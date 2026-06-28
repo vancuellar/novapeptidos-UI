@@ -1,0 +1,85 @@
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+    margin: 0;
+    font-family: 'IBM Plex Sans', ui-sans-serif, system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+@layer base {
+    :root {
+        --background: 210 33% 99%;
+        --foreground: 222 47% 11%;
+        --card: 0 0% 100%;
+        --card-foreground: 222 47% 11%;
+        --popover: 0 0% 100%;
+        --popover-foreground: 222 47% 11%;
+
+        --primary: 174 55% 28%;
+        --primary-foreground: 210 40% 98%;
+
+        --secondary: 210 20% 96%;
+        --secondary-foreground: 222 47% 11%;
+
+        --muted: 210 20% 96%;
+        --muted-foreground: 215 16% 40%;
+
+        --accent: 168 35% 92%;
+        --accent-foreground: 174 55% 22%;
+
+        --destructive: 0 72% 52%;
+        --destructive-foreground: 210 40% 98%;
+
+        --border: 214 20% 90%;
+        --input: 214 20% 90%;
+        --ring: 174 55% 28%;
+
+        --chart-1: 174 55% 28%;
+        --chart-2: 204 80% 40%;
+        --chart-3: 38 92% 50%;
+        --chart-4: 152 45% 32%;
+        --chart-5: 215 16% 40%;
+
+        --radius: 0.75rem;
+
+        --shadow-sm: 0 1px 2px rgba(11,18,32,0.06);
+        --shadow-md: 0 10px 30px rgba(11,18,32,0.10);
+
+        --font-heading: 'Space Grotesk', ui-sans-serif, system-ui;
+        --font-body: 'IBM Plex Sans', ui-sans-serif, system-ui;
+        --font-mono: 'IBM Plex Mono', ui-monospace, monospace;
+    }
+}
+
+@layer base {
+    * {
+        @apply border-border;
+    }
+    body {
+        @apply bg-background text-foreground;
+    }
+    h1, h2, h3, h4, .font-heading {
+        font-family: var(--font-heading);
+    }
+    .font-mono-tech {
+        font-family: var(--font-mono);
+    }
+}
+
+/* subtle noise texture for hero/sections */
+.bg-grain {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+}
+
+.hero-gradient {
+    background: linear-gradient(135deg, rgba(217,240,234,0.75) 0%, rgba(251,252,254,1) 55%, rgba(214,236,255,0.55) 100%);
+}
+
+@layer base {
+    [data-debug-wrapper="true"] { display: contents !important; }
+}

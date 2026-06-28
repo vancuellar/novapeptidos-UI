@@ -1,0 +1,57 @@
+import React from 'react';
+import { Link } from 'react-router-dom';
+import { FlaskConical, ShieldCheck, Truck, BadgeCheck, Mail, Phone } from 'lucide-react';
+
+const Footer = () => {
+  return (
+    <footer className="mt-16 border-t border-border bg-white">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+          <div>
+            <div className="flex items-center gap-2 mb-3">
+              <div className="h-8 w-8 rounded-lg bg-[hsl(var(--primary))] flex items-center justify-center"><FlaskConical className="h-4 w-4 text-white" /></div>
+              <span className="font-heading font-bold">Nova Peptides</span>
+            </div>
+            <p className="text-sm text-muted-foreground leading-relaxed">Péptidos de investigación con trazabilidad por lote, pureza verificada y envíos dentro de México.</p>
+          </div>
+          <div>
+            <h4 className="font-semibold mb-3 text-sm">Catálogo</h4>
+            <ul className="space-y-2 text-sm text-muted-foreground">
+              <li><Link to="/catalogo" className="hover:text-foreground">Todo el catálogo</Link></li>
+              <li><Link to="/catalogo?category=recuperacion-tejidos" className="hover:text-foreground">Recuperación y tejidos</Link></li>
+              <li><Link to="/catalogo?category=hormona-crecimiento" className="hover:text-foreground">Hormona de crecimiento</Link></li>
+              <li><Link to="/catalogo?category=stacks" className="hover:text-foreground">Stacks / Combos</Link></li>
+            </ul>
+          </div>
+          <div>
+            <h4 className="font-semibold mb-3 text-sm">Información</h4>
+            <ul className="space-y-2 text-sm text-muted-foreground">
+              <li><Link to="/info/envios" className="hover:text-foreground">Envíos y entregas</Link></li>
+              <li><Link to="/info/devoluciones" className="hover:text-foreground">Devoluciones</Link></li>
+              <li><Link to="/info/calidad" className="hover:text-foreground">Calidad y COA</Link></li>
+              <li><Link to="/info/terminos" className="hover:text-foreground">Términos y RUO</Link></li>
+            </ul>
+          </div>
+          <div>
+            <h4 className="font-semibold mb-3 text-sm">Contacto</h4>
+            <ul className="space-y-2 text-sm text-muted-foreground">
+              <li className="flex items-center gap-2"><Mail className="h-4 w-4" /> hola@novapeptides.mx</li>
+              <li className="flex items-center gap-2"><Phone className="h-4 w-4" /> +52 55 0000 0000</li>
+            </ul>
+            <div className="flex gap-3 mt-4 text-[hsl(var(--primary))]">
+              <ShieldCheck className="h-5 w-5" /><BadgeCheck className="h-5 w-5" /><Truck className="h-5 w-5" />
+            </div>
+          </div>
+        </div>
+        <div className="mt-10 pt-6 border-t border-border">
+          <p className="text-xs text-muted-foreground leading-relaxed bg-amber-50 border border-amber-200 text-amber-900 rounded-lg p-3">
+            <strong>Aviso legal (RUO):</strong> Todos los productos se venden exclusivamente para uso en investigación y desarrollo. No están destinados al consumo humano ni animal, ni para diagnóstico, tratamiento, cura o prevención de enfermedades. Al comprar, el cliente confirma que es un investigador calificado.
+          </p>
+          <p className="text-xs text-muted-foreground mt-4 text-center">© {new Date().getFullYear()} Nova Peptides. Todos los derechos reservados.</p>
+        </div>
+      </div>
+    </footer>
+  );
+};
+
+export default Footer;
