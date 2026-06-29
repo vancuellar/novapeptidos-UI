@@ -4,12 +4,12 @@ import { FlaskConical, ShieldCheck, Truck, BadgeCheck, Mail, Phone } from 'lucid
 
 const Footer = () => {
   return (
-    <footer className="mt-16 border-t border-border bg-white">
+    <footer className="mt-16 border-t border-border bg-card text-card-foreground">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           <div>
             <div className="flex items-center gap-2 mb-3">
-              <div className="h-8 w-8 rounded-lg bg-[hsl(var(--primary))] flex items-center justify-center"><FlaskConical className="h-4 w-4 text-white" /></div>
+              <div className="h-8 w-8 rounded-lg bg-[hsl(var(--primary))] flex items-center justify-center"><FlaskConical className="h-4 w-4 text-[hsl(var(--primary-foreground))]" /></div>
               <span className="font-heading font-bold">Nova Peptides</span>
             </div>
             <p className="text-sm text-muted-foreground leading-relaxed">Péptidos de investigación con trazabilidad por lote, pureza verificada y envíos dentro de México.</p>
@@ -44,7 +44,7 @@ const Footer = () => {
           </div>
         </div>
         <div className="mt-10 pt-6 border-t border-border">
-          <p className="text-xs text-muted-foreground leading-relaxed bg-amber-50 border border-amber-200 text-amber-900 rounded-lg p-3">
+          <p className="text-xs leading-relaxed bg-[hsl(var(--warning))] border border-[hsl(var(--warning-border))] text-[hsl(var(--warning-foreground))] rounded-lg p-3">
             <strong>Aviso legal (RUO):</strong> Todos los productos se venden exclusivamente para uso en investigación y desarrollo. No están destinados al consumo humano ni animal, ni para diagnóstico, tratamiento, cura o prevención de enfermedades. Al comprar, el cliente confirma que es un investigador calificado.
           </p>
           <p className="text-xs text-muted-foreground mt-4 text-center">© {new Date().getFullYear()} Nova Peptides. Todos los derechos reservados.</p>

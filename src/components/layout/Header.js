@@ -46,7 +46,7 @@ const Header = () => {
       </div>
 
       {/* Main header */}
-      <div className="bg-white/80 supports-[backdrop-filter]:backdrop-blur-md border-b border-border">
+      <div className="bg-card/90 supports-[backdrop-filter]:backdrop-blur-md border-b border-border">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center gap-4">
           {/* Mobile menu */}
           <Sheet open={mobileOpen} onOpenChange={setMobileOpen}>
@@ -73,7 +73,7 @@ const Header = () => {
 
           <Link to="/" className="flex items-center gap-2 shrink-0" data-testid="header-logo">
             <div className="h-9 w-9 rounded-lg bg-[hsl(var(--primary))] flex items-center justify-center">
-              <FlaskConical className="h-5 w-5 text-white" />
+              <FlaskConical className="h-5 w-5 text-[hsl(var(--primary-foreground))]" />
             </div>
             <div className="leading-tight">
               <div className="font-heading font-bold text-lg tracking-tight">Nova Peptides</div>

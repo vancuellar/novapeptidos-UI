@@ -124,7 +124,7 @@ const Admin = () => {
                     <TableCell className="font-medium">{p.name}{p.featured && <Badge variant="secondary" className="ml-2 text-[10px]">Destacado</Badge>}</TableCell>
                     <TableCell className="text-xs text-muted-foreground">{categories.find((c) => c.slug === p.category)?.name || p.category}</TableCell>
                     <TableCell className="font-mono-tech text-xs">{p.purity}</TableCell>
-                    <TableCell><Badge variant="outline" className={p.stock <= 5 ? 'text-amber-700 border-amber-200' : ''}>{p.stock}</Badge></TableCell>
+                    <TableCell><Badge variant="outline" className={p.stock <= 5 ? 'text-[hsl(var(--warning-foreground))] border-[hsl(var(--warning-border))] bg-[hsl(var(--warning))]' : ''}>{p.stock}</Badge></TableCell>
                     <TableCell>{formatMXN(p.price)}</TableCell>
                     <TableCell className="font-mono-tech text-xs">{p.batch_number}</TableCell>
                     <TableCell className="text-right whitespace-nowrap">

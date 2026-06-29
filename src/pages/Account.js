@@ -11,9 +11,11 @@ import api, { formatMXN, PAYMENT_LABELS, STATUS_LABELS } from '@/lib/api';
 import { useAuth } from '@/context/AuthContext';
 
 const STATUS_COLORS = {
-  pendiente: 'bg-amber-100 text-amber-900', confirmado: 'bg-sky-100 text-sky-900',
-  enviado: 'bg-indigo-100 text-indigo-900', entregado: 'bg-emerald-100 text-emerald-900',
-  cancelado: 'bg-slate-100 text-slate-700',
+  pendiente: 'bg-[hsl(var(--warning))] text-[hsl(var(--warning-foreground))] border border-[hsl(var(--warning-border))]',
+  confirmado: 'bg-[hsl(var(--accent))] text-[hsl(var(--accent-foreground))] border border-border',
+  enviado: 'bg-[hsl(var(--secondary))] text-[hsl(var(--secondary-foreground))] border border-border',
+  entregado: 'bg-[hsl(var(--success))] text-[hsl(var(--primary-foreground))]',
+  cancelado: 'bg-[hsl(var(--muted))] text-[hsl(var(--muted-foreground))] border border-border',
 };
 
 const Account = () => {

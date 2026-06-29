@@ -17,7 +17,7 @@ const OrderConfirmation = () => {
   return (
     <div className="max-w-2xl mx-auto px-4 sm:px-6 py-12">
       <Card className="p-8 text-center">
-        <CheckCircle2 className="h-16 w-16 mx-auto text-emerald-600 mb-4" />
+        <CheckCircle2 className="h-16 w-16 mx-auto text-[hsl(var(--success))] mb-4" />
         <h1 className="font-heading text-2xl font-bold">¡Pedido recibido!</h1>
         <p className="text-muted-foreground mt-2">Tu pedido <span className="font-mono-tech font-medium text-foreground">{orderNumber}</span> fue registrado correctamente.</p>
         {order && (
@@ -33,7 +33,7 @@ const OrderConfirmation = () => {
               <Separator className="my-2" />
               <div className="flex justify-between"><span className="text-muted-foreground">Método de pago</span><span>{PAYMENT_LABELS[order.payment_method] || order.payment_method}</span></div>
             </div>
-            <div className="mt-4 rounded-lg bg-amber-50 border border-amber-200 text-amber-900 p-3 text-xs leading-relaxed">
+            <div className="mt-4 rounded-lg bg-[hsl(var(--warning))] border border-[hsl(var(--warning-border))] text-[hsl(var(--warning-foreground))] p-3 text-xs leading-relaxed">
               <strong>Nota:</strong> Los métodos de pago se muestran como propuesta. Aún no se procesa el cobro en línea; nuestro equipo te contactará para coordinar el pago y el envío.
             </div>
           </div>

@@ -32,6 +32,13 @@ body {
         --accent: 168 35% 92%;
         --accent-foreground: 174 55% 22%;
 
+        --success: 152 60% 32%;
+        --warning: 43 96% 94%;
+        --warning-foreground: 30 84% 18%;
+        --warning-border: 43 90% 78%;
+        --info: 199 89% 48%;
+        --info-foreground: 210 40% 98%;
+
         --destructive: 0 72% 52%;
         --destructive-foreground: 210 40% 98%;
 
@@ -74,6 +81,13 @@ body {
 
         --accent: 174 32% 18%;
         --accent-foreground: 174 60% 82%;
+
+        --success: 152 66% 58%;
+        --warning: 36 38% 16%;
+        --warning-foreground: 43 90% 82%;
+        --warning-border: 36 42% 30%;
+        --info: 199 78% 58%;
+        --info-foreground: 222 47% 7%;
 
         --destructive: 0 72% 52%;
         --destructive-foreground: 210 40% 98%;

@@ -64,7 +64,7 @@ const ProductDetail = () => {
           <div className="rounded-2xl border border-border bg-[hsl(var(--secondary))] overflow-hidden">
             <img src={product.image_url} alt={product.name} className="w-full object-cover aspect-square" />
           </div>
-          <div className="mt-4 rounded-xl border border-amber-200 bg-amber-50 text-amber-900 p-3 flex items-start gap-2 text-xs leading-relaxed">
+          <div className="mt-4 rounded-xl border border-[hsl(var(--warning-border))] bg-[hsl(var(--warning))] text-[hsl(var(--warning-foreground))] p-3 flex items-start gap-2 text-xs leading-relaxed">
             <FlaskConical className="h-4 w-4 shrink-0 mt-0.5" />
             <span>Solo para uso en investigación (RUO). No destinado a diagnóstico, tratamiento, cura o prevención de enfermedades.</span>
           </div>
@@ -73,8 +73,8 @@ const ProductDetail = () => {
         <div>
           <div className="flex flex-wrap gap-2 mb-3">
             <Badge variant="secondary" className="gap-1"><ShieldCheck className="h-3 w-3" /> COA verificado</Badge>
-            <Badge variant="outline" className="border-amber-200 bg-amber-50 text-amber-900">RUO</Badge>
-            {product.is_new && <Badge className="bg-sky-600">Nuevo</Badge>}
+            <Badge variant="outline" className="border-[hsl(var(--warning-border))] bg-[hsl(var(--warning))] text-[hsl(var(--warning-foreground))]">RUO</Badge>
+            {product.is_new && <Badge className="bg-[hsl(var(--info))] text-[hsl(var(--info-foreground))]">Nuevo</Badge>}
           </div>
           <h1 className="font-heading text-3xl font-bold tracking-tight" data-testid="pdp-title">{product.name}</h1>
           <p className="mt-2 text-muted-foreground font-mono-tech text-sm">{product.presentation} · Pureza {product.purity}</p>
@@ -86,7 +86,7 @@ const ProductDetail = () => {
           <p className="mt-4 text-sm leading-relaxed text-muted-foreground">{product.short_description}</p>
 
           <div className="mt-5">
-            {out ? <Badge variant="outline" className="text-muted-foreground">Agotado</Badge> : <span className="text-sm text-emerald-700">✓ En stock ({product.stock} disponibles)</span>}
+            {out ? <Badge variant="outline" className="text-muted-foreground">Agotado</Badge> : <span className="text-sm text-[hsl(var(--success))]">✓ En stock ({product.stock} disponibles)</span>}
           </div>
 
           <div className="mt-5 flex items-center gap-3">

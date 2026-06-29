@@ -31,7 +31,7 @@ const Register = () => {
   return (
     <div className="max-w-md mx-auto px-4 sm:px-6 py-12">
       <Card className="p-6">
-        <div className="flex items-center gap-2 mb-4"><div className="h-10 w-10 rounded-lg bg-[hsl(var(--primary))] flex items-center justify-center"><FlaskConical className="h-5 w-5 text-white" /></div><span className="font-heading font-bold text-xl">Nova Peptides</span></div>
+        <div className="flex items-center gap-2 mb-4"><div className="h-10 w-10 rounded-lg bg-[hsl(var(--primary))] flex items-center justify-center"><FlaskConical className="h-5 w-5 text-[hsl(var(--primary-foreground))]" /></div><span className="font-heading font-bold text-xl">Nova Peptides</span></div>
         <h1 className="font-heading text-2xl font-bold">Crear cuenta</h1>
         <p className="text-sm text-muted-foreground mt-1">Únete para dar seguimiento a tus pedidos</p>
         <form onSubmit={submit} className="mt-6 space-y-4">
