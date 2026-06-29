@@ -28,7 +28,7 @@ function App() {
         <LanguageProvider>
           <AuthProvider>
             <CartProvider>
-              <BrowserRouter>
+              <BrowserRouter basename={process.env.PUBLIC_URL || '/'}>
                 <Header />
                 <main className="min-h-[70vh]">
                   <Routes>
