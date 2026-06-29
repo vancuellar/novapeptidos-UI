@@ -3,10 +3,11 @@ import React, { createContext, useContext, useEffect, useMemo, useState } from '
 export const THEMES = ['light', 'dark', 'system'];
 
 const STORAGE_KEY = 'nova-theme';
+const DEFAULT_THEME = 'light';
 const ThemeContext = createContext(null);
 
 const normalizeTheme = (value) => {
-  return THEMES.includes(value) ? value : 'system';
+  return THEMES.includes(value) ? value : DEFAULT_THEME;
 };
 
 const systemPrefersDark = () => {
@@ -15,7 +16,7 @@ const systemPrefersDark = () => {
 
 export const ThemeProvider = ({ children }) => {
   const [theme, setThemeState] = useState(() => {
-    if (typeof window === 'undefined') return 'system';
+    if (typeof window === 'undefined') return DEFAULT_THEME;
     return normalizeTheme(localStorage.getItem(STORAGE_KEY));
   });
 
