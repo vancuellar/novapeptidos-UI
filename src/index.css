@@ -54,6 +54,34 @@ body {
         --font-body: 'IBM Plex Sans', ui-sans-serif, system-ui;
         --font-mono: 'IBM Plex Mono', ui-monospace, monospace;
     }
+
+    .dark {
+        --background: 222 47% 7%;
+        --foreground: 210 40% 98%;
+        --card: 222 36% 10%;
+        --card-foreground: 210 40% 98%;
+        --popover: 222 36% 10%;
+        --popover-foreground: 210 40% 98%;
+
+        --primary: 174 55% 42%;
+        --primary-foreground: 222 47% 7%;
+
+        --secondary: 222 30% 14%;
+        --secondary-foreground: 210 40% 98%;
+
+        --muted: 222 30% 14%;
+        --muted-foreground: 215 20% 70%;
+
+        --accent: 174 32% 18%;
+        --accent-foreground: 174 60% 82%;
+
+        --destructive: 0 72% 52%;
+        --destructive-foreground: 210 40% 98%;
+
+        --border: 222 26% 20%;
+        --input: 222 26% 20%;
+        --ring: 174 55% 42%;
+    }
 }
 
 @layer base {
@@ -78,6 +106,10 @@ body {
 
 .hero-gradient {
     background: linear-gradient(135deg, rgba(217,240,234,0.75) 0%, rgba(251,252,254,1) 55%, rgba(214,236,255,0.55) 100%);
+}
+
+.dark .hero-gradient {
+    background: linear-gradient(135deg, rgba(18,74,68,0.72) 0%, rgba(11,18,32,1) 55%, rgba(23,52,72,0.64) 100%);
 }
 
 @layer base {
