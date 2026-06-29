@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import ProductCard from '@/components/ProductCard';
 import api from '@/lib/api';
+import { fallbackCategories, getFallbackFeaturedProducts } from '@/data/fallbackCatalog';
 
 const ICONS = { HeartPulse, Activity, Flame, Hourglass, Brain, Sparkles, Layers, FlaskConical };
 
@@ -13,8 +14,12 @@ const Home = () => {
   const [categories, setCategories] = useState([]);
 
   useEffect(() => {
-    api.get('/products?featured=true').then((r) => setFeatured(r.data.slice(0, 8))).catch(() => {});
-    api.get('/categories').then((r) => setCategories(r.data)).catch(() => {});
+    api.get('/products?featured=true')
+      .then((r) => setFeatured(r.data.slice(0, 8)))
+      .catch(() => setFeatured(getFallbackFeaturedProducts()));
+    api.get('/categories')
+      .then((r) => setCategories(r.data))
+      .catch(() => setCategories(fallbackCategories));
   }, []);
 
   return (

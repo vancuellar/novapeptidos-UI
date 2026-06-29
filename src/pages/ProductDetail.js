@@ -11,6 +11,7 @@ import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbP
 import ProductCard from '@/components/ProductCard';
 import api, { formatMXN } from '@/lib/api';
 import { useCart } from '@/context/CartContext';
+import { getFallbackProductBySlug, getFallbackProductsByCategory } from '@/data/fallbackCatalog';
 
 const ProductDetail = () => {
   const { slug } = useParams();
@@ -28,7 +29,11 @@ const ProductDetail = () => {
     api.get(`/products/${slug}`).then((r) => {
       setProduct(r.data);
       api.get(`/products?category=${r.data.category}`).then((rr) => setRelated(rr.data.filter((p) => p.slug !== slug).slice(0, 4)));
-    }).catch(() => setProduct(null)).finally(() => setLoading(false));
+    }).catch(() => {
+      const fallbackProduct = getFallbackProductBySlug(slug);
+      setProduct(fallbackProduct || null);
+      setRelated(fallbackProduct ? getFallbackProductsByCategory(fallbackProduct.category).filter((p) => p.slug !== slug).slice(0, 4) : []);
+    }).finally(() => setLoading(false));
   }, [slug]);
 
   if (loading) return <div className="max-w-6xl mx-auto px-4 py-10"><Skeleton className="h-96 rounded-xl" /></div>;

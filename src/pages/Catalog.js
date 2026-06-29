@@ -12,6 +12,7 @@ import { Sheet, SheetContent, SheetTrigger, SheetHeader, SheetTitle } from '@/co
 import { Skeleton } from '@/components/ui/skeleton';
 import ProductCard from '@/components/ProductCard';
 import api, { formatMXN } from '@/lib/api';
+import { fallbackCategories, fallbackProducts } from '@/data/fallbackCatalog';
 
 const Filters = ({ categories, selectedCat, setCat, inStock, setInStock, priceMax, setPriceMax, onClear }) => (
   <div className="space-y-6">
@@ -48,7 +49,9 @@ const Catalog = () => {
   const [priceMax, setPriceMax] = useState(5000);
   const [sort, setSort] = useState('relevance');
 
-  useEffect(() => { api.get('/categories').then((r) => setCategories(r.data)).catch(() => {}); }, []);
+  useEffect(() => {
+    api.get('/categories').then((r) => setCategories(r.data)).catch(() => setCategories(fallbackCategories));
+  }, []);
 
   useEffect(() => {
     setSearch(params.get('search') || '');
@@ -63,7 +66,22 @@ const Catalog = () => {
     if (inStock) q.set('in_stock', 'true');
     if (priceMax < 5000) q.set('max_price', priceMax);
     if (sort !== 'relevance') q.set('sort', sort);
-    api.get(`/products?${q.toString()}`).then((r) => setProducts(r.data)).catch(() => {}).finally(() => setLoading(false));
+    api.get(`/products?${q.toString()}`)
+      .then((r) => setProducts(r.data))
+      .catch(() => {
+        let list = [...fallbackProducts];
+        if (selectedCat) list = list.filter((product) => product.category === selectedCat);
+        if (search) {
+          const needle = search.toLowerCase();
+          list = list.filter((product) => `${product.name} ${product.short_description}`.toLowerCase().includes(needle));
+        }
+        if (inStock) list = list.filter((product) => product.stock > 0);
+        list = list.filter((product) => product.price <= priceMax);
+        if (sort === 'price_asc') list.sort((a, b) => a.price - b.price);
+        if (sort === 'price_desc') list.sort((a, b) => b.price - a.price);
+        setProducts(list);
+      })
+      .finally(() => setLoading(false));
   }, [selectedCat, search, inStock, priceMax, sort]);
 
   useEffect(() => { fetchProducts(); }, [fetchProducts]);
