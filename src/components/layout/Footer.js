@@ -11,10 +11,10 @@ const Footer = () => {
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           <div>
-            <div className="flex items-center gap-2 mb-3">
+            <Link to="/" className="flex items-center gap-2 mb-3 hover:text-[hsl(var(--primary))] transition-colors">
               <div className="h-8 w-8 rounded-lg bg-[hsl(var(--primary))] flex items-center justify-center"><FlaskConical className="h-4 w-4 text-[hsl(var(--primary-foreground))]" /></div>
               <span className="font-heading font-bold">Nova Peptides</span>
-            </div>
+            </Link>
             <p className="text-sm text-muted-foreground leading-relaxed">{t('footer.description')}</p>
           </div>
           <div>

@@ -56,7 +56,13 @@ const Header = () => {
               <Button variant="ghost" size="icon" data-testid="header-mobile-menu-button"><Menu className="h-5 w-5" /></Button>
             </SheetTrigger>
             <SheetContent side="left" className="w-80">
-              <SheetHeader><SheetTitle className="flex items-center gap-2"><FlaskConical className="h-5 w-5 text-[hsl(var(--primary))]" /> Nova Peptides</SheetTitle></SheetHeader>
+              <SheetHeader>
+                <SheetTitle asChild>
+                  <Link to="/" onClick={() => setMobileOpen(false)} className="flex items-center gap-2">
+                    <FlaskConical className="h-5 w-5 text-[hsl(var(--primary))]" /> Nova Peptides
+                  </Link>
+                </SheetTitle>
+              </SheetHeader>
               <form onSubmit={submitSearch} className="mt-4">
                 <Input placeholder={t('header.searchShort')} value={search} onChange={(e) => setSearch(e.target.value)} data-testid="site-search-input-mobile" />
               </form>
