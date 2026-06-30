@@ -18,19 +18,9 @@ export const formatMXN = (value) =>
   new Intl.NumberFormat('es-MX', { style: 'currency', currency: 'MXN', minimumFractionDigits: 0, maximumFractionDigits: 0 }).format(value || 0);
 
 export const PAYMENT_METHODS = [
-  { id: 'mercado_pago', label: 'Mercado Pago', desc: 'Tarjetas, saldo y meses sin intereses', icon: 'Wallet' },
-  { id: 'tarjeta', label: 'Tarjeta de crédito / débito', desc: 'Visa, Mastercard, American Express', icon: 'CreditCard' },
-  { id: 'oxxo', label: 'OXXO (efectivo)', desc: 'Paga en cualquier tienda OXXO', icon: 'Store' },
-  { id: 'spei', label: 'Transferencia SPEI', desc: 'Transferencia bancaria interbancaria', icon: 'Landmark' },
-  { id: 'contra_entrega', label: 'Pago contra entrega', desc: 'Paga al recibir tu pedido', icon: 'Truck' },
+  { id: 'mercado_pago', icon: 'Wallet' },
+  { id: 'tarjeta', icon: 'CreditCard' },
+  { id: 'oxxo', icon: 'Store' },
+  { id: 'spei', icon: 'Landmark' },
+  { id: 'contra_entrega', icon: 'Truck' },
 ];
-
-export const PAYMENT_LABELS = PAYMENT_METHODS.reduce((acc, m) => { acc[m.id] = m.label; return acc; }, {});
-
-export const STATUS_LABELS = {
-  pendiente: 'Pendiente',
-  confirmado: 'Confirmado',
-  enviado: 'Enviado',
-  entregado: 'Entregado',
-  cancelado: 'Cancelado',
-};

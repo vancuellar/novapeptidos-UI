@@ -23,7 +23,7 @@ export const LanguageProvider = ({ children }) => {
     language,
     languages: LANGUAGES,
     setLanguage: (nextLanguage) => setLanguageState(normalizeLanguage(nextLanguage)),
-    t: (key) => getTranslation(language, key),
+    t: (key, params) => getTranslation(language, key, params),
   }), [language]);
 
   return <LanguageContext.Provider value={value}>{children}</LanguageContext.Provider>;

@@ -14,18 +14,20 @@ import { useLanguage } from '@/context/LanguageContext';
 import LanguageSelector from '@/components/LanguageSelector';
 import ThemeSelector from '@/components/ThemeSelector';
 import api from '@/lib/api';
+import { fallbackCategories } from '@/data/fallbackCatalog';
+import { localizeCategories } from '@/i18n/catalog';
 
 const Header = () => {
   const { count } = useCart();
   const { user, logout } = useAuth();
-  const { t } = useLanguage();
+  const { language, t } = useLanguage();
   const navigate = useNavigate();
   const [search, setSearch] = useState('');
   const [categories, setCategories] = useState([]);
   const [mobileOpen, setMobileOpen] = useState(false);
 
   useEffect(() => {
-    api.get('/categories').then((r) => setCategories(r.data)).catch(() => {});
+    api.get('/categories').then((r) => setCategories(r.data)).catch(() => setCategories(fallbackCategories));
   }, []);
 
   const submitSearch = (e) => {
@@ -60,7 +62,7 @@ const Header = () => {
               </form>
               <nav className="mt-6 flex flex-col gap-1">
                 <Link to="/catalogo" onClick={() => setMobileOpen(false)} className="py-2 font-medium">{t('header.allCatalog')}</Link>
-                {categories.map((c) => (
+                {localizeCategories(categories, language).map((c) => (
                   <Link key={c.slug} to={`/catalogo?category=${c.slug}`} onClick={() => setMobileOpen(false)} className="py-2 text-sm text-muted-foreground hover:text-foreground">{c.name}</Link>
                 ))}
               </nav>
@@ -125,7 +127,7 @@ const Header = () => {
         <div className="hidden lg:block border-t border-border">
           <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 h-11 flex items-center gap-6 overflow-x-auto">
             <Link to="/catalogo" className="text-sm font-medium whitespace-nowrap hover:text-[hsl(var(--primary))]">{t('header.all')}</Link>
-            {categories.map((c) => (
+            {localizeCategories(categories, language).map((c) => (
               <Link key={c.slug} to={`/catalogo?category=${c.slug}`} className="text-sm text-muted-foreground whitespace-nowrap hover:text-[hsl(var(--primary))]" data-testid={`nav-category-${c.slug}`}>{c.name}</Link>
             ))}
           </div>

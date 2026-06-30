@@ -4,12 +4,13 @@ import { Button } from '@/components/ui/button';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Textarea } from '@/components/ui/textarea';
 import { API } from '@/lib/api';
+import { useLanguage } from '@/context/LanguageContext';
 
 const QUICK = [
-  '¿Qué significa RUO?',
-  'Ayúdame a elegir por objetivo de investigación',
-  'Envíos y tiempos',
-  '¿Tienen COA por lote?',
+  'chat.quick.ruo',
+  'chat.quick.goal',
+  'chat.quick.shipping',
+  'chat.quick.coa',
 ];
 
 const getSessionId = () => {
@@ -22,9 +23,10 @@ const getSessionId = () => {
 };
 
 const AIChatWidget = () => {
+  const { t } = useLanguage();
   const [open, setOpen] = useState(false);
   const [messages, setMessages] = useState([
-    { role: 'assistant', content: 'Hola, soy Nova, el asistente de Nova Peptides. Puedo ayudarte a encontrar un péptido según tu objetivo de investigación y a ubicar COA/lotes. ¿En qué te apoyo?' },
+    { role: 'assistant', content: t('chat.initial') },
   ]);
   const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false);
@@ -67,7 +69,7 @@ const AIChatWidget = () => {
     } catch (e) {
       setMessages((prev) => {
         const copy = [...prev];
-        copy[copy.length - 1] = { role: 'assistant', content: 'Lo siento, ocurrió un error. Intenta de nuevo.' };
+        copy[copy.length - 1] = { role: 'assistant', content: t('chat.error') };
         return copy;
       });
     } finally {
@@ -83,7 +85,7 @@ const AIChatWidget = () => {
           onClick={() => setOpen(true)}
           data-testid="ai-chat-open-button"
           className="fixed bottom-24 right-5 z-50 h-14 w-14 rounded-full bg-[hsl(var(--primary))] text-[hsl(var(--primary-foreground))] shadow-[var(--shadow-md)] flex items-center justify-center hover:scale-105 transition-transform"
-          aria-label="Abrir asistente"
+          aria-label={t('chat.open')}
         >
           <MessageCircle className="h-6 w-6" />
         </button>
@@ -96,8 +98,8 @@ const AIChatWidget = () => {
             <div className="flex items-center gap-2">
               <div className="h-8 w-8 rounded-lg bg-[hsl(var(--primary))] flex items-center justify-center"><FlaskConical className="h-4 w-4 text-[hsl(var(--primary-foreground))]" /></div>
               <div>
-                <div className="font-heading font-semibold text-sm leading-tight">Asistente Nova</div>
-                <div className="text-[10px] text-muted-foreground">En línea · responde en segundos</div>
+                <div className="font-heading font-semibold text-sm leading-tight">{t('chat.title')}</div>
+                <div className="text-[10px] text-muted-foreground">{t('chat.online')}</div>
               </div>
             </div>
             <Button variant="ghost" size="icon" onClick={() => setOpen(false)} data-testid="ai-chat-close-button"><X className="h-5 w-5" /></Button>
@@ -115,8 +117,8 @@ const AIChatWidget = () => {
 
           {messages.length <= 2 && (
             <div className="px-4 pb-2 flex flex-wrap gap-2">
-              {QUICK.map((q) => (
-                <button key={q} onClick={() => send(q)} data-testid="ai-chat-quick-reply-button" className="text-xs border border-border rounded-full px-3 py-1.5 hover:bg-[hsl(var(--secondary))] transition-colors">{q}</button>
+              {QUICK.map((key) => (
+                <button key={key} onClick={() => send(t(key))} data-testid="ai-chat-quick-reply-button" className="text-xs border border-border rounded-full px-3 py-1.5 hover:bg-[hsl(var(--secondary))] transition-colors">{t(key)}</button>
               ))}
             </div>
           )}
@@ -127,14 +129,14 @@ const AIChatWidget = () => {
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
                 onKeyDown={(e) => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); send(); } }}
-                placeholder="Escribe tu pregunta..."
+                placeholder={t('chat.placeholder')}
                 rows={1}
                 className="resize-none min-h-[44px] max-h-28"
                 data-testid="ai-chat-input"
               />
               <Button size="icon" onClick={() => send()} disabled={loading} data-testid="ai-chat-send-button" className="h-11 w-11 shrink-0"><Send className="h-4 w-4" /></Button>
             </div>
-            <p className="text-[10px] text-muted-foreground mt-2 text-center">Respuestas informativas. Solo uso en investigación (RUO).</p>
+            <p className="text-[10px] text-muted-foreground mt-2 text-center">{t('chat.disclaimer')}</p>
           </div>
         </div>
       )}
