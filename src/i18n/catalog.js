@@ -49,6 +49,12 @@ const productTranslations = {
       form: 'Lyophilized',
       storage: 'Store at -20 C, protected from light. Reconstituted: 2-8 C.',
     },
+    'pt-BR': {
+      short_description: 'Peptideo estudado na reparacao de tecidos e mucosa gastrica.',
+      description: 'BPC-157 e um peptideo de pesquisa amplamente estudado por seu papel na reparacao de tecidos, tendoes e integridade gastrointestinal. Somente para uso em pesquisa (RUO).',
+      form: 'Liofilizado',
+      storage: 'Conservar a -20 C, protegido da luz. Reconstituido: 2-8 C.',
+    },
   },
   'bpc-157-10mg': {
     'en-US': {
@@ -56,6 +62,12 @@ const productTranslations = {
       description: '10 mg BPC-157 presentation for studies requiring more material. HPLC-verified purity. Research use only (RUO).',
       form: 'Lyophilized',
       storage: 'Store at -20 C, protected from light. Reconstituted: 2-8 C.',
+    },
+    'pt-BR': {
+      short_description: 'Maior concentracao para protocolos de pesquisa estendidos.',
+      description: 'Apresentacao de 10 mg de BPC-157 para estudos que exigem mais material. Pureza verificada por HPLC. Somente para uso em pesquisa (RUO).',
+      form: 'Liofilizado',
+      storage: 'Conservar a -20 C, protegido da luz. Reconstituido: 2-8 C.',
     },
   },
   'tb-500-5mg': {
@@ -65,6 +77,12 @@ const productTranslations = {
       form: 'Lyophilized',
       storage: 'Store at -20 C, protected from light. Reconstituted: 2-8 C.',
     },
+    'pt-BR': {
+      short_description: 'Fragmento de timosina beta-4 estudado na mobilidade celular.',
+      description: 'TB-500 e pesquisado por seu papel na migracao celular e recuperacao ampla de tecidos. Somente para uso em pesquisa (RUO).',
+      form: 'Liofilizado',
+      storage: 'Conservar a -20 C, protegido da luz. Reconstituido: 2-8 C.',
+    },
   },
   'ipamorelin-5mg': {
     'en-US': {
@@ -72,6 +90,12 @@ const productTranslations = {
       description: 'Ipamorelin is a research peptide studied for selective growth hormone signaling. Research use only (RUO).',
       form: 'Lyophilized',
       storage: 'Store at -20 C, protected from light. Reconstituted: 2-8 C.',
+    },
+    'pt-BR': {
+      short_description: 'Secretagogo seletivo de GH, amplamente estudado.',
+      description: 'Ipamorelin e um peptideo de pesquisa estudado pela sinalizacao seletiva do hormonio do crescimento. Somente para uso em pesquisa (RUO).',
+      form: 'Liofilizado',
+      storage: 'Conservar a -20 C, protegido da luz. Reconstituido: 2-8 C.',
     },
   },
   'semaglutida-5mg': {
@@ -82,6 +106,13 @@ const productTranslations = {
       form: 'Lyophilized',
       storage: 'Store at -20 C, protected from light. Reconstituted: 2-8 C.',
     },
+    'pt-BR': {
+      name: 'Semaglutida 5 mg',
+      short_description: 'Agonista GLP-1 para pesquisa metabolica.',
+      description: 'Semaglutida e um peptideo agonista do receptor GLP-1 pesquisado em modelos de metabolismo da glicose e apetite. Somente para uso em pesquisa (RUO).',
+      form: 'Liofilizado',
+      storage: 'Conservar a -20 C, protegido da luz. Reconstituido: 2-8 C.',
+    },
   },
   'tirzepatida-10mg': {
     'en-US': {
@@ -90,6 +121,13 @@ const productTranslations = {
       description: 'Tirzepatide is a dual GIP/GLP-1 agonist peptide researched in glycemic control and body composition models. Research use only (RUO).',
       form: 'Lyophilized',
       storage: 'Store at -20 C, protected from light. Reconstituted: 2-8 C.',
+    },
+    'pt-BR': {
+      name: 'Tirzepatida 10 mg',
+      short_description: 'Duplo agonista GIP/GLP-1 para pesquisa.',
+      description: 'Tirzepatida e um peptideo duplo agonista GIP/GLP-1 pesquisado em modelos de controle glicemico e composicao corporal. Somente para uso em pesquisa (RUO).',
+      form: 'Liofilizado',
+      storage: 'Conservar a -20 C, protegido da luz. Reconstituido: 2-8 C.',
     },
   },
   'stack-recuperacion': {
@@ -100,6 +138,13 @@ const productTranslations = {
       form: 'Lyophilized',
       storage: 'Store at -20 C, protected from light. Reconstituted: 2-8 C.',
     },
+    'pt-BR': {
+      name: 'Stack Recuperacao: BPC-157 + TB-500',
+      short_description: 'Combo de pesquisa para recuperacao de tecidos.',
+      description: 'Combinacao de BPC-157 e TB-500 em um unico kit para protocolos de pesquisa focados na reparacao de tecidos. Somente para uso em pesquisa (RUO).',
+      form: 'Liofilizado',
+      storage: 'Conservar a -20 C, protegido da luz. Reconstituido: 2-8 C.',
+    },
   },
   'stack-gh': {
     'en-US': {
@@ -107,6 +152,12 @@ const productTranslations = {
       description: 'Ipamorelin and CJC-1295 no DAC combination for growth hormone signaling studies. Research use only (RUO).',
       form: 'Lyophilized',
       storage: 'Store at -20 C, protected from light. Reconstituted: 2-8 C.',
+    },
+    'pt-BR': {
+      short_description: 'Combo de pesquisa para sinalizacao de GH.',
+      description: 'Combinacao de Ipamorelin e CJC-1295 sem DAC para estudos de sinalizacao do hormonio do crescimento. Somente para uso em pesquisa (RUO).',
+      form: 'Liofilizado',
+      storage: 'Conservar a -20 C, protegido da luz. Reconstituido: 2-8 C.',
     },
   },
 };
