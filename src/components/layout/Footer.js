@@ -39,7 +39,7 @@ const Footer = () => {
             <h4 className="font-semibold mb-3 text-sm">{t('footer.contactTitle')}</h4>
             <ul className="space-y-2 text-sm text-muted-foreground">
               <li className="flex items-center gap-2"><Mail className="h-4 w-4" /> hola@novapeptides.mx</li>
-              <li className="flex items-center gap-2"><Phone className="h-4 w-4" /> +52 55 0000 0000</li>
+              <li className="flex items-center gap-2"><Phone className="h-4 w-4" /> +52 (994) 494-6889</li>
             </ul>
             <div className="flex gap-3 mt-4 text-[hsl(var(--primary))]">
               <ShieldCheck className="h-5 w-5" /><BadgeCheck className="h-5 w-5" /><Truck className="h-5 w-5" />
