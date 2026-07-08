@@ -1,6 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { ShieldCheck, FlaskConical, Truck, BadgeCheck, ArrowRight, HeartPulse, Activity, Flame, Hourglass, Brain, Sparkles, Layers, MessageCircle } from 'lucide-react';
+import {
+  ShieldCheck, FlaskConical, Truck, BadgeCheck, ArrowRight, HeartPulse, Activity, Flame, Hourglass,
+  Brain, Sparkles, Layers, CheckCircle2, MinusCircle, FileCheck2, ScanSearch, Landmark, CreditCard, Store,
+  ChevronLeft, ChevronRight, Building2, Mail,
+} from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import ProductCard from '@/components/ProductCard';
@@ -10,51 +14,127 @@ import { useLanguage } from '@/context/LanguageContext';
 import { localizeCategories, localizeProducts } from '@/i18n/catalog';
 
 const ICONS = { HeartPulse, Activity, Flame, Hourglass, Brain, Sparkles, Layers, FlaskConical };
+const HERO_IMG = process.env.PUBLIC_URL + '/images/hero-vials.png';
+
+// Compounds shown in the scrolling ticker under the hero
+const TICKER_ITEMS = [
+  'BPC-157', 'TB-500', 'Ipamorelin', 'CJC-1295', 'Semaglutida', 'Tirzepatida',
+  'Epithalon', 'NAD+', 'Semax', 'Selank', 'DSIP', 'GHK-Cu',
+];
+
+// Representative compounds shown as tags on each category card
+const CATEGORY_CHIPS = {
+  'recuperacion-tejidos': ['BPC-157', 'TB-500', '+2'],
+  'hormona-crecimiento': ['Ipamorelin', 'CJC-1295', '+3'],
+  metabolicos: ['Semaglutida', 'Tirzepatida', '+2'],
+  longevidad: ['Epithalon', 'NAD+', '+1'],
+  nootropicos: ['Semax', 'Selank', '+2'],
+  bienestar: ['DSIP', 'GHK-Cu', '+1'],
+  stacks: ['BPC + TB-500', 'Ipa + CJC', '+1'],
+  accesorios: ['Agua bact.', 'Jeringas', '+2'],
+};
 
 const Home = () => {
   const [featured, setFeatured] = useState([]);
   const [categories, setCategories] = useState([]);
+  const carouselRef = useRef(null);
   const { language, t } = useLanguage();
+
+  const scrollCarousel = (dir) => {
+    if (carouselRef.current) carouselRef.current.scrollBy({ left: dir * 300, behavior: 'smooth' });
+  };
 
   useEffect(() => {
     api.get('/products?featured=true')
-      .then((r) => setFeatured(r.data.slice(0, 8)))
+      .then((r) => setFeatured(Array.isArray(r.data) ? r.data.slice(0, 8) : getFallbackFeaturedProducts()))
       .catch(() => setFeatured(getFallbackFeaturedProducts()));
     api.get('/categories')
-      .then((r) => setCategories(r.data))
+      .then((r) => setCategories(Array.isArray(r.data) ? r.data : fallbackCategories))
       .catch(() => setCategories(fallbackCategories));
   }, []);
 
+  // Gradient-highlight the last two words of the headline in any language
+  const heroWords = t('home.heroTitle').split(' ');
+  const heroLead = heroWords.slice(0, -2).join(' ');
+  const heroAccent = heroWords.slice(-2).join(' ');
+
+  const whyRows = [
+    { label: t('home.why.r1'), others: 'no' },
+    { label: t('home.why.r2'), others: 'partial' },
+    { label: t('home.why.r3'), others: 'partial' },
+    { label: t('home.why.r4'), others: 'partial' },
+    { label: t('home.why.r5'), others: 'no' },
+    { label: t('home.why.r6'), others: 'partial' },
+  ];
+
   return (
     <div>
-      {/* Hero */}
-      <section className="hero-gradient bg-grain border-b border-border">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-14 pb-12">
-          <div className="grid lg:grid-cols-2 gap-10 items-center">
+      {/* ===== Hero — clean typography + real vial photo ===== */}
+      <section className="bg-background relative overflow-hidden">
+        <div className="hero-aurora" />
+        <div className="hero-grid" />
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 pb-14 relative">
+          <div className="grid lg:grid-cols-[1.1fr_0.9fr] gap-12 lg:gap-16 items-center">
             <div>
-              <div className="inline-flex items-center gap-2 rounded-full bg-card text-card-foreground border border-border px-3 py-1 text-xs font-medium mb-5">
-                <span className="h-2 w-2 rounded-full bg-[hsl(var(--success))]" /> {t('home.badge')}
-              </div>
-              <h1 className="font-heading text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight leading-[1.05]">{t('home.heroTitle')}</h1>
-              <p className="mt-5 text-base sm:text-lg text-muted-foreground max-w-xl leading-relaxed">{t('home.heroBody')} <span className="font-medium text-foreground">{t('home.heroRuo')}</span></p>
-              <div className="mt-7 flex flex-wrap gap-3">
-                <Button asChild size="lg" data-testid="hero-catalog-button"><Link to="/catalogo">{t('home.viewCatalog')} <ArrowRight className="h-4 w-4 ml-1.5" /></Link></Button>
-                <Button asChild variant="outline" size="lg"><Link to="/info/calidad">{t('home.verifyPurity')}</Link></Button>
-              </div>
-              <div className="mt-8 grid grid-cols-3 gap-4 max-w-md">
-                <div><div className="font-heading text-2xl font-bold">>=99%</div><div className="text-xs text-muted-foreground">{t('home.typicalPurity')}</div></div>
-                <div><div className="font-heading text-2xl font-bold">22+</div><div className="text-xs text-muted-foreground">{t('home.products')}</div></div>
-                <div><div className="font-heading text-2xl font-bold">2-5 dias</div><div className="text-xs text-muted-foreground">{t('home.nationalShipping')}</div></div>
+              <div className="kicker">{t('home.kicker')}</div>
+              <h1 className="font-heading text-5xl sm:text-6xl lg:text-[3.6rem] font-bold tracking-tight leading-[1.04] mt-6">
+                {heroLead}{' '}<span className="hero-title-accent font-display-serif italic font-normal">{heroAccent}</span>
+              </h1>
+              <p className="mt-7 text-lg sm:text-xl text-muted-foreground max-w-xl leading-relaxed">
+                {t('home.heroBody')}
+              </p>
+              <div className="mt-10 flex flex-wrap items-center gap-4">
+                <Button asChild className="rounded-full h-12 px-8 uppercase tracking-[0.14em] text-xs font-bold" data-testid="hero-catalog-button">
+                  <Link to="/catalogo">{t('home.viewCatalog')} <ArrowRight className="h-4 w-4 ml-2" /></Link>
+                </Button>
+                <Button asChild variant="outline" className="rounded-full h-12 px-8 uppercase tracking-[0.14em] text-xs font-semibold">
+                  <Link to="/info/calidad">{t('home.verifyPurity')}</Link>
+                </Button>
               </div>
             </div>
-            <div className="relative">
-              <img src="https://images.pexels.com/photos/9259964/pexels-photo-9259964.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940" alt={t('home.labAlt')} className="rounded-2xl border border-border shadow-[var(--shadow-md)] w-full object-cover aspect-[4/3]" />
+            <div className="flex items-center justify-center">
+              <img src={HERO_IMG} alt={t('home.labAlt')} className="w-full max-w-[240px] object-contain drop-shadow-[0_18px_32px_rgba(20,24,30,0.16)]" />
+            </div>
+          </div>
+        </div>
+        {/* ===== Compound ticker ===== */}
+        <div className="ticker py-3.5 relative" aria-hidden="true">
+          <div className="ticker-track">
+            {[0, 1].map((dup) => (
+              <div key={dup} className="flex shrink-0 items-center">
+                {TICKER_ITEMS.map((name) => (
+                  <span key={`${dup}-${name}`} className="flex items-center font-mono-tech text-[11px] uppercase tracking-[0.22em] ticker-item">
+                    <span className="px-6">{name}</span>
+                    <span className="h-1 w-1 rounded-full bg-current opacity-50" />
+                  </span>
+                ))}
+              </div>
+            ))}
+          </div>
+        </div>
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pb-20 relative">
+          <div className="mt-4 flex flex-wrap gap-x-12 gap-y-6 pt-4">
+            <div>
+              <div className="font-heading text-3xl font-bold">≥99%</div>
+              <div className="font-mono-tech text-[10.5px] uppercase tracking-[0.16em] text-muted-foreground mt-1.5">{t('home.typicalPurity')} · HPLC</div>
+            </div>
+            <div className="border-l border-border pl-12">
+              <div className="font-heading text-3xl font-bold">22+</div>
+              <div className="font-mono-tech text-[10.5px] uppercase tracking-[0.16em] text-muted-foreground mt-1.5">{t('home.products')}</div>
+            </div>
+            <div className="border-l border-border pl-12">
+              <div className="font-heading text-3xl font-bold">{t('home.shippingValue')}</div>
+              <div className="font-mono-tech text-[10.5px] uppercase tracking-[0.16em] text-muted-foreground mt-1.5">{t('home.nationalShipping')}</div>
+            </div>
+            <div className="border-l border-border pl-12">
+              <div className="font-heading text-3xl font-bold text-[hsl(var(--primary))]">COA</div>
+              <div className="font-mono-tech text-[10.5px] uppercase tracking-[0.16em] text-muted-foreground mt-1.5">{t('home.coa.batch')} NP-BPC5-2401 · 99.4%</div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Trust badges */}
+      {/* ===== Trust strip ===== */}
       <section className="border-b border-border bg-card">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-6 grid grid-cols-2 md:grid-cols-4 gap-4">
           {[{ i: ShieldCheck, t: t('home.trust.coa.title'), d: t('home.trust.coa.desc') }, { i: BadgeCheck, t: t('home.trust.purity.title'), d: t('home.trust.purity.desc') }, { i: Truck, t: t('home.trust.shipping.title'), d: t('home.trust.shipping.desc') }, { i: FlaskConical, t: t('home.trust.support.title'), d: t('home.trust.support.desc') }].map((b, idx) => (
@@ -66,23 +146,35 @@ const Home = () => {
         </div>
       </section>
 
-      {/* Categories */}
-      <section className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div className="flex items-end justify-between mb-6">
-          <div>
-            <h2 className="font-heading text-2xl sm:text-3xl font-bold tracking-tight">{t('home.categoriesTitle')}</h2>
-            <p className="text-muted-foreground text-sm mt-1">{t('home.categoriesSubtitle')}</p>
-          </div>
+      {/* ===== Categories ===== */}
+      <section className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+        <div className="mb-8">
+          <div className="kicker">{t('home.categoriesKicker')}</div>
+          <h2 className="font-heading text-2xl sm:text-3xl font-bold tracking-tight mt-2">{t('home.categoriesTitle')}</h2>
+          <p className="text-muted-foreground text-sm mt-1">{t('home.categoriesSubtitle')}</p>
         </div>
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
           {localizeCategories(categories, language).map((c) => {
             const Icon = ICONS[c.icon] || FlaskConical;
+            const chips = CATEGORY_CHIPS[c.slug] || [];
             return (
-              <Link key={c.slug} to={`/catalogo?category=${c.slug}`} data-testid={`home-category-${c.slug}`}>
-                <Card className="p-5 h-full hover:shadow-[var(--shadow-md)] hover:border-[hsl(var(--primary))] transition-all duration-200 bg-card text-card-foreground">
-                  <div className="h-11 w-11 rounded-lg bg-[hsl(var(--accent))] flex items-center justify-center mb-3"><Icon className="h-5 w-5 text-[hsl(var(--primary))]" /></div>
-                  <h3 className="font-heading font-semibold text-sm">{c.name}</h3>
-                  <p className="text-xs text-muted-foreground mt-1 line-clamp-2">{c.description}</p>
+              <Link key={c.slug} to={`/catalogo?category=${c.slug}`} data-testid={`home-category-${c.slug}`} className="group">
+                <Card className="p-5 h-full flex flex-col shadow-none hover:shadow-[var(--shadow-md)] hover:border-[hsl(var(--primary))]/50 transition-all duration-200 bg-card text-card-foreground rounded-xl">
+                  <div className="flex items-center gap-3 mb-3">
+                    <div className="h-10 w-10 rounded-lg bg-[hsl(var(--accent))] flex items-center justify-center shrink-0"><Icon className="h-5 w-5 text-[hsl(var(--primary))]" /></div>
+                    <h3 className="font-heading font-semibold text-sm leading-snug">{c.name}</h3>
+                  </div>
+                  <p className="text-xs text-muted-foreground line-clamp-2">{c.description}</p>
+                  {chips.length > 0 && (
+                    <div className="flex flex-wrap gap-1.5 mt-3">
+                      {chips.map((chip) => (
+                        <span key={chip} className="font-mono-tech text-[10px] rounded bg-[hsl(var(--secondary))] border border-border px-1.5 py-0.5 text-muted-foreground">{chip}</span>
+                      ))}
+                    </div>
+                  )}
+                  <div className="mt-auto pt-4 inline-flex items-center gap-1 text-xs font-medium text-[hsl(var(--primary))]">
+                    {t('home.explore')} <ArrowRight className="h-3.5 w-3.5 group-hover:translate-x-0.5 transition-transform" />
+                  </div>
                 </Card>
               </Link>
             );
@@ -90,39 +182,160 @@ const Home = () => {
         </div>
       </section>
 
-      {/* Featured products */}
-      <section className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pb-12">
-        <div className="flex items-end justify-between mb-6">
+      {/* ===== Featured products ===== */}
+      <section className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pb-16">
+        <div className="flex items-end justify-between mb-8">
           <div>
-            <h2 className="font-heading text-2xl sm:text-3xl font-bold tracking-tight">{t('home.featuredTitle')}</h2>
+            <div className="kicker">{t('home.featuredKicker')}</div>
+            <h2 className="font-heading text-2xl sm:text-3xl font-bold tracking-tight mt-2">{t('home.featuredTitle')}</h2>
             <p className="text-muted-foreground text-sm mt-1">{t('home.featuredSubtitle')}</p>
           </div>
-          <Button asChild variant="ghost" className="hidden sm:flex"><Link to="/catalogo">{t('home.viewAll')} <ArrowRight className="h-4 w-4 ml-1.5" /></Link></Button>
+          <div className="hidden sm:flex items-center gap-2">
+            <Button variant="outline" size="icon" className="rounded-full" onClick={() => scrollCarousel(-1)} aria-label="previous" data-testid="featured-prev">
+              <ChevronLeft className="h-4 w-4" />
+            </Button>
+            <Button variant="outline" size="icon" className="rounded-full" onClick={() => scrollCarousel(1)} aria-label="next" data-testid="featured-next">
+              <ChevronRight className="h-4 w-4" />
+            </Button>
+            <Button asChild variant="ghost"><Link to="/catalogo">{t('home.viewAll')} <ArrowRight className="h-4 w-4 ml-1.5" /></Link></Button>
+          </div>
         </div>
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
-          {localizeProducts(featured, language).map((p) => <ProductCard key={p.id} product={p} />)}
+        <div ref={carouselRef} className="flex gap-4 sm:gap-6 overflow-x-auto snap-x snap-mandatory pb-2 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+          {localizeProducts(featured, language).map((p) => (
+            <div key={p.id} className="snap-start shrink-0 w-[65vw] xs:w-[240px] sm:w-[260px] max-w-[260px]">
+              <ProductCard product={p} />
+            </div>
+          ))}
         </div>
       </section>
 
-      {/* Transparency / COA banner */}
+      {/* ===== Before your first order — 3 education cards ===== */}
+      <section className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pb-16">
+        <div className="mb-8">
+          <div className="kicker">{t('home.eduKicker')}</div>
+          <h2 className="font-heading text-2xl sm:text-3xl font-bold tracking-tight mt-2">{t('home.eduTitle')}</h2>
+          <p className="text-muted-foreground text-sm mt-1">{t('home.eduSubtitle')}</p>
+        </div>
+        <div className="grid md:grid-cols-3 gap-4">
+          {[
+            { icon: FlaskConical, title: t('home.edu1.title'), body: t('home.edu1.body'), to: '/info/terminos' },
+            { icon: FileCheck2, title: t('home.edu2.title'), body: t('home.edu2.body'), to: '/info/calidad' },
+            { icon: ScanSearch, title: t('home.edu3.title'), body: t('home.edu3.body'), to: '/info/calidad' },
+          ].map((s, i) => (
+            <Link key={i} to={s.to} className="group" data-testid={`home-edu-${i + 1}`}>
+              <div className="rounded-xl border border-border bg-card p-5 h-full hover:shadow-[var(--shadow-md)] hover:border-[hsl(var(--primary))]/50 transition-all duration-200">
+                <div className="flex items-center justify-between">
+                  <s.icon className="h-5 w-5 text-[hsl(var(--primary))]" />
+                  <span className="font-mono-tech text-muted-foreground/60 text-sm">0{i + 1}</span>
+                </div>
+                <h3 className="font-heading font-semibold mt-4">{s.title}</h3>
+                <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{s.body}</p>
+                <div className="mt-4 inline-flex items-center gap-1 text-xs font-medium text-[hsl(var(--primary))]">
+                  {t('home.explore')} <ArrowRight className="h-3.5 w-3.5 group-hover:translate-x-0.5 transition-transform" />
+                </div>
+              </div>
+            </Link>
+          ))}
+        </div>
+      </section>
+
+      {/* ===== Traceability — light band, 3 steps ===== */}
       <section className="bg-[hsl(var(--secondary))] border-y border-border">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12 grid md:grid-cols-2 gap-8 items-center">
-          <img src="https://images.pexels.com/photos/36339062/pexels-photo-36339062.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940" alt={t('home.coaAlt')} className="rounded-2xl border border-border w-full object-cover aspect-[16/10]" />
-          <div>
-            <h2 className="font-heading text-2xl sm:text-3xl font-bold tracking-tight">{t('home.transparencyTitle')}</h2>
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+          <div className="max-w-2xl">
+            <div className="kicker">{t('home.transparencyKicker')}</div>
+            <h2 className="font-heading text-2xl sm:text-3xl font-bold tracking-tight mt-2">{t('home.transparencyTitle')}</h2>
             <p className="mt-3 text-muted-foreground leading-relaxed">{t('home.transparencyBody')}</p>
-            <ul className="mt-5 space-y-3">
-              {['home.transparency.bullet1', 'home.transparency.bullet2', 'home.transparency.bullet3'].map((key) => (
-                <li key={key} className="flex items-start gap-2 text-sm"><ShieldCheck className="h-5 w-5 text-[hsl(var(--primary))] shrink-0" /> {t(key)}</li>
-              ))}
-            </ul>
-            <Button asChild className="mt-6"><Link to="/info/calidad">{t('home.learnProcess')}</Link></Button>
+          </div>
+          <div className="mt-9 grid md:grid-cols-3 gap-4">
+            {[
+              { icon: ScanSearch, text: t('home.transparency.bullet2') },
+              { icon: FileCheck2, text: t('home.transparency.bullet1') },
+              { icon: ShieldCheck, text: t('home.transparency.bullet3') },
+            ].map((s, i) => (
+              <div key={i} className="rounded-xl border border-border bg-card p-5">
+                <div className="flex items-center justify-between">
+                  <s.icon className="h-5 w-5 text-[hsl(var(--primary))]" />
+                  <span className="font-mono-tech text-muted-foreground/60 text-sm">0{i + 1}</span>
+                </div>
+                <p className="mt-4 text-sm leading-relaxed">{s.text}</p>
+              </div>
+            ))}
+          </div>
+          <Button asChild className="mt-8"><Link to="/info/calidad">{t('home.learnProcess')}</Link></Button>
+        </div>
+      </section>
+
+      {/* ===== Why Nova — comparison ===== */}
+      <section className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+        <div className="mb-8">
+          <div className="kicker">{t('home.whyKicker')}</div>
+          <h2 className="font-heading text-2xl sm:text-3xl font-bold tracking-tight mt-2">{t('home.whyTitle')}</h2>
+          <p className="text-muted-foreground text-sm mt-1">{t('home.whySubtitle')}</p>
+        </div>
+        <Card className="overflow-hidden shadow-none">
+          <div className="grid grid-cols-[1fr_auto_auto] text-sm">
+            <div className="px-5 py-3.5 bg-[hsl(var(--secondary))]"> </div>
+            <div className="px-5 sm:px-8 py-3.5 font-heading font-bold text-[hsl(var(--primary))] bg-[hsl(var(--accent))] text-center whitespace-nowrap">Nova Peptides</div>
+            <div className="px-5 sm:px-8 py-3.5 font-medium text-muted-foreground bg-[hsl(var(--secondary))] text-center whitespace-nowrap">{t('home.why.others')}</div>
+            {whyRows.map((row, i) => (
+              <React.Fragment key={i}>
+                <div className="px-5 py-3.5 border-t border-border">{row.label}</div>
+                <div className="px-5 sm:px-8 py-3.5 border-t border-border bg-[hsl(var(--accent))]/40 flex items-center justify-center">
+                  <CheckCircle2 className="h-5 w-5 text-[hsl(var(--success))]" />
+                </div>
+                <div className="px-5 sm:px-8 py-3.5 border-t border-border flex items-center justify-center">
+                  {row.others === 'partial'
+                    ? <span className="text-xs text-muted-foreground">{t('home.why.partial')}</span>
+                    : <MinusCircle className="h-5 w-5 text-muted-foreground/50" />}
+                </div>
+              </React.Fragment>
+            ))}
+          </div>
+        </Card>
+      </section>
+
+      {/* ===== Wholesale / B2B ===== */}
+      <section className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pb-16">
+        <div className="rounded-2xl border border-border bg-[hsl(var(--secondary))] px-6 py-10 sm:px-10 grid lg:grid-cols-[1.2fr_0.8fr] gap-8 items-center">
+          <div>
+            <div className="inline-flex items-center gap-2 rounded-full border border-border bg-card px-4 py-2">
+              <Building2 className="h-3.5 w-3.5 text-[hsl(var(--primary))]" />
+              <span className="font-mono-tech text-[11px] uppercase tracking-[0.22em] text-[hsl(var(--primary))]">{t('home.b2bKicker')}</span>
+            </div>
+            <h2 className="font-heading text-2xl sm:text-3xl font-bold tracking-tight mt-4">{t('home.b2bTitle')}</h2>
+            <p className="mt-3 text-muted-foreground leading-relaxed max-w-lg">{t('home.b2bBody')}</p>
+          </div>
+          <div className="flex flex-col sm:flex-row lg:flex-col gap-3 lg:items-end">
+            <Button asChild className="rounded-full h-12 px-7 uppercase tracking-[0.14em] text-xs font-bold" data-testid="b2b-quote-button">
+              <a href="mailto:hola@novapeptides.mx?subject=Mayoreo"><Mail className="h-4 w-4 mr-2" /> {t('home.b2bCta1')}</a>
+            </Button>
+            <Button asChild variant="outline" className="rounded-full h-12 px-7 uppercase tracking-[0.14em] text-xs font-semibold">
+              <Link to="/catalogo">{t('home.b2bCta2')}</Link>
+            </Button>
           </div>
         </div>
       </section>
 
-      {/* RUO notice */}
-      <section className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+      {/* ===== Payments ===== */}
+      <section className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pb-16">
+        <div className="rounded-2xl border border-border bg-card px-6 py-6 flex flex-col sm:flex-row items-center justify-between gap-5">
+          <div>
+            <div className="font-heading font-semibold">{t('home.paymentsTitle')}</div>
+            <div className="text-xs text-muted-foreground mt-0.5">{t('home.paymentsNote')}</div>
+          </div>
+          <div className="flex flex-wrap items-center justify-center gap-2.5">
+            {[{ i: Store, l: 'OXXO' }, { i: Landmark, l: 'SPEI' }, { i: CreditCard, l: 'Visa · Mastercard' }, { i: BadgeCheck, l: 'Mercado Pago' }].map((p, i) => (
+              <span key={i} className="inline-flex items-center gap-1.5 rounded-lg border border-border bg-[hsl(var(--secondary))] px-3 py-2 text-xs font-medium">
+                <p.i className="h-3.5 w-3.5 text-[hsl(var(--primary))]" /> {p.l}
+              </span>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ===== RUO notice ===== */}
+      <section className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pb-12">
         <div className="rounded-xl border border-[hsl(var(--warning-border))] bg-[hsl(var(--warning))] text-[hsl(var(--warning-foreground))] p-5 flex items-start gap-3">
           <FlaskConical className="h-5 w-5 shrink-0 mt-0.5" />
           <p className="text-sm leading-relaxed"><strong>{t('home.heroRuo')}</strong> {t('home.ruoNotice')}</p>
