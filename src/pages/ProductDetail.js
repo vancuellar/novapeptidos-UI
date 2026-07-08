@@ -30,8 +30,9 @@ const ProductDetail = () => {
     setQty(1);
     window.scrollTo(0, 0);
     api.get(`/products/${slug}`).then((r) => {
+      if (!r.data || typeof r.data !== 'object' || !r.data.slug) throw new Error('unexpected product response');
       setProduct(r.data);
-      api.get(`/products?category=${r.data.category}`).then((rr) => setRelated(rr.data.filter((p) => p.slug !== slug).slice(0, 4)));
+      api.get(`/products?category=${r.data.category}`).then((rr) => setRelated(Array.isArray(rr.data) ? rr.data.filter((p) => p.slug !== slug).slice(0, 4) : []));
     }).catch(() => {
       const fallbackProduct = getFallbackProductBySlug(slug);
       setProduct(fallbackProduct || null);

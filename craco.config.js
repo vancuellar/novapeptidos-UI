@@ -34,6 +34,17 @@ let webpackConfig = {
     },
     configure: (webpackConfig) => {
 
+      // node_modules is a symlink to node_modules.nosync (keeps iCloud from
+      // syncing it); don't resolve to the real path or CRA treats every
+      // dependency as "outside src/"
+      webpackConfig.resolve = {
+        ...webpackConfig.resolve,
+        symlinks: false,
+        plugins: (webpackConfig.resolve.plugins || []).filter(
+          (p) => p.constructor.name !== 'ModuleScopePlugin'
+        ),
+      };
+
       // Add ignored patterns to reduce watched directories
         webpackConfig.watchOptions = {
           ...webpackConfig.watchOptions,
