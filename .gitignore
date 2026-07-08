@@ -86,3 +86,6 @@ android-sdk/
 credentials.json
 *.key
 .credentials
+node_modules.nosync/
+node_modules 2
+.claude/

@@ -53,7 +53,7 @@ const Catalog = () => {
   const { language, t } = useLanguage();
 
   useEffect(() => {
-    api.get('/categories').then((r) => setCategories(r.data)).catch(() => setCategories(fallbackCategories));
+    api.get('/categories').then((r) => setCategories(Array.isArray(r.data) ? r.data : fallbackCategories)).catch(() => setCategories(fallbackCategories));
   }, []);
 
   useEffect(() => {
@@ -70,7 +70,10 @@ const Catalog = () => {
     if (priceMax < 5000) q.set('max_price', priceMax);
     if (sort !== 'relevance') q.set('sort', sort);
     api.get(`/products?${q.toString()}`)
-      .then((r) => setProducts(r.data))
+      .then((r) => {
+        if (!Array.isArray(r.data)) throw new Error('unexpected catalog response');
+        setProducts(r.data);
+      })
       .catch(() => {
         let list = [...fallbackProducts];
         if (selectedCat) list = list.filter((product) => product.category === selectedCat);
