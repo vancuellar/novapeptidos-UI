@@ -29,7 +29,8 @@ export const AuthProvider = ({ children }) => {
   };
 
   const register = async (name, email, password) => {
-    const res = await api.post('/auth/register', { name, email, password });
+    const language = localStorage.getItem('nova-language') || 'es';
+    const res = await api.post('/auth/register', { name, email, password, language });
     localStorage.setItem('np_token', res.data.token);
     setUser(res.data.user);
     return res.data.user;
