@@ -23,11 +23,13 @@ const ProductDetail = () => {
   const [product, setProduct] = useState(null);
   const [related, setRelated] = useState([]);
   const [qty, setQty] = useState(1);
+  const [variantIdx, setVariantIdx] = useState(0);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     setLoading(true);
     setQty(1);
+    setVariantIdx(0);
     window.scrollTo(0, 0);
     api.get(`/products/${slug}`).then((r) => {
       if (!r.data || typeof r.data !== 'object' || !r.data.slug) throw new Error('unexpected product response');
@@ -43,15 +45,25 @@ const ProductDetail = () => {
   if (loading) return <div className="max-w-6xl mx-auto px-4 py-10"><Skeleton className="h-96 rounded-xl" /></div>;
   if (!product) return <div className="max-w-6xl mx-auto px-4 py-20 text-center">{t('product.notFound')} <Link to="/catalogo" className="text-[hsl(var(--primary))]">{t('product.backToCatalog')}</Link></div>;
 
-  const out = product.stock <= 0;
   const localizedProduct = localizeProduct(product, language);
   const localizedRelated = localizeProducts(related, language);
+  const variants = product.variants || [];
+  const active = variants[variantIdx] || { price: localizedProduct.price, presentation: localizedProduct.presentation, stock: localizedProduct.stock, batch_number: localizedProduct.batch_number };
+  const out = (active.stock ?? 0) <= 0;
   const specs = [
     { label: t('common.purity'), value: localizedProduct.purity, testid: 'pdp-purity' },
-    { label: t('common.presentation'), value: localizedProduct.presentation },
+    { label: t('common.presentation'), value: active.presentation },
     { label: t('common.form'), value: localizedProduct.form },
-    { label: t('common.batchNumber'), value: localizedProduct.batch_number, testid: 'pdp-lot-number' },
+    { label: t('common.batchNumber'), value: active.batch_number, testid: 'pdp-lot-number' },
   ];
+  const addToCart = () => addItem({
+    ...localizedProduct,
+    id: variants.length ? `${product.id}::${active.presentation}` : product.id,
+    name: variants.length ? `${localizedProduct.name} ${active.presentation}` : localizedProduct.name,
+    price: active.price,
+    presentation: active.presentation,
+    stock: active.stock,
+  }, qty);
 
   return (
     <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
@@ -83,8 +95,21 @@ const ProductDetail = () => {
             {localizedProduct.is_new && <Badge className="bg-[hsl(var(--info))] text-[hsl(var(--info-foreground))]">{t('product.new')}</Badge>}
           </div>
           <h1 className="font-heading text-3xl font-bold tracking-tight" data-testid="pdp-title">{localizedProduct.name}</h1>
-          <p className="mt-2 text-muted-foreground font-mono-tech text-sm">{localizedProduct.presentation} · {t('product.purityLine', { purity: localizedProduct.purity })}</p>
-          <div className="mt-4 font-heading text-3xl font-bold" data-testid="pdp-price">{formatMXN(localizedProduct.price)}</div>
+          <p className="mt-2 text-muted-foreground font-mono-tech text-sm">{active.presentation} · {t('product.purityLine', { purity: localizedProduct.purity })}</p>
+          {variants.length > 1 && (
+            <div className="mt-4">
+              <div className="text-xs font-medium text-muted-foreground mb-2">Presentación</div>
+              <div className="flex flex-wrap gap-2" data-testid="pdp-variant-selector">
+                {variants.map((v, i) => (
+                  <button key={v.presentation} type="button" onClick={() => setVariantIdx(i)} data-testid="pdp-variant-option"
+                    className={`px-3.5 py-1.5 rounded-lg border text-sm font-medium transition-colors ${i === variantIdx ? 'border-[hsl(var(--primary))] bg-[hsl(var(--primary))]/10 text-[hsl(var(--primary))]' : 'border-border text-foreground hover:border-[hsl(var(--primary))]/50'}`}>
+                    {v.presentation}
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
+          <div className="mt-4 font-heading text-3xl font-bold" data-testid="pdp-price">{formatMXN(active.price)}</div>
           {localizedProduct.tiers?.length > 0 && (
             <div className="mt-2 text-xs text-muted-foreground">{t('product.volumePricing', { tiers: localizedProduct.tiers.map((tier) => t('common.piecesFrom', { price: formatMXN(tier.price), qty: tier.min_qty })).join(' · ') })}</div>
           )}
@@ -92,7 +117,7 @@ const ProductDetail = () => {
           <p className="mt-4 text-sm leading-relaxed text-muted-foreground">{localizedProduct.short_description}</p>
 
           <div className="mt-5">
-            {out ? <Badge variant="outline" className="text-muted-foreground">{t('product.outOfStock')}</Badge> : <span className="text-sm text-[hsl(var(--success))]">✓ {t('product.inStock', { stock: localizedProduct.stock })}</span>}
+            {out ? <Badge variant="outline" className="text-muted-foreground">{t('product.outOfStock')}</Badge> : <span className="text-sm text-[hsl(var(--success))]">✓ {t('product.inStock', { stock: active.stock })}</span>}
           </div>
 
           <div className="mt-5 flex items-center gap-3">
@@ -101,7 +126,7 @@ const ProductDetail = () => {
               <span className="w-10 text-center font-medium" data-testid="pdp-qty">{qty}</span>
               <Button variant="ghost" size="icon" onClick={() => setQty(qty + 1)} data-testid="pdp-qty-increase"><Plus className="h-4 w-4" /></Button>
             </div>
-            <Button className="flex-1" size="lg" disabled={out} onClick={() => addItem(localizedProduct, qty)} data-testid="pdp-add-to-cart-button"><ShoppingCart className="h-4 w-4 mr-2" /> {t('product.addToCart')}</Button>
+            <Button className="flex-1" size="lg" disabled={out} onClick={addToCart} data-testid="pdp-add-to-cart-button"><ShoppingCart className="h-4 w-4 mr-2" /> {t('product.addToCart')}</Button>
           </div>
 
           <div className="mt-5 grid grid-cols-2 gap-3">
