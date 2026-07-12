@@ -47,8 +47,26 @@ export const CartProvider = ({ children }) => {
   const subtotal = items.reduce((sum, i) => sum + i.price * i.quantity, 0);
   const count = items.reduce((sum, i) => sum + i.quantity, 0);
 
+  // Códigos de descuento
+  const PROMOS = { INTRO10: 0.10 };
+  const [promo, setPromo] = useState(() => (localStorage.getItem('np_promo') || ''));
+  useEffect(() => { localStorage.setItem('np_promo', promo); }, [promo]);
+  const discountRate = PROMOS[promo] || 0;
+  const discount = Math.round(subtotal * discountRate);
+  const applyPromo = (code) => {
+    const c = (code || '').trim().toUpperCase();
+    if (PROMOS[c]) {
+      setPromo(c);
+      toast.success('Código aplicado', { description: `${Math.round(PROMOS[c] * 100)}% de descuento` });
+      return true;
+    }
+    toast.error('Código no válido');
+    return false;
+  };
+  const clearPromo = () => setPromo('');
+
   return (
-    <CartContext.Provider value={{ items, addItem, updateQty, removeItem, clearCart, subtotal, count }}>
+    <CartContext.Provider value={{ items, addItem, updateQty, removeItem, clearCart, subtotal, count, promo, discount, discountRate, applyPromo, clearPromo }}>
       {children}
     </CartContext.Provider>
   );

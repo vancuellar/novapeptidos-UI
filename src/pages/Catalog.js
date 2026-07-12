@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useEffect, useState, useCallback, useMemo } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { SlidersHorizontal, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -16,7 +16,7 @@ import { fallbackCategories, fallbackProducts } from '@/data/fallbackCatalog';
 import { useLanguage } from '@/context/LanguageContext';
 import { localizeCategories, localizeProducts } from '@/i18n/catalog';
 
-const Filters = ({ categories, selectedCat, setCat, inStock, setInStock, priceMax, setPriceMax, onClear, t }) => (
+const Filters = ({ categories, selectedCat, setCat, inStock, setInStock, priceMax, setPriceMax, priceCeiling, onClear, t }) => (
   <div className="space-y-6">
     <div>
       <h4 className="font-semibold text-sm mb-3">{t('catalog.category')}</h4>
@@ -29,7 +29,7 @@ const Filters = ({ categories, selectedCat, setCat, inStock, setInStock, priceMa
     </div>
     <div>
       <h4 className="font-semibold text-sm mb-3">{t('catalog.maxPrice')}</h4>
-      <Slider value={[priceMax]} min={500} max={5000} step={100} onValueChange={(v) => setPriceMax(v[0])} data-testid="catalog-price-slider" />
+      <Slider value={[priceMax]} min={500} max={priceCeiling} step={100} onValueChange={(v) => setPriceMax(v[0])} data-testid="catalog-price-slider" />
       <div className="text-xs text-muted-foreground mt-2">{t('catalog.upTo', { price: formatMXN(priceMax) })}</div>
     </div>
     <div className="flex items-center gap-2">
@@ -48,7 +48,12 @@ const Catalog = () => {
   const [search, setSearch] = useState(params.get('search') || '');
   const [selectedCat, setSelectedCat] = useState(params.get('category') || '');
   const [inStock, setInStock] = useState(false);
-  const [priceMax, setPriceMax] = useState(5000);
+  // Techo del filtro = producto más caro del catálogo, redondeado al millar (para no esconder los caros).
+  const priceCeiling = useMemo(() => {
+    const max = Math.max(5000, ...fallbackProducts.map((p) => p.price || 0));
+    return Math.ceil(max / 1000) * 1000;
+  }, []);
+  const [priceMax, setPriceMax] = useState(priceCeiling);
   const [sort, setSort] = useState('relevance');
   const { language, t } = useLanguage();
 
@@ -67,7 +72,7 @@ const Catalog = () => {
     if (selectedCat) q.set('category', selectedCat);
     if (search) q.set('search', search);
     if (inStock) q.set('in_stock', 'true');
-    if (priceMax < 5000) q.set('max_price', priceMax);
+    if (priceMax < priceCeiling) q.set('max_price', priceMax);
     if (sort !== 'relevance') q.set('sort', sort);
     api.get(`/products?${q.toString()}`)
       .then((r) => {
@@ -76,7 +81,7 @@ const Catalog = () => {
       })
       .catch(() => {
         let list = [...fallbackProducts];
-        if (selectedCat) list = list.filter((product) => product.category === selectedCat);
+        if (selectedCat) list = list.filter((product) => (product.categories || [product.category]).includes(selectedCat));
         if (search) {
           const needle = search.toLowerCase();
           list = list.filter((product) => `${product.name} ${product.short_description}`.toLowerCase().includes(needle));
@@ -88,12 +93,12 @@ const Catalog = () => {
         setProducts(list);
       })
       .finally(() => setLoading(false));
-  }, [selectedCat, search, inStock, priceMax, sort]);
+  }, [selectedCat, search, inStock, priceMax, priceCeiling, sort]);
 
   useEffect(() => { fetchProducts(); }, [fetchProducts]);
 
   const setCat = (c) => { setSelectedCat(c); const np = new URLSearchParams(params); if (c) np.set('category', c); else np.delete('category'); setParams(np); };
-  const clearFilters = () => { setSelectedCat(''); setSearch(''); setInStock(false); setPriceMax(5000); setParams(new URLSearchParams()); };
+  const clearFilters = () => { setSelectedCat(''); setSearch(''); setInStock(false); setPriceMax(priceCeiling); setParams(new URLSearchParams()); };
   const localizedCategories = localizeCategories(categories, language);
   const localizedProducts = localizeProducts(products, language);
   const catName = localizedCategories.find((c) => c.slug === selectedCat)?.name;
@@ -114,7 +119,7 @@ const Catalog = () => {
             </SheetTrigger>
             <SheetContent side="right">
               <SheetHeader><SheetTitle>{t('catalog.filters')}</SheetTitle></SheetHeader>
-              <div className="mt-6"><Filters categories={localizedCategories} selectedCat={selectedCat} setCat={setCat} inStock={inStock} setInStock={setInStock} priceMax={priceMax} setPriceMax={setPriceMax} onClear={clearFilters} t={t} /></div>
+              <div className="mt-6"><Filters categories={localizedCategories} selectedCat={selectedCat} setCat={setCat} inStock={inStock} setInStock={setInStock} priceMax={priceMax} setPriceMax={setPriceMax} priceCeiling={priceCeiling} onClear={clearFilters} t={t} /></div>
             </SheetContent>
           </Sheet>
           <Select value={sort} onValueChange={setSort}>
@@ -131,7 +136,7 @@ const Catalog = () => {
 
       <div className="grid grid-cols-1 md:grid-cols-12 gap-6">
         <aside className="hidden md:block md:col-span-3">
-          <Card className="p-5 sticky top-32"><Filters categories={localizedCategories} selectedCat={selectedCat} setCat={setCat} inStock={inStock} setInStock={setInStock} priceMax={priceMax} setPriceMax={setPriceMax} onClear={clearFilters} t={t} /></Card>
+          <Card className="p-5 sticky top-32"><Filters categories={localizedCategories} selectedCat={selectedCat} setCat={setCat} inStock={inStock} setInStock={setInStock} priceMax={priceMax} setPriceMax={setPriceMax} priceCeiling={priceCeiling} onClear={clearFilters} t={t} /></Card>
         </aside>
         <div className="md:col-span-9">
           {loading ? (
