@@ -12,6 +12,7 @@ import AIChatWidget from '@/components/AIChatWidget';
 import Home from '@/pages/Home';
 import Catalog from '@/pages/Catalog';
 import Calculator from '@/pages/Calculator';
+import NotFound from '@/pages/NotFound';
 import ProductDetail from '@/pages/ProductDetail';
 import Cart from '@/pages/Cart';
 import Checkout from '@/pages/Checkout';
@@ -45,6 +46,7 @@ function App() {
                     <Route path="/cuenta" element={<Account />} />
                     <Route path="/admin" element={<Admin />} />
                     <Route path="/info/:page" element={<InfoPage />} />
+                    <Route path="*" element={<NotFound />} />
                   </Routes>
                 </main>
                 <Footer />
