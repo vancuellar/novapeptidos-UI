@@ -54,6 +54,9 @@ const Header = () => {
 
   return (
     <header className="sticky top-0 z-40">
+      <Link to="/carrito" className="block bg-[hsl(var(--primary))] text-[hsl(var(--primary-foreground))] text-center text-[11px] sm:text-xs py-1.5 px-4 font-medium tracking-wide hover:opacity-95 transition-opacity" data-testid="promo-banner">
+        🎉 Precio de lanzamiento — usa el código <span className="font-bold underline underline-offset-2">INTRO10</span> y obtén 10% de descuento en tu primer pedido
+      </Link>
       <div className="bg-background/70 supports-[backdrop-filter]:backdrop-blur-xl">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 h-[68px] grid grid-cols-[1fr_auto_1fr] items-center gap-4">
           {/* Left: nav links (desktop) / menu (mobile) */}
@@ -106,6 +109,7 @@ const Header = () => {
                 {t('nav.tools')} <ChevronDown className="h-3.5 w-3.5" />
               </DropdownMenuTrigger>
               <DropdownMenuContent align="start" className="w-64">
+                <DropdownMenuItem onClick={() => navigate('/calculadora')} data-testid="nav-calculadora">{t('nav.calculator')}</DropdownMenuItem>
                 <DropdownMenuItem onClick={() => navigate('/info/calidad')}>{t('footer.quality')}</DropdownMenuItem>
                 <DropdownMenuItem onClick={() => navigate('/info/envios')}>{t('footer.shipping')}</DropdownMenuItem>
                 <DropdownMenuItem onClick={() => navigate('/info/devoluciones')}>{t('footer.returns')}</DropdownMenuItem>

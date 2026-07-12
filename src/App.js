@@ -11,6 +11,7 @@ import Footer from '@/components/layout/Footer';
 import AIChatWidget from '@/components/AIChatWidget';
 import Home from '@/pages/Home';
 import Catalog from '@/pages/Catalog';
+import Calculator from '@/pages/Calculator';
 import ProductDetail from '@/pages/ProductDetail';
 import Cart from '@/pages/Cart';
 import Checkout from '@/pages/Checkout';
@@ -34,6 +35,7 @@ function App() {
                   <Routes>
                     <Route path="/" element={<Home />} />
                     <Route path="/catalogo" element={<Catalog />} />
+                    <Route path="/calculadora" element={<Calculator />} />
                     <Route path="/producto/:slug" element={<ProductDetail />} />
                     <Route path="/carrito" element={<Cart />} />
                     <Route path="/checkout" element={<Checkout />} />

@@ -89,3 +89,8 @@ credentials.json
 node_modules.nosync/
 node_modules 2
 .claude/
+
+# Never publish pricing/distributor spreadsheets
+*.xlsx
+*.xls
+*.csv

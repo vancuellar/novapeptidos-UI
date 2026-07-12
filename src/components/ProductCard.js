@@ -43,14 +43,14 @@ const ProductCard = ({ product }) => {
         <div className="mt-1 text-xs text-muted-foreground font-mono-tech">{product.presentation} · {t('product.card.purity', { purity: product.purity })}</div>
         <p className="mt-2 text-xs text-muted-foreground line-clamp-2 flex-1">{product.short_description}</p>
         <div className="mt-3 flex items-center justify-between">
-          <span className="font-heading text-lg font-bold" data-testid="product-card-price">{formatMXN(product.price)} <span className="text-[11px] font-mono-tech font-normal text-muted-foreground">MXN</span></span>
+          <span className="font-heading text-lg font-bold" data-testid="product-card-price">{product.variants?.length > 1 && <span className="text-[11px] font-normal text-muted-foreground mr-1">Desde</span>}{formatMXN(product.price)} <span className="text-[11px] font-mono-tech font-normal text-muted-foreground">MXN</span></span>
           {out
             ? <span className="text-xs text-muted-foreground">{t('product.outOfStock')}</span>
             : <span className="inline-flex items-center gap-1.5 text-xs text-[hsl(var(--success))]"><span className="h-1.5 w-1.5 rounded-full bg-[hsl(var(--success))]" /> {t('product.card.inStock')}</span>}
         </div>
         <div className="mt-3 flex gap-2">
-          <Button className="flex-1" disabled={out} onClick={() => addItem(product)} data-testid="product-card-add-to-cart-button">
-            <ShoppingCart className="h-4 w-4 mr-1.5" /> {t('product.card.add')}
+          <Button className="flex-1" disabled={out} onClick={() => (product.variants?.length ? navigate(`/producto/${product.slug}`) : addItem(product))} data-testid="product-card-add-to-cart-button">
+            <ShoppingCart className="h-4 w-4 mr-1.5" /> {product.variants?.length ? t('product.card.view') : t('product.card.add')}
           </Button>
           <Button variant="outline" onClick={() => navigate(`/producto/${product.slug}`)} data-testid="product-card-view-details-link">{t('product.card.view')}</Button>
         </div>

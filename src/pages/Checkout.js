@@ -17,7 +17,7 @@ import { useLanguage } from '@/context/LanguageContext';
 const ICONS = { Wallet, CreditCard, Store, Landmark, Truck };
 
 const Checkout = () => {
-  const { items, subtotal, clearCart } = useCart();
+  const { items, subtotal, discount, promo, clearCart } = useCart();
   const { user } = useAuth();
   const { t } = useLanguage();
   const navigate = useNavigate();
@@ -28,8 +28,8 @@ const Checkout = () => {
     city: '', state: '', postal_code: '', notes: '',
   });
 
-  const shipping = subtotal >= 2500 ? 0 : 199;
-  const total = subtotal + shipping;
+  const afterDiscount = subtotal - discount;
+  const total = afterDiscount; // el envío se cotiza y cobra por separado
   const set = (k, v) => setForm((f) => ({ ...f, [k]: v }));
 
   if (items.length === 0) {
@@ -48,7 +48,9 @@ const Checkout = () => {
         items: items.map((i) => ({ product_id: i.product_id, name: i.name, price: i.price, quantity: i.quantity, presentation: i.presentation, image_url: i.image_url })),
         customer: form,
         payment_method: payment,
-        shipping,
+        shipping: 0,
+        discount,
+        promo_code: promo || null,
       };
       const res = await api.post('/orders', payload);
       clearCart();
@@ -113,7 +115,8 @@ const Checkout = () => {
             <Separator className="my-4" />
             <div className="space-y-1.5 text-sm">
               <div className="flex justify-between"><span className="text-muted-foreground">{t('common.subtotal')}</span><span>{formatMXN(subtotal)}</span></div>
-              <div className="flex justify-between"><span className="text-muted-foreground">{t('common.shipping')}</span><span>{shipping === 0 ? t('common.free') : formatMXN(shipping)}</span></div>
+              {discount > 0 && <div className="flex justify-between text-[hsl(var(--success))]"><span>Descuento ({promo})</span><span>− {formatMXN(discount)}</span></div>}
+              <div className="flex justify-between"><span className="text-muted-foreground">{t('common.shipping')}</span><span className="text-muted-foreground">{t('cart.shippingTBD')}</span></div>
             </div>
             <Separator className="my-4" />
             <div className="flex justify-between font-heading font-bold text-lg"><span>{t('common.total')}</span><span>{formatMXN(total)}</span></div>
