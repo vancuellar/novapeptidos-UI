@@ -82,6 +82,8 @@ const Header = () => {
                 {localizeCategories(categories, language).map((c) => (
                   <Link key={c.slug} to={`/catalogo?category=${c.slug}`} onClick={() => setMobileOpen(false)} className="py-2 text-sm text-muted-foreground hover:text-foreground">{c.name}</Link>
                 ))}
+                <Link to="/calculadora" onClick={() => setMobileOpen(false)} className="py-2 text-sm text-muted-foreground hover:text-foreground">{t('nav.calculator')}</Link>
+                <Link to="/educacion" onClick={() => setMobileOpen(false)} className="py-2 text-sm text-muted-foreground hover:text-foreground">{t('nav.education')}</Link>
                 <Link to="/info/calidad" onClick={() => setMobileOpen(false)} className="py-2 text-sm text-muted-foreground hover:text-foreground">{t('footer.quality')}</Link>
               </nav>
             </SheetContent>
@@ -92,24 +94,12 @@ const Header = () => {
             <Link to="/catalogo" className={navLinkClass} data-testid="nav-catalog">{t('nav.catalog')}</Link>
 
             <DropdownMenu>
-              <DropdownMenuTrigger className={navLinkClass} data-testid="nav-peptides">
-                {t('nav.peptides')} <ChevronDown className="h-3.5 w-3.5" />
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="start" className="w-64">
-                {localizeCategories(categories, language).map((c) => (
-                  <DropdownMenuItem key={c.slug} onClick={() => navigate(`/catalogo?category=${c.slug}`)} data-testid={`nav-category-${c.slug}`}>
-                    {c.name}
-                  </DropdownMenuItem>
-                ))}
-              </DropdownMenuContent>
-            </DropdownMenu>
-
-            <DropdownMenu>
               <DropdownMenuTrigger className={navLinkClass} data-testid="nav-tools">
                 {t('nav.tools')} <ChevronDown className="h-3.5 w-3.5" />
               </DropdownMenuTrigger>
               <DropdownMenuContent align="start" className="w-64">
                 <DropdownMenuItem onClick={() => navigate('/calculadora')} data-testid="nav-calculadora">{t('nav.calculator')}</DropdownMenuItem>
+                <DropdownMenuItem onClick={() => navigate('/educacion')} data-testid="nav-educacion">{t('nav.education')}</DropdownMenuItem>
                 <DropdownMenuItem onClick={() => navigate('/info/calidad')}>{t('footer.quality')}</DropdownMenuItem>
                 <DropdownMenuItem onClick={() => navigate('/info/envios')}>{t('footer.shipping')}</DropdownMenuItem>
                 <DropdownMenuItem onClick={() => navigate('/info/devoluciones')}>{t('footer.returns')}</DropdownMenuItem>
