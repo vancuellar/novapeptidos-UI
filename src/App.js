@@ -22,6 +22,8 @@ import Register from '@/pages/Register';
 import Account from '@/pages/Account';
 import Admin from '@/pages/Admin';
 import InfoPage from '@/pages/InfoPage';
+import Education from '@/pages/Education';
+import Advisor from '@/pages/Advisor';
 
 function App() {
   return (
@@ -37,6 +39,8 @@ function App() {
                     <Route path="/" element={<Home />} />
                     <Route path="/catalogo" element={<Catalog />} />
                     <Route path="/calculadora" element={<Calculator />} />
+                    <Route path="/educacion" element={<Education />} />
+                    <Route path="/asesor" element={<Advisor />} />
                     <Route path="/producto/:slug" element={<ProductDetail />} />
                     <Route path="/carrito" element={<Cart />} />
                     <Route path="/checkout" element={<Checkout />} />
