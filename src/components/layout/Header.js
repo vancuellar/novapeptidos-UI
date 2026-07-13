@@ -82,6 +82,7 @@ const Header = () => {
                 {localizeCategories(categories, language).map((c) => (
                   <Link key={c.slug} to={`/catalogo?category=${c.slug}`} onClick={() => setMobileOpen(false)} className="py-2 text-sm text-muted-foreground hover:text-foreground">{c.name}</Link>
                 ))}
+                <Link to="/asesor" onClick={() => setMobileOpen(false)} className="py-2 text-sm text-muted-foreground hover:text-foreground">{t('nav.advisor')}</Link>
                 <Link to="/calculadora" onClick={() => setMobileOpen(false)} className="py-2 text-sm text-muted-foreground hover:text-foreground">{t('nav.calculator')}</Link>
                 <Link to="/educacion" onClick={() => setMobileOpen(false)} className="py-2 text-sm text-muted-foreground hover:text-foreground">{t('nav.education')}</Link>
                 <Link to="/info/calidad" onClick={() => setMobileOpen(false)} className="py-2 text-sm text-muted-foreground hover:text-foreground">{t('footer.quality')}</Link>
@@ -98,6 +99,7 @@ const Header = () => {
                 {t('nav.tools')} <ChevronDown className="h-3.5 w-3.5" />
               </DropdownMenuTrigger>
               <DropdownMenuContent align="start" className="w-64">
+                <DropdownMenuItem onClick={() => navigate('/asesor')} data-testid="nav-asesor">{t('nav.advisor')}</DropdownMenuItem>
                 <DropdownMenuItem onClick={() => navigate('/calculadora')} data-testid="nav-calculadora">{t('nav.calculator')}</DropdownMenuItem>
                 <DropdownMenuItem onClick={() => navigate('/educacion')} data-testid="nav-educacion">{t('nav.education')}</DropdownMenuItem>
                 <DropdownMenuItem onClick={() => navigate('/info/calidad')}>{t('footer.quality')}</DropdownMenuItem>
