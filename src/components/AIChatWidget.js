@@ -3,8 +3,10 @@ import { MessageCircle, X, Send, FlaskConical } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Textarea } from '@/components/ui/textarea';
-import { API } from '@/lib/api';
 import { useLanguage } from '@/context/LanguageContext';
+
+// El chat de IA vive en su propio servicio (Gemini), separado del backend principal.
+const CHAT_API = 'https://chat.novapeptidos.mx/api';
 
 const QUICK = [
   'chat.quick.ruo',
@@ -47,7 +49,7 @@ const AIChatWidget = () => {
     setLoading(true);
 
     try {
-      const res = await fetch(`${API}/ai/chat`, {
+      const res = await fetch(`${CHAT_API}/ai/chat`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ session_id: sessionId.current, message }),
