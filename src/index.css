@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&family=Instrument+Serif:ital@0;1&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&family=Instrument+Serif:ital@0;1&family=Marcellus&family=JetBrains+Mono:wght@400;500&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -13,7 +13,7 @@ body {
 
 @layer base {
     :root {
-        --background: 48 33% 97%; /* Claude light-theme ivory (#FAF9F5) */
+        --background: 42 36% 95%; /* Exygen marfil (#f6f3ec) */
         --foreground: 220 20% 11%;
         --card: 0 0% 100%;
         --card-foreground: 220 20% 11%;
