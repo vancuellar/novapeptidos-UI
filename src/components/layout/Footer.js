@@ -41,7 +41,7 @@ const Footer = () => {
           <div>
             <h4 className="kicker mb-4">{t('footer.contactTitle')}</h4>
             <ul className="space-y-2.5 text-sm text-muted-foreground">
-              <li className="flex items-center gap-2"><Mail className="h-4 w-4 text-[hsl(var(--primary))]" /> hola@novapeptides.mx</li>
+              <li className="flex items-center gap-2"><Mail className="h-4 w-4 text-[hsl(var(--primary))]" /> hola@exygenlabs.com</li>
               <li className="flex items-center gap-2"><Phone className="h-4 w-4 text-[hsl(var(--primary))]" /> +52 (994) 494-6889</li>
             </ul>
             <div className="flex flex-wrap gap-2 mt-5">

@@ -6,7 +6,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { useLanguage } from '@/context/LanguageContext';
 
 // El chat de IA vive en su propio servicio (Gemini), separado del backend principal.
-const CHAT_API = 'https://chat.novapeptidos.mx/api';
+const CHAT_API = 'https://chat.exygenlabs.com/api';
 
 const QUICK = [
   'chat.quick.ruo',
