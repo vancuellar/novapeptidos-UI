@@ -13,7 +13,7 @@ import { useCart } from '@/context/CartContext';
 import { useAuth } from '@/context/AuthContext';
 import { useLanguage } from '@/context/LanguageContext';
 import { useTheme } from '@/context/ThemeContext';
-import BrandLogo, { BrandMark } from '@/components/BrandLogo';
+import BrandLogo from '@/components/BrandLogo';
 import api from '@/lib/api';
 import { fallbackCategories } from '@/data/fallbackCatalog';
 import { localizeCategories } from '@/i18n/catalog';
@@ -69,8 +69,8 @@ const Header = () => {
             <SheetContent side="left" className="w-80">
               <SheetHeader>
                 <SheetTitle asChild>
-                  <Link to="/" onClick={() => setMobileOpen(false)} className="flex items-center gap-2">
-                    <BrandMark className="h-5 w-5 text-[hsl(var(--primary))]" /> Nova Peptides
+                  <Link to="/" onClick={() => setMobileOpen(false)} className="flex items-center">
+                    <BrandLogo compact />
                   </Link>
                 </SheetTitle>
               </SheetHeader>
