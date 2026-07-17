@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { ShieldCheck, Truck, BadgeCheck, Mail, Phone, Store, Landmark, CreditCard } from 'lucide-react';
 import { useLanguage } from '@/context/LanguageContext';
-import { BrandMark } from '@/components/BrandLogo';
+import BrandLogo from '@/components/BrandLogo';
 
 const Footer = () => {
   const { t } = useLanguage();
@@ -12,11 +12,8 @@ const Footer = () => {
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-14">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           <div>
-            <Link to="/" className="flex items-center gap-2.5 mb-4">
-              <span className="h-9 w-9 rounded-xl bg-[hsl(var(--primary))] text-[hsl(var(--primary-foreground))] flex items-center justify-center">
-                <BrandMark className="h-6 w-6" />
-              </span>
-              <span className="font-heading font-bold text-lg">Nova Peptides</span>
+            <Link to="/" className="inline-flex items-center mb-4">
+              <BrandLogo />
             </Link>
             <p className="text-sm text-muted-foreground leading-relaxed">{t('footer.description')}</p>
             <div className="flex gap-3 mt-5 text-[hsl(var(--primary))]">

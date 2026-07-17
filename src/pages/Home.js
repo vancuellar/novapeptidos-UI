@@ -53,10 +53,11 @@ const Home = () => {
       .catch(() => setCategories(fallbackCategories));
   }, []);
 
-  // Gradient-highlight the last two words of the headline in any language
-  const heroWords = t('home.heroTitle').split(' ');
-  const heroLead = heroWords.slice(0, -2).join(' ');
-  const heroAccent = heroWords.slice(-2).join(' ');
+  // Italic-serif accent = la frase después de la coma (o las últimas 2 palabras si no hay coma).
+  const heroTitleRaw = t('home.heroTitle');
+  const commaIdx = heroTitleRaw.indexOf(',');
+  const heroLead = commaIdx >= 0 ? heroTitleRaw.slice(0, commaIdx + 1) : heroTitleRaw.split(' ').slice(0, -2).join(' ');
+  const heroAccent = commaIdx >= 0 ? heroTitleRaw.slice(commaIdx + 1).trim() : heroTitleRaw.split(' ').slice(-2).join(' ');
 
   const whyRows = [
     { label: t('home.why.r1'), others: 'no' },

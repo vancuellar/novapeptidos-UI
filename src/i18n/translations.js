@@ -60,8 +60,8 @@ const esMX = {
   'common.piecesFrom': '{{price}} desde {{qty}} pzas',
 
   'home.badge': 'Pureza verificada por HPLC · COA por lote',
-  'home.heroTitle': 'Péptidos liofilizados de investigación, trazables por lote',
-  'home.heroBody': 'COA disponible, pureza verificada y envíos dentro de México. Calidad de laboratorio para tu investigación.',
+  'home.heroTitle': 'Ciencia y precisión, lote por lote',
+  'home.heroBody': 'Péptidos liofilizados de investigación. Pureza verificada por HPLC. Envíos a todo México.',
   'home.heroRuo': 'Solo para uso en investigación (RUO).',
   'home.viewCatalog': 'Ver catálogo',
   'home.verifyPurity': 'Cómo verificamos la pureza',
@@ -480,8 +480,8 @@ const enUS = {
   'common.piecesFrom': '{{price}} from {{qty}} pcs',
 
   'home.badge': 'HPLC-verified purity · Lot-specific COA',
-  'home.heroTitle': 'Lyophilized research peptides, traceable by lot',
-  'home.heroBody': 'COA available, verified purity, and shipping within Mexico. Lab-grade quality for your research.',
+  'home.heroTitle': 'Science and precision, lot by lot',
+  'home.heroBody': 'Lyophilized research peptides. HPLC-verified purity. Shipping across Mexico.',
   'home.heroRuo': 'Research use only (RUO).',
   'home.viewCatalog': 'View catalog',
   'home.verifyPurity': 'How we verify purity',
@@ -900,8 +900,8 @@ const ptBR = {
   'common.piecesFrom': '{{price}} a partir de {{qty}} unid.',
 
   'home.badge': 'Pureza verificada por HPLC · COA por lote',
-  'home.heroTitle': 'Peptideos liofilizados de pesquisa, rastreaveis por lote',
-  'home.heroBody': 'COA disponivel, pureza verificada e envios dentro do Mexico. Qualidade de laboratorio para sua pesquisa.',
+  'home.heroTitle': 'Ciência e precisão, lote a lote',
+  'home.heroBody': 'Peptídeos liofilizados de pesquisa. Pureza verificada por HPLC. Envios para todo o México.',
   'home.heroRuo': 'Somente para uso em pesquisa (RUO).',
   'home.viewCatalog': 'Ver catalogo',
   'home.verifyPurity': 'Como verificamos a pureza',
