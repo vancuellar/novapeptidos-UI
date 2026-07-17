@@ -84,7 +84,7 @@ const Catalog = () => {
     if (sort === 'price_desc') list.sort((a, b) => b.price - a.price);
     setProducts(list);
     setLoading(false);
-  }, [selectedCat, search, inStock, priceMax, priceCeiling, sort]);
+  }, [selectedCat, search, inStock, priceMax, sort]);
 
   useEffect(() => { fetchProducts(); }, [fetchProducts]);
 
