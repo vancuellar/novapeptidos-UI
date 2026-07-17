@@ -11,7 +11,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Sheet, SheetContent, SheetTrigger, SheetHeader, SheetTitle } from '@/components/ui/sheet';
 import { Skeleton } from '@/components/ui/skeleton';
 import ProductCard from '@/components/ProductCard';
-import api, { formatMXN } from '@/lib/api';
+import { formatMXN } from '@/lib/api';
 import { fallbackCategories, fallbackProducts } from '@/data/fallbackCatalog';
 import { useLanguage } from '@/context/LanguageContext';
 import { localizeCategories, localizeProducts } from '@/i18n/catalog';
@@ -58,7 +58,8 @@ const Catalog = () => {
   const { language, t } = useLanguage();
 
   useEffect(() => {
-    api.get('/categories').then((r) => setCategories(Array.isArray(r.data) ? r.data : fallbackCategories)).catch(() => setCategories(fallbackCategories));
+    // El catálogo curado (generado desde la maestra) es la fuente de verdad.
+    setCategories(fallbackCategories);
   }, []);
 
   useEffect(() => {
@@ -68,31 +69,21 @@ const Catalog = () => {
 
   const fetchProducts = useCallback(() => {
     setLoading(true);
-    const q = new URLSearchParams();
-    if (selectedCat) q.set('category', selectedCat);
-    if (search) q.set('search', search);
-    if (inStock) q.set('in_stock', 'true');
-    if (priceMax < priceCeiling) q.set('max_price', priceMax);
-    if (sort !== 'relevance') q.set('sort', sort);
-    api.get(`/products?${q.toString()}`)
-      .then((r) => {
-        if (!Array.isArray(r.data)) throw new Error('unexpected catalog response');
-        setProducts(r.data);
-      })
-      .catch(() => {
-        let list = [...fallbackProducts];
-        if (selectedCat) list = list.filter((product) => (product.categories || [product.category]).includes(selectedCat));
-        if (search) {
-          const needle = search.toLowerCase();
-          list = list.filter((product) => `${product.name} ${product.short_description}`.toLowerCase().includes(needle));
-        }
-        if (inStock) list = list.filter((product) => product.stock > 0);
-        list = list.filter((product) => product.price <= priceMax);
-        if (sort === 'price_asc') list.sort((a, b) => a.price - b.price);
-        if (sort === 'price_desc') list.sort((a, b) => b.price - a.price);
-        setProducts(list);
-      })
-      .finally(() => setLoading(false));
+    // Sin acentos y sin la vocal final de cada palabra: "Retatrutide" (inglés) encuentra "Retatrutida".
+    const norm = (s) => (s || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+    const stem = (s) => norm(s).replace(/([a-z]{3})[aeo]\b/g, '$1');
+    let list = [...fallbackProducts];
+    if (selectedCat) list = list.filter((product) => (product.categories || [product.category]).includes(selectedCat));
+    if (search) {
+      const needle = stem(search).trim();
+      list = list.filter((product) => stem(`${product.name} ${product.short_description || ''} ${product.description || ''}`).includes(needle));
+    }
+    if (inStock) list = list.filter((product) => product.stock > 0);
+    list = list.filter((product) => product.price <= priceMax);
+    if (sort === 'price_asc') list.sort((a, b) => a.price - b.price);
+    if (sort === 'price_desc') list.sort((a, b) => b.price - a.price);
+    setProducts(list);
+    setLoading(false);
   }, [selectedCat, search, inStock, priceMax, priceCeiling, sort]);
 
   useEffect(() => { fetchProducts(); }, [fetchProducts]);
