@@ -267,7 +267,7 @@ const Home = () => {
         </div>
       </section>
 
-      {/* ===== Why Nova — comparison ===== */}
+      {/* ===== Why Exygen — comparison ===== */}
       <section className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
         <div className="mb-8">
           <div className="kicker">{t('home.whyKicker')}</div>
@@ -277,7 +277,7 @@ const Home = () => {
         <Card className="overflow-hidden shadow-none">
           <div className="grid grid-cols-[1fr_auto_auto] text-sm">
             <div className="px-5 py-3.5 bg-[hsl(var(--secondary))]"> </div>
-            <div className="px-5 sm:px-8 py-3.5 font-heading font-bold text-[hsl(var(--primary))] bg-[hsl(var(--accent))] text-center whitespace-nowrap">Nova Peptides</div>
+            <div className="px-5 sm:px-8 py-3.5 font-heading font-bold text-[hsl(var(--primary))] bg-[hsl(var(--accent))] text-center whitespace-nowrap">Exygen Labs</div>
             <div className="px-5 sm:px-8 py-3.5 font-medium text-muted-foreground bg-[hsl(var(--secondary))] text-center whitespace-nowrap">{t('home.why.others')}</div>
             {whyRows.map((row, i) => (
               <React.Fragment key={i}>
@@ -309,7 +309,7 @@ const Home = () => {
           </div>
           <div className="flex flex-col sm:flex-row lg:flex-col gap-3 lg:items-end">
             <Button asChild className="rounded-full h-12 px-7 uppercase tracking-[0.14em] text-xs font-bold" data-testid="b2b-quote-button">
-              <a href="mailto:hola@novapeptides.mx?subject=Mayoreo"><Mail className="h-4 w-4 mr-2" /> {t('home.b2bCta1')}</a>
+              <a href="mailto:hola@exygenlabs.com?subject=Mayoreo"><Mail className="h-4 w-4 mr-2" /> {t('home.b2bCta1')}</a>
             </Button>
             <Button asChild variant="outline" className="rounded-full h-12 px-7 uppercase tracking-[0.14em] text-xs font-semibold">
               <Link to="/catalogo">{t('home.b2bCta2')}</Link>

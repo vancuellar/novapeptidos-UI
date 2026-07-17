@@ -223,7 +223,7 @@ const Calculator = () => {
       L.push(`${t('calc.draw')}: ${res.units.toFixed(1)} ${t('calc.units')} (${res.drawMl.toFixed(3)} mL) — ${syringe.label}`);
       L.push(`${t('calc.conc')}: ${(res.conc / 1000).toFixed(1)} mg/mL · ${dosesPerVial} ${t('calc.doses')}`);
     }
-    L.push('novapeptides.mx — ' + t('calc.disclaimer'));
+    L.push('exygenlabs.com — ' + t('calc.disclaimer'));
     return L.join('\n');
   };
   const resetAll = () => {
@@ -468,7 +468,7 @@ const Calculator = () => {
 
       {/* Resumen imprimible (solo se ve al imprimir / Guardar como PDF) */}
       <div id="calc-print">
-        <div className="cp-brand">Nova Peptides</div>
+        <div className="cp-brand">Exygen Labs</div>
         <h2>{t('calc.title')}</h2>
         {product && (
           <div className="cp-rows">
@@ -483,7 +483,7 @@ const Calculator = () => {
           </div>
         )}
         <p className="cp-ruo">{t('calc.disclaimer')}</p>
-        <p className="cp-src">novapeptides.mx</p>
+        <p className="cp-src">exygenlabs.com</p>
       </div>
       <style>{`
         #calc-print{display:none}
