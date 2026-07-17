@@ -33,7 +33,7 @@ const Login = () => {
     <div className="max-w-5xl mx-auto px-4 sm:px-6 py-12">
       <div className="grid md:grid-cols-2 gap-8 items-center">
         <div className="hidden md:block">
-          <div className="flex items-center gap-2 mb-4"><div className="h-10 w-10 rounded-lg bg-[hsl(var(--primary))] flex items-center justify-center"><FlaskConical className="h-5 w-5 text-[hsl(var(--primary-foreground))]" /></div><span className="font-heading font-bold text-xl">Nova Peptides</span></div>
+          <div className="flex items-center gap-2 mb-4"><div className="h-10 w-10 rounded-lg bg-[hsl(var(--primary))] flex items-center justify-center"><FlaskConical className="h-5 w-5 text-[hsl(var(--primary-foreground))]" /></div><span className="font-heading font-bold text-xl">Exygen Labs</span></div>
           <h2 className="font-heading text-2xl font-bold tracking-tight">{t('auth.login.sideTitle')}</h2>
           <ul className="mt-6 space-y-3 text-sm text-muted-foreground">
             <li className="flex gap-2"><ShieldCheck className="h-5 w-5 text-[hsl(var(--primary))]" /> {t('auth.login.bullet1')}</li>
