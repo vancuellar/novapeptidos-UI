@@ -75,8 +75,13 @@ const Catalog = () => {
     let list = [...fallbackProducts];
     if (selectedCat) list = list.filter((product) => (product.categories || [product.category]).includes(selectedCat));
     if (search) {
-      const needle = stem(search).trim();
-      list = list.filter((product) => stem(`${product.name} ${product.short_description || ''} ${product.description || ''}`).includes(needle));
+      const nq = norm(search).trim();
+      const sq = stem(search).trim();
+      list = list.filter((product) => {
+        const text = `${product.name} ${product.short_description || ''} ${product.description || ''}`;
+        if (norm(text).includes(nq)) return true;             // substring exacto (sin acentos)
+        return nq.length >= 6 && stem(text).includes(sq);     // tolerante a sufijo solo en consultas largas
+      });
     }
     if (inStock) list = list.filter((product) => product.stock > 0);
     list = list.filter((product) => product.price <= priceMax);
