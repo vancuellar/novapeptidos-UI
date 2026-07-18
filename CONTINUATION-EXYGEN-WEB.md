@@ -63,10 +63,12 @@
 
 ---
 
-## 5. Precios — REGLA NUEVA (2026-07-18) y problema urgente
+## 5. Precios — REGLA VIGENTE (confirmada 2026-07-18)
 
-- **REGLA NUEVA de precio público (sustituye "justo debajo de Exoma"):** el precio público debe quedar en el **PROMEDIO entre Certified y Exoma** — para NO parecer sospechosamente barato. (Antes: máximo posible justo debajo del competidor más barato.) Falta implementar esta regla en `pricing-system/build_pricing_final.py` y regenerar.
-- **PROBLEMA URGENTE (detectado por el vigía, 2026-07-18):** el catálogo actual (regenerado con un aumento ~+20% desde la maestra) dejó a Exygen **ARRIBA de Exoma en TODOS los flagship** — y **ya está en vivo**. Ejemplos: Tirzepatida 60mg Exoma $2,699 vs Exygen $4,109 (+$1,410); Sema 10mg $1,299 vs $2,049 (+$750); Reta 100mg $6,399 vs $7,679. **Hay que REALINEAR** con la regla nueva (promedio Certified↔Exoma) por el sistema (script → sitio + hoja de distribuidores). Pendiente: primero traer precios de Certified para calcular el promedio.
+- **REGLA VIGENTE (Christian la confirmó el 2026-07-18; implementada en `build_pricing_final.py` desde el 2026-07-17):** pegados **ABAJO de Certified**, no del más barato. Detalle: (i) compiten los dos → mezcla **25% Exoma + 75% Certified** (nunca arriba del caro); (ii) **solo Exoma** (el barato) → **+20%** sobre Exoma; (iii) **solo Certified** → justo debajo; (iv) sin competidor → costo ×17.5. Terminación 9.
+- **Estar ARRIBA de Exoma es DELIBERADO** — el descuento INTRO10 (10%) da el colchón. Razón anti-barato: precios <$1,000 se ven sospechosos. El vigía solo alarma si rebasamos al competidor CARO.
+- **Los precios en vivo YA cumplen la regla** (verificado 2026-07-18): Tirze 60mg $4,109 = 25%·$2,699 + 75%·$4,580; Sema 10mg $2,049; Reta 100mg $7,679 = Exoma $6,399 × 1.20. **Nada que realinear.** (La "alarma urgente" del 2026-07-18 y la regla del "promedio" fueron un malentendido de una sesión — ignorar si aparecen en notas viejas.)
+- Precios de Certified descargados por su API en `pricing-system/certified_prices.json` (46 productos, 2026-07-18).
 - Los precios NO se editan a mano; salen de los scripts. `gen_catalog.py` genera `fallbackCatalog.js`; su COA URL ya apunta a exygenlabs.com.
 
 ---
@@ -74,6 +76,7 @@
 ## 6. Vigía de precios (monitoreo diario)
 
 - Tarea programada **`vigia-precios-exygen`**, ~8:17am diario (herramienta scheduled-tasks; correr "Run now" una vez para pre-aprobar el navegador).
+- **Regla de alarma:** solo alarmar si estamos ARRIBA del competidor CARO (normalmente Certified). Estar arriba de Exoma es deliberado (ver §5) — NO es alarma. `check_competitors.py` ya lo hace así.
 - **Exoma tiene API en vivo (Supabase REST):** `https://rtupumzllrvelrqkfqer.supabase.co/rest/v1/products?select=name,dosage,price,in_stock&limit=1000`. Requiere header `apikey` = un JWT público (`eyJ...`) embebido en los bundles JS de Exoma (abrir exomapeptides.mx, bajar los `<script src>`, extraer el JWT con `/eyJ[\w-]{20,}\.[\w-]{20,}\.[\w-]{10,}/`, luego `fetch` con `{apikey, authorization:'Bearer '+JWT}`). **NUNCA leer su tabla HTML.**
 - **Certified** = WooCommerce (`certified-pepmex.com`), precios por `/wp-json/wc/store/products` o páginas de producto.
 - El vigía compara vs `fallbackCatalog.js`, guarda histórico en `pricing-system/comp_prices_history.json`, y reporta corto (qué cambió, dónde estás mal posicionado, precio sugerido con la **regla del promedio**). No cambia nada solo.
@@ -88,8 +91,7 @@
 
 ## 8. Pendientes / decisiones abiertas
 
-- [ ] **Realinear precios** con la regla nueva (promedio Certified↔Exoma) — URGENTE, hoy Exygen está caro vs Exoma. Requiere traer precios de Certified primero.
-- [ ] **Implementar la regla del promedio** en `build_pricing_final.py`.
+- [x] ~~Realinear precios~~ — NO aplica: los precios en vivo ya cumplen la regla vigente (§5). Resuelto 2026-07-18.
 - [ ] **Lanzar el backend nuevo** (correr `deploy-exygen-backend.sh` en Claude interactivo) + DNS `api.exygenlabs.com` y `chat.exygenlabs.com`.
 - [ ] **Migrar el dominio a exygenlabs.com** (comprar en GoDaddy → NS a Route53 opcional → cambiar `public/CNAME` → GitHub Pages custom domain). Hasta entonces todo vive en novapeptidos.mx.
 - [ ] **Rebrand en los scripts/xlsx internos** (distribuidores, título de la maestra) y COA reales.
