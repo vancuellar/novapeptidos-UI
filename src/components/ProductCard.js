@@ -8,6 +8,7 @@ import { ShoppingCart, ShieldCheck } from 'lucide-react';
 import { formatMXN } from '@/lib/api';
 import { useCart } from '@/context/CartContext';
 import { useLanguage } from '@/context/LanguageContext';
+import { productImage } from '@/data/productImages';
 
 const ProductCard = ({ product }) => {
   const { addItem } = useCart();
@@ -20,7 +21,7 @@ const ProductCard = ({ product }) => {
       <Link to={`/producto/${product.slug}`} className="block relative">
         <div className="bg-[hsl(var(--secondary))] overflow-hidden">
           <AspectRatio ratio={4 / 3}>
-            <img src={product.image_url} alt={product.name} className="h-full w-full object-cover group-hover:scale-[1.03] transition-transform duration-300" loading="lazy" />
+            <img src={productImage(product)} alt={product.name} className="h-full w-full object-cover group-hover:scale-[1.03] transition-transform duration-300" loading="lazy" />
           </AspectRatio>
         </div>
         {product.purity && (

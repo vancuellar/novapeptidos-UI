@@ -12,6 +12,7 @@ import ProductCard from '@/components/ProductCard';
 import api, { formatMXN } from '@/lib/api';
 import { useCart } from '@/context/CartContext';
 import { getFallbackProductBySlug, getFallbackProductsByCategory } from '@/data/fallbackCatalog';
+import { productImage, hasProductPhoto } from '@/data/productImages';
 import { useLanguage } from '@/context/LanguageContext';
 import { localizeProduct, localizeProducts } from '@/i18n/catalog';
 
@@ -80,8 +81,11 @@ const ProductDetail = () => {
       <div className="grid lg:grid-cols-2 gap-8">
         <div>
           <div className="rounded-2xl border border-border bg-[hsl(var(--secondary))] overflow-hidden">
-            <img src={localizedProduct.image_url} alt={localizedProduct.name} className="w-full object-cover aspect-square" />
+            <img src={productImage(localizedProduct)} alt={localizedProduct.name} className="w-full object-cover aspect-square" />
           </div>
+          {hasProductPhoto(localizedProduct) && (
+            <p className="mt-2 text-[11px] leading-relaxed text-muted-foreground text-center">{t('product.photoNote')}</p>
+          )}
           <div className="mt-4 rounded-xl border border-[hsl(var(--warning-border))] bg-[hsl(var(--warning))] text-[hsl(var(--warning-foreground))] p-3 flex items-start gap-2 text-xs leading-relaxed">
             <FlaskConical className="h-4 w-4 shrink-0 mt-0.5" />
             <span>{t('product.ruoWarning')}</span>
