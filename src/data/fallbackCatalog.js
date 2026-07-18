@@ -89,7 +89,7 @@ export const fallbackProducts = [
     "tiers": [],
     "stock": 40,
     "image_url": "https://images.pexels.com/photos/10514991/pexels-photo-10514991.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
-    "coa_url": "https://novapeptides.mx/coa/bronchogen.pdf",
+    "coa_url": "https://exygenlabs.com/coa/bronchogen.pdf",
     "batch_number": "NP-BRON10-2601",
     "storage": "Conservar a -20 °C, protegido de la luz. Reconstituido: 2–8 °C.",
     "start_dose": 5,
@@ -116,11 +116,11 @@ export const fallbackProducts = [
     "presentation": "20 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
-    "price": 1999,
+    "price": 2399,
     "variants": [
       {
         "presentation": "20 mg",
-        "price": 1999,
+        "price": 2399,
         "stock": 40,
         "batch_number": "NP-CARD20-2601"
       }
@@ -128,7 +128,7 @@ export const fallbackProducts = [
     "tiers": [],
     "stock": 40,
     "image_url": "https://images.pexels.com/photos/10514991/pexels-photo-10514991.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
-    "coa_url": "https://novapeptides.mx/coa/cardiogen.pdf",
+    "coa_url": "https://exygenlabs.com/coa/cardiogen.pdf",
     "batch_number": "NP-CARD20-2601",
     "storage": "Conservar a -20 °C, protegido de la luz. Reconstituido: 2–8 °C.",
     "start_dose": 5,
@@ -155,11 +155,11 @@ export const fallbackProducts = [
     "presentation": "20 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
-    "price": 1999,
+    "price": 2399,
     "variants": [
       {
         "presentation": "20 mg",
-        "price": 1999,
+        "price": 2399,
         "stock": 40,
         "batch_number": "NP-CART20-2601"
       }
@@ -167,7 +167,7 @@ export const fallbackProducts = [
     "tiers": [],
     "stock": 40,
     "image_url": "https://images.pexels.com/photos/10514991/pexels-photo-10514991.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
-    "coa_url": "https://novapeptides.mx/coa/cartalax.pdf",
+    "coa_url": "https://exygenlabs.com/coa/cartalax.pdf",
     "batch_number": "NP-CART20-2601",
     "storage": "Conservar a -20 °C, protegido de la luz. Reconstituido: 2–8 °C.",
     "start_dose": 5,
@@ -194,11 +194,11 @@ export const fallbackProducts = [
     "presentation": "20 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
-    "price": 1999,
+    "price": 2399,
     "variants": [
       {
         "presentation": "20 mg",
-        "price": 1999,
+        "price": 2399,
         "stock": 40,
         "batch_number": "NP-CORT20-2601"
       }
@@ -206,7 +206,7 @@ export const fallbackProducts = [
     "tiers": [],
     "stock": 40,
     "image_url": "https://images.pexels.com/photos/10514991/pexels-photo-10514991.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
-    "coa_url": "https://novapeptides.mx/coa/cortagen.pdf",
+    "coa_url": "https://exygenlabs.com/coa/cortagen.pdf",
     "batch_number": "NP-CORT20-2601",
     "storage": "Conservar a -20 °C, protegido de la luz. Reconstituido: 2–8 °C.",
     "start_dose": 5,
@@ -233,11 +233,11 @@ export const fallbackProducts = [
     "presentation": "20 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
-    "price": 1999,
+    "price": 2399,
     "variants": [
       {
         "presentation": "20 mg",
-        "price": 1999,
+        "price": 2399,
         "stock": 40,
         "batch_number": "NP-CRYS20-2601"
       }
@@ -245,7 +245,7 @@ export const fallbackProducts = [
     "tiers": [],
     "stock": 40,
     "image_url": "https://images.pexels.com/photos/10514991/pexels-photo-10514991.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
-    "coa_url": "https://novapeptides.mx/coa/crystagen.pdf",
+    "coa_url": "https://exygenlabs.com/coa/crystagen.pdf",
     "batch_number": "NP-CRYS20-2601",
     "storage": "Conservar a -20 °C, protegido de la luz. Reconstituido: 2–8 °C.",
     "start_dose": 5,
@@ -272,17 +272,17 @@ export const fallbackProducts = [
     "presentation": "5 mg – 10 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
-    "price": 849,
+    "price": 1019,
     "variants": [
       {
         "presentation": "5 mg",
-        "price": 849,
+        "price": 1019,
         "stock": 40,
         "batch_number": "NP-PINE5-2601"
       },
       {
         "presentation": "10 mg",
-        "price": 1299,
+        "price": 1559,
         "stock": 40,
         "batch_number": "NP-PINE10-2601"
       }
@@ -290,7 +290,7 @@ export const fallbackProducts = [
     "tiers": [],
     "stock": 40,
     "image_url": "https://images.pexels.com/photos/10514991/pexels-photo-10514991.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
-    "coa_url": "https://novapeptides.mx/coa/pinealon.pdf",
+    "coa_url": "https://exygenlabs.com/coa/pinealon.pdf",
     "batch_number": "NP-PINE5-2601",
     "storage": "Conservar a -20 °C, protegido de la luz. Reconstituido: 2–8 °C.",
     "start_dose": 5,
@@ -317,11 +317,11 @@ export const fallbackProducts = [
     "presentation": "10 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
-    "price": 1199,
+    "price": 1439,
     "variants": [
       {
         "presentation": "10 mg",
-        "price": 1199,
+        "price": 1439,
         "stock": 40,
         "batch_number": "NP-THYM10-2601"
       }
@@ -329,7 +329,7 @@ export const fallbackProducts = [
     "tiers": [],
     "stock": 40,
     "image_url": "https://images.pexels.com/photos/10514991/pexels-photo-10514991.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
-    "coa_url": "https://novapeptides.mx/coa/thymalin.pdf",
+    "coa_url": "https://exygenlabs.com/coa/thymalin.pdf",
     "batch_number": "NP-THYM10-2601",
     "storage": "Conservar a -20 °C, protegido de la luz. Reconstituido: 2–8 °C.",
     "start_dose": 5,
@@ -356,17 +356,17 @@ export const fallbackProducts = [
     "presentation": "5 mg – 10 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
-    "price": 1349,
+    "price": 1479,
     "variants": [
       {
         "presentation": "5 mg",
-        "price": 1349,
+        "price": 1479,
         "stock": 40,
         "batch_number": "NP-THYM5-2601"
       },
       {
         "presentation": "10 mg",
-        "price": 1439,
+        "price": 1579,
         "stock": 40,
         "batch_number": "NP-THYM10-2601"
       }
@@ -374,7 +374,7 @@ export const fallbackProducts = [
     "tiers": [],
     "stock": 40,
     "image_url": "https://images.pexels.com/photos/10514991/pexels-photo-10514991.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
-    "coa_url": "https://novapeptides.mx/coa/thymosin-alpha-1.pdf",
+    "coa_url": "https://exygenlabs.com/coa/thymosin-alpha-1.pdf",
     "batch_number": "NP-THYM5-2601",
     "storage": "Conservar a -20 °C, protegido de la luz. Reconstituido: 2–8 °C.",
     "start_dose": 1.6,
@@ -411,7 +411,7 @@ export const fallbackProducts = [
       },
       {
         "presentation": "100 mg",
-        "price": 1149,
+        "price": 1379,
         "stock": 40,
         "batch_number": "NP-AHKC100-2601"
       }
@@ -419,7 +419,7 @@ export const fallbackProducts = [
     "tiers": [],
     "stock": 40,
     "image_url": "https://images.pexels.com/photos/10514991/pexels-photo-10514991.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
-    "coa_url": "https://novapeptides.mx/coa/ahk-cu.pdf",
+    "coa_url": "https://exygenlabs.com/coa/ahk-cu.pdf",
     "batch_number": "NP-AHKC50-2601",
     "storage": "Conservar a -20 °C, protegido de la luz. Reconstituido: 2–8 °C.",
     "start_dose": null,
@@ -453,7 +453,7 @@ export const fallbackProducts = [
     "tiers": [],
     "stock": 40,
     "image_url": "https://images.pexels.com/photos/10514991/pexels-photo-10514991.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
-    "coa_url": "https://novapeptides.mx/coa/botulinum-toxin.pdf",
+    "coa_url": "https://exygenlabs.com/coa/botulinum-toxin.pdf",
     "batch_number": "NP-BOTU100-2601",
     "storage": "Conservar a -20 °C, protegido de la luz. Reconstituido: 2–8 °C.",
     "start_dose": null,
@@ -476,17 +476,17 @@ export const fallbackProducts = [
     "presentation": "50 mg – 100 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
-    "price": 549,
+    "price": 659,
     "variants": [
       {
         "presentation": "50 mg",
-        "price": 549,
+        "price": 659,
         "stock": 40,
         "batch_number": "NP-GHK50-2601"
       },
       {
         "presentation": "100 mg",
-        "price": 989,
+        "price": 1209,
         "stock": 40,
         "batch_number": "NP-GHK100-2601"
       }
@@ -494,7 +494,7 @@ export const fallbackProducts = [
     "tiers": [],
     "stock": 40,
     "image_url": "https://images.pexels.com/photos/10514991/pexels-photo-10514991.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
-    "coa_url": "https://novapeptides.mx/coa/ghk-cu.pdf",
+    "coa_url": "https://exygenlabs.com/coa/ghk-cu.pdf",
     "batch_number": "NP-GHK50-2601",
     "storage": "Conservar a -20 °C, protegido de la luz. Reconstituido: 2–8 °C.",
     "start_dose": 2,
@@ -533,7 +533,7 @@ export const fallbackProducts = [
     "tiers": [],
     "stock": 40,
     "image_url": "https://images.pexels.com/photos/10514991/pexels-photo-10514991.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
-    "coa_url": "https://novapeptides.mx/coa/lemon-bottle.pdf",
+    "coa_url": "https://exygenlabs.com/coa/lemon-bottle.pdf",
     "batch_number": "NP-LEMO10-2601",
     "storage": "Conservar a -20 °C, protegido de la luz. Reconstituido: 2–8 °C.",
     "start_dose": null,
@@ -555,11 +555,11 @@ export const fallbackProducts = [
     "presentation": "10 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
-    "price": 749,
+    "price": 899,
     "variants": [
       {
         "presentation": "10 mg",
-        "price": 749,
+        "price": 899,
         "stock": 40,
         "batch_number": "NP-MATR10-2601"
       }
@@ -567,7 +567,7 @@ export const fallbackProducts = [
     "tiers": [],
     "stock": 40,
     "image_url": "https://images.pexels.com/photos/10514991/pexels-photo-10514991.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
-    "coa_url": "https://novapeptides.mx/coa/matrixyl.pdf",
+    "coa_url": "https://exygenlabs.com/coa/matrixyl.pdf",
     "batch_number": "NP-MATR10-2601",
     "storage": "Conservar a -20 °C, protegido de la luz. Reconstituido: 2–8 °C.",
     "start_dose": null,
@@ -589,11 +589,11 @@ export const fallbackProducts = [
     "presentation": "10 mg – 100 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
-    "price": 699,
+    "price": 839,
     "variants": [
       {
         "presentation": "10 mg",
-        "price": 699,
+        "price": 839,
         "stock": 40,
         "batch_number": "NP-SNAP10-2601"
       },
@@ -607,7 +607,7 @@ export const fallbackProducts = [
     "tiers": [],
     "stock": 40,
     "image_url": "https://images.pexels.com/photos/10514991/pexels-photo-10514991.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
-    "coa_url": "https://novapeptides.mx/coa/snap-8.pdf",
+    "coa_url": "https://exygenlabs.com/coa/snap-8.pdf",
     "batch_number": "NP-SNAP10-2601",
     "storage": "Conservar a -20 °C, protegido de la luz. Reconstituido: 2–8 °C.",
     "start_dose": null,
@@ -629,11 +629,11 @@ export const fallbackProducts = [
     "presentation": "10 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
-    "price": 1599,
+    "price": 1919,
     "variants": [
       {
         "presentation": "10 mg",
-        "price": 1599,
+        "price": 1919,
         "stock": 40,
         "batch_number": "NP-CJC110-2601"
       }
@@ -641,7 +641,7 @@ export const fallbackProducts = [
     "tiers": [],
     "stock": 40,
     "image_url": "https://images.pexels.com/photos/9259977/pexels-photo-9259977.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
-    "coa_url": "https://novapeptides.mx/coa/cjc-1295-no-dac-5mg-ipamorelin-5mg.pdf",
+    "coa_url": "https://exygenlabs.com/coa/cjc-1295-no-dac-5mg-ipamorelin-5mg.pdf",
     "batch_number": "NP-CJC110-2601",
     "storage": "Conservar a -20 °C, protegido de la luz. Reconstituido: 2–8 °C.",
     "start_dose": 100,
@@ -680,7 +680,7 @@ export const fallbackProducts = [
     "tiers": [],
     "stock": 40,
     "image_url": "https://images.pexels.com/photos/9259977/pexels-photo-9259977.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
-    "coa_url": "https://novapeptides.mx/coa/fragment-17-23.pdf",
+    "coa_url": "https://exygenlabs.com/coa/fragment-17-23.pdf",
     "batch_number": "NP-FRAG10-2601",
     "storage": "Conservar a -20 °C, protegido de la luz. Reconstituido: 2–8 °C.",
     "start_dose": null,
@@ -702,17 +702,17 @@ export const fallbackProducts = [
     "presentation": "5 mg – 15 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
-    "price": 599,
+    "price": 719,
     "variants": [
       {
         "presentation": "5 mg",
-        "price": 599,
+        "price": 719,
         "stock": 40,
         "batch_number": "NP-GHRP5-2601"
       },
       {
         "presentation": "10 mg",
-        "price": 799,
+        "price": 829,
         "stock": 40,
         "batch_number": "NP-GHRP10-2601"
       },
@@ -726,7 +726,7 @@ export const fallbackProducts = [
     "tiers": [],
     "stock": 40,
     "image_url": "https://images.pexels.com/photos/9259977/pexels-photo-9259977.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
-    "coa_url": "https://novapeptides.mx/coa/ghrp-2-acetate.pdf",
+    "coa_url": "https://exygenlabs.com/coa/ghrp-2-acetate.pdf",
     "batch_number": "NP-GHRP5-2601",
     "storage": "Conservar a -20 °C, protegido de la luz. Reconstituido: 2–8 °C.",
     "start_dose": 100,
@@ -753,17 +753,17 @@ export const fallbackProducts = [
     "presentation": "5 mg – 10 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
-    "price": 599,
+    "price": 719,
     "variants": [
       {
         "presentation": "5 mg",
-        "price": 599,
+        "price": 719,
         "stock": 40,
         "batch_number": "NP-GHRP5-2601"
       },
       {
         "presentation": "10 mg",
-        "price": 799,
+        "price": 869,
         "stock": 40,
         "batch_number": "NP-GHRP10-2601"
       }
@@ -771,7 +771,7 @@ export const fallbackProducts = [
     "tiers": [],
     "stock": 40,
     "image_url": "https://images.pexels.com/photos/9259977/pexels-photo-9259977.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
-    "coa_url": "https://novapeptides.mx/coa/ghrp-6-acetate.pdf",
+    "coa_url": "https://exygenlabs.com/coa/ghrp-6-acetate.pdf",
     "batch_number": "NP-GHRP5-2601",
     "storage": "Conservar a -20 °C, protegido de la luz. Reconstituido: 2–8 °C.",
     "start_dose": 100,
@@ -798,17 +798,17 @@ export const fallbackProducts = [
     "presentation": "2 mg – 5 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
-    "price": 649,
+    "price": 779,
     "variants": [
       {
         "presentation": "2 mg",
-        "price": 649,
+        "price": 779,
         "stock": 40,
         "batch_number": "NP-HEXA2-2601"
       },
       {
         "presentation": "5 mg",
-        "price": 1199,
+        "price": 1439,
         "stock": 40,
         "batch_number": "NP-HEXA5-2601"
       }
@@ -816,7 +816,7 @@ export const fallbackProducts = [
     "tiers": [],
     "stock": 40,
     "image_url": "https://images.pexels.com/photos/9259977/pexels-photo-9259977.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
-    "coa_url": "https://novapeptides.mx/coa/hexarelin-acetate.pdf",
+    "coa_url": "https://exygenlabs.com/coa/hexarelin-acetate.pdf",
     "batch_number": "NP-HEXA2-2601",
     "storage": "Conservar a -20 °C, protegido de la luz. Reconstituido: 2–8 °C.",
     "start_dose": 100,
@@ -843,19 +843,13 @@ export const fallbackProducts = [
     "presentation": "24 IU – 40 IU",
     "form": "Liofilizado",
     "purity": "99.0%",
-    "price": 949,
+    "price": 1139,
     "variants": [
       {
         "presentation": "24 IU",
-        "price": 949,
+        "price": 1139,
         "stock": 40,
         "batch_number": "NP-HGH24-2601"
-      },
-      {
-        "presentation": "36 IU",
-        "price": 1289,
-        "stock": 40,
-        "batch_number": "NP-HGH36-2601"
       },
       {
         "presentation": "40 IU",
@@ -867,7 +861,7 @@ export const fallbackProducts = [
     "tiers": [],
     "stock": 40,
     "image_url": "https://images.pexels.com/photos/9259977/pexels-photo-9259977.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
-    "coa_url": "https://novapeptides.mx/coa/hgh.pdf",
+    "coa_url": "https://exygenlabs.com/coa/hgh.pdf",
     "batch_number": "NP-HGH24-2601",
     "storage": "Conservar a -20 °C, protegido de la luz. Reconstituido: 2–8 °C.",
     "start_dose": 2,
@@ -904,19 +898,19 @@ export const fallbackProducts = [
       },
       {
         "presentation": "2 mg",
-        "price": 799,
+        "price": 959,
         "stock": 40,
         "batch_number": "NP-HGHF2-2601"
       },
       {
         "presentation": "5 mg",
-        "price": 1099,
+        "price": 1319,
         "stock": 40,
         "batch_number": "NP-HGHF5-2601"
       },
       {
         "presentation": "10 mg",
-        "price": 2649,
+        "price": 3099,
         "stock": 40,
         "batch_number": "NP-HGHF10-2601"
       },
@@ -930,7 +924,7 @@ export const fallbackProducts = [
     "tiers": [],
     "stock": 40,
     "image_url": "https://images.pexels.com/photos/9259977/pexels-photo-9259977.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
-    "coa_url": "https://novapeptides.mx/coa/hgh-fragment-176-191.pdf",
+    "coa_url": "https://exygenlabs.com/coa/hgh-fragment-176-191.pdf",
     "batch_number": "NP-HGHF1-2601",
     "storage": "Conservar a -20 °C, protegido de la luz. Reconstituido: 2–8 °C.",
     "start_dose": 250,
@@ -957,17 +951,17 @@ export const fallbackProducts = [
     "presentation": "0.1 mg – 1 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
-    "price": 349,
+    "price": 419,
     "variants": [
       {
         "presentation": "0.1 mg",
-        "price": 349,
+        "price": 419,
         "stock": 40,
         "batch_number": "NP-IGF101-2601"
       },
       {
         "presentation": "1 mg",
-        "price": 1459,
+        "price": 1559,
         "stock": 40,
         "batch_number": "NP-IGF11-2601"
       }
@@ -975,7 +969,7 @@ export const fallbackProducts = [
     "tiers": [],
     "stock": 40,
     "image_url": "https://images.pexels.com/photos/9259977/pexels-photo-9259977.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
-    "coa_url": "https://novapeptides.mx/coa/igf-1-lr3.pdf",
+    "coa_url": "https://exygenlabs.com/coa/igf-1-lr3.pdf",
     "batch_number": "NP-IGF101-2601",
     "storage": "Conservar a -20 °C, protegido de la luz. Reconstituido: 2–8 °C.",
     "start_dose": 20,
@@ -1002,23 +996,23 @@ export const fallbackProducts = [
     "presentation": "2 mg – 10 mg",
     "form": "Liofilizado",
     "purity": "99.3%",
-    "price": 799,
+    "price": 959,
     "variants": [
       {
         "presentation": "2 mg",
-        "price": 799,
+        "price": 959,
         "stock": 40,
         "batch_number": "NP-IPA2-2601"
       },
       {
         "presentation": "5 mg",
-        "price": 999,
+        "price": 1049,
         "stock": 40,
         "batch_number": "NP-IPA5-2601"
       },
       {
         "presentation": "10 mg",
-        "price": 1099,
+        "price": 1119,
         "stock": 40,
         "batch_number": "NP-IPA10-2601"
       }
@@ -1026,7 +1020,7 @@ export const fallbackProducts = [
     "tiers": [],
     "stock": 40,
     "image_url": "https://images.pexels.com/photos/9259977/pexels-photo-9259977.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
-    "coa_url": "https://novapeptides.mx/coa/ipamorelin.pdf",
+    "coa_url": "https://exygenlabs.com/coa/ipamorelin.pdf",
     "batch_number": "NP-IPA2-2601",
     "storage": "Conservar a -20 °C, protegido de la luz. Reconstituido: 2–8 °C.",
     "start_dose": 200,
@@ -1053,11 +1047,11 @@ export const fallbackProducts = [
     "presentation": "2 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
-    "price": 1349,
+    "price": 1619,
     "variants": [
       {
         "presentation": "2 mg",
-        "price": 1349,
+        "price": 1619,
         "stock": 40,
         "batch_number": "NP-MGF2-2601"
       }
@@ -1065,7 +1059,7 @@ export const fallbackProducts = [
     "tiers": [],
     "stock": 40,
     "image_url": "https://images.pexels.com/photos/9259977/pexels-photo-9259977.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
-    "coa_url": "https://novapeptides.mx/coa/mgf.pdf",
+    "coa_url": "https://exygenlabs.com/coa/mgf.pdf",
     "batch_number": "NP-MGF2-2601",
     "storage": "Conservar a -20 °C, protegido de la luz. Reconstituido: 2–8 °C.",
     "start_dose": 200,
@@ -1092,11 +1086,11 @@ export const fallbackProducts = [
     "presentation": "2 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
-    "price": 1349,
+    "price": 1619,
     "variants": [
       {
         "presentation": "2 mg",
-        "price": 1349,
+        "price": 1619,
         "stock": 40,
         "batch_number": "NP-PEGM2-2601"
       }
@@ -1104,7 +1098,7 @@ export const fallbackProducts = [
     "tiers": [],
     "stock": 40,
     "image_url": "https://images.pexels.com/photos/9259977/pexels-photo-9259977.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
-    "coa_url": "https://novapeptides.mx/coa/peg-mgf.pdf",
+    "coa_url": "https://exygenlabs.com/coa/peg-mgf.pdf",
     "batch_number": "NP-PEGM2-2601",
     "storage": "Conservar a -20 °C, protegido de la luz. Reconstituido: 2–8 °C.",
     "start_dose": 200,
@@ -1141,13 +1135,13 @@ export const fallbackProducts = [
       },
       {
         "presentation": "5 mg",
-        "price": 899,
+        "price": 1049,
         "stock": 40,
         "batch_number": "NP-SERM5-2601"
       },
       {
         "presentation": "10 mg",
-        "price": 1799,
+        "price": 2159,
         "stock": 40,
         "batch_number": "NP-SERM10-2601"
       }
@@ -1155,7 +1149,7 @@ export const fallbackProducts = [
     "tiers": [],
     "stock": 40,
     "image_url": "https://images.pexels.com/photos/6129873/pexels-photo-6129873.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
-    "coa_url": "https://novapeptides.mx/coa/sermorelina.pdf",
+    "coa_url": "https://exygenlabs.com/coa/sermorelina.pdf",
     "batch_number": "NP-SERM2-2601",
     "storage": "Conservar a -20 °C, protegido de la luz. Reconstituido: 2–8 °C.",
     "start_dose": 200,
@@ -1194,7 +1188,7 @@ export const fallbackProducts = [
     "tiers": [],
     "stock": 40,
     "image_url": "https://images.pexels.com/photos/9259977/pexels-photo-9259977.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
-    "coa_url": "https://novapeptides.mx/coa/tesamorelin-10-ipamorelin-5.pdf",
+    "coa_url": "https://exygenlabs.com/coa/tesamorelin-10-ipamorelin-5.pdf",
     "batch_number": "NP-TESA15-2601",
     "storage": "Conservar a -20 °C, protegido de la luz. Reconstituido: 2–8 °C.",
     "start_dose": null,
@@ -1216,17 +1210,17 @@ export const fallbackProducts = [
     "presentation": "10 mg – 50 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
-    "price": 899,
+    "price": 939,
     "variants": [
       {
         "presentation": "10 mg",
-        "price": 899,
+        "price": 939,
         "stock": 40,
         "batch_number": "NP-EPI10-2601"
       },
       {
         "presentation": "50 mg",
-        "price": 2799,
+        "price": 3359,
         "stock": 40,
         "batch_number": "NP-EPI50-2601"
       }
@@ -1234,7 +1228,7 @@ export const fallbackProducts = [
     "tiers": [],
     "stock": 40,
     "image_url": "https://images.pexels.com/photos/10514991/pexels-photo-10514991.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
-    "coa_url": "https://novapeptides.mx/coa/epithalon.pdf",
+    "coa_url": "https://exygenlabs.com/coa/epithalon.pdf",
     "batch_number": "NP-EPI10-2601",
     "storage": "Conservar a -20 °C, protegido de la luz. Reconstituido: 2–8 °C.",
     "start_dose": 5,
@@ -1279,7 +1273,7 @@ export const fallbackProducts = [
     "tiers": [],
     "stock": 40,
     "image_url": "https://images.pexels.com/photos/10514991/pexels-photo-10514991.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
-    "coa_url": "https://novapeptides.mx/coa/foxo4.pdf",
+    "coa_url": "https://exygenlabs.com/coa/foxo4.pdf",
     "batch_number": "NP-FOXO2-2601",
     "storage": "Conservar a -20 °C, protegido de la luz. Reconstituido: 2–8 °C.",
     "start_dose": null,
@@ -1311,7 +1305,7 @@ export const fallbackProducts = [
       },
       {
         "presentation": "1500 mg",
-        "price": 1499,
+        "price": 1559,
         "stock": 40,
         "batch_number": "NP-GLUT1500-2601"
       }
@@ -1319,7 +1313,7 @@ export const fallbackProducts = [
     "tiers": [],
     "stock": 40,
     "image_url": "https://images.pexels.com/photos/10514991/pexels-photo-10514991.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
-    "coa_url": "https://novapeptides.mx/coa/glutation.pdf",
+    "coa_url": "https://exygenlabs.com/coa/glutation.pdf",
     "batch_number": "NP-GLUT600-2601",
     "storage": "Conservar a -20 °C, protegido de la luz. Reconstituido: 2–8 °C.",
     "start_dose": 200,
@@ -1346,17 +1340,17 @@ export const fallbackProducts = [
     "presentation": "10 mg – 20 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
-    "price": 3799,
+    "price": 4559,
     "variants": [
       {
         "presentation": "10 mg",
-        "price": 3799,
+        "price": 4559,
         "stock": 40,
         "batch_number": "NP-HUMA10-2601"
       },
       {
         "presentation": "20 mg",
-        "price": 5699,
+        "price": 6839,
         "stock": 40,
         "batch_number": "NP-HUMA20-2601"
       }
@@ -1364,7 +1358,7 @@ export const fallbackProducts = [
     "tiers": [],
     "stock": 40,
     "image_url": "https://images.pexels.com/photos/10514991/pexels-photo-10514991.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
-    "coa_url": "https://novapeptides.mx/coa/humanin.pdf",
+    "coa_url": "https://exygenlabs.com/coa/humanin.pdf",
     "batch_number": "NP-HUMA10-2601",
     "storage": "Conservar a -20 °C, protegido de la luz. Reconstituido: 2–8 °C.",
     "start_dose": 1,
@@ -1391,23 +1385,23 @@ export const fallbackProducts = [
     "presentation": "100 mg – 1000 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
-    "price": 699,
+    "price": 839,
     "variants": [
       {
         "presentation": "100 mg",
-        "price": 699,
+        "price": 839,
         "stock": 40,
         "batch_number": "NP-NAD100-2601"
       },
       {
         "presentation": "500 mg",
-        "price": 1259,
+        "price": 1289,
         "stock": 40,
         "batch_number": "NP-NAD500-2601"
       },
       {
         "presentation": "1000 mg",
-        "price": 1899,
+        "price": 2279,
         "stock": 40,
         "batch_number": "NP-NAD1000-2601"
       }
@@ -1415,7 +1409,7 @@ export const fallbackProducts = [
     "tiers": [],
     "stock": 40,
     "image_url": "https://images.pexels.com/photos/10514991/pexels-photo-10514991.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
-    "coa_url": "https://novapeptides.mx/coa/nad-plus.pdf",
+    "coa_url": "https://exygenlabs.com/coa/nad-plus.pdf",
     "batch_number": "NP-NAD100-2601",
     "storage": "Conservar a -20 °C, protegido de la luz. Reconstituido: 2–8 °C.",
     "start_dose": 50,
@@ -1442,17 +1436,17 @@ export const fallbackProducts = [
     "presentation": "10 mg – 50 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
-    "price": 1099,
+    "price": 1319,
     "variants": [
       {
         "presentation": "10 mg",
-        "price": 1099,
+        "price": 1319,
         "stock": 40,
         "batch_number": "NP-SS3110-2601"
       },
       {
         "presentation": "50 mg",
-        "price": 3899,
+        "price": 4679,
         "stock": 40,
         "batch_number": "NP-SS3150-2601"
       }
@@ -1460,7 +1454,7 @@ export const fallbackProducts = [
     "tiers": [],
     "stock": 40,
     "image_url": "https://images.pexels.com/photos/10514991/pexels-photo-10514991.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
-    "coa_url": "https://novapeptides.mx/coa/ss-31.pdf",
+    "coa_url": "https://exygenlabs.com/coa/ss-31.pdf",
     "batch_number": "NP-SS3110-2601",
     "storage": "Conservar a -20 °C, protegido de la luz. Reconstituido: 2–8 °C.",
     "start_dose": 5,
@@ -1487,11 +1481,11 @@ export const fallbackProducts = [
     "presentation": "60 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
-    "price": 1499,
+    "price": 1799,
     "variants": [
       {
         "presentation": "60 mg",
-        "price": 1499,
+        "price": 1799,
         "stock": 40,
         "batch_number": "NP-CERE60-2601"
       }
@@ -1499,7 +1493,7 @@ export const fallbackProducts = [
     "tiers": [],
     "stock": 40,
     "image_url": "https://images.pexels.com/photos/9259977/pexels-photo-9259977.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
-    "coa_url": "https://novapeptides.mx/coa/cerebrolysin.pdf",
+    "coa_url": "https://exygenlabs.com/coa/cerebrolysin.pdf",
     "batch_number": "NP-CERE60-2601",
     "storage": "Conservar a -20 °C, protegido de la luz. Reconstituido: 2–8 °C.",
     "start_dose": null,
@@ -1521,23 +1515,23 @@ export const fallbackProducts = [
     "presentation": "2 mg – 10 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
-    "price": 459,
+    "price": 599,
     "variants": [
       {
         "presentation": "2 mg",
-        "price": 459,
+        "price": 599,
         "stock": 40,
         "batch_number": "NP-DSIP2-2601"
       },
       {
         "presentation": "5 mg",
-        "price": 699,
+        "price": 889,
         "stock": 40,
         "batch_number": "NP-DSIP5-2601"
       },
       {
         "presentation": "10 mg",
-        "price": 999,
+        "price": 1199,
         "stock": 40,
         "batch_number": "NP-DSIP10-2601"
       }
@@ -1545,7 +1539,7 @@ export const fallbackProducts = [
     "tiers": [],
     "stock": 40,
     "image_url": "https://images.pexels.com/photos/9259977/pexels-photo-9259977.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
-    "coa_url": "https://novapeptides.mx/coa/dsip.pdf",
+    "coa_url": "https://exygenlabs.com/coa/dsip.pdf",
     "batch_number": "NP-DSIP2-2601",
     "storage": "Conservar a -20 °C, protegido de la luz. Reconstituido: 2–8 °C.",
     "start_dose": 100,
@@ -1584,7 +1578,7 @@ export const fallbackProducts = [
     "tiers": [],
     "stock": 40,
     "image_url": "https://images.pexels.com/photos/9259977/pexels-photo-9259977.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
-    "coa_url": "https://novapeptides.mx/coa/melatonina.pdf",
+    "coa_url": "https://exygenlabs.com/coa/melatonina.pdf",
     "batch_number": "NP-MELA10-2601",
     "storage": "Conservar a -20 °C, protegido de la luz. Reconstituido: 2–8 °C.",
     "start_dose": null,
@@ -1618,7 +1612,7 @@ export const fallbackProducts = [
     "tiers": [],
     "stock": 40,
     "image_url": "https://images.pexels.com/photos/9259977/pexels-photo-9259977.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
-    "coa_url": "https://novapeptides.mx/coa/orexin-a.pdf",
+    "coa_url": "https://exygenlabs.com/coa/orexin-a.pdf",
     "batch_number": "NP-OREX10-2601",
     "storage": "Conservar a -20 °C, protegido de la luz. Reconstituido: 2–8 °C.",
     "start_dose": null,
@@ -1658,7 +1652,7 @@ export const fallbackProducts = [
     "tiers": [],
     "stock": 40,
     "image_url": "https://images.pexels.com/photos/9259977/pexels-photo-9259977.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
-    "coa_url": "https://novapeptides.mx/coa/orexin-b.pdf",
+    "coa_url": "https://exygenlabs.com/coa/orexin-b.pdf",
     "batch_number": "NP-OREX5-2601",
     "storage": "Conservar a -20 °C, protegido de la luz. Reconstituido: 2–8 °C.",
     "start_dose": null,
@@ -1680,11 +1674,11 @@ export const fallbackProducts = [
     "presentation": "10 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
-    "price": 999,
+    "price": 1199,
     "variants": [
       {
         "presentation": "10 mg",
-        "price": 999,
+        "price": 1199,
         "stock": 40,
         "batch_number": "NP-PE2210-2601"
       }
@@ -1692,7 +1686,7 @@ export const fallbackProducts = [
     "tiers": [],
     "stock": 40,
     "image_url": "https://images.pexels.com/photos/9259977/pexels-photo-9259977.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
-    "coa_url": "https://novapeptides.mx/coa/pe-22-28.pdf",
+    "coa_url": "https://exygenlabs.com/coa/pe-22-28.pdf",
     "batch_number": "NP-PE2210-2601",
     "storage": "Conservar a -20 °C, protegido de la luz. Reconstituido: 2–8 °C.",
     "start_dose": null,
@@ -1714,11 +1708,11 @@ export const fallbackProducts = [
     "presentation": "5 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
-    "price": 1799,
+    "price": 2159,
     "variants": [
       {
         "presentation": "5 mg",
-        "price": 1799,
+        "price": 2159,
         "stock": 40,
         "batch_number": "NP-PNC25-2601"
       }
@@ -1726,7 +1720,7 @@ export const fallbackProducts = [
     "tiers": [],
     "stock": 40,
     "image_url": "https://images.pexels.com/photos/9259977/pexels-photo-9259977.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
-    "coa_url": "https://novapeptides.mx/coa/pnc-27.pdf",
+    "coa_url": "https://exygenlabs.com/coa/pnc-27.pdf",
     "batch_number": "NP-PNC25-2601",
     "storage": "Conservar a -20 °C, protegido de la luz. Reconstituido: 2–8 °C.",
     "start_dose": null,
@@ -1748,17 +1742,17 @@ export const fallbackProducts = [
     "presentation": "5 mg – 10 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
-    "price": 599,
+    "price": 719,
     "variants": [
       {
         "presentation": "5 mg",
-        "price": 599,
+        "price": 719,
         "stock": 40,
         "batch_number": "NP-SLK5-2601"
       },
       {
         "presentation": "10 mg",
-        "price": 839,
+        "price": 849,
         "stock": 40,
         "batch_number": "NP-SLK10-2601"
       }
@@ -1766,7 +1760,7 @@ export const fallbackProducts = [
     "tiers": [],
     "stock": 40,
     "image_url": "https://images.pexels.com/photos/9259977/pexels-photo-9259977.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
-    "coa_url": "https://novapeptides.mx/coa/selank.pdf",
+    "coa_url": "https://exygenlabs.com/coa/selank.pdf",
     "batch_number": "NP-SLK5-2601",
     "storage": "Conservar a -20 °C, protegido de la luz. Reconstituido: 2–8 °C.",
     "start_dose": 300,
@@ -1793,17 +1787,17 @@ export const fallbackProducts = [
     "presentation": "5 mg – 10 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
-    "price": 549,
+    "price": 659,
     "variants": [
       {
         "presentation": "5 mg",
-        "price": 549,
+        "price": 659,
         "stock": 40,
         "batch_number": "NP-SMX5-2601"
       },
       {
         "presentation": "10 mg",
-        "price": 889,
+        "price": 909,
         "stock": 40,
         "batch_number": "NP-SMX10-2601"
       }
@@ -1811,7 +1805,7 @@ export const fallbackProducts = [
     "tiers": [],
     "stock": 40,
     "image_url": "https://images.pexels.com/photos/9259977/pexels-photo-9259977.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
-    "coa_url": "https://novapeptides.mx/coa/semax.pdf",
+    "coa_url": "https://exygenlabs.com/coa/semax.pdf",
     "batch_number": "NP-SMX5-2601",
     "storage": "Conservar a -20 °C, protegido de la luz. Reconstituido: 2–8 °C.",
     "start_dose": 300,
@@ -1850,7 +1844,7 @@ export const fallbackProducts = [
     "tiers": [],
     "stock": 40,
     "image_url": "https://images.pexels.com/photos/6129873/pexels-photo-6129873.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
-    "coa_url": "https://novapeptides.mx/coa/acth-1-39.pdf",
+    "coa_url": "https://exygenlabs.com/coa/acth-1-39.pdf",
     "batch_number": "NP-ACTH5-2601",
     "storage": "Conservar a -20 °C, protegido de la luz. Reconstituido: 2–8 °C.",
     "start_dose": null,
@@ -1882,7 +1876,7 @@ export const fallbackProducts = [
       },
       {
         "presentation": "10 mg",
-        "price": 2499,
+        "price": 2469,
         "stock": 40,
         "batch_number": "NP-ADMA10-2601"
       }
@@ -1890,7 +1884,7 @@ export const fallbackProducts = [
     "tiers": [],
     "stock": 40,
     "image_url": "https://images.pexels.com/photos/6129873/pexels-photo-6129873.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
-    "coa_url": "https://novapeptides.mx/coa/admax.pdf",
+    "coa_url": "https://exygenlabs.com/coa/admax.pdf",
     "batch_number": "NP-ADMA5-2601",
     "storage": "Conservar a -20 °C, protegido de la luz. Reconstituido: 2–8 °C.",
     "start_dose": null,
@@ -1930,7 +1924,7 @@ export const fallbackProducts = [
     "tiers": [],
     "stock": 40,
     "image_url": "https://images.pexels.com/photos/6129873/pexels-photo-6129873.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
-    "coa_url": "https://novapeptides.mx/coa/b7-33.pdf",
+    "coa_url": "https://exygenlabs.com/coa/b7-33.pdf",
     "batch_number": "NP-B7332-2601",
     "storage": "Conservar a -20 °C, protegido de la luz. Reconstituido: 2–8 °C.",
     "start_dose": null,
@@ -1952,17 +1946,17 @@ export const fallbackProducts = [
     "presentation": "2 mg – 5 mg",
     "form": "Liofilizado",
     "purity": "99.1%",
-    "price": 899,
+    "price": 1079,
     "variants": [
       {
         "presentation": "2 mg",
-        "price": 899,
+        "price": 1079,
         "stock": 40,
         "batch_number": "NP-CJCD2-2601"
       },
       {
         "presentation": "5 mg",
-        "price": 1099,
+        "price": 1319,
         "stock": 40,
         "batch_number": "NP-CJCD5-2601"
       }
@@ -1970,7 +1964,7 @@ export const fallbackProducts = [
     "tiers": [],
     "stock": 40,
     "image_url": "https://images.pexels.com/photos/6129873/pexels-photo-6129873.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
-    "coa_url": "https://novapeptides.mx/coa/cjc-1295-con-dac.pdf",
+    "coa_url": "https://exygenlabs.com/coa/cjc-1295-con-dac.pdf",
     "batch_number": "NP-CJCD2-2601",
     "storage": "Conservar a -20 °C, protegido de la luz. Reconstituido: 2–8 °C.",
     "start_dose": 1,
@@ -2007,13 +2001,13 @@ export const fallbackProducts = [
       },
       {
         "presentation": "5 mg",
-        "price": 1099,
+        "price": 1319,
         "stock": 40,
         "batch_number": "NP-CJCN5-2601"
       },
       {
         "presentation": "10 mg",
-        "price": 1439,
+        "price": 1479,
         "stock": 40,
         "batch_number": "NP-CJCN10-2601"
       }
@@ -2021,7 +2015,7 @@ export const fallbackProducts = [
     "tiers": [],
     "stock": 40,
     "image_url": "https://images.pexels.com/photos/6129873/pexels-photo-6129873.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
-    "coa_url": "https://novapeptides.mx/coa/cjc-1295-sin-dac.pdf",
+    "coa_url": "https://exygenlabs.com/coa/cjc-1295-sin-dac.pdf",
     "batch_number": "NP-CJCN2-2601",
     "storage": "Conservar a -20 °C, protegido de la luz. Reconstituido: 2–8 °C.",
     "start_dose": 100,
@@ -2060,7 +2054,7 @@ export const fallbackProducts = [
     "tiers": [],
     "stock": 40,
     "image_url": "https://images.pexels.com/photos/10514991/pexels-photo-10514991.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
-    "coa_url": "https://novapeptides.mx/coa/dysport.pdf",
+    "coa_url": "https://exygenlabs.com/coa/dysport.pdf",
     "batch_number": "NP-DYSP500-2601",
     "storage": "Conservar a -20 °C, protegido de la luz. Reconstituido: 2–8 °C.",
     "start_dose": null,
@@ -2094,7 +2088,7 @@ export const fallbackProducts = [
     "tiers": [],
     "stock": 40,
     "image_url": "https://images.pexels.com/photos/6129873/pexels-photo-6129873.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
-    "coa_url": "https://novapeptides.mx/coa/epo.pdf",
+    "coa_url": "https://exygenlabs.com/coa/epo.pdf",
     "batch_number": "NP-EPO3000-2601",
     "storage": "Conservar a -20 °C, protegido de la luz. Reconstituido: 2–8 °C.",
     "start_dose": null,
@@ -2128,7 +2122,7 @@ export const fallbackProducts = [
     "tiers": [],
     "stock": 40,
     "image_url": "https://images.pexels.com/photos/6129873/pexels-photo-6129873.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
-    "coa_url": "https://novapeptides.mx/coa/humsc-celulas-madre.pdf",
+    "coa_url": "https://exygenlabs.com/coa/humsc-celulas-madre.pdf",
     "batch_number": "NP-HUMS100-2601",
     "storage": "Conservar a -20 °C, protegido de la luz. Reconstituido: 2–8 °C.",
     "start_dose": null,
@@ -2168,7 +2162,7 @@ export const fallbackProducts = [
     "tiers": [],
     "stock": 40,
     "image_url": "https://images.pexels.com/photos/6129873/pexels-photo-6129873.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
-    "coa_url": "https://novapeptides.mx/coa/kisspeptina-10.pdf",
+    "coa_url": "https://exygenlabs.com/coa/kisspeptina-10.pdf",
     "batch_number": "NP-KISS5-2601",
     "storage": "Conservar a -20 °C, protegido de la luz. Reconstituido: 2–8 °C.",
     "start_dose": 100,
@@ -2195,17 +2189,17 @@ export const fallbackProducts = [
     "presentation": "5 mg – 10 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
-    "price": 1699,
+    "price": 2039,
     "variants": [
       {
         "presentation": "5 mg",
-        "price": 1699,
+        "price": 2039,
         "stock": 40,
         "batch_number": "NP-MAZD5-2601"
       },
       {
         "presentation": "10 mg",
-        "price": 2199,
+        "price": 2639,
         "stock": 40,
         "batch_number": "NP-MAZD10-2601"
       }
@@ -2213,7 +2207,7 @@ export const fallbackProducts = [
     "tiers": [],
     "stock": 40,
     "image_url": "https://images.pexels.com/photos/9259977/pexels-photo-9259977.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
-    "coa_url": "https://novapeptides.mx/coa/mazdutida.pdf",
+    "coa_url": "https://exygenlabs.com/coa/mazdutida.pdf",
     "batch_number": "NP-MAZD5-2601",
     "storage": "Conservar a -20 °C, protegido de la luz. Reconstituido: 2–8 °C.",
     "start_dose": 2.5,
@@ -2253,7 +2247,7 @@ export const fallbackProducts = [
     "tiers": [],
     "stock": 40,
     "image_url": "https://images.pexels.com/photos/10514991/pexels-photo-10514991.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
-    "coa_url": "https://novapeptides.mx/coa/melanotan-i.pdf",
+    "coa_url": "https://exygenlabs.com/coa/melanotan-i.pdf",
     "batch_number": "NP-MELA10-2601",
     "storage": "Conservar a -20 °C, protegido de la luz. Reconstituido: 2–8 °C.",
     "start_dose": 250,
@@ -2281,11 +2275,11 @@ export const fallbackProducts = [
     "presentation": "10 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
-    "price": 799,
+    "price": 959,
     "variants": [
       {
         "presentation": "10 mg",
-        "price": 799,
+        "price": 959,
         "stock": 40,
         "batch_number": "NP-MT210-2601"
       }
@@ -2293,7 +2287,7 @@ export const fallbackProducts = [
     "tiers": [],
     "stock": 40,
     "image_url": "https://images.pexels.com/photos/6129873/pexels-photo-6129873.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
-    "coa_url": "https://novapeptides.mx/coa/melanotan-2.pdf",
+    "coa_url": "https://exygenlabs.com/coa/melanotan-2.pdf",
     "batch_number": "NP-MT210-2601",
     "storage": "Conservar a -20 °C, protegido de la luz. Reconstituido: 2–8 °C.",
     "start_dose": 250,
@@ -2332,7 +2326,7 @@ export const fallbackProducts = [
     "tiers": [],
     "stock": 40,
     "image_url": "https://images.pexels.com/photos/9259977/pexels-photo-9259977.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
-    "coa_url": "https://novapeptides.mx/coa/mic-lipo-c-b12.pdf",
+    "coa_url": "https://exygenlabs.com/coa/mic-lipo-c-b12.pdf",
     "batch_number": "NP-MICL10-2601",
     "storage": "Conservar a -20 °C, protegido de la luz. Reconstituido: 2–8 °C.",
     "start_dose": null,
@@ -2354,23 +2348,23 @@ export const fallbackProducts = [
     "presentation": "2 mg – 10 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
-    "price": 649,
+    "price": 779,
     "variants": [
       {
         "presentation": "2 mg",
-        "price": 649,
+        "price": 779,
         "stock": 40,
         "batch_number": "NP-OXY2-2601"
       },
       {
         "presentation": "5 mg",
-        "price": 799,
+        "price": 959,
         "stock": 40,
         "batch_number": "NP-OXY5-2601"
       },
       {
         "presentation": "10 mg",
-        "price": 999,
+        "price": 1199,
         "stock": 40,
         "batch_number": "NP-OXY10-2601"
       }
@@ -2378,7 +2372,7 @@ export const fallbackProducts = [
     "tiers": [],
     "stock": 40,
     "image_url": "https://images.pexels.com/photos/6129873/pexels-photo-6129873.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
-    "coa_url": "https://novapeptides.mx/coa/oxitocina.pdf",
+    "coa_url": "https://exygenlabs.com/coa/oxitocina.pdf",
     "batch_number": "NP-OXY2-2601",
     "storage": "Conservar a -20 °C, protegido de la luz. Reconstituido: 2–8 °C.",
     "start_dose": null,
@@ -2412,7 +2406,7 @@ export const fallbackProducts = [
     "tiers": [],
     "stock": 40,
     "image_url": "https://images.pexels.com/photos/9259977/pexels-photo-9259977.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
-    "coa_url": "https://novapeptides.mx/coa/p21.pdf",
+    "coa_url": "https://exygenlabs.com/coa/p21.pdf",
     "batch_number": "NP-P215-2601",
     "storage": "Conservar a -20 °C, protegido de la luz. Reconstituido: 2–8 °C.",
     "start_dose": null,
@@ -2434,23 +2428,23 @@ export const fallbackProducts = [
     "presentation": "10 IU – 15 IU",
     "form": "Liofilizado",
     "purity": "99.0%",
-    "price": 449,
+    "price": 539,
     "variants": [
       {
         "presentation": "10 IU",
-        "price": 449,
+        "price": 539,
         "stock": 40,
         "batch_number": "NP-SOMA10-2601"
       },
       {
         "presentation": "12 IU",
-        "price": 549,
+        "price": 659,
         "stock": 40,
         "batch_number": "NP-SOMA12-2601"
       },
       {
         "presentation": "15 IU",
-        "price": 649,
+        "price": 779,
         "stock": 40,
         "batch_number": "NP-SOMA15-2601"
       }
@@ -2458,7 +2452,7 @@ export const fallbackProducts = [
     "tiers": [],
     "stock": 40,
     "image_url": "https://images.pexels.com/photos/9259977/pexels-photo-9259977.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
-    "coa_url": "https://novapeptides.mx/coa/somatropina-hgh-191aa.pdf",
+    "coa_url": "https://exygenlabs.com/coa/somatropina-hgh-191aa.pdf",
     "batch_number": "NP-SOMA10-2601",
     "storage": "Conservar a -20 °C, protegido de la luz. Reconstituido: 2–8 °C.",
     "start_dose": 2,
@@ -2485,29 +2479,29 @@ export const fallbackProducts = [
     "presentation": "2 mg – 20 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
-    "price": 349,
+    "price": 439,
     "variants": [
       {
         "presentation": "2 mg",
-        "price": 349,
+        "price": 439,
         "stock": 40,
         "batch_number": "NP-TESA2-2601"
       },
       {
         "presentation": "5 mg",
-        "price": 749,
+        "price": 899,
         "stock": 40,
         "batch_number": "NP-TESA5-2601"
       },
       {
         "presentation": "10 mg",
-        "price": 1499,
+        "price": 1829,
         "stock": 40,
         "batch_number": "NP-TESA10-2601"
       },
       {
         "presentation": "20 mg",
-        "price": 2999,
+        "price": 3599,
         "stock": 40,
         "batch_number": "NP-TESA20-2601"
       }
@@ -2515,7 +2509,7 @@ export const fallbackProducts = [
     "tiers": [],
     "stock": 40,
     "image_url": "https://images.pexels.com/photos/6129873/pexels-photo-6129873.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
-    "coa_url": "https://novapeptides.mx/coa/tesamorelina.pdf",
+    "coa_url": "https://exygenlabs.com/coa/tesamorelina.pdf",
     "batch_number": "NP-TESA2-2601",
     "storage": "Conservar a -20 °C, protegido de la luz. Reconstituido: 2–8 °C.",
     "start_dose": 1,
@@ -2542,17 +2536,17 @@ export const fallbackProducts = [
     "presentation": "5 mg – 10 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
-    "price": 1249,
+    "price": 1499,
     "variants": [
       {
         "presentation": "5 mg",
-        "price": 1249,
+        "price": 1499,
         "stock": 40,
         "batch_number": "NP-VIP5-2601"
       },
       {
         "presentation": "10 mg",
-        "price": 1999,
+        "price": 2399,
         "stock": 40,
         "batch_number": "NP-VIP10-2601"
       }
@@ -2560,7 +2554,7 @@ export const fallbackProducts = [
     "tiers": [],
     "stock": 40,
     "image_url": "https://images.pexels.com/photos/6129873/pexels-photo-6129873.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
-    "coa_url": "https://novapeptides.mx/coa/vip.pdf",
+    "coa_url": "https://exygenlabs.com/coa/vip.pdf",
     "batch_number": "NP-VIP5-2601",
     "storage": "Conservar a -20 °C, protegido de la luz. Reconstituido: 2–8 °C.",
     "start_dose": null,
@@ -2582,17 +2576,17 @@ export const fallbackProducts = [
     "presentation": "10 mg – 50 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
-    "price": 1049,
+    "price": 1259,
     "variants": [
       {
         "presentation": "10 mg",
-        "price": 1049,
+        "price": 1259,
         "stock": 40,
         "batch_number": "NP-10AM10-2601"
       },
       {
         "presentation": "50 mg",
-        "price": 1599,
+        "price": 1889,
         "stock": 40,
         "batch_number": "NP-10AM50-2601"
       }
@@ -2600,7 +2594,7 @@ export const fallbackProducts = [
     "tiers": [],
     "stock": 40,
     "image_url": "https://images.pexels.com/photos/9259977/pexels-photo-9259977.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
-    "coa_url": "https://novapeptides.mx/coa/10-amino-1mq.pdf",
+    "coa_url": "https://exygenlabs.com/coa/10-amino-1mq.pdf",
     "batch_number": "NP-10AM10-2601",
     "storage": "Conservar a -20 °C, protegido de la luz. Reconstituido: 2–8 °C.",
     "start_dose": null,
@@ -2622,11 +2616,11 @@ export const fallbackProducts = [
     "presentation": "5 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
-    "price": 699,
+    "price": 839,
     "variants": [
       {
         "presentation": "5 mg",
-        "price": 699,
+        "price": 839,
         "stock": 40,
         "batch_number": "NP-5AMI5-2601"
       }
@@ -2634,7 +2628,7 @@ export const fallbackProducts = [
     "tiers": [],
     "stock": 40,
     "image_url": "https://images.pexels.com/photos/9259977/pexels-photo-9259977.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
-    "coa_url": "https://novapeptides.mx/coa/5-amino-1mq.pdf",
+    "coa_url": "https://exygenlabs.com/coa/5-amino-1mq.pdf",
     "batch_number": "NP-5AMI5-2601",
     "storage": "Conservar a -20 °C, protegido de la luz. Reconstituido: 2–8 °C.",
     "start_dose": null,
@@ -2656,17 +2650,17 @@ export const fallbackProducts = [
     "presentation": "2 mg – 10 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
-    "price": 1299,
+    "price": 1559,
     "variants": [
       {
         "presentation": "2 mg",
-        "price": 1299,
+        "price": 1559,
         "stock": 40,
         "batch_number": "NP-ADIP2-2601"
       },
       {
         "presentation": "5 mg",
-        "price": 2399,
+        "price": 2879,
         "stock": 40,
         "batch_number": "NP-ADIP5-2601"
       },
@@ -2680,7 +2674,7 @@ export const fallbackProducts = [
     "tiers": [],
     "stock": 40,
     "image_url": "https://images.pexels.com/photos/9259977/pexels-photo-9259977.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
-    "coa_url": "https://novapeptides.mx/coa/adipotide.pdf",
+    "coa_url": "https://exygenlabs.com/coa/adipotide.pdf",
     "batch_number": "NP-ADIP2-2601",
     "storage": "Conservar a -20 °C, protegido de la luz. Reconstituido: 2–8 °C.",
     "start_dose": null,
@@ -2702,17 +2696,17 @@ export const fallbackProducts = [
     "presentation": "50 mg – 100 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
-    "price": 1149,
+    "price": 1379,
     "variants": [
       {
         "presentation": "50 mg",
-        "price": 1149,
+        "price": 1379,
         "stock": 40,
         "batch_number": "NP-AICA50-2601"
       },
       {
         "presentation": "100 mg",
-        "price": 1599,
+        "price": 1919,
         "stock": 40,
         "batch_number": "NP-AICA100-2601"
       }
@@ -2720,7 +2714,7 @@ export const fallbackProducts = [
     "tiers": [],
     "stock": 40,
     "image_url": "https://images.pexels.com/photos/9259977/pexels-photo-9259977.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
-    "coa_url": "https://novapeptides.mx/coa/aicar.pdf",
+    "coa_url": "https://exygenlabs.com/coa/aicar.pdf",
     "batch_number": "NP-AICA50-2601",
     "storage": "Conservar a -20 °C, protegido de la luz. Reconstituido: 2–8 °C.",
     "start_dose": null,
@@ -2742,23 +2736,23 @@ export const fallbackProducts = [
     "presentation": "2 mg – 10 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
-    "price": 799,
+    "price": 949,
     "variants": [
       {
         "presentation": "2 mg",
-        "price": 799,
+        "price": 949,
         "stock": 40,
         "batch_number": "NP-AOD92-2601"
       },
       {
         "presentation": "5 mg",
-        "price": 959,
+        "price": 1019,
         "stock": 40,
         "batch_number": "NP-AOD95-2601"
       },
       {
         "presentation": "10 mg",
-        "price": 1699,
+        "price": 2039,
         "stock": 40,
         "batch_number": "NP-AOD910-2601"
       }
@@ -2766,7 +2760,7 @@ export const fallbackProducts = [
     "tiers": [],
     "stock": 40,
     "image_url": "https://images.pexels.com/photos/9259977/pexels-photo-9259977.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
-    "coa_url": "https://novapeptides.mx/coa/aod-9604.pdf",
+    "coa_url": "https://exygenlabs.com/coa/aod-9604.pdf",
     "batch_number": "NP-AOD92-2601",
     "storage": "Conservar a -20 °C, protegido de la luz. Reconstituido: 2–8 °C.",
     "start_dose": 300,
@@ -2805,7 +2799,7 @@ export const fallbackProducts = [
     "tiers": [],
     "stock": 40,
     "image_url": "https://images.pexels.com/photos/9259977/pexels-photo-9259977.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
-    "coa_url": "https://novapeptides.mx/coa/cagri-sema-2-5mg-2-5mg.pdf",
+    "coa_url": "https://exygenlabs.com/coa/cagri-sema-2-5mg-2-5mg.pdf",
     "batch_number": "NP-CAGR5-2601",
     "storage": "Conservar a -20 °C, protegido de la luz. Reconstituido: 2–8 °C.",
     "start_dose": null,
@@ -2837,13 +2831,13 @@ export const fallbackProducts = [
       },
       {
         "presentation": "5 mg",
-        "price": 1199,
+        "price": 1439,
         "stock": 40,
         "batch_number": "NP-CAGR5-2601"
       },
       {
         "presentation": "10 mg",
-        "price": 1749,
+        "price": 2119,
         "stock": 40,
         "batch_number": "NP-CAGR10-2601"
       }
@@ -2851,7 +2845,7 @@ export const fallbackProducts = [
     "tiers": [],
     "stock": 40,
     "image_url": "https://images.pexels.com/photos/9259977/pexels-photo-9259977.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
-    "coa_url": "https://novapeptides.mx/coa/cagrilintida.pdf",
+    "coa_url": "https://exygenlabs.com/coa/cagrilintida.pdf",
     "batch_number": "NP-CAGR2-2601",
     "storage": "Conservar a -20 °C, protegido de la luz. Reconstituido: 2–8 °C.",
     "start_dose": 0.3,
@@ -2890,7 +2884,7 @@ export const fallbackProducts = [
     "tiers": [],
     "stock": 40,
     "image_url": "https://images.pexels.com/photos/9259977/pexels-photo-9259977.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
-    "coa_url": "https://novapeptides.mx/coa/dulaglutida.pdf",
+    "coa_url": "https://exygenlabs.com/coa/dulaglutida.pdf",
     "batch_number": "NP-DULA10-2601",
     "storage": "Conservar a -20 °C, protegido de la luz. Reconstituido: 2–8 °C.",
     "start_dose": 1.5,
@@ -2939,7 +2933,7 @@ export const fallbackProducts = [
       },
       {
         "presentation": "1200 mg",
-        "price": 1599,
+        "price": 1569,
         "stock": 40,
         "batch_number": "NP-LCAR1200-2601"
       }
@@ -2947,7 +2941,7 @@ export const fallbackProducts = [
     "tiers": [],
     "stock": 40,
     "image_url": "https://images.pexels.com/photos/9259977/pexels-photo-9259977.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
-    "coa_url": "https://novapeptides.mx/coa/l-carnitine.pdf",
+    "coa_url": "https://exygenlabs.com/coa/l-carnitine.pdf",
     "batch_number": "NP-LCAR2-2601",
     "storage": "Conservar a -20 °C, protegido de la luz. Reconstituido: 2–8 °C.",
     "start_dose": 500,
@@ -2986,7 +2980,7 @@ export const fallbackProducts = [
     "tiers": [],
     "stock": 40,
     "image_url": "https://images.pexels.com/photos/9259977/pexels-photo-9259977.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
-    "coa_url": "https://novapeptides.mx/coa/lipo-c.pdf",
+    "coa_url": "https://exygenlabs.com/coa/lipo-c.pdf",
     "batch_number": "NP-LIPO10-2601",
     "storage": "Conservar a -20 °C, protegido de la luz. Reconstituido: 2–8 °C.",
     "start_dose": null,
@@ -3008,23 +3002,23 @@ export const fallbackProducts = [
     "presentation": "5 mg – 30 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
-    "price": 1549,
+    "price": 1859,
     "variants": [
       {
         "presentation": "5 mg",
-        "price": 1549,
+        "price": 1859,
         "stock": 40,
         "batch_number": "NP-LIRA5-2601"
       },
       {
         "presentation": "10 mg",
-        "price": 1999,
+        "price": 2399,
         "stock": 40,
         "batch_number": "NP-LIRA10-2601"
       },
       {
         "presentation": "30 mg",
-        "price": 3299,
+        "price": 3959,
         "stock": 40,
         "batch_number": "NP-LIRA30-2601"
       }
@@ -3032,7 +3026,7 @@ export const fallbackProducts = [
     "tiers": [],
     "stock": 40,
     "image_url": "https://images.pexels.com/photos/9259977/pexels-photo-9259977.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
-    "coa_url": "https://novapeptides.mx/coa/liraglutida.pdf",
+    "coa_url": "https://exygenlabs.com/coa/liraglutida.pdf",
     "batch_number": "NP-LIRA5-2601",
     "storage": "Conservar a -20 °C, protegido de la luz. Reconstituido: 2–8 °C.",
     "start_dose": 0.6,
@@ -3059,13 +3053,19 @@ export const fallbackProducts = [
     "presentation": "10 mg – 40 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
-    "price": 779,
+    "price": 859,
     "variants": [
       {
         "presentation": "10 mg",
-        "price": 779,
+        "price": 859,
         "stock": 40,
         "batch_number": "NP-MOTS10-2601"
+      },
+      {
+        "presentation": "15 mg",
+        "price": 1029,
+        "stock": 40,
+        "batch_number": "NP-MOTS15-2601"
       },
       {
         "presentation": "20 mg",
@@ -3075,7 +3075,7 @@ export const fallbackProducts = [
       },
       {
         "presentation": "40 mg",
-        "price": 2799,
+        "price": 3359,
         "stock": 40,
         "batch_number": "NP-MOTS40-2601"
       }
@@ -3083,7 +3083,7 @@ export const fallbackProducts = [
     "tiers": [],
     "stock": 40,
     "image_url": "https://images.pexels.com/photos/10514991/pexels-photo-10514991.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
-    "coa_url": "https://novapeptides.mx/coa/mots-c.pdf",
+    "coa_url": "https://exygenlabs.com/coa/mots-c.pdf",
     "batch_number": "NP-MOTS10-2601",
     "storage": "Conservar a -20 °C, protegido de la luz. Reconstituido: 2–8 °C.",
     "start_dose": 5,
@@ -3110,59 +3110,53 @@ export const fallbackProducts = [
     "presentation": "5 mg – 100 mg",
     "form": "Liofilizado",
     "purity": "99.1%",
-    "price": 989,
+    "price": 1189,
     "variants": [
       {
         "presentation": "5 mg",
-        "price": 989,
+        "price": 1189,
         "stock": 40,
         "batch_number": "NP-RETA5-2601"
       },
       {
         "presentation": "10 mg",
-        "price": 1589,
+        "price": 2269,
         "stock": 40,
         "batch_number": "NP-RETA10-2601"
       },
       {
         "presentation": "15 mg",
-        "price": 2199,
+        "price": 2639,
         "stock": 40,
         "batch_number": "NP-RETA15-2601"
       },
       {
         "presentation": "20 mg",
-        "price": 2599,
+        "price": 3119,
         "stock": 40,
         "batch_number": "NP-RETA20-2601"
       },
       {
         "presentation": "30 mg",
-        "price": 3289,
+        "price": 3909,
         "stock": 40,
         "batch_number": "NP-RETA30-2601"
       },
       {
         "presentation": "40 mg",
-        "price": 3799,
+        "price": 4189,
         "stock": 40,
         "batch_number": "NP-RETA40-2601"
       },
       {
-        "presentation": "50 mg",
-        "price": 4299,
-        "stock": 40,
-        "batch_number": "NP-RETA50-2601"
-      },
-      {
         "presentation": "60 mg",
-        "price": 4799,
+        "price": 5279,
         "stock": 40,
         "batch_number": "NP-RETA60-2601"
       },
       {
         "presentation": "100 mg",
-        "price": 6399,
+        "price": 7679,
         "stock": 40,
         "batch_number": "NP-RETA100-2601"
       }
@@ -3170,7 +3164,7 @@ export const fallbackProducts = [
     "tiers": [],
     "stock": 40,
     "image_url": "https://images.pexels.com/photos/9259977/pexels-photo-9259977.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
-    "coa_url": "https://novapeptides.mx/coa/retatrutida.pdf",
+    "coa_url": "https://exygenlabs.com/coa/retatrutida.pdf",
     "batch_number": "NP-RETA5-2601",
     "storage": "Conservar a -20 °C, protegido de la luz. Reconstituido: 2–8 °C.",
     "start_dose": 2,
@@ -3209,7 +3203,7 @@ export const fallbackProducts = [
     "tiers": [],
     "stock": 40,
     "image_url": "https://images.pexels.com/photos/9259977/pexels-photo-9259977.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
-    "coa_url": "https://novapeptides.mx/coa/retatrutide-20mg-tirzepatide-40mg.pdf",
+    "coa_url": "https://exygenlabs.com/coa/retatrutide-20mg-tirzepatide-40mg.pdf",
     "batch_number": "NP-RETA60-2601",
     "storage": "Conservar a -20 °C, protegido de la luz. Reconstituido: 2–8 °C.",
     "start_dose": null,
@@ -3231,47 +3225,47 @@ export const fallbackProducts = [
     "presentation": "2 mg – 50 mg",
     "form": "Liofilizado",
     "purity": "99.1%",
-    "price": 899,
+    "price": 1079,
     "variants": [
       {
         "presentation": "2 mg",
-        "price": 899,
+        "price": 1079,
         "stock": 40,
         "batch_number": "NP-SEMA2-2601"
       },
       {
         "presentation": "5 mg",
-        "price": 1099,
+        "price": 1319,
         "stock": 40,
         "batch_number": "NP-SEMA5-2601"
       },
       {
         "presentation": "10 mg",
-        "price": 1299,
+        "price": 2049,
         "stock": 40,
         "batch_number": "NP-SEMA10-2601"
       },
       {
         "presentation": "15 mg",
-        "price": 1549,
+        "price": 2189,
         "stock": 40,
         "batch_number": "NP-SEMA15-2601"
       },
       {
         "presentation": "20 mg",
-        "price": 1699,
+        "price": 2349,
         "stock": 40,
         "batch_number": "NP-SEMA20-2601"
       },
       {
         "presentation": "30 mg",
-        "price": 1999,
+        "price": 2509,
         "stock": 40,
         "batch_number": "NP-SEMA30-2601"
       },
       {
         "presentation": "50 mg",
-        "price": 2199,
+        "price": 2689,
         "stock": 40,
         "batch_number": "NP-SEMA50-2601"
       }
@@ -3279,7 +3273,7 @@ export const fallbackProducts = [
     "tiers": [],
     "stock": 40,
     "image_url": "https://images.pexels.com/photos/9259977/pexels-photo-9259977.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
-    "coa_url": "https://novapeptides.mx/coa/semaglutida.pdf",
+    "coa_url": "https://exygenlabs.com/coa/semaglutida.pdf",
     "batch_number": "NP-SEMA2-2601",
     "storage": "Conservar a -20 °C, protegido de la luz. Reconstituido: 2–8 °C.",
     "start_dose": 0.25,
@@ -3318,7 +3312,7 @@ export const fallbackProducts = [
     "tiers": [],
     "stock": 40,
     "image_url": "https://images.pexels.com/photos/9259977/pexels-photo-9259977.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
-    "coa_url": "https://novapeptides.mx/coa/slu-pp-332.pdf",
+    "coa_url": "https://exygenlabs.com/coa/slu-pp-332.pdf",
     "batch_number": "NP-SLUP5-2601",
     "storage": "Conservar a -20 °C, protegido de la luz. Reconstituido: 2–8 °C.",
     "start_dose": null,
@@ -3340,11 +3334,11 @@ export const fallbackProducts = [
     "presentation": "10 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
-    "price": 3999,
+    "price": 4799,
     "variants": [
       {
         "presentation": "10 mg",
-        "price": 3999,
+        "price": 4799,
         "stock": 40,
         "batch_number": "NP-SURV10-2601"
       }
@@ -3352,7 +3346,7 @@ export const fallbackProducts = [
     "tiers": [],
     "stock": 40,
     "image_url": "https://images.pexels.com/photos/9259977/pexels-photo-9259977.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
-    "coa_url": "https://novapeptides.mx/coa/survodutide.pdf",
+    "coa_url": "https://exygenlabs.com/coa/survodutide.pdf",
     "batch_number": "NP-SURV10-2601",
     "storage": "Conservar a -20 °C, protegido de la luz. Reconstituido: 2–8 °C.",
     "start_dose": 0.6,
@@ -3376,62 +3370,50 @@ export const fallbackProducts = [
     ],
     "short_description": "Doble agonista GIP/GLP-1 para investigación.",
     "description": "Tirzepatida es un péptido doble agonista GIP/GLP-1 investigado en modelos de control glucémico y composición corporal. Solo para uso en investigación (RUO).",
-    "presentation": "5 mg – 120 mg",
+    "presentation": "10 mg – 120 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
-    "price": 789,
+    "price": 1879,
     "variants": [
       {
-        "presentation": "5 mg",
-        "price": 789,
-        "stock": 40,
-        "batch_number": "NP-TIRZ5-2601"
-      },
-      {
         "presentation": "10 mg",
-        "price": 1089,
+        "price": 1879,
         "stock": 40,
         "batch_number": "NP-TIRZ10-2601"
       },
       {
-        "presentation": "15 mg",
-        "price": 1399,
-        "stock": 40,
-        "batch_number": "NP-TIRZ15-2601"
-      },
-      {
         "presentation": "20 mg",
-        "price": 1499,
+        "price": 2339,
         "stock": 40,
         "batch_number": "NP-TIRZ20-2601"
       },
       {
         "presentation": "30 mg",
-        "price": 1889,
+        "price": 2799,
         "stock": 40,
         "batch_number": "NP-TIRZ30-2601"
       },
       {
         "presentation": "40 mg",
-        "price": 2199,
+        "price": 3239,
         "stock": 40,
         "batch_number": "NP-TIRZ40-2601"
       },
       {
         "presentation": "50 mg",
-        "price": 2399,
+        "price": 3669,
         "stock": 40,
         "batch_number": "NP-TIRZ50-2601"
       },
       {
         "presentation": "60 mg",
-        "price": 2699,
+        "price": 4109,
         "stock": 40,
         "batch_number": "NP-TIRZ60-2601"
       },
       {
         "presentation": "100 mg",
-        "price": 3399,
+        "price": 4399,
         "stock": 40,
         "batch_number": "NP-TIRZ100-2601"
       },
@@ -3445,8 +3427,8 @@ export const fallbackProducts = [
     "tiers": [],
     "stock": 40,
     "image_url": "https://images.pexels.com/photos/9259977/pexels-photo-9259977.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
-    "coa_url": "https://novapeptides.mx/coa/tirzepatida.pdf",
-    "batch_number": "NP-TIRZ5-2601",
+    "coa_url": "https://exygenlabs.com/coa/tirzepatida.pdf",
+    "batch_number": "NP-TIRZ10-2601",
     "storage": "Conservar a -20 °C, protegido de la luz. Reconstituido: 2–8 °C.",
     "start_dose": 2.5,
     "start_unit": "mg",
@@ -3472,11 +3454,11 @@ export const fallbackProducts = [
     "presentation": "1 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
-    "price": 1399,
+    "price": 1679,
     "variants": [
       {
         "presentation": "1 mg",
-        "price": 1399,
+        "price": 1679,
         "stock": 40,
         "batch_number": "NP-ACE01-2601"
       }
@@ -3484,7 +3466,7 @@ export const fallbackProducts = [
     "tiers": [],
     "stock": 40,
     "image_url": "https://images.pexels.com/photos/6129873/pexels-photo-6129873.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
-    "coa_url": "https://novapeptides.mx/coa/ace-031.pdf",
+    "coa_url": "https://exygenlabs.com/coa/ace-031.pdf",
     "batch_number": "NP-ACE01-2601",
     "storage": "Conservar a -20 °C, protegido de la luz. Reconstituido: 2–8 °C.",
     "start_dose": null,
@@ -3506,11 +3488,11 @@ export const fallbackProducts = [
     "presentation": "10 mg – 16 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
-    "price": 1699,
+    "price": 1819,
     "variants": [
       {
         "presentation": "10 mg",
-        "price": 1699,
+        "price": 1819,
         "stock": 40,
         "batch_number": "NP-ARA210-2601"
       },
@@ -3524,7 +3506,7 @@ export const fallbackProducts = [
     "tiers": [],
     "stock": 40,
     "image_url": "https://images.pexels.com/photos/6129873/pexels-photo-6129873.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
-    "coa_url": "https://novapeptides.mx/coa/ara-290.pdf",
+    "coa_url": "https://exygenlabs.com/coa/ara-290.pdf",
     "batch_number": "NP-ARA210-2601",
     "storage": "Conservar a -20 °C, protegido de la luz. Reconstituido: 2–8 °C.",
     "start_dose": 2,
@@ -3561,19 +3543,19 @@ export const fallbackProducts = [
       },
       {
         "presentation": "5 mg",
-        "price": 699,
+        "price": 839,
         "stock": 40,
         "batch_number": "NP-BPC5-2601"
       },
       {
         "presentation": "10 mg",
-        "price": 1099,
+        "price": 1109,
         "stock": 40,
         "batch_number": "NP-BPC10-2601"
       },
       {
         "presentation": "20 mg",
-        "price": 1999,
+        "price": 2399,
         "stock": 40,
         "batch_number": "NP-BPC20-2601"
       }
@@ -3581,7 +3563,7 @@ export const fallbackProducts = [
     "tiers": [],
     "stock": 40,
     "image_url": "https://images.pexels.com/photos/9259977/pexels-photo-9259977.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
-    "coa_url": "https://novapeptides.mx/coa/bpc-157.pdf",
+    "coa_url": "https://exygenlabs.com/coa/bpc-157.pdf",
     "batch_number": "NP-BPC2-2601",
     "storage": "Conservar a -20 °C, protegido de la luz. Reconstituido: 2–8 °C.",
     "start_dose": 250,
@@ -3608,11 +3590,11 @@ export const fallbackProducts = [
     "presentation": "20 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
-    "price": 1999,
+    "price": 2399,
     "variants": [
       {
         "presentation": "20 mg",
-        "price": 1999,
+        "price": 2399,
         "stock": 40,
         "batch_number": "NP-BPC120-2601"
       }
@@ -3620,7 +3602,7 @@ export const fallbackProducts = [
     "tiers": [],
     "stock": 40,
     "image_url": "https://images.pexels.com/photos/6129873/pexels-photo-6129873.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
-    "coa_url": "https://novapeptides.mx/coa/bpc-157-10mg-tb-500-10mg.pdf",
+    "coa_url": "https://exygenlabs.com/coa/bpc-157-10mg-tb-500-10mg.pdf",
     "batch_number": "NP-BPC120-2601",
     "storage": "Conservar a -20 °C, protegido de la luz. Reconstituido: 2–8 °C.",
     "start_dose": null,
@@ -3642,11 +3624,11 @@ export const fallbackProducts = [
     "presentation": "10 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
-    "price": 1399,
+    "price": 1669,
     "variants": [
       {
         "presentation": "10 mg",
-        "price": 1399,
+        "price": 1669,
         "stock": 40,
         "batch_number": "NP-BPC110-2601"
       }
@@ -3654,7 +3636,7 @@ export const fallbackProducts = [
     "tiers": [],
     "stock": 40,
     "image_url": "https://images.pexels.com/photos/6129873/pexels-photo-6129873.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
-    "coa_url": "https://novapeptides.mx/coa/bpc-157-5mg-tb-500-5mg.pdf",
+    "coa_url": "https://exygenlabs.com/coa/bpc-157-5mg-tb-500-5mg.pdf",
     "batch_number": "NP-BPC110-2601",
     "storage": "Conservar a -20 °C, protegido de la luz. Reconstituido: 2–8 °C.",
     "start_dose": null,
@@ -3688,7 +3670,7 @@ export const fallbackProducts = [
     "tiers": [],
     "stock": 40,
     "image_url": "https://images.pexels.com/photos/6129873/pexels-photo-6129873.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
-    "coa_url": "https://novapeptides.mx/coa/follistatin.pdf",
+    "coa_url": "https://exygenlabs.com/coa/follistatin.pdf",
     "batch_number": "NP-FOLL1-2601",
     "storage": "Conservar a -20 °C, protegido de la luz. Reconstituido: 2–8 °C.",
     "start_dose": 100,
@@ -3727,7 +3709,7 @@ export const fallbackProducts = [
     "tiers": [],
     "stock": 40,
     "image_url": "https://images.pexels.com/photos/6129873/pexels-photo-6129873.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
-    "coa_url": "https://novapeptides.mx/coa/gdf-8.pdf",
+    "coa_url": "https://exygenlabs.com/coa/gdf-8.pdf",
     "batch_number": "NP-GDF81-2601",
     "storage": "Conservar a -20 °C, protegido de la luz. Reconstituido: 2–8 °C.",
     "start_dose": null,
@@ -3749,11 +3731,11 @@ export const fallbackProducts = [
     "presentation": "70 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
-    "price": 1999,
+    "price": 2179,
     "variants": [
       {
         "presentation": "70 mg",
-        "price": 1999,
+        "price": 2179,
         "stock": 40,
         "batch_number": "NP-GLOW70-2601"
       }
@@ -3761,7 +3743,7 @@ export const fallbackProducts = [
     "tiers": [],
     "stock": 40,
     "image_url": "https://images.pexels.com/photos/6129873/pexels-photo-6129873.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
-    "coa_url": "https://novapeptides.mx/coa/glow-bpc-157-10mg-ghk-cu-50mg-tb-500-10mg.pdf",
+    "coa_url": "https://exygenlabs.com/coa/glow-bpc-157-10mg-ghk-cu-50mg-tb-500-10mg.pdf",
     "batch_number": "NP-GLOW70-2601",
     "storage": "Conservar a -20 °C, protegido de la luz. Reconstituido: 2–8 °C.",
     "start_dose": null,
@@ -3783,11 +3765,11 @@ export const fallbackProducts = [
     "presentation": "80 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
-    "price": 2879,
+    "price": 2899,
     "variants": [
       {
         "presentation": "80 mg",
-        "price": 2879,
+        "price": 2899,
         "stock": 40,
         "batch_number": "NP-KLOW80-2601"
       }
@@ -3795,7 +3777,7 @@ export const fallbackProducts = [
     "tiers": [],
     "stock": 40,
     "image_url": "https://images.pexels.com/photos/6129873/pexels-photo-6129873.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
-    "coa_url": "https://novapeptides.mx/coa/klow-bpc-ghk-cu-tb-500-kpv.pdf",
+    "coa_url": "https://exygenlabs.com/coa/klow-bpc-ghk-cu-tb-500-kpv.pdf",
     "batch_number": "NP-KLOW80-2601",
     "storage": "Conservar a -20 °C, protegido de la luz. Reconstituido: 2–8 °C.",
     "start_dose": null,
@@ -3817,17 +3799,17 @@ export const fallbackProducts = [
     "presentation": "5 mg – 10 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
-    "price": 1099,
+    "price": 1319,
     "variants": [
       {
         "presentation": "5 mg",
-        "price": 1099,
+        "price": 1319,
         "stock": 40,
         "batch_number": "NP-KPV5-2601"
       },
       {
         "presentation": "10 mg",
-        "price": 1499,
+        "price": 1799,
         "stock": 40,
         "batch_number": "NP-KPV10-2601"
       }
@@ -3835,7 +3817,7 @@ export const fallbackProducts = [
     "tiers": [],
     "stock": 40,
     "image_url": "https://images.pexels.com/photos/6129873/pexels-photo-6129873.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
-    "coa_url": "https://novapeptides.mx/coa/kpv.pdf",
+    "coa_url": "https://exygenlabs.com/coa/kpv.pdf",
     "batch_number": "NP-KPV5-2601",
     "storage": "Conservar a -20 °C, protegido de la luz. Reconstituido: 2–8 °C.",
     "start_dose": 250,
@@ -3862,11 +3844,11 @@ export const fallbackProducts = [
     "presentation": "5 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
-    "price": 1499,
+    "price": 1799,
     "variants": [
       {
         "presentation": "5 mg",
-        "price": 1499,
+        "price": 1799,
         "stock": 40,
         "batch_number": "NP-LL375-2601"
       }
@@ -3874,7 +3856,7 @@ export const fallbackProducts = [
     "tiers": [],
     "stock": 40,
     "image_url": "https://images.pexels.com/photos/6129873/pexels-photo-6129873.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
-    "coa_url": "https://novapeptides.mx/coa/ll-37.pdf",
+    "coa_url": "https://exygenlabs.com/coa/ll-37.pdf",
     "batch_number": "NP-LL375-2601",
     "storage": "Conservar a -20 °C, protegido de la luz. Reconstituido: 2–8 °C.",
     "start_dose": null,
@@ -3908,7 +3890,7 @@ export const fallbackProducts = [
     "tiers": [],
     "stock": 40,
     "image_url": "https://images.pexels.com/photos/6129873/pexels-photo-6129873.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
-    "coa_url": "https://novapeptides.mx/coa/ptd-1.pdf",
+    "coa_url": "https://exygenlabs.com/coa/ptd-1.pdf",
     "batch_number": "NP-PTD15-2601",
     "storage": "Conservar a -20 °C, protegido de la luz. Reconstituido: 2–8 °C.",
     "start_dose": null,
@@ -3942,7 +3924,7 @@ export const fallbackProducts = [
     "tiers": [],
     "stock": 40,
     "image_url": "https://images.pexels.com/photos/6129873/pexels-photo-6129873.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
-    "coa_url": "https://novapeptides.mx/coa/ptd-dbm.pdf",
+    "coa_url": "https://exygenlabs.com/coa/ptd-dbm.pdf",
     "batch_number": "NP-PTDD1-2601",
     "storage": "Conservar a -20 °C, protegido de la luz. Reconstituido: 2–8 °C.",
     "start_dose": null,
@@ -3964,23 +3946,23 @@ export const fallbackProducts = [
     "presentation": "2 mg – 10 mg",
     "form": "Liofilizado",
     "purity": "99.1%",
-    "price": 729,
+    "price": 949,
     "variants": [
       {
         "presentation": "2 mg",
-        "price": 729,
+        "price": 949,
         "stock": 40,
         "batch_number": "NP-TB2-2601"
       },
       {
         "presentation": "5 mg",
-        "price": 1099,
+        "price": 1319,
         "stock": 40,
         "batch_number": "NP-TB5-2601"
       },
       {
         "presentation": "10 mg",
-        "price": 1399,
+        "price": 1429,
         "stock": 40,
         "batch_number": "NP-TB10-2601"
       }
@@ -3988,7 +3970,7 @@ export const fallbackProducts = [
     "tiers": [],
     "stock": 40,
     "image_url": "https://images.pexels.com/photos/6129873/pexels-photo-6129873.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
-    "coa_url": "https://novapeptides.mx/coa/tb-500.pdf",
+    "coa_url": "https://exygenlabs.com/coa/tb-500.pdf",
     "batch_number": "NP-TB2-2601",
     "storage": "Conservar a -20 °C, protegido de la luz. Reconstituido: 2–8 °C.",
     "start_dose": 2,
@@ -4033,7 +4015,7 @@ export const fallbackProducts = [
     "tiers": [],
     "stock": 40,
     "image_url": "https://images.pexels.com/photos/6129873/pexels-photo-6129873.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
-    "coa_url": "https://novapeptides.mx/coa/dermorphin.pdf",
+    "coa_url": "https://exygenlabs.com/coa/dermorphin.pdf",
     "batch_number": "NP-DERM5-2601",
     "storage": "Conservar a -20 °C, protegido de la luz. Reconstituido: 2–8 °C.",
     "start_dose": null,
@@ -4055,17 +4037,17 @@ export const fallbackProducts = [
     "presentation": "2 mg – 5 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
-    "price": 549,
+    "price": 659,
     "variants": [
       {
         "presentation": "2 mg",
-        "price": 549,
+        "price": 659,
         "stock": 40,
         "batch_number": "NP-GONA2-2601"
       },
       {
         "presentation": "5 mg",
-        "price": 899,
+        "price": 989,
         "stock": 40,
         "batch_number": "NP-GONA5-2601"
       }
@@ -4073,7 +4055,7 @@ export const fallbackProducts = [
     "tiers": [],
     "stock": 40,
     "image_url": "https://images.pexels.com/photos/6129873/pexels-photo-6129873.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
-    "coa_url": "https://novapeptides.mx/coa/gonadorelin-acetate.pdf",
+    "coa_url": "https://exygenlabs.com/coa/gonadorelin-acetate.pdf",
     "batch_number": "NP-GONA2-2601",
     "storage": "Conservar a -20 °C, protegido de la luz. Reconstituido: 2–8 °C.",
     "start_dose": 100,
@@ -4100,23 +4082,23 @@ export const fallbackProducts = [
     "presentation": "2,000IU – 10,000IU",
     "form": "Liofilizado",
     "purity": "99.0%",
-    "price": 389,
+    "price": 469,
     "variants": [
       {
         "presentation": "2,000IU",
-        "price": 389,
+        "price": 469,
         "stock": 40,
         "batch_number": "NP-HCG2000-2601"
       },
       {
         "presentation": "5,000IU",
-        "price": 589,
+        "price": 1289,
         "stock": 40,
         "batch_number": "NP-HCG5000-2601"
       },
       {
         "presentation": "10,000IU",
-        "price": 1149,
+        "price": 1379,
         "stock": 40,
         "batch_number": "NP-HCG10000-2601"
       }
@@ -4124,7 +4106,7 @@ export const fallbackProducts = [
     "tiers": [],
     "stock": 40,
     "image_url": "https://images.pexels.com/photos/6129873/pexels-photo-6129873.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
-    "coa_url": "https://novapeptides.mx/coa/hcg.pdf",
+    "coa_url": "https://exygenlabs.com/coa/hcg.pdf",
     "batch_number": "NP-HCG2000-2601",
     "storage": "Conservar a -20 °C, protegido de la luz. Reconstituido: 2–8 °C.",
     "start_dose": 500,
@@ -4151,11 +4133,11 @@ export const fallbackProducts = [
     "presentation": "75 IU",
     "form": "Liofilizado",
     "purity": "99.0%",
-    "price": 949,
+    "price": 1139,
     "variants": [
       {
         "presentation": "75 IU",
-        "price": 949,
+        "price": 1139,
         "stock": 40,
         "batch_number": "NP-HMG75-2601"
       }
@@ -4163,7 +4145,7 @@ export const fallbackProducts = [
     "tiers": [],
     "stock": 40,
     "image_url": "https://images.pexels.com/photos/6129873/pexels-photo-6129873.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
-    "coa_url": "https://novapeptides.mx/coa/hmg.pdf",
+    "coa_url": "https://exygenlabs.com/coa/hmg.pdf",
     "batch_number": "NP-HMG75-2601",
     "storage": "Conservar a -20 °C, protegido de la luz. Reconstituido: 2–8 °C.",
     "start_dose": null,
@@ -4185,11 +4167,11 @@ export const fallbackProducts = [
     "presentation": "10 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
-    "price": 839,
+    "price": 929,
     "variants": [
       {
         "presentation": "10 mg",
-        "price": 839,
+        "price": 929,
         "stock": 40,
         "batch_number": "NP-PT10-2601"
       }
@@ -4197,7 +4179,7 @@ export const fallbackProducts = [
     "tiers": [],
     "stock": 40,
     "image_url": "https://images.pexels.com/photos/6129873/pexels-photo-6129873.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
-    "coa_url": "https://novapeptides.mx/coa/pt-141.pdf",
+    "coa_url": "https://exygenlabs.com/coa/pt-141.pdf",
     "batch_number": "NP-PT10-2601",
     "storage": "Conservar a -20 °C, protegido de la luz. Reconstituido: 2–8 °C.",
     "start_dose": 1,
@@ -4236,7 +4218,7 @@ export const fallbackProducts = [
     "tiers": [],
     "stock": 40,
     "image_url": "https://images.pexels.com/photos/6129873/pexels-photo-6129873.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
-    "coa_url": "https://novapeptides.mx/coa/triptorelin-acetate.pdf",
+    "coa_url": "https://exygenlabs.com/coa/triptorelin-acetate.pdf",
     "batch_number": "NP-TRIP2-2601",
     "storage": "Conservar a -20 °C, protegido de la luz. Reconstituido: 2–8 °C.",
     "start_dose": null,
@@ -4258,17 +4240,17 @@ export const fallbackProducts = [
     "presentation": "3 mL – 10 mL",
     "form": "Liofilizado",
     "purity": "99.0%",
-    "price": 149,
+    "price": 179,
     "variants": [
       {
         "presentation": "3 mL",
-        "price": 149,
+        "price": 179,
         "stock": 40,
         "batch_number": "NP-AGUA3-2601"
       },
       {
         "presentation": "10 mL",
-        "price": 199,
+        "price": 239,
         "stock": 40,
         "batch_number": "NP-AGUA10-2601"
       }
@@ -4276,7 +4258,7 @@ export const fallbackProducts = [
     "tiers": [],
     "stock": 40,
     "image_url": "https://images.pexels.com/photos/6129873/pexels-photo-6129873.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
-    "coa_url": "https://novapeptides.mx/coa/agua-bacteriostatica.pdf",
+    "coa_url": "https://exygenlabs.com/coa/agua-bacteriostatica.pdf",
     "batch_number": "NP-AGUA3-2601",
     "storage": "Conservar a -20 °C, protegido de la luz. Reconstituido: 2–8 °C.",
     "start_dose": null,
@@ -4310,7 +4292,7 @@ export const fallbackProducts = [
     "tiers": [],
     "stock": 40,
     "image_url": "https://images.pexels.com/photos/6129873/pexels-photo-6129873.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
-    "coa_url": "https://novapeptides.mx/coa/b12.pdf",
+    "coa_url": "https://exygenlabs.com/coa/b12.pdf",
     "batch_number": "NP-B121-2601",
     "storage": "Conservar a -20 °C, protegido de la luz. Reconstituido: 2–8 °C.",
     "start_dose": null,
@@ -4344,7 +4326,7 @@ export const fallbackProducts = [
     "tiers": [],
     "stock": 40,
     "image_url": "https://images.pexels.com/photos/6129873/pexels-photo-6129873.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
-    "coa_url": "https://novapeptides.mx/coa/vitamina-b12.pdf",
+    "coa_url": "https://exygenlabs.com/coa/vitamina-b12.pdf",
     "batch_number": "NP-VITA10-2601",
     "storage": "Conservar a -20 °C, protegido de la luz. Reconstituido: 2–8 °C.",
     "start_dose": null,
@@ -4366,23 +4348,23 @@ export const fallbackProducts = [
     "presentation": "3 mL – 10 mL",
     "form": "Liofilizado",
     "purity": "99.0%",
-    "price": 149,
+    "price": 249,
     "variants": [
       {
         "presentation": "3 mL",
-        "price": 149,
+        "price": 249,
         "stock": 40,
         "batch_number": "NP-CIDO3-2601"
       },
       {
         "presentation": "5 mL",
-        "price": 199,
+        "price": 349,
         "stock": 40,
         "batch_number": "NP-CIDO5-2601"
       },
       {
         "presentation": "10 mL",
-        "price": 249,
+        "price": 369,
         "stock": 40,
         "batch_number": "NP-CIDO10-2601"
       }
@@ -4390,7 +4372,7 @@ export const fallbackProducts = [
     "tiers": [],
     "stock": 40,
     "image_url": "https://images.pexels.com/photos/6129873/pexels-photo-6129873.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
-    "coa_url": "https://novapeptides.mx/coa/acido-acetico.pdf",
+    "coa_url": "https://exygenlabs.com/coa/acido-acetico.pdf",
     "batch_number": "NP-CIDO3-2601",
     "storage": "Conservar a -20 °C, protegido de la luz. Reconstituido: 2–8 °C.",
     "start_dose": null,
