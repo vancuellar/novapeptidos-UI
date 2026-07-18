@@ -39,6 +39,8 @@
 - **Asesor de péptidos (`/asesor`)** — réplica del "Asesor-IA" de Exoma, **híbrido**: cuestionario de 3 pasos (Objetivo → Perfil → Sugerencia) con reglas y dosis PROPIAS (del catálogo), + botón que abre el chat de IA. `src/pages/Advisor.js`. Español.
 - **Educación (`/educacion`)** — intro a péptidos, aviso RUO, literatura curada (8 fuentes reales: NEJM, Frontiers, MDPI, PMC, PubMed, ClinicalTrials.gov). es/en/pt.
 - **Calculadora de reconstitución (`/calculadora`)**, **404 propia**, banner INTRO10 (10% off).
+- **Portal admin v2 (`/admin`, solo rol admin, 2026-07-18):** pestañas **Ventas** (ticket promedio, ingresos por mes con gráfica recharts, top productos, ingresos por método de pago), **Clientes** (todos los clientes con teléfonos, direcciones de envío, total comprado, historial de pedidos en diálogo — nunca password_hash), Pedidos y Productos (CRUD, ya existían). Endpoints nuevos en RBAC: `/admin/customers` y `/admin/analytics` (PR #5; frontend PRs #36/#37). **Las pestañas nuevas se llenan cuando el backend esté en línea**; hoy quedan vacías sin errores. Siguiente paso planeado: rol `distributor` para el portal de distribuidores (ventas, clientes y ganancias propias).
+- **Correo de bienvenida rebrandeado a Exygen** (RBAC PR #4, es/en/pt): wordmark EXYGEN LABS, contacto hola@exygenlabs.com; los enlaces siguen a novapeptidos.mx hasta migrar el dominio.
 
 ---
 
