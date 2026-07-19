@@ -46,7 +46,7 @@ const Cart = () => {
                   <span className="w-8 text-center text-sm">{item.quantity}</span>
                   <Button variant="ghost" size="icon" className="h-8 w-8" onClick={() => updateQty(item.product_id, item.quantity + 1)} data-testid="cart-qty-increase-button"><Plus className="h-3.5 w-3.5" /></Button>
                 </div>
-                <Button variant="ghost" size="sm" className="text-muted-foreground hover:text-destructive h-7" onClick={() => removeItem(item.product_id)} data-testid="cart-remove-item-button"><Trash2 className="h-3.5 w-3.5 mr-1" /> {t('cart.remove')}</Button>
+                <Button variant="destructive" size="sm" className="h-7" onClick={() => removeItem(item.product_id)} data-testid="cart-remove-item-button"><Trash2 className="h-3.5 w-3.5 mr-1" /> {t('cart.remove')}</Button>
               </div>
             </Card>
           ))}
@@ -59,7 +59,7 @@ const Cart = () => {
               {promo ? (
                 <div className="flex items-center justify-between rounded-lg border border-[hsl(var(--success))]/40 bg-[hsl(var(--success))]/10 px-3 py-2 text-sm" data-testid="cart-promo-applied">
                   <span className="inline-flex items-center gap-1.5 text-[hsl(var(--success))] font-medium"><Tag className="h-3.5 w-3.5" /> {promo} aplicado</span>
-                  <button onClick={clearPromo} className="text-muted-foreground hover:text-destructive" data-testid="cart-promo-remove"><X className="h-4 w-4" /></button>
+                  <button onClick={clearPromo} className="rounded-md p-1 bg-destructive/10 text-destructive transition-colors hover:bg-destructive hover:text-white" data-testid="cart-promo-remove"><X className="h-4 w-4" /></button>
                 </div>
               ) : (
                 <form onSubmit={(e) => { e.preventDefault(); if (applyPromo(code)) setCode(''); }} className="flex gap-2">

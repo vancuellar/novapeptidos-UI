@@ -420,7 +420,7 @@ const Admin = () => {
                     <TableCell className="font-mono-tech text-xs">{p.batch_number}</TableCell>
                     <TableCell className="text-right whitespace-nowrap">
                       <Button variant="ghost" size="icon" onClick={() => openEdit(p)} data-testid="admin-edit-product-button"><Pencil className="h-4 w-4" /></Button>
-                      <Button variant="ghost" size="icon" onClick={() => remove(p)} className="text-destructive" data-testid="admin-delete-product-button"><Trash2 className="h-4 w-4" /></Button>
+                      <Button variant="destructive" size="icon" onClick={() => remove(p)} className="ml-1" data-testid="admin-delete-product-button"><Trash2 className="h-4 w-4" /></Button>
                     </TableCell>
                   </TableRow>
                 ))}
