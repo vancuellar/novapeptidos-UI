@@ -531,7 +531,7 @@ const Admin = () => {
                   <Select value={shippingOpen.carrier} onValueChange={(v) => setShippingOpen({ ...shippingOpen, carrier: v })}>
                     <SelectTrigger data-testid="admin-shipping-carrier"><SelectValue /></SelectTrigger>
                     <SelectContent>
-                      {['FedEx', 'DHL', 'Estafeta', 'UPS', 'Paquetexpress'].map((c) => <SelectItem key={c} value={c}>{c}</SelectItem>)}
+                      {['FedEx', 'DHL', 'Estafeta', 'UPS', 'Paquete Express', 'Redpack', 'Correos de México'].map((c) => <SelectItem key={c} value={c}>{c}</SelectItem>)}
                     </SelectContent>
                   </Select>
                 </div>
