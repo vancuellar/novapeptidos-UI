@@ -178,6 +178,47 @@ limpio y con el navegador.
 
 ---
 
+## 8quater. SEGUNDA TANDA (2026-07-19, noche) — frontend EN VIVO, backend PENDIENTE
+
+1. **Consentimientos en el registro.** Confirmar contraseña + 5 casillas: *18 años y Términos* y
+   *Política de privacidad* son obligatorias (el botón "Sí, estoy de acuerdo" queda bloqueado
+   hasta marcarlas); bonos, correo y SMS son opt-in real. **El servidor los exige también** — el
+   API es público y no basta validar en el navegador. Se guarda `consents` con fecha en el usuario.
+2. **La calculadora y el seguimiento solo con compra pagada.** Se desbloquean con un pedido en
+   `confirmado`, `enviado` o `entregado` (decisión de Christian: "confirmado" es cuando se verifica
+   el pago, sea tarjeta o SPEI). Mientras tanto se explica por qué y se ofrece la pública.
+3. **Mis estudios (análisis de sangre).** Nueva pestaña en Mi cuenta, mismo candado.
+   - `lab_reference.py`: **40 marcadores** con rango de referencia (por sexo donde aplica),
+     explicación en lenguaje llano y a qué familia de compuesto pertenecen.
+   - **Se acota a los péptidos del cliente** (comprados o en su seguimiento): sin compuestos no
+     hay marcadores, y los marcadores conocidos ajenos a sus vías se ocultan.
+   - `POST /me/labs/extract`: el PDF o la foto pasan por Gemini **una sola vez** y se convierten
+     en tabla markdown + valores. **El archivo NO se guarda**, solo los números; el prompt de
+     extracción excluye nombre, dirección y CURP.
+   - El cliente **revisa y corrige** los valores antes de guardar.
+   - Tabla con rango y marca de dentro/arriba/abajo, gráfica de evolución por marcador con banda
+     de referencia, y `POST /me/labs/{id}/interpret` para la explicación educativa.
+   - **Límites del prompt de interpretación:** no diagnostica, no nombra enfermedades como
+     conclusión, no indica tratamiento ni dosis, no dice si "puede" usar un compuesto y no dice
+     que algo "está bien". El aviso de que NO es diagnóstico va arriba, abajo y dentro del diálogo.
+4. **Guías renombradas.** 5 tenían la MISMA URL que Exoma (`glosario-simple`, `glosario`,
+   `como-reconstituir`, `control-calidad`, `pureza-hplc`) y `/compendio` también → ahora
+   `diccionario-basico`, `glosario-tecnico`, `reconstitucion-paso-a-paso`,
+   `como-verificamos-cada-lote`, `que-significa-99-por-ciento` y `/compuestos`.
+   **Además se habían colado 3 títulos calcados** del informe de escaneo ("Las palabras raras,
+   traducidas", "Las dudas que todos tienen la primera vez", "Todo sobre péptidos"): reescritos.
+   Verificado con un comparador de frases de 8 palabras contra el texto real de Exoma: **cero
+   coincidencias**. Lo único que sigue igual es `/calculadora`, palabra genérica con enlaces ya
+   compartidos. Las 13 guías son **públicas**, sin login.
+
+**Pruebas: 33 en el backend, todas pasan** (`pytest -q` en `novapeptidos-RBAC`).
+
+> **Sigue pendiente desplegar el backend** (ver §8ter). Sin eso no funcionan: pedidos del
+> distribuidor, seguimiento de consumo, recompra, guías de envío, estatus en el chat, los
+> consentimientos del servidor y TODA la pestaña de estudios.
+
+---
+
 ## 10. ROADMAP — PRÓXIMA SESIÓN (orden de Christian, 2026-07-19)
 
 > **Estado: los 7 puntos de abajo YA SE EJECUTARON.** Ver §8ter. Lo único que falta es
