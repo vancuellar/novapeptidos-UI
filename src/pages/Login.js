@@ -6,7 +6,6 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { BrandMark } from '@/components/BrandLogo';
 import { toast } from 'sonner';
 import { useAuth } from '@/context/AuthContext';
 import { useLanguage } from '@/context/LanguageContext';
@@ -70,7 +69,6 @@ const Login = () => {
     <div className="min-h-[70vh] flex items-center justify-center px-4 py-14">
       <div className="w-full max-w-md">
         <div className="flex flex-col items-center text-center mb-8">
-          <BrandMark className="h-9 mb-5" />
           <h1 className="font-heading text-2xl sm:text-3xl font-bold tracking-tight">{t('auth.portal.title')}</h1>
           <p className="text-sm text-muted-foreground mt-2 max-w-xs">{t('auth.portal.subtitle')}</p>
         </div>
