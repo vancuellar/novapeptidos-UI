@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Package, User, LogOut } from 'lucide-react';
+import { Package, User, LogOut, ShoppingBag, DollarSign } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -35,6 +35,9 @@ const Account = () => {
 
   if (!user) return null;
 
+  const validOrders = orders.filter((o) => o.status !== 'cancelado');
+  const totalSpent = validOrders.reduce((sum, o) => sum + (o.total || 0), 0);
+
   return (
     <div className="max-w-4xl mx-auto px-4 sm:px-6 py-8">
       <div className="flex items-center justify-between mb-6">
@@ -43,6 +46,17 @@ const Account = () => {
           <p className="text-muted-foreground text-sm">{user.name} · {user.email}</p>
         </div>
         <Button variant="outline" onClick={() => { logout(); navigate('/'); }}><LogOut className="h-4 w-4 mr-1.5" /> {t('account.signOut')}</Button>
+      </div>
+
+      <div className="grid grid-cols-2 gap-3 mb-6">
+        <Card className="p-4">
+          <div className="flex items-center gap-2 text-muted-foreground text-xs"><ShoppingBag className="h-4 w-4" /> {t('account.stats.orders')}</div>
+          <div className="font-heading text-xl font-bold mt-1">{orders.length}</div>
+        </Card>
+        <Card className="p-4">
+          <div className="flex items-center gap-2 text-muted-foreground text-xs"><DollarSign className="h-4 w-4" /> {t('account.stats.spent')}</div>
+          <div className="font-heading text-xl font-bold mt-1">{formatMXN(totalSpent)}</div>
+        </Card>
       </div>
 
       <Tabs defaultValue="orders">

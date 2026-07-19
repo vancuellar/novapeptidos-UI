@@ -20,6 +20,7 @@ import OrderConfirmation from '@/pages/OrderConfirmation';
 import Login from '@/pages/Login';
 import Register from '@/pages/Register';
 import Account from '@/pages/Account';
+import Distributor from '@/pages/Distributor';
 import Admin from '@/pages/Admin';
 import InfoPage from '@/pages/InfoPage';
 import Education from '@/pages/Education';
@@ -48,6 +49,7 @@ function App() {
                     <Route path="/login" element={<Login />} />
                     <Route path="/registro" element={<Register />} />
                     <Route path="/cuenta" element={<Account />} />
+                    <Route path="/distribuidor" element={<Distributor />} />
                     <Route path="/admin" element={<Admin />} />
                     <Route path="/info/:page" element={<InfoPage />} />
                     <Route path="*" element={<NotFound />} />
