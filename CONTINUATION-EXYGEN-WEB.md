@@ -50,7 +50,7 @@
 
 - Backend en `novapeptidos-RBAC/ai_assistant.py`: usa **SDK `google-genai`** (no OpenAI). Modelo por defecto **`gemini-3.5-flash`** (configurable con `AI_MODEL_NAME`; los 2.x ya no aplican a llaves nuevas). Streaming vía `client.aio.models.generate_content_stream`.
 - **System prompt ACOTADO** (probado con llave real): la IA "Exygen" SOLO habla de la tienda y de péptidos de investigación; **rechaza** redactar documentos/código/tareas/recetas/consejo legal, resiste "ignora tus instrucciones", no inventa productos/precios, mantiene RUO (sin dosis ni consejo médico).
-- **Llave Gemini (capa gratuita, rotar después):** `AIzaSyC3BdqQQlp2vZRIr2GhRwiI0gnjDhKVU54`. Se pone como env `GEMINI_API_KEY`.
+- **Llave Gemini (capa gratuita; Christian decidió NO rotarla — no volver a mencionarlo):** `AIzaSyC3BdqQQlp2vZRIr2GhRwiI0gnjDhKVU54`. Se pone como env `GEMINI_API_KEY`.
 - **Frontend:** `src/components/AIChatWidget.js` llama a `https://chat.exygenlabs.com/api/ai/chat` (const `CHAT_API`). PR #1 y #2 de RBAC ya mergeados (Gemini + welcome emails multilingües por SES).
 
 ---
@@ -98,10 +98,9 @@
 - [x] ~~Realinear precios~~ — NO aplica: los precios en vivo ya cumplen la regla vigente (§5). Resuelto 2026-07-18.
 - [x] ~~Migrar el dominio a exygenlabs.com~~ — HECHO 2026-07-19 (Cloudflare DNS + `public/CNAME` + GitHub Pages). https://exygenlabs.com en vivo con HTTPS. Ver §0.
 - [ ] **Redirigir `novapeptidos.mx` y los demás dominios `nova*` → exygenlabs.com.** DNS de esos dominios está en GoDaddy (fuera del token de Cloudflare, que solo cubre exygenlabs.com). Opción A: GoDaddy Domain Forwarding (301) por dominio. Opción B: mudarlos a Cloudflare + token que los cubra y poner redirect. **Falta la lista completa de dominios `nova*` de Christian.**
-- [x] ~~Lanzar el backend nuevo~~ — HECHO 2026-07-19. EC2 `i-0a577cceb113edb6b` (certis, us-east-1a, IP 44.202.77.45), `api`/`chat`.exygenlabs.com en Cloudflare con TLS. Login admin verificado. Frontend redeployado con `REACT_APP_BACKEND_URL=https://api.exygenlabs.com` (variable del repo actualizada). **DATOS REALES EN VIVO.** Pendiente: cambiar contraseña admin y rotar llave Gemini.
+- [x] ~~Lanzar el backend nuevo~~ — HECHO 2026-07-19. EC2 `i-0a577cceb113edb6b` (certis, us-east-1a, IP 44.202.77.45), `api`/`chat`.exygenlabs.com en Cloudflare con TLS. Login admin verificado. Frontend redeployado con `REACT_APP_BACKEND_URL=https://api.exygenlabs.com` (variable del repo actualizada). **DATOS REALES EN VIVO.** Pendiente: cambiar contraseña admin.
 - [ ] **Rebrand en los scripts/xlsx internos** (distribuidores, título de la maestra) y COA reales.
 - [ ] Batch numbers en fotos/etiquetas siguen con prefijo `NP-` (Nova) — cambiar a Exygen si se desea.
-- [ ] Rotar la llave de Gemini (anduvo en el chat).
 - [ ] Páginas internas que faltan (FAQ, Quiénes somos, etc. — ver §9 del pricing continuation).
 
 ---
