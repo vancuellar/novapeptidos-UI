@@ -1,7 +1,7 @@
 // Glosario en lenguaje llano, con ejemplos numéricos. RUO.
 const page = {
-  slug: 'terminos-sin-jerga',
-  title: 'Las palabras raras, traducidas',
+  slug: 'diccionario-basico',
+  title: 'Diccionario para no perderte',
   subtitle:
     'Treinta y tres términos que vas a encontrar en etiquetas, certificados y artículos, explicados sin jerga y con un ejemplo con números en cada uno.',
   badge: 'Glosario',
@@ -58,7 +58,7 @@ const page = {
         },
         {
           term: 'Subcutáneo (SC)',
-          plain: 'Debajo de la piel, en la capa de grasa. Es una vía que aparece descrita en muchos estudios porque la absorción es lenta y pareja.',
+          plain: 'En el tejido graso que está justo bajo la piel. Es la vía que más aparece descrita en los estudios, porque la absorción resulta lenta y pareja.',
           example: 'En la literatura suele usarse aguja corta de 4 a 8 mm y volúmenes menores a 1 mL por sitio. Término informativo: no describimos administración en personas.',
         },
         {

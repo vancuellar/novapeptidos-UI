@@ -16,7 +16,7 @@ const GROUPS = [
     items: [
       { slug: 'empieza-aqui', icon: Baby },
       { slug: 'peptidos-explicados', icon: BookOpen },
-      { slug: 'terminos-sin-jerga', icon: Library },
+      { slug: 'diccionario-basico', icon: Library },
       { slug: 'preguntas-principiantes', icon: HelpCircle },
     ],
   },
@@ -60,7 +60,7 @@ const LearnHub = () => {
           <BookOpen className="h-5 w-5" />
           <span className="text-xs font-medium uppercase tracking-wide">Aprende</span>
         </div>
-        <h1 className="font-heading text-3xl sm:text-4xl font-bold tracking-tight">Todo sobre péptidos de investigación</h1>
+        <h1 className="font-heading text-3xl sm:text-4xl font-bold tracking-tight">Aprende antes de comprar</h1>
         <p className="text-base text-muted-foreground mt-3 max-w-3xl leading-relaxed">
           Desde qué es un péptido hasta cómo se lee un cromatograma. Escrito para que sirva:
           con cifras, temperaturas y tiempos reales, no con generalidades.

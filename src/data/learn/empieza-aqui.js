@@ -229,7 +229,7 @@ const page = {
         {
           title: 'Glosario en español simple',
           body: 'Treinta términos traducidos a lenguaje normal, cada uno con un ejemplo numérico.',
-          to: '/aprende/terminos-sin-jerga',
+          to: '/aprende/diccionario-basico',
           cta: 'Ver glosario',
         },
         {
@@ -243,7 +243,7 @@ const page = {
   ],
   related: [
     { to: '/aprende/reconstitucion-paso-a-paso', title: 'Cómo reconstituir', desc: 'Procedimiento detallado con volúmenes y tiempos.' },
-    { to: '/aprende/terminos-sin-jerga', title: 'Términos sin jerga', desc: 'Las palabras raras, traducidas con ejemplos.' },
+    { to: '/aprende/diccionario-basico', title: 'Diccionario básico', desc: 'Cada término explicado en llano y con un ejemplo numérico.' },
     { to: '/aprende/peptidos-explicados', title: 'Péptidos explicados desde cero', desc: 'Fundamentos de química y clasificación.' },
     { to: '/info/calidad', title: 'Calidad y COA', desc: 'Cómo probamos cada lote y dónde ver los resultados.' },
   ],

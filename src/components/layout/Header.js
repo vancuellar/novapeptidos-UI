@@ -43,10 +43,10 @@ const PEPTIDE_CATEGORIES = fallbackCategories
 
 // Columna derecha: las guías. El orden es el recorrido natural de un novato.
 const LEARN_LINKS = [
-  { to: '/aprende', label: 'Péptidos de investigación', desc: 'El hub con todas las guías y herramientas' },
+  { to: '/aprende', label: 'Centro de aprendizaje', desc: 'El hub con todas las guías y herramientas' },
   { to: '/aprende/empieza-aqui', label: 'Empieza aquí', desc: 'Tu primera vez, en 5 minutos' },
   { to: '/aprende/peptidos-explicados', label: 'Péptidos explicados desde cero', desc: 'Guía de introducción' },
-  { to: '/aprende/terminos-sin-jerga', label: 'Términos sin jerga', desc: 'Los términos sin jerga' },
+  { to: '/aprende/diccionario-basico', label: 'Diccionario básico', desc: 'Los términos sin jerga' },
   { to: '/compuestos', label: 'Fichas de compuestos', desc: 'Ficha técnica de cada compuesto' },
   { to: '/aprende/protocolos', label: 'Protocolos por objetivo', desc: 'Qué se combina con qué y por qué' },
   { to: '/aprende/reconstitucion-paso-a-paso', label: 'Cómo reconstituir', desc: 'El procedimiento paso a paso' },

@@ -4,7 +4,7 @@
 
 import empiezaAqui from '@/data/learn/empieza-aqui';
 import queSonLosPeptidos from '@/data/learn/peptidos-explicados';
-import glosarioSimple from '@/data/learn/terminos-sin-jerga';
+import glosarioSimple from '@/data/learn/diccionario-basico';
 import glosario from '@/data/learn/glosario-tecnico';
 import comoReconstituir from '@/data/learn/reconstitucion-paso-a-paso';
 import conservacion from '@/data/learn/conservacion';

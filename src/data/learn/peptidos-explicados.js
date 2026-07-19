@@ -221,7 +221,7 @@ const page = {
         {
           title: 'Glosario en español simple',
           body: 'Treinta términos técnicos traducidos, cada uno con un ejemplo numérico concreto.',
-          to: '/aprende/terminos-sin-jerga',
+          to: '/aprende/diccionario-basico',
           cta: 'Ver glosario',
         },
         {
@@ -247,7 +247,7 @@ const page = {
   ],
   related: [
     { to: '/aprende/empieza-aqui', title: 'Empieza aquí', desc: 'Tu primera vez con un vial, en 5 minutos.' },
-    { to: '/aprende/terminos-sin-jerga', title: 'Términos sin jerga', desc: 'Las palabras raras, traducidas con ejemplos.' },
+    { to: '/aprende/diccionario-basico', title: 'Diccionario básico', desc: 'Cada término explicado en llano y con un ejemplo numérico.' },
     { to: '/aprende/reconstitucion-paso-a-paso', title: 'Cómo reconstituir', desc: 'Del polvo a la solución, con volúmenes reales.' },
     { to: '/info/calidad', title: 'Calidad y COA', desc: 'Qué se mide en cada lote y cómo leerlo.' },
   ],

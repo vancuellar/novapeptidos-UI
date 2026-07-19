@@ -71,7 +71,7 @@ const page = {
       type: 'cards',
       title: 'Sigue leyendo',
       items: [
-        { to: '/aprende/terminos-sin-jerga', title: 'Términos sin jerga', body: 'Los mismos conceptos, explicados sin jerga y con ejemplos numéricos.', cta: 'Abrir' },
+        { to: '/aprende/diccionario-basico', title: 'Diccionario básico', body: 'Los mismos conceptos, explicados sin jerga y con ejemplos numéricos.', cta: 'Abrir' },
         { to: '/aprende/que-significa-99-por-ciento', title: 'Pureza por HPLC', body: 'Cómo se mide de verdad la pureza y qué preguntas hacerle a un proveedor.', cta: 'Abrir' },
         { to: '/aprende/como-verificamos-cada-lote', title: 'Control de calidad', body: 'El recorrido de un lote desde la síntesis hasta la liberación.', cta: 'Abrir' },
         { to: '/compuestos', title: 'Fichas de compuestos', body: 'Ficha de referencia de cada compuesto del catálogo.', cta: 'Abrir' },

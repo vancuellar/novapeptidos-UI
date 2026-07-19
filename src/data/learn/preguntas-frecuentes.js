@@ -282,7 +282,7 @@ const page = {
   related: [
     {
       to: '/aprende/preguntas-principiantes',
-      title: 'Las dudas que todos tienen la primera vez',
+      title: 'Lo que nadie te explica en tu primer pedido',
       desc: 'La guía sin pena para quien nunca ha manejado un vial liofilizado.',
     },
     {

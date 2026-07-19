@@ -1,6 +1,6 @@
 const page = {
   slug: 'preguntas-principiantes',
-  title: 'Las dudas que todos tienen la primera vez',
+  title: 'Lo que nadie te explica en tu primer pedido',
   subtitle:
     'Las preguntas que casi nadie hace por pena, ordenadas por el momento en que aparecen: antes de comprar, cuando llega la caja, al preparar el material y durante el protocolo.',
   badge: 'Principiantes',

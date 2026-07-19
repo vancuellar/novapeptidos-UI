@@ -347,7 +347,7 @@ const page = {
   related: [
     {
       to: '/aprende/preguntas-principiantes',
-      title: 'Las dudas que todos tienen la primera vez',
+      title: 'Lo que nadie te explica en tu primer pedido',
       desc: 'Manejo del material, reconstitución y conservación, explicado desde cero.',
     },
     {
