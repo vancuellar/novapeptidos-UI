@@ -1,6 +1,8 @@
-import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { Package, User, LogOut, ShoppingBag, DollarSign, MapPin, CreditCard, LockKeyhole, Eye, EyeOff } from 'lucide-react';
+import React, { useEffect, useState, useCallback } from 'react';
+import { useNavigate, useSearchParams } from 'react-router-dom';
+import { Package, User, LogOut, ShoppingBag, DollarSign, MapPin, CreditCard, LockKeyhole, Eye, EyeOff, Syringe, Truck, ExternalLink } from 'lucide-react';
+import ReconstitutionCalculator, { mgProducts } from '@/components/ReconstitutionCalculator';
+import ProtocolTracker from '@/components/ProtocolTracker';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -48,7 +50,9 @@ const Account = () => {
   const { language, t } = useLanguage();
   const navigate = useNavigate();
   const [orders, setOrders] = useState([]);
+  const [protocols, setProtocols] = useState([]);
   const [saving, setSaving] = useState(false);
+  const [params, setParams] = useSearchParams();
 
   // datos personales
   const [name, setName] = useState('');
@@ -72,9 +76,15 @@ const Account = () => {
     if (!loading && !user) navigate('/login');
   }, [user, loading, navigate]);
 
+  const loadProtocols = useCallback(
+    () => api.get('/me/protocols').then((r) => setProtocols(r.data)).catch(() => {}),
+    [],
+  );
+
   useEffect(() => {
     if (user) {
       api.get('/orders/me').then((r) => setOrders(r.data)).catch(() => {});
+      loadProtocols();
       setName(user.name || '');
       setEmail(user.email || '');
       setPhone(user.phone || '');
@@ -83,13 +93,37 @@ const Account = () => {
       setSameBilling(!user.billing_address || !user.billing_address.address);
       setPreferredPayment(user.preferred_payment || '');
     }
-  }, [user]);
+  }, [user, loadProtocols]);
 
   if (!user) return null;
 
   const validOrders = orders.filter((o) => o.status !== 'cancelado');
   const totalSpent = validOrders.reduce((sum, o) => sum + (o.total || 0), 0);
   const emailChanged = email.trim().toLowerCase() !== (user.email || '').toLowerCase();
+
+  // Péptidos que este cliente ya compró, para pre-cargar la calculadora.
+  // Solo los que el catálogo maneja en mg (los únicos que se reconstituyen).
+  const purchased = (() => {
+    const seen = new Map();
+    for (const o of validOrders) {
+      for (const it of o.items || []) {
+        const match = mgProducts.find((p) => p.name.toLowerCase() === (it.name || '').toLowerCase());
+        if (!match) continue;
+        const mg = parseFloat(it.presentation) || (match.variants.length ? Math.min(...match.variants) : 0);
+        const key = `${match.name}::${mg}`;
+        if (!seen.has(key)) seen.set(key, { name: match.name, mg });
+      }
+    }
+    return [...seen.values()];
+  })();
+
+  const trackProtocol = async (payload) => {
+    try {
+      await api.post('/me/protocols', { ...payload, doses_per_week: 7, vials: 1 });
+      await loadProtocols();
+      toast.success(t('track.added'));
+    } catch { toast.error(t('track.error')); }
+  };
 
   const saveProfile = async () => {
     if (!name.trim()) { toast.error(t('profile.toast.nameRequired')); return; }
@@ -146,11 +180,26 @@ const Account = () => {
         </Card>
       </div>
 
-      <Tabs defaultValue="orders">
+      <Tabs value={params.get('tab') || 'orders'} onValueChange={(v) => setParams(v === 'orders' ? {} : { tab: v }, { replace: true })}>
         <TabsList>
           <TabsTrigger value="orders"><Package className="h-4 w-4 mr-1.5" /> {t('account.ordersTab')}</TabsTrigger>
+          <TabsTrigger value="tools"><Syringe className="h-4 w-4 mr-1.5" /> {t('account.toolsTab')}</TabsTrigger>
           <TabsTrigger value="profile"><User className="h-4 w-4 mr-1.5" /> {t('account.profileTab')}</TabsTrigger>
         </TabsList>
+
+        <TabsContent value="tools" className="mt-5 space-y-8">
+          <section>
+            <h3 className="font-heading font-semibold text-lg mb-1">{t('calc.title')}</h3>
+            <p className="text-sm text-muted-foreground mb-4">{t('account.tools.calcHint')}</p>
+            <ReconstitutionCalculator variant="full" purchased={purchased} onTrack={trackProtocol} syncUrl={false} />
+          </section>
+
+          <section>
+            <h3 className="font-heading font-semibold text-lg mb-1">{t('account.tools.trackTitle')}</h3>
+            <p className="text-sm text-muted-foreground mb-4">{t('account.tools.trackHint')}</p>
+            <ProtocolTracker protocols={protocols} onChange={loadProtocols} />
+          </section>
+        </TabsContent>
 
         <TabsContent value="orders" className="mt-5">
           {orders.length === 0 ? (
@@ -163,6 +212,18 @@ const Account = () => {
                     <div>
                       <div className="font-mono-tech font-medium">{o.order_number}</div>
                       <div className="text-xs text-muted-foreground">{new Date(o.created_at).toLocaleDateString(language)} · {t('common.items', { count: o.items.length })}</div>
+                      {o.tracking_number && (
+                        <div className="flex flex-wrap items-center gap-2 text-xs mt-1.5" data-testid="account-tracking">
+                          <Truck className="h-3.5 w-3.5 text-[hsl(var(--primary))]" />
+                          <span className="text-muted-foreground">{o.carrier}</span>
+                          <span className="font-mono-tech">{o.tracking_number}</span>
+                          {o.tracking_url && (
+                            <a href={o.tracking_url} target="_blank" rel="noreferrer" className="flex items-center gap-1 text-[hsl(var(--primary))] hover:underline">
+                              <ExternalLink className="h-3 w-3" /> {t('distributor.track')}
+                            </a>
+                          )}
+                        </div>
+                      )}
                     </div>
                     <div className="flex items-center gap-3">
                       <Badge className={STATUS_COLORS[o.status]}>{t(`status.${o.status}`)}</Badge>
