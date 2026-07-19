@@ -217,7 +217,7 @@ const page = {
         {
           title: 'Cómo reconstituir, paso a paso',
           body: 'La guía técnica completa: volúmenes, técnica de inyección del diluyente, conservación y errores de laboratorio.',
-          to: '/aprende/como-reconstituir',
+          to: '/aprende/reconstitucion-paso-a-paso',
           cta: 'Ver la guía',
         },
         {
@@ -229,22 +229,22 @@ const page = {
         {
           title: 'Glosario en español simple',
           body: 'Treinta términos traducidos a lenguaje normal, cada uno con un ejemplo numérico.',
-          to: '/aprende/glosario-simple',
+          to: '/aprende/terminos-sin-jerga',
           cta: 'Ver glosario',
         },
         {
-          title: 'Qué son los péptidos',
+          title: 'Péptidos explicados desde cero',
           body: 'Los fundamentos: de aminoácido a péptido, clasificación por función y por qué se estudian.',
-          to: '/aprende/que-son-los-peptidos',
+          to: '/aprende/peptidos-explicados',
           cta: 'Leer fundamentos',
         },
       ],
     },
   ],
   related: [
-    { to: '/aprende/como-reconstituir', title: 'Cómo reconstituir', desc: 'Procedimiento detallado con volúmenes y tiempos.' },
-    { to: '/aprende/glosario-simple', title: 'Glosario simple', desc: 'Las palabras raras, traducidas con ejemplos.' },
-    { to: '/aprende/que-son-los-peptidos', title: 'Qué son los péptidos', desc: 'Fundamentos de química y clasificación.' },
+    { to: '/aprende/reconstitucion-paso-a-paso', title: 'Cómo reconstituir', desc: 'Procedimiento detallado con volúmenes y tiempos.' },
+    { to: '/aprende/terminos-sin-jerga', title: 'Términos sin jerga', desc: 'Las palabras raras, traducidas con ejemplos.' },
+    { to: '/aprende/peptidos-explicados', title: 'Péptidos explicados desde cero', desc: 'Fundamentos de química y clasificación.' },
     { to: '/info/calidad', title: 'Calidad y COA', desc: 'Cómo probamos cada lote y dónde ver los resultados.' },
   ],
 };

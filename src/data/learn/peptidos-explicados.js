@@ -1,7 +1,7 @@
 // Fundamentos: química de péptidos, clasificación funcional y por qué se estudian. RUO.
 const page = {
-  slug: 'que-son-los-peptidos',
-  title: 'Qué son los péptidos',
+  slug: 'peptidos-explicados',
+  title: 'Péptidos explicados desde cero',
   subtitle:
     'De aminoácido a molécula funcional: qué es un péptido, en qué se diferencia de una proteína, cómo se clasifican por función y por qué llegan como polvo liofilizado.',
   badge: 'Fundamentos',
@@ -221,7 +221,7 @@ const page = {
         {
           title: 'Glosario en español simple',
           body: 'Treinta términos técnicos traducidos, cada uno con un ejemplo numérico concreto.',
-          to: '/aprende/glosario-simple',
+          to: '/aprende/terminos-sin-jerga',
           cta: 'Ver glosario',
         },
         {
@@ -247,8 +247,8 @@ const page = {
   ],
   related: [
     { to: '/aprende/empieza-aqui', title: 'Empieza aquí', desc: 'Tu primera vez con un vial, en 5 minutos.' },
-    { to: '/aprende/glosario-simple', title: 'Glosario simple', desc: 'Las palabras raras, traducidas con ejemplos.' },
-    { to: '/aprende/como-reconstituir', title: 'Cómo reconstituir', desc: 'Del polvo a la solución, con volúmenes reales.' },
+    { to: '/aprende/terminos-sin-jerga', title: 'Términos sin jerga', desc: 'Las palabras raras, traducidas con ejemplos.' },
+    { to: '/aprende/reconstitucion-paso-a-paso', title: 'Cómo reconstituir', desc: 'Del polvo a la solución, con volúmenes reales.' },
     { to: '/info/calidad', title: 'Calidad y COA', desc: 'Qué se mide en cada lote y cómo leerlo.' },
   ],
 };

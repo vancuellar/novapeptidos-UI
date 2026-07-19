@@ -170,7 +170,7 @@ const page = {
         {
           title: 'Cómo reconstituir',
           body: 'Procedimiento en 7 pasos, tabla de concentraciones y los seis errores que arruinan el material.',
-          to: '/aprende/como-reconstituir',
+          to: '/aprende/reconstitucion-paso-a-paso',
           cta: 'Ver guía',
         },
         {
@@ -197,7 +197,7 @@ const page = {
   ],
   related: [
     {
-      to: '/aprende/como-reconstituir',
+      to: '/aprende/reconstitucion-paso-a-paso',
       title: 'Cómo reconstituir',
       desc: 'El procedimiento de laboratorio paso a paso, con tiempos y cifras.',
     },

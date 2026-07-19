@@ -1,6 +1,6 @@
 const page = {
-  slug: 'como-reconstituir',
-  title: 'Cómo reconstituir un péptido liofilizado',
+  slug: 'reconstitucion-paso-a-paso',
+  title: 'Del polvo a la solución: reconstitución paso a paso',
   subtitle:
     'Procedimiento de laboratorio, paso a paso y con cifras, para pasar un vial de polvo liofilizado a una solución estable y homogénea sin degradar el material.',
   badge: 'Guía operativa',

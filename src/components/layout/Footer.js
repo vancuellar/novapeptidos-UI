@@ -33,8 +33,8 @@ const Footer = () => {
             <h4 className="kicker mb-4">{t('nav.learn')}</h4>
             <ul className="space-y-2.5 text-sm text-muted-foreground">
               <li><Link to="/aprende/empieza-aqui" className="hover:text-foreground transition-colors">Empieza aquí</Link></li>
-              <li><Link to="/aprende/como-reconstituir" className="hover:text-foreground transition-colors">Cómo reconstituir</Link></li>
-              <li><Link to="/compendio" className="hover:text-foreground transition-colors">Compendio</Link></li>
+              <li><Link to="/aprende/reconstitucion-paso-a-paso" className="hover:text-foreground transition-colors">Cómo reconstituir</Link></li>
+              <li><Link to="/compuestos" className="hover:text-foreground transition-colors">Fichas de compuestos</Link></li>
               <li><Link to="/aprende/preguntas-frecuentes" className="hover:text-foreground transition-colors">Preguntas frecuentes</Link></li>
               <li><Link to="/aprende" className="hover:text-foreground transition-colors">Todas las guías</Link></li>
             </ul>

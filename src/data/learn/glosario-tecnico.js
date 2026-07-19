@@ -1,6 +1,6 @@
 const page = {
-  slug: 'glosario',
-  title: 'Glosario técnico',
+  slug: 'glosario-tecnico',
+  title: 'Vocabulario técnico: el idioma de un COA',
   subtitle: 'Los términos como aparecen en un certificado de análisis, en un artículo o en la etiqueta de un vial. Si buscas la versión sin jerga, empieza por el glosario simple.',
   badge: 'Referencia',
   updated: '19 de julio de 2026',
@@ -71,15 +71,15 @@ const page = {
       type: 'cards',
       title: 'Sigue leyendo',
       items: [
-        { to: '/aprende/glosario-simple', title: 'Glosario simple', body: 'Los mismos conceptos, explicados sin jerga y con ejemplos numéricos.', cta: 'Abrir' },
-        { to: '/aprende/pureza-hplc', title: 'Pureza por HPLC', body: 'Cómo se mide de verdad la pureza y qué preguntas hacerle a un proveedor.', cta: 'Abrir' },
-        { to: '/aprende/control-calidad', title: 'Control de calidad', body: 'El recorrido de un lote desde la síntesis hasta la liberación.', cta: 'Abrir' },
-        { to: '/compendio', title: 'Compendio de compuestos', body: 'Ficha de referencia de cada compuesto del catálogo.', cta: 'Abrir' },
+        { to: '/aprende/terminos-sin-jerga', title: 'Términos sin jerga', body: 'Los mismos conceptos, explicados sin jerga y con ejemplos numéricos.', cta: 'Abrir' },
+        { to: '/aprende/que-significa-99-por-ciento', title: 'Pureza por HPLC', body: 'Cómo se mide de verdad la pureza y qué preguntas hacerle a un proveedor.', cta: 'Abrir' },
+        { to: '/aprende/como-verificamos-cada-lote', title: 'Control de calidad', body: 'El recorrido de un lote desde la síntesis hasta la liberación.', cta: 'Abrir' },
+        { to: '/compuestos', title: 'Fichas de compuestos', body: 'Ficha de referencia de cada compuesto del catálogo.', cta: 'Abrir' },
       ],
     },
   ],
   related: [
-    { to: '/aprende/como-reconstituir', title: 'Cómo reconstituir', desc: 'El procedimiento completo, paso a paso y con tiempos.' },
+    { to: '/aprende/reconstitucion-paso-a-paso', title: 'Cómo reconstituir', desc: 'El procedimiento completo, paso a paso y con tiempos.' },
     { to: '/calculadora', title: 'Calculadora de reconstitución', desc: 'Convierte mg, mL y unidades sin que tengas que hacer la cuenta.' },
   ],
 };

@@ -1,5 +1,5 @@
 const page = {
-  slug: 'pureza-hplc',
+  slug: 'que-significa-99-por-ciento',
   title: 'Pureza por HPLC: qué mide realmente ese 99%',
   subtitle:
     'Cómo funciona la cromatografía líquida de alta resolución aplicada a péptidos, de dónde salen las impurezas y qué preguntarle a cualquier proveedor antes de creerle un número.',
@@ -208,7 +208,7 @@ const page = {
   ],
   related: [
     {
-      to: '/aprende/control-calidad',
+      to: '/aprende/como-verificamos-cada-lote',
       title: 'Control de calidad de un lote',
       desc: 'El recorrido completo de la síntesis a la liberación, y cómo leer un COA sin ser químico.',
     },

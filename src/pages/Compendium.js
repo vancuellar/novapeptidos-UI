@@ -52,15 +52,15 @@ const Compendium = () => {
         <ChevronRight className="h-3 w-3" />
         <Link to="/aprende" className="hover:text-foreground">Aprende</Link>
         <ChevronRight className="h-3 w-3" />
-        <span className="text-foreground">Compendio</span>
+        <span className="text-foreground">Fichas de compuestos</span>
       </nav>
 
       <header className="mb-6">
         <div className="inline-flex items-center gap-2 text-[hsl(var(--primary))] mb-2">
           <FlaskConical className="h-5 w-5" />
-          <span className="text-xs font-medium uppercase tracking-wide">Compendio</span>
+          <span className="text-xs font-medium uppercase tracking-wide">Fichas de compuestos</span>
         </div>
-        <h1 className="font-heading text-3xl sm:text-4xl font-bold tracking-tight">Compendio de compuestos</h1>
+        <h1 className="font-heading text-3xl sm:text-4xl font-bold tracking-tight">Fichas técnicas de compuestos</h1>
         <p className="text-base text-muted-foreground mt-3 max-w-3xl leading-relaxed">
           Ficha de referencia de cada compuesto que manejamos: presentaciones disponibles, forma,
           pureza declarada, conservación y dosis de referencia de investigación. Material exclusivo

@@ -284,7 +284,7 @@ const page = {
         {
           title: 'Cómo reconstituir',
           body: 'El procedimiento completo en 7 pasos, con tiempos, tabla de concentraciones y los errores que arruinan el material.',
-          to: '/aprende/como-reconstituir',
+          to: '/aprende/reconstitucion-paso-a-paso',
           cta: 'Ver procedimiento',
         },
         {
@@ -347,7 +347,7 @@ const page = {
   ],
   related: [
     {
-      to: '/aprende/como-reconstituir',
+      to: '/aprende/reconstitucion-paso-a-paso',
       title: 'Cómo reconstituir',
       desc: 'Los 7 pasos con tiempos concretos y la tabla de concentraciones por vial.',
     },

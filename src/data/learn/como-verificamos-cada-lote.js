@@ -1,6 +1,6 @@
 const page = {
-  slug: 'control-calidad',
-  title: 'Control de calidad: cómo se verifica un lote de péptidos',
+  slug: 'como-verificamos-cada-lote',
+  title: 'Cómo verificamos cada lote antes de venderlo',
   subtitle:
     'El recorrido completo de un lote, de la síntesis a la liberación, y cómo leer los datos analíticos sin ser químico. Material exclusivo para investigación.',
   badge: 'Guía',
@@ -234,7 +234,7 @@ const page = {
   ],
   related: [
     {
-      to: '/aprende/pureza-hplc',
+      to: '/aprende/que-significa-99-por-ciento',
       title: 'Pureza por HPLC',
       desc: 'Cómo funciona la cromatografía de fase reversa y por qué un "99%" sin método declarado no dice nada.',
     },

@@ -49,7 +49,7 @@ function App() {
                     <Route path="/asesor" element={<Advisor />} />
                     <Route path="/aprende" element={<LearnHub />} />
                     <Route path="/aprende/:slug" element={<LearnPage />} />
-                    <Route path="/compendio" element={<Compendium />} />
+                    <Route path="/compuestos" element={<Compendium />} />
                     <Route path="/producto/:slug" element={<ProductDetail />} />
                     <Route path="/carrito" element={<Cart />} />
                     <Route path="/checkout" element={<Checkout />} />

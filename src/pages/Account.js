@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useCallback } from 'react';
-import { useNavigate, useSearchParams } from 'react-router-dom';
-import { Package, User, LogOut, ShoppingBag, DollarSign, MapPin, CreditCard, LockKeyhole, Eye, EyeOff, Syringe, Truck, ExternalLink } from 'lucide-react';
+import { useNavigate, useSearchParams, Link } from 'react-router-dom';
+import { Package, User, LogOut, ShoppingBag, DollarSign, MapPin, CreditCard, LockKeyhole, Eye, EyeOff, Syringe, Truck, ExternalLink, Lock } from 'lucide-react';
 import ReconstitutionCalculator, { mgProducts } from '@/components/ReconstitutionCalculator';
 import ProtocolTracker from '@/components/ProtocolTracker';
 import { Button } from '@/components/ui/button';
@@ -101,11 +101,18 @@ const Account = () => {
   const totalSpent = validOrders.reduce((sum, o) => sum + (o.total || 0), 0);
   const emailChanged = email.trim().toLowerCase() !== (user.email || '').toLowerCase();
 
+  // Las herramientas se desbloquean con la primera compra pagada. "Confirmado"
+  // es el momento en que se verifica el pago (tarjeta o SPEI), así que ese
+  // estado y los posteriores cuentan; "pendiente" y "cancelado" no.
+  const PAID_STATUSES = ['confirmado', 'enviado', 'entregado'];
+  const paidOrders = orders.filter((o) => PAID_STATUSES.includes(o.status));
+  const toolsUnlocked = paidOrders.length > 0;
+
   // Péptidos que este cliente ya compró, para pre-cargar la calculadora.
   // Solo los que el catálogo maneja en mg (los únicos que se reconstituyen).
   const purchased = (() => {
     const seen = new Map();
-    for (const o of validOrders) {
+    for (const o of paidOrders) {
       for (const it of o.items || []) {
         const match = mgProducts.find((p) => p.name.toLowerCase() === (it.name || '').toLowerCase());
         if (!match) continue;
@@ -188,17 +195,33 @@ const Account = () => {
         </TabsList>
 
         <TabsContent value="tools" className="mt-5 space-y-8">
-          <section>
-            <h3 className="font-heading font-semibold text-lg mb-1">{t('calc.title')}</h3>
-            <p className="text-sm text-muted-foreground mb-4">{t('account.tools.calcHint')}</p>
-            <ReconstitutionCalculator variant="full" purchased={purchased} onTrack={trackProtocol} syncUrl={false} />
-          </section>
+          {!toolsUnlocked ? (
+            <Card className="p-10 text-center" data-testid="tools-locked">
+              <Lock className="h-8 w-8 mx-auto mb-4 text-muted-foreground opacity-50" />
+              <h3 className="font-heading font-semibold text-lg mb-2">{t('account.tools.lockedTitle')}</h3>
+              <p className="text-sm text-muted-foreground max-w-md mx-auto leading-relaxed">
+                {orders.length === 0 ? t('account.tools.lockedNoOrders') : t('account.tools.lockedPending')}
+              </p>
+              <div className="flex flex-wrap gap-2 justify-center mt-5">
+                <Link to="/calculadora"><Button variant="outline">{t('account.tools.publicCalc')}</Button></Link>
+                <Link to="/catalogo"><Button>{t('account.exploreCatalog')}</Button></Link>
+              </div>
+            </Card>
+          ) : (
+            <>
+              <section>
+                <h3 className="font-heading font-semibold text-lg mb-1">{t('calc.title')}</h3>
+                <p className="text-sm text-muted-foreground mb-4">{t('account.tools.calcHint')}</p>
+                <ReconstitutionCalculator variant="full" purchased={purchased} onTrack={trackProtocol} syncUrl={false} />
+              </section>
 
-          <section>
-            <h3 className="font-heading font-semibold text-lg mb-1">{t('account.tools.trackTitle')}</h3>
-            <p className="text-sm text-muted-foreground mb-4">{t('account.tools.trackHint')}</p>
-            <ProtocolTracker protocols={protocols} onChange={loadProtocols} />
-          </section>
+              <section>
+                <h3 className="font-heading font-semibold text-lg mb-1">{t('account.tools.trackTitle')}</h3>
+                <p className="text-sm text-muted-foreground mb-4">{t('account.tools.trackHint')}</p>
+                <ProtocolTracker protocols={protocols} onChange={loadProtocols} />
+              </section>
+            </>
+          )}
         </TabsContent>
 
         <TabsContent value="orders" className="mt-5">

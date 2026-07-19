@@ -15,8 +15,8 @@ const GROUPS = [
     desc: 'Si es tu primera vez, este es el orden correcto.',
     items: [
       { slug: 'empieza-aqui', icon: Baby },
-      { slug: 'que-son-los-peptidos', icon: BookOpen },
-      { slug: 'glosario-simple', icon: Library },
+      { slug: 'peptidos-explicados', icon: BookOpen },
+      { slug: 'terminos-sin-jerga', icon: Library },
       { slug: 'preguntas-principiantes', icon: HelpCircle },
     ],
   },
@@ -24,7 +24,7 @@ const GROUPS = [
     title: 'Manejo del material',
     desc: 'Lo operativo: preparar, guardar y no echar a perder un vial.',
     items: [
-      { slug: 'como-reconstituir', icon: Syringe },
+      { slug: 'reconstitucion-paso-a-paso', icon: Syringe },
       { slug: 'conservacion', icon: Snowflake },
       { slug: 'protocolos', icon: Layers },
       { slug: 'mitos', icon: Sparkles },
@@ -34,8 +34,8 @@ const GROUPS = [
     title: 'Calidad y cumplimiento',
     desc: 'Cómo verificamos lo que vendemos y en qué marco se mueve.',
     items: [
-      { slug: 'control-calidad', icon: ShieldCheck },
-      { slug: 'pureza-hplc', icon: Microscope },
+      { slug: 'como-verificamos-cada-lote', icon: ShieldCheck },
+      { slug: 'que-significa-99-por-ciento', icon: Microscope },
       { slug: 'legalidad', icon: Scale },
       { slug: 'preguntas-frecuentes', icon: HelpCircle },
     ],
@@ -45,7 +45,7 @@ const GROUPS = [
 const TOOLS = [
   { to: '/asesor', icon: Target, title: 'Asesor de péptidos', desc: 'Responde tres pasos y te armamos un plan con compuestos, duración, viales y costo.' },
   { to: '/calculadora', icon: Calculator, title: 'Calculadora de reconstitución', desc: 'Cuánta agua agregar y cuántas rayitas jalar en la jeringa.' },
-  { to: '/compendio', icon: FlaskConical, title: 'Compendio de compuestos', desc: 'Ficha técnica de cada compuesto del catálogo, con buscador y filtros.' },
+  { to: '/compuestos', icon: FlaskConical, title: 'Fichas de compuestos', desc: 'Ficha técnica de cada compuesto del catálogo, con buscador y filtros.' },
   { to: '/educacion', icon: BookOpen, title: 'Literatura y fuentes', desc: 'Referencias reales revisadas por pares sobre los compuestos que manejamos.' },
 ];
 

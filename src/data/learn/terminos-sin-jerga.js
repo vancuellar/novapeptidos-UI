@@ -1,6 +1,6 @@
 // Glosario en lenguaje llano, con ejemplos numéricos. RUO.
 const page = {
-  slug: 'glosario-simple',
+  slug: 'terminos-sin-jerga',
   title: 'Las palabras raras, traducidas',
   subtitle:
     'Treinta y tres términos que vas a encontrar en etiquetas, certificados y artículos, explicados sin jerga y con un ejemplo con números en cada uno.',
@@ -209,9 +209,9 @@ const page = {
       intro: 'Este glosario es la versión llana. Aquí está el resto.',
       items: [
         {
-          title: 'Glosario técnico',
+          title: 'Vocabulario técnico: el idioma de un COA',
           body: 'Las mismas ideas con nomenclatura formal, estructura química y referencias a la literatura.',
-          to: '/aprende/glosario-tecnico',
+          to: '/aprende/glosario-tecnico-tecnico',
           cta: 'Ver versión técnica',
         },
         {
@@ -221,9 +221,9 @@ const page = {
           cta: 'Leer la guía',
         },
         {
-          title: 'Qué son los péptidos',
+          title: 'Péptidos explicados desde cero',
           body: 'De aminoácido a molécula funcional, clasificación por grupo y por qué se estudian.',
-          to: '/aprende/que-son-los-peptidos',
+          to: '/aprende/peptidos-explicados',
           cta: 'Leer fundamentos',
         },
         {
@@ -237,8 +237,8 @@ const page = {
   ],
   related: [
     { to: '/aprende/empieza-aqui', title: 'Empieza aquí', desc: 'Tu primera vez con un vial, en 5 minutos.' },
-    { to: '/aprende/que-son-los-peptidos', title: 'Qué son los péptidos', desc: 'Fundamentos de química y clasificación.' },
-    { to: '/aprende/como-reconstituir', title: 'Cómo reconstituir', desc: 'Del polvo a la solución, con volúmenes reales.' },
+    { to: '/aprende/peptidos-explicados', title: 'Péptidos explicados desde cero', desc: 'Fundamentos de química y clasificación.' },
+    { to: '/aprende/reconstitucion-paso-a-paso', title: 'Cómo reconstituir', desc: 'Del polvo a la solución, con volúmenes reales.' },
     { to: '/info/calidad', title: 'Calidad y COA', desc: 'Qué se mide en cada lote y cómo leerlo.' },
   ],
 };

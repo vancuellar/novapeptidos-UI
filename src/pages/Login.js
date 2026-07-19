@@ -10,6 +10,16 @@ import { toast } from 'sonner';
 import { useAuth } from '@/context/AuthContext';
 import { useLanguage } from '@/context/LanguageContext';
 
+// Casilla de consentimiento. Etiqueta clicable completa: en móvil el cuadrito
+// solo es un blanco de 20 px y la gente falla el toque.
+const Consent = ({ checked, onChange, testid, children }) => (
+  <label className="flex items-start gap-3 cursor-pointer">
+    <input type="checkbox" checked={checked} onChange={onChange} data-testid={testid}
+      className="h-5 w-5 mt-0.5 shrink-0 accent-[hsl(var(--primary))] cursor-pointer" />
+    <span className="text-sm leading-relaxed">{children}</span>
+  </label>
+);
+
 const Login = () => {
   const { login, register } = useAuth();
   const { t } = useLanguage();
@@ -21,7 +31,15 @@ const Login = () => {
   const [regEmail, setRegEmail] = useState('');
   const [regPassword, setRegPassword] = useState('');
   const [showRegPassword, setShowRegPassword] = useState(false);
+  const [regConfirm, setRegConfirm] = useState('');
   const [loading, setLoading] = useState(false);
+  // Los dos primeros son obligatorios; los otros tres son opt-in real (nacen apagados).
+  const [consents, setConsents] = useState({
+    age_confirmed: false, privacy_accepted: false,
+    promos: false, marketing_email: false, marketing_sms: false,
+  });
+  const setConsent = (key) => (e) => setConsents((prev) => ({ ...prev, [key]: e.target.checked }));
+  const canRegister = consents.age_confirmed && consents.privacy_accepted;
 
   const submitLogin = async (e) => {
     e.preventDefault();
@@ -37,9 +55,11 @@ const Login = () => {
 
   const submitRegister = async (e) => {
     e.preventDefault();
+    if (regPassword !== regConfirm) { toast.error(t('auth.reset.mismatch')); return; }
+    if (!canRegister) { toast.error(t('auth.consent.required')); return; }
     setLoading(true);
     try {
-      await register(regName, regEmail, regPassword);
+      await register(regName, regEmail, regPassword, consents);
       toast.success(t('auth.toast.created'));
       navigate('/cuenta');
     } catch (err) {
@@ -110,8 +130,41 @@ const Login = () => {
                 <div>
                   <Label>{t('auth.password')}</Label>
                   {passwordField(regPassword, (e) => setRegPassword(e.target.value), showRegPassword, setShowRegPassword, 'register-password-input')}
+                  <p className="text-xs text-muted-foreground mt-1.5">{t('auth.passwordHint')}</p>
                 </div>
-                <Button type="submit" size="lg" className="w-full" disabled={loading} data-testid="register-submit-button">{loading ? t('auth.register.loading') : t('auth.register.submit')}</Button>
+                <div>
+                  <Label>{t('auth.confirmPassword')}</Label>
+                  {passwordField(regConfirm, (e) => setRegConfirm(e.target.value), showRegPassword, setShowRegPassword, 'register-confirm-input')}
+                </div>
+
+                <div className="space-y-3 pt-2" data-testid="register-consents">
+                  <Consent checked={consents.age_confirmed} onChange={setConsent('age_confirmed')} testid="consent-age">
+                    {t('auth.consent.age')}{' '}
+                    <Link to="/info/terminos" target="_blank" className="text-[hsl(var(--primary))] font-medium hover:underline underline-offset-2">{t('auth.terms.service')}</Link>
+                  </Consent>
+                  <Consent checked={consents.promos} onChange={setConsent('promos')} testid="consent-promos">
+                    {t('auth.consent.promos')}
+                  </Consent>
+                  <Consent checked={consents.marketing_email} onChange={setConsent('marketing_email')} testid="consent-email">
+                    {t('auth.consent.email')}
+                  </Consent>
+                  <Consent checked={consents.marketing_sms} onChange={setConsent('marketing_sms')} testid="consent-sms">
+                    {t('auth.consent.sms')}
+                  </Consent>
+                  <Consent checked={consents.privacy_accepted} onChange={setConsent('privacy_accepted')} testid="consent-privacy">
+                    {t('auth.consent.privacy')}{' '}
+                    <Link to="/info/privacidad" target="_blank" className="text-[hsl(var(--primary))] font-medium hover:underline underline-offset-2">{t('auth.terms.privacy')}</Link>
+                  </Consent>
+                </div>
+
+                <p className="text-xs text-muted-foreground leading-relaxed">
+                  {t('auth.consent.statement')}
+                </p>
+
+                <Button type="submit" size="lg" className="w-full" disabled={loading || !canRegister} data-testid="register-submit-button">
+                  {loading ? t('auth.register.loading') : t('auth.consent.submit')}
+                </Button>
+                {!canRegister && <p className="text-xs text-muted-foreground text-center">{t('auth.consent.required')}</p>}
               </form>
             </TabsContent>
           </Tabs>

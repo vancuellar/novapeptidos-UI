@@ -45,11 +45,11 @@ const PEPTIDE_CATEGORIES = fallbackCategories
 const LEARN_LINKS = [
   { to: '/aprende', label: 'Péptidos de investigación', desc: 'El hub con todas las guías y herramientas' },
   { to: '/aprende/empieza-aqui', label: 'Empieza aquí', desc: 'Tu primera vez, en 5 minutos' },
-  { to: '/aprende/que-son-los-peptidos', label: 'Qué son los péptidos', desc: 'Guía de introducción' },
-  { to: '/aprende/glosario-simple', label: 'Glosario simple', desc: 'Los términos sin jerga' },
-  { to: '/compendio', label: 'Compendio de compuestos', desc: 'Ficha técnica de cada compuesto' },
+  { to: '/aprende/peptidos-explicados', label: 'Péptidos explicados desde cero', desc: 'Guía de introducción' },
+  { to: '/aprende/terminos-sin-jerga', label: 'Términos sin jerga', desc: 'Los términos sin jerga' },
+  { to: '/compuestos', label: 'Fichas de compuestos', desc: 'Ficha técnica de cada compuesto' },
   { to: '/aprende/protocolos', label: 'Protocolos por objetivo', desc: 'Qué se combina con qué y por qué' },
-  { to: '/aprende/como-reconstituir', label: 'Cómo reconstituir', desc: 'El procedimiento paso a paso' },
+  { to: '/aprende/reconstitucion-paso-a-paso', label: 'Cómo reconstituir', desc: 'El procedimiento paso a paso' },
   { to: '/calculadora', label: 'Calculadora de dosis', desc: 'Herramienta gratuita' },
 ];
 

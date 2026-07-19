@@ -172,12 +172,12 @@ const page = {
   ],
   related: [
     {
-      to: '/aprende/control-calidad',
+      to: '/aprende/como-verificamos-cada-lote',
       title: 'Control de calidad de un lote',
       desc: 'Qué análisis respaldan la trazabilidad de un reactivo y qué es —y qué no es— un certificado de análisis.',
     },
     {
-      to: '/aprende/pureza-hplc',
+      to: '/aprende/que-significa-99-por-ciento',
       title: 'Pureza por HPLC',
       desc: 'Cómo se mide la pureza de un péptido y por qué el método declarado importa tanto como el número.',
     },
