@@ -17,7 +17,7 @@ const OrderConfirmation = () => {
   }, [orderNumber]);
 
   return (
-    <div className="max-w-2xl mx-auto px-4 sm:px-6 py-12">
+    <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
       <Card className="p-8 text-center">
         <CheckCircle2 className="h-16 w-16 mx-auto text-[hsl(var(--success))] mb-4" />
         <h1 className="font-heading text-2xl font-bold">{t('order.received')}</h1>
