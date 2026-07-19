@@ -171,7 +171,7 @@ const Header = () => {
                     <DropdownMenuItem onClick={() => navigate('/distribuidor')} data-testid="header-distributor-link"><LayoutDashboard className="h-4 w-4 mr-2" /> {t('header.distributor')}</DropdownMenuItem>
                   )}
                   <DropdownMenuSeparator />
-                  <DropdownMenuItem onClick={() => { logout(); navigate('/'); }} data-testid="header-logout-button"><LogOut className="h-4 w-4 mr-2" /> {t('header.logout')}</DropdownMenuItem>
+                  <DropdownMenuItem onClick={() => { logout(); navigate('/'); }} data-testid="header-logout-button" className="bg-destructive/10 text-destructive focus:bg-destructive focus:text-white [&_svg]:text-destructive focus:[&_svg]:text-white"><LogOut className="h-4 w-4 mr-2" /> {t('header.logout')}</DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
             ) : (
