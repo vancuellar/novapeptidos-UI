@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { LayoutDashboard, Package, ShoppingBag, Plus, Pencil, Trash2, DollarSign, Users, Clock, TrendingUp, MapPin, Phone, Receipt, Store, Copy } from 'lucide-react';
+import { LayoutDashboard, Package, ShoppingBag, Plus, Pencil, Trash2, DollarSign, Users, Clock, TrendingUp, MapPin, Phone, Receipt, Store, Copy, Boxes } from 'lucide-react';
+import { fallbackProducts } from '@/data/fallbackCatalog';
 import { ResponsiveContainer, AreaChart, Area, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip } from 'recharts';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -28,6 +29,16 @@ const STATUS_COLORS = {
 };
 const EMPTY = { name: '', slug: '', category: '', short_description: '', description: '', presentation: '', form: 'Liofilizado', purity: '99%', price: 0, stock: 0, image_url: '', coa_url: '', batch_number: '', storage: 'Conservar a -20 C, protegido de la luz.', featured: false, is_new: false };
 
+// Todas las presentaciones del catalogo curado (key = id::presentacion, igual que el carrito)
+const STOCK_VARIANTS = fallbackProducts.flatMap((p) => {
+  const vs = p.variants?.length ? p.variants : [{ presentation: p.presentation }];
+  return vs.map((v) => ({
+    key: p.variants?.length ? `${p.id}::${v.presentation}` : p.id,
+    name: p.name,
+    presentation: v.presentation || '',
+  }));
+});
+
 const CHART_TOOLTIP_STYLE = {
   backgroundColor: 'hsl(var(--card))',
   border: '1px solid hsl(var(--border))',
@@ -48,6 +59,8 @@ const Admin = () => {
   const [analytics, setAnalytics] = useState(null);
   const [customerOpen, setCustomerOpen] = useState(null);
   const [distributors, setDistributors] = useState([]);
+  const [stockMap, setStockMap] = useState({});
+  const [stockFilter, setStockFilter] = useState('');
   const [distForm, setDistForm] = useState({ name: '', email: '', commission: 25 });
   const [distDialogOpen, setDistDialogOpen] = useState(false);
   const [distCreated, setDistCreated] = useState(null);
@@ -65,6 +78,7 @@ const Admin = () => {
     api.get('/admin/customers').then((r) => setCustomers(r.data)).catch(() => {});
     api.get('/admin/analytics').then((r) => setAnalytics(r.data)).catch(() => {});
     api.get('/admin/distributors').then((r) => setDistributors(r.data)).catch(() => {});
+    api.get('/stock').then((r) => setStockMap(r.data || {})).catch(() => {});
   }, []);
 
   useEffect(() => { if (user?.role === 'admin') loadAll(); }, [user, loadAll]);
@@ -124,6 +138,14 @@ const Admin = () => {
 
   const copyText = (text, msg) => { navigator.clipboard?.writeText(text); toast.success(msg); };
 
+  const saveStock = async (key, patch) => {
+    const prev = stockMap[key] || { qty: 0, in_hand: false };
+    const next = { ...prev, ...patch };
+    setStockMap((m) => ({ ...m, [key]: next }));
+    try { await api.put('/admin/stock', { key, ...next }); }
+    catch { setStockMap((m) => ({ ...m, [key]: prev })); toast.error(t('admin.toast.saveError')); }
+  };
+
   const fmtDate = (iso) => (iso ? new Date(iso).toLocaleDateString(language) : '—');
   const fmtMonth = (m) => new Date(`${m}-02T00:00:00`).toLocaleDateString(language, { month: 'short', year: '2-digit' });
 
@@ -158,7 +180,54 @@ const Admin = () => {
           <TabsTrigger value="distributors"><Store className="h-4 w-4 mr-1.5" /> {t('admin.distributorsTab')}</TabsTrigger>
           <TabsTrigger value="orders"><ShoppingBag className="h-4 w-4 mr-1.5" /> {t('admin.ordersTab')}</TabsTrigger>
           <TabsTrigger value="products"><Package className="h-4 w-4 mr-1.5" /> {t('admin.productsTab')}</TabsTrigger>
+          <TabsTrigger value="stock"><Boxes className="h-4 w-4 mr-1.5" /> {t('admin.stockTab')}</TabsTrigger>
         </TabsList>
+
+        <TabsContent value="stock" className="mt-5">
+          <div className="flex flex-wrap items-center justify-between gap-3 mb-4">
+            <h3 className="font-heading font-semibold">{t('admin.stock.title', { count: STOCK_VARIANTS.length })}</h3>
+            <Input className="w-64" placeholder={t('admin.stock.search')} value={stockFilter} onChange={(e) => setStockFilter(e.target.value)} data-testid="admin-stock-search" />
+          </div>
+          <p className="text-xs text-muted-foreground mb-3">{t('admin.stock.hint')}</p>
+          <Card className="overflow-x-auto">
+            <Table data-testid="admin-stock-table">
+              <TableHeader>
+                <TableRow>
+                  <TableHead>{t('admin.table.name')}</TableHead><TableHead>{t('admin.presentation')}</TableHead>
+                  <TableHead>{t('admin.stock.qty')}</TableHead><TableHead>{t('admin.stock.inHand')}</TableHead>
+                  <TableHead>{t('admin.stock.shownAs')}</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {STOCK_VARIANTS
+                  .filter((v) => (v.name + ' ' + v.presentation).toLowerCase().includes(stockFilter.toLowerCase()))
+                  .map((v) => {
+                    const s = stockMap[v.key] || { qty: 0, in_hand: false };
+                    const inHand = s.in_hand && s.qty > 0;
+                    return (
+                      <TableRow key={v.key}>
+                        <TableCell className="font-medium text-sm">{v.name}</TableCell>
+                        <TableCell className="font-mono-tech text-xs">{v.presentation}</TableCell>
+                        <TableCell>
+                          <Input type="number" min="0" className="w-20 h-8" value={s.qty}
+                            onChange={(e) => saveStock(v.key, { qty: Math.max(0, Number(e.target.value) || 0) })} />
+                        </TableCell>
+                        <TableCell>
+                          <input type="checkbox" className="h-4 w-4 accent-[hsl(var(--primary))]" checked={!!s.in_hand}
+                            onChange={(e) => saveStock(v.key, { in_hand: e.target.checked })} />
+                        </TableCell>
+                        <TableCell>
+                          {inHand
+                            ? <span className="text-xs text-[hsl(var(--success))]">✓ {t('admin.stock.immediate')}</span>
+                            : <span className="text-xs text-muted-foreground">{t('admin.stock.oneWeek')}</span>}
+                        </TableCell>
+                      </TableRow>
+                    );
+                  })}
+              </TableBody>
+            </Table>
+          </Card>
+        </TabsContent>
 
         <TabsContent value="sales" className="mt-5">
           {!analytics || analytics.monthly.length === 0 ? (

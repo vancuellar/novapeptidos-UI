@@ -26,22 +26,23 @@ const ProductDetail = () => {
   const [qty, setQty] = useState(1);
   const [variantIdx, setVariantIdx] = useState(0);
   const [loading, setLoading] = useState(true);
+  const [stockMap, setStockMap] = useState(null);
 
   useEffect(() => {
     setLoading(true);
     setQty(1);
     setVariantIdx(0);
     window.scrollTo(0, 0);
-    api.get(`/products/${slug}`).then((r) => {
-      if (!r.data || typeof r.data !== 'object' || !r.data.slug) throw new Error('unexpected product response');
-      setProduct(r.data);
-      api.get(`/products?category=${r.data.category}`).then((rr) => setRelated(Array.isArray(rr.data) ? rr.data.filter((p) => p.slug !== slug).slice(0, 4) : []));
-    }).catch(() => {
-      const fallbackProduct = getFallbackProductBySlug(slug);
-      setProduct(fallbackProduct || null);
-      setRelated(fallbackProduct ? getFallbackProductsByCategory(fallbackProduct.category).filter((p) => p.slug !== slug).slice(0, 4) : []);
-    }).finally(() => setLoading(false));
+    // El catalogo curado es la fuente de verdad (mismos ids que el inventario vivo).
+    const fallbackProduct = getFallbackProductBySlug(slug);
+    setProduct(fallbackProduct || null);
+    setRelated(fallbackProduct ? getFallbackProductsByCategory(fallbackProduct.category).filter((p) => p.slug !== slug).slice(0, 4) : []);
+    setLoading(false);
   }, [slug]);
+
+  useEffect(() => {
+    api.get('/stock').then((r) => setStockMap(r.data || null)).catch(() => setStockMap(null));
+  }, []);
 
   if (loading) return <div className="max-w-6xl mx-auto px-4 py-10"><Skeleton className="h-96 rounded-xl" /></div>;
   if (!product) return <div className="max-w-6xl mx-auto px-4 py-20 text-center">{t('product.notFound')} <Link to="/catalogo" className="text-[hsl(var(--primary))]">{t('product.backToCatalog')}</Link></div>;
@@ -50,7 +51,10 @@ const ProductDetail = () => {
   const localizedRelated = localizeProducts(related, language);
   const variants = product.variants || [];
   const active = variants[variantIdx] || { price: localizedProduct.price, presentation: localizedProduct.presentation, stock: localizedProduct.stock, batch_number: localizedProduct.batch_number };
-  const out = (active.stock ?? 0) <= 0;
+  const stockKey = variants.length ? `${product.id}::${active.presentation}` : product.id;
+  const stockEntry = stockMap ? stockMap[stockKey] : null;
+  // Siempre se puede comprar: en mano = inmediato; si no, ~1 semana (Christian resurte expres).
+  const inHand = !!(stockEntry && stockEntry.in_hand && stockEntry.qty > 0);
   const specs = [
     { label: t('common.purity'), value: localizedProduct.purity, testid: 'pdp-purity' },
     { label: t('common.presentation'), value: active.presentation },
@@ -120,8 +124,10 @@ const ProductDetail = () => {
 
           <p className="mt-4 text-sm leading-relaxed text-muted-foreground">{localizedProduct.short_description}</p>
 
-          <div className="mt-5">
-            {out ? <Badge variant="outline" className="text-muted-foreground">{t('product.outOfStock')}</Badge> : <span className="text-sm text-[hsl(var(--success))]">✓ {t('product.inStock', { stock: active.stock })}</span>}
+          <div className="mt-5" data-testid="pdp-availability">
+            {inHand
+              ? <span className="text-sm text-[hsl(var(--success))]">✓ {t('product.inHandStock', { stock: stockEntry.qty })}</span>
+              : <Badge variant="outline" className="border-[hsl(var(--warning-border))] bg-[hsl(var(--warning))] text-[hsl(var(--warning-foreground))]">{t('product.oneWeekShip')}</Badge>}
           </div>
 
           <div className="mt-5 flex items-center gap-3">
@@ -130,7 +136,7 @@ const ProductDetail = () => {
               <span className="w-10 text-center font-medium" data-testid="pdp-qty">{qty}</span>
               <Button variant="ghost" size="icon" onClick={() => setQty(qty + 1)} data-testid="pdp-qty-increase"><Plus className="h-4 w-4" /></Button>
             </div>
-            <Button className="flex-1" size="lg" disabled={out} onClick={addToCart} data-testid="pdp-add-to-cart-button"><ShoppingCart className="h-4 w-4 mr-2" /> {t('product.addToCart')}</Button>
+            <Button className="flex-1" size="lg" onClick={addToCart} data-testid="pdp-add-to-cart-button"><ShoppingCart className="h-4 w-4 mr-2" /> {t('product.addToCart')}</Button>
           </div>
 
           <div className="mt-5 grid grid-cols-2 gap-3">
