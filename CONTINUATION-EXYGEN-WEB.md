@@ -122,7 +122,66 @@
 
 ---
 
+## 8ter. ROADMAP §10 EJECUTADO (2026-07-19, tarde) — frontend EN VIVO, backend PENDIENTE DE DESPLEGAR
+
+**Los 7 puntos del roadmap están construidos y el frontend ya está en producción.** El código del
+backend está en `main` del repo RBAC pero **NO se ha desplegado al servidor**: el clasificador
+bloquea `ssh` en modo automático. Hay que correr, en un Claude interactivo:
+`ssh -i ~/.ssh/id_ed25519 ubuntu@44.204.127.242 "cd /opt/exygen/app && sudo git pull && sudo docker compose up -d --build"`
+**Hasta que eso pase, las funciones que dependen del backend nuevo no responden** (pestaña Pedidos
+del distribuidor, seguimiento de consumo, recompra en admin, guías de envío y estatus en el chat).
+
+Antes de construir se escaneó a fondo exomapeptides.mx (sitemaps, bundles JS del asesor, de las
+7 calculadoras, del comparador y de stacks, y las 16 páginas de contenido). Hallazgo clave: su
+asesor no tiene lógica propia — es un formulario de ~30 campos que manda todo a una edge function
+de Supabase (`ai-peptide-advisor`) y renderiza el JSON que devuelve un LLM. Sus stacks son
+contenido estático sin precio ni carrito.
+
+1. **Distribuidores ven pedidos y envíos de sus clientes.** `GET /distributor/orders` devuelve las
+   órdenes atribuidas con estatus, contacto, destino y guía (nunca el margen interno). En el portal
+   hay una pestaña *Pedidos y envíos* con filtros de periodo y estado, guía copiable y enlace de
+   rastreo. Para que haya guía, el admin la captura: nueva columna *Guía* en Pedidos + diálogo con
+   paquetería/guía/ETA. La URL de rastreo se arma sola (FedEx, DHL, Estafeta, UPS, Paquete Express,
+   Redpack, Correos de México) y capturar una guía pasa el pedido a *enviado*.
+2. **Chat IA con estatus de envío.** `/api/ai/chat` ahora acepta el token de sesión. Si el mensaje
+   tiene intención de envío, el servidor adjunta al system prompt los pedidos reales del usuario
+   (por número `EX-AAAAMMDD-1234` o por sesión) y el prompt le prohíbe inventar guías o fechas.
+   Nunca expone dirección ni datos personales, ni órdenes ajenas.
+3. **Calculadora pública acotada + completa en el área privada.** El componente
+   `src/components/ReconstitutionCalculator.js` tiene variantes `basic` y `full`. La pública
+   perdió modos, dosis de referencia y exportar, y anuncia lo que gana el cliente al entrar.
+4. **Calculadora consciente de compras.** En *Mi cuenta > Mis herramientas* pre-carga con un clic
+   los péptidos que el cliente compró, con su presentación, derivados de sus órdenes.
+5. **Seguimiento de consumo y recompra.** Colección `protocols` + `/me/protocols`. Con dosis,
+   frecuencia y viales calcula dosis restantes y fecha de fin; avisa a 14 días o menos.
+   `GET /admin/repurchase` alimenta la pestaña *Recompra* del admin.
+6. **Plan estilo Exoma.** `/asesor` ahora es Objetivo → Perfil (experiencia, stack, duración) →
+   Presupuesto y salud → **PLAN**. El plan trae estrategia, métricas del ciclo, compuestos con
+   dosis de referencia, frecuencia, viales y costo, primeras dos semanas, puntos de control,
+   qué NO hacer, qué pasa si cambia el presupuesto, expectativas honestas y advertencias según las
+   condiciones de salud marcadas. **Motor de reglas propio** (`src/data/advisorPlan.js`), sin LLM:
+   reproducible y auditable. Elige la presentación más barata **para el ciclo completo**, no el
+   vial más barato. Botones *Agregar todo al carrito* y *Copiar plan*.
+7. **Paridad de contenido.** Nuevo `/aprende` (hub) y `/aprende/:slug` con renderizador de
+   secciones tipadas (prose, list, steps, table, faq, glossary con buscador, callout, cards) e
+   índice lateral. **13 guías**: empieza aquí, qué son los péptidos, glosario simple (35 términos),
+   glosario técnico (32), cómo reconstituir, conservación, protocolos por objetivo, mitos, control
+   de calidad, pureza HPLC, legalidad, FAQ (47 preguntas) y FAQ de principiantes (38). Además
+   `/compendio`, generado del propio catálogo (102 compuestos, buscador y filtros). El menú
+   **Péptidos** es de dos columnas (Por categoría + Aprende) y el footer ganó columna *Aprende*.
+
+**Pruebas:** `test_core.py` era un script muerto que importaba `openai` (el backend usa Gemini) y
+ni siquiera cargaba. Ahora son **22 pruebas offline** de la lógica de negocio (número de pedido,
+intención de envío, URL de rastreo, proyección de consumo, rollup de distribuidor). Corren con
+`pytest test_core.py -q` y pasan todas. El frontend no tiene suite propia; se verificó con build
+limpio y con el navegador.
+
+---
+
 ## 10. ROADMAP — PRÓXIMA SESIÓN (orden de Christian, 2026-07-19)
+
+> **Estado: los 7 puntos de abajo YA SE EJECUTARON.** Ver §8ter. Lo único que falta es
+> desplegar el backend al servidor (bloqueado por el clasificador en modo automático).
 
 **Antes de construir: ESCANEAR PROFUNDO todas y cada una de las páginas de exomapeptides.mx** (Inicio, Catálogo, menú "Péptidos" completo, Certificados, Herramientas, /asesor-ai, blog, cada página de "Aprende") con el navegador. El objetivo NO es copiar el texto: es cubrir la MISMA información con otras palabras, otro orden y otro diseño.
 
