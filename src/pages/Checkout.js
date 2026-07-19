@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Wallet, CreditCard, Store, Landmark, Truck, ShieldCheck, Package } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import { Wallet, CreditCard, Store, Landmark, Truck, ShieldCheck, Package, UserRound, MapPin, LogIn } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -17,7 +18,7 @@ import { useLanguage } from '@/context/LanguageContext';
 const ICONS = { Wallet, CreditCard, Store, Landmark, Truck };
 
 const Checkout = () => {
-  const { items, subtotal, discount, promo, clearCart } = useCart();
+  const { items, subtotal, discount, discountRate, clearCart } = useCart();
   const { user } = useAuth();
   const { t } = useLanguage();
   const navigate = useNavigate();
@@ -50,7 +51,6 @@ const Checkout = () => {
         payment_method: payment,
         shipping: 0,
         discount,
-        promo_code: promo || null,
       };
       const res = await api.post('/orders', payload);
       clearCart();
@@ -65,7 +65,23 @@ const Checkout = () => {
 
   return (
     <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-      <h1 className="font-heading text-2xl sm:text-3xl font-bold tracking-tight mb-6">{t('checkout.title')}</h1>
+      <h1 className="font-heading text-2xl sm:text-3xl font-bold tracking-tight mb-2">{t('checkout.title')}</h1>
+      {!user && (
+        <p className="text-sm text-muted-foreground mb-4" data-testid="checkout-login-hint">
+          {t('checkout.haveAccount')} <Link to="/login" className="text-[hsl(var(--primary))] font-medium hover:underline">{t('checkout.loginLink')}</Link> · {t('checkout.guestOk')}
+        </p>
+      )}
+      <div className="flex items-center gap-2 sm:gap-3 mb-6 text-xs sm:text-sm" data-testid="checkout-stepper">
+        {[{ i: UserRound, l: t('checkout.step1') }, { i: MapPin, l: t('checkout.step2') }, { i: CreditCard, l: t('checkout.step3') }].map((s, idx) => (
+          <React.Fragment key={idx}>
+            {idx > 0 && <div className="h-px flex-1 bg-border" />}
+            <span className="inline-flex items-center gap-1.5 font-medium text-[hsl(var(--primary))]">
+              <span className="h-6 w-6 rounded-full bg-[hsl(var(--primary))]/10 border border-[hsl(var(--primary))]/30 flex items-center justify-center"><s.i className="h-3 w-3" /></span>
+              {s.l}
+            </span>
+          </React.Fragment>
+        ))}
+      </div>
       <form onSubmit={submit} className="grid lg:grid-cols-12 gap-6">
         <div className="lg:col-span-8 space-y-6">
           <Card className="p-5">
@@ -115,7 +131,7 @@ const Checkout = () => {
             <Separator className="my-4" />
             <div className="space-y-1.5 text-sm">
               <div className="flex justify-between"><span className="text-muted-foreground">{t('common.subtotal')}</span><span>{formatMXN(subtotal)}</span></div>
-              {discount > 0 && <div className="flex justify-between text-[hsl(var(--success))]"><span>Descuento ({promo})</span><span>− {formatMXN(discount)}</span></div>}
+              {discount > 0 && <div className="flex justify-between text-[hsl(var(--success))]"><span>{t('discount.line', { rate: Math.round(discountRate * 100) })}</span><span>− {formatMXN(discount)}</span></div>}
               <div className="flex justify-between"><span className="text-muted-foreground">{t('common.shipping')}</span><span className="text-muted-foreground">{t('cart.shippingTBD')}</span></div>
             </div>
             <Separator className="my-4" />

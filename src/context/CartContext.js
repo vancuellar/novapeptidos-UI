@@ -47,26 +47,20 @@ export const CartProvider = ({ children }) => {
   const subtotal = items.reduce((sum, i) => sum + i.price * i.quantity, 0);
   const count = items.reduce((sum, i) => sum + i.quantity, 0);
 
-  // Códigos de descuento
-  const PROMOS = { INTRO10: 0.10 };
-  const [promo, setPromo] = useState(() => (localStorage.getItem('np_promo') || ''));
-  useEffect(() => { localStorage.setItem('np_promo', promo); }, [promo]);
-  const discountRate = PROMOS[promo] || 0;
+  // Descuento AUTOMÁTICO por volumen (sin código): 10% lanzamiento, 15% ≥ $20k, 20% ≥ $40k.
+  // El backend aplica la misma regla; esto es solo para mostrarlo en vivo.
+  const DISCOUNT_TIERS = [
+    { min: 40000, rate: 0.20 },
+    { min: 20000, rate: 0.15 },
+    { min: 0, rate: 0.10 },
+  ];
+  const tier = DISCOUNT_TIERS.find((d) => subtotal >= d.min) || DISCOUNT_TIERS[DISCOUNT_TIERS.length - 1];
+  const discountRate = items.length ? tier.rate : 0;
   const discount = Math.round(subtotal * discountRate);
-  const applyPromo = (code) => {
-    const c = (code || '').trim().toUpperCase();
-    if (PROMOS[c]) {
-      setPromo(c);
-      toast.success('Código aplicado', { description: `${Math.round(PROMOS[c] * 100)}% de descuento` });
-      return true;
-    }
-    toast.error('Código no válido');
-    return false;
-  };
-  const clearPromo = () => setPromo('');
+  const nextTier = subtotal < 20000 ? { min: 20000, rate: 0.15 } : subtotal < 40000 ? { min: 40000, rate: 0.20 } : null;
 
   return (
-    <CartContext.Provider value={{ items, addItem, updateQty, removeItem, clearCart, subtotal, count, promo, discount, discountRate, applyPromo, clearPromo }}>
+    <CartContext.Provider value={{ items, addItem, updateQty, removeItem, clearCart, subtotal, count, discount, discountRate, nextTier }}>
       {children}
     </CartContext.Provider>
   );

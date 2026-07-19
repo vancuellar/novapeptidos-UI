@@ -1,8 +1,7 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Trash2, Minus, Plus, ShoppingBag, ArrowRight, Tag, X } from 'lucide-react';
+import { Trash2, Minus, Plus, ShoppingBag, ArrowRight, BadgePercent } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
 import { Card } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
 import { useCart } from '@/context/CartContext';
@@ -10,10 +9,9 @@ import { formatMXN } from '@/lib/api';
 import { useLanguage } from '@/context/LanguageContext';
 
 const Cart = () => {
-  const { items, updateQty, removeItem, subtotal, promo, discount, applyPromo, clearPromo } = useCart();
+  const { items, updateQty, removeItem, subtotal, discount, discountRate, nextTier } = useCart();
   const { t } = useLanguage();
   const navigate = useNavigate();
-  const [code, setCode] = useState('');
   const afterDiscount = subtotal - discount; // el envío se cotiza por separado
 
   if (items.length === 0) {
@@ -29,7 +27,14 @@ const Cart = () => {
 
   return (
     <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-      <h1 className="font-heading text-2xl sm:text-3xl font-bold tracking-tight mb-6">{t('cart.title')}</h1>
+      <h1 className="font-heading text-2xl sm:text-3xl font-bold tracking-tight mb-4">{t('cart.title')}</h1>
+      <div className="mb-6 flex flex-wrap items-center gap-x-3 gap-y-1.5 rounded-xl border border-border bg-[hsl(var(--secondary))] px-4 py-2.5 text-xs sm:text-sm" data-testid="cart-tier-banner">
+        <span className="inline-flex items-center gap-1.5 font-medium"><BadgePercent className="h-4 w-4 text-[hsl(var(--primary))]" /> {t('discount.bannerTitle')}</span>
+        <span className="rounded-full bg-[hsl(var(--primary))]/10 text-[hsl(var(--primary))] font-medium px-2.5 py-0.5">−10% {t('discount.launch')}</span>
+        <span className="rounded-full bg-[hsl(var(--primary))]/10 text-[hsl(var(--primary))] font-medium px-2.5 py-0.5">−15% {t('discount.from20k')}</span>
+        <span className="rounded-full bg-[hsl(var(--primary))]/10 text-[hsl(var(--primary))] font-medium px-2.5 py-0.5">−20% {t('discount.from40k')}</span>
+        <span className="text-muted-foreground">{t('discount.noCode')}</span>
+      </div>
       <div className="grid lg:grid-cols-12 gap-6">
         <div className="lg:col-span-8 space-y-3" data-testid="cart-items-table">
           {items.map((item) => (
@@ -54,23 +59,10 @@ const Cart = () => {
         <div className="lg:col-span-4">
           <Card className="p-5 sticky top-32">
             <h3 className="font-heading font-semibold mb-4">{t('cart.summary')}</h3>
-            {/* Código de descuento */}
-            <div className="mb-4">
-              {promo ? (
-                <div className="flex items-center justify-between rounded-lg border border-[hsl(var(--success))]/40 bg-[hsl(var(--success))]/10 px-3 py-2 text-sm" data-testid="cart-promo-applied">
-                  <span className="inline-flex items-center gap-1.5 text-[hsl(var(--success))] font-medium"><Tag className="h-3.5 w-3.5" /> {promo} aplicado</span>
-                  <button onClick={clearPromo} className="rounded-md p-1 bg-destructive/10 text-destructive transition-colors hover:bg-destructive hover:text-white" data-testid="cart-promo-remove"><X className="h-4 w-4" /></button>
-                </div>
-              ) : (
-                <form onSubmit={(e) => { e.preventDefault(); if (applyPromo(code)) setCode(''); }} className="flex gap-2">
-                  <Input placeholder="Código de descuento" value={code} onChange={(e) => setCode(e.target.value)} className="h-9" data-testid="cart-promo-input" />
-                  <Button type="submit" variant="outline" className="h-9" data-testid="cart-promo-apply">Aplicar</Button>
-                </form>
-              )}
-            </div>
             <div className="space-y-2 text-sm">
               <div className="flex justify-between"><span className="text-muted-foreground">{t('common.subtotal')}</span><span data-testid="cart-subtotal">{formatMXN(subtotal)}</span></div>
-              {discount > 0 && <div className="flex justify-between text-[hsl(var(--success))]"><span>Descuento ({promo})</span><span data-testid="cart-discount">− {formatMXN(discount)}</span></div>}
+              {discount > 0 && <div className="flex justify-between text-[hsl(var(--success))]"><span>{t('discount.line', { rate: Math.round(discountRate * 100) })}</span><span data-testid="cart-discount">− {formatMXN(discount)}</span></div>}
+              {nextTier && <p className="text-xs text-muted-foreground">{t('discount.nextTier', { amount: formatMXN(nextTier.min - subtotal), rate: Math.round(nextTier.rate * 100) })}</p>}
               <div className="flex justify-between"><span className="text-muted-foreground">{t('common.shipping')}</span><span className="text-muted-foreground">{t('cart.shippingTBD')}</span></div>
               <p className="text-xs text-muted-foreground">{t('cart.freeShippingLine')}</p>
             </div>
