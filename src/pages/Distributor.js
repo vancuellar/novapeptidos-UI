@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { toast } from 'sonner';
 import api, { formatMXN } from '@/lib/api';
@@ -35,6 +36,8 @@ const Distributor = () => {
   const [summary, setSummary] = useState(null);
   const [clients, setClients] = useState([]);
   const [sales, setSales] = useState([]);
+  const [period, setPeriod] = useState('all');
+  const [statusFilter, setStatusFilter] = useState('all');
 
   useEffect(() => {
     if (!loading && (!user || !['distributor', 'admin'].includes(user.role))) navigate('/login');
@@ -59,6 +62,19 @@ const Distributor = () => {
       toast.success(t('distributor.codeCopied'));
     }
   };
+
+  // Filtro de ventas por periodo y estado (del lado del cliente).
+  const inPeriod = (iso) => {
+    if (period === 'all' || !iso) return true;
+    const d = new Date(iso);
+    const now = new Date();
+    if (period === 'month') return d.getFullYear() === now.getFullYear() && d.getMonth() === now.getMonth();
+    if (period === 'year') return d.getFullYear() === now.getFullYear();
+    if (period === '90d') return (now - d) / 86400000 <= 90;
+    return true;
+  };
+  const filteredSales = sales.filter((o) => inPeriod(o.created_at) && (statusFilter === 'all' || o.status === statusFilter));
+  const filteredEarnings = filteredSales.filter((o) => o.status !== 'cancelado').reduce((s, o) => s + (o.commission || 0), 0);
 
   const STAT_CARDS = summary ? [
     { i: DollarSign, t: t('distributor.stats.earnings'), v: formatMXN(summary.earnings_total) },
@@ -161,7 +177,30 @@ const Distributor = () => {
           </Card>
         </TabsContent>
 
-        <TabsContent value="sales" className="mt-5">
+        <TabsContent value="sales" className="mt-5 space-y-4">
+          <div className="flex flex-wrap items-center gap-3" data-testid="distributor-sales-filters">
+            <Select value={period} onValueChange={setPeriod}>
+              <SelectTrigger className="w-44 h-9" data-testid="distributor-period-filter"><SelectValue /></SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">{t('distributor.filter.allTime')}</SelectItem>
+                <SelectItem value="month">{t('distributor.filter.thisMonth')}</SelectItem>
+                <SelectItem value="90d">{t('distributor.filter.last90')}</SelectItem>
+                <SelectItem value="year">{t('distributor.filter.thisYear')}</SelectItem>
+              </SelectContent>
+            </Select>
+            <Select value={statusFilter} onValueChange={setStatusFilter}>
+              <SelectTrigger className="w-40 h-9" data-testid="distributor-status-filter"><SelectValue /></SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">{t('distributor.filter.allStatus')}</SelectItem>
+                {['pendiente', 'confirmado', 'enviado', 'entregado', 'cancelado'].map((s) => <SelectItem key={s} value={s}>{t(`status.${s}`)}</SelectItem>)}
+              </SelectContent>
+            </Select>
+            <div className="ml-auto text-sm">
+              <span className="text-muted-foreground">{t('distributor.filter.earnedInPeriod')} </span>
+              <span className="font-heading font-bold text-[hsl(var(--primary))]" data-testid="distributor-filtered-earnings">{formatMXN(filteredEarnings)}</span>
+              <span className="text-muted-foreground"> · {t('common.items', { count: filteredSales.length })}</span>
+            </div>
+          </div>
           <Card className="overflow-x-auto">
             <Table data-testid="distributor-sales-table">
               <TableHeader>
@@ -172,9 +211,9 @@ const Distributor = () => {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {sales.length === 0 ? (
+                {filteredSales.length === 0 ? (
                   <TableRow><TableCell colSpan={6} className="text-center text-muted-foreground py-8">{t('distributor.noSales')}</TableCell></TableRow>
-                ) : sales.map((o) => (
+                ) : filteredSales.map((o) => (
                   <TableRow key={o.order_number}>
                     <TableCell className="font-mono-tech text-xs">{o.order_number}</TableCell>
                     <TableCell className="text-sm">{o.customer_name}</TableCell>

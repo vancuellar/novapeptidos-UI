@@ -306,3 +306,19 @@ body {
     -webkit-text-fill-color: transparent;
 }
 
+
+/* Toasts: boton de cerrar (X) siempre visible, arriba a la derecha, facil de clic */
+[data-sonner-toast] [data-close-button] {
+    left: auto !important;
+    right: 0 !important;
+    top: 0 !important;
+    transform: translate(35%, -35%) !important;
+    opacity: 1 !important;
+    height: 22px;
+    width: 22px;
+    background: hsl(var(--background));
+    border-color: hsl(var(--border));
+}
+[data-sonner-toast] [data-close-button]:hover {
+    background: hsl(var(--secondary));
+}

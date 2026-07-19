@@ -61,7 +61,7 @@ function App() {
                 </main>
                 <Footer />
                 <AIChatWidget />
-                <Toaster position="top-right" richColors />
+                <Toaster position="top-right" richColors closeButton duration={2500} />
               </BrowserRouter>
             </CartProvider>
           </AuthProvider>

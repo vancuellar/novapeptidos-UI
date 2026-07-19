@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { toast } from 'sonner';
 import api from '@/lib/api';
+import { productImage } from '@/data/productImages';
 
 const CartContext = createContext(null);
 
@@ -27,7 +28,9 @@ export const CartProvider = ({ children }) => {
         price: product.price,
         quantity: qty,
         presentation: product.presentation,
-        image_url: product.image_url,
+        slug: product.slug,
+        // Misma imagen que muestra el catálogo (foto de vial real o imagen de categoría).
+        image_url: productImage(product) || product.image_url,
         stock: product.stock,
       }];
     });
