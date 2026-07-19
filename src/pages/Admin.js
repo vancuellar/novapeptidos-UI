@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { LayoutDashboard, Package, ShoppingBag, Plus, Pencil, Trash2, DollarSign, Users, Clock, TrendingUp, MapPin, Phone, Receipt } from 'lucide-react';
+import { LayoutDashboard, Package, ShoppingBag, Plus, Pencil, Trash2, DollarSign, Users, Clock, TrendingUp, MapPin, Phone, Receipt, Store, Copy } from 'lucide-react';
 import { ResponsiveContainer, AreaChart, Area, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip } from 'recharts';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -47,6 +47,10 @@ const Admin = () => {
   const [customers, setCustomers] = useState([]);
   const [analytics, setAnalytics] = useState(null);
   const [customerOpen, setCustomerOpen] = useState(null);
+  const [distributors, setDistributors] = useState([]);
+  const [distForm, setDistForm] = useState({ name: '', email: '', commission: 25 });
+  const [distDialogOpen, setDistDialogOpen] = useState(false);
+  const [distCreated, setDistCreated] = useState(null);
   const [editing, setEditing] = useState(null);
   const [form, setForm] = useState(EMPTY);
   const [dialogOpen, setDialogOpen] = useState(false);
@@ -60,6 +64,7 @@ const Admin = () => {
     api.get('/admin/orders').then((r) => setOrders(r.data)).catch(() => {});
     api.get('/admin/customers').then((r) => setCustomers(r.data)).catch(() => {});
     api.get('/admin/analytics').then((r) => setAnalytics(r.data)).catch(() => {});
+    api.get('/admin/distributors').then((r) => setDistributors(r.data)).catch(() => {});
   }, []);
 
   useEffect(() => { if (user?.role === 'admin') loadAll(); }, [user, loadAll]);
@@ -101,6 +106,24 @@ const Admin = () => {
     catch { toast.error(t('admin.toast.statusError')); }
   };
 
+  const createDistributor = async () => {
+    if (!distForm.name || !distForm.email) { toast.error(t('admin.toast.required')); return; }
+    try {
+      const r = await api.post('/admin/distributors', {
+        name: distForm.name,
+        email: distForm.email,
+        commission_rate: Math.max(0, Math.min(100, Number(distForm.commission) || 0)) / 100,
+      });
+      setDistCreated(r.data);
+      setDistForm({ name: '', email: '', commission: 25 });
+      loadAll();
+    } catch (err) {
+      toast.error(err.response?.data?.detail || t('admin.toast.saveError'));
+    }
+  };
+
+  const copyText = (text, msg) => { navigator.clipboard?.writeText(text); toast.success(msg); };
+
   const fmtDate = (iso) => (iso ? new Date(iso).toLocaleDateString(language) : '—');
   const fmtMonth = (m) => new Date(`${m}-02T00:00:00`).toLocaleDateString(language, { month: 'short', year: '2-digit' });
 
@@ -132,6 +155,7 @@ const Admin = () => {
         <TabsList className="flex-wrap h-auto">
           <TabsTrigger value="sales"><TrendingUp className="h-4 w-4 mr-1.5" /> {t('admin.salesTab')}</TabsTrigger>
           <TabsTrigger value="customers"><Users className="h-4 w-4 mr-1.5" /> {t('admin.customersTab')}</TabsTrigger>
+          <TabsTrigger value="distributors"><Store className="h-4 w-4 mr-1.5" /> {t('admin.distributorsTab')}</TabsTrigger>
           <TabsTrigger value="orders"><ShoppingBag className="h-4 w-4 mr-1.5" /> {t('admin.ordersTab')}</TabsTrigger>
           <TabsTrigger value="products"><Package className="h-4 w-4 mr-1.5" /> {t('admin.productsTab')}</TabsTrigger>
         </TabsList>
@@ -232,6 +256,38 @@ const Admin = () => {
                     <TableCell className="text-right">
                       <Button variant="outline" size="sm" onClick={() => setCustomerOpen(c)} data-testid="admin-open-customer-button">{t('account.detail')}</Button>
                     </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </Card>
+        </TabsContent>
+
+        <TabsContent value="distributors" className="mt-5">
+          <div className="flex justify-between items-center mb-4">
+            <h3 className="font-heading font-semibold">{t('admin.distributorsCount', { count: distributors.length })}</h3>
+            <Button onClick={() => { setDistCreated(null); setDistDialogOpen(true); }} data-testid="admin-add-distributor-button"><Plus className="h-4 w-4 mr-1.5" /> {t('admin.newDistributor')}</Button>
+          </div>
+          <Card className="overflow-x-auto">
+            <Table data-testid="admin-distributors-table">
+              <TableHeader>
+                <TableRow>
+                  <TableHead>{t('admin.dist.name')}</TableHead><TableHead>{t('admin.dist.code')}</TableHead>
+                  <TableHead>{t('admin.dist.commission')}</TableHead><TableHead>{t('admin.dist.clients')}</TableHead>
+                  <TableHead>{t('admin.dist.sales')}</TableHead><TableHead>{t('admin.dist.earnings')}</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {distributors.length === 0 ? (
+                  <TableRow><TableCell colSpan={6} className="text-center text-muted-foreground py-8">{t('admin.dist.noDistributors')}</TableCell></TableRow>
+                ) : distributors.map((d) => (
+                  <TableRow key={d.id}>
+                    <TableCell><div className="text-sm font-medium">{d.name}</div><div className="text-xs text-muted-foreground">{d.email}</div></TableCell>
+                    <TableCell><button onClick={() => copyText(d.distributor_code, t('distributor.codeCopied'))} className="font-mono-tech text-xs inline-flex items-center gap-1 hover:text-[hsl(var(--primary))]">{d.distributor_code} <Copy className="h-3 w-3" /></button></TableCell>
+                    <TableCell>{Math.round((d.commission_rate || 0) * 100)}%</TableCell>
+                    <TableCell>{d.clients_count}</TableCell>
+                    <TableCell>{formatMXN(d.sales_total)}</TableCell>
+                    <TableCell className="font-medium text-[hsl(var(--primary))]">{formatMXN(d.earnings)}</TableCell>
                   </TableRow>
                 ))}
               </TableBody>
@@ -347,6 +403,38 @@ const Admin = () => {
                   ))}
                 </div>
               </div>
+            </>
+          )}
+        </DialogContent>
+      </Dialog>
+
+      <Dialog open={distDialogOpen} onOpenChange={(v) => { setDistDialogOpen(v); if (!v) setDistCreated(null); }}>
+        <DialogContent className="max-w-md">
+          <DialogHeader><DialogTitle>{distCreated ? t('admin.dist.createdTitle') : t('admin.newDistributor')}</DialogTitle></DialogHeader>
+          {distCreated ? (
+            <div className="space-y-4 text-sm">
+              <div className="font-medium">{distCreated.name}<span className="text-muted-foreground font-normal"> · {distCreated.email}</span></div>
+              <div>
+                <div className="text-xs text-muted-foreground mb-1">{t('admin.dist.shareCode')}</div>
+                <button onClick={() => copyText(distCreated.distributor_code, t('distributor.codeCopied'))} className="font-mono-tech font-bold text-lg inline-flex items-center gap-2 hover:text-[hsl(var(--primary))]">{distCreated.distributor_code} <Copy className="h-4 w-4" /></button>
+              </div>
+              <div>
+                <div className="text-xs text-muted-foreground mb-1">{t('admin.dist.tempPassword')}</div>
+                <button onClick={() => copyText(distCreated.temp_password, t('distributor.codeCopied'))} className="font-mono-tech inline-flex items-center gap-2 hover:text-[hsl(var(--primary))]">{distCreated.temp_password} <Copy className="h-4 w-4" /></button>
+              </div>
+              <DialogFooter><Button onClick={() => { setDistDialogOpen(false); setDistCreated(null); }}>{t('admin.dist.close')}</Button></DialogFooter>
+            </div>
+          ) : (
+            <>
+              <div className="space-y-4">
+                <div><Label>{t('admin.dist.name')}</Label><Input className="mt-1.5" value={distForm.name} onChange={(e) => setDistForm((f) => ({ ...f, name: e.target.value }))} data-testid="admin-distributor-name-input" /></div>
+                <div><Label>{t('admin.dist.email')}</Label><Input type="email" className="mt-1.5" value={distForm.email} onChange={(e) => setDistForm((f) => ({ ...f, email: e.target.value }))} data-testid="admin-distributor-email-input" /></div>
+                <div><Label>{t('admin.dist.commission')}</Label><Input type="number" min="0" max="100" className="mt-1.5" value={distForm.commission} onChange={(e) => setDistForm((f) => ({ ...f, commission: e.target.value }))} /></div>
+              </div>
+              <DialogFooter>
+                <Button variant="outline" onClick={() => setDistDialogOpen(false)}>{t('common.cancel')}</Button>
+                <Button onClick={createDistributor} data-testid="admin-create-distributor-button">{t('admin.dist.create')}</Button>
+              </DialogFooter>
             </>
           )}
         </DialogContent>
