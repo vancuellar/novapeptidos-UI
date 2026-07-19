@@ -36,6 +36,23 @@ const CAT_EXAMPLES = {
 const CAT_TOP = new Set(['perdida-peso', 'recuperacion']);
 const WHATSAPP_URL = 'https://wa.me/5219944946889';
 
+// Columna izquierda del menú "Péptidos": por objetivo de investigación.
+const PEPTIDE_CATEGORIES = fallbackCategories
+  .filter((c) => c.slug !== 'otros' && c.slug !== 'suministros')
+  .map((c) => ({ slug: c.slug, name: c.name, examples: CAT_EXAMPLES[c.slug] || '' }));
+
+// Columna derecha: las guías. El orden es el recorrido natural de un novato.
+const LEARN_LINKS = [
+  { to: '/aprende', label: 'Péptidos de investigación', desc: 'El hub con todas las guías y herramientas' },
+  { to: '/aprende/empieza-aqui', label: 'Empieza aquí', desc: 'Tu primera vez, en 5 minutos' },
+  { to: '/aprende/que-son-los-peptidos', label: 'Qué son los péptidos', desc: 'Guía de introducción' },
+  { to: '/aprende/glosario-simple', label: 'Glosario simple', desc: 'Los términos sin jerga' },
+  { to: '/compendio', label: 'Compendio de compuestos', desc: 'Ficha técnica de cada compuesto' },
+  { to: '/aprende/protocolos', label: 'Protocolos por objetivo', desc: 'Qué se combina con qué y por qué' },
+  { to: '/aprende/como-reconstituir', label: 'Cómo reconstituir', desc: 'El procedimiento paso a paso' },
+  { to: '/calculadora', label: 'Calculadora de dosis', desc: 'Herramienta gratuita' },
+];
+
 const Header = () => {
   const { count } = useCart();
   const { user, logout } = useAuth();
@@ -162,6 +179,47 @@ const Header = () => {
           {/* Primary nav */}
           <nav className="hidden lg:flex items-center gap-8">
             <Link to="/catalogo" className={navLinkClass} data-testid="nav-catalog">{t('nav.catalog')}</Link>
+
+            {/* Menú "Péptidos": a la izquierda por objetivo de investigación,
+                a la derecha las guías. Es la ruta de entrada de quien no sabe
+                todavía el nombre del compuesto que busca. */}
+            <DropdownMenu>
+              <DropdownMenuTrigger className={navLinkClass} data-testid="nav-peptides">
+                {t('nav.peptides')} <ChevronDown className="h-3.5 w-3.5" />
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="start" className="w-[640px] p-0">
+                <div className="grid grid-cols-2 divide-x divide-border">
+                  <div className="p-4">
+                    <div className="text-[11px] font-semibold uppercase tracking-wide text-muted-foreground mb-2">{t('nav.byCategory')}</div>
+                    <ul className="space-y-0.5">
+                      {PEPTIDE_CATEGORIES.map((c) => (
+                        <li key={c.slug}>
+                          <button onClick={() => navigate(`/catalogo?category=${c.slug}`)} data-testid="nav-peptide-category"
+                            className="w-full text-left rounded-md px-2 py-1.5 hover:bg-[hsl(var(--muted))] transition-colors">
+                            <div className="text-sm font-medium">{c.name}</div>
+                            <div className="text-[11px] text-muted-foreground">{c.examples}</div>
+                          </button>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                  <div className="p-4">
+                    <div className="text-[11px] font-semibold uppercase tracking-wide text-muted-foreground mb-2">{t('nav.learn')}</div>
+                    <ul className="space-y-0.5">
+                      {LEARN_LINKS.map((l) => (
+                        <li key={l.to}>
+                          <button onClick={() => navigate(l.to)} data-testid="nav-learn-link"
+                            className="w-full text-left rounded-md px-2 py-1.5 hover:bg-[hsl(var(--muted))] transition-colors">
+                            <div className="text-sm font-medium">{l.label}</div>
+                            <div className="text-[11px] text-muted-foreground">{l.desc}</div>
+                          </button>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </div>
+              </DropdownMenuContent>
+            </DropdownMenu>
 
             <DropdownMenu>
               <DropdownMenuTrigger className={navLinkClass} data-testid="nav-tools">

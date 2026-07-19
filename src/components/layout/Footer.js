@@ -10,7 +10,7 @@ const Footer = () => {
   return (
     <footer className="mt-16 border-t border-border bg-card text-card-foreground">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-14">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-8">
           <div>
             <Link to="/" className="inline-flex items-center mb-4">
               <BrandLogo />
@@ -27,6 +27,16 @@ const Footer = () => {
               <li><Link to="/catalogo?category=recuperacion-tejidos" className="hover:text-foreground transition-colors">{t('footer.recovery')}</Link></li>
               <li><Link to="/catalogo?category=hormona-crecimiento" className="hover:text-foreground transition-colors">{t('footer.growth')}</Link></li>
               <li><Link to="/catalogo?category=stacks" className="hover:text-foreground transition-colors">Stacks / Combos</Link></li>
+            </ul>
+          </div>
+          <div>
+            <h4 className="kicker mb-4">{t('nav.learn')}</h4>
+            <ul className="space-y-2.5 text-sm text-muted-foreground">
+              <li><Link to="/aprende/empieza-aqui" className="hover:text-foreground transition-colors">Empieza aquí</Link></li>
+              <li><Link to="/aprende/como-reconstituir" className="hover:text-foreground transition-colors">Cómo reconstituir</Link></li>
+              <li><Link to="/compendio" className="hover:text-foreground transition-colors">Compendio</Link></li>
+              <li><Link to="/aprende/preguntas-frecuentes" className="hover:text-foreground transition-colors">Preguntas frecuentes</Link></li>
+              <li><Link to="/aprende" className="hover:text-foreground transition-colors">Todas las guías</Link></li>
             </ul>
           </div>
           <div>

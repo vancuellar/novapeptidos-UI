@@ -27,6 +27,9 @@ import Admin from '@/pages/Admin';
 import InfoPage from '@/pages/InfoPage';
 import Education from '@/pages/Education';
 import Advisor from '@/pages/Advisor';
+import LearnHub from '@/pages/LearnHub';
+import LearnPage from '@/pages/LearnPage';
+import Compendium from '@/pages/Compendium';
 
 function App() {
   return (
@@ -44,6 +47,9 @@ function App() {
                     <Route path="/calculadora" element={<Calculator />} />
                     <Route path="/educacion" element={<Education />} />
                     <Route path="/asesor" element={<Advisor />} />
+                    <Route path="/aprende" element={<LearnHub />} />
+                    <Route path="/aprende/:slug" element={<LearnPage />} />
+                    <Route path="/compendio" element={<Compendium />} />
                     <Route path="/producto/:slug" element={<ProductDetail />} />
                     <Route path="/carrito" element={<Cart />} />
                     <Route path="/checkout" element={<Checkout />} />
