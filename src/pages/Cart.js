@@ -1,20 +1,40 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Trash2, Minus, Plus, ShoppingBag, ArrowRight, BadgePercent, Tag, X } from 'lucide-react';
+import { Trash2, Minus, Plus, ShoppingBag, ArrowRight, BadgePercent, Tag, X, Droplet } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { useCart } from '@/context/CartContext';
 import { formatMXN } from '@/lib/api';
+import { fallbackProducts } from '@/data/fallbackCatalog';
 import { useLanguage } from '@/context/LanguageContext';
 
+const BAC = fallbackProducts.find((p) => p.slug === 'agua-bacteriostatica');
+const BAC_VARIANT = BAC?.variants?.[0]; // 3 mL, el más económico
+
 const Cart = () => {
-  const { items, updateQty, removeItem, subtotal, discount, discountRate, discountSource, nextTier, distCode, distRate, applyDistCode, clearDistCode } = useCart();
+  const { items, addItem, updateQty, removeItem, subtotal, discount, discountRate, discountSource, nextTier, distCode, distRate, applyDistCode, clearDistCode } = useCart();
   const { t } = useLanguage();
   const navigate = useNavigate();
   const [code, setCode] = useState('');
+  const [bacOpen, setBacOpen] = useState(false);
   const afterDiscount = subtotal - discount; // el envío se cotiza por separado
+
+  const hasBac = items.some((i) => /agua-bacteriostatica/.test(i.product_id));
+  const needsBac = items.some((i) => !/agua-bacteriostatica/.test(i.product_id));
+
+  const goCheckout = () => navigate('/checkout');
+  const onCheckoutClick = () => {
+    if (needsBac && !hasBac && BAC_VARIANT) setBacOpen(true);
+    else goCheckout();
+  };
+  const addBacAndCheckout = () => {
+    addItem({ ...BAC, id: `${BAC.id}::${BAC_VARIANT.presentation}`, name: `${BAC.name} ${BAC_VARIANT.presentation}`, price: BAC_VARIANT.price, presentation: BAC_VARIANT.presentation, stock: BAC_VARIANT.stock });
+    setBacOpen(false);
+    goCheckout();
+  };
 
   if (items.length === 0) {
     return (
@@ -85,11 +105,28 @@ const Cart = () => {
             <Separator className="my-4" />
             <div className="flex justify-between font-heading font-bold text-lg"><span>{t('common.total')}</span><span data-testid="cart-total">{formatMXN(afterDiscount)}</span></div>
             <p className="text-xs text-muted-foreground mt-1 text-right">{t('cart.plusShipping')}</p>
-            <Button className="w-full mt-5" size="lg" onClick={() => navigate('/checkout')} data-testid="cart-go-to-checkout-button">{t('cart.checkout')} <ArrowRight className="h-4 w-4 ml-1.5" /></Button>
+            <Button className="w-full mt-5" size="lg" onClick={onCheckoutClick} data-testid="cart-go-to-checkout-button">{t('cart.checkout')} <ArrowRight className="h-4 w-4 ml-1.5" /></Button>
             <Button asChild variant="ghost" className="w-full mt-2"><Link to="/catalogo">{t('cart.keepShopping')}</Link></Button>
           </Card>
         </div>
       </div>
+
+      {/* Recordatorio de agua bacteriostática (estilo Exoma/Certified) */}
+      <Dialog open={bacOpen} onOpenChange={setBacOpen}>
+        <DialogContent className="max-w-md text-center" data-testid="bac-water-modal">
+          <DialogHeader>
+            <div className="mx-auto h-12 w-12 rounded-full bg-[hsl(var(--primary))]/10 flex items-center justify-center mb-2"><Droplet className="h-6 w-6 text-[hsl(var(--primary))]" /></div>
+            <DialogTitle className="text-center">{t('bac.title')}</DialogTitle>
+          </DialogHeader>
+          <p className="text-sm text-muted-foreground">{t('bac.body')}</p>
+          <div className="rounded-lg border border-border bg-[hsl(var(--secondary))]/60 px-3 py-2 text-xs text-muted-foreground">{t('bac.note')}</div>
+          <div className="flex flex-col gap-2 mt-2">
+            <Button onClick={addBacAndCheckout} data-testid="bac-add-button"><Droplet className="h-4 w-4 mr-1.5" /> {t('bac.add', { price: formatMXN(BAC_VARIANT?.price || 0) })}</Button>
+            <Button variant="outline" onClick={() => { setBacOpen(false); goCheckout(); }} data-testid="bac-skip-button">{t('bac.skip')}</Button>
+            <Button variant="ghost" onClick={() => setBacOpen(false)}>{t('bac.back')}</Button>
+          </div>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };

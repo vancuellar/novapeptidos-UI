@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useCallback, useMemo } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import { SlidersHorizontal, X } from 'lucide-react';
+import { SlidersHorizontal, X, BadgePercent } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card } from '@/components/ui/card';
@@ -128,6 +128,14 @@ const Catalog = () => {
             </SelectContent>
           </Select>
         </div>
+      </div>
+
+      {/* Banner de descuento por volumen automático (estilo Exoma) */}
+      <div className="mb-6 rounded-2xl border border-[hsl(var(--primary))]/25 bg-[hsl(var(--primary))]/[0.06] px-4 sm:px-6 py-3.5 flex flex-wrap items-center gap-x-4 gap-y-2" data-testid="catalog-volume-banner">
+        <span className="inline-flex items-center gap-2 font-semibold text-sm"><BadgePercent className="h-5 w-5 text-[hsl(var(--primary))]" /> {t('discount.volumeTitle')}</span>
+        <span className="inline-flex items-center gap-1 rounded-full bg-[hsl(var(--primary))]/12 text-[hsl(var(--primary))] font-semibold text-xs px-3 py-1">−15% {t('discount.from20k')}</span>
+        <span className="inline-flex items-center gap-1 rounded-full bg-[hsl(var(--primary))]/12 text-[hsl(var(--primary))] font-semibold text-xs px-3 py-1">−20% {t('discount.from40k')}</span>
+        <span className="text-xs text-muted-foreground ml-auto">{t('discount.appliedInCart')}</span>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-12 gap-6">

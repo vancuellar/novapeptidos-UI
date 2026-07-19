@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { AspectRatio } from '@/components/ui/aspect-ratio';
-import { ShoppingCart, ShieldCheck } from 'lucide-react';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { ShoppingCart, Eye } from 'lucide-react';
 import { formatMXN } from '@/lib/api';
 import { useCart } from '@/context/CartContext';
 import { useLanguage } from '@/context/LanguageContext';
@@ -15,6 +16,28 @@ const ProductCard = ({ product }) => {
   const { t } = useLanguage();
   const navigate = useNavigate();
   const out = product.stock <= 0;
+  const variants = product.variants || [];
+  const hasVariants = variants.length > 0;       // al menos una presentación con precio propio
+  const showSelector = variants.length > 1;      // dropdown solo si hay varias
+  const [variantIdx, setVariantIdx] = useState(0);
+  const active = hasVariants ? variants[variantIdx] : null;
+  const price = active ? active.price : product.price;
+  const presentationLabel = showSelector ? `${variants.length} ${t('product.card.presentations')}` : (active?.presentation || product.presentation);
+
+  const add = () => {
+    if (hasVariants) {
+      addItem({
+        ...product,
+        id: `${product.id}::${active.presentation}`,
+        name: `${product.name} ${active.presentation}`,
+        price: active.price,
+        presentation: active.presentation,
+        stock: active.stock,
+      });
+    } else {
+      addItem(product);
+    }
+  };
 
   return (
     <Card data-testid="product-card" className="group overflow-hidden border-border bg-card text-card-foreground shadow-[var(--shadow-sm)] hover:shadow-[var(--shadow-md)] hover:border-[hsl(var(--primary))]/40 transition-all duration-200 flex flex-col">
@@ -40,19 +63,33 @@ const ProductCard = ({ product }) => {
         <Link to={`/producto/${product.slug}`}>
           <h3 className="font-heading font-semibold tracking-tight leading-snug hover:text-[hsl(var(--primary))]">{product.name}</h3>
         </Link>
-        <div className="mt-1 text-xs text-muted-foreground font-mono-tech">{product.presentation} · {t('product.card.purity', { purity: product.purity })}</div>
+        <div className="mt-1 text-xs text-muted-foreground font-mono-tech">{presentationLabel} · {t('product.card.purity', { purity: product.purity })}</div>
         <p className="mt-2 text-xs text-muted-foreground line-clamp-2 flex-1">{product.short_description}</p>
+
+        {showSelector && (
+          <div className="mt-3" onClick={(e) => e.stopPropagation()}>
+            <Select value={String(variantIdx)} onValueChange={(v) => setVariantIdx(Number(v))}>
+              <SelectTrigger className="h-9" data-testid="product-card-variant-select"><SelectValue /></SelectTrigger>
+              <SelectContent>
+                {variants.map((v, i) => <SelectItem key={v.presentation} value={String(i)}>{v.presentation} · {formatMXN(v.price)}</SelectItem>)}
+              </SelectContent>
+            </Select>
+          </div>
+        )}
+
         <div className="mt-3 flex items-center justify-between">
-          <span className="font-heading text-lg font-bold" data-testid="product-card-price">{product.variants?.length > 1 && <span className="text-[11px] font-normal text-muted-foreground mr-1">Desde</span>}{formatMXN(product.price)} <span className="text-[11px] font-mono-tech font-normal text-muted-foreground">MXN</span></span>
+          <span className="font-heading text-lg font-bold" data-testid="product-card-price">{formatMXN(price)} <span className="text-[11px] font-mono-tech font-normal text-muted-foreground">MXN</span></span>
           {out
             ? <span className="text-xs text-muted-foreground">{t('product.outOfStock')}</span>
             : <span className="inline-flex items-center gap-1.5 text-xs text-[hsl(var(--success))]"><span className="h-1.5 w-1.5 rounded-full bg-[hsl(var(--success))]" /> {t('product.card.inStock')}</span>}
         </div>
         <div className="mt-3 flex gap-2">
-          <Button className="flex-1" disabled={out} onClick={() => (product.variants?.length ? navigate(`/producto/${product.slug}`) : addItem(product))} data-testid="product-card-add-to-cart-button">
-            <ShoppingCart className="h-4 w-4 mr-1.5" /> {product.variants?.length ? t('product.card.view') : t('product.card.add')}
+          <Button className="flex-1" disabled={out} onClick={add} data-testid="product-card-add-to-cart-button">
+            <ShoppingCart className="h-4 w-4 mr-1.5" /> {t('product.card.add')}
           </Button>
-          <Button variant="outline" onClick={() => navigate(`/producto/${product.slug}`)} data-testid="product-card-view-details-link">{t('product.card.view')}</Button>
+          <Button variant="outline" onClick={() => navigate(`/producto/${product.slug}`)} data-testid="product-card-view-details-link" aria-label={t('product.card.view')}>
+            <Eye className="h-4 w-4 sm:mr-1.5" /> <span className="hidden sm:inline">{t('product.card.view')}</span>
+          </Button>
         </div>
       </div>
     </Card>
