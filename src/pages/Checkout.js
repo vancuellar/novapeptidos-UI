@@ -21,7 +21,7 @@ const Checkout = () => {
   const { user } = useAuth();
   const { t } = useLanguage();
   const navigate = useNavigate();
-  const [payment, setPayment] = useState('mercado_pago');
+  const [payment, setPayment] = useState('tarjeta');
   const [submitting, setSubmitting] = useState(false);
   const [form, setForm] = useState({
     full_name: user?.name || '', email: user?.email || '', phone: '', address: '',
