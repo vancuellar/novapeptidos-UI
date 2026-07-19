@@ -18,6 +18,10 @@ const esMX = {
   'header.account': 'Mi cuenta',
   'header.admin': 'Panel admin',
   'header.logout': 'Cerrar sesión',
+  'auth.portal.title': 'Bienvenido a Exygen Labs',
+  'auth.portal.subtitle': 'Entra o crea tu cuenta para comprar y dar seguimiento a tus pedidos.',
+  'auth.securePayment': 'Pago seguro',
+
   'admin.inviteCustomer': 'Invitar cliente',
   'admin.invite.createdTitle': 'Cliente invitado',
   'admin.invite.emailSent': 'Le enviamos un correo de bienvenida. Compartele tambien su contrasena temporal (la cambia al entrar).',
@@ -587,6 +591,10 @@ const enUS = {
   'header.account': 'My account',
   'header.admin': 'Admin panel',
   'header.logout': 'Sign out',
+  'auth.portal.title': 'Welcome to Exygen Labs',
+  'auth.portal.subtitle': 'Sign in or create your account to shop and track your orders.',
+  'auth.securePayment': 'Secure payment',
+
   'admin.inviteCustomer': 'Invite customer',
   'admin.invite.createdTitle': 'Customer invited',
   'admin.invite.emailSent': 'We sent them a welcome email. Also share the temporary password (they change it on first login).',
@@ -1141,6 +1149,10 @@ const ptBR = {
   'header.account': 'Minha conta',
   'header.admin': 'Painel admin',
   'header.logout': 'Sair',
+  'auth.portal.title': 'Bem-vindo a Exygen Labs',
+  'auth.portal.subtitle': 'Entre ou crie sua conta para comprar e acompanhar seus pedidos.',
+  'auth.securePayment': 'Pagamento seguro',
+
   'admin.inviteCustomer': 'Convidar cliente',
   'admin.invite.createdTitle': 'Cliente convidado',
   'admin.invite.emailSent': 'Enviamos um e-mail de boas-vindas. Compartilhe tambem a senha temporaria (ele a troca no primeiro acesso).',

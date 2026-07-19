@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { ShieldCheck, Truck, BadgeCheck, Mail, Phone, Store, Landmark, CreditCard } from 'lucide-react';
+import { ShieldCheck, Truck, BadgeCheck, Mail, Phone, Landmark, CreditCard } from 'lucide-react';
 import { useLanguage } from '@/context/LanguageContext';
 import BrandLogo from '@/components/BrandLogo';
 
@@ -46,7 +46,7 @@ const Footer = () => {
               <li className="flex items-center gap-2"><Phone className="h-4 w-4 text-[hsl(var(--primary))]" /> +52 (994) 494-6889</li>
             </ul>
             <div className="flex flex-wrap gap-2 mt-5">
-              {[{ i: Store, l: 'OXXO' }, { i: Landmark, l: 'SPEI' }, { i: CreditCard, l: 'Visa · MC' }].map((p, i) => (
+              {[{ i: CreditCard, l: 'Visa · MC · Amex' }, { i: Landmark, l: 'SPEI' }].map((p, i) => (
                 <span key={i} className="inline-flex items-center gap-1.5 rounded-md border border-border bg-[hsl(var(--secondary))] px-2.5 py-1.5 text-[11px]">
                   <p.i className="h-3 w-3 text-[hsl(var(--primary))]" /> {p.l}
                 </span>
