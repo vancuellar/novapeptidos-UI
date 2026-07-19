@@ -94,7 +94,7 @@ const Home = () => {
               </div>
             </div>
             <div className="flex items-center justify-center">
-              <img src={HERO_IMG} alt={t('home.labAlt')} className="w-full max-w-[240px] object-contain drop-shadow-[0_18px_32px_rgba(20,24,30,0.16)]" />
+              <img src={HERO_IMG} alt={t('home.labAlt')} className="w-full max-w-[520px] object-contain drop-shadow-[0_18px_32px_rgba(20,24,30,0.16)]" />
             </div>
           </div>
         </div>
