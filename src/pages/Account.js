@@ -1,8 +1,9 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import { useNavigate, useSearchParams, Link } from 'react-router-dom';
-import { Package, User, LogOut, ShoppingBag, DollarSign, MapPin, CreditCard, LockKeyhole, Eye, EyeOff, Syringe, Truck, ExternalLink, Lock } from 'lucide-react';
+import { Package, User, LogOut, ShoppingBag, DollarSign, MapPin, CreditCard, LockKeyhole, Eye, EyeOff, Syringe, Truck, ExternalLink, Lock, FlaskConical } from 'lucide-react';
 import ReconstitutionCalculator, { mgProducts } from '@/components/ReconstitutionCalculator';
 import ProtocolTracker from '@/components/ProtocolTracker';
+import LabReports from '@/components/LabReports';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -191,6 +192,7 @@ const Account = () => {
         <TabsList>
           <TabsTrigger value="orders"><Package className="h-4 w-4 mr-1.5" /> {t('account.ordersTab')}</TabsTrigger>
           <TabsTrigger value="tools"><Syringe className="h-4 w-4 mr-1.5" /> {t('account.toolsTab')}</TabsTrigger>
+          <TabsTrigger value="labs"><FlaskConical className="h-4 w-4 mr-1.5" /> {t('account.labsTab')}</TabsTrigger>
           <TabsTrigger value="profile"><User className="h-4 w-4 mr-1.5" /> {t('account.profileTab')}</TabsTrigger>
         </TabsList>
 
@@ -271,6 +273,18 @@ const Account = () => {
               ))}
             </div>
           )}
+        </TabsContent>
+
+        <TabsContent value="labs" className="mt-5">
+          {!toolsUnlocked ? (
+            <Card className="p-10 text-center" data-testid="labs-locked">
+              <Lock className="h-8 w-8 mx-auto mb-4 text-muted-foreground opacity-50" />
+              <h3 className="font-heading font-semibold text-lg mb-2">{t('account.tools.lockedTitle')}</h3>
+              <p className="text-sm text-muted-foreground max-w-md mx-auto leading-relaxed">
+                {orders.length === 0 ? t('account.tools.lockedNoOrders') : t('account.tools.lockedPending')}
+              </p>
+            </Card>
+          ) : <LabReports />}
         </TabsContent>
 
         <TabsContent value="profile" className="mt-5 space-y-4">
