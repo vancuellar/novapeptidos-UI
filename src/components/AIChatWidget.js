@@ -9,9 +9,9 @@ import { useLanguage } from '@/context/LanguageContext';
 const CHAT_API = 'https://chat.exygenlabs.com/api';
 
 const QUICK = [
+  'chat.quick.order',
   'chat.quick.ruo',
   'chat.quick.goal',
-  'chat.quick.shipping',
   'chat.quick.coa',
 ];
 
@@ -49,9 +49,15 @@ const AIChatWidget = () => {
     setLoading(true);
 
     try {
+      // Con sesión iniciada mandamos el token: así el asistente puede consultar
+      // el estatus y la guía de los pedidos del propio cliente.
+      const token = localStorage.getItem('np_token');
       const res = await fetch(`${CHAT_API}/ai/chat`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          ...(token ? { Authorization: `Bearer ${token}` } : {}),
+        },
         body: JSON.stringify({ session_id: sessionId.current, message }),
       });
       if (!res.body) throw new Error('No stream');

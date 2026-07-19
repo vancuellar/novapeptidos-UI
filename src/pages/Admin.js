@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { LayoutDashboard, Package, ShoppingBag, Plus, Pencil, Trash2, DollarSign, Users, Clock, TrendingUp, MapPin, Phone, Receipt, Store, Copy, Boxes } from 'lucide-react';
+import { LayoutDashboard, Package, ShoppingBag, Plus, Pencil, Trash2, DollarSign, Users, Clock, TrendingUp, MapPin, Phone, Receipt, Store, Copy, Boxes, Truck, RefreshCw } from 'lucide-react';
 import { fallbackProducts } from '@/data/fallbackCatalog';
 import { ResponsiveContainer, AreaChart, Area, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip } from 'recharts';
 import { Button } from '@/components/ui/button';
@@ -58,6 +58,8 @@ const Admin = () => {
   const [customers, setCustomers] = useState([]);
   const [analytics, setAnalytics] = useState(null);
   const [customerOpen, setCustomerOpen] = useState(null);
+  const [shippingOpen, setShippingOpen] = useState(null);
+  const [repurchase, setRepurchase] = useState([]);
   const [distributors, setDistributors] = useState([]);
   const [stockMap, setStockMap] = useState({});
   const [stockFilter, setStockFilter] = useState('');
@@ -78,6 +80,7 @@ const Admin = () => {
     api.get('/products').then((r) => setProducts(r.data)).catch(() => {});
     api.get('/categories').then((r) => setCategories(r.data)).catch(() => {});
     api.get('/admin/orders').then((r) => setOrders(r.data)).catch(() => {});
+    api.get('/admin/repurchase').then((r) => setRepurchase(r.data)).catch(() => {});
     api.get('/admin/customers').then((r) => setCustomers(r.data)).catch(() => {});
     api.get('/admin/analytics').then((r) => setAnalytics(r.data)).catch(() => {});
     api.get('/admin/distributors').then((r) => setDistributors(r.data)).catch(() => {});
@@ -116,6 +119,26 @@ const Admin = () => {
     if (!window.confirm(t('admin.confirmDelete', { name: p.name }))) return;
     try { await api.delete(`/admin/products/${p.id}`); toast.success(t('admin.toast.deleted')); loadAll(); }
     catch { toast.error(t('admin.toast.deleteError')); }
+  };
+
+  const openShipping = (order) => setShippingOpen({
+    id: order.id,
+    order_number: order.order_number,
+    carrier: order.carrier || 'FedEx',
+    tracking_number: order.tracking_number || '',
+    tracking_url: order.tracking_url || '',
+    eta: order.eta || '',
+  });
+
+  const saveShipping = async () => {
+    const { id, ...body } = shippingOpen;
+    delete body.order_number;
+    try {
+      await api.put(`/admin/orders/${id}/shipping`, body);
+      toast.success(t('admin.shipping.saved'));
+      setShippingOpen(null);
+      loadAll();
+    } catch { toast.error(t('admin.shipping.error')); }
   };
 
   const updateStatus = async (order, status) => {
@@ -197,6 +220,7 @@ const Admin = () => {
           <TabsTrigger value="orders"><ShoppingBag className="h-4 w-4 mr-1.5" /> {t('admin.ordersTab')}</TabsTrigger>
           <TabsTrigger value="products"><Package className="h-4 w-4 mr-1.5" /> {t('admin.productsTab')}</TabsTrigger>
           <TabsTrigger value="stock"><Boxes className="h-4 w-4 mr-1.5" /> {t('admin.stockTab')}</TabsTrigger>
+          <TabsTrigger value="repurchase"><RefreshCw className="h-4 w-4 mr-1.5" /> {t('admin.repurchaseTab')}</TabsTrigger>
         </TabsList>
 
         <TabsContent value="stock" className="mt-5">
@@ -391,11 +415,12 @@ const Admin = () => {
                 <TableRow>
                   <TableHead>{t('admin.table.order')}</TableHead><TableHead>{t('admin.table.customer')}</TableHead><TableHead>{t('common.total')}</TableHead>
                   <TableHead>{t('admin.table.payment')}</TableHead><TableHead>{t('admin.table.date')}</TableHead><TableHead>{t('admin.table.status')}</TableHead>
+                  <TableHead>{t('admin.table.tracking')}</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
                 {orders.length === 0 ? (
-                  <TableRow><TableCell colSpan={6} className="text-center text-muted-foreground py-8">{t('admin.noOrders')}</TableCell></TableRow>
+                  <TableRow><TableCell colSpan={7} className="text-center text-muted-foreground py-8">{t('admin.noOrders')}</TableCell></TableRow>
                 ) : orders.map((o) => (
                   <TableRow key={o.id}>
                     <TableCell className="font-mono-tech text-xs">{o.order_number}</TableCell>
@@ -408,6 +433,19 @@ const Admin = () => {
                         <SelectTrigger className="w-36 h-8" data-testid="admin-update-order-status-select"><SelectValue /></SelectTrigger>
                         <SelectContent>{STATUSES.map((s) => <SelectItem key={s} value={s}>{t(`status.${s}`)}</SelectItem>)}</SelectContent>
                       </Select>
+                    </TableCell>
+                    <TableCell>
+                      {o.tracking_number ? (
+                        <button type="button" onClick={() => openShipping(o)} data-testid="admin-edit-tracking"
+                          className="text-xs text-left hover:text-[hsl(var(--primary))] transition">
+                          <div className="text-muted-foreground">{o.carrier || '—'}</div>
+                          <div className="font-mono-tech">{o.tracking_number}</div>
+                        </button>
+                      ) : (
+                        <Button variant="outline" size="sm" className="h-8 text-xs" onClick={() => openShipping(o)} data-testid="admin-add-tracking">
+                          <Truck className="h-3.5 w-3.5 mr-1.5" /> {t('admin.shipping.add')}
+                        </Button>
+                      )}
                     </TableCell>
                   </TableRow>
                 ))}
@@ -448,7 +486,75 @@ const Admin = () => {
             </Table>
           </Card>
         </TabsContent>
+        <TabsContent value="repurchase" className="mt-5 space-y-4">
+          <p className="text-sm text-muted-foreground">{t('admin.repurchase.hint')}</p>
+          <Card className="overflow-x-auto">
+            <Table data-testid="admin-repurchase-table">
+              <TableHeader>
+                <TableRow>
+                  <TableHead>{t('distributor.table.client')}</TableHead>
+                  <TableHead>{t('calc.product')}</TableHead>
+                  <TableHead>{t('admin.repurchase.daysLeft')}</TableHead>
+                  <TableHead>{t('admin.repurchase.runsOut')}</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {repurchase.length === 0 ? (
+                  <TableRow><TableCell colSpan={4} className="text-center text-muted-foreground py-8">{t('admin.repurchase.empty')}</TableCell></TableRow>
+                ) : repurchase.map((r, i) => (
+                  <TableRow key={i} className={r.needs_repurchase ? 'bg-[hsl(var(--warning))]/10' : ''}>
+                    <TableCell><div className="text-sm">{r.customer_name}</div><div className="text-xs text-muted-foreground">{r.customer_email}</div></TableCell>
+                    <TableCell className="text-sm">{r.product_name}</TableCell>
+                    <TableCell className={r.needs_repurchase ? 'font-semibold text-[hsl(var(--primary))]' : ''}>
+                      {t('admin.repurchase.days', { count: r.days_left })}
+                    </TableCell>
+                    <TableCell className="text-xs text-muted-foreground">{fmtDate(r.runs_out_at)}</TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </Card>
+        </TabsContent>
       </Tabs>
+
+      <Dialog open={!!shippingOpen} onOpenChange={(v) => !v && setShippingOpen(null)}>
+        <DialogContent className="max-w-md">
+          {shippingOpen && (
+            <>
+              <DialogHeader>
+                <DialogTitle className="flex items-center gap-2"><Truck className="h-5 w-5" /> {t('admin.shipping.title')}</DialogTitle>
+              </DialogHeader>
+              <div className="space-y-4">
+                <div className="text-xs text-muted-foreground font-mono-tech">{shippingOpen.order_number}</div>
+                <div>
+                  <Label className="text-sm mb-1.5 block">{t('admin.shipping.carrier')}</Label>
+                  <Select value={shippingOpen.carrier} onValueChange={(v) => setShippingOpen({ ...shippingOpen, carrier: v })}>
+                    <SelectTrigger data-testid="admin-shipping-carrier"><SelectValue /></SelectTrigger>
+                    <SelectContent>
+                      {['FedEx', 'DHL', 'Estafeta', 'UPS', 'Paquetexpress'].map((c) => <SelectItem key={c} value={c}>{c}</SelectItem>)}
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div>
+                  <Label className="text-sm mb-1.5 block">{t('admin.shipping.number')}</Label>
+                  <Input value={shippingOpen.tracking_number} data-testid="admin-shipping-number"
+                    onChange={(e) => setShippingOpen({ ...shippingOpen, tracking_number: e.target.value })} />
+                  <p className="text-[11px] text-muted-foreground mt-1">{t('admin.shipping.autoUrl')}</p>
+                </div>
+                <div>
+                  <Label className="text-sm mb-1.5 block">{t('admin.shipping.eta')}</Label>
+                  <Input value={shippingOpen.eta} placeholder="3-5 días hábiles" data-testid="admin-shipping-eta"
+                    onChange={(e) => setShippingOpen({ ...shippingOpen, eta: e.target.value })} />
+                </div>
+              </div>
+              <DialogFooter>
+                <Button variant="outline" onClick={() => setShippingOpen(null)}>{t('common.cancel')}</Button>
+                <Button onClick={saveShipping} data-testid="admin-shipping-save">{t('common.saveChanges')}</Button>
+              </DialogFooter>
+            </>
+          )}
+        </DialogContent>
+      </Dialog>
 
       <Dialog open={!!customerOpen} onOpenChange={(v) => !v && setCustomerOpen(null)}>
         <DialogContent className="max-w-lg max-h-[85vh] overflow-y-auto">
