@@ -9,7 +9,7 @@
 ## 0. La marca — REBRAND Nova → Exygen (2026-07-17/18)
 
 - **Nombre nuevo: "Exygen Labs — Research Peptides"** (antes "Nova Peptides"). El asistente de IA se llama **Exygen** (antes "Nova").
-- **Dominio nuevo: `exygenlabs.com`** (antes novapeptides/novapeptidos.mx). **AÚN NO migrado** — el sitio sigue viviendo en **novapeptidos.mx** (GitHub Pages, `public/CNAME`). Todo el texto/correo ya dice exygenlabs.com; falta comprar/configurar el dominio y apuntar DNS.
+- **Dominio nuevo: `exygenlabs.com`** — **MIGRADO 2026-07-19.** Comprado en **Cloudflare** (no AWS; ver [[exygen-dominio-backend]]). DNS en Cloudflare: 4 registros A del apex → GitHub Pages (185.199.108-111.153) + `www` CNAME → vancuellar.github.io (todos DNS-only, sin proxy). `public/CNAME` = **exygenlabs.com** y GitHub Pages custom domain actualizado por API. `novapeptidos.mx` (DNS en GoDaddy) YA NO sirve el sitio → **pendiente: redirigirlo (y los demás dominios `nova*`) a exygenlabs.com** vía GoDaddy Domain Forwarding o mudándolos a Cloudflare. Token de Cloudflare (acotado a la zona exygenlabs.com) lo dio Christian; NO se pudo guardar en disco (clasificador), vive solo en la sesión que lo use.
 - **Correo:** `hola@exygenlabs.com`.
 - **Logo:** imagen oficial en `public/images/exygen-logo.png` (estructura del dipéptido + wordmark Marcellus + "RESEARCH PEPTIDES" + enlace peptídico en guinda). Componente `src/components/BrandLogo.js` la renderiza como `<img>`; en dark theme se invierte a blanco (`dark:brightness-0 dark:invert`). Original en `../Exygen Brand - design_handoff_exygen_web/exygen-logo-9a-transparent.png` (recortado al contenido al copiarlo).
 - **Handoff de marca:** carpeta `../Exygen Brand - design_handoff_exygen_web/` (README con paleta marfil/tinta y fuentes Marcellus/Archivo/JetBrains Mono). **Christian acotó el re-tema:** SOLO se aplicó (i) fondo del light theme a marfil `#f6f3ec` y (ii) el logo en ambos themes. **NO** se cambiaron fuentes, radius ni el resto de la paleta. Dark theme intacto.
@@ -96,8 +96,9 @@
 ## 8. Pendientes / decisiones abiertas
 
 - [x] ~~Realinear precios~~ — NO aplica: los precios en vivo ya cumplen la regla vigente (§5). Resuelto 2026-07-18.
-- [ ] **Lanzar el backend nuevo** (correr `deploy-exygen-backend.sh` en Claude interactivo) + DNS `api.exygenlabs.com` y `chat.exygenlabs.com`.
-- [ ] **Migrar el dominio a exygenlabs.com** (comprar en GoDaddy → NS a Route53 opcional → cambiar `public/CNAME` → GitHub Pages custom domain). Hasta entonces todo vive en novapeptidos.mx.
+- [x] ~~Migrar el dominio a exygenlabs.com~~ — HECHO 2026-07-19 (Cloudflare DNS + `public/CNAME` + GitHub Pages). https://exygenlabs.com en vivo con HTTPS. Ver §0.
+- [ ] **Redirigir `novapeptidos.mx` y los demás dominios `nova*` → exygenlabs.com.** DNS de esos dominios está en GoDaddy (fuera del token de Cloudflare, que solo cubre exygenlabs.com). Opción A: GoDaddy Domain Forwarding (301) por dominio. Opción B: mudarlos a Cloudflare + token que los cubra y poner redirect. **Falta la lista completa de dominios `nova*` de Christian.**
+- [ ] **Lanzar el backend nuevo** (correr `deploy-exygen-backend.sh` en Claude interactivo) + DNS `api.exygenlabs.com` y `chat.exygenlabs.com` (estos sí en Cloudflare, con el token que ya tenemos).
 - [ ] **Rebrand en los scripts/xlsx internos** (distribuidores, título de la maestra) y COA reales.
 - [ ] Batch numbers en fotos/etiquetas siguen con prefijo `NP-` (Nova) — cambiar a Exygen si se desea.
 - [ ] Rotar la llave de Gemini (anduvo en el chat).
