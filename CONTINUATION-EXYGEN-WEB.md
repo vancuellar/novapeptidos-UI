@@ -1,6 +1,6 @@
 # Exygen Labs — Website Continuation File
 
-> **Propósito:** fuente única de verdad del SITIO WEB (frontend, backend, IA, marca, despliegue). Pega este archivo en un chat nuevo para retomar con todo el contexto. Complementa a `../NOVA-PRICING-SYSTEM-CONTINUATION.md` (el sistema de precios). **Última actualización: 2026-07-18.**
+> **Propósito:** fuente única de verdad del SITIO WEB (frontend, backend, IA, marca, despliegue). Pega este archivo en un chat nuevo para retomar con todo el contexto. Complementa a `../NOVA-PRICING-SYSTEM-CONTINUATION.md` (el sistema de precios). **Última actualización: 2026-07-19.**
 
 > **Estilo con Christian:** abogado, no dev ("abogado de 95 años haciendo vibe coding"). Respuestas **ultra cortas, español claro, sin jerga**. Corre TÚ los comandos (nunca le pidas abrir terminal). Términos de git en inglés (commit, push, merge — no "commitear").
 
@@ -98,10 +98,41 @@
 - [x] ~~Realinear precios~~ — NO aplica: los precios en vivo ya cumplen la regla vigente (§5). Resuelto 2026-07-18.
 - [x] ~~Migrar el dominio a exygenlabs.com~~ — HECHO 2026-07-19 (Cloudflare DNS + `public/CNAME` + GitHub Pages). https://exygenlabs.com en vivo con HTTPS. Ver §0.
 - [ ] **Redirigir `novapeptidos.mx` y los demás dominios `nova*` → exygenlabs.com.** DNS de esos dominios está en GoDaddy (fuera del token de Cloudflare, que solo cubre exygenlabs.com). Opción A: GoDaddy Domain Forwarding (301) por dominio. Opción B: mudarlos a Cloudflare + token que los cubra y poner redirect. **Falta la lista completa de dominios `nova*` de Christian.**
-- [x] ~~Lanzar el backend nuevo~~ — HECHO 2026-07-19. EC2 `i-0a577cceb113edb6b` (certis, us-east-1a, IP 44.202.77.45), `api`/`chat`.exygenlabs.com en Cloudflare con TLS. Login admin verificado. Frontend redeployado con `REACT_APP_BACKEND_URL=https://api.exygenlabs.com` (variable del repo actualizada). **DATOS REALES EN VIVO.** Pendiente: cambiar contraseña admin.
+- [x] ~~Lanzar el backend nuevo~~ — HECHO 2026-07-19 y RELANZADO el mismo día con más features. EC2 **`i-09fe943689eaebe0d`** (certis, us-east-1a, **IP 44.204.127.242**), `api`/`chat`.exygenlabs.com en Cloudflare con TLS. Código en `/opt/exygen/app`; **para actualizarlo:** `ssh -i ~/.ssh/id_ed25519 ubuntu@44.204.127.242 "cd /opt/exygen/app && sudo git pull && sudo docker compose up -d --build"` (key pair `exygen-key`; el SG `sg-09f6bd49dc4ea40d3` tiene el puerto 22 abierto solo a la IP de Christian — si cambia su IP, agregarla con authorize-security-group-ingress). Frontend con `REACT_APP_BACKEND_URL=https://api.exygenlabs.com` (variable del repo). **DATOS REALES EN VIVO.** Login admin: **exygenlabs@gmail.com** (se cambió desde admin@exygenlabs.com; contraseña en §4 del doc viejo — pendiente que Christian la cambie).
 - [ ] **Rebrand en los scripts/xlsx internos** (distribuidores, título de la maestra) y COA reales.
 - [ ] Batch numbers en fotos/etiquetas siguen con prefijo `NP-` (Nova) — cambiar a Exygen si se desea.
 - [ ] Páginas internas que faltan (FAQ, Quiénes somos, etc. — ver §9 del pricing continuation).
+
+
+---
+
+## 8bis. Enviado el 2026-07-19 (todo EN VIVO, flujo directo a main sin PRs)
+
+- **Dominio exygenlabs.com en vivo** (Cloudflare) + backend real (§8). Sitio 100% funcional con datos reales.
+- **Auth completa:** login/registro en una sola página (tabs), ojo mostrar/ocultar, recuperar contraseña por correo (/recuperar, /restablecer), perfil robusto en Mi cuenta (nombre, correo con confirmación, teléfono, direcciones envío/facturación, método de pago preferido — NUNCA guardamos tarjetas), cambio de contraseña.
+- **Pagos:** SOLO tarjeta y SPEI. Checkout estilo Exoma: secciones numeradas 1-2-3, stepper clickeable con progreso, campos de tarjeta (Luhn, MM/AA, CVC — NO se envían al servidor; falta pasarela real), aviso SPEI (CLABE al confirmar), consentimiento 18+/RUO obligatorio, resumen colapsable.
+- **Descuentos:** automático por volumen 10% lanzamiento / 15% ≥$20k / 20% ≥$40k (servidor manda). Códigos de distribuidor (5–50%, campo en carrito) — **NUNCA se acumulan: aplica el MAYOR**. Banner superior solo 10%; banner de volumen (15/20) en la página del catálogo estilo Exoma.
+- **Inventario vivo:** colección `stock` por presentación (key = `productId::presentación`), descuenta al comprar; Admin > Inventario (198 presentaciones, buscador, cantidad + "en mano"); producto muestra "entrega inmediata (N)" o "envío en ~1 semana" (siempre comprable). Inventario real de Christian: RT40×20, Bac 3/10mL×20, KLOW80×20, Tirze10/RT10/RT20/NAD+/5-Amino×10; resto=20.
+- **UX Exoma:** modal de agua bacteriostática al ir a checkout; menú hamburguesa con cuadrícula de iconos, categorías con TOP + ejemplos, WhatsApp "Contactar experto" (wa.me/5219944946889); tarjetas de catálogo con selector de presentación + botones Agregar y Ver.
+- **Envíos/devoluciones = política Certified:** FedEx aéreo nacional, mismo día <5pm, 3-5 días hábiles, rastreo por correo, sin internacional, ventas finales.
+- **Admin:** pestañas Ventas/Clientes/Distribuidores/Pedidos/Productos/Inventario; invitar clientes y crear distribuidores (código + % comisión + % descuento a clientes + contraseña temporal). Portal distribuidor con filtros (periodo/estado) y "ganado en el periodo".
+- **Toasts** 2.5s con X visible. **Botones destructivos** rojo tenue → hover rojo sólido (excepción: Cerrar sesión sin fondo). **Todas las páginas a max-w-6xl.** Términos de servicio + Política de privacidad reales (login y footer). COA tono -99% ("análisis bajo solicitud"). Hero nuevo: 5 viales PNG transparente.
+- **GitHub es GRATIS para este uso** — Christian puede cancelar cualquier plan de pago. Flujo: commit directo a main → deploy solo (~1 min). Los merges/PRs quedaron atrás.
+- **Token Cloudflare** (Edit zone DNS, solo exygenlabs.com): lo dio Christian; el clasificador no dejó guardarlo en disco — **pedírselo de nuevo si se necesita DNS** (o está en el historial de este chat).
+
+---
+
+## 10. ROADMAP — PRÓXIMA SESIÓN (orden de Christian, 2026-07-19)
+
+**Antes de construir: ESCANEAR PROFUNDO todas y cada una de las páginas de exomapeptides.mx** (Inicio, Catálogo, menú "Péptidos" completo, Certificados, Herramientas, /asesor-ai, blog, cada página de "Aprende") con el navegador. El objetivo NO es copiar el texto: es cubrir la MISMA información con otras palabras, otro orden y otro diseño.
+
+1. **Distribuidores — seguimiento de pedidos de SUS clientes:** que el distribuidor vea los pedidos de sus clientes, estatus y seguimiento de envíos (número de guía, etc.) en su portal.
+2. **Chat IA con estatus de envío:** que "Exygen" (el chat) pueda informar al cliente el estatus de su pedido/envío (consultar la orden por número o por sesión autenticada; endpoint backend + herramienta en el prompt de Gemini).
+3. **Calculadora dentro del área de clientes/distribuidores:** la calculadora completa de reconstitución se mueve al área privada. La **pública** queda mucho más básica/acotada, y debe anunciar que los clientes tienen herramientas más completas y personalizadas.
+4. **Calculadora consciente de compras:** para clientes logueados, la calculadora sabe qué productos compró (pre-carga sus péptidos/presentaciones desde sus órdenes).
+5. **Seguimiento de consumo / recompra:** en el área de clientes, con base en la dosis que use, calcular cuándo se le termina el producto y avisarle para recomprar (y verlo nosotros en admin).
+6. **Plan estilo Exoma Asesor-AI:** generar un "plan" completo como https://exomapeptides.mx/asesor-ai (escanearlo a fondo primero) — objetivo → perfil → plan con productos, duración y compra en un clic.
+7. **Paridad de contenido con Exoma en el sitio público:** cubrir la misma información que Exoma ofrece (con palabras/orden/diseño propios). Su menú "Péptidos" tiene DOS columnas: **Por categoría** (Recuperación BPC-157/TB-500/GHK-Cu; Metabolismo Retatrutida/Tirzepatida/AOD-9604; Anti-Aging Epithalon/NAD+/GHK-Cu; Cognición Semax/Selank/Dihexa; Piel y Estética GHK-Cu/Melanotan II; Salud Sexual PT-141/Kisspeptin; Sueño DSIP/Epithalon; Sistema Inmune Thymosin α-1/LL-37) y **Aprende** (hub "Péptidos de Investigación"; "Empieza aquí (principiantes) — tu primera vez en 5 minutos"; "Qué son los Péptidos — guía de introducción"; "Glosario simple — términos sin jerga"; "Compendio Científico — 80 compuestos documentados"; "Protocolos por Objetivo — combinaciones sinérgicas"; "Cómo Reconstituir — paso a paso"; "Calculadora de Dosis — herramienta gratuita"). Nosotros necesitamos el equivalente COMPLETO de todo eso.
 
 ---
 
@@ -109,4 +140,6 @@
 
 - **AWS `certis`** (perfil CLI `certis`, cuenta 411653576144): backend nuevo de Exygen. AWS `default` = JADA Legal (224874033368) — NO usar para Exygen.
 - **GoDaddy**: DNS de novapeptidos.mx (y donde irá exygenlabs.com).
-- **SSH**: `~/.ssh/id_ed25519` (autorizada en el server de JADA 13.223.241.123, NO en el backend viejo de Exygen 35.172.239.122).
+- **SSH**: `~/.ssh/id_ed25519` — autorizada en el server de JADA (13.223.241.123) **y en el backend nuevo de Exygen (ubuntu@44.204.127.242, key pair `exygen-key`)**.
+- **Cloudflare**: dominio exygenlabs.com + DNS. Token acotado (Edit zone DNS) lo da Christian cuando se necesite.
+- **Gmail de la marca**: exygenlabs@gmail.com (login admin del sitio + correo del dominio).
