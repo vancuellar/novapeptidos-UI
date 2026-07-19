@@ -71,10 +71,10 @@ const Checkout = () => {
           {t('checkout.haveAccount')} <Link to="/login" className="text-[hsl(var(--primary))] font-medium hover:underline">{t('checkout.loginLink')}</Link> · {t('checkout.guestOk')}
         </p>
       )}
-      <div className="flex items-center gap-2 sm:gap-3 mb-6 text-xs sm:text-sm" data-testid="checkout-stepper">
+      <div className="flex items-center justify-center sm:justify-start gap-2 sm:gap-3 mb-6 text-xs sm:text-sm" data-testid="checkout-stepper">
         {[{ i: UserRound, l: t('checkout.step1') }, { i: MapPin, l: t('checkout.step2') }, { i: CreditCard, l: t('checkout.step3') }].map((s, idx) => (
           <React.Fragment key={idx}>
-            {idx > 0 && <div className="h-px flex-1 bg-border" />}
+            {idx > 0 && <div className="h-px w-8 sm:w-14 bg-border" />}
             <span className="inline-flex items-center gap-1.5 font-medium text-[hsl(var(--primary))]">
               <span className="h-6 w-6 rounded-full bg-[hsl(var(--primary))]/10 border border-[hsl(var(--primary))]/30 flex items-center justify-center"><s.i className="h-3 w-3" /></span>
               {s.l}
