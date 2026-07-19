@@ -167,7 +167,7 @@ const Header = () => {
                   {user.role === 'admin' && (
                     <DropdownMenuItem onClick={() => navigate('/admin')} data-testid="header-admin-link"><LayoutDashboard className="h-4 w-4 mr-2" /> {t('header.admin')}</DropdownMenuItem>
                   )}
-                  {user.role === 'distributor' && (
+                  {['distributor', 'admin'].includes(user.role) && (
                     <DropdownMenuItem onClick={() => navigate('/distribuidor')} data-testid="header-distributor-link"><LayoutDashboard className="h-4 w-4 mr-2" /> {t('header.distributor')}</DropdownMenuItem>
                   )}
                   <DropdownMenuSeparator />
