@@ -97,7 +97,7 @@ const Distributor = () => {
       {summary && (
         <Card className="p-4 mb-6 flex items-center gap-2 text-sm text-muted-foreground">
           <Percent className="h-4 w-4 text-[hsl(var(--primary))]" />
-          {t('distributor.commissionNote', { rate: Math.round((summary.commission_rate || 0) * 100) })}
+          {t('distributor.commissionNote', { rate: Math.round((summary.commission_rate || 0) * 100) })}{summary.customer_discount_rate > 0 && <> · {t('distributor.customerDiscountNote', { rate: Math.round(summary.customer_discount_rate * 100) })}</>}
         </Card>
       )}
 

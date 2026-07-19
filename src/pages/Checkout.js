@@ -45,7 +45,7 @@ const expiryOk = (exp) => {
 };
 
 const Checkout = () => {
-  const { items, subtotal, discount, discountRate, clearCart } = useCart();
+  const { items, subtotal, discount, discountRate, discountSource, distCode, clearCart } = useCart();
   const { user } = useAuth();
   const { t } = useLanguage();
   const navigate = useNavigate();
@@ -91,6 +91,7 @@ const Checkout = () => {
         payment_method: payment,
         shipping: 0,
         discount,
+        distributor_code: distCode || null,
         // Seguridad: los datos de la tarjeta NUNCA se envian ni se guardan en nuestro servidor.
       };
       const res = await api.post('/orders', payload);
@@ -237,7 +238,7 @@ const Checkout = () => {
             <Separator className="my-4" />
             <div className="space-y-1.5 text-sm">
               <div className="flex justify-between"><span className="text-muted-foreground">{t('common.subtotal')}</span><span>{formatMXN(subtotal)}</span></div>
-              {discount > 0 && <div className="flex justify-between text-[hsl(var(--success))]"><span>{t('discount.line', { rate: Math.round(discountRate * 100) })}</span><span>− {formatMXN(discount)}</span></div>}
+              {discount > 0 && <div className="flex justify-between text-[hsl(var(--success))]"><span>{discountSource === 'code' ? t('discount.lineCode', { code: distCode, rate: Math.round(discountRate * 100) }) : t('discount.line', { rate: Math.round(discountRate * 100) })}</span><span>− {formatMXN(discount)}</span></div>}
               <div className="flex justify-between"><span className="text-muted-foreground">{t('common.shipping')}</span><span className="text-muted-foreground">{t('cart.shippingTBD')}</span></div>
             </div>
             <Separator className="my-4" />

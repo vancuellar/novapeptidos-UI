@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Trash2, Minus, Plus, ShoppingBag, ArrowRight, BadgePercent } from 'lucide-react';
+import { Trash2, Minus, Plus, ShoppingBag, ArrowRight, BadgePercent, Tag, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
 import { Card } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
 import { useCart } from '@/context/CartContext';
@@ -9,9 +10,10 @@ import { formatMXN } from '@/lib/api';
 import { useLanguage } from '@/context/LanguageContext';
 
 const Cart = () => {
-  const { items, updateQty, removeItem, subtotal, discount, discountRate, nextTier } = useCart();
+  const { items, updateQty, removeItem, subtotal, discount, discountRate, discountSource, nextTier, distCode, distRate, applyDistCode, clearDistCode } = useCart();
   const { t } = useLanguage();
   const navigate = useNavigate();
+  const [code, setCode] = useState('');
   const afterDiscount = subtotal - discount; // el envío se cotiza por separado
 
   if (items.length === 0) {
@@ -59,10 +61,24 @@ const Cart = () => {
         <div className="lg:col-span-4">
           <Card className="p-5 sticky top-32">
             <h3 className="font-heading font-semibold mb-4">{t('cart.summary')}</h3>
+            <div className="mb-4">
+              {distCode ? (
+                <div className="flex items-center justify-between rounded-lg border border-[hsl(var(--success))]/40 bg-[hsl(var(--success))]/10 px-3 py-2 text-sm" data-testid="cart-distcode-applied">
+                  <span className="inline-flex items-center gap-1.5 text-[hsl(var(--success))] font-medium"><Tag className="h-3.5 w-3.5" /> {t('discount.codeApplied', { code: distCode, rate: Math.round(distRate * 100) })}</span>
+                  <button type="button" onClick={clearDistCode} className="rounded-md p-1 bg-destructive/10 text-destructive transition-colors hover:bg-destructive hover:text-white" data-testid="cart-distcode-remove"><X className="h-4 w-4" /></button>
+                </div>
+              ) : (
+                <form onSubmit={async (e) => { e.preventDefault(); if (await applyDistCode(code)) setCode(''); }} className="flex gap-2">
+                  <Input placeholder={t('discount.codePlaceholder')} value={code} onChange={(e) => setCode(e.target.value)} className="h-9" data-testid="cart-distcode-input" />
+                  <Button type="submit" variant="outline" className="h-9" data-testid="cart-distcode-apply">{t('discount.apply')}</Button>
+                </form>
+              )}
+              <p className="text-[11px] text-muted-foreground mt-1.5">{t('discount.noStack')}</p>
+            </div>
             <div className="space-y-2 text-sm">
               <div className="flex justify-between"><span className="text-muted-foreground">{t('common.subtotal')}</span><span data-testid="cart-subtotal">{formatMXN(subtotal)}</span></div>
-              {discount > 0 && <div className="flex justify-between text-[hsl(var(--success))]"><span>{t('discount.line', { rate: Math.round(discountRate * 100) })}</span><span data-testid="cart-discount">− {formatMXN(discount)}</span></div>}
-              {nextTier && <p className="text-xs text-muted-foreground">{t('discount.nextTier', { amount: formatMXN(nextTier.min - subtotal), rate: Math.round(nextTier.rate * 100) })}</p>}
+              {discount > 0 && <div className="flex justify-between text-[hsl(var(--success))]"><span>{discountSource === 'code' ? t('discount.lineCode', { code: distCode, rate: Math.round(discountRate * 100) }) : t('discount.line', { rate: Math.round(discountRate * 100) })}</span><span data-testid="cart-discount">− {formatMXN(discount)}</span></div>}
+              {discountSource === 'auto' && nextTier && <p className="text-xs text-muted-foreground">{t('discount.nextTier', { amount: formatMXN(nextTier.min - subtotal), rate: Math.round(nextTier.rate * 100) })}</p>}
               <div className="flex justify-between"><span className="text-muted-foreground">{t('common.shipping')}</span><span className="text-muted-foreground">{t('cart.shippingTBD')}</span></div>
               <p className="text-xs text-muted-foreground">{t('cart.freeShippingLine')}</p>
             </div>

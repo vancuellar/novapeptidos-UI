@@ -61,7 +61,7 @@ const Admin = () => {
   const [distributors, setDistributors] = useState([]);
   const [stockMap, setStockMap] = useState({});
   const [stockFilter, setStockFilter] = useState('');
-  const [distForm, setDistForm] = useState({ name: '', email: '', commission: 25 });
+  const [distForm, setDistForm] = useState({ name: '', email: '', commission: 25, customerDiscount: 10 });
   const [distDialogOpen, setDistDialogOpen] = useState(false);
   const [distCreated, setDistCreated] = useState(null);
   const [inviteForm, setInviteForm] = useState({ name: '', email: '' });
@@ -130,9 +130,10 @@ const Admin = () => {
         name: distForm.name,
         email: distForm.email,
         commission_rate: Math.max(0, Math.min(100, Number(distForm.commission) || 0)) / 100,
+        customer_discount_rate: Math.max(5, Math.min(50, Number(distForm.customerDiscount) || 10)) / 100,
       });
       setDistCreated(r.data);
-      setDistForm({ name: '', email: '', commission: 25 });
+      setDistForm({ name: '', email: '', commission: 25, customerDiscount: 10 });
       loadAll();
     } catch (err) {
       toast.error(err.response?.data?.detail || t('admin.toast.saveError'));
@@ -360,7 +361,7 @@ const Admin = () => {
               <TableHeader>
                 <TableRow>
                   <TableHead>{t('admin.dist.name')}</TableHead><TableHead>{t('admin.dist.code')}</TableHead>
-                  <TableHead>{t('admin.dist.commission')}</TableHead><TableHead>{t('admin.dist.clients')}</TableHead>
+                  <TableHead>{t('admin.dist.commission')}</TableHead><TableHead>{t('admin.dist.customerDiscountCol')}</TableHead><TableHead>{t('admin.dist.clients')}</TableHead>
                   <TableHead>{t('admin.dist.sales')}</TableHead><TableHead>{t('admin.dist.earnings')}</TableHead>
                 </TableRow>
               </TableHeader>
@@ -372,6 +373,7 @@ const Admin = () => {
                     <TableCell><div className="text-sm font-medium">{d.name}</div><div className="text-xs text-muted-foreground">{d.email}</div></TableCell>
                     <TableCell><button onClick={() => copyText(d.distributor_code, t('distributor.codeCopied'))} className="font-mono-tech text-xs inline-flex items-center gap-1 hover:text-[hsl(var(--primary))]">{d.distributor_code} <Copy className="h-3 w-3" /></button></TableCell>
                     <TableCell>{Math.round((d.commission_rate || 0) * 100)}%</TableCell>
+                    <TableCell>{Math.round((d.customer_discount_rate || 0) * 100)}%</TableCell>
                     <TableCell>{d.clients_count}</TableCell>
                     <TableCell>{formatMXN(d.sales_total)}</TableCell>
                     <TableCell className="font-medium text-[hsl(var(--primary))]">{formatMXN(d.earnings)}</TableCell>
@@ -545,6 +547,7 @@ const Admin = () => {
                 <div><Label>{t('admin.dist.name')}</Label><Input className="mt-1.5" value={distForm.name} onChange={(e) => setDistForm((f) => ({ ...f, name: e.target.value }))} data-testid="admin-distributor-name-input" /></div>
                 <div><Label>{t('admin.dist.email')}</Label><Input type="email" className="mt-1.5" value={distForm.email} onChange={(e) => setDistForm((f) => ({ ...f, email: e.target.value }))} data-testid="admin-distributor-email-input" /></div>
                 <div><Label>{t('admin.dist.commission')}</Label><Input type="number" min="0" max="100" className="mt-1.5" value={distForm.commission} onChange={(e) => setDistForm((f) => ({ ...f, commission: e.target.value }))} /></div>
+                <div><Label>{t('admin.dist.customerDiscount')}</Label><Input type="number" min="5" max="50" className="mt-1.5" value={distForm.customerDiscount} onChange={(e) => setDistForm((f) => ({ ...f, customerDiscount: e.target.value }))} /><p className="text-xs text-muted-foreground mt-1">{t('admin.dist.customerDiscountHint')}</p></div>
               </div>
               <DialogFooter>
                 <Button variant="outline" onClick={() => setDistDialogOpen(false)}>{t('common.cancel')}</Button>
