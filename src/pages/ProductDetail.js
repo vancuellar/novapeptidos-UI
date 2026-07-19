@@ -148,24 +148,7 @@ const ProductDetail = () => {
             ))}
           </div>
 
-          <Dialog>
-            <DialogTrigger asChild>
-              <Button variant="outline" className="mt-4 w-full" data-testid="pdp-open-coa-button"><FileText className="h-4 w-4 mr-2" /> {t('product.viewCoa')}</Button>
-            </DialogTrigger>
-            <DialogContent>
-              <DialogHeader><DialogTitle>{t('product.coaTitle')}</DialogTitle></DialogHeader>
-              <div className="space-y-3 text-sm">
-                <div className="rounded-lg border border-border p-4 bg-[hsl(var(--secondary))]">
-                  <div className="flex justify-between py-1"><span className="text-muted-foreground">{t('common.product')}</span><span className="font-medium">{localizedProduct.name}</span></div>
-                  <div className="flex justify-between py-1"><span className="text-muted-foreground">{t('common.batchNumber')}</span><span className="font-mono-tech">{localizedProduct.batch_number}</span></div>
-                  <div className="flex justify-between py-1"><span className="text-muted-foreground">{t('common.purity')} (HPLC)</span><span className="font-mono-tech">{localizedProduct.purity}</span></div>
-                  <div className="flex justify-between py-1"><span className="text-muted-foreground">{t('common.method')}</span><span>HPLC / MS</span></div>
-                </div>
-                <p className="text-xs text-muted-foreground">{t('product.coaHelp')}</p>
-                <Button asChild variant="outline" className="w-full"><a href={localizedProduct.coa_url} target="_blank" rel="noreferrer">{t('product.downloadPdf')}</a></Button>
-              </div>
-            </DialogContent>
-          </Dialog>
+          <p className="mt-4 text-xs text-muted-foreground flex items-center gap-1.5"><FileText className="h-3.5 w-3.5" /> {t('product.viewCoa')}</p>
 
           <div className="mt-4 flex items-center gap-4 text-xs text-muted-foreground">
             <span className="flex items-center gap-1.5"><Truck className="h-4 w-4" /> {t('product.fastShipping')}</span>

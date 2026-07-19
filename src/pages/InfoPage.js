@@ -3,7 +3,7 @@ import { useParams, Link } from 'react-router-dom';
 import { Card } from '@/components/ui/card';
 import { useLanguage } from '@/context/LanguageContext';
 
-const PAGES = ['envios', 'devoluciones', 'calidad', 'terminos'];
+const PAGES = ['envios', 'devoluciones', 'calidad', 'terminos', 'privacidad'];
 
 const InfoPage = () => {
   const { page } = useParams();

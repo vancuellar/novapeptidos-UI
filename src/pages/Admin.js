@@ -64,6 +64,9 @@ const Admin = () => {
   const [distForm, setDistForm] = useState({ name: '', email: '', commission: 25 });
   const [distDialogOpen, setDistDialogOpen] = useState(false);
   const [distCreated, setDistCreated] = useState(null);
+  const [inviteForm, setInviteForm] = useState({ name: '', email: '' });
+  const [inviteDialogOpen, setInviteDialogOpen] = useState(false);
+  const [inviteCreated, setInviteCreated] = useState(null);
   const [editing, setEditing] = useState(null);
   const [form, setForm] = useState(EMPTY);
   const [dialogOpen, setDialogOpen] = useState(false);
@@ -137,6 +140,18 @@ const Admin = () => {
   };
 
   const copyText = (text, msg) => { navigator.clipboard?.writeText(text); toast.success(msg); };
+
+  const inviteCustomer = async () => {
+    if (!inviteForm.name || !inviteForm.email) { toast.error(t('admin.toast.required')); return; }
+    try {
+      const r = await api.post('/admin/customers/invite', inviteForm);
+      setInviteCreated(r.data);
+      setInviteForm({ name: '', email: '' });
+      loadAll();
+    } catch (err) {
+      toast.error(err.response?.data?.detail || t('admin.toast.saveError'));
+    }
+  };
 
   const saveStock = async (key, patch) => {
     const prev = stockMap[key] || { qty: 0, in_hand: false };
@@ -301,7 +316,10 @@ const Admin = () => {
         </TabsContent>
 
         <TabsContent value="customers" className="mt-5">
-          <h3 className="font-heading font-semibold mb-4">{t('admin.customersCount', { count: customers.length })}</h3>
+          <div className="flex justify-between items-center mb-4">
+            <h3 className="font-heading font-semibold">{t('admin.customersCount', { count: customers.length })}</h3>
+            <Button onClick={() => { setInviteCreated(null); setInviteDialogOpen(true); }} data-testid="admin-invite-customer-button"><Plus className="h-4 w-4 mr-1.5" /> {t('admin.inviteCustomer')}</Button>
+          </div>
           <Card className="overflow-x-auto">
             <Table data-testid="admin-customers-table">
               <TableHeader>
@@ -472,6 +490,34 @@ const Admin = () => {
                   ))}
                 </div>
               </div>
+            </>
+          )}
+        </DialogContent>
+      </Dialog>
+
+      <Dialog open={inviteDialogOpen} onOpenChange={(v) => { setInviteDialogOpen(v); if (!v) setInviteCreated(null); }}>
+        <DialogContent className="max-w-md">
+          <DialogHeader><DialogTitle>{inviteCreated ? t('admin.invite.createdTitle') : t('admin.inviteCustomer')}</DialogTitle></DialogHeader>
+          {inviteCreated ? (
+            <div className="space-y-4 text-sm">
+              <div className="font-medium">{inviteCreated.name}<span className="text-muted-foreground font-normal"> · {inviteCreated.email}</span></div>
+              <p className="text-xs text-muted-foreground">{t('admin.invite.emailSent')}</p>
+              <div>
+                <div className="text-xs text-muted-foreground mb-1">{t('admin.dist.tempPassword')}</div>
+                <button onClick={() => copyText(inviteCreated.temp_password, t('distributor.codeCopied'))} className="font-mono-tech inline-flex items-center gap-2 hover:text-[hsl(var(--primary))]">{inviteCreated.temp_password} <Copy className="h-4 w-4" /></button>
+              </div>
+              <DialogFooter><Button onClick={() => { setInviteDialogOpen(false); setInviteCreated(null); }}>{t('admin.dist.close')}</Button></DialogFooter>
+            </div>
+          ) : (
+            <>
+              <div className="space-y-4">
+                <div><Label>{t('admin.dist.name')}</Label><Input className="mt-1.5" value={inviteForm.name} onChange={(e) => setInviteForm((f) => ({ ...f, name: e.target.value }))} data-testid="admin-invite-name-input" /></div>
+                <div><Label>{t('admin.dist.email')}</Label><Input type="email" className="mt-1.5" value={inviteForm.email} onChange={(e) => setInviteForm((f) => ({ ...f, email: e.target.value }))} data-testid="admin-invite-email-input" /></div>
+              </div>
+              <DialogFooter>
+                <Button variant="outline" onClick={() => setInviteDialogOpen(false)}>{t('common.cancel')}</Button>
+                <Button onClick={inviteCustomer} data-testid="admin-send-invite-button">{t('admin.invite.send')}</Button>
+              </DialogFooter>
             </>
           )}
         </DialogContent>

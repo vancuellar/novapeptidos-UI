@@ -66,7 +66,7 @@ const Login = () => {
   const termsLine = (
     <div className="text-center text-xs text-muted-foreground mt-5">
       {t('auth.terms.pre')}<br />
-      <Link to="/info/terminos" className="text-[hsl(var(--primary))] font-medium underline underline-offset-2">{t('auth.terms.link')}</Link>
+      <Link to="/info/terminos" className="text-[hsl(var(--primary))] font-medium underline underline-offset-2">{t('auth.terms.service')}</Link> {t('auth.terms.and')} <Link to="/info/privacidad" className="text-[hsl(var(--primary))] font-medium underline underline-offset-2">{t('auth.terms.privacy')}</Link>
     </div>
   );
 

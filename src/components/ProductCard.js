@@ -35,7 +35,6 @@ const ProductCard = ({ product }) => {
       </Link>
       <div className="p-4 flex flex-col flex-1">
         <div className="flex flex-wrap gap-1.5 mb-2">
-          <Badge variant="secondary" className="text-[10px] gap-1" data-testid="product-card-coa-badge"><ShieldCheck className="h-3 w-3" /> COA</Badge>
           <Badge variant="outline" className="text-[10px] border-[hsl(var(--warning-border))] bg-[hsl(var(--warning))] text-[hsl(var(--warning-foreground))]" data-testid="product-card-ruo-badge">RUO</Badge>
         </div>
         <Link to={`/producto/${product.slug}`}>
