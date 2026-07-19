@@ -19,7 +19,7 @@
 ## 1. Repos y despliegue
 
 - **`novapeptidos-UI/`** — frontend React (CRA + craco + Tailwind), **GitHub Pages**. Es el único repo git de la carpeta padre. Remote: `github.com/vancuellar/novapeptidos-UI`.
-  - **Flujo de despliegue (SIEMPRE):** rama de feature → **PR a `dev`** → merge → **PR `dev` → `main`** ("Promover a producción") → merge → `deploy.yml` publica a GitHub Pages. Usa `gh pr merge <n> --merge`. Christian pidió que YO haga los merges vía `gh` en esta modalidad.
+  - **Flujo de despliegue (NUEVO 2026-07-19, orden de Christian):** SIN PRs — commit directo a `main` → push → `deploy.yml` publica solo (~1 min a producción). Cada cambio se sube EN EL MOMENTO. (El flujo viejo de PRs dev→main quedó atrás; GitHub es gratis para este uso — Christian puede cancelar cualquier plan de pago sin que nada se rompa.)
   - Dev server: `.claude/launch.json` (name `novapeptidos-ui`, puerto 3000). Verificación en navegador con las tools del Browser pane.
   - `public/CNAME` = `novapeptidos.mx` (NO cambiar hasta migrar a exygenlabs.com, o se cae el sitio).
 - **`novapeptidos-RBAC/`** — backend FastAPI + MongoDB (repo `github.com/vancuellar/novapeptidos-RBAC`, **público**). Dockerfile + docker-compose. Endpoints: auth, products, orders, `/api/ai/chat`, emails (SES). NO tiene rama `dev` (PRs directos a `main`).
