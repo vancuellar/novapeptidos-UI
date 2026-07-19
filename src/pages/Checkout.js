@@ -71,17 +71,26 @@ const Checkout = () => {
           {t('checkout.haveAccount')} <Link to="/login" className="text-[hsl(var(--primary))] font-medium hover:underline">{t('checkout.loginLink')}</Link> · {t('checkout.guestOk')}
         </p>
       )}
-      <div className="flex items-center justify-center sm:justify-start gap-2 sm:gap-3 mb-6 text-xs sm:text-sm" data-testid="checkout-stepper">
-        {[{ i: UserRound, l: t('checkout.step1') }, { i: MapPin, l: t('checkout.step2') }, { i: CreditCard, l: t('checkout.step3') }].map((s, idx) => (
-          <React.Fragment key={idx}>
-            {idx > 0 && <div className="h-px w-8 sm:w-14 bg-border" />}
-            <span className="inline-flex items-center gap-1.5 font-medium text-[hsl(var(--primary))]">
-              <span className="h-6 w-6 rounded-full bg-[hsl(var(--primary))]/10 border border-[hsl(var(--primary))]/30 flex items-center justify-center"><s.i className="h-3 w-3" /></span>
-              {s.l}
-            </span>
-          </React.Fragment>
-        ))}
-      </div>
+      {(() => {
+        const contactDone = !!(form.full_name && form.email && form.phone);
+        const shippingDone = contactDone && !!form.address;
+        // paso 1 siempre activo; los siguientes se van iluminando conforme avanza
+        const stepActive = [true, contactDone, shippingDone];
+        const steps = [{ i: UserRound, l: t('checkout.step1') }, { i: MapPin, l: t('checkout.step2') }, { i: CreditCard, l: t('checkout.step3') }];
+        return (
+          <div className="flex items-center justify-center sm:justify-start gap-2 sm:gap-3 mb-6 text-xs sm:text-sm" data-testid="checkout-stepper">
+            {steps.map((s, idx) => (
+              <React.Fragment key={idx}>
+                {idx > 0 && <div className={`h-px w-8 sm:w-14 transition-colors ${stepActive[idx] ? 'bg-[hsl(var(--primary))]' : 'bg-border'}`} />}
+                <span className={`inline-flex items-center gap-1.5 font-medium transition-colors ${stepActive[idx] ? 'text-[hsl(var(--primary))]' : 'text-muted-foreground'}`} data-testid={`checkout-step-${idx + 1}`} data-active={stepActive[idx]}>
+                  <span className={`h-6 w-6 rounded-full flex items-center justify-center transition-colors ${stepActive[idx] ? 'bg-[hsl(var(--primary))] text-[hsl(var(--primary-foreground))]' : 'bg-[hsl(var(--secondary))] border border-border'}`}><s.i className="h-3 w-3" /></span>
+                  {s.l}
+                </span>
+              </React.Fragment>
+            ))}
+          </div>
+        );
+      })()}
       <form onSubmit={submit} className="grid lg:grid-cols-12 gap-6">
         <div className="lg:col-span-8 space-y-6">
           <Card className="p-5">
