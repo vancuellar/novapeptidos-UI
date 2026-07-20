@@ -386,6 +386,38 @@ reported as leaked"`. Estaba escrita en este documento y en los userdata, y el r
   cubría `api.exygenlabs.com`, así que el widget del chat fallaba en el navegador desde siempre.
   Ya se agregó al mismo bloque de Caddy y responde con HTTPS válido.
 
+### Novena tanda (2026-07-20) — commit `fd17103` — EN VIVO
+- **Barra:** las 3 pestañas quedan **centradas** entre el logo y las herramientas.
+- **Tema + idioma en un solo menú, calcado de jadalegal.com:** botón de 3 líneas
+  (`SlidersHorizontal`) con el código de idioma, panel de 192 px con secciones
+  **Apariencia** e **Idioma** y palomita en el activo. Llaves nuevas: `controls.appearance`,
+  `controls.preferences`, `controls.dark`, `controls.light` (es/en/pt/fr).
+- **Viales del hero con efecto dock de macOS:** el apuntado escala a 1.28 y se levanta, los
+  vecinos a 1.1, los lejanos bajan a 0.94 y se apagan. El estado vive en React
+  (`hoveredVial`), no en CSS, porque el efecto es de la fila completa. Aparece el nombre
+  debajo y **el clic lleva a la página del producto** (`/producto/<slug>`), ya no a una
+  búsqueda. Respeta `prefers-reduced-motion`.
+- **Monografías largas de producto:** `src/data/productMonographs.js` — **archivo aparte a
+  propósito**, porque `fallbackCatalog.js` lo regenera `gen_catalog.py` y se sobrescribiría.
+  Se unen por slug en `ProductDetail`. 8 fichas de 300-400 palabras (Retatrutida, NAD+, KLOW,
+  Tirzepatida, Semaglutida, BPC-157, TB-500, Epithalon), con secciones *Qué es / Qué se
+  estudia / Manejo en laboratorio* y cierre RUO. Contenido propio: se investigó a la
+  competencia solo para saber qué cubrir.
+- **Orden por relevancia:** `FLAGSHIP_ORDER` en `Catalog.js` = Retatrutida, NAD+, KLOW.
+  Salen primero dentro de su categoría; con orden por precio manda el precio y el destacado
+  solo desempata.
+
+### Hueco de catálogo vs. la competencia (revisado 2026-07-20)
+Comparación real de nuestros **112 productos** contra Exoma, Certified PepMex, Peptide MX,
+Zelara, Viu, Singular, Nexa y Supreme. **Ya tenemos casi todo** (GHRP-2/6, IGF-1 LR3, SS-31,
+FOXO4-DRI, KPV, GLOW, Humanina, AICAR, PNC-27, Adipotida, Mazdutida, Survodutida, HCG, HMG,
+ACE-031, Melanotan I, VIP, Oxitocina, Matrixyl, SNAP-8, AHK-Cu…). **Faltan 15**, casi todos
+bioreguladores Khavinson donde Exoma domina:
+Folistatina, Cerebrolisina, Dihexa, Adamax, **Timalina, Livagen, Ovagen, Pancragen, Prostamax,
+Chonluten, Testagen, Vesugen, Vilon**, ácido acético 0.6% (diluyente) y jeringas de insulina.
+> Ojo: un informe previo de subagente listó muchos más "huecos" porque comparó contra una lista
+> corta de 30 compuestos, no contra el catálogo real. Esta lista de 15 es la buena.
+
 ### Octava tanda (2026-07-20) — commits `6ad13a9` (UI) y `ac3496b` (backend) — EN VIVO
 - **Viales del hero más chicos otra vez** (13-16% del ancho del contenedor) y **wordmark de la
   barra a h-3.5/h-4**. Christian los pidió más pequeños dos veces; este es el tamaño bueno.
