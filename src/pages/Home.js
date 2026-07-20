@@ -17,12 +17,14 @@ const ICONS = { HeartPulse, Activity, Flame, Hourglass, Brain, Sparkles, Layers,
 
 // Un archivo por vial (botellas que mandó Christian): cada uno se levanta solo
 // al pasar el cursor y lleva al catálogo. Alturas escalonadas para la silueta.
+// Orden de Christian: Reta al centro y al frente; NAD y KLOW a sus lados como
+// principales; Tirze y Sema en las esquinas.
 const HERO_VIALS = [
-  { slug: 'vial-nad', name: 'NAD+ 500mg', search: 'NAD+', w: 18 },
-  { slug: 'vial-semaglutide', name: 'Semaglutida 10mg', search: 'Semaglutida', w: 20 },
-  { slug: 'vial-tirzepatide', name: 'Tirzepatida 20mg', search: 'Tirzepatida', w: 22 },
-  { slug: 'vial-retatrutide', name: 'Retatrutida 40mg', search: 'Retatrutida', w: 20 },
-  { slug: 'vial-klow', name: 'KLOW 80mg', search: 'KLOW', w: 18 },
+  { slug: 'vial-tirzepatide', name: 'Tirzepatida 20mg', search: 'Tirzepatida', w: 18 },
+  { slug: 'vial-nad', name: 'NAD+ 500mg', search: 'NAD+', w: 20 },
+  { slug: 'vial-retatrutide', name: 'Retatrutida 40mg', search: 'Retatrutida', w: 22 },
+  { slug: 'vial-klow', name: 'KLOW 80mg', search: 'KLOW', w: 20 },
+  { slug: 'vial-semaglutide', name: 'Semaglutida 10mg', search: 'Semaglutida', w: 18 },
 ].map((v) => ({ ...v, src: `${process.env.PUBLIC_URL}/images/hero/${v.slug}.webp` }));
 
 // Compounds shown in the scrolling ticker under the hero
