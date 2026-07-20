@@ -479,7 +479,27 @@ envían a ningún procesador. SPEI funciona porque es transferencia manual.
 
 ## 🚩 LO PRIMERO QUE DEBE HACER EL PRÓXIMO CHAT
 
-### 1. E2E + workflow completo de pre-push (Christian lo pidió explícitamente)
+### 1. Versión clara/oscura del correo de pedido — LO PRIMERO (Christian, 2026-07-20)
+El correo de confirmación de pedido ya quedó con el diseño del de bienvenida (`_order_email_html`
+en `novapeptidos-RBAC/emails.py`), pero **solo existe en versión clara**. Christian pidió que
+tenga versión clara y oscura.
+- **Cómo se hace en correo:** con `@media (prefers-color-scheme: dark)` dentro de un `<style>`
+  en el `<head>`, más el meta `<meta name="color-scheme" content="light dark">` y
+  `<meta name="supported-color-schemes" content="light dark">`. Como los estilos van en línea
+  (obligatorio para Outlook), hay que **duplicar** cada regla que cambie de color usando clases
+  con `!important` en el bloque `@media`.
+- **Ojo con el soporte real:** Apple Mail y iOS lo respetan bien; **Gmail app y Outlook no de
+  forma confiable**, y algunos clientes *invierten los colores por su cuenta*. Por eso el
+  diseño claro debe seguir siendo el que se ve bien por defecto, y el oscuro es una mejora
+  encima — nunca al revés.
+- **Alcance:** hacerlo primero en el correo de pedido y, si funciona, replicarlo en los de
+  bienvenida (`templates/welcome_email.*.html`) y en `_action_email_html` (confirmación de
+  correo, invitación y restablecer contraseña), que hoy tampoco tienen versión oscura.
+- **Cómo probarlo sin mandar correos:** renderizar `_order_email_html()` a un archivo HTML,
+  abrirlo en el navegador y alternar el tema del sistema (o forzar `prefers-color-scheme` con
+  las herramientas del navegador).
+
+### 2. E2E + workflow completo de pre-push (Christian lo pidió explícitamente)
 **No se ha corrido una auditoría E2E completa.** El chat anterior se quedó sin contexto.
 Hay que correr el **workflow de pre-push global de Christian: CERO fallas, incluidas las
 preexistentes y las "ambientales".** Cubrir al menos:
@@ -496,15 +516,15 @@ preexistentes y las "ambientales".** Cubrir al menos:
 > **Estado al cierre de esta sesión (2026-07-20, noche):** último commit del frontend
 > `573c2d2`, del backend `2a60cca`. Frontend compila limpio (`CI=true npm run build`) y el
 > backend pasa sus **40 pruebas**. Sitio y API en vivo. **Lo único caído es el chat de IA**,
-> por la llave de Gemini revocada. **Nada de esto sustituye el E2E completo del punto 1.**
+> por la llave de Gemini revocada. **Nada de esto sustituye el E2E completo del punto 2.**
 
-### 2. Llave de Gemini
+### 3. Llave de Gemini
 Christian dijo que **la renueva y la entrega** (2026-07-21). Al recibirla: guardarla en
 `~/.config/exygen/gemini.env`, ponerla en el `.env` del servidor y reiniciar
 (`ssh -i ~/.ssh/id_ed25519 ubuntu@44.204.127.242 "cd /opt/exygen/app && sudo docker compose up -d"`).
 **NUNCA escribirla en el repo** (la anterior la revocó Google por filtrada).
 
-### 3. Google Sign-In — falta solo el CLIENT ID
+### 4. Google Sign-In — falta solo el CLIENT ID
 **El backend ya está hecho y desplegable** (commit RBAC `2a60cca`): `google_auth.py`,
 `GET /api/auth/google/config` y `POST /api/auth/google`. Verifica el ID token contra las
 llaves públicas de Google. **Solo necesita la variable `GOOGLE_CLIENT_ID`** (es pública,
