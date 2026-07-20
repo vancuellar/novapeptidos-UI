@@ -386,6 +386,23 @@ reported as leaked"`. Estaba escrita en este documento y en los userdata, y el r
   cubría `api.exygenlabs.com`, así que el widget del chat fallaba en el navegador desde siempre.
   Ya se agregó al mismo bloque de Caddy y responde con HTTPS válido.
 
+### Décima tanda (2026-07-20) — commit `48f9ab5` — EN VIVO
+- **Tipografía: HELVETICA (con Arial de respaldo).** Franklin Gothic no le gustó a Christian.
+  Stack: `'Helvetica Neue', Helvetica, Arial, 'Liberation Sans', sans-serif`. **Razón:** es la
+  sans neutra de las etiquetas de nuestros viales y la que contrasta bien con la **Marcellus**
+  del logotipo (serif romana elegante + sans limpia). No se descarga nada de Google Fonts:
+  las tres ya están en el equipo del visitante. Descartadas: Calibri/Aptos/Tahoma/Verdana
+  (se ven "de Office") y Courier New (monoespaciada, solo sirve para detalles técnicos).
+- **Barra centrada de verdad:** el nav estaba con `flex-1 justify-center` en el hueco entre
+  logo y herramientas, que tienen anchos distintos → quedaba descentrado. Ahora va
+  `absolute left-1/2 -translate-x-1/2`. **Medido: centro del nav = centro de la pantalla.**
+- **Espaciado parejo entre las 3 pestañas:** "Catálogo" no tenía chevron y las otras dos sí,
+  así que el espacio entre palabras salía distinto (era lo que Christian notó). Se le agregó
+  un hueco invisible del tamaño del chevron. **Medido: 54 px idénticos en ambos lados.**
+- **Buscador fijo en el sidebar del catálogo**, arriba de las categorías, con botón de limpiar.
+  El buscador de la barra superior de la página quedó `md:hidden` (solo móvil, donde el sidebar
+  se esconde) para no tener dos cajas iguales en escritorio. Ambos comparten el mismo estado.
+
 ### Novena tanda (2026-07-20) — commit `fd17103` — EN VIVO
 - **Barra:** las 3 pestañas quedan **centradas** entre el logo y las herramientas.
 - **Tema + idioma en un solo menú, calcado de jadalegal.com:** botón de 3 líneas
