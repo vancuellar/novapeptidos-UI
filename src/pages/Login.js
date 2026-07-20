@@ -22,7 +22,7 @@ const Consent = ({ checked, onChange, testid, children }) => (
 );
 
 const Login = () => {
-  const { login, register } = useAuth();
+  const { login, register, adoptSession } = useAuth();
   const { t, language } = useLanguage();
   const navigate = useNavigate();
   const [email, setEmail] = useState('');
@@ -64,7 +64,15 @@ const Login = () => {
     if (!canRegister) { toast.error(t('auth.consent.required')); return; }
     setLoading(true);
     try {
-      await register(regName, regEmail, regPassword, consents);
+      const res = await register(regName, regEmail, regPassword, consents);
+      // Si el servidor no exige confirmacion (correo saliente apagado) ya viene
+      // la sesion lista: entramos directo en vez de pedir un correo que no llegara.
+      if (res?.pending_verification === false && res.token) {
+        adoptSession(res.token, res.user);
+        toast.success(t('auth.toast.created'));
+        navigate('/cuenta');
+        return;
+      }
       setPendingEmail(regEmail.trim());
     } catch (err) {
       toast.error(err.response?.data?.detail || t('auth.toast.registerError'));

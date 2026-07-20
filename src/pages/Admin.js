@@ -47,6 +47,27 @@ const CHART_TOOLTIP_STYLE = {
   color: 'hsl(var(--foreground))',
 };
 
+// Resultado de una invitación. Con el correo saliente apagado el admin
+// necesita el enlace en pantalla para poder compartirlo el mismo.
+const InviteResult = ({ created, t, copyText }) => (
+  created.invitation_sent ? (
+    <div className="rounded-lg border border-[hsl(var(--border))] bg-[hsl(var(--muted))]/40 p-3">
+      <div className="flex items-start gap-2">
+        <MailCheck className="h-4 w-4 mt-0.5 text-[hsl(var(--primary))] shrink-0" />
+        <p className="text-xs text-muted-foreground leading-relaxed">{t('admin.invite.linkSent')}</p>
+      </div>
+    </div>
+  ) : (
+    <div className="rounded-lg border border-[hsl(var(--warning-border))] bg-[hsl(var(--warning))]/10 p-3" data-testid="invite-manual-link">
+      <p className="text-xs leading-relaxed mb-2">{t('admin.invite.emailOff')}</p>
+      <button onClick={() => copyText(created.invitation_link, t('admin.invite.linkCopied'))}
+        className="text-xs font-mono-tech break-all text-left inline-flex items-start gap-2 hover:text-[hsl(var(--primary))]">
+        {created.invitation_link} <Copy className="h-3.5 w-3.5 shrink-0 mt-0.5" />
+      </button>
+    </div>
+  )
+);
+
 const Admin = () => {
   const { user, loading } = useAuth();
   const { language, t } = useLanguage();
@@ -609,12 +630,7 @@ const Admin = () => {
           {inviteCreated ? (
             <div className="space-y-4 text-sm">
               <div className="font-medium">{inviteCreated.name}<span className="text-muted-foreground font-normal"> · {inviteCreated.email}</span></div>
-              <div className="rounded-lg border border-[hsl(var(--border))] bg-[hsl(var(--muted))]/40 p-3">
-                <div className="flex items-start gap-2">
-                  <MailCheck className="h-4 w-4 mt-0.5 text-[hsl(var(--primary))] shrink-0" />
-                  <p className="text-xs text-muted-foreground leading-relaxed">{t('admin.invite.linkSent')}</p>
-                </div>
-              </div>
+              <InviteResult created={inviteCreated} t={t} copyText={copyText} />
               <DialogFooter><Button onClick={() => { setInviteDialogOpen(false); setInviteCreated(null); }}>{t('admin.dist.close')}</Button></DialogFooter>
             </div>
           ) : (
@@ -642,12 +658,7 @@ const Admin = () => {
                 <div className="text-xs text-muted-foreground mb-1">{t('admin.dist.shareCode')}</div>
                 <button onClick={() => copyText(distCreated.distributor_code, t('distributor.codeCopied'))} className="font-mono-tech font-bold text-lg inline-flex items-center gap-2 hover:text-[hsl(var(--primary))]">{distCreated.distributor_code} <Copy className="h-4 w-4" /></button>
               </div>
-              <div className="rounded-lg border border-[hsl(var(--border))] bg-[hsl(var(--muted))]/40 p-3">
-                <div className="flex items-start gap-2">
-                  <MailCheck className="h-4 w-4 mt-0.5 text-[hsl(var(--primary))] shrink-0" />
-                  <p className="text-xs text-muted-foreground leading-relaxed">{t('admin.invite.linkSent')}</p>
-                </div>
-              </div>
+              <InviteResult created={distCreated} t={t} copyText={copyText} />
               <DialogFooter><Button onClick={() => { setDistDialogOpen(false); setDistCreated(null); }}>{t('admin.dist.close')}</Button></DialogFooter>
             </div>
           ) : (
