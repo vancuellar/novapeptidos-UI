@@ -1,6 +1,6 @@
 # Exygen Labs — Website Continuation File
 
-> **Propósito:** fuente única de verdad del SITIO WEB (frontend, backend, IA, marca, despliegue). Pega este archivo en un chat nuevo para retomar con todo el contexto. Complementa a `../NOVA-PRICING-SYSTEM-CONTINUATION.md` (el sistema de precios). **Última actualización: 2026-07-20.**
+> **Propósito:** fuente única de verdad del SITIO WEB (frontend, backend, IA, marca, despliegue). Pega este archivo en un chat nuevo para retomar con todo el contexto. Complementa a `../NOVA-PRICING-SYSTEM-CONTINUATION.md` (el sistema de precios). **Última actualización: 2026-07-20 (noche).** Empieza por la sección 🚩 LO PRIMERO QUE DEBE HACER EL PRÓXIMO CHAT.
 
 > **Estilo con Christian:** abogado, no dev ("abogado de 95 años haciendo vibe coding"). Respuestas **ultra cortas, español claro, sin jerga**. Corre TÚ los comandos (nunca le pidas abrir terminal). Términos de git en inglés (commit, push, merge — no "commitear").
 
@@ -373,6 +373,51 @@ El hero ahora arma la fila con 5 archivos y **cada vial se levanta solo al pasar
 - **Barra superior: logo SOLO "EXYGEN LABS"** (`public/images/exygen-logo-wordmark.png`,
   `BrandLogo nameOnly`). El logo completo (molécula + subtítulo) sigue en footer, menú móvil
   y favicon. Christian fue explícito: solo en la barra.
+
+## 🚩 LO PRIMERO QUE DEBE HACER EL PRÓXIMO CHAT
+
+### 1. E2E + workflow completo de pre-push (Christian lo pidió explícitamente)
+**No se ha corrido una auditoría E2E completa.** El chat anterior se quedó sin contexto.
+Hay que correr el **workflow de pre-push global de Christian: CERO fallas, incluidas las
+preexistentes y las "ambientales".** Cubrir al menos:
+- `cd novapeptidos-RBAC && pytest test_core.py -q` → hoy **40 pasan**.
+- `cd novapeptidos-UI && CI=true npm run build` → hoy compila limpio.
+- **Recorrido E2E en el navegador** (Browser pane, `.claude/launch.json` → `novapeptidos-ui`):
+  home, catálogo (filtros + buscador del sidebar), ficha de producto (monografía + foto),
+  carrito → checkout, registro/login, `/cuenta` (pestañas incluida Certificados),
+  `/distribuidor`, `/admin`, las 6 páginas `/info/*`, las 13 guías `/aprende/*`,
+  el asesor y la calculadora. Verificar en **claro y oscuro** y en **es/en/pt**.
+- Revisar consola sin errores y `preview_logs`.
+- Verificar en vivo: `https://api.exygenlabs.com/api/` y `https://exygenlabs.com`.
+
+### 2. Llave de Gemini
+Christian dijo que **la renueva y la entrega** (2026-07-21). Al recibirla: guardarla en
+`~/.config/exygen/gemini.env`, ponerla en el `.env` del servidor y reiniciar
+(`ssh -i ~/.ssh/id_ed25519 ubuntu@44.204.127.242 "cd /opt/exygen/app && sudo docker compose up -d"`).
+**NUNCA escribirla en el repo** (la anterior la revocó Google por filtrada).
+
+### 3. Google Sign-In — falta solo el CLIENT ID
+**El backend ya está hecho y desplegable** (commit RBAC `2a60cca`): `google_auth.py`,
+`GET /api/auth/google/config` y `POST /api/auth/google`. Verifica el ID token contra las
+llaves públicas de Google. **Solo necesita la variable `GOOGLE_CLIENT_ID`** (es pública,
+no hay client secret). **Falta el frontend**: botón de Google en `/login`, que debe
+consultar `/auth/google/config` y **no renderizarse si `enabled` es false**.
+- **Lo que tiene que hacer Christian (poco):** en Google Cloud Console → APIs y servicios →
+  Credenciales → Crear ID de cliente de OAuth → tipo *Aplicación web* → orígenes autorizados
+  `https://exygenlabs.com` (y `http://localhost:3000` para pruebas). Copiar el Client ID.
+- Después: **Passkeys (WebAuthn)** y **2FA solo para admin y distribuidores** (a los clientes
+  no se les impone: mata la conversión en una tienda).
+
+### Decimocuarta tanda (2026-07-20, noche) — commit `764161a` — EN VIVO
+- **"Get Started" al extremo derecho** de la barra y **el carrito a su izquierda**: el extremo
+  derecho es de la acción principal. **"Get Started" ya NO se traduce** en ningún idioma
+  (es nombre de acción de marca, no "Crear cuenta").
+- **"lote por lote" usa la misma familia y tamaño** que el resto del título del hero; lo único
+  que cambia es el color. Se quitaron la cursiva y la serif aparte.
+- **El halo del hero baja de izquierda a derecha**, con el foco de origen justo debajo del
+  logotipo (antes venía de la derecha). En claro resta luz y en oscuro la suma.
+- **Dysport y HUMSC se quedan como están** (decisión de Christian). Los otros 7 productos
+  regulados siguen igualmente sin monografía; ver la sección de productos regulados.
 
 ### Decimotercera tanda (2026-07-20) — commits `e4a6860` … `37b5bcd` — EN VIVO
 - **Tipografía definitiva:** **Manrope** para textos y **Cormorant Garamond** para títulos
