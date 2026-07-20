@@ -8,8 +8,9 @@ import SectionRenderer from '@/components/SectionRenderer';
 import { INFO_PAGES } from '@/data/info';
 import { useLanguage } from '@/context/LanguageContext';
 
-// Páginas legales que siguen siendo texto plano en las traducciones.
-const LEGAL_PAGES = ['terminos', 'privacidad'];
+// Todas las páginas de /info/* son ricas. Esta rama queda solo como red por si
+// se enlaza un slug que no exista todavía.
+const LEGAL_PAGES = [];
 
 const InfoPage = () => {
   const { page } = useParams();
