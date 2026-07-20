@@ -413,6 +413,21 @@ consultar `/auth/google/config` y **no renderizarse si `enabled` es false**.
 - Después: **Passkeys (WebAuthn)** y **2FA solo para admin y distribuidores** (a los clientes
   no se les impone: mata la conversión en una tienda).
 
+### Diagnóstico: "el correo de confirmación no confirma" (2026-07-20) — NO ERA UN BUG
+Christian reportó que el enlace del correo lo llevaba al sitio pero no confirmaba la cuenta.
+**Se probó de punta a punta contra producción y el flujo funciona:** registro real por API →
+token generado en `account_tokens` → abrir `https://exygenlabs.com/confirmar?token=...` →
+cuenta confirmada (`email_verified: true`) y sesión iniciada en Mi cuenta. Cuenta de prueba
+borrada después.
+**Causa real:** su enlace apuntaba a la cuenta de prueba del 2026-07-20 **que se borró**.
+Un token cuyo usuario ya no existe da "El enlace no es válido o ya expiró" — que es el
+comportamiento correcto. Los tokens además **duran 24 h y sirven una sola vez**.
+**Qué decirle si vuelve a pasar:** que se registre de nuevo y use el correo más reciente.
+- De paso se verificó que el fallback de rutas de GitHub Pages **ya existía**: `deploy.yml`
+  hace `cp build/index.html build/404.html`. Se agregó además `public/404.html` con el truco
+  estándar de SPA, que es inofensivo (el workflow lo sobrescribe) y sirve de red por si algún
+  día se cambia el hosting.
+
 ### Decimocuarta tanda (2026-07-20, noche) — commits `764161a` y `573c2d2` — EN VIVO
 - **"Get Started" al extremo derecho** de la barra y **el carrito a su izquierda**: el extremo
   derecho es de la acción principal. **El botón SÍ se traduce** (Christian lo pidió sin
