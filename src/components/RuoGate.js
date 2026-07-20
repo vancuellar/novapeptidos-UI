@@ -53,7 +53,7 @@ const RuoGate = () => {
       data-testid="ruo-gate"
     >
       <div className="w-full max-w-lg rounded-2xl border border-border bg-card shadow-[var(--shadow-md)] p-7 sm:p-9">
-        <BrandMark className="h-7 mx-auto mb-7" />
+        <BrandMark className="h-8 mx-auto mb-7" noMolecule />
 
         <span className="inline-flex items-center gap-1.5 rounded-full border border-[hsl(var(--primary))]/30 bg-[hsl(var(--primary))]/10 px-3 py-1 font-mono-tech text-[10px] uppercase tracking-[0.18em] text-[hsl(var(--primary))]">
           {t('ruo.gate.badge')}

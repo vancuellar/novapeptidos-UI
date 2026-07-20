@@ -6,9 +6,17 @@ import React from 'react';
 // la barra superior por orden de Christian (2026-07-20); no usarlo en otro lado.
 const LOGO_SRC = process.env.PUBLIC_URL + '/images/exygen-logo.png';
 const LOGO_NAME_SRC = process.env.PUBLIC_URL + '/images/exygen-logo-wordmark.png';
+// "EXYGEN LABS" + "RESEARCH PEPTIDES", sin la molécula.
+const LOGO_TEXT_SRC = process.env.PUBLIC_URL + '/images/exygen-logo-name.png';
 
-export const BrandMark = ({ className = 'h-8' }) => (
-  <img src={LOGO_SRC} alt="Exygen Labs" className={`${className} w-auto object-contain dark:brightness-0 dark:invert`} />
+// `noMolecule` deja el nombre y el subtítulo, sin la estructura del dipéptido.
+// Lo usa el aviso RUO de la primera visita (orden de Christian, 2026-07-20).
+export const BrandMark = ({ className = 'h-8', noMolecule = false }) => (
+  <img
+    src={noMolecule ? LOGO_TEXT_SRC : LOGO_SRC}
+    alt="Exygen Labs"
+    className={`${className} w-auto object-contain dark:brightness-0 dark:invert`}
+  />
 );
 
 const BrandLogo = ({ compact = false, nameOnly = false }) => (
