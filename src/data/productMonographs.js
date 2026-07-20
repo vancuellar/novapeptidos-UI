@@ -488,6 +488,301 @@ const monographs = {
       },
     ],
   },
+
+  // ===== Tanda 3: bioreguladores de Khavinson y péptidos inmunes =====
+
+  bronchogen: {
+    tagline: 'Bioregulador peptídico corto (Ala-Glu-Asp-Leu)',
+    sections: [
+      { title: 'Qué es', paragraphs: [
+        'Bronchogen es un tetrapéptido sintético de secuencia Ala-Glu-Asp-Leu (AEDL), de la familia de bioreguladores peptídicos cortos desarrollada por la escuela de Vladimir Khavinson. Se concibió como análogo sintético de un extracto de tejido bronquial, siguiendo la misma lógica que dio origen a Epithalon a partir de la glándula pineal.',
+        'La premisa de toda esa familia es la especificidad de tejido: cada bioregulador corto se asocia con el órgano del que derivó su extracto de origen. En el caso de Bronchogen, el tejido de referencia es el epitelio respiratorio.' ] },
+      { title: 'Qué se estudia con él', paragraphs: [
+        'La hipótesis central de la escuela de Khavinson es que estos péptidos de dos a cuatro residuos pueden interactuar con regiones específicas del ADN y modular la expresión génica de forma tejido-selectiva. Conviene decirlo con claridad: es un modelo que sigue en discusión y que no ha tenido la misma verificación independiente que otros mecanismos peptídicos.',
+        'Aparece en trabajos sobre epitelio respiratorio en cultivo, expresión génica tejido-específica y estudios comparativos dentro de la familia de bioreguladores cortos, donde el interés es justamente probar si la especificidad de tejido que se les atribuye se sostiene experimentalmente.' ] },
+      { title: 'Manejo en laboratorio', paragraphs: [
+        'Tetrapéptido liofilizado, estable en seco pero higroscópico. Vial sellado, en frío, protegido de la luz.',
+        'Reconstituir con diluyente estéril de forma suave y refrigerar la solución.' ] },
+    ],
+  },
+
+  cardiogen: {
+    tagline: 'Bioregulador peptídico corto (Ala-Glu-Asp-Arg)',
+    sections: [
+      { title: 'Qué es', paragraphs: [
+        'Cardiogen es un tetrapéptido sintético de secuencia Ala-Glu-Asp-Arg (AEDR), perteneciente a la familia de bioreguladores peptídicos cortos de la escuela de Khavinson. Su tejido de referencia es el miocardio: se desarrolló como análogo sintético de un extracto de tejido cardiaco.' ] },
+      { title: 'Qué se estudia con él', paragraphs: [
+        'Se investiga bajo la misma hipótesis que el resto de la familia: interacción con secuencias específicas de ADN y modulación tejido-selectiva de la expresión génica. Como en todos los bioreguladores cortos, ese mecanismo sigue siendo materia de debate en la literatura independiente.',
+        'Los trabajos publicados lo sitúan en modelos de cardiomiocitos en cultivo, senescencia celular en tejido cardiaco y estudios de expresión génica comparativa frente a otros bioreguladores de la serie.' ] },
+      { title: 'Manejo en laboratorio', paragraphs: [
+        'Liofilizado en vial sellado. Cadena corta, estable en seco, sensible a la humedad. Frío, seco y sin luz.',
+        'Reconstituir con diluyente estéril de forma suave; refrigerar.' ] },
+    ],
+  },
+
+  cartalax: {
+    tagline: 'Bioregulador peptídico corto (Ala-Glu-Asp-Gly), tejido cartilaginoso',
+    sections: [
+      { title: 'Qué es', paragraphs: [
+        'Cartalax es un tetrapéptido sintético de la familia de bioreguladores cortos de Khavinson, asociado al tejido cartilaginoso y conectivo. Comparte con Epithalon la secuencia AEDG, y la diferencia práctica entre ambos en la literatura de esta escuela está en el contexto de estudio y el tejido de referencia, no en la cadena.' ] },
+      { title: 'Qué se estudia con él', paragraphs: [
+        'Aparece en modelos de condrocitos en cultivo, síntesis de matriz extracelular cartilaginosa y senescencia de tejido conectivo. La hipótesis de trabajo es la misma de toda la serie: modulación de expresión génica con especificidad de tejido.',
+        'Por compartir secuencia con Epithalon, es una pieza útil en estudios que buscan comprobar si la especificidad tisular que la escuela de Khavinson atribuye a estos péptidos es real o depende del contexto experimental.' ] },
+      { title: 'Manejo en laboratorio', paragraphs: [
+        'Liofilizado en vial sellado; frío, seco y sin luz.',
+        'Reconstituir con diluyente estéril de forma suave y refrigerar la solución.' ] },
+    ],
+  },
+
+  cortagen: {
+    tagline: 'Bioregulador peptídico corto (Ala-Glu-Asp-Pro)',
+    sections: [
+      { title: 'Qué es', paragraphs: [
+        'Cortagen es un tetrapéptido sintético de secuencia Ala-Glu-Asp-Pro (AEDP), de la serie de bioreguladores cortos de Khavinson. Su tejido de referencia es la corteza cerebral, de donde procedía el extracto que le dio origen.' ] },
+      { title: 'Qué se estudia con él', paragraphs: [
+        'Se investiga en modelos de tejido nervioso: regeneración de fibra nerviosa periférica en modelos animales, expresión génica en corteza y comportamiento comparado frente a otros bioreguladores de la misma serie.',
+        'Como con el resto de la familia, el mecanismo propuesto —interacción directa con ADN y modulación tejido-selectiva— es una hipótesis de escuela que conviene tratar como tal.' ] },
+      { title: 'Manejo en laboratorio', paragraphs: [
+        'Liofilizado en vial sellado; frío, seco y protegido de la luz.',
+        'Reconstituir con diluyente estéril de forma suave; refrigerar.' ] },
+    ],
+  },
+
+  crystagen: {
+    tagline: 'Bioregulador peptídico corto, referencia inmunitaria',
+    sections: [
+      { title: 'Qué es', paragraphs: [
+        'Crystagen es un tetrapéptido sintético de la familia de bioreguladores cortos de Khavinson, cuyo tejido de referencia es el sistema inmunitario. Junto con Thymalin, es el representante de la rama inmune dentro de esa serie.' ] },
+      { title: 'Qué se estudia con él', paragraphs: [
+        'Aparece en modelos de proliferación y diferenciación de linfocitos en cultivo, expresión de citocinas y estudios sobre el eje neuroinmune. La pregunta experimental habitual es si un péptido de cuatro residuos puede producir una respuesta inmunológica medible y reproducible.',
+        'Se estudia con frecuencia junto a Thymalin y a Thymosin Alpha-1, que abordan el mismo terreno desde estructuras muy distintas: un tetrapéptido sintético, un extracto peptídico y un péptido de 28 residuos.' ] },
+      { title: 'Manejo en laboratorio', paragraphs: [
+        'Liofilizado en vial sellado; frío, seco y sin luz.',
+        'Reconstituir con diluyente estéril de forma suave y refrigerar.' ] },
+    ],
+  },
+
+  pinealon: {
+    tagline: 'Tripéptido bioregulador (Glu-Asp-Arg), referencia cerebral',
+    sections: [
+      { title: 'Qué es', paragraphs: [
+        'Pinealon es un tripéptido sintético de secuencia Glu-Asp-Arg (EDR), de la familia de bioreguladores cortos de Khavinson. Es uno de los más cortos de la serie —tres residuos— y su tejido de referencia es el cerebral.' ] },
+      { title: 'Qué se estudia con él', paragraphs: [
+        'La literatura publicada lo sitúa en modelos de estrés oxidativo en neuronas, viabilidad celular bajo hipoxia y expresión de genes asociados a respuesta al estrés. También aparece en trabajos sobre ritmos circadianos, terreno que comparte con Epithalon por la referencia pineal.',
+        'Su tamaño mínimo lo vuelve interesante por una razón metodológica: si un tripéptido produce una respuesta reproducible en cultivo, la pregunta de cómo lo hace se vuelve más aguda, no menos.' ] },
+      { title: 'Manejo en laboratorio', paragraphs: [
+        'Liofilizado en vial sellado. Las cadenas muy cortas son estables en seco pero especialmente higroscópicas: frío, seco y sin luz.',
+        'Reconstituir con diluyente estéril de forma suave; refrigerar.' ] },
+    ],
+  },
+
+  thymalin: {
+    tagline: 'Complejo peptídico de origen tímico',
+    sections: [
+      { title: 'Qué es', paragraphs: [
+        'Thymalin no es un péptido único sino un complejo de péptidos de bajo peso molecular obtenido del timo, la glándula donde maduran los linfocitos T. Es uno de los preparados originales de la escuela rusa de bioreguladores, anterior a los tetrapéptidos sintéticos que después la caracterizaron.',
+        'Esa naturaleza de mezcla es importante para el diseño experimental: a diferencia de un péptido sintético de secuencia conocida, aquí se trabaja con una fracción, y la caracterización analítica es correspondientemente más compleja.' ] },
+      { title: 'Qué se estudia con él', paragraphs: [
+        'Se investiga en modelos de maduración y diferenciación de linfocitos T, respuesta inmunitaria en modelos animales y, dentro de la literatura de esta escuela, en trabajos sobre involución tímica asociada a la edad.',
+        'Suele compararse con Thymosin Alpha-1 y con Crystagen, que abordan el mismo eje inmunitario desde una molécula definida en lugar de una fracción.' ] },
+      { title: 'Manejo en laboratorio', paragraphs: [
+        'Liofilizado en vial sellado. Por tratarse de una fracción peptídica compleja, la protección frente a humedad y calor importa especialmente. Frío, seco y sin luz.',
+        'Reconstituir con diluyente estéril de forma suave y refrigerar la solución.' ] },
+    ],
+  },
+
+  'thymosin-alpha-1': {
+    tagline: 'Péptido tímico de 28 aminoácidos',
+    sections: [
+      { title: 'Qué es', paragraphs: [
+        'Thymosin Alpha-1 es un péptido de 28 aminoácidos, acetilado en su extremo N-terminal, identificado originalmente en la fracción 5 del extracto tímico. A diferencia de Thymalin, aquí sí se trata de una molécula única de secuencia conocida, lo que la vuelve mucho más manejable como herramienta experimental.',
+        'No debe confundirse con la timosina beta-4, de la que deriva TB-500: comparten el nombre de familia por su origen tímico común, pero son moléculas distintas con mecanismos distintos.' ] },
+      { title: 'Qué se estudia con él', paragraphs: [
+        'Su eje mejor documentado es la modulación de la inmunidad innata y adaptativa: se ha descrito su interacción con receptores tipo Toll, en particular TLR2 y TLR9, y su influencia sobre la maduración de células dendríticas y sobre la diferenciación de linfocitos T.',
+        'Aparece en modelos de respuesta inmune celular, expresión de citocinas, biología de células dendríticas y estudios sobre inmunosenescencia. Es uno de los péptidos inmunomoduladores con más literatura preclínica independiente.' ] },
+      { title: 'Manejo en laboratorio', paragraphs: [
+        'Liofilizado en vial sellado. Su cadena de 28 residuos lo hace más sensible que un tetrapéptido: frío, seco y protegido de la luz.',
+        'Reconstituir con diluyente estéril sin agitación; refrigerar y evitar ciclos de congelado y descongelado.' ] },
+    ],
+  },
+
+  kpv: {
+    tagline: 'Tripéptido C-terminal de la α-MSH (Lys-Pro-Val)',
+    sections: [
+      { title: 'Qué es', paragraphs: [
+        'KPV es el tripéptido formado por lisina, prolina y valina, correspondiente al extremo C-terminal (residuos 11-13) de la hormona estimulante de melanocitos alfa. Es la fracción mínima de la α-MSH que conserva actividad antiinflamatoria en los modelos publicados.',
+        'Su interés metodológico está justamente ahí: conserva la rama antiinflamatoria de la molécula madre sin arrastrar la actividad sobre los receptores de melanocortina responsables de la pigmentación y de los efectos centrales.' ] },
+      { title: 'Qué se estudia con él', paragraphs: [
+        'El eje mejor documentado es la señalización NF-κB: la literatura describe inhibición de su translocación al núcleo y, con ella, reducción de la expresión de citocinas proinflamatorias en cultivo. También se ha estudiado su entrada a la célula por transportadores de péptidos como PepT1, muy expresado en epitelio intestinal.',
+        'Aparece en modelos de inflamación intestinal, integridad de barrera epitelial, dermatología experimental y como componente de mezclas de reparación tisular, donde aporta la rama antiinflamatoria: es la "K" de KLOW.' ] },
+      { title: 'Manejo en laboratorio', paragraphs: [
+        'Liofilizado en vial sellado; tripéptido estable en seco pero higroscópico. Frío, seco y sin luz.',
+        'Reconstituir con diluyente estéril de forma suave y refrigerar.' ] },
+    ],
+  },
+
+  'll-37': {
+    tagline: 'Péptido antimicrobiano humano de la familia catelicidina',
+    sections: [
+      { title: 'Qué es', paragraphs: [
+        'LL-37 es un péptido de 37 aminoácidos, el único miembro humano de la familia de las catelicidinas. Se genera por escisión proteolítica de la proteína precursora hCAP-18 y debe su nombre a los dos residuos de leucina con los que empieza su secuencia.',
+        'Estructuralmente es un péptido anfipático de hélice alfa: una cara de la hélice concentra los residuos hidrofóbicos y la otra los cargados positivamente. Esa asimetría es la clave de su comportamiento sobre membranas.' ] },
+      { title: 'Qué se estudia con él', paragraphs: [
+        'Su mecanismo antimicrobiano se estudia como interacción directa con la membrana bacteriana: la carga positiva del péptido se asocia a los fosfolípidos aniónicos de la membrana procariota y la cara hidrofóbica se inserta, desestabilizándola. Es un mecanismo físico, no enzimático, lo que ha despertado interés en el contexto de resistencia a antibióticos.',
+        'Más allá de eso, LL-37 se investiga como molécula de señalización inmunitaria: quimiotaxis de células inmunes, neutralización de lipopolisacárido, angiogénesis y cicatrización. Es uno de los péptidos de la inmunidad innata con literatura más amplia.' ] },
+      { title: 'Manejo en laboratorio', paragraphs: [
+        'Liofilizado en vial sellado. Los péptidos catiónicos largos tienden a adsorberse a superficies plásticas y de vidrio, algo que conviene tener presente al preparar diluciones. Frío, seco y protegido de la luz.',
+        'Reconstituir con diluyente estéril de forma suave, sin vórtice. Refrigerar y evitar congelado y descongelado repetidos.' ] },
+    ],
+  },
+
+  // ===== Tanda 4: eje somatotrópico (GH / IGF) =====
+
+  'ghrp-2-acetate': {
+    tagline: 'Secretagogo de GH de segunda generación',
+    sections: [
+      { title: 'Qué es', paragraphs: [
+        'GHRP-2 es un hexapéptido sintético de la familia de los péptidos liberadores de hormona de crecimiento. Actúa como agonista del receptor GHSR-1a, el receptor de la grelina, por una vía distinta de la del receptor de GHRH.',
+        'Pertenece a la generación anterior a Ipamorelin. Es más potente en la liberación de GH, pero menos selectivo: en los modelos publicados también eleva prolactina y cortisol, un efecto cruzado que Ipamorelin en buena medida evita.' ] },
+      { title: 'Qué se estudia con él', paragraphs: [
+        'Aparece en estudios de señalización del receptor GHSR-1a, comparación de potencia y selectividad entre secretagogos, y modelos de apetito y balance energético, donde la vía de la grelina participa de forma directa.',
+        'Su falta de selectividad, que sería un defecto en desarrollo farmacéutico, lo vuelve útil como comparador: permite separar qué respuestas dependen exclusivamente del eje somatotrópico y cuáles arrastran otras ramas endocrinas.' ] },
+      { title: 'Manejo en laboratorio', paragraphs: [
+        'Liofilizado en vial sellado. Hexapéptido estable en seco; frío, seco y protegido de la luz.',
+        'Reconstituir con diluyente estéril de forma suave y refrigerar la solución.' ] },
+    ],
+  },
+
+  'ghrp-6-acetate': {
+    tagline: 'Secretagogo de GH con fuerte señal orexigénica',
+    sections: [
+      { title: 'Qué es', paragraphs: [
+        'GHRP-6 es un hexapéptido sintético agonista del receptor GHSR-1a, cronológicamente el primero de la familia de secretagogos que se caracterizó a fondo. Comparte mecanismo con GHRP-2 pero difiere en perfil: su señal sobre el apetito es notablemente más marcada.' ] },
+      { title: 'Qué se estudia con él', paragraphs: [
+        'Precisamente por esa señal orexigénica es la herramienta de referencia en modelos de regulación del apetito mediada por grelina, además de en estudios de señalización GHSR-1a y de liberación pulsátil de hormona de crecimiento.',
+        'La comparación GHRP-6 / GHRP-2 / Ipamorelin es un experimento clásico de la farmacología de secretagogos: mismo receptor, tres perfiles de selectividad distintos.' ] },
+      { title: 'Manejo en laboratorio', paragraphs: [
+        'Liofilizado en vial sellado; frío, seco y sin luz.',
+        'Reconstituir con diluyente estéril de forma suave; refrigerar.' ] },
+    ],
+  },
+
+  'hexarelin-acetate': {
+    tagline: 'Secretagogo hexapeptídico de alta potencia',
+    sections: [
+      { title: 'Qué es', paragraphs: [
+        'Hexarelina es un hexapéptido sintético derivado estructuralmente de GHRP-6, con una metilación en el residuo de triptófano que aumenta de forma importante su potencia y su resistencia a la degradación. Es el más potente de los secretagogos peptídicos clásicos.' ] },
+      { title: 'Qué se estudia con él', paragraphs: [
+        'Además del eje somatotrópico, tiene una línea de investigación propia en tejido cardiaco: se ha descrito su unión al receptor CD36, distinto del GHSR-1a, lo que abrió estudios sobre señalización cardiovascular independientes de la hormona de crecimiento.',
+        'Otro tema recurrente en su literatura es la desensibilización del receptor con exposición sostenida, que lo convierte en una herramienta útil para estudiar internalización y resensibilización de GPCRs.' ] },
+      { title: 'Manejo en laboratorio', paragraphs: [
+        'Liofilizado en vial sellado; frío, seco y protegido de la luz.',
+        'Reconstituir con diluyente estéril de forma suave y refrigerar.' ] },
+    ],
+  },
+
+  sermorelina: {
+    tagline: 'Análogo de GHRH (1-29), el fragmento activo',
+    sections: [
+      { title: 'Qué es', paragraphs: [
+        'Sermorelina corresponde a los primeros 29 aminoácidos de la hormona liberadora de hormona de crecimiento humana, el fragmento mínimo que conserva la actividad biológica de la molécula completa de 44 residuos. A diferencia de CJC-1295 sin DAC, no lleva sustituciones que la protejan de la DPP-4, así que su vida media es muy corta.',
+        'Esa fragilidad es su valor experimental: es el análogo que más se parece, en cinética, al GHRH endógeno.' ] },
+      { title: 'Qué se estudia con ella', paragraphs: [
+        'Se investiga en señalización del receptor de GHRH y su acoplamiento a la vía del AMP cíclico en somatotropos, y en el estudio del patrón pulsátil de secreción de GH, donde una molécula de acción larga aplanaría justamente el fenómeno que se quiere observar.',
+        'Es la referencia natural frente a la que se comparan Modified GRF (1-29), CJC-1295 con DAC y Tesamorelina.' ] },
+      { title: 'Manejo en laboratorio', paragraphs: [
+        'Liofilizada en vial sellado. Al no llevar protección frente a peptidasas, es de las más sensibles del grupo: frío, seco y sin luz, y usar la solución pronto.',
+        'Reconstituir con diluyente estéril de forma muy suave; refrigerar.' ] },
+    ],
+  },
+
+  'cjc-1295-con-dac': {
+    tagline: 'Análogo de GHRH con Drug Affinity Complex',
+    sections: [
+      { title: 'Qué es', paragraphs: [
+        'CJC-1295 con DAC es el mismo análogo de GHRH (1-29) modificado, al que se le añade el Drug Affinity Complex: un grupo maleimida que forma un enlace covalente con la albúmina sérica. Ese enlace cambia por completo la cinética de la molécula: de una vida media de minutos se pasa a una exposición sostenida de días.' ] },
+      { title: 'Qué se estudia con él', paragraphs: [
+        'Es la herramienta para estudiar qué ocurre cuando la señal de GHRH deja de ser pulsátil y se vuelve continua: desensibilización del receptor, cambios en la amplitud de los pulsos de GH y comportamiento del eje GH/IGF-1 bajo estimulación sostenida.',
+        'La comparación directa con la versión sin DAC —misma secuencia, mismo receptor, duración de exposición radicalmente distinta— es uno de los experimentos más limpios disponibles para separar los efectos de la señal de los efectos de su patrón temporal.' ] },
+      { title: 'Manejo en laboratorio', paragraphs: [
+        'Liofilizado en vial sellado. El grupo maleimida es reactivo frente a tioles, así que conviene evitar diluyentes que los contengan. Frío, seco y sin luz.',
+        'Reconstituir con diluyente estéril de forma suave; refrigerar y usar en el plazo previsto.' ] },
+    ],
+  },
+
+  'igf-1-lr3': {
+    tagline: 'Variante de larga acción del factor de crecimiento insulínico tipo 1',
+    sections: [
+      { title: 'Qué es', paragraphs: [
+        'IGF-1 LR3 es una variante recombinante del factor de crecimiento insulínico tipo 1 con dos modificaciones: una extensión de 13 aminoácidos en el extremo N-terminal y la sustitución del residuo 3 de ácido glutámico por arginina, de donde viene el nombre (Long R3).',
+        'Esas modificaciones reducen drásticamente su afinidad por las proteínas de unión a IGF (IGFBP), que en condiciones normales secuestran la mayor parte del IGF-1 circulante. El resultado es una fracción libre mucho mayor y una vida media considerablemente más larga.' ] },
+      { title: 'Qué se estudia con él', paragraphs: [
+        'Se investiga en señalización del receptor de IGF-1 y sus vías descendentes —PI3K/Akt y MAPK—, en proliferación y diferenciación celular, en hipertrofia de miotubos en cultivo y en biología del crecimiento.',
+        'Su interés metodológico está en el sistema de IGFBP: al escapar de él, permite separar experimentalmente lo que depende del ligando de lo que depende de su secuestro por proteínas de unión.' ] },
+      { title: 'Manejo en laboratorio', paragraphs: [
+        'Liofilizado en vial sellado. Es una proteína pequeña más que un péptido corto: más sensible a la desnaturalización, al calor y a la agitación. Frío, seco y sin luz.',
+        'Reconstituir con el diluyente indicado para la ficha, de forma muy suave y sin espuma. Refrigerar y evitar ciclos de congelado y descongelado, que son especialmente dañinos aquí.' ] },
+    ],
+  },
+
+  mgf: {
+    tagline: 'Factor mecano-crecimiento, variante de empalme de IGF-1',
+    sections: [
+      { title: 'Qué es', paragraphs: [
+        'MGF (Mechano Growth Factor) es una variante de empalme alternativo del gen de IGF-1, también documentada como IGF-1Ec. Se expresa en músculo esquelético en respuesta a carga mecánica o daño, de ahí su nombre. El péptido de investigación corresponde a su péptido E, el fragmento C-terminal que distingue esta isoforma.',
+        'Su vida media en solución es muy corta, lo que históricamente ha sido la principal dificultad de trabajar con él y la razón de que exista la versión pegilada.' ] },
+      { title: 'Qué se estudia con él', paragraphs: [
+        'Se investiga en activación y proliferación de células satélite del músculo esquelético, respuesta a daño mecánico, y como pieza para entender cómo un mismo gen produce señales distintas según el contexto: IGF-1 sistémico frente a MGF local.',
+        'Ese es su valor conceptual: ilustra que el empalme alternativo no es un detalle, sino un mecanismo de especialización funcional.' ] },
+      { title: 'Manejo en laboratorio', paragraphs: [
+        'Liofilizado en vial sellado; frío, seco y protegido de la luz.',
+        'Reconstituir con diluyente estéril de forma suave y usar la solución pronto: su estabilidad en medio acuoso es de las más cortas del catálogo.' ] },
+    ],
+  },
+
+  'peg-mgf': {
+    tagline: 'MGF pegilado, de vida media extendida',
+    sections: [
+      { title: 'Qué es', paragraphs: [
+        'PEG-MGF es el péptido E de MGF conjugado con polietilenglicol. La pegilación —unir cadenas de PEG a una proteína o péptido— es una técnica estándar para aumentar el radio hidrodinámico de la molécula, reducir su depuración renal y protegerla de las peptidasas.',
+        'El resultado es la misma señal biológica con una permanencia mucho mayor, que resuelve el principal obstáculo práctico del MGF sin modificar.' ] },
+      { title: 'Qué se estudia con él', paragraphs: [
+        'Comparte líneas de investigación con MGF —células satélite, respuesta a daño muscular, señalización local— pero permite diseños experimentales de ventana más larga que serían inviables con la molécula sin pegilar.',
+        'La comparación entre MGF y PEG-MGF es además un caso de estudio útil sobre lo que la pegilación conserva y lo que altera: el impedimento estérico del PEG puede reducir la afinidad por el receptor aunque aumente la exposición total.' ] },
+      { title: 'Manejo en laboratorio', paragraphs: [
+        'Liofilizado en vial sellado; frío, seco y sin luz.',
+        'Reconstituir con diluyente estéril de forma suave y sin espuma; refrigerar. Los conjugados de PEG son especialmente sensibles a la agitación mecánica.' ] },
+    ],
+  },
+
+  'hgh-fragment-176-191': {
+    tagline: 'Fragmento C-terminal lipolítico de la hormona de crecimiento',
+    sections: [
+      { title: 'Qué es', paragraphs: [
+        'HGH Fragment 176-191 corresponde a los residuos 176 a 191 del extremo C-terminal de la hormona de crecimiento humana. Es la región que en los estudios de disección de la molécula se asoció con la actividad sobre el metabolismo lipídico, separada del resto de las funciones de la hormona completa.',
+        'Ese es exactamente su valor experimental: es una hormona de 191 aminoácidos reducida a los 16 residuos de una sola de sus funciones, sin la señalización sobre el receptor de GH ni la inducción de IGF-1.' ] },
+      { title: 'Qué se estudia con él', paragraphs: [
+        'Aparece en modelos de lipólisis en adipocitos, oxidación de ácidos grasos y en estudios de relación estructura-función de la hormona de crecimiento, donde la pregunta es qué fracción de la molécula es responsable de cada rama de su actividad.',
+        'Comparado con la hormona completa, permite comprobar si un efecto observado depende del receptor de GH o de un mecanismo distinto.' ] },
+      { title: 'Manejo en laboratorio', paragraphs: [
+        'Liofilizado en vial sellado; frío, seco y sin luz.',
+        'Reconstituir con diluyente estéril de forma suave; refrigerar la solución.' ] },
+    ],
+  },
+
+  'fragment-17-23': {
+    tagline: 'Fragmento peptídico corto de investigación',
+    sections: [
+      { title: 'Qué es', paragraphs: [
+        'Fragment 17-23 es un péptido corto correspondiente a la región 17-23 de su secuencia madre. Los fragmentos de este tipo se usan en investigación para acotar qué parte de una molécula grande es responsable de una actividad concreta: se sintetiza el tramo, se ensaya por separado y se compara con la molécula íntegra.' ] },
+      { title: 'Qué se estudia con él', paragraphs: [
+        'Su uso típico es el mapeo de estructura-función: identificar el epítopo o el motivo mínimo que conserva la unión al receptor o la actividad medida. También se emplea como control negativo o de especificidad en ensayos donde se quiere descartar que la respuesta observada venga de una región distinta.',
+        'Para el diseño experimental conviene verificar la secuencia exacta y el marco de numeración de referencia antes de compararlo con datos de la literatura, porque la numeración de fragmentos varía entre publicaciones.' ] },
+      { title: 'Manejo en laboratorio', paragraphs: [
+        'Liofilizado en vial sellado. Péptido corto: estable en seco, higroscópico. Frío, seco y sin luz.',
+        'Reconstituir con diluyente estéril de forma suave y refrigerar.' ] },
+    ],
+  },
 };
 
 export const monographFor = (slug) => monographs[slug] || null;
