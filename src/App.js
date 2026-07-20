@@ -23,6 +23,8 @@ import Account from '@/pages/Account';
 import Distributor from '@/pages/Distributor';
 import ForgotPassword from '@/pages/ForgotPassword';
 import ResetPassword from '@/pages/ResetPassword';
+import ConfirmEmail from '@/pages/ConfirmEmail';
+import ActivateAccount from '@/pages/ActivateAccount';
 import Admin from '@/pages/Admin';
 import InfoPage from '@/pages/InfoPage';
 import Education from '@/pages/Education';
@@ -58,6 +60,8 @@ function App() {
                     <Route path="/registro" element={<Register />} />
                     <Route path="/recuperar" element={<ForgotPassword />} />
                     <Route path="/restablecer" element={<ResetPassword />} />
+                    <Route path="/confirmar" element={<ConfirmEmail />} />
+                    <Route path="/activar" element={<ActivateAccount />} />
                     <Route path="/cuenta" element={<Account />} />
                     <Route path="/distribuidor" element={<Distributor />} />
                     <Route path="/admin" element={<Admin />} />

@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { LayoutDashboard, Package, ShoppingBag, Plus, Pencil, Trash2, DollarSign, Users, Clock, TrendingUp, MapPin, Phone, Receipt, Store, Copy, Boxes, Truck, RefreshCw } from 'lucide-react';
+import { LayoutDashboard, Package, ShoppingBag, Plus, Pencil, Trash2, DollarSign, Users, Clock, TrendingUp, MapPin, Phone, Receipt, Store, Copy, Boxes, Truck, RefreshCw, MailCheck } from 'lucide-react';
 import { fallbackProducts } from '@/data/fallbackCatalog';
 import { ResponsiveContainer, AreaChart, Area, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip } from 'recharts';
 import { Button } from '@/components/ui/button';
@@ -609,10 +609,11 @@ const Admin = () => {
           {inviteCreated ? (
             <div className="space-y-4 text-sm">
               <div className="font-medium">{inviteCreated.name}<span className="text-muted-foreground font-normal"> · {inviteCreated.email}</span></div>
-              <p className="text-xs text-muted-foreground">{t('admin.invite.emailSent')}</p>
-              <div>
-                <div className="text-xs text-muted-foreground mb-1">{t('admin.dist.tempPassword')}</div>
-                <button onClick={() => copyText(inviteCreated.temp_password, t('distributor.codeCopied'))} className="font-mono-tech inline-flex items-center gap-2 hover:text-[hsl(var(--primary))]">{inviteCreated.temp_password} <Copy className="h-4 w-4" /></button>
+              <div className="rounded-lg border border-[hsl(var(--border))] bg-[hsl(var(--muted))]/40 p-3">
+                <div className="flex items-start gap-2">
+                  <MailCheck className="h-4 w-4 mt-0.5 text-[hsl(var(--primary))] shrink-0" />
+                  <p className="text-xs text-muted-foreground leading-relaxed">{t('admin.invite.linkSent')}</p>
+                </div>
               </div>
               <DialogFooter><Button onClick={() => { setInviteDialogOpen(false); setInviteCreated(null); }}>{t('admin.dist.close')}</Button></DialogFooter>
             </div>
@@ -641,9 +642,11 @@ const Admin = () => {
                 <div className="text-xs text-muted-foreground mb-1">{t('admin.dist.shareCode')}</div>
                 <button onClick={() => copyText(distCreated.distributor_code, t('distributor.codeCopied'))} className="font-mono-tech font-bold text-lg inline-flex items-center gap-2 hover:text-[hsl(var(--primary))]">{distCreated.distributor_code} <Copy className="h-4 w-4" /></button>
               </div>
-              <div>
-                <div className="text-xs text-muted-foreground mb-1">{t('admin.dist.tempPassword')}</div>
-                <button onClick={() => copyText(distCreated.temp_password, t('distributor.codeCopied'))} className="font-mono-tech inline-flex items-center gap-2 hover:text-[hsl(var(--primary))]">{distCreated.temp_password} <Copy className="h-4 w-4" /></button>
+              <div className="rounded-lg border border-[hsl(var(--border))] bg-[hsl(var(--muted))]/40 p-3">
+                <div className="flex items-start gap-2">
+                  <MailCheck className="h-4 w-4 mt-0.5 text-[hsl(var(--primary))] shrink-0" />
+                  <p className="text-xs text-muted-foreground leading-relaxed">{t('admin.invite.linkSent')}</p>
+                </div>
               </div>
               <DialogFooter><Button onClick={() => { setDistDialogOpen(false); setDistCreated(null); }}>{t('admin.dist.close')}</Button></DialogFooter>
             </div>

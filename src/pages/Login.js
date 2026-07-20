@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { Eye, EyeOff, ArrowLeft, ShieldCheck, Truck, Lock } from 'lucide-react';
+import { Eye, EyeOff, ArrowLeft, ShieldCheck, Truck, Lock, MailCheck } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { toast } from 'sonner';
+import api from '@/lib/api';
 import { useAuth } from '@/context/AuthContext';
 import { useLanguage } from '@/context/LanguageContext';
 
@@ -22,7 +23,7 @@ const Consent = ({ checked, onChange, testid, children }) => (
 
 const Login = () => {
   const { login, register } = useAuth();
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
   const navigate = useNavigate();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -33,6 +34,8 @@ const Login = () => {
   const [showRegPassword, setShowRegPassword] = useState(false);
   const [regConfirm, setRegConfirm] = useState('');
   const [loading, setLoading] = useState(false);
+  const [pendingEmail, setPendingEmail] = useState('');   // registrado, falta confirmar
+  const [unverified, setUnverified] = useState('');       // intento de entrar sin confirmar
   // Los dos primeros son obligatorios; los otros tres son opt-in real (nacen apagados).
   const [consents, setConsents] = useState({
     age_confirmed: false, privacy_accepted: false,
@@ -44,12 +47,14 @@ const Login = () => {
   const submitLogin = async (e) => {
     e.preventDefault();
     setLoading(true);
+    setUnverified('');
     try {
       const user = await login(email, password);
       toast.success(t('auth.toast.welcome'));
       navigate(user.role === 'admin' ? '/admin' : '/cuenta');
     } catch (err) {
-      toast.error(err.response?.data?.detail || t('auth.toast.loginError'));
+      if (err.response?.status === 403) setUnverified(email.trim());
+      else toast.error(err.response?.data?.detail || t('auth.toast.loginError'));
     } finally { setLoading(false); }
   };
 
@@ -60,11 +65,19 @@ const Login = () => {
     setLoading(true);
     try {
       await register(regName, regEmail, regPassword, consents);
-      toast.success(t('auth.toast.created'));
-      navigate('/cuenta');
+      setPendingEmail(regEmail.trim());
     } catch (err) {
       toast.error(err.response?.data?.detail || t('auth.toast.registerError'));
     } finally { setLoading(false); }
+  };
+
+  const resendVerification = async (address) => {
+    setLoading(true);
+    try {
+      await api.post('/auth/resend-verification', { email: address, language });
+      toast.success(t('verify.resent'));
+    } catch { toast.error(t('verify.resendFailed')); }
+    finally { setLoading(false); }
   };
 
   const passwordField = (value, onChange, show, setShow, testid) => (
@@ -93,7 +106,32 @@ const Login = () => {
           <p className="text-sm text-muted-foreground mt-2 max-w-xs">{t('auth.portal.subtitle')}</p>
         </div>
 
+        {/* Registrado: falta abrir el enlace del correo para poder entrar. */}
+        {pendingEmail ? (
+          <Card className="p-8 rounded-2xl shadow-sm text-center" data-testid="register-pending">
+            <MailCheck className="h-10 w-10 mx-auto mb-4 text-[hsl(var(--primary))]" />
+            <h2 className="font-heading text-xl font-bold mb-2">{t('verify.sentTitle')}</h2>
+            <p className="text-sm text-muted-foreground leading-relaxed">
+              {t('verify.sentBody', { email: pendingEmail })}
+            </p>
+            <p className="text-xs text-muted-foreground mt-3">{t('verify.spamHint')}</p>
+            <div className="flex flex-col gap-2 mt-6">
+              <Button variant="outline" onClick={() => resendVerification(pendingEmail)} disabled={loading} data-testid="register-resend">
+                {loading ? t('verify.sending') : t('verify.resendCta')}
+              </Button>
+              <Button variant="ghost" onClick={() => setPendingEmail('')}>{t('verify.backToLogin')}</Button>
+            </div>
+          </Card>
+        ) : (
         <Card className="p-6 sm:p-8 rounded-2xl shadow-sm">
+          {unverified && (
+            <div className="mb-5 rounded-xl border border-[hsl(var(--warning-border))] bg-[hsl(var(--warning))]/10 p-4" data-testid="login-unverified">
+              <p className="text-sm leading-relaxed">{t('verify.blockedBody')}</p>
+              <Button variant="outline" size="sm" className="mt-3" onClick={() => resendVerification(unverified)} disabled={loading} data-testid="login-resend">
+                {loading ? t('verify.sending') : t('verify.resendCta')}
+              </Button>
+            </div>
+          )}
           <Tabs defaultValue="login">
             <TabsList className="w-full">
               <TabsTrigger value="login" className="flex-1" data-testid="auth-tab-login">{t('auth.login.title')}</TabsTrigger>
@@ -171,6 +209,7 @@ const Login = () => {
 
           {termsLine}
         </Card>
+        )}
 
         <div className="mt-6 flex items-center justify-center gap-x-5 gap-y-2 flex-wrap text-xs text-muted-foreground">
           <span className="inline-flex items-center gap-1.5"><ShieldCheck className="h-3.5 w-3.5 text-[hsl(var(--primary))]" /> {t('auth.login.bullet1')}</span>

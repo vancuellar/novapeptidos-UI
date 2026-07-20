@@ -28,12 +28,19 @@ export const AuthProvider = ({ children }) => {
     return res.data.user;
   };
 
+  // El registro YA NO inicia sesion: la cuenta nace sin confirmar y el usuario
+  // tiene que abrir el enlace del correo. Devolvemos la respuesta tal cual para
+  // que la pantalla muestre "revisa tu correo".
   const register = async (name, email, password, consents = {}) => {
     const language = localStorage.getItem('nova-language') || 'es';
     const res = await api.post('/auth/register', { name, email, password, language, ...consents });
-    localStorage.setItem('np_token', res.data.token);
-    setUser(res.data.user);
-    return res.data.user;
+    return res.data;
+  };
+
+  // Sesion que llega ya resuelta por el backend (confirmar correo o activar invitacion).
+  const adoptSession = (token, sessionUser) => {
+    localStorage.setItem('np_token', token);
+    setUser(sessionUser);
   };
 
   const logout = () => {
@@ -48,7 +55,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ user, loading, login, register, logout, refreshUser }}>
+    <AuthContext.Provider value={{ user, loading, login, register, logout, refreshUser, adoptSession }}>
       {children}
     </AuthContext.Provider>
   );
