@@ -338,3 +338,88 @@ body {
 [data-sonner-toast] [data-close-button]:hover {
     background: hsl(var(--secondary));
 }
+
+/* ===== Viales del hero — entrada, flotación, brillo y parallax =====
+   El parallax vive en el contenedor y la flotación en la imagen: si ambas
+   escribieran `transform` sobre el mismo nodo, una pisaría a la otra. */
+.hero-vials {
+    position: relative;
+    transform: translate3d(var(--px, 0), var(--py, 0), 0) rotateX(var(--rx, 0)) rotateY(var(--ry, 0));
+    transform-style: preserve-3d;
+    perspective: 900px;
+    transition: transform 400ms cubic-bezier(0.22, 1, 0.36, 1);
+    will-change: transform;
+}
+
+.hero-vials-img {
+    display: block;
+    filter: drop-shadow(0 18px 32px rgba(20, 24, 30, 0.16));
+    animation:
+        hero-vials-in 900ms cubic-bezier(0.22, 1, 0.36, 1) both,
+        hero-vials-float 7s ease-in-out 900ms infinite alternate;
+}
+
+.dark .hero-vials-img {
+    filter: drop-shadow(0 22px 46px rgba(0, 0, 0, 0.8));
+}
+
+/* Halo detrás del vidrio: da profundidad sin tocar la foto. */
+.hero-vials-glow {
+    position: absolute;
+    inset: 12% 8% 4%;
+    border-radius: 50%;
+    pointer-events: none;
+    background: radial-gradient(60% 55% at 50% 45%, hsla(225, 70%, 70%, 0.16), transparent 70%);
+    filter: blur(34px);
+    animation: hero-vials-breathe 7s ease-in-out infinite alternate;
+}
+
+.dark .hero-vials-glow {
+    background: radial-gradient(60% 55% at 50% 45%, hsla(225, 70%, 70%, 0.22), transparent 70%);
+}
+
+/* Destello que recorre el vidrio cada tantos segundos. */
+.hero-vials-sheen {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: linear-gradient(105deg, transparent 38%, rgba(255, 255, 255, 0.42) 50%, transparent 62%);
+    mix-blend-mode: overlay;
+    opacity: 0;
+    animation: hero-vials-sheen 9s ease-in-out 1.6s infinite;
+}
+
+.dark .hero-vials-sheen {
+    background: linear-gradient(105deg, transparent 38%, rgba(255, 255, 255, 0.3) 50%, transparent 62%);
+    mix-blend-mode: screen;
+}
+
+@keyframes hero-vials-in {
+    from { opacity: 0; transform: translateY(26px) scale(0.965); }
+    to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+@keyframes hero-vials-float {
+    from { transform: translateY(0); }
+    to   { transform: translateY(-12px); }
+}
+
+@keyframes hero-vials-breathe {
+    from { opacity: 0.75; transform: scale(0.96); }
+    to   { opacity: 1;    transform: scale(1.06); }
+}
+
+@keyframes hero-vials-sheen {
+    0%, 100% { opacity: 0; transform: translateX(-120%); }
+    42%      { opacity: 0; transform: translateX(-120%); }
+    58%      { opacity: 1; }
+    78%      { opacity: 0; transform: translateX(120%); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .hero-vials { transition: none; transform: none; }
+    .hero-vials-img,
+    .hero-vials-glow,
+    .hero-vials-sheen { animation: none; }
+    .hero-vials-sheen { opacity: 0; }
+}
