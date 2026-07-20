@@ -238,12 +238,23 @@ limpio y con el navegador.
      enlace de invitación en pantalla para pasarlo a mano.
    - Al encender SES, la confirmación obligatoria se activa sola. **No hay que tocar código.**
 
-### Para encender los correos (pendiente, requiere a Christian)
-1. Verificar el dominio en SES de `certis`: `aws sesv2 create-email-identity --email-identity exygenlabs.com --region us-east-1`, y meter los 3 CNAME de DKIM en Cloudflare (hace falta el token).
-2. Pedir salida de sandbox en la consola de SES (AWS tarda ~24 h).
-3. Agregar al `.env` del servidor: `EMAIL_ENABLED=true`, `SES_REGION=us-east-1`,
-   `EMAIL_FROM='Exygen Labs <hola@exygenlabs.com>'`, `SITE_URL=https://exygenlabs.com`,
-   y credenciales AWS o un rol IAM con permiso `ses:SendEmail`. Luego `docker compose up -d`.
+### Correo: RESUELTO — sale por Resend, NO por SES
+
+- **SES quedó denegado.** AWS rechazó el salir del sandbox de forma automática y en segundos
+  (caso `178452167700909`). El motivo no se puede leer por API sin soporte de paga. No insistir.
+- **El correo sale por Resend.** Dominio `exygenlabs.com` verificado ahí
+  (domain id `52eae878-0429-487b-a35f-bc127c77cc91`), con DKIM, MX de `send.` y SPF puestos
+  en Cloudflare. `emails.py` tiene los dos proveedores y se elige con `EMAIL_PROVIDER`.
+- **En el `.env` del servidor:** `EMAIL_ENABLED=true`, `EMAIL_PROVIDER=resend`,
+  `EMAIL_FROM='Exygen Labs <hola@exygenlabs.com>'`, `RESEND_API_KEY=...`,
+  `SITE_URL=https://exygenlabs.com`.
+- **Probado de punta a punta el 2026-07-20:** registro real → correo entregado (Resend lo reporta
+  `delivered`) → login devuelve 403 hasta confirmar. La cuenta de prueba se borró.
+- **Credenciales guardadas en disco** (600, fuera de git), NO volver a pedírselas a Christian:
+  `~/.config/exygen/cloudflare.env` (token de Cloudflare + zone id `2c7505a60e14114b9c40ff6233599301`)
+  y `~/.config/exygen/resend.env`.
+- El dominio conserva también el DKIM de SES y un rol IAM `exygen-api-ses` en la instancia, por si
+  algún día se retoma SES.
 
 ---
 
