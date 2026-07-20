@@ -1074,6 +1074,294 @@ const monographs = {
         'Reconstituir con diluyente estéril de forma suave y usar la solución con prontitud; refrigerar.' ] },
     ],
   },
+
+  // ===== Tanda 7: reparación tisular, estética y mezclas =====
+
+  'ara-290': {
+    tagline: 'Cibinetida, péptido derivado de EPO sin acción eritropoyética',
+    sections: [
+      { title: 'Qué es', paragraphs: [
+        'ARA-290, también documentado como cibinetida, es un péptido de 11 aminoácidos que reproduce la región helicoidal B de la eritropoyetina. Es el ejemplo de manual de disección funcional: la EPO tiene dos actividades separables —la eritropoyética, que aumenta glóbulos rojos, y la citoprotectora tisular— y ARA-290 conserva solo la segunda.',
+        'Actúa sobre el receptor innato de reparación tisular, un heterocomplejo formado por el receptor de EPO y el receptor beta común, distinto del homodímero que media la producción de eritrocitos.' ] },
+      { title: 'Qué se estudia con él', paragraphs: [
+        'Aparece en modelos de neuropatía de fibra pequeña, inflamación tisular, protección frente a isquemia y estudios de señalización del receptor innato de reparación.',
+        'Su valor conceptual es que demuestra que una hormona puede tener ramas funcionales separables por diseño molecular: la misma proteína, dos receptores, dos efectos que se pueden desacoplar.' ] },
+      { title: 'Manejo en laboratorio', paragraphs: [
+        'Liofilizado en vial sellado; frío, seco y protegido de la luz.',
+        'Reconstituir con diluyente estéril de forma suave; refrigerar.' ] },
+    ],
+  },
+
+  'glow-bpc-157-10mg-ghk-cu-50mg-tb-500-10mg': {
+    tagline: 'Mezcla de tres péptidos: BPC-157, GHK-Cu y TB-500',
+    sections: [
+      { title: 'Qué es', paragraphs: [
+        'GLOW es una formulación combinada de tres péptidos de investigación en un solo vial liofilizado: BPC-157, GHK-Cu y TB-500, con el péptido de cobre en la proporción dominante. Es la mezcla más difundida del mercado en su categoría y la base de la que deriva KLOW, que añade KPV como cuarto componente.' ] },
+      { title: 'Por qué se combinan', paragraphs: [
+        'Cada componente cubre una etapa distinta del mismo proceso: GHK-Cu se investiga en remodelado de matriz extracelular y expresión de colágeno; BPC-157 en angiogénesis y señalización de factores de crecimiento; TB-500 en dinámica de actina y migración celular.',
+        'Esa complementariedad es lo que la vuelve útil para estudiar interacción entre vías en lugar de un eje aislado. La comparación GLOW frente a KLOW permite además aislar la contribución específica de la rama antiinflamatoria que aporta KPV.' ] },
+      { title: 'Manejo en laboratorio', paragraphs: [
+        'La presencia de GHK-Cu da a la mezcla el color azul-verdoso característico del complejo cobre-péptido al reconstituirse. Es normal.',
+        'Vial sellado en frío y protegido de la luz. Reconstituir con diluyente estéril de forma muy suave, sin agitar: el complejo de cobre es sensible al estrés mecánico. Refrigerar.' ] },
+    ],
+  },
+
+  'bpc-157-10mg-tb-500-10mg': {
+    tagline: 'Mezcla BPC-157 + TB-500, 10 mg de cada uno',
+    sections: [
+      { title: 'Qué es', paragraphs: [
+        'Combinación en un solo vial de BPC-157 y TB-500, los dos péptidos con más literatura preclínica en reparación tisular, en proporción 1:1 de 10 mg cada uno.' ] },
+      { title: 'Por qué se combinan', paragraphs: [
+        'Actúan sobre etapas complementarias y no redundantes. BPC-157 se investiga en angiogénesis, regulación de VEGFR2 y señalización de la vía del óxido nítrico; TB-500 en secuestro de actina monomérica, reorganización del citoesqueleto y migración celular direccional.',
+        'Dicho simple: uno se estudia por la irrigación del tejido nuevo, el otro por la capacidad de las células de desplazarse hasta donde hacen falta. Esa es la razón por la que la pareja aparece constantemente en la literatura de reparación y por la que existe como presentación combinada.' ] },
+      { title: 'Manejo en laboratorio', paragraphs: [
+        'Vial liofilizado sellado; frío, seco y protegido de la luz.',
+        'Reconstituir con diluyente estéril vertido por la pared, sin agitación. Refrigerar la solución.' ] },
+    ],
+  },
+
+  'bpc-157-5mg-tb-500-5mg': {
+    tagline: 'Mezcla BPC-157 + TB-500, 5 mg de cada uno',
+    sections: [
+      { title: 'Qué es', paragraphs: [
+        'La misma combinación de BPC-157 y TB-500 en presentación de 5 mg de cada componente, para protocolos que requieren menos material total o series de ensayo más cortas.' ] },
+      { title: 'Por qué se combinan', paragraphs: [
+        'La lógica es idéntica a la de la presentación de 10 mg: dos péptidos que intervienen en fases distintas del mismo proceso de reparación —angiogénesis y señalización por un lado, migración celular y citoesqueleto por el otro—.',
+        'La elección entre 5 y 10 mg es una decisión de diseño experimental: lo que cambia es el material disponible por vial, no la relación entre los componentes.' ] },
+      { title: 'Manejo en laboratorio', paragraphs: [
+        'Vial liofilizado sellado; frío, seco y sin luz.',
+        'Reconstituir con diluyente estéril de forma suave; refrigerar.' ] },
+    ],
+  },
+
+  'cjc-1295-no-dac-5mg-ipamorelin-5mg': {
+    tagline: 'Mezcla del eje somatotrópico: Modified GRF (1-29) + Ipamorelin',
+    sections: [
+      { title: 'Qué es', paragraphs: [
+        'Combinación en un solo vial de CJC-1295 sin DAC (Modified GRF 1-29) e Ipamorelin, 5 mg de cada uno. Es la pareja clásica del eje somatotrópico en investigación.' ] },
+      { title: 'Por qué se combinan', paragraphs: [
+        'Cada uno actúa sobre un receptor distinto. CJC-1295 sin DAC es análogo de GHRH y actúa sobre el receptor de GHRH; Ipamorelin es agonista del GHSR-1a, el receptor de la grelina. Son dos vías independientes que convergen sobre la misma célula: el somatotropo hipofisario.',
+        'Por eso la combinación es interesante experimentalmente: permite estudiar si la activación simultánea de ambas vías produce un efecto aditivo, sinérgico o simplemente redundante sobre el pulso de hormona de crecimiento. Ipamorelin aporta además la ventaja de su selectividad, que evita arrastrar cortisol y prolactina a la ecuación.' ] },
+      { title: 'Manejo en laboratorio', paragraphs: [
+        'Vial liofilizado sellado; frío, seco y protegido de la luz.',
+        'Reconstituir con diluyente estéril de forma suave y refrigerar.' ] },
+    ],
+  },
+
+  'tesamorelin-10-ipamorelin-5': {
+    tagline: 'Mezcla Tesamorelina 10 mg + Ipamorelin 5 mg',
+    sections: [
+      { title: 'Qué es', paragraphs: [
+        'Combinación de Tesamorelina —análogo estabilizado del GHRH completo de 44 aminoácidos— con Ipamorelin, el secretagogo selectivo de GHSR-1a.' ] },
+      { title: 'Por qué se combinan', paragraphs: [
+        'Es la misma lógica de dos vías convergentes que en la mezcla con CJC-1295, pero con la secuencia completa del GHRH en lugar de su fragmento 1-29. Eso permite comparar si la molécula íntegra y el fragmento se comportan igual cuando se los combina con la vía de la grelina.',
+        'La literatura de Tesamorelina, además, tiene una rama propia en metabolismo de tejido adiposo visceral que el fragmento 1-29 no comparte de forma tan marcada.' ] },
+      { title: 'Manejo en laboratorio', paragraphs: [
+        'Vial liofilizado sellado; frío, seco y sin luz.',
+        'Reconstituir con diluyente estéril de forma suave; refrigerar y no congelar la solución.' ] },
+    ],
+  },
+
+  'retatrutide-20mg-tirzepatide-40mg': {
+    tagline: 'Mezcla de un triple agonista y un agonista dual',
+    sections: [
+      { title: 'Qué es', paragraphs: [
+        'Presentación combinada de Retatrutida (triple agonista GIP/GLP-1/glucagón) y Tirzepatida (agonista dual GIP/GLP-1) en un solo vial.' ] },
+      { title: 'Consideración experimental', paragraphs: [
+        'Conviene decirlo con franqueza: combinar dos agonistas que comparten dos de sus tres receptores es, desde el punto de vista del diseño experimental, una situación difícil de interpretar. Los efectos sobre GLP-1 y GIP se suman de forma no trivial y la contribución de cada molécula no se puede separar a posteriori.',
+        'Para estudiar la diferencia entre agonismo dual y triple, lo limpio metodológicamente es ensayar cada compuesto por separado y comparar. Esta presentación tiene sentido cuando el objetivo es la respuesta agregada, no la atribución de causa.' ] },
+      { title: 'Manejo en laboratorio', paragraphs: [
+        'Vial liofilizado sellado; frío, seco y protegido de la luz.',
+        'Reconstituir con diluyente estéril dejándolo escurrir por la pared, sin agitación ni vórtice: ambos componentes son péptidos acilados y propensos a agregarse. Refrigerar.' ] },
+    ],
+  },
+
+  'cagri-sema-2-5mg-2-5mg': {
+    tagline: 'Mezcla Cagrilintida + Semaglutida, 2.5 mg de cada uno',
+    sections: [
+      { title: 'Qué es', paragraphs: [
+        'Combinación de un análogo de amilina (Cagrilintida) con un análogo de GLP-1 (Semaglutida) en el mismo vial, en proporción 1:1.' ] },
+      { title: 'Por qué se combinan', paragraphs: [
+        'A diferencia de la mezcla de dos incretinas, aquí los dos componentes actúan sobre sistemas de saciedad **distintos**: la amilina señaliza a través de receptores de calcitonina asociados a RAMP en el área postrema, y el GLP-1 sobre su propio receptor en núcleos hipotalámicos y del tronco encefálico.',
+        'Esa independencia es lo que hace la combinación interesante: la pregunta experimental —si dos vías de saciedad separadas producen un efecto aditivo o sinérgico— sí se puede plantear con limpieza, porque los receptores no se solapan.' ] },
+      { title: 'Manejo en laboratorio', paragraphs: [
+        'Vial liofilizado sellado. Los análogos de amilina son especialmente propensos a la agregación: manejar con cuidado.',
+        'Reconstituir con diluyente estéril de forma muy suave, sin vórtice. Refrigerar y evitar congelado y descongelado.' ] },
+    ],
+  },
+
+  'ahk-cu': {
+    tagline: 'Tripéptido de cobre (Ala-His-Lys)',
+    sections: [
+      { title: 'Qué es', paragraphs: [
+        'AHK-Cu es el complejo de cobre del tripéptido Ala-His-Lys. Es el pariente cercano de GHK-Cu: difiere en un solo residuo —alanina en lugar de glicina en la primera posición— y conserva la histidina y la lisina responsables de la coordinación del metal.' ] },
+      { title: 'Qué se estudia con él', paragraphs: [
+        'Precisamente por esa diferencia mínima, su principal valor es comparativo: permite preguntar cuánto del comportamiento de GHK-Cu depende de la secuencia exacta y cuánto de la simple presencia del complejo de cobre.',
+        'En la literatura aparece sobre todo en estudios de biología del folículo piloso, proliferación de células dérmicas y transporte de cobre. Como GHK-Cu, forma un complejo coloreado al reconstituirse.' ] },
+      { title: 'Manejo en laboratorio', paragraphs: [
+        'Liofilizado en vial sellado, de color azulado. Los complejos de cobre son fotosensibles: frío y oscuridad.',
+        'Reconstituir con diluyente estéril de forma muy suave, evitando cambios bruscos de pH. Refrigerar y proteger de la luz.' ] },
+    ],
+  },
+
+  matrixyl: {
+    tagline: 'Palmitoil pentapéptido (péptido cosmético de matriz)',
+    sections: [
+      { title: 'Qué es', paragraphs: [
+        'Matrixyl es un pentapéptido —secuencia Lys-Thr-Thr-Lys-Ser— conjugado con ácido palmítico. La cadena grasa no está ahí para prolongar la vida media en circulación, como en los análogos de GLP-1, sino para aumentar la lipofilia del péptido y facilitar su paso a través de barreras lipídicas.',
+        'La secuencia deriva de un fragmento del propéptido del colágeno tipo I, una región que en el organismo participa en la retroalimentación de la síntesis de matriz.' ] },
+      { title: 'Qué se estudia con él', paragraphs: [
+        'Se investiga en modelos de fibroblasto dérmico en cultivo: expresión de colágeno tipo I y IV, fibronectina y otros componentes de la matriz extracelular.',
+        'Es uno de los péptidos de matriz mejor caracterizados en la literatura de biología cutánea y aparece con frecuencia como comparador frente a GHK-Cu, que aborda el mismo terreno por una química distinta.' ] },
+      { title: 'Manejo en laboratorio', paragraphs: [
+        'Liofilizado en vial sellado. La conjugación con palmitoilo cambia su perfil de solubilidad respecto de un péptido sin acilar: revisar la ficha del lote.',
+        'Conservar en frío, seco y protegido de la luz; refrigerar la solución.' ] },
+    ],
+  },
+
+  // ===== Tanda 8: hormonal, reproductivo y misceláneos =====
+
+  'gonadorelin-acetate': {
+    tagline: 'GnRH sintética, decapéptido hipotalámico',
+    sections: [
+      { title: 'Qué es', paragraphs: [
+        'Gonadorelina es la forma sintética de la hormona liberadora de gonadotropinas (GnRH), un decapéptido producido en el hipotálamo. Es idéntica a la molécula endógena, sin modificaciones de estabilización, por lo que su vida media es de pocos minutos.' ] },
+      { title: 'Qué se estudia con ella', paragraphs: [
+        'Su rasgo más interesante es que la respuesta depende del patrón de administración, no solo de la dosis: la estimulación pulsátil del receptor de GnRH mantiene la secreción de LH y FSH, mientras que la estimulación continua la suprime por desensibilización del receptor. Es uno de los ejemplos más claros en toda la endocrinología de que el patrón temporal de una señal es en sí mismo información.',
+        'Aparece en modelos de señalización del receptor de GnRH, regulación del eje hipotálamo-hipófisis-gonadal y estudios de desensibilización de GPCRs.' ] },
+      { title: 'Manejo en laboratorio', paragraphs: [
+        'Liofilizada en vial sellado. Al no llevar protección frente a peptidasas, es sensible: frío, seco y sin luz.',
+        'Reconstituir con diluyente estéril de forma suave y usar la solución con prontitud; refrigerar.' ] },
+    ],
+  },
+
+  'triptorelin-acetate': {
+    tagline: 'Análogo de GnRH de acción prolongada',
+    sections: [
+      { title: 'Qué es', paragraphs: [
+        'Triptorelina es un análogo sintético de la GnRH en el que la glicina de la posición 6 se sustituye por D-triptófano. Ese cambio de un solo residuo, y de la quiralidad, la hace mucho más resistente a la degradación enzimática y aumenta notablemente su afinidad por el receptor.' ] },
+      { title: 'Qué se estudia con ella', paragraphs: [
+        'Es la contraparte experimental de la gonadorelina: al ser de acción prolongada, produce estimulación sostenida del receptor de GnRH y por tanto su desensibilización, con el fenómeno característico de un pico inicial de gonadotropinas seguido de supresión.',
+        'Comparar gonadorelina y triptorelina es el modo limpio de estudiar cómo la duración de ocupación del receptor determina el resultado biológico, y aparece en trabajos de regulación del eje reproductivo y de internalización de GPCRs.' ] },
+      { title: 'Manejo en laboratorio', paragraphs: [
+        'Liofilizada en vial sellado; frío, seco y protegido de la luz.',
+        'Reconstituir con diluyente estéril de forma suave; refrigerar.' ] },
+    ],
+  },
+
+  'kisspeptina-10': {
+    tagline: 'Decapéptido regulador del eje reproductivo',
+    sections: [
+      { title: 'Qué es', paragraphs: [
+        'Kisspeptina-10 es el fragmento de 10 aminoácidos biológicamente activo de la kisspeptina, producto del gen KISS1. Actúa sobre el receptor KISS1R (antes GPR54), y su descubrimiento reorganizó la comprensión del eje reproductivo: resultó ser el regulador que está por encima de la GnRH.' ] },
+      { title: 'Qué se estudia con ella', paragraphs: [
+        'Las neuronas de kisspeptina del hipotálamo son las que marcan el patrón pulsátil de liberación de GnRH, e integran señales metabólicas y de esteroides sexuales. Por eso la kisspeptina es el punto donde convergen el estado energético del organismo y la función reproductiva.',
+        'Aparece en modelos de regulación del eje hipotálamo-hipófisis-gonadal, pubertad, retroalimentación por esteroides sexuales y en la conexión entre metabolismo y reproducción.' ] },
+      { title: 'Manejo en laboratorio', paragraphs: [
+        'Liofilizada en vial sellado; frío, seco y sin luz.',
+        'Reconstituir con diluyente estéril de forma suave y refrigerar.' ] },
+    ],
+  },
+
+  oxitocina: {
+    tagline: 'Nonapéptido con puente disulfuro',
+    sections: [
+      { title: 'Qué es', paragraphs: [
+        'La oxitocina es un nonapéptido cíclico con un puente disulfuro entre las cisteínas 1 y 6, sintetizado en el hipotálamo y liberado por la neurohipófisis. Tiene un lugar especial en la historia de la química: fue el primer péptido hormonal secuenciado y sintetizado, trabajo que le valió el Nobel a Vincent du Vigneaud en 1955.',
+        'Se diferencia de la vasopresina en solo dos residuos, un parecido que explica su afinidad cruzada por los receptores de esa hormona.' ] },
+      { title: 'Qué se estudia con ella', paragraphs: [
+        'Actúa sobre el receptor de oxitocina, acoplado a Gq y a la vía de la fosfolipasa C. Se investiga en dos terrenos bastante separados: el periférico clásico —contracción de músculo liso— y el central, donde participa en circuitos de vínculo social, reconocimiento y modulación del estrés.',
+        'Aparece también en estudios de especificidad de receptor, precisamente por su reactividad cruzada con los receptores de vasopresina, que obliga a controles cuidadosos.' ] },
+      { title: 'Manejo en laboratorio', paragraphs: [
+        'Liofilizada en vial sellado. El puente disulfuro es sensible a agentes reductores: evitar diluyentes con tioles.',
+        'Reconstituir con diluyente estéril de forma suave; refrigerar y evitar congelado y descongelado repetidos.' ] },
+    ],
+  },
+
+  vip: {
+    tagline: 'Péptido intestinal vasoactivo, 28 aminoácidos',
+    sections: [
+      { title: 'Qué es', paragraphs: [
+        'VIP es un péptido de 28 aminoácidos de la superfamilia secretina-glucagón, la misma a la que pertenecen GHRH y GLP-1. Se aisló originalmente de intestino, de donde viene su nombre, pero se expresa también de forma amplia en el sistema nervioso central y periférico.' ] },
+      { title: 'Qué se estudia con él', paragraphs: [
+        'Actúa sobre los receptores VPAC1 y VPAC2, acoplados a Gs y a la vía del AMP cíclico. Sus líneas de investigación son notablemente diversas: relajación de músculo liso vascular y bronquial, secreción intestinal, inmunomodulación y neurotransmisión.',
+        'Un capítulo aparte es su papel en el núcleo supraquiasmático, donde la señalización VIP es esencial para la sincronización entre las neuronas del reloj circadiano central. Es uno de los mecanismos mejor establecidos de acoplamiento entre osciladores celulares.' ] },
+      { title: 'Manejo en laboratorio', paragraphs: [
+        'Liofilizado en vial sellado. Cadena de 28 residuos, más sensible que un péptido corto: frío, seco y protegido de la luz.',
+        'Reconstituir con diluyente estéril de forma suave, sin agitación; refrigerar.' ] },
+    ],
+  },
+
+  p21: {
+    tagline: 'Mimético peptídico de CNTF con actividad neurogénica',
+    sections: [
+      { title: 'Qué es', paragraphs: [
+        'P21 es un péptido sintético derivado de una región activa del factor neurotrófico ciliar (CNTF). Se diseñó como mimético de bajo peso molecular de esa proteína, con la idea de conservar la señal neurogénica en una molécula mucho más pequeña y manejable. Existe también en versión adamantilada, modificación que aumenta su lipofilia.' ] },
+      { title: 'Qué se estudia con él', paragraphs: [
+        'Se investiga en modelos de neurogénesis en el hipocampo adulto, supervivencia y diferenciación neuronal, y expresión de factores neurotróficos como BDNF.',
+        'Metodológicamente es un buen ejemplo de una estrategia recurrente en el campo: reducir una proteína grande a un péptido corto que conserve el motivo de unión al receptor, con las ventajas prácticas —síntesis, difusión, costo— que eso implica.' ] },
+      { title: 'Manejo en laboratorio', paragraphs: [
+        'Liofilizado en vial sellado; frío, seco y sin luz.',
+        'Reconstituir con diluyente estéril de forma suave; refrigerar.' ] },
+    ],
+  },
+
+  'pe-22-28': {
+    tagline: 'Péptido bloqueador del canal TREK-1',
+    sections: [
+      { title: 'Qué es', paragraphs: [
+        'PE 22-28 es un péptido corto derivado de la espadina, un péptido natural que procede del propéptido de la sortilina. Su diana es TREK-1, un canal de potasio de dos dominios de poro (K2P) que contribuye a mantener el potencial de reposo de la membrana neuronal.' ] },
+      { title: 'Qué se estudia con él', paragraphs: [
+        'Los canales K2P son de los menos caracterizados farmacológicamente, en buena medida por la escasez de bloqueadores selectivos. Un péptido que actúa sobre TREK-1 con selectividad es, por eso, una herramienta valiosa más allá de cualquier aplicación concreta.',
+        'Aparece en modelos de excitabilidad neuronal, electrofisiología de canales K2P y estudios sobre la relación entre TREK-1 y la regulación del estado de ánimo, que es la línea que originalmente motivó su desarrollo.' ] },
+      { title: 'Manejo en laboratorio', paragraphs: [
+        'Liofilizado en vial sellado; frío, seco y protegido de la luz.',
+        'Reconstituir con diluyente estéril de forma suave y refrigerar.' ] },
+    ],
+  },
+
+  dermorphin: {
+    tagline: 'Heptapéptido opioide de origen anfibio con D-alanina',
+    sections: [
+      { title: 'Qué es', paragraphs: [
+        'La dermorfina es un heptapéptido aislado de la piel de ranas sudamericanas del género Phyllomedusa. Su rasgo más notable —y lo que la hizo famosa en bioquímica— es que contiene un residuo de D-alanina en posición 2.',
+        'Ese detalle fue importante: los aminoácidos D eran considerados prácticamente ausentes en péptidos de animales, y la dermorfina demostró que existe maquinaria enzimática capaz de isomerizar residuos después de la traducción.' ] },
+      { title: 'Qué se estudia con ella', paragraphs: [
+        'Es un agonista de muy alta afinidad y selectividad por el receptor opioide mu, lo que la convierte en herramienta de referencia en farmacología de receptores opioides.',
+        'Además de eso, se estudia como caso de isomerización postraduccional: cómo se forma un residuo D en un organismo y qué gana la molécula con él, que en este caso es una resistencia notable a las peptidasas.' ] },
+      { title: 'Manejo en laboratorio', paragraphs: [
+        'Liofilizada en vial sellado. Su residuo D le da estabilidad frente a peptidasas, pero no frente a la humedad. Frío, seco y sin luz.',
+        'Reconstituir con diluyente estéril de forma suave; refrigerar. Manejar con los controles que correspondan a un agonista opioide de alta afinidad.' ] },
+    ],
+  },
+
+  'ptd-dbm': {
+    tagline: 'Péptido de penetración celular dirigido a la vía Wnt',
+    sections: [
+      { title: 'Qué es', paragraphs: [
+        'PTD-DBM es un péptido quimérico: un dominio de transducción proteica (PTD), que le permite atravesar la membrana celular, unido a un módulo que interfiere con la unión entre Dishevelled y CXXC5, dos proteínas reguladoras de la vía de señalización Wnt/β-catenina.' ] },
+      { title: 'Qué se estudia con él', paragraphs: [
+        'CXXC5 actúa como regulador negativo de la vía Wnt. Al bloquear su interacción con Dishevelled, el péptido libera la señalización Wnt, que participa en regeneración de tejidos y en el ciclo del folículo piloso.',
+        'Aparece en modelos de biología del folículo, regeneración cutánea y estudios de la vía Wnt. Metodológicamente ilustra bien la estrategia de inhibir una interacción proteína-proteína específica en lugar de una enzima.' ] },
+      { title: 'Manejo en laboratorio', paragraphs: [
+        'Liofilizado en vial sellado; frío, seco y protegido de la luz.',
+        'Reconstituir con diluyente estéril de forma suave; refrigerar y manejar con técnica estéril.' ] },
+    ],
+  },
+
+  'ptd-1': {
+    tagline: 'Dominio de transducción proteica',
+    sections: [
+      { title: 'Qué es', paragraphs: [
+        'PTD-1 es un dominio de transducción proteica, es decir, una secuencia corta capaz de cruzar la membrana plasmática y de arrastrar consigo una carga unida a ella. Los PTD, también llamados péptidos penetrantes de célula, suelen ser secuencias ricas en aminoácidos básicos.' ] },
+      { title: 'Qué se estudia con él', paragraphs: [
+        'Su interés es sobre todo como vehículo: la barrera práctica de muchas moléculas terapéuticas o experimentales no es la afinidad por su diana sino la incapacidad de llegar al citoplasma. Los PTD existen para resolver eso.',
+        'Se investiga en mecanismos de internalización —endocitosis frente a translocación directa—, eficiencia de entrega de cargas de distinto tamaño y toxicidad de membrana asociada a péptidos catiónicos. Es el módulo que aparece en construcciones como PTD-DBM.' ] },
+      { title: 'Manejo en laboratorio', paragraphs: [
+        'Liofilizado en vial sellado. Los péptidos catiónicos se adsorben a superficies de plástico y vidrio; conviene tenerlo presente al preparar diluciones seriadas.',
+        'Frío, seco y sin luz. Reconstituir con diluyente estéril de forma suave y refrigerar.' ] },
+    ],
+  },
 };
 
 export const monographFor = (slug) => monographs[slug] || null;
