@@ -219,6 +219,35 @@ limpio y con el navegador.
 
 ---
 
+## 8quinquies. TERCERA TANDA (2026-07-20) — en `main`, PENDIENTE DE PUBLICAR
+
+> **DOS COSAS PENDIENTES, ninguna de código:**
+> 1. **Desplegar el backend** al servidor (ver §8ter) — sigue bloqueado el `ssh` en modo automático.
+> 2. **Republicar el frontend.** El commit `8772f93` está en `main` pero **el deploy falló**: el
+>    build pasó y reventó el paso de publicación de GitHub Pages durante un incidente de GitHub
+>    (Actions y API en *partial outage*). No es el código. Cuando GitHub se recupere basta con
+>    `gh run rerun <id> --failed`, o empujar cualquier commit para disparar el workflow.
+
+1. **Barra superior con solo dos pestañas.** Se quitó el menú "Péptidos" que duplicaba el catálogo.
+   Queda **Catálogo** (los péptidos) y **Herramientas** (todo lo demás, en dos columnas: asesor,
+   calculadora, fichas y guías | educación, calidad, envíos y devoluciones).
+2. **Confirmación de correo obligatoria.** Decisión de Christian: **sin confirmar no se puede
+   entrar**. El registro ya no inicia sesión; manda un enlace de 24 h y muestra "revisa tu correo"
+   con botón de reenviar. El login devuelve 403 con mensaje claro y opción de reenviar. Nueva
+   página `/confirmar`. **Las cuentas viejas (sin el campo `email_verified`) se dan por
+   confirmadas** para no dejar a nadie fuera.
+3. **Invitaciones con enlace, sin contraseñas por correo.** Al crear un distribuidor o invitar a
+   un cliente ya **no se genera contraseña temporal**: la cuenta se crea con una contraseña que
+   nadie conoce y se manda un enlace de 7 días a `/activar`, donde el invitado elige la suya; usarlo
+   confirma su correo de un golpe. El admin ya solo ve "se mandó el enlace".
+   Endpoints: `verify-email`, `resend-verification`, `invitation/{token}`, `activate`.
+   Colección `account_tokens`, de un solo uso.
+
+**Ojo con SES:** los correos solo salen si `EMAIL_ENABLED=true` en el servidor. Si está apagado,
+nadie va a poder confirmar su cuenta y **nadie nuevo podrá entrar**. Verificarlo al desplegar.
+
+---
+
 ## 10. ROADMAP — PRÓXIMA SESIÓN (orden de Christian, 2026-07-19)
 
 > **Estado: los 7 puntos de abajo YA SE EJECUTARON.** Ver §8ter. Lo único que falta es
