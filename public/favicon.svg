@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" role="img" aria-label="Exygen Labs">
+  <!-- El enlace peptídico del logo, aislado: es lo único que se lee a 16 px. -->
+  <rect width="32" height="32" rx="7" fill="#14181B"/>
+  <!-- caja punteada que en el logo resalta el enlace -->
+  <rect x="6.5" y="6.5" width="19" height="19" rx="3.5" fill="none"
+        stroke="#6C3030" stroke-width="1.6" stroke-dasharray="3.2 2.6"/>
+  <!-- carbono, enlace y nitrógeno -->
+  <circle cx="11.6" cy="20.2" r="2.5" fill="#F6F3EC"/>
+  <circle cx="20.4" cy="11.8" r="2.5" fill="#F6F3EC"/>
+  <line x1="11.6" y1="20.2" x2="20.4" y2="11.8" stroke="#8E4040" stroke-width="3.2" stroke-linecap="round"/>
+</svg>

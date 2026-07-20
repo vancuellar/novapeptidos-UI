@@ -68,31 +68,6 @@ const Home = () => {
     { label: t('home.why.r6'), others: 'partial' },
   ];
 
-  // Parallax del hero: unos pocos píxeles siguiendo el cursor. Se apaga solo
-  // en pantallas táctiles y con "reducir movimiento" activado.
-  const vialsRef = useRef(null);
-  useEffect(() => {
-    const el = vialsRef.current;
-    if (!el) return;
-    const finePointer = window.matchMedia('(pointer: fine)').matches;
-    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    if (!finePointer || reduced) return;
-    let frame = 0;
-    const onMove = (e) => {
-      cancelAnimationFrame(frame);
-      frame = requestAnimationFrame(() => {
-        const x = (e.clientX / window.innerWidth - 0.5) * 2;
-        const y = (e.clientY / window.innerHeight - 0.5) * 2;
-        el.style.setProperty('--px', `${(x * 9).toFixed(2)}px`);
-        el.style.setProperty('--py', `${(y * 7).toFixed(2)}px`);
-        el.style.setProperty('--rx', `${(-y * 2.2).toFixed(2)}deg`);
-        el.style.setProperty('--ry', `${(x * 3).toFixed(2)}deg`);
-      });
-    };
-    window.addEventListener('mousemove', onMove, { passive: true });
-    return () => { window.removeEventListener('mousemove', onMove); cancelAnimationFrame(frame); };
-  }, []);
-
   return (
     <div>
       {/* ===== Hero — clean typography + real vial photo ===== */}
@@ -113,18 +88,15 @@ const Home = () => {
                 <Button asChild className="rounded-full h-12 px-8 uppercase tracking-[0.14em] text-xs font-bold" data-testid="hero-catalog-button">
                   <Link to="/catalogo">{t('home.viewCatalog')} <ArrowRight className="h-4 w-4 ml-2" /></Link>
                 </Button>
-                <Button asChild variant="outline" className="rounded-full h-12 px-8 uppercase tracking-[0.14em] text-xs font-semibold">
-                  <Link to="/info/calidad">{t('home.verifyPurity')}</Link>
+                <Button asChild variant="ghost" className="h-12 px-5 uppercase tracking-[0.14em] text-xs font-semibold">
+                  <Link to="/aprende/empieza-aqui">{t('home.startHere')}</Link>
                 </Button>
               </div>
             </div>
             <div className="flex items-center justify-center">
-              {/* El parallax se aplica al contenedor y la flotación a la imagen,
-                  para que no peleen por la misma propiedad transform. */}
-              <div ref={vialsRef} className="hero-vials w-full max-w-[540px]">
+              <div className="hero-vials w-full max-w-[540px]">
                 <div className="hero-vials-glow" />
                 <img src={HERO_IMG} alt={t('home.labAlt')} className="hero-vials-img w-full object-contain" />
-                <div className="hero-vials-sheen" />
               </div>
             </div>
           </div>
