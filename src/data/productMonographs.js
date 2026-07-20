@@ -1362,6 +1362,227 @@ const monographs = {
         'Frío, seco y sin luz. Reconstituir con diluyente estéril de forma suave y refrigerar.' ] },
     ],
   },
+
+  // ===== Tanda 9: músculo, miostatina, vitaminas y lipotrópicos =====
+
+  follistatin: {
+    tagline: 'Glicoproteína que secuestra miembros de la familia TGF-β',
+    sections: [
+      { title: 'Qué es', paragraphs: [
+        'La folistatina es una glicoproteína de unión que actúa como antagonista natural de varios miembros de la superfamilia TGF-β, entre ellos la activina A y la miostatina (GDF-8). No bloquea un receptor: secuestra al ligando antes de que llegue a él, un mecanismo de regulación distinto y bastante elegante.' ] },
+      { title: 'Qué se estudia con ella', paragraphs: [
+        'Su papel mejor documentado es en músculo esquelético: al retirar miostatina de circulación, levanta el freno que esa proteína ejerce sobre el crecimiento muscular. Es la herramienta de referencia para estudiar la vía de la miostatina desde el lado del ligando.',
+        'Aparece también en modelos de diferenciación de miotubos, señalización de activina y biología del folículo ovárico, donde la activina participa de forma central.' ] },
+      { title: 'Manejo en laboratorio', paragraphs: [
+        'Liofilizada en vial sellado. Es una glicoproteína, no un péptido corto: sensible a la desnaturalización por calor y agitación. Frío, seco y sin luz.',
+        'Reconstituir con mucha suavidad, sin espuma ni vórtice. Refrigerar y evitar ciclos de congelado y descongelado.' ] },
+    ],
+  },
+
+  'gdf-8': {
+    tagline: 'Miostatina, factor de diferenciación de crecimiento 8',
+    sections: [
+      { title: 'Qué es', paragraphs: [
+        'GDF-8, más conocida como miostatina, es un miembro de la superfamilia TGF-β que actúa como regulador negativo de la masa muscular. Se produce en el propio músculo y limita su crecimiento: es un freno fisiológico, no un promotor.',
+        'Su historia es conocida por los fenotipos de "doble musculatura" en bovinos con mutaciones que la inactivan, que fueron la primera demostración clara de su función.' ] },
+      { title: 'Qué se estudia con ella', paragraphs: [
+        'Señaliza a través de los receptores ActRIIB y ALK4/5, y de la vía Smad2/3. Se investiga en diferenciación y proliferación de mioblastos, atrofia muscular, y como control positivo o como diana en experimentos con folistatina y ACE-031.',
+        'Metodológicamente es interesante porque el ligando y sus antagonistas están todos disponibles: se puede estudiar la vía desde ambos extremos.' ] },
+      { title: 'Manejo en laboratorio', paragraphs: [
+        'Liofilizada en vial sellado. Proteína dimérica: frágil frente a calor, agitación y congelado repetido.',
+        'Reconstituir con suavidad y sin espuma; refrigerar.' ] },
+    ],
+  },
+
+  'ace-031': {
+    tagline: 'Receptor señuelo soluble de ActRIIB',
+    sections: [
+      { title: 'Qué es', paragraphs: [
+        'ACE-031 es una proteína de fusión formada por el dominio extracelular del receptor de activina tipo IIB (ActRIIB) unido a un fragmento Fc de inmunoglobulina. Funciona como receptor señuelo: circula capturando los ligandos que normalmente activarían el receptor real en la superficie celular.' ] },
+      { title: 'Qué se estudia con él', paragraphs: [
+        'Comparte diana con la folistatina —la vía de la miostatina— pero por una estrategia distinta: un dominio de receptor soluble en lugar de una proteína de unión natural. Comparar ambos permite estudiar la especificidad: ActRIIB une varios ligandos además de miostatina, así que un señuelo basado en él es menos selectivo de lo que a veces se asume.',
+        'Aparece en modelos de masa muscular, señalización de la superfamilia TGF-β y estudios de proteínas de fusión con Fc.' ] },
+      { title: 'Manejo en laboratorio', paragraphs: [
+        'Liofilizado en vial sellado. Proteína de fusión grande: muy sensible a la agitación y al congelado repetido.',
+        'Reconstituir con mucha suavidad, sin espuma. Refrigerar y no congelar la solución.' ] },
+    ],
+  },
+
+  'l-carnitine': {
+    tagline: 'Transportador de ácidos grasos de cadena larga',
+    sections: [
+      { title: 'Qué es', paragraphs: [
+        'La L-carnitina no es un péptido sino un compuesto de amonio cuaternario derivado de los aminoácidos lisina y metionina. Su función es de transporte: forma acilcarnitinas con los ácidos grasos de cadena larga, que es la única forma en que estos pueden atravesar la membrana mitocondrial interna.' ] },
+      { title: 'Qué se estudia con ella', paragraphs: [
+        'Sin carnitina, la beta-oxidación no arranca: los ácidos grasos largos se quedan fuera de la matriz mitocondrial. Ese cuello de botella la vuelve una herramienta obligada en estudios de metabolismo lipídico.',
+        'Aparece en modelos de oxidación de ácidos grasos, función mitocondrial, metabolismo del músculo esquelético y en los llamados perfiles de acilcarnitinas, que se usan como lectura indirecta del estado de la beta-oxidación.' ] },
+      { title: 'Manejo en laboratorio', paragraphs: [
+        'Molécula pequeña, no péptido. Es muy higroscópica: absorbe humedad del aire con facilidad y eso afecta la pesada.',
+        'Conservar bien sellada, en seco y protegida de la luz. Revisar la ficha del lote para el diluyente adecuado.' ] },
+    ],
+  },
+
+  b12: {
+    tagline: 'Cobalamina, cofactor con núcleo de cobalto',
+    sections: [
+      { title: 'Qué es', paragraphs: [
+        'La vitamina B12 o cobalamina es una molécula compleja organizada alrededor de un anillo de corrina con un átomo de cobalto en el centro. Es el único compuesto biológico conocido que incorpora cobalto, y también el más grande y estructuralmente elaborado de las vitaminas.' ] },
+      { title: 'Qué se estudia con ella', paragraphs: [
+        'Es cofactor de dos enzimas: la metionina sintasa, que conecta el ciclo del folato con el de la metionina y por tanto con la disponibilidad de grupos metilo para toda la célula, y la metilmalonil-CoA mutasa, del metabolismo de ácidos grasos de cadena impar.',
+        'Aparece en modelos de metabolismo de un carbono, metilación de ADN, homocisteína y función neurológica. En el catálogo se relaciona con SAM-e y con el metabolismo de metilos que también toca la NNMT.' ] },
+      { title: 'Manejo en laboratorio', paragraphs: [
+        'Es marcadamente fotosensible: la exposición a la luz la degrada, así que la protección lumínica es parte del método, no una precaución opcional. Su color rojo intenso es característico.',
+        'Conservar sellada, en frío y en oscuridad total.' ] },
+    ],
+  },
+
+  'vitamina-b12': {
+    tagline: 'Cobalamina inyectable de laboratorio',
+    sections: [
+      { title: 'Qué es', paragraphs: [
+        'Presentación de vitamina B12 (cobalamina) para uso en laboratorio. Químicamente es la misma molécula descrita en la ficha de B12: anillo de corrina con cobalto central, cofactor de la metionina sintasa y de la metilmalonil-CoA mutasa.',
+        'Las formas comerciales varían —cianocobalamina, hidroxocobalamina, metilcobalamina— y no son intercambiables sin más en un diseño experimental: difieren en el grupo unido al cobalto y en su conversión a las formas activas.' ] },
+      { title: 'Qué se estudia con ella', paragraphs: [
+        'Metabolismo de un carbono, disponibilidad de grupos metilo, ciclo de la homocisteína y metabolismo mitocondrial de ácidos grasos de cadena impar.',
+        'Conviene verificar en la ficha del lote qué forma de cobalamina contiene antes de comparar resultados con la literatura.' ] },
+      { title: 'Manejo en laboratorio', paragraphs: [
+        'Fotosensible. Conservar sellada, en frío y en oscuridad.',
+        'Manejar con material estéril; no usar si la solución presenta turbidez o partículas.' ] },
+    ],
+  },
+
+  'lipo-c': {
+    tagline: 'Fórmula lipotrópica combinada',
+    sections: [
+      { title: 'Qué es', paragraphs: [
+        'LIPO-C es una fórmula combinada de compuestos lipotrópicos, es decir, sustancias implicadas en el manejo y el transporte de lípidos. Las formulaciones de esta familia suelen construirse alrededor de metionina, inositol y colina, a veces con carnitina y vitaminas del grupo B.',
+        'No es un péptido ni una molécula única: es una mezcla, y eso condiciona por completo cómo se puede usar experimentalmente.' ] },
+      { title: 'Consideración experimental', paragraphs: [
+        'Trabajar con una mezcla significa que un efecto observado no se puede atribuir a un componente concreto sin ensayarlos por separado. Para un diseño que busque causa, lo correcto es partir la fórmula; para uno que evalúe la preparación tal cual, la mezcla es el objeto de estudio.',
+        'Los componentes habituales tocan el metabolismo de un carbono (metionina, colina), la señalización de fosfoinosítidos (inositol) y el transporte mitocondrial de ácidos grasos (carnitina). Verificar la composición exacta en la ficha del lote.' ] },
+      { title: 'Manejo en laboratorio', paragraphs: [
+        'Conservar sellado, en frío y protegido de la luz; varios de sus componentes son fotosensibles.',
+        'No usar si la solución presenta turbidez, precipitado o cambio de color.' ] },
+    ],
+  },
+
+  'mic-lipo-c-b12': {
+    tagline: 'Fórmula lipotrópica con metionina, inositol, colina y B12',
+    sections: [
+      { title: 'Qué es', paragraphs: [
+        'MIC es el acrónimo de metionina, inositol y colina, los tres componentes que definen esta familia de fórmulas lipotrópicas; esta presentación añade vitamina B12. Como toda mezcla, es un preparado y no una molécula única.' ] },
+      { title: 'Qué hace cada componente', paragraphs: [
+        'La metionina es donante de grupos metilo a través de la S-adenosilmetionina y participa en el metabolismo de un carbono. La colina es precursora de fosfatidilcolina, componente estructural de membranas y necesaria para el ensamblaje y la exportación hepática de lipoproteínas VLDL. El inositol participa en la señalización de fosfoinosítidos. La B12 es cofactor de la metionina sintasa, lo que la conecta directamente con el primero de la lista.',
+        'Vistos juntos, los cuatro convergen en el metabolismo hepático de lípidos y en la disponibilidad de grupos metilo, que es la lógica de la fórmula.' ] },
+      { title: 'Consideración experimental y manejo', paragraphs: [
+        'Al ser una mezcla, los efectos no son atribuibles a un componente sin ensayarlos por separado. Verificar la composición exacta del lote.',
+        'Conservar sellado, en frío y protegido de la luz (la B12 es fotosensible). No usar si hay turbidez o precipitado.' ] },
+    ],
+  },
+
+  'acido-acetico': {
+    tagline: 'Diluyente ácido para péptidos poco solubles',
+    sections: [
+      { title: 'Qué es', paragraphs: [
+        'Solución diluida de ácido acético, usada como diluyente alternativo cuando un péptido no se disuelve bien en agua bacteriostática o en agua estéril. No es un principio activo: es una herramienta de reconstitución.' ] },
+      { title: 'Cuándo se usa', paragraphs: [
+        'La solubilidad de un péptido depende de su carga neta, y esa carga depende del pH del medio. Los péptidos básicos —ricos en lisina, arginina o histidina— se disuelven mejor en medio ligeramente ácido, porque ahí ganan carga positiva y las moléculas se repelen entre sí en lugar de agregarse.',
+        'El procedimiento habitual es disolver primero en el volumen mínimo de solución ácida y después llevar al volumen final con el diluyente acuoso que corresponda. Los péptidos ácidos, en cambio, suelen requerir lo contrario: medio ligeramente básico.' ] },
+      { title: 'Manejo en laboratorio', paragraphs: [
+        'Conservar sellado, a temperatura ambiente controlada y protegido de la luz.',
+        'Verificar la compatibilidad del diluyente con el compuesto y con el ensayo antes de usarlo: un cambio de pH puede afectar tanto la estabilidad del péptido como la lectura del experimento.' ] },
+    ],
+  },
+
+  'b7-33': {
+    tagline: 'Análogo monomérico de relaxina-2',
+    sections: [
+      { title: 'Qué es', paragraphs: [
+        'B7-33 es un péptido sintético de cadena única derivado de la cadena B de la relaxina-2 humana. La relaxina nativa es una hormona de dos cadenas unidas por puentes disulfuro, difícil y cara de sintetizar; B7-33 reduce esa arquitectura a un solo tramo lineal que conserva actividad sobre el receptor RXFP1.' ] },
+      { title: 'Qué se estudia con él', paragraphs: [
+        'Su rasgo más interesante es el sesgo de señalización: en los estudios publicados activa preferentemente la vía de ERK1/2 sobre la del AMP cíclico, a diferencia de la relaxina completa. Eso lo convierte en una herramienta para separar qué efectos de la hormona dependen de cada rama.',
+        'Aparece en modelos de fibrosis, remodelado de matriz extracelular —donde se describe inducción de MMP-2— y biología cardiovascular.' ] },
+      { title: 'Manejo en laboratorio', paragraphs: [
+        'Liofilizado en vial sellado; frío, seco y protegido de la luz.',
+        'Reconstituir con diluyente estéril de forma suave; refrigerar.' ] },
+    ],
+  },
+
+  // ===== Tanda 10: últimos compuestos de investigación =====
+
+  'snap-8': {
+    tagline: 'Octapéptido acetilado que interfiere con el complejo SNARE',
+    sections: [
+      { title: 'Qué es', paragraphs: [
+        'SNAP-8 es un octapéptido acetilado, extensión de la secuencia del hexapéptido Argireline. Su diana es el complejo SNARE, la maquinaria proteica que acopla las vesículas sinápticas a la membrana para que liberen su contenido.',
+        'La secuencia imita el extremo N-terminal de SNAP-25, una de las tres proteínas del complejo, y compite con ella por incorporarse al ensamblaje. Un complejo mal formado libera neurotransmisor con menos eficiencia.' ] },
+      { title: 'Qué se estudia con él', paragraphs: [
+        'Es el enfoque peptídico al mismo problema que aborda la toxina botulínica, pero por un camino distinto: la toxina corta enzimáticamente SNAP-25, mientras que SNAP-8 compite por el ensamblaje del complejo. Uno es irreversible y catalítico; el otro, competitivo y reversible.',
+        'Aparece en modelos de exocitosis mediada por SNARE, biología de la unión neuromuscular y estudios de péptidos cosméticos de acción sobre la contracción.' ] },
+      { title: 'Manejo en laboratorio', paragraphs: [
+        'Liofilizado en vial sellado; frío, seco y protegido de la luz.',
+        'Reconstituir con diluyente estéril de forma suave y refrigerar.' ] },
+    ],
+  },
+
+  'acth-1-39': {
+    tagline: 'Corticotropina completa, 39 aminoácidos',
+    sections: [
+      { title: 'Qué es', paragraphs: [
+        'ACTH 1-39 es la hormona adrenocorticotropa completa, un péptido de 39 aminoácidos producido en la hipófisis anterior a partir del precursor proopiomelanocortina (POMC), el mismo del que derivan la α-MSH y las beta-endorfinas.',
+        'Actúa sobre el receptor de melanocortina 2 (MC2R), que a diferencia de los otros receptores de la familia responde exclusivamente a ACTH y no a las MSH.' ] },
+      { title: 'Qué se estudia con ella', paragraphs: [
+        'Es la pieza terminal del eje hipotálamo-hipófisis-adrenal y la herramienta estándar para estimularlo en modelos experimentales: señalización de MC2R, esteroidogénesis en corteza adrenal y regulación por retroalimentación del eje completo.',
+        'Su relación con el resto de la familia de melanocortinas es además didáctica: un mismo precursor da lugar a péptidos que activan receptores distintos con funciones que van de la pigmentación al metabolismo y al estrés. En el catálogo conecta con PT-141, Melanotan I y II, y KPV.' ] },
+      { title: 'Manejo en laboratorio', paragraphs: [
+        'Liofilizada en vial sellado. Cadena de 39 residuos: más sensible que un péptido corto. Frío, seco y protegido de la luz.',
+        'Reconstituir con diluyente estéril de forma suave, sin agitación; refrigerar y evitar congelado y descongelado repetidos.' ] },
+    ],
+  },
+
+  admax: {
+    tagline: 'Análogo lipofílico de Semax',
+    sections: [
+      { title: 'Qué es', paragraphs: [
+        'ADMAX es un análogo de Semax al que se incorpora un grupo adamantano, una estructura de hidrocarburo en jaula muy rígida y marcadamente lipofílica. La adamantilación es un recurso conocido en química medicinal para aumentar la lipofilia de una molécula sin alterar sus grupos funcionales.' ] },
+      { title: 'Qué se estudia con él', paragraphs: [
+        'La razón de ser de la modificación es el paso a través de barreras lipídicas: comparar ADMAX con Semax permite estudiar cuánto de la actividad observada depende de la secuencia y cuánto de la capacidad de la molécula para llegar a su sitio de acción.',
+        'Comparte terreno de investigación con Semax —factores neurotróficos, plasticidad, neuroprotección— con el añadido del eje de biodisponibilidad, que es precisamente lo que la modificación pone sobre la mesa.' ] },
+      { title: 'Manejo en laboratorio', paragraphs: [
+        'Liofilizado en vial sellado. El grupo adamantano cambia el perfil de solubilidad respecto de Semax: revisar la ficha del lote antes de elegir diluyente.',
+        'Conservar en frío, seco y protegido de la luz; refrigerar la solución.' ] },
+    ],
+  },
+
+  'melanotan-i': {
+    tagline: 'Afamelanotida, análogo lineal selectivo de MC1R',
+    sections: [
+      { title: 'Qué es', paragraphs: [
+        'Melanotan I, también documentado como afamelanotida, es un análogo lineal de 13 aminoácidos de la α-MSH, con dos sustituciones —norleucina en posición 4 y D-fenilalanina en posición 7— que lo hacen mucho más estable que el péptido nativo.',
+        'A diferencia de Melanotan II, que es cíclico y activa varios receptores de melanocortina, este conserva la estructura lineal y una selectividad clara por MC1R.' ] },
+      { title: 'Qué se estudia con él', paragraphs: [
+        'Esa selectividad es su utilidad experimental: permite estudiar la vía MC1R —la del melanocito y la síntesis de eumelanina— sin arrastrar las respuestas centrales de MC3R y MC4R que sí produce Melanotan II.',
+        'Aparece en modelos de biología del melanocito, melanogénesis y fotoprotección celular, y como comparador selectivo frente a los agonistas no selectivos de la familia.' ] },
+      { title: 'Manejo en laboratorio', paragraphs: [
+        'Liofilizado en vial sellado; frío, seco y protegido de la luz.',
+        'Reconstituir con diluyente estéril de forma suave y refrigerar.' ] },
+    ],
+  },
+
+  cerebrolysin: {
+    tagline: 'Hidrolizado peptídico de origen porcino',
+    sections: [
+      { title: 'Qué es', paragraphs: [
+        'Cerebrolysin no es un péptido único sino un hidrolizado: una mezcla de péptidos de bajo peso molecular y aminoácidos libres obtenida por digestión enzimática controlada de tejido cerebral porcino. Como preparado, se parece más a Thymalin que a un péptido sintético de secuencia definida.',
+        'Esa naturaleza de fracción condiciona por completo cómo puede usarse: no hay una secuencia que citar ni una masa molecular que verificar por espectrometría, sino un perfil de composición que varía dentro de las tolerancias del proceso.' ] },
+      { title: 'Consideración experimental', paragraphs: [
+        'Con una mezcla no se puede atribuir un efecto a un componente, y la reproducibilidad entre lotes depende de la consistencia del proceso de hidrólisis, no de una síntesis. Cualquier diseño experimental serio con este material tiene que tomar el lote como variable.',
+        'En la literatura aparece en modelos de neuroprotección, plasticidad sináptica y actividad de tipo neurotrófico. Conviene señalar que su estatus regulatorio varía por país: en varios está clasificado como medicamento, no como reactivo.' ] },
+      { title: 'Manejo en laboratorio', paragraphs: [
+        'Conservar sellado, en frío y protegido de la luz. Al ser una fracción compleja de origen biológico, es especialmente sensible al calor.',
+        'No usar si presenta turbidez, precipitado o cambio de color. Manejar con técnica estéril.' ] },
+    ],
+  },
 };
 
 export const monographFor = (slug) => monographs[slug] || null;
