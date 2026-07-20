@@ -415,8 +415,9 @@ consultar `/auth/google/config` y **no renderizarse si `enabled` es false**.
 
 ### Decimocuarta tanda (2026-07-20, noche) — commits `764161a` y `573c2d2` — EN VIVO
 - **"Get Started" al extremo derecho** de la barra y **el carrito a su izquierda**: el extremo
-  derecho es de la acción principal. **"Get Started" ya NO se traduce** en ningún idioma
-  (es nombre de acción de marca, no "Crear cuenta").
+  derecho es de la acción principal. **El botón SÍ se traduce** (Christian lo pidió sin
+  traducir y después cambió de opinión): es → **Comenzar**, en → **Get Started**,
+  pt → **Comecar**. Llave `header.getStarted`.
 - **"lote por lote" usa la misma familia y tamaño** que el resto del título del hero; lo único
   que cambia es el color. Se quitaron la cursiva y la serif aparte.
 - **El halo del hero cae en diagonal de la esquina SUPERIOR IZQUIERDA a la INFERIOR DERECHA**
