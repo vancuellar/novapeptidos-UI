@@ -413,6 +413,18 @@ consultar `/auth/google/config` y **no renderizarse si `enabled` es false**.
 - Después: **Passkeys (WebAuthn)** y **2FA solo para admin y distribuidores** (a los clientes
   no se les impone: mata la conversión en una tienda).
 
+### Puerta RUO / 18+ en la primera visita (2026-07-20) — EN VIVO
+`src/components/RuoGate.js`, montado en `App.js`. Aparece la **primera vez** que alguien entra
+y **hay que aceptar para continuar**: no tiene tache, no se cierra con clic afuera y bloquea el
+scroll del fondo. La aceptacion se guarda en `localStorage` (`exygen_ruo_ack`), asi que sale
+una sola vez por dispositivo.
+- Texto **propio**, en es/en/pt/fr (llaves `ruo.gate.*`). Se inspiro en que Certified PepMex
+  tiene una, pero **no se copio su texto**.
+- Cubre lo que importa legalmente: material solo para investigacion (RUO), no es medicamento
+  ni suplemento ni para consumo humano o animal, y declaracion de ser mayor de 18.
+- Incluye salida para quien no acepta ("No acepto, salir del sitio").
+- **Para volver a verla en pruebas:** borrar `exygen_ruo_ack` de localStorage.
+
 ### Diagnóstico: "el correo de confirmación no confirma" (2026-07-20) — NO ERA UN BUG
 Christian reportó que el enlace del correo lo llevaba al sitio pero no confirmaba la cuenta.
 **Se probó de punta a punta contra producción y el flujo funciona:** registro real por API →
