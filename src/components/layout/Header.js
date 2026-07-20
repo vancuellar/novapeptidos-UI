@@ -56,11 +56,12 @@ const TOOL_GROUPS = [
   },
 ];
 
-// Menú "Ayuda": contacto, soporte, estatus y políticas.
+// Menú "Ayuda": contacto, soporte, seguimiento y políticas. Cada entrada es una
+// página completa en /info/*, no un enlace suelto a WhatsApp.
 const HELP_ITEMS = [
-  { href: WHATSAPP_URL, labelKey: 'nav.contact', descKey: 'nav.contact.desc' },
-  { href: 'mailto:hola@exygenlabs.com', labelKey: 'nav.support', descKey: 'nav.support.desc' },
-  { to: '/cuenta', labelKey: 'nav.orderStatus', descKey: 'nav.orderStatus.desc' },
+  { to: '/info/contacto', labelKey: 'nav.contact', descKey: 'nav.contact.desc' },
+  { to: '/info/soporte', labelKey: 'nav.support', descKey: 'nav.support.desc' },
+  { to: '/info/rastreo', labelKey: 'nav.orderStatus', descKey: 'nav.orderStatus.desc' },
   { to: '/aprende/preguntas-frecuentes', labelKey: 'nav.faq', descKey: 'nav.faq.desc' },
   { to: '/info/envios', labelKey: 'footer.shipping', descKey: 'nav.shipping.desc' },
   { to: '/info/devoluciones', labelKey: 'footer.returns', descKey: 'nav.returns.desc' },
