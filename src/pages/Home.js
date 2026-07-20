@@ -9,7 +9,8 @@ import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import ProductCard from '@/components/ProductCard';
 import api from '@/lib/api';
-import { fallbackCategories, getFallbackFeaturedProducts } from '@/data/fallbackCatalog';
+import { fallbackCategories } from '@/data/fallbackCatalog';
+import { getFeaturedProducts } from '@/data/featured';
 import { useLanguage } from '@/context/LanguageContext';
 import { localizeCategories, localizeProducts } from '@/i18n/catalog';
 
@@ -57,9 +58,10 @@ const Home = () => {
   };
 
   useEffect(() => {
-    api.get('/products?featured=true')
-      .then((r) => setFeatured(Array.isArray(r.data) ? r.data.slice(0, 8) : getFallbackFeaturedProducts()))
-      .catch(() => setFeatured(getFallbackFeaturedProducts()));
+    // Los destacados son una lista curada nuestra (src/data/featured.js), no lo
+    // que diga el backend: el campo `featured` del catálogo lo regenera el
+    // script de precios y se perdería el orden que eligió Christian.
+    setFeatured(getFeaturedProducts());
     api.get('/categories')
       .then((r) => setCategories(Array.isArray(r.data) ? r.data : fallbackCategories))
       .catch(() => setCategories(fallbackCategories));
@@ -93,7 +95,9 @@ const Home = () => {
             <div>
               <div className="kicker">{t('home.kicker')}</div>
               <h1 className="font-heading text-5xl sm:text-6xl lg:text-[3.6rem] font-bold tracking-tight leading-[1.04] mt-6">
-                {heroLead}{' '}<span className="hero-title-accent">{heroAccent}</span>
+                {heroLead}
+                {/* "lote por lote" va en su propio renglon, debajo. */}
+                <span className="hero-title-accent block">{heroAccent}</span>
               </h1>
               {/* Márgenes de Resend: subtítulo pegado al título (8px) y 32px antes de los botones. */}
               <p className="mt-3 text-lg text-muted-foreground max-w-xl leading-relaxed">

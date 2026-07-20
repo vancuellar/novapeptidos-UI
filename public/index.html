@@ -28,6 +28,20 @@
         Learn how to configure a non-root public URL by running `npm run build`.
         -->
         <title>Exygen Labs Mexico</title>
+        <script>
+          // Contraparte de public/404.html: reconstruye la URL real cuando el
+          // visitante entro directo a una ruta interna (confirmar correo,
+          // activar invitacion, restablecer contrasena, ficha de producto...).
+          // Debe correr ANTES de que React monte el router.
+          (function () {
+            var l = window.location;
+            if (l.search[1] !== '/') return;
+            var decoded = l.search.slice(1).split('&').map(function (s) {
+              return s.replace(/~and~/g, '&');
+            }).join('?');
+            window.history.replaceState(null, null, l.pathname.slice(0, -1) + decoded + l.hash);
+          })();
+        </script>
         <script>window.addEventListener("error",function(e){if(e.error instanceof DOMException&&e.error.name==="DataCloneError"&&e.message&&e.message.includes("PerformanceServerTiming")){e.stopImmediatePropagation();e.preventDefault()}},true);</script>
     </head>
     <body>
