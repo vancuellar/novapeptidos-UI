@@ -12,6 +12,7 @@ import { useAuth } from '@/context/AuthContext';
 import { useLanguage } from '@/context/LanguageContext';
 import { useTheme } from '@/context/ThemeContext';
 import BrandLogo from '@/components/BrandLogo';
+import HomeLogoLink from '@/components/HomeLogoLink';
 import api from '@/lib/api';
 import { fallbackCategories } from '@/data/fallbackCatalog';
 import { localizeCategories } from '@/i18n/catalog';
@@ -116,9 +117,9 @@ const Header = () => {
           {/* Izquierda: logo y el menú móvil. La navegación va aparte, centrada. */}
           <div className="flex items-center gap-3 min-w-0 shrink-0">
           {/* Logo pegado a la izquierda */}
-          <Link to="/" className="shrink-0 order-first" data-testid="header-logo">
+          <HomeLogoLink className="shrink-0 order-first" data-testid="header-logo">
             <BrandLogo compact nameOnly />
-          </Link>
+          </HomeLogoLink>
 
           {/* Mobile menu */}
           <Sheet open={mobileOpen} onOpenChange={setMobileOpen}>

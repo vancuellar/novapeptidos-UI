@@ -10,6 +10,7 @@ import { toast } from 'sonner';
 import api from '@/lib/api';
 import { useAuth } from '@/context/AuthContext';
 import { useLanguage } from '@/context/LanguageContext';
+import { BrandMark } from '@/components/BrandLogo';
 
 // Casilla de consentimiento. Etiqueta clicable completa: en móvil el cuadrito
 // solo es un blanco de 20 px y la gente falla el toque.
@@ -108,11 +109,20 @@ const Login = () => {
   );
 
   return (
-    <div className="min-h-[70vh] flex items-center justify-center px-4 py-14">
+    <div className="min-h-[70vh] flex items-center justify-center px-4 py-14 relative">
+      {/* Vuelta al inicio arriba a la izquierda, como en el alta de Resend. */}
+      <Link to="/" data-testid="auth-back-home"
+        className="absolute left-4 top-6 sm:left-8 inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors">
+        <ArrowLeft className="h-4 w-4" /> {t('common.home')}
+      </Link>
+
       <div className="w-full max-w-md">
+        {/* Marca centrada + título grande: proporciones del alta de Resend,
+            con nuestro logo y nuestros colores. */}
         <div className="flex flex-col items-center text-center mb-8">
-          <h1 className="font-heading text-2xl sm:text-3xl font-bold tracking-tight">{t('auth.portal.title')}</h1>
-          <p className="text-sm text-muted-foreground mt-2 max-w-xs">{t('auth.portal.subtitle')}</p>
+          <BrandMark className="h-9 mb-6" />
+          <h1 className="font-heading text-3xl sm:text-4xl font-bold tracking-tight">{t('auth.portal.title')}</h1>
+          <p className="text-sm text-muted-foreground mt-3 max-w-xs">{t('auth.portal.subtitle')}</p>
         </div>
 
         {/* Registrado: falta abrir el enlace del correo para poder entrar. */}

@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { ShieldCheck, Truck, BadgeCheck, Mail, Phone, Landmark, CreditCard } from 'lucide-react';
 import { useLanguage } from '@/context/LanguageContext';
 import BrandLogo from '@/components/BrandLogo';
+import HomeLogoLink from '@/components/HomeLogoLink';
 
 const Footer = () => {
   const { t } = useLanguage();
@@ -12,9 +13,9 @@ const Footer = () => {
       <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 py-14">
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-8">
           <div>
-            <Link to="/" className="inline-flex items-center mb-4">
+            <HomeLogoLink className="inline-flex items-center mb-4" data-testid="footer-logo">
               <BrandLogo />
-            </Link>
+            </HomeLogoLink>
             <p className="text-sm text-muted-foreground leading-relaxed">{t('footer.description')}</p>
             <div className="flex gap-3 mt-5 text-[hsl(var(--primary))]">
               <ShieldCheck className="h-5 w-5" /><BadgeCheck className="h-5 w-5" /><Truck className="h-5 w-5" />
