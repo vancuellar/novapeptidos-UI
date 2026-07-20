@@ -36,21 +36,27 @@ const CAT_EXAMPLES = {
 const CAT_TOP = new Set(['perdida-peso', 'recuperacion']);
 const WHATSAPP_URL = 'https://wa.me/5219944946889';
 
-// Columna izquierda del menú "Péptidos": por objetivo de investigación.
-const PEPTIDE_CATEGORIES = fallbackCategories
-  .filter((c) => c.slug !== 'otros' && c.slug !== 'suministros')
-  .map((c) => ({ slug: c.slug, name: c.name, examples: CAT_EXAMPLES[c.slug] || '' }));
-
-// Columna derecha: las guías. El orden es el recorrido natural de un novato.
-const LEARN_LINKS = [
-  { to: '/aprende', label: 'Centro de aprendizaje', desc: 'El hub con todas las guías y herramientas' },
-  { to: '/aprende/empieza-aqui', label: 'Empieza aquí', desc: 'Tu primera vez, en 5 minutos' },
-  { to: '/aprende/peptidos-explicados', label: 'Péptidos explicados desde cero', desc: 'Guía de introducción' },
-  { to: '/aprende/diccionario-basico', label: 'Diccionario básico', desc: 'Los términos sin jerga' },
-  { to: '/compuestos', label: 'Fichas de compuestos', desc: 'Ficha técnica de cada compuesto' },
-  { to: '/aprende/protocolos', label: 'Protocolos por objetivo', desc: 'Qué se combina con qué y por qué' },
-  { to: '/aprende/reconstitucion-paso-a-paso', label: 'Cómo reconstituir', desc: 'El procedimiento paso a paso' },
-  { to: '/calculadora', label: 'Calculadora de dosis', desc: 'Herramienta gratuita' },
+// Menú "Herramientas": todo lo que NO es el catálogo, en dos columnas.
+// El catálogo lista los péptidos; aquí vive el resto. Sin duplicar nada.
+const TOOL_GROUPS = [
+  {
+    titleKey: 'nav.group.tools',
+    items: [
+      { to: '/asesor', labelKey: 'nav.advisor', descKey: 'nav.advisor.desc' },
+      { to: '/calculadora', labelKey: 'nav.calculator', descKey: 'nav.calculator.desc' },
+      { to: '/compuestos', labelKey: 'nav.compounds', descKey: 'nav.compounds.desc' },
+      { to: '/aprende', labelKey: 'nav.guides', descKey: 'nav.guides.desc' },
+    ],
+  },
+  {
+    titleKey: 'nav.group.info',
+    items: [
+      { to: '/educacion', labelKey: 'nav.education', descKey: 'nav.education.desc' },
+      { to: '/info/calidad', labelKey: 'footer.quality', descKey: 'nav.quality.desc' },
+      { to: '/info/envios', labelKey: 'footer.shipping', descKey: 'nav.shipping.desc' },
+      { to: '/info/devoluciones', labelKey: 'footer.returns', descKey: 'nav.returns.desc' },
+    ],
+  },
 ];
 
 const Header = () => {
@@ -180,58 +186,29 @@ const Header = () => {
           <nav className="hidden lg:flex items-center gap-8">
             <Link to="/catalogo" className={navLinkClass} data-testid="nav-catalog">{t('nav.catalog')}</Link>
 
-            {/* Menú "Péptidos": a la izquierda por objetivo de investigación,
-                a la derecha las guías. Es la ruta de entrada de quien no sabe
-                todavía el nombre del compuesto que busca. */}
-            <DropdownMenu>
-              <DropdownMenuTrigger className={navLinkClass} data-testid="nav-peptides">
-                {t('nav.peptides')} <ChevronDown className="h-3.5 w-3.5" />
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="start" className="w-[640px] p-0">
-                <div className="grid grid-cols-2 divide-x divide-border">
-                  <div className="p-4">
-                    <div className="text-[11px] font-semibold uppercase tracking-wide text-muted-foreground mb-2">{t('nav.byCategory')}</div>
-                    <ul className="space-y-0.5">
-                      {PEPTIDE_CATEGORIES.map((c) => (
-                        <li key={c.slug}>
-                          <button onClick={() => navigate(`/catalogo?category=${c.slug}`)} data-testid="nav-peptide-category"
-                            className="w-full text-left rounded-md px-2 py-1.5 hover:bg-[hsl(var(--muted))] transition-colors">
-                            <div className="text-sm font-medium">{c.name}</div>
-                            <div className="text-[11px] text-muted-foreground">{c.examples}</div>
-                          </button>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                  <div className="p-4">
-                    <div className="text-[11px] font-semibold uppercase tracking-wide text-muted-foreground mb-2">{t('nav.learn')}</div>
-                    <ul className="space-y-0.5">
-                      {LEARN_LINKS.map((l) => (
-                        <li key={l.to}>
-                          <button onClick={() => navigate(l.to)} data-testid="nav-learn-link"
-                            className="w-full text-left rounded-md px-2 py-1.5 hover:bg-[hsl(var(--muted))] transition-colors">
-                            <div className="text-sm font-medium">{l.label}</div>
-                            <div className="text-[11px] text-muted-foreground">{l.desc}</div>
-                          </button>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                </div>
-              </DropdownMenuContent>
-            </DropdownMenu>
-
             <DropdownMenu>
               <DropdownMenuTrigger className={navLinkClass} data-testid="nav-tools">
                 {t('nav.tools')} <ChevronDown className="h-3.5 w-3.5" />
               </DropdownMenuTrigger>
-              <DropdownMenuContent align="start" className="w-64">
-                <DropdownMenuItem onClick={() => navigate('/asesor')} data-testid="nav-asesor">{t('nav.advisor')}</DropdownMenuItem>
-                <DropdownMenuItem onClick={() => navigate('/calculadora')} data-testid="nav-calculadora">{t('nav.calculator')}</DropdownMenuItem>
-                <DropdownMenuItem onClick={() => navigate('/educacion')} data-testid="nav-educacion">{t('nav.education')}</DropdownMenuItem>
-                <DropdownMenuItem onClick={() => navigate('/info/calidad')}>{t('footer.quality')}</DropdownMenuItem>
-                <DropdownMenuItem onClick={() => navigate('/info/envios')}>{t('footer.shipping')}</DropdownMenuItem>
-                <DropdownMenuItem onClick={() => navigate('/info/devoluciones')}>{t('footer.returns')}</DropdownMenuItem>
+              <DropdownMenuContent align="start" className="w-[560px] p-0">
+                <div className="grid grid-cols-2 divide-x divide-border">
+                  {TOOL_GROUPS.map((group) => (
+                    <div key={group.titleKey} className="p-4">
+                      <div className="text-[11px] font-semibold uppercase tracking-wide text-muted-foreground mb-2">{t(group.titleKey)}</div>
+                      <ul className="space-y-0.5">
+                        {group.items.map((it) => (
+                          <li key={it.to}>
+                            <button onClick={() => navigate(it.to)} data-testid="nav-tool-link"
+                              className="w-full text-left rounded-md px-2 py-1.5 hover:bg-[hsl(var(--muted))] transition-colors">
+                              <div className="text-sm font-medium">{t(it.labelKey)}</div>
+                              <div className="text-[11px] text-muted-foreground">{t(it.descKey)}</div>
+                            </button>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  ))}
+                </div>
               </DropdownMenuContent>
             </DropdownMenu>
           </nav>
