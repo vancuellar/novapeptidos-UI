@@ -1,9 +1,8 @@
-/* Helvetica para todo el sitio (Christian, 2026-07-20). Es la sans neutra de
-   las etiquetas de nuestros viales y la que mejor contrasta con la Marcellus
-   del logotipo: serif romana elegante + sans limpia. Arial entra como respaldo
-   (métricas casi idénticas) y Liberation Sans en Linux. Sin descarga: las tres
-   ya están en el equipo del visitante. El logotipo es imagen: no lo afecta. */
-@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Instrument+Serif:ital@0;1&family=Marcellus&family=JetBrains+Mono:wght@400;500&display=swap');
+/* Tipografía (Christian, 2026-07-20), calcada del reparto de jadalegal.com:
+   Manrope para textos y Cormorant Garamond para títulos. La serif de los
+   títulos conversa con la Marcellus del logotipo; IBM Plex Mono se queda para
+   las pestañas y los datos técnicos. El logotipo es imagen: no lo afecta. */
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=Cormorant+Garamond:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500&family=Instrument+Serif:ital@0;1&family=Marcellus&family=JetBrains+Mono:wght@400;500&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -11,7 +10,7 @@
 
 body {
     margin: 0;
-    font-family: 'Helvetica Neue', Helvetica, Arial, 'Liberation Sans', sans-serif;
+    font-family: 'Manrope', 'Helvetica Neue', Arial, sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
 }
@@ -65,8 +64,8 @@ body {
         --shadow-sm: 0 1px 2px rgba(6,24,20,0.06);
         --shadow-md: 0 12px 32px rgba(6,24,20,0.12);
 
-        --font-heading: 'Helvetica Neue', Helvetica, Arial, 'Liberation Sans', sans-serif;
-        --font-body: 'Helvetica Neue', Helvetica, Arial, 'Liberation Sans', sans-serif;
+        --font-heading: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+        --font-body: 'Manrope', 'Helvetica Neue', Arial, sans-serif;
         --font-mono: 'IBM Plex Mono', ui-monospace, monospace;
     }
 

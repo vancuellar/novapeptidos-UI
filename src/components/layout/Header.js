@@ -1,6 +1,6 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { User, Menu, LogOut, LayoutDashboard, ChevronDown, Search, X, Moon, Sun, SlidersHorizontal, Home, LayoutGrid, BadgeCheck, GraduationCap, MessageCircle, Calculator, Sparkles, FlaskConical, Flame, Activity, HeartPulse, Hourglass, HeartHandshake, Brain, ShieldPlus, Package } from 'lucide-react';
+import { User, Menu, LogOut, LayoutDashboard, ChevronDown, Search, ShoppingCart, Moon, Sun, SlidersHorizontal, Home, LayoutGrid, BadgeCheck, GraduationCap, MessageCircle, Calculator, Sparkles, FlaskConical, Flame, Activity, HeartPulse, Hourglass, HeartHandshake, Brain, ShieldPlus, Package } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Sheet, SheetContent, SheetTrigger, SheetHeader, SheetTitle } from '@/components/ui/sheet';
@@ -8,6 +8,7 @@ import {
   DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger, DropdownMenuSeparator, DropdownMenuLabel,
   DropdownMenuRadioGroup, DropdownMenuRadioItem,
 } from '@/components/ui/dropdown-menu';
+import { useCart } from '@/context/CartContext';
 import { useAuth } from '@/context/AuthContext';
 import { useLanguage } from '@/context/LanguageContext';
 import { useTheme } from '@/context/ThemeContext';
@@ -70,16 +71,15 @@ const HELP_ITEMS = [
 ];
 
 const Header = () => {
+  const { count } = useCart();
   const { user, logout } = useAuth();
   const { language, languages, setLanguage, t } = useLanguage();
   const { theme, setTheme } = useTheme();
   const navigate = useNavigate();
   const [search, setSearch] = useState('');
-  const [searchOpen, setSearchOpen] = useState(false);
   const [categories, setCategories] = useState([]);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-  const searchRef = useRef(null);
 
   // Como Resend: la barra nace transparente y fundida con el hero; solo al
   // hacer scroll gana fondo con blur para que el contenido no se le encime.
@@ -94,15 +94,10 @@ const Header = () => {
     api.get('/categories').then((r) => setCategories(Array.isArray(r.data) && r.data.length ? r.data : fallbackCategories)).catch(() => setCategories(fallbackCategories));
   }, []);
 
-  useEffect(() => {
-    if (searchOpen && searchRef.current) searchRef.current.focus();
-  }, [searchOpen]);
-
   const submitSearch = (e) => {
     e.preventDefault();
     navigate(`/catalogo?search=${encodeURIComponent(search)}`);
     setMobileOpen(false);
-    setSearchOpen(false);
   };
 
   const currentLang = languages.find((l) => l.code === language);
@@ -269,21 +264,6 @@ const Header = () => {
           </nav>
 
           <div className="flex items-center gap-0.5 ml-auto shrink-0">
-            {/* Expanding search */}
-            {searchOpen ? (
-              <form onSubmit={submitSearch} className="hidden md:flex items-center">
-                <div className="relative w-72">
-                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                  <Input ref={searchRef} className="pl-9 h-9" placeholder={t('header.searchLong')} value={search} onChange={(e) => setSearch(e.target.value)} data-testid="site-search-input" />
-                </div>
-                <Button type="button" variant="ghost" size="icon" onClick={() => setSearchOpen(false)}><X className="h-4 w-4" /></Button>
-              </form>
-            ) : (
-              <Button variant="ghost" size="icon" className="hidden md:inline-flex" onClick={() => setSearchOpen(true)} data-testid="header-search-button">
-                <Search className="h-5 w-5" />
-              </Button>
-            )}
-
             {/* Preferencias: tema + idioma en un solo menú, igual que jadalegal.com
                 (botón de 3 líneas con el código del idioma, secciones y palomita). */}
             <DropdownMenu>
@@ -344,12 +324,9 @@ const Header = () => {
               </DropdownMenu>
             ) : (
               <>
-                {/* Igual que Resend: entrar en texto y el alta como boton solido. */}
-                <Button variant="ghost" onClick={() => navigate('/login')} data-testid="header-login-button"
-                  className="hidden sm:inline-flex h-9 px-3 text-[13px] font-medium">
-                  {t('header.logIn')}
-                </Button>
-                <button onClick={() => navigate('/login?tab=signup')} data-testid="header-signup-button"
+                {/* Un solo boton: la pagina /login ya trae las dos pestanas
+                    (entrar y crear cuenta), asi que dos botones sobraban. */}
+                <button onClick={() => navigate('/login')} data-testid="header-signup-button"
                   className="btn-resend btn-resend-sm hidden sm:inline-flex ml-1">
                   {t('header.getStarted')}
                 </button>
@@ -358,6 +335,16 @@ const Header = () => {
                 </Button>
               </>
             )}
+            {/* El carrito vuelve a la barra (Christian, 2026-07-20). */}
+            <Button variant="ghost" size="icon" className="relative ml-0.5" onClick={() => navigate('/carrito')} data-testid="header-cart-button">
+              <ShoppingCart className="h-5 w-5" />
+              {count > 0 && (
+                <span data-testid="header-cart-count"
+                  className="absolute -top-0.5 -right-0.5 h-4 min-w-4 px-1 rounded-full bg-[hsl(var(--primary))] text-[hsl(var(--primary-foreground))] text-[10px] font-bold flex items-center justify-center">
+                  {count}
+                </span>
+              )}
+            </Button>
           </div>
         </div>
       </div>

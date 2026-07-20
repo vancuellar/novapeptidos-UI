@@ -9,7 +9,6 @@ import { ThemeProvider } from '@/context/ThemeContext';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import AIChatWidget from '@/components/AIChatWidget';
-import CartFab from '@/components/CartFab';
 import Home from '@/pages/Home';
 import Catalog from '@/pages/Catalog';
 import Calculator from '@/pages/Calculator';
@@ -71,7 +70,6 @@ function App() {
                   </Routes>
                 </main>
                 <Footer />
-                <CartFab />
                 <AIChatWidget />
                 <Toaster position="top-right" richColors closeButton duration={2500} />
               </BrowserRouter>
