@@ -18,11 +18,11 @@ const ICONS = { HeartPulse, Activity, Flame, Hourglass, Brain, Sparkles, Layers,
 // Un archivo por vial (botellas que mandó Christian): cada uno se levanta solo
 // al pasar el cursor y lleva al catálogo. Alturas escalonadas para la silueta.
 const HERO_VIALS = [
-  { slug: 'vial-nad', name: 'NAD+ 500mg', search: 'NAD+', h: 78 },
-  { slug: 'vial-semaglutide', name: 'Semaglutida 10mg', search: 'Semaglutida', h: 90 },
-  { slug: 'vial-tirzepatide', name: 'Tirzepatida 20mg', search: 'Tirzepatida', h: 100 },
-  { slug: 'vial-retatrutide', name: 'Retatrutida 40mg', search: 'Retatrutida', h: 90 },
-  { slug: 'vial-klow', name: 'KLOW 80mg', search: 'KLOW', h: 78 },
+  { slug: 'vial-nad', name: 'NAD+ 500mg', search: 'NAD+', w: 18 },
+  { slug: 'vial-semaglutide', name: 'Semaglutida 10mg', search: 'Semaglutida', w: 20 },
+  { slug: 'vial-tirzepatide', name: 'Tirzepatida 20mg', search: 'Tirzepatida', w: 22 },
+  { slug: 'vial-retatrutide', name: 'Retatrutida 40mg', search: 'Retatrutida', w: 20 },
+  { slug: 'vial-klow', name: 'KLOW 80mg', search: 'KLOW', w: 18 },
 ].map((v) => ({ ...v, src: `${process.env.PUBLIC_URL}/images/hero/${v.slug}.webp` }));
 
 // Compounds shown in the scrolling ticker under the hero
@@ -80,9 +80,12 @@ const Home = () => {
   return (
     <div>
       {/* ===== Hero — clean typography + real vial photo ===== */}
-      <section className="bg-background relative overflow-hidden">
+      {/* El hero empieza DETRÁS de la barra (que es transparente al tope), para
+          que los haces de luz corran hasta el borde superior de la pantalla y
+          la barra se funda con el hero, como en Resend. */}
+      <section className="bg-background relative overflow-hidden -mt-[60px] pt-[60px]">
         <div className="hero-beams" />
-        <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 pt-24 lg:pt-32 pb-16 relative">
+        <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 pt-20 lg:pt-28 pb-16 relative">
           <div className="grid lg:grid-cols-[1.1fr_0.9fr] gap-12 lg:gap-16 items-center">
             <div>
               <div className="kicker">{t('home.kicker')}</div>
@@ -103,13 +106,15 @@ const Home = () => {
             <div className="flex items-center justify-center">
               <div className="hero-vials w-full max-w-[540px]">
                 <div className="hero-vials-glow" />
-                <div className="relative flex items-end justify-center gap-1 sm:gap-2 h-[230px] sm:h-[300px] lg:h-[340px]">
+                {/* Anchos en % del contenedor (max 540px): la fila ocupa el mismo
+                    espacio que la foto grupal anterior, sin desbordarse. */}
+                <div className="relative flex items-end justify-center gap-0.5 sm:gap-1">
                   {HERO_VIALS.map((v) => (
                     <Link
                       key={v.slug}
                       to={`/catalogo?search=${encodeURIComponent(v.search)}`}
                       className="hero-vial-link block"
-                      style={{ height: `${v.h}%` }}
+                      style={{ width: `${v.w}%` }}
                       title={v.name}
                       data-testid={`hero-vial-${v.slug}`}
                     >

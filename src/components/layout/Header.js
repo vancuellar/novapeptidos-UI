@@ -107,7 +107,7 @@ const Header = () => {
           <div className="flex items-center gap-6 min-w-0">
           {/* Logo pegado a la izquierda */}
           <Link to="/" className="shrink-0 order-first" data-testid="header-logo">
-            <BrandLogo compact />
+            <BrandLogo compact nameOnly />
           </Link>
 
           {/* Mobile menu */}
