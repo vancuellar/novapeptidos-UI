@@ -97,7 +97,7 @@ const Home = () => {
     <div>
       {/* ===== Hero — clean typography + real vial photo ===== */}
       <section className="bg-background relative overflow-hidden">
-        <div className="hero-aurora" />
+        <div className="hero-beams" />
         <div className="hero-grid" />
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 pb-14 relative">
           <div className="grid lg:grid-cols-[1.1fr_0.9fr] gap-12 lg:gap-16 items-center">

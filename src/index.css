@@ -205,10 +205,46 @@ body {
     background: linear-gradient(160deg, rgba(222, 241, 234, 0.5) 0%, #fbfdfc 48%, rgba(219, 235, 243, 0.35) 100%);
 }
 
+/* Fondo del hero en oscuro: negro con haces de luz diagonales muy tenues,
+   como si una fuente lejana cayera de sesgo sobre una superficie mate.
+   Recreado en CSS — las imagenes originales de esa referencia son de su autor. */
 .dark .hero-gradient {
+    background: #000;
+}
+
+.dark .hero-beams {
+    opacity: 1;
+}
+
+.hero-beams {
+    position: absolute;
+    inset: -20% -10% auto -10%;
+    height: 150%;
+    pointer-events: none;
+    opacity: 0;
     background:
-        radial-gradient(1000px 460px at 85% -10%, hsla(225, 70%, 70%, 0.07), transparent 60%),
-        #000;
+        /* haz principal, ancho y de sesgo */
+        linear-gradient(107deg,
+            transparent 24%,
+            rgba(255, 255, 255, 0.075) 41%,
+            rgba(255, 255, 255, 0.028) 52%,
+            transparent 66%),
+        /* segundo haz, mas angosto y bajo */
+        linear-gradient(96deg,
+            transparent 46%,
+            rgba(255, 255, 255, 0.045) 56%,
+            transparent 67%),
+        /* filo delgado que marca el borde del haz */
+        linear-gradient(112deg,
+            transparent 38%,
+            rgba(255, 255, 255, 0.10) 40.5%,
+            transparent 43%),
+        /* resplandor difuso arriba a la derecha */
+        radial-gradient(120% 62% at 66% -12%, rgba(255, 255, 255, 0.055), transparent 62%);
+    filter: blur(26px);
+    /* se apaga hacia abajo para fundirse con el resto de la pagina */
+    mask-image: linear-gradient(#000 0%, #000 52%, transparent 88%);
+    -webkit-mask-image: linear-gradient(#000 0%, #000 52%, transparent 88%);
 }
 
 @layer base {

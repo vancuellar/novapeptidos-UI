@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate, Link, useSearchParams } from 'react-router-dom';
 import { Eye, EyeOff, ArrowLeft, ShieldCheck, Truck, Lock, MailCheck } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -25,6 +25,7 @@ const Login = () => {
   const { login, register, adoptSession } = useAuth();
   const { t, language } = useLanguage();
   const navigate = useNavigate();
+  const [params] = useSearchParams();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
@@ -140,7 +141,7 @@ const Login = () => {
               </Button>
             </div>
           )}
-          <Tabs defaultValue="login">
+          <Tabs defaultValue={params.get('tab') === 'signup' ? 'signup' : 'login'}>
             <TabsList className="w-full">
               <TabsTrigger value="login" className="flex-1" data-testid="auth-tab-login">{t('auth.login.title')}</TabsTrigger>
               <TabsTrigger value="signup" className="flex-1" data-testid="auth-tab-signup">{t('auth.register.title')}</TabsTrigger>

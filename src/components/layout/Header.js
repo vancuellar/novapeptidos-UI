@@ -97,9 +97,14 @@ const Header = () => {
         🎉 {t('discount.launchBanner')}
       </Link>
       <div className="bg-background/70 supports-[backdrop-filter]:backdrop-blur-xl">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 h-[68px] grid grid-cols-[1fr_auto_1fr] items-center gap-4">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 h-[68px] flex items-center gap-4">
           {/* Left: nav links (desktop) / menu (mobile) */}
-          <div className="flex items-center gap-8 justify-self-start">
+          <div className="flex items-center gap-6 min-w-0">
+          {/* Logo pegado a la izquierda */}
+          <Link to="/" className="shrink-0 order-first" data-testid="header-logo">
+            <BrandLogo compact />
+          </Link>
+
           {/* Mobile menu */}
           <Sheet open={mobileOpen} onOpenChange={setMobileOpen}>
             <SheetTrigger asChild className="lg:hidden">
@@ -214,12 +219,7 @@ const Header = () => {
           </nav>
           </div>
 
-          {/* Center: logo */}
-          <Link to="/" className="shrink-0 justify-self-center" data-testid="header-logo">
-            <BrandLogo compact />
-          </Link>
-
-          <div className="flex items-center gap-0.5 justify-self-end">
+          <div className="flex items-center gap-0.5 ml-auto">
             {/* Expanding search */}
             {searchOpen ? (
               <form onSubmit={submitSearch} className="hidden md:flex items-center">
@@ -279,7 +279,20 @@ const Header = () => {
                 </DropdownMenuContent>
               </DropdownMenu>
             ) : (
-              <Button variant="ghost" size="icon" onClick={() => navigate('/login')} data-testid="header-account-button"><User className="h-5 w-5" /></Button>
+              <>
+                {/* Igual que Resend: entrar en texto y el alta como boton solido. */}
+                <Button variant="ghost" onClick={() => navigate('/login')} data-testid="header-login-button"
+                  className="hidden sm:inline-flex h-9 px-3 text-[13px] font-medium">
+                  {t('header.logIn')}
+                </Button>
+                <Button onClick={() => navigate('/login?tab=signup')} data-testid="header-signup-button"
+                  className="hidden sm:inline-flex h-9 px-4 rounded-full text-[13px] font-semibold">
+                  {t('header.getStarted')}
+                </Button>
+                <Button variant="ghost" size="icon" className="sm:hidden" onClick={() => navigate('/login')} data-testid="header-account-button">
+                  <User className="h-5 w-5" />
+                </Button>
+              </>
             )}
 
             <Button variant="ghost" size="icon" className="relative" onClick={() => navigate('/carrito')} data-testid="header-cart-button">
