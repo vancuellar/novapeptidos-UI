@@ -1,6 +1,6 @@
 # Exygen Labs — Website Continuation File
 
-> **Propósito:** fuente única de verdad del SITIO WEB (frontend, backend, IA, marca, despliegue). Pega este archivo en un chat nuevo para retomar con todo el contexto. Complementa a `../NOVA-PRICING-SYSTEM-CONTINUATION.md` (el sistema de precios). **Última actualización: 2026-07-19.**
+> **Propósito:** fuente única de verdad del SITIO WEB (frontend, backend, IA, marca, despliegue). Pega este archivo en un chat nuevo para retomar con todo el contexto. Complementa a `../NOVA-PRICING-SYSTEM-CONTINUATION.md` (el sistema de precios). **Última actualización: 2026-07-20.**
 
 > **Estilo con Christian:** abogado, no dev ("abogado de 95 años haciendo vibe coding"). Respuestas **ultra cortas, español claro, sin jerga**. Corre TÚ los comandos (nunca le pidas abrir terminal). Términos de git en inglés (commit, push, merge — no "commitear").
 
@@ -122,7 +122,7 @@
 
 ---
 
-## 8ter. ROADMAP §10 EJECUTADO (2026-07-19, tarde) — frontend EN VIVO, backend PENDIENTE DE DESPLEGAR
+## 8ter. ROADMAP §10 EJECUTADO (2026-07-19, tarde) — TODO EN VIVO (el backend se desplegó el 2026-07-20, ver §8quinquies)
 
 **Los 7 puntos del roadmap están construidos y el frontend ya está en producción.** El código del
 backend está en `main` del repo RBAC pero **NO se ha desplegado al servidor**: el clasificador
@@ -178,7 +178,7 @@ limpio y con el navegador.
 
 ---
 
-## 8quater. SEGUNDA TANDA (2026-07-19, noche) — frontend EN VIVO, backend PENDIENTE
+## 8quater. SEGUNDA TANDA (2026-07-19, noche) — TODO EN VIVO
 
 1. **Consentimientos en el registro.** Confirmar contraseña + 5 casillas: *18 años y Términos* y
    *Política de privacidad* son obligatorias (el botón "Sí, estoy de acuerdo" queda bloqueado
@@ -213,9 +213,7 @@ limpio y con el navegador.
 
 **Pruebas: 33 en el backend, todas pasan** (`pytest -q` en `novapeptidos-RBAC`).
 
-> **Sigue pendiente desplegar el backend** (ver §8ter). Sin eso no funcionan: pedidos del
-> distribuidor, seguimiento de consumo, recompra, guías de envío, estatus en el chat, los
-> consentimientos del servidor y TODA la pestaña de estudios.
+> *(Al escribirse, esto estaba pendiente de desplegar. **Ya se desplegó** el 2026-07-20 — §8quinquies.)*
 
 ---
 
@@ -255,6 +253,76 @@ limpio y con el navegador.
   y `~/.config/exygen/resend.env`.
 - El dominio conserva también el DKIM de SES y un rol IAM `exygen-api-ses` en la instancia, por si
   algún día se retoma SES.
+
+---
+
+## 8sexies. CUARTA TANDA — REDISEÑO VISUAL (2026-07-20) — TODO EN VIVO
+
+Referencia estética acordada con Christian: **resend.com**. Le gusta lo "extra clean".
+**Regla:** se copian efectos, proporciones y tratamiento, **NUNCA sus archivos** (su hero son
+dos imágenes propias, `bg-hero-1.jpg` y `bg-light.png`; todo se recreó en CSS).
+
+### Tema oscuro
+- **Lienzo negro puro** (`--background: 0 0% 0%`) y grises **neutros, sin tinte**. Las superficies
+  se separan por luminosidad, no por color: fondo 0%, tarjetas 4.5%, franjas 7-8%, bordes 15%.
+  Texto secundario `0 0% 63%` → contraste 8.1:1 sobre negro.
+- **Azul de acento cambiado solo en oscuro:** de `225 70% 70%` (lavanda, se veía apagado sobre
+  negro) a `219 88% 70%`. Token nuevo `--brand-glow` para los halos. El tema claro no se tocó.
+- **Fondo del hero:** negro con haces de luz diagonales muy tenues + un filo delgado que marca el
+  borde del haz + resplandor difuso arriba a la derecha (`.hero-beams`). Recreado en CSS.
+
+### Estructura (aplica a AMBOS temas)
+- **Nada arriba de la barra.** Se eliminó la franja del 10% de descuento.
+- **Barra a todo lo ancho de la pantalla**, contenido a **1280 px** centrado, igual que Resend.
+  Todo el sitio pasó de `max-w-6xl` (1152 px) a `max-w-[1280px]`.
+- **Logo pegado a la izquierda**, navegación junto a él, acciones al extremo derecho.
+  Sin sesión aparecen **Iniciar sesión** (texto) y **Crear cuenta** (botón sólido, abre
+  `/login?tab=signup`). Con sesión, el menú de cuenta de siempre.
+- **Fuera la cuadrícula de fondo** del hero y del panel de marca.
+- **Botones del hero al estilo Resend:** uno sólido y "Empieza aquí" en texto plano
+  (→ `/aprende/empieza-aqui`).
+- Los **haces del hero también en claro**: mismo tratamiento, pero restando luz en vez de
+  sumarla, porque el lienzo es marfil.
+
+### Otros
+- **Botón del chat en verde de WhatsApp** (`#25D366`).
+- **Animación de los viales: RETIRADA.** Se probó entrada + flotación + destello + parallax y a
+  Christian no le gustó que la foto se moviera en bloque al hacer hover. Se intentó recortar los
+  5 viales del PNG y **no se puede: están pegados, no hay separación de alfa entre ellos**.
+  Christian va a mandar **las botellas individuales**; con eso se hace que cada vial se levante
+  solo al pasar el cursor. Hasta entonces, la imagen va quieta.
+- **Favicons hechos desde cero:**
+  - *Exygen* (no tenía ninguno): el enlace peptídico del logo aislado. A 16-32 px va solo el
+    enlace (la caja punteada se volvía ruido); de 180 px en adelante sí aparece la caja.
+    Archivos en `public/`: `favicon.svg`, `favicon.ico`, `favicon-16/32/192/512.png`,
+    `apple-touch-icon.png`, `site.webmanifest`. Guinda de marca muestreada del logo: **#6C3030**.
+  - *Certis* (`../certis-analytics-site/`): ya tenía la retícula teal pero **solo como data URI
+    dentro del HTML**. Se generaron archivos reales en `img/` y se enlazaron en las 14 páginas,
+    más `site.webmanifest`. **OJO: esa carpeta NO es repo git** — los cambios están solo en la
+    máquina de Christian y falta saber dónde se publica ese sitio.
+
+---
+
+## 11. LO QUE SIGUE — orden de Christian (2026-07-20)
+
+1. **Colores del hero de Resend, tal cual, en el de Exygen** — incluidos los botones.
+   **Excepción explícita: NO tocar el "lote por lote"** (la frase en cursiva serif del título;
+   se queda como está).
+2. **Márgenes.** La página de Resend respira mucho más. Adoptar sus márgenes y espaciados tal
+   cual — a Christian le gusta lo "extra clean". Revisar también **sus efectos de hover**
+   y replicarlos.
+3. **Color de acento nuevo para TODO el sitio.** El azul actual está a prueba; hay que proponer
+   alternativas y elegir uno definitivo (aplica a ambos temas, no solo al oscuro).
+4. **Mover el carrito de compras.** Hoy está al extremo derecho de la barra y a Christian no le
+   convence. Buscar otra posición.
+
+### Decisiones que siguen abiertas de antes
+- **La molécula en la barra superior:** ¿se queda, se deja solo el nombre, o solo la marca?
+  Mi recomendación fue dejar solo el nombre (a 26 px de alto la molécula se vuelve garabato y ya
+  trabaja bien en el favicon y el footer). Sin decidir.
+- **Las botellas individuales del hero** (ver arriba).
+- Propuesta interactiva con las opciones de azul, de logo y los favicons:
+  `https://claude.ai/code/artifact/87e5308c-6cf8-49fb-ab44-5fa8a1224e50`
 
 ---
 
