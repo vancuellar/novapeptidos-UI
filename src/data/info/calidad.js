@@ -74,14 +74,13 @@ const page = {
         'Si algún campo del análisis que recibes no coincide con tu vial —sobre todo el número de lote— avísanos de inmediato: es justo el tipo de cosa que queremos detectar.',
     },
     {
-      type: 'list',
-      title: 'Cómo pedir el análisis de tu lote',
-      intro: 'Es directo y no tiene costo.',
-      items: [
-        'Busca el número de lote impreso en la etiqueta de tu vial.',
-        'Escribe a hola@exygenlabs.com con ese número, o mándalo por WhatsApp. Una foto legible de la etiqueta también funciona.',
-        'Te respondemos con el análisis correspondiente a ese lote, no con un documento genérico del compuesto.',
-        'Si compraste varios viales del mismo compuesto en distintos momentos, verifica el lote de cada uno: pueden ser diferentes.',
+      type: 'prose',
+      title: 'Cómo accedes al certificado de tu lote',
+      paragraphs: [
+        'Nuestros clientes reciben acceso al certificado de análisis del lote específico que les corresponde según su compra. No es un documento genérico del compuesto: es el análisis del material que está en tu vial.',
+        'Lo encuentras en la pestaña "Certificados" dentro de Mi cuenta, en cuanto tu pedido queda confirmado. Los distribuidores tienen la misma pestaña en su portal, con los certificados de los productos que manejan. Desde ahí se descarga el PDF.',
+        'Publicamos además un certificado de muestra abierto, para que cualquiera pueda ver el formato y el nivel de detalle antes de comprar. Y si prefieres pedirlo a mano, escríbenos a hola@exygenlabs.com con el número de lote impreso en tu etiqueta —o una foto legible de ella— y te lo mandamos.',
+        'Si compraste varios viales del mismo compuesto en momentos distintos, revisa el lote de cada uno: pueden ser diferentes, y cada lote tiene su propio análisis.',
       ],
     },
     {
@@ -137,8 +136,8 @@ const page = {
       title: 'Preguntas frecuentes de calidad',
       items: [
         {
-          q: '¿Por qué el análisis se envía a solicitud y no está publicado?',
-          a: 'Porque el documento útil es el de tu lote, no uno genérico. Publicar un solo archivo por producto sería cómodo pero engañoso: dejaría de corresponder al vial que tienes en cuanto entrara un lote nuevo. Pedirlo con tu número de lote toma un minuto y garantiza que lo que recibes es el análisis de tu material.',
+          q: '¿Por qué no están todos los certificados publicados en abierto?',
+          a: 'Porque el documento que te sirve es el de tu lote, no uno cualquiera. Publicar un archivo por producto sería cómodo pero engañoso: dejaría de corresponder al vial que tienes en cuanto entrara un lote nuevo. Por eso cada cliente ve, en su cuenta, el certificado del lote que compró, y dejamos uno de muestra abierto para que se pueda revisar el formato antes de comprar.',
         },
         {
           q: '¿Qué significa exactamente "≥99% de pureza"?',

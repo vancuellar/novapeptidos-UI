@@ -16,7 +16,7 @@ const BrandLogo = ({ compact = false, nameOnly = false }) => (
     src={nameOnly ? LOGO_NAME_SRC : LOGO_SRC}
     alt="Exygen Labs — Research Peptides"
     data-testid="brand-logo"
-    className={`w-auto object-contain dark:brightness-0 dark:invert ${compact ? (nameOnly ? 'h-5 sm:h-6' : 'h-8 sm:h-9') : 'h-10'}`}
+    className={`w-auto object-contain dark:brightness-0 dark:invert ${compact ? (nameOnly ? 'h-3.5 sm:h-4' : 'h-8 sm:h-9') : 'h-10'}`}
   />
 );
 

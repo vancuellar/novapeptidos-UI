@@ -111,7 +111,7 @@ const page = {
         'No hacemos ni permitimos afirmaciones terapéuticas en ningún canal: ni sitio, ni fichas, ni redes, ni correo, ni atención a clientes. Nuestro contenido educativo explica química, mecanismos y manejo de laboratorio, nunca uso en personas.',
         'No publicamos dosis, protocolos de administración humana ni comparaciones con medicamentos.',
         'Analizamos cada lote antes de liberarlo: identidad por espectrometría de masas y pureza por RP-HPLC con método declarado. Cada lote tiene número propio y trazabilidad.',
-        'Entregamos el certificado de análisis del lote correspondiente bajo solicitud, por correo, escribiendo a hola@exygenlabs.com. Todavía no tenemos galería pública de COA; cuando la tengamos lo anunciaremos aquí.',
+        'Cada cliente recibe el certificado de análisis del lote que le corresponde según su compra, en la pestaña Certificados de Mi cuenta. Hay además un certificado de muestra público, y siempre puedes pedirlo por correo a hola@exygenlabs.com con tu número de lote.',
         'Publicamos aviso de privacidad conforme a la legislación mexicana de datos personales: qué datos recabamos, para qué y cómo ejercer tus derechos de acceso, rectificación, cancelación y oposición.',
         'Describimos con veracidad lo que vendemos: presentación, pureza, condiciones de envío y política de devoluciones corresponden con lo que efectivamente entregamos.',
         { text: 'No vendemos con fines de consumo humano ni animal, y no asesoramos sobre uso en organismos vivos. Si esa es la intención de la compra, no somos el proveedor adecuado.', bad: true },

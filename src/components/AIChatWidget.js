@@ -25,7 +25,7 @@ const getSessionId = () => {
 };
 
 const AIChatWidget = () => {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
   const [open, setOpen] = useState(false);
   const [messages, setMessages] = useState([
     { role: 'assistant', content: t('chat.initial') },
@@ -40,6 +40,14 @@ const AIChatWidget = () => {
       scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
     }
   }, [messages, open]);
+
+  // Si el usuario cambia de idioma antes de escribir, el saludo se traduce.
+  // Ya empezada la conversación no se toca, para no borrar lo que se dijo.
+  useEffect(() => {
+    setMessages((prev) => (prev.length === 1 && prev[0].role === 'assistant'
+      ? [{ role: 'assistant', content: t('chat.initial') }]
+      : prev));
+  }, [language, t]);
 
   const send = async (text) => {
     const message = (text || input).trim();
@@ -58,7 +66,9 @@ const AIChatWidget = () => {
           'Content-Type': 'application/json',
           ...(token ? { Authorization: `Bearer ${token}` } : {}),
         },
-        body: JSON.stringify({ session_id: sessionId.current, message }),
+        // El idioma va en cada mensaje: el asistente responde en el que el
+        // usuario tenga elegido en el sitio, no siempre en español.
+        body: JSON.stringify({ session_id: sessionId.current, message, language }),
       });
       if (!res.body) throw new Error('No stream');
       const reader = res.body.getReader();

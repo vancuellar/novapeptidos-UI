@@ -76,6 +76,7 @@ const ProtocolTracker = ({ protocols, onChange }) => {
               <div className="text-xs text-muted-foreground">
                 {p.vial_mg} mg · {p.dose} {p.dose_unit} {t('track.perDose')}
                 {p.water_ml ? ` · ${p.water_ml} mL ${t('calc.water').toLowerCase()}` : ''}
+                {p.level ? ` · ${t(`calc.lvl${{ inicial: 'Basic', tipica: 'Typical', avanzada: 'Advanced' }[p.level] || 'Basic'}`)}` : ''}
               </div>
             </div>
             <div className="flex items-center gap-2">

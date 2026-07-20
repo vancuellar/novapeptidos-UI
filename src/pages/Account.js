@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import { useNavigate, useSearchParams, Link } from 'react-router-dom';
-import { Package, User, LogOut, ShoppingBag, DollarSign, MapPin, CreditCard, LockKeyhole, Eye, EyeOff, Syringe, Truck, ExternalLink, Lock, FlaskConical } from 'lucide-react';
+import { Package, User, LogOut, ShoppingBag, DollarSign, MapPin, CreditCard, LockKeyhole, Eye, EyeOff, Syringe, Truck, ExternalLink, Lock, FlaskConical, FileText } from 'lucide-react';
 import ReconstitutionCalculator, { mgProducts } from '@/components/ReconstitutionCalculator';
 import ProtocolTracker from '@/components/ProtocolTracker';
 import LabReports from '@/components/LabReports';
@@ -10,6 +10,7 @@ import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import CoaLibrary from '@/components/CoaLibrary';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Separator } from '@/components/ui/separator';
@@ -193,6 +194,7 @@ const Account = () => {
           <TabsTrigger value="orders"><Package className="h-4 w-4 mr-1.5" /> {t('account.ordersTab')}</TabsTrigger>
           <TabsTrigger value="tools"><Syringe className="h-4 w-4 mr-1.5" /> {t('account.toolsTab')}</TabsTrigger>
           <TabsTrigger value="labs"><FlaskConical className="h-4 w-4 mr-1.5" /> {t('account.labsTab')}</TabsTrigger>
+          <TabsTrigger value="coas"><FileText className="h-4 w-4 mr-1.5" /> {t('account.coasTab')}</TabsTrigger>
           <TabsTrigger value="profile"><User className="h-4 w-4 mr-1.5" /> {t('account.profileTab')}</TabsTrigger>
         </TabsList>
 
@@ -273,6 +275,10 @@ const Account = () => {
               ))}
             </div>
           )}
+        </TabsContent>
+
+        <TabsContent value="coas" className="mt-5">
+          <CoaLibrary locked={!toolsUnlocked} />
         </TabsContent>
 
         <TabsContent value="labs" className="mt-5">

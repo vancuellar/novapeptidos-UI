@@ -33,7 +33,7 @@ const page = {
         },
         {
           q: '¿Qué es un COA y cómo lo consigo?',
-          a: 'El COA (certificate of analysis) es el reporte del laboratorio para ese lote específico: cromatograma de HPLC con el porcentaje de pureza, espectro de masas, apariencia, contenido de agua y número de lote. Lo mandamos bajo solicitud: escribe a hola@exygenlabs.com con el nombre del producto y, si ya lo tienes en mano, el número de lote impreso en la etiqueta.',
+          a: 'El COA (certificate of analysis) es el reporte del laboratorio para ese lote específico: cromatograma de HPLC con el porcentaje de pureza, espectro de masas, apariencia, contenido de agua y número de lote. Nuestros clientes lo reciben en la pestaña Certificados de Mi cuenta, con el lote que les corresponde según su compra. Antes de comprar puedes revisar el certificado de muestra que publicamos, o escribirnos a hola@exygenlabs.com.',
         },
         {
           q: '¿El COA corresponde a mi vial o es genérico?',

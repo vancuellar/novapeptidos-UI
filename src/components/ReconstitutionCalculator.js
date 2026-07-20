@@ -128,6 +128,11 @@ const ReconstitutionCalculator = ({ variant = 'full', purchased = [], onTrack, s
   const hasRef = currentProduct?.startDose != null;
   const levels = full ? currentProduct?.startLevels || null : null;
   const mcgDisabled = product && unitFor(product) === 'mg';   // péptido mg-dosado → mcg apagado
+  // Nivel de referencia activo (inicial | tipica | avanzada), derivado de la
+  // dosis actual. Se guarda con el seguimiento porque la reconstitución cambia.
+  const activeLevel = levels
+    ? ['inicial', 'tipica', 'avanzada'].find((k) => effUnit === levels.unit && Number(dose) === levels[k]) || ''
+    : '';
   const effUnit = mcgDisabled ? 'mg' : doseUnit;
   const doseMcg = (parseFloat(dose) || 0) * (effUnit === 'mg' ? 1000 : 1);
   const mg = parseFloat(vialMg) || 0;
@@ -423,6 +428,7 @@ const ReconstitutionCalculator = ({ variant = 'full', purchased = [], onTrack, s
                 dose: Number(dose),
                 dose_unit: effUnit,
                 water_ml: Number(res.water),
+                level: activeLevel,
               })}>
               <CalendarClock className="h-4 w-4 mr-1.5" /> {t('calc.track')}
             </Button>

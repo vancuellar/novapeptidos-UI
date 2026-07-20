@@ -167,7 +167,7 @@ const page = {
       type: 'steps',
       title: 'Cómo pedir el COA de tu lote',
       intro:
-        'Todavía no tenemos galería pública de certificados. Los COA se entregan bajo solicitud, por correo, y siempre corresponden al lote que se te va a enviar o que ya recibiste.',
+        'Cada cliente recibe el certificado del lote que le corresponde según su compra: aparece en la pestaña Certificados de Mi cuenta cuando el pedido queda confirmado, y los distribuidores lo tienen en su portal. Además publicamos uno de muestra abierto, para revisar el formato antes de comprar, y siempre puedes pedirlo por correo con tu número de lote.',
       items: [
         {
           title: 'Escríbenos a hola@exygenlabs.com',
@@ -200,7 +200,7 @@ const page = {
       items: [
         {
           q: '¿Puedo ver los COA sin escribirles?',
-          a: 'Todavía no. No tenemos un repositorio público de certificados; preferimos decirlo con claridad en lugar de anunciar una galería que no existe. Los COA se entregan por correo, bajo solicitud, escribiendo a hola@exygenlabs.com. Cuando publiquemos una biblioteca en línea lo anunciaremos en el sitio.',
+          a: 'En abierto publicamos solo un certificado de muestra, para que cualquiera vea el formato y el nivel de detalle. El resto se entrega por cliente: en Mi cuenta, pestaña Certificados, aparece el COA del lote que compraste. Lo hacemos así porque el documento que sirve es el de TU lote; una galería general dejaría de corresponder a tu vial en cuanto entrara un lote nuevo. También puedes pedirlo por correo a hola@exygenlabs.com con tu número de lote.',
         },
         {
           q: '¿El COA es del lote que me van a mandar?',

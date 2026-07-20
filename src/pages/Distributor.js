@@ -1,11 +1,12 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Store, Users, DollarSign, TrendingUp, ShoppingBag, Copy, Percent, Truck, ExternalLink } from 'lucide-react';
+import { Store, Users, DollarSign, TrendingUp, ShoppingBag, Copy, Percent, Truck, ExternalLink, FileText } from 'lucide-react';
 import { ResponsiveContainer, AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip } from 'recharts';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import CoaLibrary from '@/components/CoaLibrary';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { toast } from 'sonner';
@@ -133,6 +134,7 @@ const Distributor = () => {
           <TabsTrigger value="clients"><Users className="h-4 w-4 mr-1.5" /> {t('distributor.clientsTab')}</TabsTrigger>
           <TabsTrigger value="orders"><Truck className="h-4 w-4 mr-1.5" /> {t('distributor.ordersTab')}</TabsTrigger>
           <TabsTrigger value="sales"><ShoppingBag className="h-4 w-4 mr-1.5" /> {t('distributor.salesTab')}</TabsTrigger>
+          <TabsTrigger value="coas"><FileText className="h-4 w-4 mr-1.5" /> {t('account.coasTab')}</TabsTrigger>
         </TabsList>
 
         <TabsContent value="overview" className="mt-5">
@@ -270,6 +272,10 @@ const Distributor = () => {
               </TableBody>
             </Table>
           </Card>
+        </TabsContent>
+
+        <TabsContent value="coas" className="mt-5">
+          <CoaLibrary />
         </TabsContent>
 
         <TabsContent value="sales" className="mt-5 space-y-4">

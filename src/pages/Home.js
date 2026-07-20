@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import {
   ShieldCheck, FlaskConical, Truck, BadgeCheck, ArrowRight, HeartPulse, Activity, Flame, Hourglass,
-  Brain, Sparkles, Layers, CheckCircle2, MinusCircle, FileCheck2, ScanSearch, Landmark, CreditCard, Store,
+  Brain, Sparkles, Layers, CheckCircle2, MinusCircle, FileCheck2, ScanSearch, Landmark, CreditCard,
   ChevronLeft, ChevronRight, Building2, Mail,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -20,11 +20,11 @@ const ICONS = { HeartPulse, Activity, Flame, Hourglass, Brain, Sparkles, Layers,
 // Orden de Christian: Reta al centro y al frente; NAD y KLOW a sus lados como
 // principales; Tirze y Sema en las esquinas.
 const HERO_VIALS = [
-  { slug: 'vial-tirzepatide', name: 'Tirzepatida 20mg', search: 'Tirzepatida', w: 18 },
-  { slug: 'vial-nad', name: 'NAD+ 500mg', search: 'NAD+', w: 20 },
-  { slug: 'vial-retatrutide', name: 'Retatrutida 40mg', search: 'Retatrutida', w: 22 },
-  { slug: 'vial-klow', name: 'KLOW 80mg', search: 'KLOW', w: 20 },
-  { slug: 'vial-semaglutide', name: 'Semaglutida 10mg', search: 'Semaglutida', w: 18 },
+  { slug: 'vial-tirzepatide', name: 'Tirzepatida 20mg', search: 'Tirzepatida', w: 13 },
+  { slug: 'vial-nad', name: 'NAD+ 500mg', search: 'NAD+', w: 14.5 },
+  { slug: 'vial-retatrutide', name: 'Retatrutida 40mg', search: 'Retatrutida', w: 16 },
+  { slug: 'vial-klow', name: 'KLOW 80mg', search: 'KLOW', w: 14.5 },
+  { slug: 'vial-semaglutide', name: 'Semaglutida 10mg', search: 'Semaglutida', w: 13 },
 ].map((v) => ({ ...v, src: `${process.env.PUBLIC_URL}/images/hero/${v.slug}.webp` }));
 
 // Compounds shown in the scrolling ticker under the hero
@@ -356,7 +356,7 @@ const Home = () => {
             <div className="text-xs text-muted-foreground mt-0.5">{t('home.paymentsNote')}</div>
           </div>
           <div className="flex flex-wrap items-center justify-center gap-2.5">
-            {[{ i: Store, l: 'OXXO' }, { i: Landmark, l: 'SPEI' }, { i: CreditCard, l: 'Visa · Mastercard' }, { i: BadgeCheck, l: 'Mercado Pago' }].map((p, i) => (
+            {[{ i: Landmark, l: 'SPEI' }, { i: CreditCard, l: 'Visa · Mastercard' }].map((p, i) => (
               <span key={i} className="inline-flex items-center gap-1.5 rounded-lg border border-border bg-[hsl(var(--secondary))] px-3 py-2 text-xs font-medium">
                 <p.i className="h-3.5 w-3.5 text-[hsl(var(--primary))]" /> {p.l}
               </span>
