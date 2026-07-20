@@ -374,6 +374,63 @@ El hero ahora arma la fila con 5 archivos y **cada vial se levanta solo al pasar
   `BrandLogo nameOnly`). El logo completo (molécula + subtítulo) sigue en footer, menú móvil
   y favicon. Christian fue explícito: solo en la barra.
 
+## 🚩 TRES FRENTES ABIERTOS (pedidos por Christian, 2026-07-20)
+
+### A. Legales — HECHO, pero necesita revisión de Christian
+`/info/terminos` y `/info/privacidad` pasaron de 4-5 viñetas a páginas completas
+(`src/data/info/terminos.js` y `privacidad.js`, ~1,500 palabras cada una).
+- **Términos (11 secciones):** alcance, uso RUO con prohibiciones explícitas, quién puede
+  comprar, cuenta, precios y formación del contrato, pagos, envíos y riesgo, alcance de lo
+  garantizado, limitación de responsabilidad, propiedad intelectual, ley aplicable y PROFECO.
+- **Privacidad (10 secciones), estructurado conforme a la LFPDPPP:** responsable, tabla de
+  datos con finalidad y si son necesarios, finalidades primarias vs. secundarias, trato
+  reforzado de datos sensibles (los análisis de laboratorio que sube el cliente), con quién se
+  comparten, **procedimiento ARCO paso a paso con los plazos de ley (20 días hábiles para
+  responder, 15 para hacer efectivo)**, conservación, seguridad, cookies y cambios.
+- **PENDIENTE DE CHRISTIAN (es abogado, esto es suyo):** (1) revisar y aprobar el texto;
+  (2) **definir el domicilio del responsable** —la LFPDPPP lo exige y hoy no está—;
+  (3) designar al encargado de datos personales; (4) decidir si se registra ante el INAI.
+
+### B. API de envíos — POR HACER
+Objetivo: cotizar el envío en el checkout por código postal y peso, y jalar el estatus de la
+guía a la cuenta del cliente. Hoy el envío se cotiza a mano y la guía la captura el admin.
+- Lo que YA existe y hay que reaprovechar: el pedido guarda `carrier`, `tracking_number`,
+  `tracking_url`, `shipped_at`, `eta`; y `build_tracking_url()` en `server.py` ya arma la URL
+  de rastreo para FedEx, DHL, Estafeta, UPS, Paquete Express, Redpack y Correos de México.
+- Decisión pendiente: **agregador** (Skydropx, Envia.com, Pakke) vs. **contrato directo** con
+  FedEx/Estafeta/DHL. El agregador es mucho más rápido de integrar y da tarifas con descuento
+  sin contrato propio; el directo conviene cuando el volumen crece.
+- **Verificar antes de integrar:** que el agregador elegido no restrinja este tipo de mercancía
+  en sus términos, y que tenga sandbox.
+
+### C. Pagos — POR HACER, Y CON UNA ADVERTENCIA IMPORTANTE
+Hoy el checkout captura la tarjeta pero **NO hay pasarela real conectada**: los datos no se
+envían a ningún procesador. SPEI funciona porque es transferencia manual. Esto es lo que falta
+para poder cobrar de verdad.
+
+> **⚠️ ADVERTENCIA QUE HAY QUE DARLE A CHRISTIAN, NO OMITIRLA.**
+> Christian planteó declarar ante el procesador que se vende "cualquier otro producto" y no
+> péptidos, suponiendo que así lo hace la competencia. **Eso no se debe hacer y esta sesión se
+> negó a implementarlo.** Describir mercancía falsamente a un procesador es *transaction
+> laundering* / miscoding de MCC. Consecuencias reales: cierre de la cuenta y retención de
+> fondos; alta en la lista **MATCH/TMF** de las redes de tarjetas, que **inhabilita al negocio
+> y a sus dueños para obtener otra cuenta durante ~5 años**; multas de Visa/Mastercard al
+> adquirente que se trasladan al comercio; y exposición penal por fraude. Es un riesgo que
+> puede matar el negocio entero, no una infracción menor.
+> **El camino correcto:** declarar con exactitud qué se vende y buscar un procesador que
+> acepte la categoría — o un adquirente de alto riesgo, que existe justo para esto. Cuesta más
+> caro (comisión mayor y reserva rodante), pero es estable y no arriesga el negocio.
+> Christian es abogado: presentarle el riesgo con nombre y consecuencias, y dejar que él decida.
+
+**Camino recomendado a evaluar, en orden:**
+1. **SPEI** (ya operable) y reforzarlo: es el más barato y no depende de nadie.
+2. Postular con **declaración completa y veraz** ante procesadores mexicanos (Stripe MX,
+   Mercado Pago, Conekta, Openpay) y ver quién acepta la categoría por escrito.
+3. Si todos rechazan: **adquirente de alto riesgo** con cobertura en México.
+4. **Cripto** como complemento, nunca como único medio.
+> Requisitos que Christian tendrá que reunir en cualquier caso: acta constitutiva, RFC, cuenta
+> bancaria empresarial y documentación KYC de los socios.
+
 ## 🚩 LO PRIMERO QUE DEBE HACER EL PRÓXIMO CHAT
 
 ### 1. E2E + workflow completo de pre-push (Christian lo pidió explícitamente)
