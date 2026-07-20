@@ -355,6 +355,21 @@ El hero ahora arma la fila con 5 archivos y **cada vial se levanta solo al pasar
   Python (FastAPI). Se le explicó; no hay nada que migrar. Si insiste, aclarar de nuevo con
   cariño; NO reescribir el frontend en Python.
 
+### Sexta tanda (2026-07-20, noche) — commits `e5c99f8` y `aff2a44` — EN VIVO
+- **Viales del hero reordenados (orden de Christian):** Tirze · NAD+ · **Reta (centro, la
+  más grande)** · KLOW · Sema. Reta al frente; NAD+ y KLOW como principales a los lados.
+- **Pestañas de la barra:** "Herramientas" → **"Recursos"** (asesor, calculadora, fichas,
+  guías | educación, calidad) y nueva pestaña **"Ayuda"** (contacto por WhatsApp, soporte por
+  correo hola@exygenlabs.com, estado de mi pedido → /cuenta, preguntas frecuentes →
+  /aprende/preguntas-frecuentes, envíos, devoluciones). Envíos y devoluciones se MUDARON del
+  menú viejo a Ayuda. Llaves i18n nuevas: nav.help, nav.contact, nav.support, nav.orderStatus,
+  nav.faq (+ .desc) en es/en/pt.
+- **Kicker del hero:** "Research Grade Peptides" (frase de marca, igual en los 3 idiomas;
+  antes "Laboratorio · Grado investigación").
+- **Barra superior: logo SOLO "EXYGEN LABS"** (`public/images/exygen-logo-wordmark.png`,
+  `BrandLogo nameOnly`). El logo completo (molécula + subtítulo) sigue en footer, menú móvil
+  y favicon. Christian fue explícito: solo en la barra.
+
 ---
 
 ## 10. ROADMAP — PRÓXIMA SESIÓN (orden de Christian, 2026-07-19)
