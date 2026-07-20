@@ -374,6 +374,39 @@ El hero ahora arma la fila con 5 archivos y **cada vial se levanta solo al pasar
   `BrandLogo nameOnly`). El logo completo (molécula + subtítulo) sigue en footer, menú móvil
   y favicon. Christian fue explícito: solo en la barra.
 
+### Decimotercera tanda (2026-07-20) — commits `e4a6860` … `37b5bcd` — EN VIVO
+- **Tipografía definitiva:** **Manrope** para textos y **Cormorant Garamond** para títulos
+  (el reparto de jadalegal.com). IBM Plex Mono se queda en pestañas y datos técnicos.
+  Antes se probaron y descartaron Franklin Gothic y Helvetica.
+- **El sitio abre en OSCURO por defecto** (`DEFAULT_THEME = 'dark'`). Español ya era el default.
+  La elección guardada del visitante sigue mandando sobre el default.
+- **Barra simplificada:** fuera la lupa (el buscador ya vive fijo en el sidebar del catálogo y
+  en el menú móvil); **un solo botón** en vez de "Iniciar sesión" + "Crear cuenta", porque
+  `/login` ya trae las dos pestañas; y **el carrito regresó a la barra** (se eliminó `CartFab`).
+- **MONOGRAFÍAS: 93 de 102 productos.** Se completaron en 10 tandas. Reglas que se siguieron:
+  RUO estricto (sin dosis, sin pautas, sin afirmaciones clínicas); se dice explícitamente
+  cuándo un producto **no es un péptido** (AICAR, melatonina, 5-amino-1MQ, SLU-PP-332,
+  glutatión, L-carnitina, B12) porque no se reconstituyen igual; se advierte cuándo el
+  mecanismo propuesto **sigue en debate** (bioreguladores de Khavinson, PNC-27); y en las
+  mezclas se explica cuándo la combinación es limpia experimentalmente y cuándo no
+  (Reta+Tirze comparte dos receptores → difícil de interpretar; Cagri+Sema no → sí se puede).
+
+### 🔴 9 PRODUCTOS DEL CATÁLOGO QUE NO SON PÉPTIDOS DE INVESTIGACIÓN
+**Ya están publicados en el catálogo** y se dejaron **a propósito sin monografía**, porque
+escribirles ficha RUO sería presentarlos como algo que no son:
+`dysport`, `botulinum-toxin`, `humsc-celulas-madre`, `epo`, `hgh`, `somatropina-hgh-191aa`,
+`hcg`, `hmg`, `lemon-bottle`.
+Son **medicamentos de prescripción, biológicos o inyectables estéticos** — en México caen bajo
+registro sanitario COFEPRIS y varios requieren receta. Venderlos en una tienda que se declara
+"solo para investigación" cambia el perfil regulatorio de todo el negocio.
+**Decisión de Christian como abogado:** o se retiran del catálogo, o se les da un marco legal
+propio y separado. Mientras tanto, no se les escribe copy.
+
+### Corrección al hueco de catálogo (la lista buena)
+La comparación anterior tenía falsos positivos por coincidencia de palabras. Verificado contra
+los 102 productos: **Follistatin, Cerebrolysin, ADMAX y ácido acético SÍ los tenemos.**
+El único compuesto de la competencia que falta de verdad es **Dihexa**.
+
 ### Duodécima tanda (2026-07-20) — commit `069ec06` — EN VIVO
 - **Logos al inicio Y al tope:** nuevo `src/components/HomeLogoLink.js`. Lo usan el logo de la
   barra y el del pie. Estando ya en el home, un `<Link to="/">` no hacía nada; ahora fuerza el
