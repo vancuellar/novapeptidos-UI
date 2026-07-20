@@ -390,6 +390,11 @@ preexistentes y las "ambientales".** Cubrir al menos:
 - Revisar consola sin errores y `preview_logs`.
 - Verificar en vivo: `https://api.exygenlabs.com/api/` y `https://exygenlabs.com`.
 
+> **Estado al cierre de esta sesión (2026-07-20, noche):** último commit del frontend
+> `573c2d2`, del backend `2a60cca`. Frontend compila limpio (`CI=true npm run build`) y el
+> backend pasa sus **40 pruebas**. Sitio y API en vivo. **Lo único caído es el chat de IA**,
+> por la llave de Gemini revocada. **Nada de esto sustituye el E2E completo del punto 1.**
+
 ### 2. Llave de Gemini
 Christian dijo que **la renueva y la entrega** (2026-07-21). Al recibirla: guardarla en
 `~/.config/exygen/gemini.env`, ponerla en el `.env` del servidor y reiniciar
@@ -408,14 +413,19 @@ consultar `/auth/google/config` y **no renderizarse si `enabled` es false**.
 - Después: **Passkeys (WebAuthn)** y **2FA solo para admin y distribuidores** (a los clientes
   no se les impone: mata la conversión en una tienda).
 
-### Decimocuarta tanda (2026-07-20, noche) — commit `764161a` — EN VIVO
+### Decimocuarta tanda (2026-07-20, noche) — commits `764161a` y `573c2d2` — EN VIVO
 - **"Get Started" al extremo derecho** de la barra y **el carrito a su izquierda**: el extremo
   derecho es de la acción principal. **"Get Started" ya NO se traduce** en ningún idioma
   (es nombre de acción de marca, no "Crear cuenta").
 - **"lote por lote" usa la misma familia y tamaño** que el resto del título del hero; lo único
   que cambia es el color. Se quitaron la cursiva y la serif aparte.
-- **El halo del hero baja de izquierda a derecha**, con el foco de origen justo debajo del
-  logotipo (antes venía de la derecha). En claro resta luz y en oscuro la suma.
+- **El halo del hero cae en diagonal de la esquina SUPERIOR IZQUIERDA a la INFERIOR DERECHA**
+  (forma `\`), con el foco de origen justo debajo del logotipo. Se hizo en dos pasos: primero
+  se movió el origen a la izquierda (`764161a`) y luego Christian pidió invertir la diagonal,
+  que se resolvió haciendo espejo de los ángulos, `ángulo → 360 − ángulo`: 163→197, 171→189,
+  158→202 (`573c2d2`). En claro resta luz y en oscuro la suma.
+  **Si vuelve a pedir cambiar la dirección: es solo espejo de esos tres ángulos en
+  `.hero-beams` y `.dark .hero-beams` de `src/index.css`.**
 - **Dysport y HUMSC se quedan como están** (decisión de Christian). Los otros 7 productos
   regulados siguen igualmente sin monografía; ver la sección de productos regulados.
 
