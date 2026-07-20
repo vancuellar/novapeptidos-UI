@@ -50,7 +50,11 @@
 
 - Backend en `novapeptidos-RBAC/ai_assistant.py`: usa **SDK `google-genai`** (no OpenAI). Modelo por defecto **`gemini-3.5-flash`** (configurable con `AI_MODEL_NAME`; los 2.x ya no aplican a llaves nuevas). Streaming vía `client.aio.models.generate_content_stream`.
 - **System prompt ACOTADO** (probado con llave real): la IA "Exygen" SOLO habla de la tienda y de péptidos de investigación; **rechaza** redactar documentos/código/tareas/recetas/consejo legal, resiste "ignora tus instrucciones", no inventa productos/precios, mantiene RUO (sin dosis ni consejo médico).
-- **Llave Gemini (capa gratuita; Christian decidió NO rotarla — no volver a mencionarlo):** `AIzaSyC3BdqQQlp2vZRIr2GhRwiI0gnjDhKVU54`. Se pone como env `GEMINI_API_KEY`.
+- **Llave Gemini:** NUNCA se escribe en este archivo ni en scripts. Vive en
+  `~/.config/exygen/gemini.env` (600, fuera de git) y en el `.env` del servidor.
+  **La llave anterior la REVOCÓ Google el 2026-07-20** con el mensaje "Your API key was
+  reported as leaked": estaba escrita aquí y en los userdata, y el repo es público. Por eso
+  ahora solo se guarda en disco, igual que Cloudflare y Resend.
 - **Frontend:** `src/components/AIChatWidget.js` llama a `https://chat.exygenlabs.com/api/ai/chat` (const `CHAT_API`). PR #1 y #2 de RBAC ya mergeados (Gemini + welcome emails multilingües por SES).
 
 ---
