@@ -93,7 +93,7 @@ const Home = () => {
             <div>
               <div className="kicker">{t('home.kicker')}</div>
               <h1 className="font-heading text-5xl sm:text-6xl lg:text-[3.6rem] font-bold tracking-tight leading-[1.04] mt-6">
-                {heroLead}{' '}<span className="hero-title-accent font-display-serif italic font-normal">{heroAccent}</span>
+                {heroLead}{' '}<span className="hero-title-accent">{heroAccent}</span>
               </h1>
               {/* Márgenes de Resend: subtítulo pegado al título (8px) y 32px antes de los botones. */}
               <p className="mt-3 text-lg text-muted-foreground max-w-xl leading-relaxed">

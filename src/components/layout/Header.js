@@ -302,6 +302,18 @@ const Header = () => {
               </DropdownMenuContent>
             </DropdownMenu>
 
+            {/* Carrito a la izquierda de la cuenta: el extremo derecho es de
+                "Get Started", que es la accion principal de la barra. */}
+            <Button variant="ghost" size="icon" className="relative" onClick={() => navigate('/carrito')} data-testid="header-cart-button">
+              <ShoppingCart className="h-5 w-5" />
+              {count > 0 && (
+                <span data-testid="header-cart-count"
+                  className="absolute -top-0.5 -right-0.5 h-4 min-w-4 px-1 rounded-full bg-[hsl(var(--primary))] text-[hsl(var(--primary-foreground))] text-[10px] font-bold flex items-center justify-center">
+                  {count}
+                </span>
+              )}
+            </Button>
+
             {/* Profile */}
             {user ? (
               <DropdownMenu>
@@ -335,16 +347,6 @@ const Header = () => {
                 </Button>
               </>
             )}
-            {/* El carrito vuelve a la barra (Christian, 2026-07-20). */}
-            <Button variant="ghost" size="icon" className="relative ml-0.5" onClick={() => navigate('/carrito')} data-testid="header-cart-button">
-              <ShoppingCart className="h-5 w-5" />
-              {count > 0 && (
-                <span data-testid="header-cart-count"
-                  className="absolute -top-0.5 -right-0.5 h-4 min-w-4 px-1 rounded-full bg-[hsl(var(--primary))] text-[hsl(var(--primary-foreground))] text-[10px] font-bold flex items-center justify-center">
-                  {count}
-                </span>
-              )}
-            </Button>
           </div>
         </div>
       </div>

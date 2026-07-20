@@ -198,26 +198,27 @@ body {
 
 .hero-beams {
     position: absolute;
-    inset: -20% -10% auto -10%;
+    inset: -10% -10% auto -20%;
     height: 150%;
     pointer-events: none;
-    /* Mismo tratamiento en claro, con luz oscura en vez de luz blanca:
-       sobre marfil hay que restar luz, no sumarla. */
+    /* El haz BAJA de izquierda a derecha y arranca por debajo del logotipo
+       (esquina superior izquierda), no desde la derecha. Mismo tratamiento en
+       claro, restando luz en vez de sumarla: sobre marfil hay que oscurecer. */
     background:
-        linear-gradient(107deg,
-            transparent 24%,
-            rgba(24, 30, 38, 0.055) 41%,
-            rgba(24, 30, 38, 0.02) 52%,
+        linear-gradient(163deg,
+            transparent 26%,
+            rgba(24, 30, 38, 0.055) 42%,
+            rgba(24, 30, 38, 0.02) 54%,
+            transparent 68%),
+        linear-gradient(171deg,
+            transparent 44%,
+            rgba(24, 30, 38, 0.03) 55%,
             transparent 66%),
-        linear-gradient(96deg,
-            transparent 46%,
-            rgba(24, 30, 38, 0.032) 56%,
-            transparent 67%),
-        linear-gradient(112deg,
+        linear-gradient(158deg,
             transparent 38%,
             rgba(24, 30, 38, 0.07) 40.5%,
             transparent 43%),
-        radial-gradient(120% 62% at 66% -12%, rgba(24, 30, 38, 0.04), transparent 62%);
+        radial-gradient(115% 60% at 12% 6%, rgba(24, 30, 38, 0.05), transparent 62%);
     filter: blur(26px);
     mask-image: linear-gradient(#000 0%, #000 52%, transparent 88%);
     -webkit-mask-image: linear-gradient(#000 0%, #000 52%, transparent 88%);
@@ -225,24 +226,24 @@ body {
 
 .dark .hero-beams {
     background:
-        /* haz principal, ancho y de sesgo */
-        linear-gradient(107deg,
-            transparent 24%,
-            rgba(255, 255, 255, 0.075) 41%,
-            rgba(255, 255, 255, 0.028) 52%,
+        /* haz principal: nace arriba a la izquierda y cae hacia la derecha */
+        linear-gradient(163deg,
+            transparent 26%,
+            rgba(255, 255, 255, 0.075) 42%,
+            rgba(255, 255, 255, 0.028) 54%,
+            transparent 68%),
+        /* segundo haz, mas angosto */
+        linear-gradient(171deg,
+            transparent 44%,
+            rgba(255, 255, 255, 0.042) 55%,
             transparent 66%),
-        /* segundo haz, mas angosto y bajo */
-        linear-gradient(96deg,
-            transparent 46%,
-            rgba(255, 255, 255, 0.045) 56%,
-            transparent 67%),
         /* filo delgado que marca el borde del haz */
-        linear-gradient(112deg,
+        linear-gradient(158deg,
             transparent 38%,
             rgba(255, 255, 255, 0.10) 40.5%,
             transparent 43%),
-        /* resplandor difuso arriba a la derecha */
-        radial-gradient(120% 62% at 66% -12%, rgba(255, 255, 255, 0.055), transparent 62%);
+        /* foco de origen: justo debajo del logotipo */
+        radial-gradient(115% 60% at 12% 6%, rgba(255, 255, 255, 0.07), transparent 62%);
 }
 
 @layer base {
