@@ -426,6 +426,11 @@ consultar `/auth/google/config` y **no renderizarse si `enabled` es false**.
   158→202 (`573c2d2`). En claro resta luz y en oscuro la suma.
   **Si vuelve a pedir cambiar la dirección: es solo espejo de esos tres ángulos en
   `.hero-beams` y `.dark .hero-beams` de `src/index.css`.**
+- **Color del halo, SOLO en tema claro:** la tinta pasó de gris neutro `rgba(24,30,38,…)`
+  a **azul de marca `rgba(28,38,82,…)`**, para amarrar el hero con el acento sin que se
+  lea como un color. El **tema oscuro no se tocó** (sigue en blanco puro sumando luz).
+  Se descartaron: sombra cálida (casi invisible sobre el marfil) y azul pizarra más
+  saturado (parecía tinte, no haz de luz). Las 5 paradas de color viven en `.hero-beams`.
 - **Dysport y HUMSC se quedan como están** (decisión de Christian). Los otros 7 productos
   regulados siguen igualmente sin monografía; ver la sección de productos regulados.
 
