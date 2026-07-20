@@ -493,6 +493,10 @@ prueba borrada. Si Christian vuelve a reportarlo, es que su enlace ya se usó, v
 su cuenta se borró.
 
 ### Puerta RUO / 18+ en la primera visita (2026-07-20) — EN VIVO
+**Términos y Privacidad SIEMPRE se pueden leer sin aceptar** (no se puede exigir aceptar algo
+que no se deja leer): en `/info/terminos` y `/info/privacidad` el aviso no se muestra
+(`ALWAYS_READABLE`), y dentro del aviso esos dos enlaces abren en **pestaña nueva**
+(`target="_blank"`), para no perder el aviso.
 `src/components/RuoGate.js`, montado en `App.js`. Usa el logo **sin molécula**
 (`BrandMark noMolecule` → `exygen-logo-name.png`), por orden de Christian. Aparece la **primera vez** que alguien entra
 y **hay que aceptar para continuar**: no tiene tache, no se cierra con clic afuera y bloquea el

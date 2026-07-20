@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
-import { FlaskConical, ShieldCheck, Ban } from 'lucide-react';
+import { useLocation } from 'react-router-dom';
+import { FlaskConical, ShieldCheck, Ban, ExternalLink } from 'lucide-react';
 import { BrandMark } from '@/components/BrandLogo';
 import { useLanguage } from '@/context/LanguageContext';
 
@@ -10,17 +10,26 @@ import { useLanguage } from '@/context/LanguageContext';
 // solo aparece una vez por dispositivo.
 const STORAGE_KEY = 'exygen_ruo_ack';
 
+// No se puede exigir aceptar algo que no se deja leer: en estas rutas el aviso
+// NO se muestra, para que Terminos y Privacidad sean legibles aunque nadie haya
+// aceptado todavia. Dentro del aviso se enlazan en pestana nueva.
+const ALWAYS_READABLE = ['/info/terminos', '/info/privacidad'];
+const BASE = process.env.PUBLIC_URL || '';
+
 const RuoGate = () => {
   const { t } = useLanguage();
-  const [open, setOpen] = useState(false);
+  const { pathname } = useLocation();
+  const [accepted, setAccepted] = useState(true);   // se asume aceptado hasta comprobar
 
   useEffect(() => {
     try {
-      if (!localStorage.getItem(STORAGE_KEY)) setOpen(true);
+      setAccepted(!!localStorage.getItem(STORAGE_KEY));
     } catch {
-      setOpen(true);   // navegador sin almacenamiento: se muestra igual
+      setAccepted(false);   // navegador sin almacenamiento: se muestra igual
     }
   }, []);
+
+  const open = !accepted && !ALWAYS_READABLE.includes(pathname);
 
   // Mientras la puerta está abierta se bloquea el scroll del fondo: si no, se
   // puede leer y navegar el sitio por detrás del aviso.
@@ -33,7 +42,7 @@ const RuoGate = () => {
 
   const accept = () => {
     try { localStorage.setItem(STORAGE_KEY, new Date().toISOString()); } catch { /* sin almacenamiento */ }
-    setOpen(false);
+    setAccepted(true);
   };
 
   if (!open) return null;
@@ -79,11 +88,19 @@ const RuoGate = () => {
           {t('ruo.gate.accept')}
         </button>
 
+        {/* En pestana nueva: asi se pueden leer sin perder el aviso ni tener
+            que aceptar a ciegas lo que todavia no se ha leido. */}
         <p className="text-[11px] text-muted-foreground leading-relaxed text-center mt-4">
           {t('ruo.gate.termsPre')}{' '}
-          <Link to="/info/terminos" className="text-[hsl(var(--primary))] hover:underline">{t('auth.terms.service')}</Link>
+          <a href={`${BASE}/info/terminos`} target="_blank" rel="noreferrer" data-testid="ruo-gate-terms"
+            className="text-[hsl(var(--primary))] hover:underline inline-flex items-center gap-0.5">
+            {t('auth.terms.service')}<ExternalLink className="h-2.5 w-2.5" />
+          </a>
           {' '}{t('auth.terms.and')}{' '}
-          <Link to="/info/privacidad" className="text-[hsl(var(--primary))] hover:underline">{t('auth.terms.privacy')}</Link>.
+          <a href={`${BASE}/info/privacidad`} target="_blank" rel="noreferrer" data-testid="ruo-gate-privacy"
+            className="text-[hsl(var(--primary))] hover:underline inline-flex items-center gap-0.5">
+            {t('auth.terms.privacy')}<ExternalLink className="h-2.5 w-2.5" />
+          </a>.
         </p>
 
         <a href="https://www.google.com" className="block text-center text-[11px] text-muted-foreground hover:text-foreground transition-colors mt-3" data-testid="ruo-gate-leave">
