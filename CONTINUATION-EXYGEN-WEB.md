@@ -219,32 +219,31 @@ limpio y con el navegador.
 
 ---
 
-## 8quinquies. TERCERA TANDA (2026-07-20) — en `main`, PENDIENTE DE PUBLICAR
+## 8quinquies. TERCERA TANDA (2026-07-20) — TODO EN VIVO
 
-> **DOS COSAS PENDIENTES, ninguna de código:**
-> 1. **Desplegar el backend** al servidor (ver §8ter) — sigue bloqueado el `ssh` en modo automático.
-> 2. **Republicar el frontend.** El commit `8772f93` está en `main` pero **el deploy falló**: el
->    build pasó y reventó el paso de publicación de GitHub Pages durante un incidente de GitHub
->    (Actions y API en *partial outage*). No es el código. Cuando GitHub se recupere basta con
->    `gh run rerun <id> --failed`, o empujar cualquier commit para disparar el workflow.
+**Backend desplegado** (`ssh` funcionó esta vez) y frontend publicado. Verificado en vivo.
 
-1. **Barra superior con solo dos pestañas.** Se quitó el menú "Péptidos" que duplicaba el catálogo.
-   Queda **Catálogo** (los péptidos) y **Herramientas** (todo lo demás, en dos columnas: asesor,
-   calculadora, fichas y guías | educación, calidad, envíos y devoluciones).
-2. **Confirmación de correo obligatoria.** Decisión de Christian: **sin confirmar no se puede
-   entrar**. El registro ya no inicia sesión; manda un enlace de 24 h y muestra "revisa tu correo"
-   con botón de reenviar. El login devuelve 403 con mensaje claro y opción de reenviar. Nueva
-   página `/confirmar`. **Las cuentas viejas (sin el campo `email_verified`) se dan por
-   confirmadas** para no dejar a nadie fuera.
-3. **Invitaciones con enlace, sin contraseñas por correo.** Al crear un distribuidor o invitar a
-   un cliente ya **no se genera contraseña temporal**: la cuenta se crea con una contraseña que
-   nadie conoce y se manda un enlace de 7 días a `/activar`, donde el invitado elige la suya; usarlo
-   confirma su correo de un golpe. El admin ya solo ve "se mandó el enlace".
+1. **Barra superior con dos pestañas.** Fuera el menú "Péptidos" que duplicaba el catálogo.
+   Queda **Catálogo** y **Herramientas** (asesor, calculadora, fichas, guías | educación,
+   calidad, envíos, devoluciones).
+2. **Confirmación de correo e invitaciones con enlace.** Registro manda enlace de 24 h; sin
+   confirmar no se entra. Invitaciones (cliente y distribuidor) mandan enlace de 7 días a
+   `/activar` donde el invitado elige su contraseña; ya NO se genera contraseña temporal.
    Endpoints: `verify-email`, `resend-verification`, `invitation/{token}`, `activate`.
-   Colección `account_tokens`, de un solo uso.
+3. **SES está en sandbox y sin remitente verificado** (cuenta `certis`, us-east-1: cero
+   identidades, `ProductionAccess: false`, cuota 200/día). Por eso `EMAIL_ENABLED` no está en el
+   `.env` del servidor y **no sale ningún correo**. Para que la confirmación obligatoria no
+   dejara sin poder entrar a todo registro nuevo, la exigencia ahora depende de `email_enabled()`:
+   - Correo apagado → la cuenta nace confirmada y el registro entra directo; el admin ve el
+     enlace de invitación en pantalla para pasarlo a mano.
+   - Al encender SES, la confirmación obligatoria se activa sola. **No hay que tocar código.**
 
-**Ojo con SES:** los correos solo salen si `EMAIL_ENABLED=true` en el servidor. Si está apagado,
-nadie va a poder confirmar su cuenta y **nadie nuevo podrá entrar**. Verificarlo al desplegar.
+### Para encender los correos (pendiente, requiere a Christian)
+1. Verificar el dominio en SES de `certis`: `aws sesv2 create-email-identity --email-identity exygenlabs.com --region us-east-1`, y meter los 3 CNAME de DKIM en Cloudflare (hace falta el token).
+2. Pedir salida de sandbox en la consola de SES (AWS tarda ~24 h).
+3. Agregar al `.env` del servidor: `EMAIL_ENABLED=true`, `SES_REGION=us-east-1`,
+   `EMAIL_FROM='Exygen Labs <hola@exygenlabs.com>'`, `SITE_URL=https://exygenlabs.com`,
+   y credenciales AWS o un rol IAM con permiso `ses:SendEmail`. Luego `docker compose up -d`.
 
 ---
 
