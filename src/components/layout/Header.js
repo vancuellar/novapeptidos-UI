@@ -1,15 +1,13 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { ShoppingCart, User, Menu, LogOut, LayoutDashboard, ChevronDown, Search, X, Moon, Sun, Home, LayoutGrid, BadgeCheck, GraduationCap, MessageCircle, Calculator, Sparkles, FlaskConical, Flame, Activity, HeartPulse, Hourglass, HeartHandshake, Brain, ShieldPlus, Package } from 'lucide-react';
+import { User, Menu, LogOut, LayoutDashboard, ChevronDown, Search, X, Moon, Sun, Home, LayoutGrid, BadgeCheck, GraduationCap, MessageCircle, Calculator, Sparkles, FlaskConical, Flame, Activity, HeartPulse, Hourglass, HeartHandshake, Brain, ShieldPlus, Package } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Badge } from '@/components/ui/badge';
 import { Sheet, SheetContent, SheetTrigger, SheetHeader, SheetTitle } from '@/components/ui/sheet';
 import {
   DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger, DropdownMenuSeparator, DropdownMenuLabel,
   DropdownMenuRadioGroup, DropdownMenuRadioItem,
 } from '@/components/ui/dropdown-menu';
-import { useCart } from '@/context/CartContext';
 import { useAuth } from '@/context/AuthContext';
 import { useLanguage } from '@/context/LanguageContext';
 import { useTheme } from '@/context/ThemeContext';
@@ -18,7 +16,8 @@ import api from '@/lib/api';
 import { fallbackCategories } from '@/data/fallbackCatalog';
 import { localizeCategories } from '@/i18n/catalog';
 
-const navLinkClass = 'inline-flex items-center gap-1 text-[11.5px] font-semibold uppercase tracking-[0.16em] text-muted-foreground hover:text-foreground transition-colors';
+// Estilo Resend: 14px medium, gris que se enciende al hover, sin mayúsculas.
+const navLinkClass = 'inline-flex items-center gap-1 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors duration-150';
 
 // Iconos + ejemplos por categoría para el menú móvil (estilo Exoma).
 const CAT_ICONS = {
@@ -60,7 +59,6 @@ const TOOL_GROUPS = [
 ];
 
 const Header = () => {
-  const { count } = useCart();
   const { user, logout } = useAuth();
   const { language, languages, setLanguage, t } = useLanguage();
   const { theme, setTheme } = useTheme();
@@ -69,7 +67,17 @@ const Header = () => {
   const [searchOpen, setSearchOpen] = useState(false);
   const [categories, setCategories] = useState([]);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
   const searchRef = useRef(null);
+
+  // Como Resend: la barra nace transparente y fundida con el hero; solo al
+  // hacer scroll gana fondo con blur para que el contenido no se le encime.
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 8);
+    onScroll();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
+  }, []);
 
   useEffect(() => {
     api.get('/categories').then((r) => setCategories(Array.isArray(r.data) && r.data.length ? r.data : fallbackCategories)).catch(() => setCategories(fallbackCategories));
@@ -93,8 +101,8 @@ const Header = () => {
 
   return (
     <header className="sticky top-0 z-40">
-      <div className="bg-background/70 supports-[backdrop-filter]:backdrop-blur-xl">
-        <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 h-[68px] flex items-center gap-4">
+      <div className={`transition-colors duration-200 ${scrolled ? 'bg-background/70 supports-[backdrop-filter]:backdrop-blur-xl' : 'bg-transparent'}`}>
+        <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 h-[60px] flex items-center gap-4">
           {/* Left: nav links (desktop) / menu (mobile) */}
           <div className="flex items-center gap-6 min-w-0">
           {/* Logo pegado a la izquierda */}
@@ -282,22 +290,15 @@ const Header = () => {
                   className="hidden sm:inline-flex h-9 px-3 text-[13px] font-medium">
                   {t('header.logIn')}
                 </Button>
-                <Button onClick={() => navigate('/login?tab=signup')} data-testid="header-signup-button"
-                  className="hidden sm:inline-flex h-9 px-4 rounded-full text-[13px] font-semibold">
+                <button onClick={() => navigate('/login?tab=signup')} data-testid="header-signup-button"
+                  className="btn-resend btn-resend-sm hidden sm:inline-flex ml-1">
                   {t('header.getStarted')}
-                </Button>
+                </button>
                 <Button variant="ghost" size="icon" className="sm:hidden" onClick={() => navigate('/login')} data-testid="header-account-button">
                   <User className="h-5 w-5" />
                 </Button>
               </>
             )}
-
-            <Button variant="ghost" size="icon" className="relative" onClick={() => navigate('/carrito')} data-testid="header-cart-button">
-              <ShoppingCart className="h-5 w-5" />
-              {count > 0 && (
-                <Badge className="absolute -top-1 -right-1 h-5 min-w-5 px-1 flex items-center justify-center bg-[hsl(var(--primary))]" data-testid="header-cart-count">{count}</Badge>
-              )}
-            </Button>
           </div>
         </div>
       </div>

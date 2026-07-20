@@ -14,7 +14,16 @@ import { useLanguage } from '@/context/LanguageContext';
 import { localizeCategories, localizeProducts } from '@/i18n/catalog';
 
 const ICONS = { HeartPulse, Activity, Flame, Hourglass, Brain, Sparkles, Layers, FlaskConical };
-const HERO_IMG = process.env.PUBLIC_URL + '/images/hero-vials.png';
+
+// Un archivo por vial (botellas que mandó Christian): cada uno se levanta solo
+// al pasar el cursor y lleva al catálogo. Alturas escalonadas para la silueta.
+const HERO_VIALS = [
+  { slug: 'vial-nad', name: 'NAD+ 500mg', search: 'NAD+', h: 78 },
+  { slug: 'vial-semaglutide', name: 'Semaglutida 10mg', search: 'Semaglutida', h: 90 },
+  { slug: 'vial-tirzepatide', name: 'Tirzepatida 20mg', search: 'Tirzepatida', h: 100 },
+  { slug: 'vial-retatrutide', name: 'Retatrutida 40mg', search: 'Retatrutida', h: 90 },
+  { slug: 'vial-klow', name: 'KLOW 80mg', search: 'KLOW', h: 78 },
+].map((v) => ({ ...v, src: `${process.env.PUBLIC_URL}/images/hero/${v.slug}.webp` }));
 
 // Compounds shown in the scrolling ticker under the hero
 const TICKER_ITEMS = [
@@ -73,29 +82,41 @@ const Home = () => {
       {/* ===== Hero — clean typography + real vial photo ===== */}
       <section className="bg-background relative overflow-hidden">
         <div className="hero-beams" />
-        <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 pt-20 pb-14 relative">
+        <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 pt-24 lg:pt-32 pb-16 relative">
           <div className="grid lg:grid-cols-[1.1fr_0.9fr] gap-12 lg:gap-16 items-center">
             <div>
               <div className="kicker">{t('home.kicker')}</div>
               <h1 className="font-heading text-5xl sm:text-6xl lg:text-[3.6rem] font-bold tracking-tight leading-[1.04] mt-6">
                 {heroLead}{' '}<span className="hero-title-accent font-display-serif italic font-normal">{heroAccent}</span>
               </h1>
-              <p className="mt-7 text-lg sm:text-xl text-muted-foreground max-w-xl leading-relaxed">
+              {/* Márgenes de Resend: subtítulo pegado al título (8px) y 32px antes de los botones. */}
+              <p className="mt-3 text-lg text-muted-foreground max-w-xl leading-relaxed">
                 {t('home.heroBody')}
               </p>
-              <div className="mt-10 flex flex-wrap items-center gap-4">
-                <Button asChild className="rounded-full h-12 px-8 uppercase tracking-[0.14em] text-xs font-bold" data-testid="hero-catalog-button">
-                  <Link to="/catalogo">{t('home.viewCatalog')} <ArrowRight className="h-4 w-4 ml-2" /></Link>
-                </Button>
-                <Button asChild variant="ghost" className="h-12 px-5 uppercase tracking-[0.14em] text-xs font-semibold">
-                  <Link to="/aprende/empieza-aqui">{t('home.startHere')}</Link>
-                </Button>
+              <div className="mt-8 flex flex-wrap items-center gap-4">
+                <Link to="/catalogo" className="btn-resend" data-testid="hero-catalog-button">
+                  {t('home.viewCatalog')} <ArrowRight className="h-4 w-4" />
+                </Link>
+                <Link to="/aprende/empieza-aqui" className="btn-resend-ghost">{t('home.startHere')}</Link>
               </div>
             </div>
             <div className="flex items-center justify-center">
               <div className="hero-vials w-full max-w-[540px]">
                 <div className="hero-vials-glow" />
-                <img src={HERO_IMG} alt={t('home.labAlt')} className="hero-vials-img w-full object-contain" />
+                <div className="relative flex items-end justify-center gap-1 sm:gap-2 h-[230px] sm:h-[300px] lg:h-[340px]">
+                  {HERO_VIALS.map((v) => (
+                    <Link
+                      key={v.slug}
+                      to={`/catalogo?search=${encodeURIComponent(v.search)}`}
+                      className="hero-vial-link block"
+                      style={{ height: `${v.h}%` }}
+                      title={v.name}
+                      data-testid={`hero-vial-${v.slug}`}
+                    >
+                      <img src={v.src} alt={v.name} className="hero-vial" />
+                    </Link>
+                  ))}
+                </div>
               </div>
             </div>
           </div>
@@ -115,7 +136,7 @@ const Home = () => {
             ))}
           </div>
         </div>
-        <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 pb-20 relative">
+        <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 pb-24 relative">
           <div className="mt-4 flex flex-wrap gap-x-12 gap-y-6 pt-4">
             <div>
               <div className="font-heading text-3xl font-bold">≥99%</div>
@@ -150,8 +171,8 @@ const Home = () => {
       </section>
 
       {/* ===== Categories ===== */}
-      <section className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 py-16">
-        <div className="mb-8">
+      <section className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 py-24">
+        <div className="mb-12">
           <div className="kicker">{t('home.categoriesKicker')}</div>
           <h2 className="font-heading text-2xl sm:text-3xl font-bold tracking-tight mt-2">{t('home.categoriesTitle')}</h2>
           <p className="text-muted-foreground text-sm mt-1">{t('home.categoriesSubtitle')}</p>
@@ -162,7 +183,7 @@ const Home = () => {
             const chips = CATEGORY_CHIPS[c.slug] || [];
             return (
               <Link key={c.slug} to={`/catalogo?category=${c.slug}`} data-testid={`home-category-${c.slug}`} className="group">
-                <Card className="p-5 h-full flex flex-col shadow-none hover:shadow-[var(--shadow-md)] hover:border-[hsl(var(--primary))]/50 transition-all duration-200 bg-card text-card-foreground rounded-xl">
+                <Card className="p-5 h-full flex flex-col shadow-none hover:border-foreground/25 transition-colors duration-200 bg-card text-card-foreground rounded-xl">
                   <div className="flex items-center gap-3 mb-3">
                     <div className="h-10 w-10 rounded-lg bg-[hsl(var(--accent))] flex items-center justify-center shrink-0"><Icon className="h-5 w-5 text-[hsl(var(--primary))]" /></div>
                     <h3 className="font-heading font-semibold text-sm leading-snug">{c.name}</h3>
@@ -186,8 +207,8 @@ const Home = () => {
       </section>
 
       {/* ===== Featured products ===== */}
-      <section className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 pb-16">
-        <div className="flex items-end justify-between mb-8">
+      <section className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 pb-24">
+        <div className="flex items-end justify-between mb-12">
           <div>
             <div className="kicker">{t('home.featuredKicker')}</div>
             <h2 className="font-heading text-2xl sm:text-3xl font-bold tracking-tight mt-2">{t('home.featuredTitle')}</h2>
@@ -213,8 +234,8 @@ const Home = () => {
       </section>
 
       {/* ===== Before your first order — 3 education cards ===== */}
-      <section className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 pb-16">
-        <div className="mb-8">
+      <section className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 pb-24">
+        <div className="mb-12">
           <div className="kicker">{t('home.eduKicker')}</div>
           <h2 className="font-heading text-2xl sm:text-3xl font-bold tracking-tight mt-2">{t('home.eduTitle')}</h2>
           <p className="text-muted-foreground text-sm mt-1">{t('home.eduSubtitle')}</p>
@@ -226,7 +247,7 @@ const Home = () => {
             { icon: ScanSearch, title: t('home.edu3.title'), body: t('home.edu3.body'), to: '/info/calidad' },
           ].map((s, i) => (
             <Link key={i} to={s.to} className="group" data-testid={`home-edu-${i + 1}`}>
-              <div className="rounded-xl border border-border bg-card p-5 h-full hover:shadow-[var(--shadow-md)] hover:border-[hsl(var(--primary))]/50 transition-all duration-200">
+              <div className="rounded-xl border border-border bg-card p-5 h-full hover:border-foreground/25 transition-colors duration-200">
                 <div className="flex items-center justify-between">
                   <s.icon className="h-5 w-5 text-[hsl(var(--primary))]" />
                   <span className="font-mono-tech text-muted-foreground/60 text-sm">0{i + 1}</span>
@@ -244,7 +265,7 @@ const Home = () => {
 
       {/* ===== Traceability — light band, 3 steps ===== */}
       <section className="bg-[hsl(var(--secondary))] border-y border-border">
-        <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 py-16">
+        <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 py-24">
           <div className="max-w-2xl">
             <div className="kicker">{t('home.transparencyKicker')}</div>
             <h2 className="font-heading text-2xl sm:text-3xl font-bold tracking-tight mt-2">{t('home.transparencyTitle')}</h2>
@@ -270,8 +291,8 @@ const Home = () => {
       </section>
 
       {/* ===== Why Exygen — comparison ===== */}
-      <section className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 py-16">
-        <div className="mb-8">
+      <section className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 py-24">
+        <div className="mb-12">
           <div className="kicker">{t('home.whyKicker')}</div>
           <h2 className="font-heading text-2xl sm:text-3xl font-bold tracking-tight mt-2">{t('home.whyTitle')}</h2>
           <p className="text-muted-foreground text-sm mt-1">{t('home.whySubtitle')}</p>
@@ -299,7 +320,7 @@ const Home = () => {
       </section>
 
       {/* ===== Wholesale / B2B ===== */}
-      <section className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 pb-16">
+      <section className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 pb-24">
         <div className="rounded-2xl border border-border bg-[hsl(var(--secondary))] px-6 py-10 sm:px-10 grid lg:grid-cols-[1.2fr_0.8fr] gap-8 items-center">
           <div>
             <div className="inline-flex items-center gap-2 rounded-full border border-border bg-card px-4 py-2">
@@ -321,7 +342,7 @@ const Home = () => {
       </section>
 
       {/* ===== Payments ===== */}
-      <section className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 pb-16">
+      <section className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 pb-24">
         <div className="rounded-2xl border border-border bg-card px-6 py-6 flex flex-col sm:flex-row items-center justify-between gap-5">
           <div>
             <div className="font-heading font-semibold">{t('home.paymentsTitle')}</div>
@@ -338,7 +359,7 @@ const Home = () => {
       </section>
 
       {/* ===== RUO notice ===== */}
-      <section className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 pb-12">
+      <section className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 pb-16">
         <div className="rounded-xl border border-[hsl(var(--warning-border))] bg-[hsl(var(--warning))] text-[hsl(var(--warning-foreground))] p-5 flex items-start gap-3">
           <FlaskConical className="h-5 w-5 shrink-0 mt-0.5" />
           <p className="text-sm leading-relaxed"><strong>{t('home.heroRuo')}</strong> {t('home.ruoNotice')}</p>
