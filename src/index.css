@@ -63,21 +63,24 @@ body {
     }
 
     .dark {
-        --background: 210 8% 4%;
-        --foreground: 40 10% 94%;
-        --card: 210 7% 7%;
-        --card-foreground: 40 10% 94%;
-        --popover: 210 7% 7%;
-        --popover-foreground: 40 10% 94%;
+        /* Lienzo negro puro y grises sin tinte. Las superficies se separan del
+           fondo por luminosidad, no por color: 0% fondo, 4-6% tarjetas,
+           15% bordes. El acento de marca se queda como estaba. */
+        --background: 0 0% 0%;
+        --foreground: 0 0% 94%;
+        --card: 0 0% 4.5%;
+        --card-foreground: 0 0% 94%;
+        --popover: 0 0% 6%;
+        --popover-foreground: 0 0% 94%;
 
         --primary: 225 70% 70%;
         --primary-foreground: 225 60% 10%;
 
-        --secondary: 210 6% 9%;
-        --secondary-foreground: 40 10% 94%;
+        --secondary: 0 0% 7%;
+        --secondary-foreground: 0 0% 94%;
 
-        --muted: 210 6% 9%;
-        --muted-foreground: 40 5% 64%;
+        --muted: 0 0% 8%;
+        --muted-foreground: 0 0% 63%;
 
         --accent: 225 40% 16%;
         --accent-foreground: 225 70% 80%;
@@ -87,13 +90,13 @@ body {
         --warning-foreground: 43 70% 78%;
         --warning-border: 36 35% 24%;
         --info: 199 78% 58%;
-        --info-foreground: 210 8% 4%;
+        --info-foreground: 0 0% 0%;
 
         --destructive: 0 72% 52%;
         --destructive-foreground: 210 40% 98%;
 
-        --border: 210 6% 14%;
-        --input: 210 6% 14%;
+        --border: 0 0% 15%;
+        --input: 0 0% 15%;
         --ring: 225 70% 70%;
     }
 }
@@ -129,14 +132,14 @@ body {
 }
 
 .dark .brand-panel {
-    color: #f2f4f2;
-    --panel-card: 210 8% 7%;
-    --panel-border: 210 7% 15%;
-    --panel-muted: 40 5% 66%;
+    color: #f0f0f0;
+    --panel-card: 0 0% 4.5%;
+    --panel-border: 0 0% 15%;
+    --panel-muted: 0 0% 63%;
     background:
-        radial-gradient(1100px 500px at 85% -10%, rgba(64, 200, 150, 0.09), transparent 60%),
-        radial-gradient(700px 420px at -10% 110%, rgba(64, 200, 150, 0.04), transparent 55%),
-        linear-gradient(160deg, #070809 0%, #0a0c0b 55%, #0c0f0d 100%);
+        radial-gradient(1100px 500px at 85% -10%, hsla(225, 70%, 70%, 0.07), transparent 60%),
+        radial-gradient(700px 420px at -10% 110%, hsla(225, 70%, 70%, 0.035), transparent 55%),
+        #000;
 }
 
 /* Fine blueprint grid, used on top of .brand-panel */
@@ -149,8 +152,21 @@ body {
 
 .dark .brand-grid {
     background-image:
-        linear-gradient(rgba(242, 244, 242, 0.04) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(242, 244, 242, 0.04) 1px, transparent 1px);
+        linear-gradient(rgba(255, 255, 255, 0.035) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.035) 1px, transparent 1px);
+}
+
+/* Franja de promoción. En claro va con el color de marca a todo lo ancho; en
+   oscuro se apaga a casi negro con un borde tenue, para no romper el lienzo. */
+.promo-bar {
+    background: hsl(var(--primary));
+    color: hsl(var(--primary-foreground));
+}
+
+.dark .promo-bar {
+    background: #0a0a0a;
+    color: rgba(240, 240, 240, 0.82);
+    border-bottom: 1px solid hsl(var(--border));
 }
 
 /* Slim announcement bar above the header */
@@ -161,8 +177,8 @@ body {
 }
 
 .dark .brand-topbar {
-    background: #060707;
-    color: rgba(242, 244, 242, 0.7);
+    background: #0a0a0a;
+    color: rgba(240, 240, 240, 0.72);
 }
 
 /* subtle noise texture */
@@ -191,8 +207,8 @@ body {
 
 .dark .hero-gradient {
     background:
-        radial-gradient(1000px 460px at 85% -10%, rgba(64, 200, 150, 0.08), transparent 60%),
-        linear-gradient(160deg, #070809 0%, #0b0d0c 100%);
+        radial-gradient(1000px 460px at 85% -10%, hsla(225, 70%, 70%, 0.07), transparent 60%),
+        #000;
 }
 
 @layer base {
@@ -214,8 +230,8 @@ body {
 
 .dark .hero-grid {
     background-image:
-        linear-gradient(rgba(242, 244, 242, 0.045) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(242, 244, 242, 0.045) 1px, transparent 1px);
+        linear-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
 }
 
 /* Drifting aurora blobs — monochrome, stays within the black/white palette */
@@ -232,8 +248,8 @@ body {
 
 .dark .hero-aurora {
     background:
-        radial-gradient(38% 42% at 70% 22%, rgba(242, 244, 242, 0.07), transparent 70%),
-        radial-gradient(30% 36% at 22% 78%, rgba(242, 244, 242, 0.045), transparent 70%);
+        radial-gradient(38% 42% at 70% 22%, rgba(255, 255, 255, 0.06), transparent 70%),
+        radial-gradient(30% 36% at 22% 78%, rgba(255, 255, 255, 0.035), transparent 70%);
 }
 
 @keyframes aurora-drift {
@@ -258,7 +274,7 @@ body {
 }
 
 .dark .ticker {
-    background: #060707;
+    background: #0a0a0a;
 }
 
 .ticker-track {

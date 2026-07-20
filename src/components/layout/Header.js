@@ -93,7 +93,7 @@ const Header = () => {
 
   return (
     <header className="sticky top-0 z-40">
-      <Link to="/catalogo" className="block bg-[hsl(var(--primary))] text-[hsl(var(--primary-foreground))] text-center text-[11px] sm:text-xs py-1.5 px-4 font-medium tracking-wide hover:opacity-95 transition-opacity" data-testid="promo-banner">
+      <Link to="/catalogo" className="promo-bar block text-center text-[11px] sm:text-xs py-1.5 px-4 font-medium tracking-wide hover:opacity-95 transition-opacity" data-testid="promo-banner">
         🎉 {t('discount.launchBanner')}
       </Link>
       <div className="bg-background/70 supports-[backdrop-filter]:backdrop-blur-xl">
