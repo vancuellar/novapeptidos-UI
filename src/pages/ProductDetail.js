@@ -44,8 +44,8 @@ const ProductDetail = () => {
     api.get('/stock').then((r) => setStockMap(r.data || null)).catch(() => setStockMap(null));
   }, []);
 
-  if (loading) return <div className="max-w-6xl mx-auto px-4 py-10"><Skeleton className="h-96 rounded-xl" /></div>;
-  if (!product) return <div className="max-w-6xl mx-auto px-4 py-20 text-center">{t('product.notFound')} <Link to="/catalogo" className="text-[hsl(var(--primary))]">{t('product.backToCatalog')}</Link></div>;
+  if (loading) return <div className="max-w-[1280px] mx-auto px-4 py-10"><Skeleton className="h-96 rounded-xl" /></div>;
+  if (!product) return <div className="max-w-[1280px] mx-auto px-4 py-20 text-center">{t('product.notFound')} <Link to="/catalogo" className="text-[hsl(var(--primary))]">{t('product.backToCatalog')}</Link></div>;
 
   const localizedProduct = localizeProduct(product, language);
   const localizedRelated = localizeProducts(related, language);
@@ -71,7 +71,7 @@ const ProductDetail = () => {
   }, qty);
 
   return (
-    <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 py-8">
       <Breadcrumb className="mb-6">
         <BreadcrumbList>
           <BreadcrumbItem><BreadcrumbLink asChild><Link to="/">{t('common.home')}</Link></BreadcrumbLink></BreadcrumbItem>

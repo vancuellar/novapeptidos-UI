@@ -54,7 +54,7 @@ const LearnHub = () => {
   const compoundCount = fallbackProducts.length;
 
   return (
-    <div className="max-w-6xl mx-auto px-4 sm:px-6 py-10">
+    <div className="max-w-[1280px] mx-auto px-4 sm:px-6 py-10">
       <header className="mb-8">
         <div className="inline-flex items-center gap-2 text-[hsl(var(--primary))] mb-2">
           <BookOpen className="h-5 w-5" />

@@ -13,7 +13,7 @@ const InfoPage = () => {
   const body = hasPage ? t(`info.${page}.body`) : t('info.notFound');
 
   return (
-    <div className="max-w-6xl mx-auto px-4 sm:px-6 py-12">
+    <div className="max-w-[1280px] mx-auto px-4 sm:px-6 py-12">
       <h1 className="font-heading text-3xl font-bold tracking-tight mb-6">{title}</h1>
       <Card className="p-6 space-y-4">
         {body.map((p, i) => <p key={i} className="text-sm leading-relaxed text-muted-foreground">{p}</p>)}

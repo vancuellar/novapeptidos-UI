@@ -118,7 +118,7 @@ const Advisor = () => {
   const progress = Math.round((Math.min(step, 3) / 3) * 100);
 
   return (
-    <div className="max-w-6xl mx-auto px-4 sm:px-6 py-10">
+    <div className="max-w-[1280px] mx-auto px-4 sm:px-6 py-10">
       <div className="text-center mb-6">
         <div className="inline-flex items-center gap-2 text-[hsl(var(--primary))] mb-2">
           <Target className="h-5 w-5" />

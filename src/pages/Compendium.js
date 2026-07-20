@@ -46,7 +46,7 @@ const Compendium = () => {
   }, [query, category]);
 
   return (
-    <div className="max-w-6xl mx-auto px-4 sm:px-6 py-10">
+    <div className="max-w-[1280px] mx-auto px-4 sm:px-6 py-10">
       <nav className="text-xs text-muted-foreground mb-4 flex items-center gap-1">
         <Link to="/" className="hover:text-foreground">Inicio</Link>
         <ChevronRight className="h-3 w-3" />

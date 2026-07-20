@@ -78,7 +78,7 @@ const Education = () => {
   const { t } = useLanguage();
 
   return (
-    <div className="max-w-6xl mx-auto px-4 sm:px-6 py-12">
+    <div className="max-w-[1280px] mx-auto px-4 sm:px-6 py-12">
       <div className="flex items-center gap-2 text-[hsl(var(--primary))] mb-2">
         <BookOpen className="h-5 w-5" />
         <span className="text-xs font-medium uppercase tracking-wide">{t('nav.education')}</span>

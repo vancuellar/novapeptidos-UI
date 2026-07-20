@@ -100,7 +100,7 @@ const Catalog = () => {
   const catName = localizedCategories.find((c) => c.slug === selectedCat)?.name;
 
   return (
-    <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 py-8">
       <div className="mb-6">
         <h1 className="font-heading text-2xl sm:text-3xl font-bold tracking-tight">{catName || (search ? t('catalog.resultsFor', { search }) : t('catalog.title'))}</h1>
         <p className="text-muted-foreground text-sm mt-1">{t('catalog.ruoLine')}</p>

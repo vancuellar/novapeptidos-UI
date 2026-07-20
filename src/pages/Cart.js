@@ -48,7 +48,7 @@ const Cart = () => {
   }
 
   return (
-    <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 py-8">
       <h1 className="font-heading text-2xl sm:text-3xl font-bold tracking-tight mb-4">{t('cart.title')}</h1>
       <div className="mb-6 flex flex-wrap items-center gap-x-3 gap-y-1.5 rounded-xl border border-border bg-[hsl(var(--secondary))] px-4 py-2.5 text-xs sm:text-sm" data-testid="cart-tier-banner">
         <span className="inline-flex items-center gap-1.5 font-medium"><BadgePercent className="h-4 w-4 text-[hsl(var(--primary))]" /> {t('discount.bannerTitle')}</span>

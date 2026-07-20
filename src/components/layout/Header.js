@@ -93,11 +93,8 @@ const Header = () => {
 
   return (
     <header className="sticky top-0 z-40">
-      <Link to="/catalogo" className="promo-bar block text-center text-[11px] sm:text-xs py-1.5 px-4 font-medium tracking-wide hover:opacity-95 transition-opacity" data-testid="promo-banner">
-        🎉 {t('discount.launchBanner')}
-      </Link>
       <div className="bg-background/70 supports-[backdrop-filter]:backdrop-blur-xl">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 h-[68px] flex items-center gap-4">
+        <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 h-[68px] flex items-center gap-4">
           {/* Left: nav links (desktop) / menu (mobile) */}
           <div className="flex items-center gap-6 min-w-0">
           {/* Logo pegado a la izquierda */}

@@ -9,7 +9,7 @@ const Footer = () => {
 
   return (
     <footer className="mt-16 border-t border-border bg-card text-card-foreground">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-14">
+      <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 py-14">
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-8">
           <div>
             <Link to="/" className="inline-flex items-center mb-4">

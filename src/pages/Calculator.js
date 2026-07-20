@@ -21,7 +21,7 @@ const Calculator = () => {
   const { user } = useAuth();
 
   return (
-    <div className="max-w-6xl mx-auto px-3 sm:px-5 py-6">
+    <div className="max-w-[1280px] mx-auto px-3 sm:px-5 py-6">
       <div className="mb-5">
         <h1 className="font-heading text-4xl font-bold tracking-tight">{t('calc.title')}</h1>
         <p className="text-base text-muted-foreground mt-2 max-w-3xl">{t('calc.publicSubtitle')}</p>

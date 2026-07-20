@@ -177,7 +177,7 @@ const LearnPage = () => {
   const anchor = (title) => title.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
 
   return (
-    <div className="max-w-6xl mx-auto px-4 sm:px-6 py-10">
+    <div className="max-w-[1280px] mx-auto px-4 sm:px-6 py-10">
       <nav className="text-xs text-muted-foreground mb-4 flex items-center gap-1 flex-wrap">
         <Link to="/" className="hover:text-foreground">Inicio</Link>
         <ChevronRight className="h-3 w-3" />

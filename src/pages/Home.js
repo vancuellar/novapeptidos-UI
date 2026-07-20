@@ -73,8 +73,7 @@ const Home = () => {
       {/* ===== Hero — clean typography + real vial photo ===== */}
       <section className="bg-background relative overflow-hidden">
         <div className="hero-beams" />
-        <div className="hero-grid" />
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 pb-14 relative">
+        <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 pt-20 pb-14 relative">
           <div className="grid lg:grid-cols-[1.1fr_0.9fr] gap-12 lg:gap-16 items-center">
             <div>
               <div className="kicker">{t('home.kicker')}</div>
@@ -116,7 +115,7 @@ const Home = () => {
             ))}
           </div>
         </div>
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pb-20 relative">
+        <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 pb-20 relative">
           <div className="mt-4 flex flex-wrap gap-x-12 gap-y-6 pt-4">
             <div>
               <div className="font-heading text-3xl font-bold">≥99%</div>
@@ -140,7 +139,7 @@ const Home = () => {
 
       {/* ===== Trust strip ===== */}
       <section className="border-b border-border bg-card">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-6 grid grid-cols-2 md:grid-cols-4 gap-4">
+        <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 py-6 grid grid-cols-2 md:grid-cols-4 gap-4">
           {[{ i: ShieldCheck, t: t('home.trust.coa.title'), d: t('home.trust.coa.desc') }, { i: BadgeCheck, t: t('home.trust.purity.title'), d: t('home.trust.purity.desc') }, { i: Truck, t: t('home.trust.shipping.title'), d: t('home.trust.shipping.desc') }, { i: FlaskConical, t: t('home.trust.support.title'), d: t('home.trust.support.desc') }].map((b, idx) => (
             <div key={idx} className="flex items-center gap-3">
               <div className="h-10 w-10 rounded-lg bg-[hsl(var(--accent))] flex items-center justify-center shrink-0"><b.i className="h-5 w-5 text-[hsl(var(--primary))]" /></div>
@@ -151,7 +150,7 @@ const Home = () => {
       </section>
 
       {/* ===== Categories ===== */}
-      <section className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+      <section className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 py-16">
         <div className="mb-8">
           <div className="kicker">{t('home.categoriesKicker')}</div>
           <h2 className="font-heading text-2xl sm:text-3xl font-bold tracking-tight mt-2">{t('home.categoriesTitle')}</h2>
@@ -187,7 +186,7 @@ const Home = () => {
       </section>
 
       {/* ===== Featured products ===== */}
-      <section className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pb-16">
+      <section className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 pb-16">
         <div className="flex items-end justify-between mb-8">
           <div>
             <div className="kicker">{t('home.featuredKicker')}</div>
@@ -214,7 +213,7 @@ const Home = () => {
       </section>
 
       {/* ===== Before your first order — 3 education cards ===== */}
-      <section className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pb-16">
+      <section className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 pb-16">
         <div className="mb-8">
           <div className="kicker">{t('home.eduKicker')}</div>
           <h2 className="font-heading text-2xl sm:text-3xl font-bold tracking-tight mt-2">{t('home.eduTitle')}</h2>
@@ -245,7 +244,7 @@ const Home = () => {
 
       {/* ===== Traceability — light band, 3 steps ===== */}
       <section className="bg-[hsl(var(--secondary))] border-y border-border">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+        <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 py-16">
           <div className="max-w-2xl">
             <div className="kicker">{t('home.transparencyKicker')}</div>
             <h2 className="font-heading text-2xl sm:text-3xl font-bold tracking-tight mt-2">{t('home.transparencyTitle')}</h2>
@@ -271,7 +270,7 @@ const Home = () => {
       </section>
 
       {/* ===== Why Exygen — comparison ===== */}
-      <section className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+      <section className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 py-16">
         <div className="mb-8">
           <div className="kicker">{t('home.whyKicker')}</div>
           <h2 className="font-heading text-2xl sm:text-3xl font-bold tracking-tight mt-2">{t('home.whyTitle')}</h2>
@@ -300,7 +299,7 @@ const Home = () => {
       </section>
 
       {/* ===== Wholesale / B2B ===== */}
-      <section className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pb-16">
+      <section className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 pb-16">
         <div className="rounded-2xl border border-border bg-[hsl(var(--secondary))] px-6 py-10 sm:px-10 grid lg:grid-cols-[1.2fr_0.8fr] gap-8 items-center">
           <div>
             <div className="inline-flex items-center gap-2 rounded-full border border-border bg-card px-4 py-2">
@@ -322,7 +321,7 @@ const Home = () => {
       </section>
 
       {/* ===== Payments ===== */}
-      <section className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pb-16">
+      <section className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 pb-16">
         <div className="rounded-2xl border border-border bg-card px-6 py-6 flex flex-col sm:flex-row items-center justify-between gap-5">
           <div>
             <div className="font-heading font-semibold">{t('home.paymentsTitle')}</div>
@@ -339,7 +338,7 @@ const Home = () => {
       </section>
 
       {/* ===== RUO notice ===== */}
-      <section className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pb-12">
+      <section className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 pb-12">
         <div className="rounded-xl border border-[hsl(var(--warning-border))] bg-[hsl(var(--warning))] text-[hsl(var(--warning-foreground))] p-5 flex items-start gap-3">
           <FlaskConical className="h-5 w-5 shrink-0 mt-0.5" />
           <p className="text-sm leading-relaxed"><strong>{t('home.heroRuo')}</strong> {t('home.ruoNotice')}</p>
