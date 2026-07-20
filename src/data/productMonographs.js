@@ -783,6 +783,297 @@ const monographs = {
         'Reconstituir con diluyente estéril de forma suave y refrigerar.' ] },
     ],
   },
+
+  // ===== Tanda 5: metabólicos e incretinas =====
+
+  liraglutida: {
+    tagline: 'Análogo de GLP-1 de primera generación acilada',
+    sections: [
+      { title: 'Qué es', paragraphs: [
+        'Liraglutida es un análogo del péptido similar al glucagón tipo 1 con dos modificaciones sobre la secuencia nativa: la sustitución de lisina por arginina en posición 34 y la conjugación de una cadena de ácido palmítico a través de un espaciador de ácido glutámico. Esa acilación le da afinidad por la albúmina y multiplica su permanencia en circulación frente al GLP-1 endógeno, cuya vida media es de minutos.',
+        'Es la generación anterior a Semaglutida: mismo receptor, misma estrategia de diseño, cadena grasa más corta y por tanto exposición menos prolongada.' ] },
+      { title: 'Qué se estudia con ella', paragraphs: [
+        'Aparece en modelos de secreción de insulina dependiente de glucosa, supervivencia de células beta, motilidad gastrointestinal y señalización de saciedad en el sistema nervioso central.',
+        'Su papel más útil hoy es de comparador: la serie Liraglutida → Semaglutida → Tirzepatida → Retatrutida permite estudiar cómo cambia la respuesta al ir alargando la exposición y sumando receptores.' ] },
+      { title: 'Manejo en laboratorio', paragraphs: [
+        'Liofilizada en vial sellado; frío, seco y sin luz.',
+        'Reconstituir con diluyente estéril de forma suave, sin vórtice: los análogos acilados de GLP-1 son propensos a formar agregados fibrilares. Refrigerar la solución.' ] },
+    ],
+  },
+
+  dulaglutida: {
+    tagline: 'Proteína de fusión GLP-1 con fragmento Fc',
+    sections: [
+      { title: 'Qué es', paragraphs: [
+        'Dulaglutida no es un péptido simple sino una proteína de fusión: dos análogos de GLP-1 modificados unidos por un enlazador a un fragmento Fc de inmunoglobulina G4 humana. La estrategia de extensión de vida media aquí no es la acilación sino el reciclaje mediado por el receptor Fc neonatal (FcRn), el mismo mecanismo que mantiene los anticuerpos en circulación durante semanas.' ] },
+      { title: 'Qué se estudia con ella', paragraphs: [
+        'Su interés experimental está en comparar dos estrategias distintas de prolongación: unión a albúmina por acilación frente a fusión con Fc. Producen perfiles de exposición y de distribución tisular diferentes a partir de la misma señal receptora.',
+        'Aparece en modelos de señalización del receptor de GLP-1, farmacocinética de proteínas de fusión y estudios de inmunogenicidad, un tema propio de las moléculas que incorporan dominios de anticuerpo.' ] },
+      { title: 'Manejo en laboratorio', paragraphs: [
+        'Liofilizada en vial sellado. Al ser una proteína de fusión de tamaño considerable, es más frágil que un péptido: sensible al calor, a la agitación y a la formación de espuma. Frío, seco y sin luz.',
+        'Reconstituir con mucha suavidad, sin vórtice ni espuma. Refrigerar y no congelar la solución.' ] },
+    ],
+  },
+
+  mazdutida: {
+    tagline: 'Doble agonista GLP-1 / glucagón',
+    sections: [
+      { title: 'Qué es', paragraphs: [
+        'Mazdutida es un péptido sintético que actúa como agonista dual de los receptores de GLP-1 y de glucagón. Su esqueleto deriva de la oxintomodulina, un péptido intestinal natural que activa de forma nativa ambos receptores, modificado y acilado para darle estabilidad y acción prolongada.' ] },
+      { title: 'Qué se estudia con ella', paragraphs: [
+        'La combinación GLP-1 más glucagón es conceptualmente distinta de la combinación GLP-1 más GIP: la rama de glucagón añade gasto energético y metabolismo hepático, no sensibilidad del adipocito. Mazdutida es la herramienta para estudiar esa pareja concreta de forma aislada.',
+        'Aparece en modelos de homeostasis energética, metabolismo hepático de lípidos y estudios comparativos frente a agonistas duales GLP-1/GIP como Tirzepatida y al triple agonista Retatrutida.' ] },
+      { title: 'Manejo en laboratorio', paragraphs: [
+        'Liofilizada en vial sellado; frío, seco y protegido de la luz.',
+        'Reconstituir con diluyente estéril dejándolo escurrir por la pared, sin agitación. Refrigerar.' ] },
+    ],
+  },
+
+  survodutide: {
+    tagline: 'Doble agonista GLP-1 / glucagón, de acción prolongada',
+    sections: [
+      { title: 'Qué es', paragraphs: [
+        'Survodutide es otro agonista dual de los receptores de GLP-1 y de glucagón, con una arquitectura de acilación diseñada para exposición prolongada. Comparte clase con Mazdutida pero difiere en secuencia y en el balance de potencia entre ambos receptores.' ] },
+      { title: 'Qué se estudia con él', paragraphs: [
+        'El punto interesante de tener dos duales GLP-1/glucagón distintos en el catálogo es que permite estudiar el efecto del sesgo receptor: dos moléculas de la misma clase con proporciones de activación diferentes producen respuestas metabólicas que no son intercambiables.',
+        'Aparece en modelos de metabolismo hepático de lípidos, gasto energético y farmacología comparada de agonistas multireceptor.' ] },
+      { title: 'Manejo en laboratorio', paragraphs: [
+        'Liofilizado en vial sellado; frío, seco y sin luz.',
+        'Reconstituir con diluyente estéril de forma suave, sin vórtice; refrigerar.' ] },
+    ],
+  },
+
+  'aod-9604': {
+    tagline: 'Fragmento 176-191 modificado de la hormona de crecimiento',
+    sections: [
+      { title: 'Qué es', paragraphs: [
+        'AOD-9604 es una versión modificada del fragmento C-terminal 176-191 de la hormona de crecimiento humana, a la que se añadió un residuo de tirosina en el extremo N-terminal para mejorar su estabilidad. Como el fragmento del que deriva, carece de la región responsable de la señalización sobre el receptor de GH y de la inducción de IGF-1.' ] },
+      { title: 'Qué se estudia con él', paragraphs: [
+        'Se investiga en modelos de metabolismo lipídico del adipocito: lipólisis, expresión de enzimas implicadas en la oxidación de ácidos grasos y comportamiento del tejido adiposo en cultivo.',
+        'Su valor conceptual es el mismo que el del fragmento original, con mejor manejabilidad: permite preguntar si un efecto metabólico atribuido a la hormona de crecimiento necesita realmente su receptor.' ] },
+      { title: 'Manejo en laboratorio', paragraphs: [
+        'Liofilizado en vial sellado; frío, seco y protegido de la luz.',
+        'Reconstituir con diluyente estéril de forma suave y refrigerar.' ] },
+    ],
+  },
+
+  adipotide: {
+    tagline: 'Péptido proapoptótico dirigido a vasculatura adiposa (FTPP)',
+    sections: [
+      { title: 'Qué es', paragraphs: [
+        'Adipotide, también documentado como FTPP (Fat Targeted Proapoptotic Peptide), es un péptido quimérico de dos módulos: una secuencia de direccionamiento que reconoce la prohibitina, una proteína enriquecida en el endotelio de la vasculatura del tejido adiposo blanco, y un dominio proapoptótico que desestabiliza membranas mitocondriales.',
+        'Es un diseño de "misil dirigido": el primer módulo decide dónde, el segundo qué ocurre al llegar. Ese esquema modular es lo que lo hace interesante más allá del tejido concreto al que apunta.' ] },
+      { title: 'Qué se estudia con él', paragraphs: [
+        'Aparece en modelos de biología vascular del tejido adiposo, apoptosis dirigida y, sobre todo, como caso de estudio de péptidos de direccionamiento: cómo se diseña una secuencia que reconoce un marcador de superficie específico y cómo se acopla a un efector.',
+        'La literatura publicada sobre este tipo de moléculas presta especial atención a la selectividad: cuánto del efecto ocurre en el tejido diana y cuánto fuera de él.' ] },
+      { title: 'Manejo en laboratorio', paragraphs: [
+        'Liofilizado en vial sellado; frío, seco y sin luz.',
+        'Reconstituir con diluyente estéril de forma suave; refrigerar y manejar con técnica estéril.' ] },
+    ],
+  },
+
+  '5-amino-1mq': {
+    tagline: 'Inhibidor de molécula pequeña de NNMT',
+    sections: [
+      { title: 'Qué es', paragraphs: [
+        '5-Amino-1MQ no es un péptido sino una molécula pequeña: un derivado de quinolinio que actúa como inhibidor selectivo de la nicotinamida N-metiltransferasa (NNMT), una enzima citosólica muy expresada en tejido adiposo e hígado.' ] },
+      { title: 'Qué se estudia con él', paragraphs: [
+        'La NNMT metila la nicotinamida y la retira de la vía de rescate de NAD+. Inhibirla es, por tanto, una forma indirecta de estudiar la disponibilidad de NAD+ intracelular sin administrarlo: si al bloquear la enzima suben los niveles de NAD+ y cambia el fenotipo celular, la vía de rescate era limitante.',
+        'Aparece en modelos de metabolismo del adipocito, homeostasis de NAD+, biología de sirtuinas y estudios sobre metilación como mecanismo de regulación metabólica. Es una herramienta complementaria a NAD+ y sus precursores, no un sustituto.' ] },
+      { title: 'Manejo en laboratorio', paragraphs: [
+        'Se presenta en forma liofilizada o cristalina según el lote. Al ser una molécula pequeña y no un péptido, su comportamiento de solubilidad es distinto: conviene revisar la ficha del lote antes de elegir diluyente.',
+        'Conservar sellado, en frío, seco y protegido de la luz.' ] },
+    ],
+  },
+
+  '10-amino-1mq': {
+    tagline: 'Análogo de la serie de inhibidores de NNMT',
+    sections: [
+      { title: 'Qué es', paragraphs: [
+        '10-Amino-1MQ pertenece a la misma serie química de derivados de quinolinio estudiados como inhibidores de la nicotinamida N-metiltransferasa. Frente al 5-amino, la diferencia está en la posición del grupo amino sobre el anillo, lo que altera la geometría de unión al sitio activo de la enzima.' ] },
+      { title: 'Qué se estudia con él', paragraphs: [
+        'Su uso principal es la relación estructura-actividad: comparar análogos que difieren en un solo sustituyente es la forma clásica de mapear qué contactos importan para la inhibición y cuáles no.',
+        'Comparte con el 5-amino el terreno de estudio: metabolismo del adipocito, homeostasis de NAD+ y regulación por metilación.' ] },
+      { title: 'Manejo en laboratorio', paragraphs: [
+        'Molécula pequeña liofilizada o cristalina; revisar la ficha del lote para el diluyente adecuado.',
+        'Conservar sellado, en frío, seco y sin luz.' ] },
+    ],
+  },
+
+  'mots-c': {
+    tagline: 'Péptido mitocondrial de 16 aminoácidos',
+    sections: [
+      { title: 'Qué es', paragraphs: [
+        'MOTS-c es un péptido de 16 aminoácidos codificado no en el ADN nuclear sino en el genoma mitocondrial, dentro del gen del ARN ribosómico 12S. Pertenece a la familia de los péptidos derivados de mitocondria (MDP), junto con la humanina, y su descubrimiento cambió una idea asentada: que la mitocondria solo aportaba proteínas de la cadena respiratoria.' ] },
+      { title: 'Qué se estudia con él', paragraphs: [
+        'Su mecanismo mejor documentado es la activación de AMPK, el sensor energético central de la célula, y la interferencia con la vía del folato y el metabolismo de un carbono. Se ha descrito además su translocación al núcleo bajo estrés metabólico, donde se asocia a la regulación de genes de respuesta adaptativa.',
+        'Eso lo convierte en el ejemplo mejor caracterizado de señalización retrógrada mitocondria-núcleo, además de aparecer en modelos de sensibilidad a la insulina, metabolismo del músculo esquelético y biología del envejecimiento.' ] },
+      { title: 'Manejo en laboratorio', paragraphs: [
+        'Liofilizado en vial sellado; frío, seco y protegido de la luz.',
+        'Reconstituir con diluyente estéril de forma suave y refrigerar la solución.' ] },
+    ],
+  },
+
+  'slu-pp-332': {
+    tagline: 'Agonista de molécula pequeña de los receptores ERR',
+    sections: [
+      { title: 'Qué es', paragraphs: [
+        'SLU-PP-332 no es un péptido sino una molécula pequeña sintética que actúa como agonista pan de los receptores relacionados con estrógenos (ERRα, ERRβ y ERRγ), una familia de receptores nucleares huérfanos —sin ligando endógeno conocido— con papel central en el control transcripcional del metabolismo oxidativo.' ] },
+      { title: 'Qué se estudia con él', paragraphs: [
+        'Los ERR regulan programas de biogénesis mitocondrial y de oxidación de ácidos grasos en músculo esquelético y corazón. Al ser receptores huérfanos, durante años solo se pudieron estudiar por manipulación genética; un agonista sintético permite hacerlo farmacológicamente y con control temporal.',
+        'Aparece en modelos de biogénesis mitocondrial, metabolismo oxidativo del músculo, regulación transcripcional por receptores nucleares y estudios de resistencia y adaptación al ejercicio en modelos animales.' ] },
+      { title: 'Manejo en laboratorio', paragraphs: [
+        'Molécula pequeña, no péptido: su solubilidad suele requerir un disolvente orgánico como DMSO antes de diluir en medio acuoso. Revisar la ficha del lote.',
+        'Conservar sellado, en frío, seco y protegido de la luz.' ] },
+    ],
+  },
+
+  // ===== Tanda 6: longevidad, mitocondria y neuro =====
+
+  'ss-31': {
+    tagline: 'Elamipretida, péptido dirigido a la cardiolipina mitocondrial',
+    sections: [
+      { title: 'Qué es', paragraphs: [
+        'SS-31, también documentado como elamipretida, es un tetrapéptido aromático-catiónico de la serie Szeto-Schiller. Su rasgo definitorio es que se acumula selectivamente en la membrana mitocondrial interna, donde se asocia con la cardiolipina, un fosfolípido exclusivo de esa membrana y esencial para la organización de los complejos de la cadena respiratoria.',
+        'La selectividad no depende del potencial de membrana, a diferencia de otros compuestos dirigidos a mitocondria: eso permite estudiarlo también en mitocondrias despolarizadas, que es justo el escenario de interés en disfunción mitocondrial.' ] },
+      { title: 'Qué se estudia con él', paragraphs: [
+        'La hipótesis mecanística es que al unirse a la cardiolipina estabiliza las crestas mitocondriales y mejora el acoplamiento de la cadena de transporte de electrones, reduciendo la fuga de electrones y la generación de especies reactivas de oxígeno.',
+        'Aparece en modelos de disfunción mitocondrial, daño por isquemia-reperfusión, biología del envejecimiento y estudios de bioenergética en músculo esquelético y cardiaco. Es uno de los péptidos mitocondriales con más literatura preclínica independiente.' ] },
+      { title: 'Manejo en laboratorio', paragraphs: [
+        'Liofilizado en vial sellado; frío, seco y protegido de la luz.',
+        'Reconstituir con diluyente estéril de forma suave; refrigerar la solución.' ] },
+    ],
+  },
+
+  humanin: {
+    tagline: 'Péptido mitocondrial de 24 aminoácidos',
+    sections: [
+      { title: 'Qué es', paragraphs: [
+        'La humanina es un péptido de 24 aminoácidos codificado en el genoma mitocondrial, dentro del gen del ARN ribosómico 16S. Fue el primer péptido derivado de mitocondria que se describió, y su hallazgo abrió la categoría a la que después se sumó MOTS-c.' ] },
+      { title: 'Qué se estudia con él', paragraphs: [
+        'Se investiga como péptido citoprotector: la literatura describe interacción con proteínas de la familia Bax y modulación de vías de apoptosis, además de señalización a través de un receptor trimérico de superficie que incluye la subunidad gp130.',
+        'Aparece en modelos de supervivencia neuronal, estrés oxidativo, sensibilidad a la insulina y biología del envejecimiento. Junto con MOTS-c, es la pieza clave para estudiar la mitocondria como órgano endocrino y no solo como central energética.' ] },
+      { title: 'Manejo en laboratorio', paragraphs: [
+        'Liofilizado en vial sellado; frío, seco y sin luz.',
+        'Reconstituir con diluyente estéril de forma suave y refrigerar.' ] },
+    ],
+  },
+
+  foxo4: {
+    tagline: 'FOXO4-DRI, péptido senolítico de interferencia',
+    sections: [
+      { title: 'Qué es', paragraphs: [
+        'FOXO4-DRI es un péptido diseñado por retroinversión (D-retro-inverso): se sintetiza con aminoácidos D en orden invertido respecto de la secuencia natural, lo que produce una molécula con una disposición espacial de las cadenas laterales muy parecida a la original pero prácticamente inmune a las proteasas.',
+        'Su diana es la interacción entre FOXO4 y p53, un contacto proteína-proteína que en células senescentes retiene a p53 en el núcleo y las mantiene vivas pese al daño acumulado.' ] },
+      { title: 'Qué se estudia con él', paragraphs: [
+        'Es una de las herramientas de referencia en el campo senolítico: la hipótesis es que al interrumpir el contacto FOXO4-p53, la célula senescente pierde su resistencia a la apoptosis y se elimina, mientras la célula sana no se ve afectada.',
+        'Aparece en modelos de senescencia celular, eliminación selectiva de células senescentes en cultivo y estudios de envejecimiento tisular. Metodológicamente es además un buen ejemplo de cómo se diseña un inhibidor de interacción proteína-proteína.' ] },
+      { title: 'Manejo en laboratorio', paragraphs: [
+        'Liofilizado en vial sellado. Los péptidos retroinversos son notablemente estables frente a peptidasas, pero no frente a la humedad. Frío, seco y sin luz.',
+        'Reconstituir con diluyente estéril de forma suave; refrigerar.' ] },
+    ],
+  },
+
+  glutation: {
+    tagline: 'Tripéptido antioxidante (GSH)',
+    sections: [
+      { title: 'Qué es', paragraphs: [
+        'El glutatión es un tripéptido formado por glutamato, cisteína y glicina, con la particularidad de que el enlace entre los dos primeros es un enlace gamma —a través de la cadena lateral del glutamato, no de su carbono alfa—. Esa unión atípica lo protege de las peptidasas comunes y explica que exista en concentraciones milimolares dentro de la célula.',
+        'Es el antioxidante no proteico más abundante del organismo y el eje del sistema redox celular.' ] },
+      { title: 'Qué se estudia con él', paragraphs: [
+        'Su química gira en torno al grupo tiol de la cisteína: dos moléculas reducidas (GSH) se oxidan a un dímero (GSSG), y la proporción GSH/GSSG es la medida estándar del estado redox de una célula.',
+        'Se investiga en estrés oxidativo, detoxificación de fase II mediada por glutatión S-transferasas, glutationilación de proteínas como mecanismo de señalización y modelos de envejecimiento y función mitocondrial.' ] },
+      { title: 'Manejo en laboratorio', paragraphs: [
+        'Liofilizado en vial sellado. Es sensible a la oxidación por aire: una vez en solución, el GSH pasa a GSSG con el tiempo, lo que altera justamente el parámetro que suele querer medirse.',
+        'Conservar sellado, en frío, seco y sin luz. Preparar las soluciones lo más cerca posible del momento de uso.' ] },
+    ],
+  },
+
+  aicar: {
+    tagline: 'Activador de AMPK (ribonucleótido de aminoimidazol carboxamida)',
+    sections: [
+      { title: 'Qué es', paragraphs: [
+        'AICAR no es un péptido sino un análogo de nucleótido. Dentro de la célula se fosforila a ZMP, un compuesto que imita estructuralmente al AMP y que por esa razón activa la proteína cinasa activada por AMP (AMPK), el sensor que la célula usa para detectar caída de energía.' ] },
+      { title: 'Qué se estudia con él', paragraphs: [
+        'Es el activador farmacológico clásico de AMPK y aparece en prácticamente toda la literatura del campo: captación de glucosa independiente de insulina, oxidación de ácidos grasos, biogénesis mitocondrial y regulación de mTOR, que AMPK inhibe.',
+        'Conviene tener presente una limitación metodológica bien documentada: ZMP no solo activa AMPK, también afecta a otras enzimas sensibles a AMP, así que los resultados con AICAR suelen requerir confirmación con un segundo abordaje.' ] },
+      { title: 'Manejo en laboratorio', paragraphs: [
+        'Se presenta liofilizado o en polvo cristalino. Al ser un análogo de nucleótido, su solubilidad y estabilidad difieren de las de un péptido: revisar la ficha del lote.',
+        'Conservar sellado, en frío, seco y protegido de la luz.' ] },
+    ],
+  },
+
+  'pnc-27': {
+    tagline: 'Péptido dirigido al complejo p53 / HDM-2',
+    sections: [
+      { title: 'Qué es', paragraphs: [
+        'PNC-27 es un péptido quimérico de dos módulos: un segmento derivado del dominio de p53 que reconoce a HDM-2 (la versión humana de MDM2), y un dominio de penetración celular que le permite atravesar la membrana.',
+        'La lógica del diseño es aprovechar que HDM-2 aparece expresado en la membrana de ciertas líneas celulares y no en otras, de modo que el reconocimiento sirva a la vez de mecanismo de selectividad.' ] },
+      { title: 'Qué se estudia con él', paragraphs: [
+        'Se investiga en modelos de interacción p53-HDM2, permeabilización de membrana y selectividad de péptidos dirigidos. Es también un caso de estudio sobre diseño de péptidos penetrantes de célula (CPP) acoplados a un módulo de reconocimiento.',
+        'La literatura sobre este péptido es más limitada y más discutida que la de otros compuestos del catálogo, algo que conviene tener presente al diseñar experimentos con él.' ] },
+      { title: 'Manejo en laboratorio', paragraphs: [
+        'Liofilizado en vial sellado; frío, seco y protegido de la luz.',
+        'Reconstituir con diluyente estéril de forma suave; refrigerar y manejar con técnica estéril.' ] },
+    ],
+  },
+
+  dsip: {
+    tagline: 'Péptido delta inductor del sueño (nonapéptido)',
+    sections: [
+      { title: 'Qué es', paragraphs: [
+        'DSIP es un nonapéptido aislado originalmente de sangre de conejo durante experimentos de sueño inducido eléctricamente, de donde viene su nombre (Delta Sleep-Inducing Peptide). Es una de las moléculas más antiguas y a la vez menos comprendidas de la neuropeptidología: décadas después de su aislamiento, no se ha identificado un receptor propio.' ] },
+      { title: 'Qué se estudia con él', paragraphs: [
+        'Se investiga en modelos de arquitectura del sueño —en particular la actividad de ondas delta—, ritmos circadianos, respuesta al estrés y regulación del eje hipotálamo-hipófisis-adrenal.',
+        'Su interés metodológico es doble: por un lado, los efectos descritos en la literatura son variables entre estudios, lo que lo convierte en un buen ejercicio de lectura crítica; por otro, la ausencia de un receptor identificado es un problema abierto y legítimo de investigación.' ] },
+      { title: 'Manejo en laboratorio', paragraphs: [
+        'Liofilizado en vial sellado; frío, seco y sin luz.',
+        'Reconstituir con diluyente estéril de forma suave y refrigerar.' ] },
+    ],
+  },
+
+  melatonina: {
+    tagline: 'Indolamina reguladora del ciclo circadiano',
+    sections: [
+      { title: 'Qué es', paragraphs: [
+        'La melatonina no es un péptido sino una indolamina derivada del triptófano, sintetizada principalmente en la glándula pineal siguiendo un ritmo marcado por el núcleo supraquiasmático. Su producción sube con la oscuridad y cae con la luz, lo que la convierte en la señal química de la noche.' ] },
+      { title: 'Qué se estudia con ella', paragraphs: [
+        'Actúa sobre los receptores MT1 y MT2, ambos acoplados a proteína G, y además tiene actividad antioxidante directa por su capacidad de ceder electrones, un mecanismo independiente de receptor.',
+        'Aparece en modelos de ritmos circadianos, señalización pineal, función mitocondrial y estrés oxidativo. En el catálogo se relaciona conceptualmente con Epithalon y Pinealon, que comparten la referencia pineal desde otra química por completo.' ] },
+      { title: 'Manejo en laboratorio', paragraphs: [
+        'Molécula pequeña, fotosensible: la protección frente a la luz aquí no es una formalidad, es parte del método.',
+        'Conservar sellada, en frío, seca y en oscuridad. Revisar la ficha del lote para el diluyente adecuado; su solubilidad en agua es limitada.' ] },
+    ],
+  },
+
+  'orexin-a': {
+    tagline: 'Neuropéptido hipotalámico de 33 aminoácidos',
+    sections: [
+      { title: 'Qué es', paragraphs: [
+        'La orexina A (también llamada hipocretina-1) es un neuropéptido de 33 aminoácidos producido por un grupo reducido de neuronas del hipotálamo lateral. Tiene dos puentes disulfuro intramoleculares y el extremo N-terminal en forma de piroglutamato, rasgos que le dan una estructura muy definida y una estabilidad notable.',
+        'Se une con afinidad similar a los dos receptores conocidos, OX1R y OX2R, a diferencia de la orexina B, que es marcadamente selectiva por OX2R.' ] },
+      { title: 'Qué se estudia con ella', paragraphs: [
+        'El sistema orexinérgico es el regulador central de la vigilia: su pérdida es la base de la narcolepsia con cataplejía. Se investiga en modelos de ciclo sueño-vigilia, estabilidad de los estados de arousal, regulación del apetito y sistemas de recompensa.',
+        'La comparación orexina A frente a orexina B es el experimento estándar para separar la contribución de OX1R y OX2R dentro del sistema.' ] },
+      { title: 'Manejo en laboratorio', paragraphs: [
+        'Liofilizada en vial sellado. Los puentes disulfuro son sensibles a agentes reductores: evitar diluyentes que contengan tioles.',
+        'Reconstituir con diluyente estéril de forma suave; refrigerar y evitar congelado y descongelado repetidos.' ] },
+    ],
+  },
+
+  'orexin-b': {
+    tagline: 'Neuropéptido hipotalámico selectivo por OX2R',
+    sections: [
+      { title: 'Qué es', paragraphs: [
+        'La orexina B (hipocretina-2) es un neuropéptido de 28 aminoácidos que procede del mismo precursor que la orexina A, la prepro-orexina, escindido en un punto distinto. A diferencia de su hermana, es lineal —sin puentes disulfuro— y presenta afinidad claramente preferente por el receptor OX2R.' ] },
+      { title: 'Qué se estudia con ella', paragraphs: [
+        'Esa selectividad es exactamente su utilidad: permite estudiar la rama OX2R del sistema orexinérgico de forma relativamente aislada, algo que con orexina A no es posible porque activa ambos receptores.',
+        'Aparece en modelos de regulación de la vigilia, donde OX2R tiene un papel destacado, y en estudios de alimentación y respuesta al estrés. Su vida media en solución es más corta que la de la orexina A por carecer de la estabilización de los puentes disulfuro.' ] },
+      { title: 'Manejo en laboratorio', paragraphs: [
+        'Liofilizada en vial sellado; frío, seco y sin luz.',
+        'Reconstituir con diluyente estéril de forma suave y usar la solución con prontitud; refrigerar.' ] },
+    ],
+  },
 };
 
 export const monographFor = (slug) => monographs[slug] || null;
