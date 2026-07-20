@@ -339,12 +339,21 @@ El hero ahora arma la fila con 5 archivos y **cada vial se levanta solo al pasar
 - **La "Foto grupal sin fondo.png" NO sirve** (texto ilegible/garabateado, KLOW repetido);
   no se usó. `public/images/hero-vials.png` (la foto vieja) quedó sin uso pero no se borró.
 
-### Decisiones que siguen abiertas de antes
-- **La molécula en la barra superior:** ¿se queda, se deja solo el nombre, o solo la marca?
-  Mi recomendación fue dejar solo el nombre (a 26 px de alto la molécula se vuelve garabato y ya
-  trabaja bien en el favicon y el footer). Sin decidir.
-- Propuesta interactiva con las opciones de azul (ya superada por el guinda), de logo y los
-  favicons: `https://claude.ai/code/artifact/87e5308c-6cf8-49fb-ab44-5fa8a1224e50`
+### Correcciones de Christian el mismo día (commit `22b8113`) — TODO EN VIVO
+- **Los viales quedaron muy grandes → arreglado:** ahora los anchos son % del contenedor de
+  540px (18/20/22/20/18), misma huella que la foto grupal vieja. El hover por vial sigue.
+- **Molécula fuera de la barra superior (DECIDIDO):** la barra usa
+  `public/images/exygen-logo-name.png` (recorte solo-wordmark del logo oficial;
+  `BrandLogo nameOnly`). La molécula sigue en footer, menú móvil y favicon.
+- **El guinda NO le gustó (DECIDIDO):** acento = **azul fuerte del light theme
+  (`225 68% 23%`) en AMBOS temas.** En oscuro, mismo tono/saturación con luminosidad subida
+  (`225 72% 60%`) para que lea sobre negro. No volver a proponer rojos/guindas.
+- **Fusión barra-hero reforzada:** el hero corre por detrás de la barra transparente
+  (`-mt-[60px] pt-[60px]`), así los haces llegan hasta el borde superior, como en Resend.
+- **"Quiero las páginas en Python, no Java":** confusión de nombres — el sitio no usa Java;
+  el frontend es JavaScript/React (lo único que corren los navegadores) y el backend YA es
+  Python (FastAPI). Se le explicó; no hay nada que migrar. Si insiste, aclarar de nuevo con
+  cariño; NO reescribir el frontend en Python.
 
 ---
 
