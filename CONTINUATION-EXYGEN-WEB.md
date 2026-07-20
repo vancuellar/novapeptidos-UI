@@ -370,6 +370,32 @@ El hero ahora arma la fila con 5 archivos y **cada vial se levanta solo al pasar
   `BrandLogo nameOnly`). El logo completo (molécula + subtítulo) sigue en footer, menú móvil
   y favicon. Christian fue explícito: solo en la barra.
 
+### Séptima tanda (2026-07-20) — commit `ce30067` — PÁGINAS DE AYUDA Y RECURSOS COMPLETAS
+Christian pidió que las páginas de los dos menús estuvieran "desarrolladas completamente".
+- **Renderizador compartido:** las secciones tipadas salieron de `LearnPage.js` a
+  **`src/components/SectionRenderer.js`**. Ahora las guías de Aprende y las páginas `/info/*`
+  usan el mismo formato (índice lateral, pasos numerados, tablas, FAQ desplegable, callouts,
+  glosario con buscador). Las tarjetas (`cards`) ya aceptan `href` además de `to`.
+- **`src/data/info/` + `src/data/info.js`**: mismo patrón que `src/data/learn/`. `InfoPage.js`
+  renderiza la página rica si el slug existe ahí; términos y privacidad siguen siendo texto
+  plano desde las traducciones.
+- **Reescritas** (antes 3-4 párrafos sueltos): `envios`, `devoluciones`, `calidad`.
+- **Nuevas**: `contacto`, `soporte`, `rastreo`. El menú Ayuda ya no manda a WhatsApp/mailto
+  sueltos, apunta a estas páginas; el footer también las lista.
+- **Investigación de mercado** (subagente, 9 vendedores MX + comparación EE.UU.): sirvió solo
+  para saber QUÉ temas cubrir, nunca para copiar. Huecos del mercado que ahora sí cubrimos y
+  casi nadie publica: temperaturas y tiempos de conservación con cifras, plazos de reporte
+  (48 h daño / 7 días producto equivocado), formato del número de pedido, lista de estados,
+  qué datos mandar al escribir, términos de facturación CFDI, procedimiento de entrega fallida.
+- **OJO legal:** la investigación señaló que en México el marco COFEPRIS es delicado
+  (registro sanitario, Art. 226 fr. IV LGS, alerta sanitaria por venta de tirzepatida en línea).
+  Las páginas **NO** afirman legalidad ni "no requiere licencia". Si se toca ese tema, que lo
+  revise Christian como abogado. Ver también la guía `/aprende/legalidad`.
+- **Datos operativos que quedaron por escrito** (coinciden con el backend): número de pedido
+  `EX-AAAAMMDD-1234`; estados pendiente → confirmado → enviado → entregado (+ cancelado);
+  paqueterías FedEx, DHL, Estafeta, UPS, Paquete Express, Redpack, Correos de México;
+  corte 5:00 pm; entrega 3-5 días hábiles; pagos solo tarjeta y SPEI.
+
 ---
 
 ## 10. ROADMAP — PRÓXIMA SESIÓN (orden de Christian, 2026-07-19)
