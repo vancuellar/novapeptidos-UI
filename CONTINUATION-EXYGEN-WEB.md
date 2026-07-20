@@ -1,6 +1,6 @@
 # Exygen Labs — Website Continuation File
 
-> **Propósito:** fuente única de verdad del SITIO WEB (frontend, backend, IA, marca, despliegue). Pega este archivo en un chat nuevo para retomar con todo el contexto. Complementa a `../NOVA-PRICING-SYSTEM-CONTINUATION.md` (el sistema de precios). **Última actualización: 2026-07-20 (noche).** Empieza por la sección 🚩 LO PRIMERO QUE DEBE HACER EL PRÓXIMO CHAT.
+> **Propósito:** fuente única de verdad del SITIO WEB (frontend, backend, IA, marca, despliegue). Pega este archivo en un chat nuevo para retomar con todo el contexto. Complementa a `../NOVA-PRICING-SYSTEM-CONTINUATION.md` (el sistema de precios). **Última actualización: 2026-07-21 (madrugada).** Empieza por la sección 🚩 LO PRIMERO QUE DEBE HACER EL PRÓXIMO CHAT.
 
 > **Estilo con Christian:** abogado, no dev ("abogado de 95 años haciendo vibe coding"). Respuestas **ultra cortas, español claro, sin jerga**. Corre TÚ los comandos (nunca le pidas abrir terminal). Términos de git en inglés (commit, push, merge — no "commitear").
 
@@ -477,46 +477,69 @@ envían a ningún procesador. SPEI funciona porque es transferencia manual.
 - **Requisitos en cualquier ruta:** acta constitutiva, RFC y constancia de situación fiscal,
   cuenta bancaria empresarial a nombre de la entidad, CFDI 4.0 y KYC/UBO de los socios.
 
+## 8septies. SÉPTIMA TANDA (2026-07-20, madrugada) — correos oscuros + E2E, DESPLEGADO
+
+### 1. ~~Versión clara/oscura de los correos~~ — HECHO Y DESPLEGADO (commit RBAC `af6e007`)
+- **TODOS los correos** tienen ya versión clara y oscura: pedido (`_order_email_html`),
+  bienvenida (`templates/welcome_email.{es,en,pt}.html`) y los de acción — confirmar correo,
+  invitación y restablecer contraseña (`_action_email_html`).
+- **Cómo:** bloque común `DARK_EMAIL_STYLE` en `emails.py` (metas `color-scheme` +
+  `@media (prefers-color-scheme: dark)` con clases `em-*` y `!important`, que es lo único que
+  vence a los estilos en línea). Paleta oscura = la del sitio: lienzo `#0A0A0A`, tarjeta
+  `#141414`, bordes `#262626`, texto `#F5F5F5/#D6D6D6/#A3A3A3`, botón azul `#4E73E8`.
+- **El claro sigue siendo el diseño base** (Gmail app y Outlook no respetan el modo oscuro de
+  forma confiable; Apple Mail sí). Verificado en navegador alternando `prefers-color-scheme`
+  en los tres tipos de correo: claro intacto, oscuro correcto.
+- `_action_email_html` ahora emite documento HTML completo (antes era un fragmento sin head).
+
+### 2. ~~E2E + workflow pre-push~~ — CORRIDO 2026-07-20 (madrugada), CERO FALLAS
+- Backend: `pytest test_core.py -q` → **40 pasan**. Frontend: `CI=true npm run build` limpio.
+- Recorrido en navegador sobre el **build de producción** servido localmente (el clasificador
+  bloqueó `npm start`; se sirvió `build/` con un server estático con fallback SPA):
+  **34 rutas públicas** renderizan con contenido y **cero errores de consola**: home, catálogo
+  (buscador probado: "Retatrutide"→Retatrutida), ficha (monografía+foto+disclaimer), carrito
+  (descuento automático 10%), modal agua BAC, checkout (secciones 1-2-3), login/registro/
+  recuperar, asesor, calculadora, educación, compendio, /aprende + las 13 guías, las 8
+  páginas /info/*, y la 404 propia. `/cuenta`, `/admin` y `/distribuidor` redirigen a /login
+  sin sesión (correcto; el interior se verificó en vivo la sesión pasada — no hay credenciales
+  de prueba en esta máquina).
+- Temas claro y oscuro OK; idiomas es-MX/en-US/pt-BR OK (llave localStorage `nova-language`;
+  las páginas legales /info/terminos y /info/privacidad son solo-español por diseño).
+- En vivo: `exygenlabs.com` 200, `api.exygenlabs.com/api/` ok, `/api/products` 200.
+- **Backend desplegado por SSH** (git pull + docker compose up -d --build) y API sana después.
+
+### Notas de entorno (para el próximo chat)
+- **Venv del backend:** `novapeptidos-RBAC/.venv` (python3.12, ya en .gitignore). Correr las
+  pruebas con `.venv/bin/python -m pytest test_core.py -q`. No hay pytest global ni Docker
+  local corriendo.
+- **`novapeptidos-UI/.env.local`** apuntaba a `http://localhost:8765` (backend local que ya no
+  existe); ahora apunta a `https://api.exygenlabs.com`. Respaldo del viejo en el scratchpad de
+  la sesión 2026-07-20.
+
 ## 🚩 LO PRIMERO QUE DEBE HACER EL PRÓXIMO CHAT
 
-### 1. Versión clara/oscura del correo de pedido — LO PRIMERO (Christian, 2026-07-20)
-El correo de confirmación de pedido ya quedó con el diseño del de bienvenida (`_order_email_html`
-en `novapeptidos-RBAC/emails.py`), pero **solo existe en versión clara**. Christian pidió que
-tenga versión clara y oscura.
-- **Cómo se hace en correo:** con `@media (prefers-color-scheme: dark)` dentro de un `<style>`
-  en el `<head>`, más el meta `<meta name="color-scheme" content="light dark">` y
-  `<meta name="supported-color-schemes" content="light dark">`. Como los estilos van en línea
-  (obligatorio para Outlook), hay que **duplicar** cada regla que cambie de color usando clases
-  con `!important` en el bloque `@media`.
-- **Ojo con el soporte real:** Apple Mail y iOS lo respetan bien; **Gmail app y Outlook no de
-  forma confiable**, y algunos clientes *invierten los colores por su cuenta*. Por eso el
-  diseño claro debe seguir siendo el que se ve bien por defecto, y el oscuro es una mejora
-  encima — nunca al revés.
-- **Alcance:** hacerlo primero en el correo de pedido y, si funciona, replicarlo en los de
-  bienvenida (`templates/welcome_email.*.html`) y en `_action_email_html` (confirmación de
-  correo, invitación y restablecer contraseña), que hoy tampoco tienen versión oscura.
-- **Cómo probarlo sin mandar correos:** renderizar `_order_email_html()` a un archivo HTML,
-  abrirlo en el navegador y alternar el tema del sistema (o forzar `prefers-color-scheme` con
-  las herramientas del navegador).
+### 1. Llave de Gemini nueva (cuando Christian la pase)
+**Lo único caído sigue siendo el chat de IA** (llave revocada por Google el 2026-07-20).
+Al recibirla: guardarla SOLO en `~/.config/exygen/gemini.env` (600) y en el `.env` del
+servidor (`ssh ubuntu@44.204.127.242`, `/opt/exygen/app/.env`, `sudo docker compose up -d`),
+NUNCA en repos ni en este archivo.
 
-### 2. E2E + workflow completo de pre-push (Christian lo pidió explícitamente)
-**No se ha corrido una auditoría E2E completa.** El chat anterior se quedó sin contexto.
-Hay que correr el **workflow de pre-push global de Christian: CERO fallas, incluidas las
-preexistentes y las "ambientales".** Cubrir al menos:
-- `cd novapeptidos-RBAC && pytest test_core.py -q` → hoy **40 pasan**.
-- `cd novapeptidos-UI && CI=true npm run build` → hoy compila limpio.
-- **Recorrido E2E en el navegador** (Browser pane, `.claude/launch.json` → `novapeptidos-ui`):
-  home, catálogo (filtros + buscador del sidebar), ficha de producto (monografía + foto),
-  carrito → checkout, registro/login, `/cuenta` (pestañas incluida Certificados),
-  `/distribuidor`, `/admin`, las 6 páginas `/info/*`, las 13 guías `/aprende/*`,
-  el asesor y la calculadora. Verificar en **claro y oscuro** y en **es/en/pt**.
-- Revisar consola sin errores y `preview_logs`.
-- Verificar en vivo: `https://api.exygenlabs.com/api/` y `https://exygenlabs.com`.
+### 2. Google Sign-In
+El backend ya está listo (commit `2a60cca`, apagado hasta tener CLIENT ID). Falta: Christian
+crea el OAuth Client ID en Google Cloud Console → botón en el frontend + variable en el
+servidor.
 
-> **Estado al cierre de esta sesión (2026-07-20, noche):** último commit del frontend
-> `573c2d2`, del backend `2a60cca`. Frontend compila limpio (`CI=true npm run build`) y el
-> backend pasa sus **40 pruebas**. Sitio y API en vivo. **Lo único caído es el chat de IA**,
-> por la llave de Gemini revocada. **Nada de esto sustituye el E2E completo del punto 2.**
+### 3. Los otros dos frentes de Christian (investigados, sin código aún)
+- **API de envíos** (§B): Skydropx primario + Envia.com respaldo; antes de escribir código,
+  pedir por escrito la clasificación de la mercancía (SDS/MSDS) y resolver Carta Porte.
+- **Pagos** (§C): postular a Stripe MX con declaración veraz (su FAQ permite péptidos RUO);
+  nunca miscoding. Pendiente decisión/documentos de Christian.
+- **Legales** (§A): Christian debe revisar términos/privacidad y definir domicilio del
+  responsable, encargado de datos y registro INAI.
+
+> **Estado al cierre (2026-07-20, madrugada siguiente):** frontend `573c2d2` (sin cambios
+> nuevos), backend `af6e007` desplegado. Pre-push corrido completo: 40 pruebas + build limpio
+> + E2E navegador cero fallas. Sitio y API en vivo y sanos.
 
 ### 3. Llave de Gemini
 Christian dijo que **la renueva y la entrega** (2026-07-21). Al recibirla: guardarla en
