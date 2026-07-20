@@ -20,11 +20,11 @@ const ICONS = { HeartPulse, Activity, Flame, Hourglass, Brain, Sparkles, Layers,
 // Orden de Christian: Reta al centro y al frente; NAD y KLOW a sus lados como
 // principales; Tirze y Sema en las esquinas.
 const HERO_VIALS = [
-  { slug: 'vial-tirzepatide', name: 'Tirzepatida 20mg', search: 'Tirzepatida', w: 13 },
-  { slug: 'vial-nad', name: 'NAD+ 500mg', search: 'NAD+', w: 14.5 },
-  { slug: 'vial-retatrutide', name: 'Retatrutida 40mg', search: 'Retatrutida', w: 16 },
-  { slug: 'vial-klow', name: 'KLOW 80mg', search: 'KLOW', w: 14.5 },
-  { slug: 'vial-semaglutide', name: 'Semaglutida 10mg', search: 'Semaglutida', w: 13 },
+  { slug: 'vial-tirzepatide', name: 'Tirzepatida 20mg', product: 'tirzepatida', w: 13 },
+  { slug: 'vial-nad', name: 'NAD+ 500mg', product: 'nad-plus', w: 14.5 },
+  { slug: 'vial-retatrutide', name: 'Retatrutida 40mg', product: 'retatrutida', w: 16 },
+  { slug: 'vial-klow', name: 'KLOW 80mg', product: 'klow-bpc-ghk-cu-tb-500-kpv', w: 14.5 },
+  { slug: 'vial-semaglutide', name: 'Semaglutida 10mg', product: 'semaglutida', w: 13 },
 ].map((v) => ({ ...v, src: `${process.env.PUBLIC_URL}/images/hero/${v.slug}.webp` }));
 
 // Compounds shown in the scrolling ticker under the hero
@@ -48,6 +48,7 @@ const CATEGORY_CHIPS = {
 const Home = () => {
   const [featured, setFeatured] = useState([]);
   const [categories, setCategories] = useState([]);
+  const [hoveredVial, setHoveredVial] = useState(null);
   const carouselRef = useRef(null);
   const { language, t } = useLanguage();
 
@@ -109,20 +110,32 @@ const Home = () => {
               <div className="hero-vials w-full max-w-[540px]">
                 <div className="hero-vials-glow" />
                 {/* Anchos en % del contenedor (max 540px): la fila ocupa el mismo
-                    espacio que la foto grupal anterior, sin desbordarse. */}
-                <div className="relative flex items-end justify-center gap-0.5 sm:gap-1">
-                  {HERO_VIALS.map((v) => (
-                    <Link
-                      key={v.slug}
-                      to={`/catalogo?search=${encodeURIComponent(v.search)}`}
-                      className="hero-vial-link block"
-                      style={{ width: `${v.w}%` }}
-                      title={v.name}
-                      data-testid={`hero-vial-${v.slug}`}
-                    >
-                      <img src={v.src} alt={v.name} className="hero-vial" />
-                    </Link>
-                  ))}
+                    espacio que la foto grupal anterior, sin desbordarse.
+                    El hover se maneja en estado, no solo en CSS, porque el vial
+                    apuntado crece y los vecinos se encogen: es un efecto de la
+                    fila completa, como el dock de macOS. */}
+                <div className="relative flex items-end justify-center gap-0.5 sm:gap-1"
+                  onMouseLeave={() => setHoveredVial(null)}>
+                  {HERO_VIALS.map((v, i) => {
+                    const state = hoveredVial === null ? 'idle'
+                      : hoveredVial === i ? 'active'
+                      : Math.abs(hoveredVial - i) === 1 ? 'near' : 'far';
+                    return (
+                      <Link
+                        key={v.slug}
+                        to={`/producto/${v.product}`}
+                        className={`hero-vial-link hero-vial-${state} block`}
+                        style={{ width: `${v.w}%` }}
+                        title={v.name}
+                        onMouseEnter={() => setHoveredVial(i)}
+                        onFocus={() => setHoveredVial(i)}
+                        data-testid={`hero-vial-${v.slug}`}
+                      >
+                        <img src={v.src} alt={v.name} className="hero-vial" />
+                        <span className="hero-vial-label">{v.name}</span>
+                      </Link>
+                    );
+                  })}
                 </div>
               </div>
             </div>

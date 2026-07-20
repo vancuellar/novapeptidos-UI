@@ -16,6 +16,14 @@ import { fallbackCategories, fallbackProducts } from '@/data/fallbackCatalog';
 import { useLanguage } from '@/context/LanguageContext';
 import { localizeCategories, localizeProducts } from '@/i18n/catalog';
 
+// Productos estrella: salen primero dentro de su categoría (orden de Christian).
+// Retatrutida es la número uno; NAD+ y KLOW la siguen.
+export const FLAGSHIP_ORDER = ['retatrutida', 'nad-plus', 'klow-bpc-ghk-cu-tb-500-kpv'];
+const flagshipRank = (p) => {
+  const i = FLAGSHIP_ORDER.indexOf(p.slug);
+  return i === -1 ? FLAGSHIP_ORDER.length : i;
+};
+
 const Filters = ({ categories, selectedCat, setCat, inStock, setInStock, priceMax, setPriceMax, priceCeiling, onClear, t }) => (
   <div className="space-y-6">
     <div>
@@ -85,8 +93,11 @@ const Catalog = () => {
     }
     if (inStock) list = list.filter((product) => product.stock > 0);
     list = list.filter((product) => product.price <= priceMax);
-    if (sort === 'price_asc') list.sort((a, b) => a.price - b.price);
-    if (sort === 'price_desc') list.sort((a, b) => b.price - a.price);
+    // Relevancia = nuestros productos estrella primero, dentro de su categoría.
+    // Con orden por precio manda el precio; el destacado solo desempata.
+    if (sort === 'price_asc') list.sort((a, b) => a.price - b.price || flagshipRank(a) - flagshipRank(b));
+    else if (sort === 'price_desc') list.sort((a, b) => b.price - a.price || flagshipRank(a) - flagshipRank(b));
+    else list.sort((a, b) => flagshipRank(a) - flagshipRank(b));
     setProducts(list);
     setLoading(false);
   }, [selectedCat, search, inStock, priceMax, sort]);

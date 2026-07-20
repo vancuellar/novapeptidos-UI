@@ -7,6 +7,7 @@ import { Card } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Skeleton } from '@/components/ui/skeleton';
+import { monographFor } from '@/data/productMonographs';
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from '@/components/ui/breadcrumb';
 import ProductCard from '@/components/ProductCard';
 import api, { formatMXN } from '@/lib/api';
@@ -49,6 +50,7 @@ const ProductDetail = () => {
 
   const localizedProduct = localizeProduct(product, language);
   const localizedRelated = localizeProducts(related, language);
+  const monograph = monographFor(product.slug);
   const variants = product.variants || [];
   const active = variants[variantIdx] || { price: localizedProduct.price, presentation: localizedProduct.presentation, stock: localizedProduct.stock, batch_number: localizedProduct.batch_number };
   const stockKey = variants.length ? `${product.id}::${active.presentation}` : product.id;
@@ -165,7 +167,30 @@ const ProductDetail = () => {
             <TabsTrigger value="storage">{t('product.tabs.storage')}</TabsTrigger>
             <TabsTrigger value="shipping">{t('product.tabs.shipping')}</TabsTrigger>
           </TabsList>
-          <TabsContent value="desc" className="mt-4 text-sm leading-relaxed text-muted-foreground max-w-3xl">{localizedProduct.description}</TabsContent>
+          <TabsContent value="desc" className="mt-4 max-w-3xl">
+            <p className="text-sm leading-relaxed text-muted-foreground">{localizedProduct.description}</p>
+            {/* Monografía larga: solo la tienen los productos que la tienen escrita.
+                Vive en productMonographs.js porque el catálogo se regenera. */}
+            {monograph && (
+              <div className="mt-8 space-y-7" data-testid="product-monograph">
+                {monograph.sections.map((sec) => (
+                  <section key={sec.title}>
+                    <h3 className="font-heading text-base font-semibold mb-2">{sec.title}</h3>
+                    <div className="space-y-3">
+                      {sec.paragraphs.map((par, i) => (
+                        <p key={i} className="text-sm leading-relaxed text-muted-foreground">{par}</p>
+                      ))}
+                    </div>
+                  </section>
+                ))}
+                <p className="text-xs leading-relaxed text-muted-foreground border-t border-border pt-4">
+                  Uso exclusivo en investigación (RUO). No es un medicamento ni un suplemento, no está
+                  destinado a consumo humano ni animal, y esta ficha no contiene indicaciones de dosis
+                  ni de administración.
+                </p>
+              </div>
+            )}
+          </TabsContent>
           <TabsContent value="specs" className="mt-4">
             <div className="max-w-xl divide-y divide-border border border-border rounded-lg">
               {specs.map((s) => <div key={s.label} className="flex justify-between px-4 py-2.5 text-sm"><span className="text-muted-foreground">{s.label}</span><span className="font-mono-tech">{s.value}</span></div>)}

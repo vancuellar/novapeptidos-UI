@@ -372,15 +372,47 @@ body {
     filter: drop-shadow(0 22px 46px rgba(0, 0, 0, 0.8));
 }
 
-.hero-vial-link:hover .hero-vial,
-.hero-vial-link:focus-visible .hero-vial {
-    transform: translateY(-14px);
-    filter: drop-shadow(0 30px 42px rgba(20, 24, 30, 0.22));
+/* Dock de macOS: el vial apuntado crece y se levanta, sus vecinos crecen un
+   poco menos, y los lejanos se encogen y se apagan para dejarle el escenario. */
+.hero-vial-link {
+    position: relative;
+    transform-origin: bottom center;
+    transition: transform 0.22s cubic-bezier(0.34, 1.4, 0.64, 1), opacity 0.22s ease;
 }
 
-.dark .hero-vial-link:hover .hero-vial,
-.dark .hero-vial-link:focus-visible .hero-vial {
-    filter: drop-shadow(0 34px 58px rgba(0, 0, 0, 0.85)) drop-shadow(0 0 24px hsla(var(--brand-glow), 0.25));
+.hero-vial-active { transform: scale(1.28) translateY(-16px); z-index: 3; }
+.hero-vial-near   { transform: scale(1.1) translateY(-6px); z-index: 2; }
+.hero-vial-far    { transform: scale(0.94); opacity: 0.55; }
+
+.hero-vial-active .hero-vial {
+    filter: drop-shadow(0 30px 42px rgba(20, 24, 30, 0.24));
+}
+
+.dark .hero-vial-active .hero-vial {
+    filter: drop-shadow(0 34px 58px rgba(0, 0, 0, 0.85)) drop-shadow(0 0 26px hsla(var(--brand-glow), 0.3));
+}
+
+/* Nombre del producto: solo aparece en el vial apuntado. */
+.hero-vial-label {
+    position: absolute;
+    left: 50%;
+    bottom: -1.55rem;
+    transform: translateX(-50%);
+    white-space: nowrap;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    color: hsl(var(--foreground));
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.18s ease;
+}
+
+.hero-vial-active .hero-vial-label { opacity: 1; }
+
+@media (prefers-reduced-motion: reduce) {
+    .hero-vial-link { transition: none; }
+    .hero-vial-active, .hero-vial-near, .hero-vial-far { transform: none; opacity: 1; }
 }
 
 .hero-vials-glow {

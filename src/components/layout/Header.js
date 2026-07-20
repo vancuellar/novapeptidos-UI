@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { User, Menu, LogOut, LayoutDashboard, ChevronDown, Search, X, Moon, Sun, Home, LayoutGrid, BadgeCheck, GraduationCap, MessageCircle, Calculator, Sparkles, FlaskConical, Flame, Activity, HeartPulse, Hourglass, HeartHandshake, Brain, ShieldPlus, Package } from 'lucide-react';
+import { User, Menu, LogOut, LayoutDashboard, ChevronDown, Search, X, Moon, Sun, SlidersHorizontal, Home, LayoutGrid, BadgeCheck, GraduationCap, MessageCircle, Calculator, Sparkles, FlaskConical, Flame, Activity, HeartPulse, Hourglass, HeartHandshake, Brain, ShieldPlus, Package } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Sheet, SheetContent, SheetTrigger, SheetHeader, SheetTitle } from '@/components/ui/sheet';
@@ -112,8 +112,8 @@ const Header = () => {
     <header className="sticky top-0 z-40">
       <div className={`transition-colors duration-200 ${scrolled ? 'bg-background/70 supports-[backdrop-filter]:backdrop-blur-xl' : 'bg-transparent'}`}>
         <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 h-[60px] flex items-center gap-4">
-          {/* Left: nav links (desktop) / menu (mobile) */}
-          <div className="flex items-center gap-6 min-w-0">
+          {/* Izquierda: logo y el menú móvil. La navegación va aparte, centrada. */}
+          <div className="flex items-center gap-3 min-w-0 shrink-0">
           {/* Logo pegado a la izquierda */}
           <Link to="/" className="shrink-0 order-first" data-testid="header-logo">
             <BrandLogo compact nameOnly />
@@ -201,8 +201,10 @@ const Header = () => {
             </SheetContent>
           </Sheet>
 
-          {/* Primary nav */}
-          <nav className="hidden lg:flex items-center gap-8">
+          </div>
+
+          {/* Navegación centrada entre el logo y las herramientas de la derecha. */}
+          <nav className="hidden lg:flex flex-1 items-center justify-center gap-8">
             <Link to="/catalogo" className={navLinkClass} data-testid="nav-catalog">{t('nav.catalog')}</Link>
 
             <DropdownMenu>
@@ -258,9 +260,8 @@ const Header = () => {
               </DropdownMenuContent>
             </DropdownMenu>
           </nav>
-          </div>
 
-          <div className="flex items-center gap-0.5 ml-auto">
+          <div className="flex items-center gap-0.5 ml-auto shrink-0">
             {/* Expanding search */}
             {searchOpen ? (
               <form onSubmit={submitSearch} className="hidden md:flex items-center">
@@ -276,14 +277,34 @@ const Header = () => {
               </Button>
             )}
 
-            {/* Language */}
+            {/* Preferencias: tema + idioma en un solo menú, igual que jadalegal.com
+                (botón de 3 líneas con el código del idioma, secciones y palomita). */}
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button variant="ghost" className="h-9 px-2 font-mono-tech text-xs uppercase tracking-[0.1em]" data-testid="language-selector">
+                <Button variant="ghost" data-testid="preferences-menu" aria-label={t('controls.preferences')}
+                  className="h-9 px-2.5 gap-1.5 border border-border font-mono-tech text-xs uppercase tracking-[0.1em]">
+                  <SlidersHorizontal className="h-[15px] w-[15px]" />
                   {currentLang ? currentLang.shortLabel : 'ES'}
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end" className="w-48">
+                <DropdownMenuLabel className="text-[10px] font-semibold uppercase tracking-[0.16em] text-muted-foreground">
+                  {t('controls.appearance')}
+                </DropdownMenuLabel>
+                <DropdownMenuRadioGroup value={isDark ? 'dark' : 'light'} onValueChange={setTheme}>
+                  <DropdownMenuRadioItem value="dark" data-testid="theme-dark">
+                    <span className="inline-flex items-center gap-2"><Moon className="h-3.5 w-3.5" /> {t('controls.dark')}</span>
+                  </DropdownMenuRadioItem>
+                  <DropdownMenuRadioItem value="light" data-testid="theme-light">
+                    <span className="inline-flex items-center gap-2"><Sun className="h-3.5 w-3.5" /> {t('controls.light')}</span>
+                  </DropdownMenuRadioItem>
+                </DropdownMenuRadioGroup>
+
+                <DropdownMenuSeparator />
+
+                <DropdownMenuLabel className="text-[10px] font-semibold uppercase tracking-[0.16em] text-muted-foreground">
+                  {t('controls.language')}
+                </DropdownMenuLabel>
                 <DropdownMenuRadioGroup value={language} onValueChange={setLanguage}>
                   {languages.map((item) => (
                     <DropdownMenuRadioItem key={item.code} value={item.code}>
@@ -293,11 +314,6 @@ const Header = () => {
                 </DropdownMenuRadioGroup>
               </DropdownMenuContent>
             </DropdownMenu>
-
-            {/* Theme toggle: shows the theme you'll switch TO */}
-            <Button variant="ghost" size="icon" onClick={toggleTheme} data-testid="theme-selector" aria-label={t('controls.theme')}>
-              {isDark ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
-            </Button>
 
             {/* Profile */}
             {user ? (
