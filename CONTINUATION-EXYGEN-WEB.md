@@ -391,45 +391,91 @@ El hero ahora arma la fila con 5 archivos y **cada vial se levanta solo al pasar
   (2) **definir el domicilio del responsable** —la LFPDPPP lo exige y hoy no está—;
   (3) designar al encargado de datos personales; (4) decidir si se registra ante el INAI.
 
-### B. API de envíos — POR HACER
+### B. API de envíos — POR HACER (investigado 2026-07-20)
 Objetivo: cotizar el envío en el checkout por código postal y peso, y jalar el estatus de la
 guía a la cuenta del cliente. Hoy el envío se cotiza a mano y la guía la captura el admin.
-- Lo que YA existe y hay que reaprovechar: el pedido guarda `carrier`, `tracking_number`,
+- Ya existe y hay que reaprovechar: el pedido guarda `carrier`, `tracking_number`,
   `tracking_url`, `shipped_at`, `eta`; y `build_tracking_url()` en `server.py` ya arma la URL
-  de rastreo para FedEx, DHL, Estafeta, UPS, Paquete Express, Redpack y Correos de México.
-- Decisión pendiente: **agregador** (Skydropx, Envia.com, Pakke) vs. **contrato directo** con
-  FedEx/Estafeta/DHL. El agregador es mucho más rápido de integrar y da tarifas con descuento
-  sin contrato propio; el directo conviene cuando el volumen crece.
-- **Verificar antes de integrar:** que el agregador elegido no restrinja este tipo de mercancía
-  en sus términos, y que tenga sandbox.
+  de rastreo de 7 paqueterías.
+- **RECOMENDACIÓN: Skydropx como primario, Envia.com como respaldo.** Una sola integración
+  (OAuth2 + JSON) cubre FedEx, DHL, Estafeta, Paquetexpress y ~20 más. Las dos cosas que
+  necesitamos son un endpoint cada una: `POST /api/v1/quotations` (CP origen/destino + peso →
+  tarifas de todas las paqueterías, válidas 24 h) y
+  `GET /api/v1/shipments/tracking/{numero}` o webhooks. Sin contrato con paquetería, sin
+  mensualidad, sin volumen mínimo, con sandbox y soporte en español.
+- **Ojo al integrar:** Skydropx limita a ~2 peticiones/segundo. NO llamar la cotización en
+  cada render del checkout: cachear por (CP, rango de peso) unos minutos y dejar una tarifa
+  plana de respaldo para que un límite de tasa nunca tumbe una venta.
+- **Directo (FedEx/DHL/Estafeta) queda para cuando crezca el volumen.** Si se hace: FedEx
+  **solo REST**, su SOAP se está retirando (tracking ya murió en mayo 2024). Estafeta directo
+  es el más difícil: no tiene documentación pública ni alta en línea, va por contrato.
+- **RESTRICCIONES DE MERCANCÍA — esto importa más que el descuento:** Skydropx pide
+  **SDS/MSDS (hoja de seguridad)** para polvos y sustancias químicas o retienen el paquete;
+  **Estafeta prohíbe líquidos**; medicamentos no controlados piden receta y certificado
+  COFEPRIS (esto pega justo con los 9 productos regulados del catálogo). FedEx es el canal de
+  consenso para químicos, lo que es otra razón para conservar la relación directa con FedEx.
+- **ANTES DE ESCRIBIR CÓDIGO:** mandar la lista real de productos a Skydropx y a FedEx y pedir
+  su clasificación **por escrito**. También hay que resolver **Carta Porte** (clave UNSPSC y
+  unidad de medida) para envíos nacionales, que aplica con cualquier proveedor.
 
-### C. Pagos — POR HACER, Y CON UNA ADVERTENCIA IMPORTANTE
+### C. Pagos — POR HACER (investigado 2026-07-20)
 Hoy el checkout captura la tarjeta pero **NO hay pasarela real conectada**: los datos no se
-envían a ningún procesador. SPEI funciona porque es transferencia manual. Esto es lo que falta
-para poder cobrar de verdad.
+envían a ningún procesador. SPEI funciona porque es transferencia manual.
 
-> **⚠️ ADVERTENCIA QUE HAY QUE DARLE A CHRISTIAN, NO OMITIRLA.**
-> Christian planteó declarar ante el procesador que se vende "cualquier otro producto" y no
-> péptidos, suponiendo que así lo hace la competencia. **Eso no se debe hacer y esta sesión se
-> negó a implementarlo.** Describir mercancía falsamente a un procesador es *transaction
-> laundering* / miscoding de MCC. Consecuencias reales: cierre de la cuenta y retención de
-> fondos; alta en la lista **MATCH/TMF** de las redes de tarjetas, que **inhabilita al negocio
-> y a sus dueños para obtener otra cuenta durante ~5 años**; multas de Visa/Mastercard al
-> adquirente que se trasladan al comercio; y exposición penal por fraude. Es un riesgo que
-> puede matar el negocio entero, no una infracción menor.
-> **El camino correcto:** declarar con exactitud qué se vende y buscar un procesador que
-> acepte la categoría — o un adquirente de alto riesgo, que existe justo para esto. Cuesta más
-> caro (comisión mayor y reserva rodante), pero es estable y no arriesga el negocio.
-> Christian es abogado: presentarle el riesgo con nombre y consecuencias, y dejar que él decida.
+> ### 🟢 HALLAZGO CLAVE: **Stripe SÍ acepta péptidos de investigación.**
+> Su FAQ oficial de negocios prohibidos/restringidos lo dice literalmente: *"Peptides that are
+> for research purposes may be sold on Stripe as long as there are preventive measures in place
+> to ensure these are not accessible to those who would purchase research chemicals for
+> nonresearch purposes"*, y advierte que *"we will assume that peptides sold where no purpose
+> is specified are sold for human consumption"*. **Existe una puerta legal. No hay ninguna
+> razón para mentirle a un procesador.**
+> **Lo que Stripe exige ya casi lo tenemos:** la puerta RUO/18+ de la primera visita, el aviso
+> RUO en cada ficha, cero dosis y cero pautas de administración en todo el sitio. Falta
+> confirmarlo **por escrito con Stripe MX antes de procesar volumen** (la FAQ es global y su
+> banco adquirente en México puede ser más estricto).
 
-**Camino recomendado a evaluar, en orden:**
-1. **SPEI** (ya operable) y reforzarlo: es el más barato y no depende de nadie.
-2. Postular con **declaración completa y veraz** ante procesadores mexicanos (Stripe MX,
-   Mercado Pago, Conekta, Openpay) y ver quién acepta la categoría por escrito.
-3. Si todos rechazan: **adquirente de alto riesgo** con cobertura en México.
-4. **Cripto** como complemento, nunca como único medio.
-> Requisitos que Christian tendrá que reunir en cualquier caso: acta constitutiva, RFC, cuenta
-> bancaria empresarial y documentación KYC de los socios.
+> ### ⚠️ ADVERTENCIA — NO DECLARAR MERCANCÍA FALSA. NO SE IMPLEMENTÓ Y NO SE DEBE.
+> Christian planteó declarar "cualquier otro producto" ante el procesador. Eso es
+> *transaction laundering* / miscoding de MCC, y **es una infracción grave aunque el producto
+> sea legal**: Visa lo define como disfrazar transacciones de alto riesgo como de bajo riesgo.
+> Consecuencias reales y documentadas: cierre de cuenta con **fondos retenidos 180 días**;
+> alta en **MATCH/TMF de Mastercard por 5 años, que incluye a los socios personalmente** e
+> impide abrir cuenta en cualquier adquirente, incluso para otro negocio; multas del **Visa
+> Integrity Risk Program** (MCC 5122/5912 son Tier 1) que el adquirente traslada al comercio y
+> han llegado a siete cifras; y exposición penal por **fraude (Art. 386-389 Bis CPF, 3 a 12
+> años)** y **Art. 400 Bis CPF (5 a 15 años)**, más bank/wire fraud en EE.UU. si algún banco
+> corresponsal es estadounidense. **Christian es abogado: dejarle el riesgo con nombre y
+> artículo, y que él decida.**
+
+**Qué usa la competencia (observado en su código, 2026-07-20):**
+- **Certified PepMex → Mercado Pago** (alta confianza: tienen overrides de traducción de las
+  cadenas del checkout de Mercado Pago). Tienen además un plugin `cp-research-popup`, o sea
+  la misma puerta RUO que nosotros.
+- **Exoma → pasarela "Monelo"** (`monelo-charge` y `monelo-3ds-status` en sus edge functions)
+  **+ SPEI pidiendo la CLABE por WhatsApp**. **OJO: capturan el número de tarjeta y el CVV en
+  sus propios campos y lo mandan a su backend** → eso es PCI-DSS SAQ-D completo y el
+  **código 12 de MATCH es justamente incumplimiento de PCI-DSS**. Esto NO se copia.
+- **peptide.com.mx → indeterminado**: el checkout se traslada a otra tienda (Shopify); lo que
+  dicen en su sitio se contradice entre páginas.
+- **Patrón del mercado:** todos se apoyan en **SPEI** como método principal y tratan la tarjeta
+  como lo frágil.
+
+**Ruta recomendada, en orden:**
+1. **Postular a Stripe MX con declaración completa y veraz**, apoyándose en las medidas que ya
+   tenemos. Pedir la respuesta por escrito.
+2. Si Stripe dice no: Conekta (`cumplimiento@conekta.com`, tiene tier de alto riesgo) o
+   Mercado Pago (tiene acreditación para suplementos, y es lo que usa Certified).
+3. Si todos rechazan: **adquirente de alto riesgo**. Costos típicos: **3.5-6.5% por
+   transacción**, **reserva rodante 5-15% retenida 180 días**, alta $0-1,500 USD, mensualidad
+   $25-100 USD, contracargo $25-50.
+4. **SPEI** ya funciona y conviene reforzarlo (referencia única por pedido, validación por CEP
+   o API bancaria) en vez de pasar CLABEs por WhatsApp. Aviso: un negocio cuyo **único** medio
+   sea transferencia opaca atrae escrutinio AML por LFPIORPI.
+5. **Cripto** solo como complemento, nunca como único medio.
+- **Descartar:** PayPal MX (prohíbe la categoría y congela fondos 180 días) y Openpay/BBVA
+  (adquirente bancario, el más conservador).
+- **Requisitos en cualquier ruta:** acta constitutiva, RFC y constancia de situación fiscal,
+  cuenta bancaria empresarial a nombre de la entidad, CFDI 4.0 y KYC/UBO de los socios.
 
 ## 🚩 LO PRIMERO QUE DEBE HACER EL PRÓXIMO CHAT
 
