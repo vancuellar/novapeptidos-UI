@@ -413,8 +413,31 @@ consultar `/auth/google/config` y **no renderizarse si `enabled` es false**.
 - Después: **Passkeys (WebAuthn)** y **2FA solo para admin y distribuidores** (a los clientes
   no se les impone: mata la conversión en una tienda).
 
+### Correo de confirmación de pedido (2026-07-20) — EN VIVO
+Faltaba por completo: al comprar no se mandaba ningún correo. `send_order_email()` en
+`emails.py`, disparado desde `POST /orders` con `asyncio.create_task` (en segundo plano: la
+compra no debe esperar al proveedor de correo ni fallar si está caído). Backend desplegado.
+- Mismo diseño que los demás correos. Trae número de pedido, artículos con cantidades,
+  subtotal, descuento, envío, total, dirección y botón "Ver mi pedido" → `/pedido/{numero}`.
+- El bloque "qué sigue" cambia si el pago fue **SPEI** (explica que se aparta al reflejarse
+  la transferencia y que de noche o en fin de semana pasa al siguiente día hábil).
+- **Fondo blanco explícito**: sin eso, los clientes de correo con modo oscuro dejaban el
+  texto gris ilegible. Los correos viejos (`_action_email_html`) **todavía no lo tienen** —
+  vale la pena arreglarlos igual.
+- es/en/pt, con el idioma del usuario. Incluye aviso RUO.
+- **Para ver el diseño sin mandar correo:** renderizar `_order_email_html()` a un archivo y
+  abrirlo; no hace falta tener EMAIL_ENABLED.
+
+### El enlace de confirmación de correo: PROBADO Y FUNCIONA
+Se verificó de punta a punta contra producción: registro real por API → token en
+`account_tokens` → abrir `https://exygenlabs.com/confirmar?token=...` (el formato exacto que
+arma `server.py`) → cuenta confirmada (`email_verified: true`) y sesión iniciada. Cuenta de
+prueba borrada. Si Christian vuelve a reportarlo, es que su enlace ya se usó, venció (24 h) o
+su cuenta se borró.
+
 ### Puerta RUO / 18+ en la primera visita (2026-07-20) — EN VIVO
-`src/components/RuoGate.js`, montado en `App.js`. Aparece la **primera vez** que alguien entra
+`src/components/RuoGate.js`, montado en `App.js`. Usa el logo **sin molécula**
+(`BrandMark noMolecule` → `exygen-logo-name.png`), por orden de Christian. Aparece la **primera vez** que alguien entra
 y **hay que aceptar para continuar**: no tiene tache, no se cierra con clic afuera y bloquea el
 scroll del fondo. La aceptacion se guarda en `localStorage` (`exygen_ruo_ack`), asi que sale
 una sola vez por dispositivo.
