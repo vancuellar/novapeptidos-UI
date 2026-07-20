@@ -374,6 +374,47 @@ El hero ahora arma la fila con 5 archivos y **cada vial se levanta solo al pasar
   `BrandLogo nameOnly`). El logo completo (molécula + subtítulo) sigue en footer, menú móvil
   y favicon. Christian fue explícito: solo en la barra.
 
+### 🔴 PENDIENTE URGENTE — EL CHAT DE IA ESTÁ CAÍDO (2026-07-20)
+Google **revocó la llave de Gemini**: responde `403 PERMISSION_DENIED — "Your API key was
+reported as leaked"`. Estaba escrita en este documento y en los userdata, y el repo es público.
+- Ya se **borró de todos los archivos** y se creó `~/.config/exygen/gemini.env` (600, vacío).
+- **Falta que Christian genere una llave nueva** en https://aistudio.google.com/apikey y la pegue
+  ahí. Después: poner `GEMINI_API_KEY=...` en el `.env` del servidor y reiniciar
+  (`ssh ubuntu@44.204.127.242 "cd /opt/exygen/app && sudo docker compose up -d"`).
+- **NUNCA volver a escribir la llave en el repo.** Es lo que la mató.
+- **Arreglado de paso:** `chat.exygenlabs.com` **nunca tuvo certificado TLS** — el Caddyfile solo
+  cubría `api.exygenlabs.com`, así que el widget del chat fallaba en el navegador desde siempre.
+  Ya se agregó al mismo bloque de Caddy y responde con HTTPS válido.
+
+### Octava tanda (2026-07-20) — commits `6ad13a9` (UI) y `ac3496b` (backend) — EN VIVO
+- **Viales del hero más chicos otra vez** (13-16% del ancho del contenedor) y **wordmark de la
+  barra a h-3.5/h-4**. Christian los pidió más pequeños dos veces; este es el tamaño bueno.
+- **Tipografía de todo el sitio: Franklin Gothic** (`Franklin Gothic Book/Medium` del sistema con
+  **Libre Franklin** de Google Fonts como respaldo). Salieron Space Grotesk e IBM Plex Sans.
+  El logotipo es imagen: no lo toca.
+- **El asistente responde en el idioma del sitio.** `ChatInput` acepta `language`, `build_chat`
+  agrega la instrucción al final del system prompt (es/en/pt/fr). El saludo del widget también
+  se traduce si se cambia de idioma antes de escribir.
+- **COAs (modelo decidido por Christian):** cada cliente recibe el COA del **lote que le
+  corresponde según su compra**, y en abierto se publica **solo uno de muestra** que él elegirá.
+  - Backend: `coa_store.py` + `GET /coa/public`, `GET /me/coas`, `GET /me/coa/{lot}`.
+    El acceso se resuelve por `product_slug` contra los pedidos pagados; a quien no compró se le
+    responde **404** (no 403) para no confirmar que el lote existe.
+  - Frontend: componente `CoaLibrary`, pestaña **Certificados** en Mi cuenta y en el portal de
+    distribuidores.
+  - **Dónde se guardan los PDF:** carpeta `../coa-files/` en la máquina de Christian (con
+    `registry.json` y un README que explica cómo agregar uno). Se suben al servidor a
+    `/opt/exygen/coa`, montado en el contenedor como `/data/coa` de solo lectura (`COA_DIR`).
+    **Agregar un COA = copiar el PDF + una entrada en el registro. No hay que desplegar.**
+  - Se reescribió el texto de "COA bajo solicitud" en calidad, guías y traducciones.
+- **Pestaña "Guías" → "Antes de comprar"** (es/en/pt).
+- **OXXO eliminado**: no es método de pago (el checkout ya solo tenía tarjeta y SPEI).
+- **Nivel en el seguimiento:** la calculadora privada guarda con qué nivel
+  (inicial/típica/avanzada) se calculó, porque de eso depende el agua por vial.
+  Los tres niveles ya existían y **siguen siendo exclusivos del área privada**.
+- **Pruebas del backend: 40 pasan** (7 nuevas: idioma del asistente y almacén de COAs,
+  incluida la que verifica que un lote con `../` no pueda salir de la carpeta).
+
 ### Séptima tanda (2026-07-20) — commit `ce30067` — PÁGINAS DE AYUDA Y RECURSOS COMPLETAS
 Christian pidió que las páginas de los dos menús estuvieran "desarrolladas completamente".
 - **Renderizador compartido:** las secciones tipadas salieron de `LearnPage.js` a
