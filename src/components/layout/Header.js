@@ -35,8 +35,8 @@ const CAT_EXAMPLES = {
 const CAT_TOP = new Set(['perdida-peso', 'recuperacion']);
 const WHATSAPP_URL = 'https://wa.me/5219944946889';
 
-// Menú "Herramientas": todo lo que NO es el catálogo, en dos columnas.
-// El catálogo lista los péptidos; aquí vive el resto. Sin duplicar nada.
+// Menú "Recursos": herramientas y aprendizaje, en dos columnas.
+// Lo de servicio al cliente (contacto, envíos, devoluciones) vive en "Ayuda".
 const TOOL_GROUPS = [
   {
     titleKey: 'nav.group.tools',
@@ -52,10 +52,18 @@ const TOOL_GROUPS = [
     items: [
       { to: '/educacion', labelKey: 'nav.education', descKey: 'nav.education.desc' },
       { to: '/info/calidad', labelKey: 'footer.quality', descKey: 'nav.quality.desc' },
-      { to: '/info/envios', labelKey: 'footer.shipping', descKey: 'nav.shipping.desc' },
-      { to: '/info/devoluciones', labelKey: 'footer.returns', descKey: 'nav.returns.desc' },
     ],
   },
+];
+
+// Menú "Ayuda": contacto, soporte, estatus y políticas.
+const HELP_ITEMS = [
+  { href: WHATSAPP_URL, labelKey: 'nav.contact', descKey: 'nav.contact.desc' },
+  { href: 'mailto:hola@exygenlabs.com', labelKey: 'nav.support', descKey: 'nav.support.desc' },
+  { to: '/cuenta', labelKey: 'nav.orderStatus', descKey: 'nav.orderStatus.desc' },
+  { to: '/aprende/preguntas-frecuentes', labelKey: 'nav.faq', descKey: 'nav.faq.desc' },
+  { to: '/info/envios', labelKey: 'footer.shipping', descKey: 'nav.shipping.desc' },
+  { to: '/info/devoluciones', labelKey: 'footer.returns', descKey: 'nav.returns.desc' },
 ];
 
 const Header = () => {
@@ -219,6 +227,33 @@ const Header = () => {
                     </div>
                   ))}
                 </div>
+              </DropdownMenuContent>
+            </DropdownMenu>
+
+            <DropdownMenu>
+              <DropdownMenuTrigger className={navLinkClass} data-testid="nav-help">
+                {t('nav.help')} <ChevronDown className="h-3.5 w-3.5" />
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="start" className="w-72 p-2">
+                <ul className="space-y-0.5">
+                  {HELP_ITEMS.map((it) => (
+                    <li key={it.labelKey}>
+                      {it.href ? (
+                        <a href={it.href} target={it.href.startsWith('http') ? '_blank' : undefined} rel="noreferrer" data-testid="nav-help-link"
+                          className="block rounded-md px-2 py-1.5 hover:bg-[hsl(var(--muted))] transition-colors">
+                          <div className="text-sm font-medium">{t(it.labelKey)}</div>
+                          <div className="text-[11px] text-muted-foreground">{t(it.descKey)}</div>
+                        </a>
+                      ) : (
+                        <button onClick={() => navigate(it.to)} data-testid="nav-help-link"
+                          className="w-full text-left rounded-md px-2 py-1.5 hover:bg-[hsl(var(--muted))] transition-colors">
+                          <div className="text-sm font-medium">{t(it.labelKey)}</div>
+                          <div className="text-[11px] text-muted-foreground">{t(it.descKey)}</div>
+                        </button>
+                      )}
+                    </li>
+                  ))}
+                </ul>
               </DropdownMenuContent>
             </DropdownMenu>
           </nav>
