@@ -1,8 +1,9 @@
-/* Franklin Gothic para todo el sitio (orden de Christian, 2026-07-20).
-   Se usa la fuente del sistema cuando existe y "Libre Franklin" —el revival
-   libre de Franklin Gothic— como respaldo web, para que se vea igual en
-   cualquier equipo. El logotipo es imagen: no lo afecta. */
-@import url('https://fonts.googleapis.com/css2?family=Libre+Franklin:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&family=Instrument+Serif:ital@0;1&family=Marcellus&family=JetBrains+Mono:wght@400;500&display=swap');
+/* Helvetica para todo el sitio (Christian, 2026-07-20). Es la sans neutra de
+   las etiquetas de nuestros viales y la que mejor contrasta con la Marcellus
+   del logotipo: serif romana elegante + sans limpia. Arial entra como respaldo
+   (métricas casi idénticas) y Liberation Sans en Linux. Sin descarga: las tres
+   ya están en el equipo del visitante. El logotipo es imagen: no lo afecta. */
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Instrument+Serif:ital@0;1&family=Marcellus&family=JetBrains+Mono:wght@400;500&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -10,7 +11,7 @@
 
 body {
     margin: 0;
-    font-family: 'Franklin Gothic Book', 'Franklin Gothic Medium', 'Franklin Gothic', 'ITC Franklin Gothic', 'Libre Franklin', 'Helvetica Neue', Arial, sans-serif;
+    font-family: 'Helvetica Neue', Helvetica, Arial, 'Liberation Sans', sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
 }
@@ -64,8 +65,8 @@ body {
         --shadow-sm: 0 1px 2px rgba(6,24,20,0.06);
         --shadow-md: 0 12px 32px rgba(6,24,20,0.12);
 
-        --font-heading: 'Franklin Gothic Medium', 'Franklin Gothic', 'ITC Franklin Gothic', 'Libre Franklin', 'Helvetica Neue', Arial, sans-serif;
-        --font-body: 'Franklin Gothic Book', 'Franklin Gothic Medium', 'Franklin Gothic', 'ITC Franklin Gothic', 'Libre Franklin', 'Helvetica Neue', Arial, sans-serif;
+        --font-heading: 'Helvetica Neue', Helvetica, Arial, 'Liberation Sans', sans-serif;
+        --font-body: 'Helvetica Neue', Helvetica, Arial, 'Liberation Sans', sans-serif;
         --font-mono: 'IBM Plex Mono', ui-monospace, monospace;
     }
 

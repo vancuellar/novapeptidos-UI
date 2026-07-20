@@ -111,7 +111,7 @@ const Header = () => {
   return (
     <header className="sticky top-0 z-40">
       <div className={`transition-colors duration-200 ${scrolled ? 'bg-background/70 supports-[backdrop-filter]:backdrop-blur-xl' : 'bg-transparent'}`}>
-        <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 h-[60px] flex items-center gap-4">
+        <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 h-[60px] flex items-center gap-4 relative">
           {/* Izquierda: logo y el menú móvil. La navegación va aparte, centrada. */}
           <div className="flex items-center gap-3 min-w-0 shrink-0">
           {/* Logo pegado a la izquierda */}
@@ -203,9 +203,14 @@ const Header = () => {
 
           </div>
 
-          {/* Navegación centrada entre el logo y las herramientas de la derecha. */}
-          <nav className="hidden lg:flex flex-1 items-center justify-center gap-8">
-            <Link to="/catalogo" className={navLinkClass} data-testid="nav-catalog">{t('nav.catalog')}</Link>
+          {/* Navegación centrada de verdad: va absoluta al centro de la barra, no
+              en el hueco entre logo y herramientas (que tienen anchos distintos).
+              "Catálogo" lleva un hueco del tamaño del chevron para que el espacio
+              entre las tres palabras sea idéntico. */}
+          <nav className="hidden lg:flex absolute left-1/2 -translate-x-1/2 items-center gap-9">
+            <Link to="/catalogo" className={navLinkClass} data-testid="nav-catalog">
+              {t('nav.catalog')} <span className="h-3.5 w-3.5" aria-hidden="true" />
+            </Link>
 
             <DropdownMenu>
               <DropdownMenuTrigger className={navLinkClass} data-testid="nav-tools">
