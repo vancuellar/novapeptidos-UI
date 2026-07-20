@@ -303,26 +303,48 @@ dos imágenes propias, `bg-hero-1.jpg` y `bg-light.png`; todo se recreó en CSS)
 
 ---
 
-## 11. LO QUE SIGUE — orden de Christian (2026-07-20)
+## 11. QUINTA TANDA (2026-07-20, tarde) — LOS 4 PUNTOS DE CHRISTIAN, HECHOS Y EN VIVO
 
-1. **Colores del hero de Resend, tal cual, en el de Exygen** — incluidos los botones.
-   **Excepción explícita: NO tocar el "lote por lote"** (la frase en cursiva serif del título;
-   se queda como está).
-2. **Márgenes.** La página de Resend respira mucho más. Adoptar sus márgenes y espaciados tal
-   cual — a Christian le gusta lo "extra clean". Revisar también **sus efectos de hover**
-   y replicarlos.
-3. **Color de acento nuevo para TODO el sitio.** El azul actual está a prueba; hay que proponer
-   alternativas y elegir uno definitivo (aplica a ambos temas, no solo al oscuro).
-4. **Mover el carrito de compras.** Hoy está al extremo derecho de la barra y a Christian no le
-   convence. Buscar otra posición.
+Los cuatro puntos que ordenó Christian se ejecutaron y están en `main` (commit `ef983af`):
+
+1. **Colores del hero de Resend, incluidos los botones.** Botón primario = pastilla de vidrio
+   medida de resend.com (borde blanco 5%, degradado translúcido, blur 25px, radio 16px) que al
+   hover se invierte a blanco con texto negro; en claro es tinta sólida sobre marfil. Secundario
+   = texto plano gris que se enciende (como su "Documentation"). Clases `btn-resend`,
+   `btn-resend-sm` y `btn-resend-ghost` en `index.css`. **El "lote por lote" NO se tocó.**
+   **La barra ahora se funde con el hero como en Resend:** nace 100% transparente y solo gana
+   fondo + blur al hacer scroll (listener en `Header.js`); 60px de alto; links de nav a 14px
+   medium sin mayúsculas.
+2. **Márgenes y hovers de Resend.** Secciones del home de 64px → 96px de aire vertical;
+   subtítulo del hero pegado al título (8px) y 32px antes de los botones, como ellos. Hovers:
+   transiciones de color a 150–200ms con su curva (0.4,0,0.2,1); tarjetas solo aclaran el borde
+   (sin sombra ni movimiento); botón primario se invierte.
+3. **Acento definitivo (decidido): guinda de marca #6C3030** — el mismo del enlace peptídico
+   del logo y del favicon. En claro va tal cual (`--primary: 0 39% 31%`, contraste ~9:1 sobre
+   marfil); en oscuro se aclara a rosa viejo (`4 55% 74%`, ~9:1 sobre negro). Sustituyó al azul
+   de prueba en TODOS los tokens (`--primary`, `--accent`, `--ring`, `--success`,
+   `--brand-glow`, kicker, chart-1). El destructivo sigue siendo rojo vivo, distinguible.
+4. **Carrito movido:** fuera de la barra. Ahora es botón flotante abajo a la derecha
+   (`src/components/CartFab.js`), en pila con el chat de WhatsApp, con contador guinda;
+   se oculta en `/carrito` y `/checkout`.
+
+**Bonus — botellas individuales del hero (Christian las mandó este día):** las 5 de
+`../Media/Viales individuales sin fondo para hero/` SÍ sirven (transparencia real, 1024²).
+Se recortaron al contenido y se convirtieron a webp (~62 KB c/u) en `public/images/hero/`.
+El hero ahora arma la fila con 5 archivos y **cada vial se levanta solo al pasar el cursor**
+(y enlaza a su búsqueda en el catálogo). Alturas escalonadas: NAD+ · Sema · Tirze · Reta · KLOW.
+- **OJO — erratas en las etiquetas (imágenes generadas):** KLOW dice "FOR RESFARCH USF ONLY";
+  NAD+ dice "RESEARCH PEPLIDES" y "Lyophlized"; Retatrutide dice "Lyoptilized". A tamaño web ni
+  se ven, pero avisar a Christian por si las quiere regenerar (y NO usarlas para imprimir).
+- **La "Foto grupal sin fondo.png" NO sirve** (texto ilegible/garabateado, KLOW repetido);
+  no se usó. `public/images/hero-vials.png` (la foto vieja) quedó sin uso pero no se borró.
 
 ### Decisiones que siguen abiertas de antes
 - **La molécula en la barra superior:** ¿se queda, se deja solo el nombre, o solo la marca?
   Mi recomendación fue dejar solo el nombre (a 26 px de alto la molécula se vuelve garabato y ya
   trabaja bien en el favicon y el footer). Sin decidir.
-- **Las botellas individuales del hero** (ver arriba).
-- Propuesta interactiva con las opciones de azul, de logo y los favicons:
-  `https://claude.ai/code/artifact/87e5308c-6cf8-49fb-ab44-5fa8a1224e50`
+- Propuesta interactiva con las opciones de azul (ya superada por el guinda), de logo y los
+  favicons: `https://claude.ai/code/artifact/87e5308c-6cf8-49fb-ab44-5fa8a1224e50`
 
 ---
 
