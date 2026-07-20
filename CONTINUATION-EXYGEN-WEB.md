@@ -374,7 +374,37 @@ El hero ahora arma la fila con 5 archivos y **cada vial se levanta solo al pasar
   `BrandLogo nameOnly`). El logo completo (molécula + subtítulo) sigue en footer, menú móvil
   y favicon. Christian fue explícito: solo en la barra.
 
-### 🔴 PENDIENTE URGENTE — EL CHAT DE IA ESTÁ CAÍDO (2026-07-20)
+### Undécima tanda (2026-07-20) — commit `09e7ff8` — EN VIVO
+- **Tipografía de las pestañas: IBM Plex Mono**, 11 px, mayúsculas, tracking 0.2em — el mismo
+  tratamiento de **jadalegal.com**, que es el que le gustó a Christian (se midió en su sitio:
+  IBM Plex Mono 11.2 px, uppercase, letter-spacing 2.24 px). El cuerpo del sitio sigue en
+  Helvetica. *Fuentes de JADA por si sirven de referencia: body Manrope, párrafos Outfit,
+  títulos Cormorant Garamond.*
+- **Hover de los botones negros, arreglado.** En claro solo oscurecía de 11% a 4% de
+  luminosidad y no se notaba. Ahora **se invierte en ambos temas**: en claro pasa a fondo
+  claro con borde y texto tinta más sombra; en oscuro sigue pasando a blanco.
+- **Fotos del catálogo: fuera las genéricas.** 88 productos usaban fotos de banco de imágenes
+  (Pexels) que no eran nuestras. Ahora todas usan
+  `public/images/products/_exygen-vial.jpg`, recorte de `Media/Viales para fotos/Todos los
+  viales sobre piedra.jpg`. **Se eligió una fila de VARIOS viales, no uno solo**, para que se
+  lea como imagen de marca y no como si el producto fuera el de la etiqueta visible; además
+  lleva aviso `product.brandPhotoNote` ("imagen ilustrativa…"). Helpers nuevos en
+  `productImages.js`: `BRAND_VIAL_IMAGE` e `isBrandImage()`. Se irán sustituyendo por la foto
+  real de cada producto conforme se tomen.
+- **Monografías: segunda tanda de 10** (Ipamorelin, CJC-1295 sin DAC, GHK-Cu, PT-141,
+  Melanotan II, Cagrilintida, Tesamorelina, Semax, Selank, agua bacteriostática).
+  **Van 18 de 112.** Christian pidió seguir en tandas de 10.
+
+### 🔴 EL CHAT DE IA SIGUE CAÍDO — GOOGLE REVOCÓ LA LLAVE (2026-07-20)
+> **Christian decidió NO rotar la llave y pidió dejar de insistir. Queda anotado el hecho, sin
+> volver a proponerlo en cada sesión.** La llave que él quiere usar **ya está puesta en el
+> `.env` del servidor** (verificado). El problema no es de configuración nuestra: Google la
+> bloqueó. Probado directo contra la API el 2026-07-20:
+> `403 PERMISSION_DENIED — "Your API key was reported as leaked. Please use another API key."`
+> Mientras Google no la desbloquee, `/api/ai/chat` responde el mensaje de error y el widget no
+> contesta. Todo lo demás del sitio funciona. La llave vive en `~/.config/exygen/gemini.env`.
+
+### Nota histórica — cómo se filtró
 Google **revocó la llave de Gemini**: responde `403 PERMISSION_DENIED — "Your API key was
 reported as leaked"`. Estaba escrita en este documento y en los userdata, y el repo es público.
 - Ya se **borró de todos los archivos** y se creó `~/.config/exygen/gemini.env` (600, vacío).
