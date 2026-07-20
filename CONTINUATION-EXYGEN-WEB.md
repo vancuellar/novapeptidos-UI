@@ -374,6 +374,31 @@ El hero ahora arma la fila con 5 archivos y **cada vial se levanta solo al pasar
   `BrandLogo nameOnly`). El logo completo (molécula + subtítulo) sigue en footer, menú móvil
   y favicon. Christian fue explícito: solo en la barra.
 
+### Duodécima tanda (2026-07-20) — commit `069ec06` — EN VIVO
+- **Logos al inicio Y al tope:** nuevo `src/components/HomeLogoLink.js`. Lo usan el logo de la
+  barra y el del pie. Estando ya en el home, un `<Link to="/">` no hacía nada; ahora fuerza el
+  scroll (suave si ya estás en el home, seco si vienes de otra página).
+- **Alta con las proporciones del signup de Resend** (sin sustituir nuestro diseño, como pidió
+  Christian): enlace "Inicio" con flecha arriba a la izquierda, marca centrada sobre el título,
+  título más grande y más aire antes del formulario. Pestañas, campos y consentimientos igual.
+
+### Decisiones pendientes de Christian — autenticación y catálogo
+- **Google Sign-In:** se puede hacer con Google Identity Services (flujo de ID token: solo se
+  necesita un **Client ID público**, no un secreto). **Falta que Christian cree el OAuth Client
+  ID** en Google Cloud Console y lo dé; el plan es dejarlo tras una variable de entorno para que
+  el botón solo aparezca cuando esté configurado (nada de botones muertos).
+- **Passkeys / huella (WebAuthn):** es lo que Christian llamó "log in con el dedo". Es el
+  siguiente paso natural DESPUÉS de Google, no antes.
+- **2FA:** recomendación = **no** imponerlo a clientes (mata conversión en una tienda);
+  **sí** para admin y distribuidores, que son las cuentas con datos de terceros.
+- **Catálogo:** faltan 15 productos vs. la competencia (§ hueco de catálogo). Los 4 que preguntó
+  Christian —Folistatina, Cerebrolisina, Dihexa, Adamax— y el ácido acético 0.6% los venden
+  otros en México, así que **existen proveedores**; hay que preguntarle a los suyos por nombre.
+- **HUMSC (células madre) y Dysport (toxina botulínica): NO son péptidos de investigación.**
+  Son productos biológicos/medicamento que en México caen bajo registro sanitario COFEPRIS y,
+  en el caso de Dysport, venta con receta. Meterlos en una tienda RUO cambia por completo el
+  perfil regulatorio del negocio. **Decisión de Christian como abogado**, no técnica.
+
 ### Undécima tanda (2026-07-20) — commit `09e7ff8` — EN VIVO
 - **Tipografía de las pestañas: IBM Plex Mono**, 11 px, mayúsculas, tracking 0.2em — el mismo
   tratamiento de **jadalegal.com**, que es el que le gustó a Christian (se midió en su sitio:
