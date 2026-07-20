@@ -16,8 +16,9 @@ import api from '@/lib/api';
 import { fallbackCategories } from '@/data/fallbackCatalog';
 import { localizeCategories } from '@/i18n/catalog';
 
-// Estilo Resend: 14px medium, gris que se enciende al hover, sin mayúsculas.
-const navLinkClass = 'inline-flex items-center gap-1 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors duration-150';
+// Pestañas con el tratamiento de jadalegal.com: IBM Plex Mono, ~11 px,
+// mayúsculas y muy espaciada. Es la fuente que le gustó a Christian.
+const navLinkClass = 'font-mono-tech inline-flex items-center gap-1 text-[11px] uppercase tracking-[0.2em] text-muted-foreground hover:text-foreground transition-colors duration-150';
 
 // Iconos + ejemplos por categoría para el menú móvil (estilo Exoma).
 const CAT_ICONS = {

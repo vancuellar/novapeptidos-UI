@@ -457,8 +457,14 @@ body {
     transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
+/* Hover visible en AMBOS temas: el botón se invierte. En claro pasa de tinta
+   sólida a fondo claro con texto tinta y borde; en oscuro, de vidrio a blanco.
+   Antes en claro solo oscurecía un 7% y no se notaba. */
 .btn-resend:hover {
-    background: hsl(220 20% 4%);
+    background: hsl(var(--background));
+    color: hsl(220 20% 11%);
+    border-color: hsl(220 20% 11%);
+    box-shadow: 0 4px 14px rgba(20, 24, 30, 0.16);
 }
 
 .dark .btn-resend {

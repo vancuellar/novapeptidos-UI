@@ -218,6 +218,276 @@ const monographs = {
       },
     ],
   },
+
+  // ===== Tanda 2 (2026-07-20) =====
+
+  ipamorelin: {
+    tagline: 'Pentapéptido secretagogo, agonista selectivo de GHSR',
+    sections: [
+      {
+        title: 'Qué es',
+        paragraphs: [
+          'Ipamorelin es un pentapéptido sintético de la familia de los secretagogos de hormona de crecimiento. Actúa como agonista del receptor de secretagogo de GH (GHSR-1a), el mismo receptor al que se une la grelina.',
+          'Su rasgo distintivo frente a los secretagogos más antiguos —GHRP-2, GHRP-6, hexarelina— es la selectividad. En los modelos publicados, Ipamorelin estimula la vía de GH sin el efecto cruzado marcado sobre cortisol, prolactina y ACTH que caracteriza a la generación anterior. Esa limpieza de perfil es justamente lo que lo volvió una herramienta de referencia: permite estudiar el eje somatotrópico sin arrastrar variables endocrinas ajenas.',
+        ],
+      },
+      {
+        title: 'Qué se estudia con él',
+        paragraphs: [
+          'Aparece en modelos de pulsatilidad de la hormona de crecimiento, señalización del receptor GHSR-1a, regulación del eje GH/IGF-1 y estudios de motilidad gastrointestinal, donde la señalización de grelina también participa.',
+          'Se investiga con frecuencia junto a un análogo de GHRH como CJC-1295, porque ambos actúan por vías receptoras distintas y complementarias: uno amplifica el pulso y el otro aumenta su amplitud. Esa combinación es la base de los stacks del eje somatotrópico.',
+        ],
+      },
+      {
+        title: 'Manejo en laboratorio',
+        paragraphs: [
+          'Polvo liofilizado en vial sellado. Al ser una cadena corta es razonablemente estable en seco, pero sensible a la humedad. Conservar en frío, seco y protegido de la luz.',
+          'Reconstituir con diluyente estéril vertido por la pared del vial, sin agitar. Refrigerar la solución.',
+        ],
+      },
+    ],
+  },
+
+  'cjc-1295-sin-dac': {
+    tagline: 'Análogo de GHRH sin DAC (Modified GRF 1-29)',
+    sections: [
+      {
+        title: 'Qué es',
+        paragraphs: [
+          'CJC-1295 sin DAC —también documentado como Modified GRF (1-29)— es un análogo sintético de los primeros 29 aminoácidos de la hormona liberadora de hormona de crecimiento, la fracción que concentra la actividad biológica de la molécula nativa. Incorpora cuatro sustituciones de aminoácidos que la protegen de la degradación por DPP-4 y aumentan su estabilidad frente al fragmento natural.',
+          '"Sin DAC" significa que carece del Drug Affinity Complex, el enlazador que en la versión con DAC se une de forma covalente a la albúmina. Sin ese enlazador, la vida media es corta y la señal se parece mucho más a un pulso fisiológico que a una exposición sostenida.',
+        ],
+      },
+      {
+        title: 'Qué se estudia con él',
+        paragraphs: [
+          'Se usa para estudiar la señalización del receptor de GHRH y su acoplamiento a la vía del AMP cíclico en la hipófisis anterior, así como la naturaleza pulsátil de la secreción de hormona de crecimiento. Precisamente por su vida media corta es la herramienta preferida cuando el diseño experimental requiere respetar el patrón de pulsos en lugar de aplanarlo.',
+          'La comparación directa entre la versión con DAC y sin DAC es un experimento clásico en farmacología del eje somatotrópico: mismo receptor, misma señal, duración de exposición radicalmente distinta.',
+        ],
+      },
+      {
+        title: 'Manejo en laboratorio',
+        paragraphs: [
+          'Liofilizado en vial sellado. Conservar en frío, seco y sin luz; es más sensible que un péptido corto por su longitud de cadena.',
+          'Reconstituir con diluyente estéril de forma suave, sin vórtice. Mantener la solución refrigerada y protegida de ciclos de congelado y descongelado.',
+        ],
+      },
+    ],
+  },
+
+  'ghk-cu': {
+    tagline: 'Tripéptido de cobre (Gly-His-Lys)',
+    sections: [
+      {
+        title: 'Qué es',
+        paragraphs: [
+          'GHK-Cu es el complejo formado por el tripéptido Gly-His-Lys y un ion de cobre (II). El péptido se aisló originalmente del plasma humano, donde su concentración desciende de manera marcada con la edad, y su altísima afinidad por el cobre es lo que define su comportamiento: no es un péptido que "lleve" cobre, sino un complejo cobre-péptido con actividad propia.',
+          'Ese complejo es responsable del color azul-verdoso característico que aparece al reconstituirlo. Es normal y es, de hecho, la señal visual de que el complejo está formado.',
+        ],
+      },
+      {
+        title: 'Qué se estudia con él',
+        paragraphs: [
+          'Es uno de los péptidos con más literatura en remodelado de matriz extracelular. Se investiga por su influencia sobre la expresión de colágeno y elastina, sobre metaloproteinasas de matriz y sus inhibidores, y sobre el equilibrio entre síntesis y degradación de tejido conectivo.',
+          'Un segundo eje es el transcriptómico: hay trabajos que describen cambios amplios en perfiles de expresión génica en cultivos expuestos al complejo, lo que lo ha convertido en objeto de estudio en biología de la piel, angiogénesis, folículo piloso y modelos de senescencia. También se estudia su papel como transportador y modulador de la homeostasis del cobre, un metal esencial en varias metaloenzimas.',
+        ],
+      },
+      {
+        title: 'Manejo en laboratorio',
+        paragraphs: [
+          'Liofilizado en vial sellado, de color azulado. Conservar en frío y protegido de la luz: los complejos de cobre son fotosensibles.',
+          'Reconstituir con diluyente estéril de forma muy suave; el complejo cobre-péptido es sensible al estrés mecánico y a los cambios bruscos de pH. La solución se guarda refrigerada y al abrigo de la luz.',
+        ],
+      },
+    ],
+  },
+
+  'pt-141': {
+    tagline: 'Bremelanotida, agonista de receptores de melanocortina',
+    sections: [
+      {
+        title: 'Qué es',
+        paragraphs: [
+          'PT-141, también documentado como bremelanotida, es un heptapéptido cíclico derivado de la Melanotan II, que a su vez deriva de la α-MSH. En su desarrollo se eliminó la parte de la estructura responsable de la actividad pigmentaria dominante, y lo que quedó fue una molécula con afinidad principalmente por los receptores de melanocortina MC3R y MC4R.',
+        ],
+      },
+      {
+        title: 'Qué se estudia con él',
+        paragraphs: [
+          'El sistema de melanocortinas es uno de los ejes de señalización más ramificados del sistema nervioso central: participa en la regulación del apetito, el gasto energético, la respuesta inflamatoria, la pigmentación y circuitos de conducta. PT-141 se investiga como herramienta para diseccionar la contribución específica de MC3R y MC4R dentro de ese entramado.',
+          'Aparece en modelos de señalización central de melanocortinas, estudios de receptores acoplados a proteína G, circuitos hipotalámicos y trabajos de farmacología comparada frente a otros agonistas de la familia. A diferencia de Melanotan II, su perfil de unión permite estudiar las vías centrales con menor interferencia del eje pigmentario.',
+        ],
+      },
+      {
+        title: 'Manejo en laboratorio',
+        paragraphs: [
+          'Liofilizado en vial sellado. Por ser un péptido cíclico es relativamente estable en seco. Conservar en frío, seco y sin exposición a la luz.',
+          'Reconstituir con diluyente estéril sin agitación vigorosa; refrigerar la solución.',
+        ],
+      },
+    ],
+  },
+
+  'melanotan-2': {
+    tagline: 'Análogo cíclico de α-MSH, agonista no selectivo de melanocortinas',
+    sections: [
+      {
+        title: 'Qué es',
+        paragraphs: [
+          'Melanotan II es un análogo sintético cíclico de la hormona estimulante de melanocitos alfa (α-MSH). La ciclación le da una estabilidad conformacional muy superior a la del péptido nativo, que se degrada en minutos, y le permite unirse a varios receptores de melanocortina a la vez: MC1R, MC3R, MC4R y MC5R.',
+          'Esa falta de selectividad, que en desarrollo farmacéutico es un inconveniente, es justo lo que lo vuelve útil como herramienta de investigación: permite activar el sistema completo y observar la respuesta integrada.',
+        ],
+      },
+      {
+        title: 'Qué se estudia con él',
+        paragraphs: [
+          'La vía MC1R es la más documentada: es el receptor de los melanocitos y el eje de la síntesis de eumelanina, por lo que la molécula aparece con frecuencia en estudios de pigmentación y biología del melanocito. Las vías MC3R y MC4R lo llevan al terreno de la regulación central del apetito y el balance energético, y MC5R al de las glándulas exocrinas.',
+          'Se usa como comparador frente a agonistas más selectivos, como PT-141, para separar qué efectos corresponden a qué receptor.',
+        ],
+      },
+      {
+        title: 'Manejo en laboratorio',
+        paragraphs: [
+          'Liofilizado en vial sellado; la estructura cíclica lo hace robusto en seco. Conservar en frío, seco y protegido de la luz.',
+          'Reconstituir con diluyente estéril de forma suave y refrigerar la solución.',
+        ],
+      },
+    ],
+  },
+
+  cagrilintida: {
+    tagline: 'Análogo de amilina de acción prolongada',
+    sections: [
+      {
+        title: 'Qué es',
+        paragraphs: [
+          'Cagrilintida es un análogo sintético de la amilina, la hormona de 37 aminoácidos que las células beta pancreáticas cosecretan junto con la insulina. La amilina humana nativa es notoriamente difícil de trabajar porque tiende a formar fibrillas amiloides; el diseño de cagrilintida sustituye residuos clave para eliminar esa propensión y añade una acilación que prolonga su permanencia en circulación.',
+          'El resultado es una molécula estable y de acción larga sobre un eje —el de la amilina— que durante años fue difícil de estudiar precisamente por la inestabilidad del péptido nativo.',
+        ],
+      },
+      {
+        title: 'Qué se estudia con ella',
+        paragraphs: [
+          'La amilina actúa sobre receptores formados por el receptor de calcitonina asociado a proteínas modificadoras de la actividad del receptor (RAMP), y su señalización se estudia en el área postrema y el núcleo del tracto solitario, regiones del tronco encefálico implicadas en saciedad y vaciamiento gástrico.',
+          'Cagrilintida aparece en modelos de señalización de saciedad, vaciado gástrico, biología de la célula beta y, muy señaladamente, en estudios de combinación con agonistas de GLP-1: la pregunta experimental es si dos vías de saciedad distintas producen un efecto aditivo o sinérgico.',
+        ],
+      },
+      {
+        title: 'Manejo en laboratorio',
+        paragraphs: [
+          'Liofilizada en vial sellado. Los análogos de amilina son especialmente sensibles a la agregación, así que la protección frente a la humedad y el manejo suave importan más aquí que en un péptido común.',
+          'Reconstituir con diluyente estéril dejándolo escurrir por la pared, sin vórtice ni agitación. Refrigerar y evitar ciclos de congelado y descongelado.',
+        ],
+      },
+    ],
+  },
+
+  tesamorelina: {
+    tagline: 'Análogo estabilizado de GHRH (1-44)',
+    sections: [
+      {
+        title: 'Qué es',
+        paragraphs: [
+          'Tesamorelina es un análogo sintético de la hormona liberadora de hormona de crecimiento humana en su forma completa de 44 aminoácidos, modificado con la adición de un grupo trans-3-hexenoil en el extremo N-terminal. Esa modificación es la clave: protege la molécula de la degradación por DPP-4 y le da una estabilidad muy superior a la del GHRH nativo, cuya vida media se mide en pocos minutos.',
+          'Frente a los análogos de fragmento 1-29, Tesamorelina conserva la secuencia completa, lo que la vuelve el análogo más cercano a la molécula natural entre los disponibles para investigación.',
+        ],
+      },
+      {
+        title: 'Qué se estudia con ella',
+        paragraphs: [
+          'Se investiga en señalización del receptor de GHRH en la hipófisis anterior, en regulación del eje GH/IGF-1 y, de forma destacada, en modelos de metabolismo del tejido adiposo visceral y de lípidos hepáticos, que es donde se concentra buena parte de su literatura.',
+          'Al respetar la secuencia completa del GHRH, es la referencia obligada cuando se quiere comparar el comportamiento de los análogos de fragmento frente a la molécula íntegra.',
+        ],
+      },
+      {
+        title: 'Manejo en laboratorio',
+        paragraphs: [
+          'Liofilizada en vial sellado. Su cadena es larga para un péptido de investigación, así que es más sensible que un tri o tetrapéptido: frío, seco y sin luz.',
+          'Reconstituir con diluyente estéril de forma suave, sin agitación. Refrigerar la solución y no congelarla una vez reconstituida.',
+        ],
+      },
+    ],
+  },
+
+  semax: {
+    tagline: 'Heptapéptido nootrópico derivado de ACTH (4-10)',
+    sections: [
+      {
+        title: 'Qué es',
+        paragraphs: [
+          'Semax es un heptapéptido sintético desarrollado en Rusia a partir del fragmento 4-10 de la hormona adrenocorticotropa (ACTH), al que se le añadió el tripéptido Pro-Gly-Pro en el extremo C-terminal. Ese añadido es lo que lo distingue: aumenta de forma notable su resistencia a las peptidasas y, al mismo tiempo, elimina la actividad corticotropa del fragmento original. Dicho de otro modo, conserva la parte neuroactiva y deja fuera la hormonal.',
+        ],
+      },
+      {
+        title: 'Qué se estudia con él',
+        paragraphs: [
+          'El eje más documentado es su influencia sobre los factores neurotróficos, en particular BDNF y NGF, y sobre la expresión de sus receptores. A partir de ahí se investiga en modelos de plasticidad sináptica, neuroprotección frente a estrés oxidativo e isquémico, y modulación de sistemas dopaminérgico y serotoninérgico.',
+          'Aparece también en trabajos de expresión génica en tejido nervioso, donde se describen cambios amplios en perfiles transcripcionales, y en estudios de atención y memoria en modelos animales. Es, junto con Selank, el representante más estudiado de la escuela rusa de péptidos reguladores cortos aplicados al sistema nervioso central.',
+        ],
+      },
+      {
+        title: 'Manejo en laboratorio',
+        paragraphs: [
+          'Liofilizado en vial sellado. Es una cadena corta y comparativamente estable en seco, pero higroscópica. Conservar en frío, seco y sin luz.',
+          'Reconstituir con diluyente estéril de forma suave; refrigerar la solución.',
+        ],
+      },
+    ],
+  },
+
+  selank: {
+    tagline: 'Heptapéptido derivado de la tuftsina',
+    sections: [
+      {
+        title: 'Qué es',
+        paragraphs: [
+          'Selank es un heptapéptido sintético construido sobre la tuftsina, un tetrapéptido inmunomodulador de origen natural, al que se le añadió —igual que en Semax— el tripéptido Pro-Gly-Pro para estabilizarlo frente a la degradación enzimática. Pertenece a la misma escuela rusa de péptidos reguladores cortos.',
+        ],
+      },
+      {
+        title: 'Qué se estudia con él',
+        paragraphs: [
+          'Su eje principal de investigación es el sistema GABAérgico: hay literatura que describe modulación de la expresión de subunidades del receptor GABA-A y cambios en la señalización inhibitoria, lo que lo ha situado en modelos de ansiedad experimental y respuesta al estrés.',
+          'Un segundo eje, heredado de la tuftsina, es el inmunológico: se estudia su influencia sobre la expresión de interleucinas y sobre el eje neuroinmune, un terreno donde los límites entre señalización nerviosa e inmunitaria se cruzan. También aparece en trabajos sobre metabolismo de encefalinas y sobre equilibrio de neurotransmisores monoaminérgicos.',
+        ],
+      },
+      {
+        title: 'Manejo en laboratorio',
+        paragraphs: [
+          'Liofilizado en vial sellado. Cadena corta, estable en seco, sensible a la humedad. Frío, seco y sin luz.',
+          'Reconstituir con diluyente estéril de forma suave y refrigerar la solución.',
+        ],
+      },
+    ],
+  },
+
+  'agua-bacteriostatica': {
+    tagline: 'Diluyente con alcohol bencílico al 0.9%',
+    sections: [
+      {
+        title: 'Qué es',
+        paragraphs: [
+          'El agua bacteriostática es agua estéril a la que se añade alcohol bencílico al 0.9% como conservador. No es un péptido ni un principio activo: es el diluyente con el que se reconstituye el material liofilizado en el banco de trabajo.',
+          'La diferencia frente al agua estéril simple es justamente el conservador. El alcohol bencílico inhibe el crecimiento bacteriano, lo que permite hacer varias extracciones del mismo vial a lo largo de días o semanas sin que la solución se comprometa. El agua estéril sin conservador no ofrece esa protección y, en rigor, es material de un solo uso.',
+        ],
+      },
+      {
+        title: 'Cuándo se usa cada una',
+        paragraphs: [
+          'El agua bacteriostática es la opción por defecto cuando el protocolo contempla extracciones repetidas del mismo vial, que es el caso más común en trabajo experimental con péptidos liofilizados.',
+          'El agua estéril sin conservador se reserva para trabajo analítico de un solo uso o para ensayos donde el alcohol bencílico podría interferir con la medición. Algunos compuestos tienen preferencias de diluyente propias: conviene revisar la ficha del compuesto antes de decidir.',
+          'La cantidad de diluyente determina la concentración final de la solución, y esa es una decisión del diseño experimental. Nuestra calculadora de reconstitución hace la aritmética a partir de los miligramos del vial y de la concentración que busques.',
+        ],
+      },
+      {
+        title: 'Manejo en laboratorio',
+        paragraphs: [
+          'Se suministra en vial sellado, listo para usar. Conservar a temperatura ambiente controlada, protegido de la luz, y no usar si la solución se ve turbia o con partículas.',
+          'El tapón se limpia con alcohol antes de cada punción y se trabaja con jeringa estéril nueva. Un vial de diluyente contaminado compromete todos los péptidos que se reconstituyan con él.',
+        ],
+      },
+    ],
+  },
 };
 
 export const monographFor = (slug) => monographs[slug] || null;

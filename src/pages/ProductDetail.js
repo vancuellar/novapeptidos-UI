@@ -13,7 +13,7 @@ import ProductCard from '@/components/ProductCard';
 import api, { formatMXN } from '@/lib/api';
 import { useCart } from '@/context/CartContext';
 import { getFallbackProductBySlug, getFallbackProductsByCategory } from '@/data/fallbackCatalog';
-import { productImage, hasProductPhoto } from '@/data/productImages';
+import { productImage, hasProductPhoto, isBrandImage } from '@/data/productImages';
 import { useLanguage } from '@/context/LanguageContext';
 import { localizeProduct, localizeProducts } from '@/i18n/catalog';
 
@@ -89,6 +89,9 @@ const ProductDetail = () => {
           <div className="rounded-2xl border border-border bg-[hsl(var(--secondary))] overflow-hidden">
             <img src={productImage(localizedProduct)} alt={localizedProduct.name} className="w-full object-cover aspect-square" />
           </div>
+          {isBrandImage(localizedProduct) && (
+            <p className="mt-2 text-[11px] leading-relaxed text-muted-foreground text-center">{t('product.brandPhotoNote')}</p>
+          )}
           {hasProductPhoto(localizedProduct) && (
             <p className="mt-2 text-[11px] leading-relaxed text-muted-foreground text-center">{t('product.photoNote')}</p>
           )}

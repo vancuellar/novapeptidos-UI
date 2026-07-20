@@ -1,5 +1,8 @@
 // Fotos reales de vial con etiqueta Exygen Labs (en public/images/products/<slug>.jpg).
-// Para los productos sin foto propia se usa la imagen del catálogo (image_url).
+// Los productos que todavía no tienen su foto propia usan una imagen de marca:
+// una fila de nuestros viales. Antes traían fotos genéricas de banco de imágenes
+// (laboratorios de stock) que no eran nuestras ni decían nada del producto.
+// Se irán sustituyendo por la foto real de cada vial conforme se tomen.
 const BASE = process.env.PUBLIC_URL || '';
 
 const WITH_PHOTO = new Set([
@@ -8,10 +11,20 @@ const WITH_PHOTO = new Set([
   'tirzepatida', 'agua-bacteriostatica',
 ]);
 
+// Imagen de marca para el resto del catálogo: varios viales nuestros, no uno
+// solo, justo para que se lea como "así son nuestros viales" y no como si el
+// producto fuera el de la etiqueta que se alcanza a ver.
+export const BRAND_VIAL_IMAGE = `${BASE}/images/products/_exygen-vial.jpg`;
+
 export const productImage = (product) => {
-  if (product && WITH_PHOTO.has(product.slug)) return `${BASE}/images/products/${product.slug}.jpg`;
-  return product ? product.image_url : undefined;
+  if (!product) return undefined;
+  if (WITH_PHOTO.has(product.slug)) return `${BASE}/images/products/${product.slug}.jpg`;
+  return BRAND_VIAL_IMAGE;
 };
 
 // True cuando el producto usa una foto de vial real (con un gramaje visible en la etiqueta).
 export const hasProductPhoto = (product) => !!product && WITH_PHOTO.has(product.slug);
+
+// True cuando se está mostrando la imagen de marca y no la foto del producto.
+// Se usa para avisar que la imagen es ilustrativa.
+export const isBrandImage = (product) => !!product && !WITH_PHOTO.has(product.slug);
