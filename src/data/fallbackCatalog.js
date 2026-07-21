@@ -3018,7 +3018,7 @@ export const fallbackProducts = [
       },
       {
         "presentation": "30 mg",
-        "price": 2969,
+        "price": 3229,
         "stock": 40,
         "batch_number": "NP-LIRA30-2601"
       }
