@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import { useNavigate, useSearchParams, Link } from 'react-router-dom';
-import { Package, User, LogOut, ShoppingBag, DollarSign, MapPin, CreditCard, LockKeyhole, Eye, EyeOff, Syringe, Truck, ExternalLink, Lock, FlaskConical, FileText } from 'lucide-react';
+import { Package, User, LogOut, ShoppingBag, DollarSign, MapPin, CreditCard, LockKeyhole, Eye, EyeOff, Syringe, Truck, ExternalLink, Lock, FlaskConical, FileText, Coins } from 'lucide-react';
 import ReconstitutionCalculator, { mgProducts } from '@/components/ReconstitutionCalculator';
 import ProtocolTracker from '@/components/ProtocolTracker';
 import LabReports from '@/components/LabReports';
@@ -53,6 +53,7 @@ const Account = () => {
   const navigate = useNavigate();
   const [orders, setOrders] = useState([]);
   const [protocols, setProtocols] = useState([]);
+  const [loyalty, setLoyalty] = useState({ eligible: false, balance: 0, ledger: [] });
   const [saving, setSaving] = useState(false);
   const [params, setParams] = useSearchParams();
 
@@ -86,6 +87,7 @@ const Account = () => {
   useEffect(() => {
     if (user) {
       api.get('/orders/me').then((r) => setOrders(r.data)).catch(() => {});
+      api.get('/me/points').then((r) => setLoyalty(r.data)).catch(() => {});
       loadProtocols();
       setName(user.name || '');
       setEmail(user.email || '');
@@ -178,7 +180,7 @@ const Account = () => {
         <Button variant="destructive" onClick={() => { logout(); navigate('/'); }} data-testid="account-logout-button"><LogOut className="h-4 w-4 mr-1.5" /> {t('account.signOut')}</Button>
       </div>
 
-      <div className="grid grid-cols-2 gap-3 mb-6">
+      <div className={`grid grid-cols-2 ${loyalty.eligible ? 'sm:grid-cols-3' : ''} gap-3 mb-6`}>
         <Card className="p-4">
           <div className="flex items-center gap-2 text-muted-foreground text-xs"><ShoppingBag className="h-4 w-4" /> {t('account.stats.orders')}</div>
           <div className="font-heading text-xl font-bold mt-1">{orders.length}</div>
@@ -187,6 +189,39 @@ const Account = () => {
           <div className="flex items-center gap-2 text-muted-foreground text-xs"><DollarSign className="h-4 w-4" /> {t('account.stats.spent')}</div>
           <div className="font-heading text-xl font-bold mt-1">{formatMXN(totalSpent)}</div>
         </Card>
+        {loyalty.eligible && (
+          <Dialog>
+            <DialogTrigger asChild>
+              <Card className="p-4 col-span-2 sm:col-span-1 cursor-pointer hover:border-[hsl(var(--primary))]/40 transition-colors" data-testid="account-points-card">
+                <div className="flex items-center gap-2 text-muted-foreground text-xs"><Coins className="h-4 w-4" /> {t('loyalty.title')}</div>
+                <div className="font-heading text-xl font-bold mt-1">{loyalty.balance}</div>
+                <div className="text-[10px] text-muted-foreground mt-0.5">{t('loyalty.cardNote')}</div>
+              </Card>
+            </DialogTrigger>
+            <DialogContent className="max-w-md">
+              <DialogHeader><DialogTitle>{t('loyalty.title')}</DialogTitle></DialogHeader>
+              <p className="text-sm text-muted-foreground leading-relaxed">{t('loyalty.explain')}</p>
+              <div className="font-heading text-3xl font-bold">{loyalty.balance} <span className="text-sm font-normal text-muted-foreground">{t('loyalty.unit')}</span></div>
+              {loyalty.ledger.length === 0 ? (
+                <p className="text-sm text-muted-foreground">{t('loyalty.empty')}</p>
+              ) : (
+                <div className="space-y-2 max-h-64 overflow-y-auto">
+                  {loyalty.ledger.map((e) => (
+                    <div key={e.id} className="flex items-center justify-between text-sm border-b border-border pb-2">
+                      <div>
+                        <div>{t(`loyalty.type.${e.type}`)}</div>
+                        <div className="text-xs text-muted-foreground">{e.order_number} · {(e.created_at || '').slice(0, 10)}</div>
+                      </div>
+                      <div className={`font-medium ${e.points > 0 ? 'text-[hsl(var(--success))]' : 'text-muted-foreground'}`}>
+                        {e.points > 0 ? '+' : ''}{e.points}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </DialogContent>
+          </Dialog>
+        )}
       </div>
 
       <Tabs value={params.get('tab') || 'orders'} onValueChange={(v) => setParams(v === 'orders' ? {} : { tab: v }, { replace: true })}>

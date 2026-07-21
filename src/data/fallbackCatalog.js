@@ -961,7 +961,7 @@ export const fallbackProducts = [
       },
       {
         "presentation": "1 mg",
-        "price": 1559,
+        "price": 1839,
         "stock": 40,
         "batch_number": "NP-IGF11-2601"
       }
@@ -2479,11 +2479,11 @@ export const fallbackProducts = [
     "presentation": "2 mg – 20 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
-    "price": 439,
+    "price": 619,
     "variants": [
       {
         "presentation": "2 mg",
-        "price": 439,
+        "price": 619,
         "stock": 40,
         "batch_number": "NP-TESA2-2601"
       },
@@ -3624,11 +3624,11 @@ export const fallbackProducts = [
     "presentation": "10 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
-    "price": 1669,
+    "price": 1889,
     "variants": [
       {
         "presentation": "10 mg",
-        "price": 1669,
+        "price": 1889,
         "stock": 40,
         "batch_number": "NP-BPC110-2601"
       }

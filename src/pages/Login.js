@@ -11,6 +11,7 @@ import api from '@/lib/api';
 import { useAuth } from '@/context/AuthContext';
 import { useLanguage } from '@/context/LanguageContext';
 import { BrandMark } from '@/components/BrandLogo';
+import GoogleSignInButton from '@/components/GoogleSignInButton';
 
 // Casilla de consentimiento. Etiqueta clicable completa: en móvil el cuadrito
 // solo es un blanco de 20 px y la gente falla el toque.
@@ -225,6 +226,8 @@ const Login = () => {
               </form>
             </TabsContent>
           </Tabs>
+
+          <GoogleSignInButton />
 
           {termsLine}
         </Card>

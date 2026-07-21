@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { CreditCard, Landmark, ShieldCheck, Package, UserRound, MapPin, ChevronDown } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -60,10 +60,22 @@ const Checkout = () => {
     notes: '',
   });
   const [card, setCard] = useState({ number: '', expiry: '', cvc: '', name: '' });
+  const [loyalty, setLoyalty] = useState({ eligible: false, balance: 0 });
+  const [usePoints, setUsePoints] = useState(false);
   const sectionRefs = { 0: useRef(null), 1: useRef(null), 2: useRef(null) };
 
+  // Puntos de lealtad: solo cuentas de cliente (el servidor decide quién participa).
+  useEffect(() => {
+    if (!user) return;
+    api.get('/me/points')
+      .then((res) => setLoyalty(res.data))
+      .catch(() => {});
+  }, [user]);
+
   const afterDiscount = subtotal - discount;
-  const total = afterDiscount; // el envío se cotiza y cobra por separado
+  const pointsApplied = usePoints && loyalty.eligible
+    ? Math.min(loyalty.balance, Math.floor(afterDiscount)) : 0;
+  const total = afterDiscount - pointsApplied; // el envío se cotiza y cobra por separado
   const set = (k, v) => setForm((f) => ({ ...f, [k]: v }));
   const setC = (k, v) => setCard((c) => ({ ...c, [k]: v }));
 
@@ -93,6 +105,7 @@ const Checkout = () => {
         shipping: 0,
         discount,
         distributor_code: distCode || null,
+        points_to_use: pointsApplied,
         // Seguridad: los datos de la tarjeta NUNCA se envian ni se guardan en nuestro servidor.
       };
       const res = await api.post('/orders', payload);
@@ -247,8 +260,19 @@ const Checkout = () => {
             <div className="space-y-1.5 text-sm">
               <div className="flex justify-between"><span className="text-muted-foreground">{t('common.subtotal')}</span><span>{formatMXN(subtotal)}</span></div>
               {discount > 0 && <div className="flex justify-between text-[hsl(var(--success))]"><span>{discountSource === 'code' ? t('discount.lineCode', { code: distCode, rate: Math.round(discountRate * 100) }) : t('discount.line', { rate: Math.round(discountRate * 100) })}</span><span>− {formatMXN(discount)}</span></div>}
+              {pointsApplied > 0 && <div className="flex justify-between text-[hsl(var(--success))]"><span>{t('loyalty.line')}</span><span>− {formatMXN(pointsApplied)}</span></div>}
               <div className="flex justify-between"><span className="text-muted-foreground">{t('common.shipping')}</span><span className="text-muted-foreground">{t('cart.shippingTBD')}</span></div>
             </div>
+            {loyalty.eligible && loyalty.balance > 0 && (
+              <label className="mt-4 flex items-start gap-2.5 rounded-lg border border-border bg-secondary/40 p-3 cursor-pointer" data-testid="checkout-use-points">
+                <input type="checkbox" checked={usePoints} onChange={(e) => setUsePoints(e.target.checked)}
+                  className="h-4 w-4 mt-0.5 shrink-0 accent-[hsl(var(--primary))] cursor-pointer" />
+                <span className="text-xs leading-relaxed">
+                  <span className="font-medium">{t('loyalty.use', { points: loyalty.balance })}</span><br />
+                  <span className="text-muted-foreground">{t('loyalty.useNote')}</span>
+                </span>
+              </label>
+            )}
             <Separator className="my-4" />
             <div className="flex justify-between font-heading font-bold text-lg"><span>{t('common.total')}</span><span>{formatMXN(total)}</span></div>
             <Button type="submit" className="w-full mt-5" size="lg" disabled={submitting} data-testid="checkout-place-order-button">
