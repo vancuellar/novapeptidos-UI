@@ -532,10 +532,32 @@ pedido / página de pedido: (i) línea "¡AHORRASTE $X!" destacada (el descuento
 (iv) puntos de recompensa (NO existe programa de puntos — sería feature nueva, decisión de
 Christian). Pendiente que Christian diga cuáles quiere.
 
-### 2. Google Sign-In
-El backend ya está listo (commit `2a60cca`, apagado hasta tener CLIENT ID). Falta: Christian
-crea el OAuth Client ID en Google Cloud Console → botón en el frontend + variable en el
-servidor.
+### 2. ~~Google Sign-In~~ — HECHO Y EN VIVO 2026-07-20 (noche)
+Client ID de Christian: `961192855720-9pqikhgl5p3vmcu69df9broh7jsfi4kj.apps.googleusercontent.com`
+(es público, sin secret; también en `~/.config/exygen/google.env` y como `GOOGLE_CLIENT_ID` en el
+`.env` del servidor). Botón "Continuar con Google" en /login (ambas pestañas, GIS con tema
+claro/oscuro, `src/components/GoogleSignInButton.js`); solo aparece si `/auth/google/config`
+dice enabled. **Verificado en producción.** OJO: desde localhost el botón NO sale — CORS del
+API solo permite exygenlabs.com; no es bug.
+
+### 2bis. PROGRAMA DE LEALTAD — CONSTRUIDO Y EN VIVO 2026-07-20 (noche)
+Orden de Christian: puntos por compra canjeables por producto, **distribuidores NO participan**.
+- **Reglas (en `novapeptidos-RBAC/loyalty.py`):** 5% de la mercancía pagada (después de
+  descuentos y canje, sin envío) vuelve como puntos; 1 punto = $1 MXN al canjear. **La tasa del
+  5% la elegí yo — si Christian quiere otra, es UNA constante (`EARN_RATE`).**
+- Se DEPOSITAN al confirmarse el pago (confirmado/enviado/entregado), idempotente; crear el
+  pedido no regala puntos (un SPEI nunca pagado no genera nada). Cancelar revierte lo ganado y
+  devuelve lo canjeado. Ledger en colección `points`; saldo en `users.points_balance`.
+- **API:** `GET /me/points` (saldo+movimientos; distribuidor → eligible:false) y
+  `points_to_use` en `POST /orders` (el servidor acota a saldo y a mercancía).
+- **Front:** casilla de canje en el checkout (aparece solo con saldo>0), tarjeta "Mis puntos"
+  con movimientos en Mi cuenta. i18n es/en/pt.
+- **Correo de pedido estilo ticket Soriana (pedido de Christian):** "Apreciable NOMBRE:",
+  caja punteada con "AHORRASTE $X" y "GANAS N PUNTOS CON ESTA COMPRA", renglón "Puntos
+  canjeados" en los totales y "GRACIAS POR TU COMPRA" al pie.
+- La comisión del distribuidor ahora se calcula sobre la mercancía tras el canje de puntos
+  (dinero real que entra), antes era sobre `after_discount`.
+- **48h de pruebas: 44 en verde** (lealtad + elementos del ticket incluidos).
 
 ### 3. Los otros dos frentes de Christian (investigados, sin código aún)
 - **API de envíos** (§B): Skydropx primario + Envia.com respaldo; antes de escribir código,
