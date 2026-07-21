@@ -565,6 +565,11 @@ API solo permite exygenlabs.com; no es bug.
   - **PENDIENTE DE CHRISTIAN:** entrar a exygenlabs.com/cuenta?tab=profile con su cuenta
     admin y ACTIVAR el 2FA (escanear QR); opcionalmente crear su passkey ahí mismo.
   - SMS: descartado para siempre (marketing y 2FA).
+- **Login/registro v5 (2026-07-21, correcciones finales de Christian):** la molécula va
+  SUELTA, sin caja (`MoleculeMark`, ya no existe MoleculeTile); "EXYGEN LABS" dentro del
+  título va en MAYÚSCULAS con tracking como el logotipo (helper `BrandTitle` que parte el
+  título por "Exygen Labs" — funciona en es/en/pt); "Volver al sitio" arriba a la
+  izquierda. Verificado en producción.
 - **Login/registro v4 — MONOCROMO Y MINIMALISTA TOTAL (2026-07-21, orden de Christian):**
   cero color en ambas pantallas (enlaces subrayados gris/blanco, CTA gris oscuro
   `#1e1f22`, **G de Google en blanco** como Resend, casillas blancas, resplandor neutro);
