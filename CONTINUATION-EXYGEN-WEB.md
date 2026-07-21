@@ -592,13 +592,29 @@ envían a ningún procesador. SPEI funciona porque es transferencia manual.
      **entidad en EE.UU.** → probable LLC americana + EIN (trámite corto). Nuestro sitio ya
      trae lo que su underwriting pide: puerta 18+/RUO, avisos en cada ficha, cero dosis.
      Siguiente paso: decidir lo de la LLC y aplicar a 2–3 en paralelo con giro real.
-   - **Cripto (complemento): BTCPay Server AUTOALOJADO** — 0% de comisión, sin
-     intermediario, nadie lo puede congelar (misma filosofía que SPEI). Corre en un
-     servidor propio (instancia aparte en la cuenta certis; nodo podado). Integración:
-     método "Cripto" en el checkout → factura BTCPay en MXN con ventana de 15 min →
-     webhook confirma el pedido. Conversión a pesos vía Bitso (exchange mexicano regulado)
-     cuando se quiera. Opcional después: NOWPayments (0.5%, 350+ monedas, auto-convert a
-     stablecoin) si se quiere USDT sin operar nodo — sujeto a su propio KYB.
+   - **Cripto (complemento): BTCPay Server AUTOALOJADO — CÓDIGO YA CONSTRUIDO Y EN MAIN,
+     APAGADO hasta configurar.** 0% comisión, sin intermediario, nadie lo congela.
+     - Backend: `btcpay.py` (crear factura Greenfield + verificar webhook HMAC fail-closed);
+       `POST /orders` acepta 'cripto' solo si `btcpay.enabled()`; webhook
+       `/payments/btcpay/webhook` confirma el pedido al liquidarse (dispara puntos);
+       `GET /payments/config`. Frontend: opción "Criptomoneda" en checkout que aparece solo
+       si config lo dice; paga en la factura BTCPay y regresa a /pedido/. 52 pruebas verdes.
+     - **PARA ENCENDERLO (pasos pendientes):** (1) montar BTCPay Server (instancia propia,
+       docker, nodo BTC podado — o LND) con dominio p.ej. pay.exygenlabs.com; (2) crear
+       tienda + API key Greenfield + webhook apuntando a
+       `https://api.exygenlabs.com/api/payments/btcpay/webhook`; (3) poner en el `.env` del
+       servidor: `BTCPAY_URL`, `BTCPAY_STORE_ID`, `BTCPAY_API_KEY`, `BTCPAY_WEBHOOK_SECRET`
+       y reiniciar. Conversión a MXN vía Bitso cuando se quiera. Alternativa sin nodo:
+       NOWPayments (0.5%, auto-USDT) sujeto a su KYB.
+     - **⚠️ DEPLOY DEL BACKEND PENDIENTE:** el código de cripto está en `main` del RBAC
+       (commit merge PR #9) pero **el servidor 44.204.127.242 NO se ha actualizado** — el
+       clasificador bloqueó el `ssh`. No urge: sin las BTCPAY_* no cambia nada. Correr en
+       Claude interactivo: `ssh -i ~/.ssh/id_ed25519 ubuntu@44.204.127.242 "cd /opt/exygen/app
+       && sudo git pull && sudo docker compose up -d --build"`.
+     - **OJO SEGURIDAD:** se agregó la IP `66.9.186.74/32` (egress de esta sesión) al SG
+       `sg-09f6bd49dc4ea40d3` puerto 22 para intentar el deploy. Si no se va a reusar,
+       **revocarla**: `aws ec2 revoke-security-group-ingress --group-id sg-09f6bd49dc4ea40d3
+       --protocol tcp --port 22 --cidr 66.9.186.74/32 --profile certis --region us-east-1`.
 
 2. **PROCESADOR DE PAGOS — DECISIÓN FIRME DE CHRISTIAN: STRIPE NO.** Stripe congeló en el
    pasado las cuentas de Certified y de Exoma con miles de dólares dentro. **Usar el mismo
