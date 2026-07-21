@@ -581,6 +581,25 @@ envían a ningún procesador. SPEI funciona porque es transferencia manual.
    por su propio servidor (PCI SAQ-D, lo que dijimos NO copiar); con Monelo se puede integrar
    BIEN vía tokens. Plan: cotizar con Monelo Y postular a Mercado Pago en paralelo.
 
+2ter. **RUTA DE PAGOS ELEGIDA POR CHRISTIAN (2026-07-21): adquirente especialista de alto
+   riesgo + cripto.** (Mercado Pago y la vía "mismo procesador que la competencia" quedaron
+   descartadas; los motivos finos están en la memoria privada, NO escribirlos aquí.)
+   - **Tarjeta (alto riesgo, giro declarado):** especialistas que aceptan péptidos RUO
+     explícitamente: **AllayPay** (procesamiento doméstico US para péptidos RUO),
+     **PaymentCloud** (bróker, ~3.49–3.95% + $0.25, $10–50 USD/mes), **Paycron**
+     (infraestructura para research chemicals). Términos realistas del nicho: 3.5–6.5%,
+     reserva rodante 5–15% (se libera ~mes 7), contracargo $50–100. La mayoría pide
+     **entidad en EE.UU.** → probable LLC americana + EIN (trámite corto). Nuestro sitio ya
+     trae lo que su underwriting pide: puerta 18+/RUO, avisos en cada ficha, cero dosis.
+     Siguiente paso: decidir lo de la LLC y aplicar a 2–3 en paralelo con giro real.
+   - **Cripto (complemento): BTCPay Server AUTOALOJADO** — 0% de comisión, sin
+     intermediario, nadie lo puede congelar (misma filosofía que SPEI). Corre en un
+     servidor propio (instancia aparte en la cuenta certis; nodo podado). Integración:
+     método "Cripto" en el checkout → factura BTCPay en MXN con ventana de 15 min →
+     webhook confirma el pedido. Conversión a pesos vía Bitso (exchange mexicano regulado)
+     cuando se quiera. Opcional después: NOWPayments (0.5%, 350+ monedas, auto-convert a
+     stablecoin) si se quiere USDT sin operar nodo — sujeto a su propio KYB.
+
 2. **PROCESADOR DE PAGOS — DECISIÓN FIRME DE CHRISTIAN: STRIPE NO.** Stripe congeló en el
    pasado las cuentas de Certified y de Exoma con miles de dólares dentro. **Usar el mismo
    procesador que usan ellos:** Certified → **Mercado Pago** (confirmado en su código);
