@@ -190,6 +190,15 @@ const Admin = () => {
 
   const copyText = (text, msg) => { navigator.clipboard?.writeText(text); toast.success(msg); };
 
+  // Abre el comprobante SPEI del cliente (endpoint solo-admin; el api client
+  // manda el token, por eso lo bajamos como blob en vez de un <a href>).
+  const openReceipt = async (orderId) => {
+    try {
+      const res = await api.get(`/admin/orders/${orderId}/spei-receipt`, { responseType: 'blob' });
+      window.open(URL.createObjectURL(res.data), '_blank');
+    } catch { toast.error(t('admin.receipt.none')); }
+  };
+
   const openRates = (d) => {
     setRatesForm({
       commission: Math.round((d.commission_rate || 0) * 100),
@@ -469,12 +478,13 @@ const Admin = () => {
                 <TableRow>
                   <TableHead>{t('admin.table.order')}</TableHead><TableHead>{t('admin.table.customer')}</TableHead><TableHead>{t('common.total')}</TableHead>
                   <TableHead>{t('admin.table.payment')}</TableHead><TableHead>{t('admin.table.date')}</TableHead><TableHead>{t('admin.table.status')}</TableHead>
+                  <TableHead>{t('admin.table.receipt')}</TableHead>
                   <TableHead>{t('admin.table.tracking')}</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
                 {orders.length === 0 ? (
-                  <TableRow><TableCell colSpan={7} className="text-center text-muted-foreground py-8">{t('admin.noOrders')}</TableCell></TableRow>
+                  <TableRow><TableCell colSpan={8} className="text-center text-muted-foreground py-8">{t('admin.noOrders')}</TableCell></TableRow>
                 ) : orders.map((o) => (
                   <TableRow key={o.id}>
                     <TableCell className="font-mono-tech text-xs">{o.order_number}</TableCell>
@@ -482,6 +492,15 @@ const Admin = () => {
                     <TableCell className="font-medium">{formatMXN(o.total)}</TableCell>
                     <TableCell className="text-xs">{t(`payment.${o.payment_method}.label`) || o.payment_method}</TableCell>
                     <TableCell className="text-xs text-muted-foreground">{new Date(o.created_at).toLocaleDateString(language)}</TableCell>
+                    <TableCell>
+                      {o.spei_receipt_at ? (
+                        <Button variant="outline" size="sm" className="h-8 text-xs" onClick={() => openReceipt(o.id)} data-testid="admin-view-receipt">
+                          <Receipt className="h-3.5 w-3.5 mr-1.5 text-[hsl(var(--success))]" /> {t('admin.receipt.view')}
+                        </Button>
+                      ) : o.payment_method === 'spei' ? (
+                        <span className="text-xs text-muted-foreground">{t('admin.receipt.pending')}</span>
+                      ) : <span className="text-xs text-muted-foreground">—</span>}
+                    </TableCell>
                     <TableCell>
                       <Select value={o.status} onValueChange={(v) => updateStatus(o, v)}>
                         <SelectTrigger className="w-36 h-8" data-testid="admin-update-order-status-select"><SelectValue /></SelectTrigger>

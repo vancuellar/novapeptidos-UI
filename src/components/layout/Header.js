@@ -318,7 +318,10 @@ const Header = () => {
             {user ? (
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <Button variant="ghost" size="icon" data-testid="header-account-button"><User className="h-5 w-5" /></Button>
+                  <Button variant="ghost" data-testid="header-account-button" className="gap-2 px-2 sm:px-3">
+                    <User className="h-5 w-5" />
+                    <span className="hidden sm:inline max-w-[120px] truncate text-sm">{(user.name || '').split(' ')[0]}</span>
+                  </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end" className="w-52">
                   <DropdownMenuLabel className="truncate">{user.name}</DropdownMenuLabel>
