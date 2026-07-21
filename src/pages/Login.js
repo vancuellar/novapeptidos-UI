@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate, Link, useSearchParams } from 'react-router-dom';
-import { Eye, EyeOff, ArrowLeft, ShieldCheck, Truck, Lock, MailCheck } from 'lucide-react';
+import { Eye, EyeOff, ArrowLeft, ShieldCheck, Truck, Lock, MailCheck, Fingerprint, KeyRound } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -9,8 +9,9 @@ import { toast } from 'sonner';
 import api from '@/lib/api';
 import { useAuth } from '@/context/AuthContext';
 import { useLanguage } from '@/context/LanguageContext';
-import { BrandMark } from '@/components/BrandLogo';
+import { MoleculeTile } from '@/components/BrandLogo';
 import GoogleSignInButton from '@/components/GoogleSignInButton';
+import { passkeysSupported, loginWithPasskey } from '@/lib/webauthn';
 
 // Casilla de consentimiento. Etiqueta clicable completa: en móvil el cuadrito
 // solo es un blanco de 20 px y la gente falla el toque.
@@ -42,6 +43,8 @@ const Login = () => {
   const [loading, setLoading] = useState(false);
   const [pendingEmail, setPendingEmail] = useState('');   // registrado, falta confirmar
   const [unverified, setUnverified] = useState('');       // intento de entrar sin confirmar
+  const [totpToken, setTotpToken] = useState('');         // cuenta con 2FA: falta el codigo
+  const [totpCode, setTotpCode] = useState('');
   // Los dos primeros son obligatorios; los otros dos son opt-in real (nacen apagados).
   const [consents, setConsents] = useState({
     age_confirmed: false, privacy_accepted: false,
@@ -57,12 +60,46 @@ const Login = () => {
     setLoading(true);
     setUnverified('');
     try {
-      const user = await login(email, password);
+      const result = await login(email, password);
+      if (result?.needs_totp) {
+        setTotpToken(result.pre_token);
+        setTotpCode('');
+        return;
+      }
       toast.success(t('auth.toast.welcome'));
-      navigate(user.role === 'admin' ? '/admin' : '/cuenta');
+      navigate(result.role === 'admin' ? '/admin' : '/cuenta');
     } catch (err) {
       if (err.response?.status === 403) setUnverified(email.trim());
       else toast.error(err.response?.data?.detail || t('auth.toast.loginError'));
+    } finally { setLoading(false); }
+  };
+
+  const submitTotp = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    try {
+      const res = await api.post('/auth/totp', { pre_token: totpToken, code: totpCode });
+      adoptSession(res.data.token, res.data.user);
+      toast.success(t('auth.toast.welcome'));
+      navigate(res.data.user.role === 'admin' ? '/admin' : '/cuenta');
+    } catch (err) {
+      toast.error(err.response?.data?.detail || t('auth.toast.loginError'));
+      if (err.response?.status === 401 && /expiro|expired/i.test(err.response?.data?.detail || '')) setTotpToken('');
+    } finally { setLoading(false); }
+  };
+
+  const passkeyLogin = async () => {
+    setLoading(true);
+    try {
+      const data = await loginWithPasskey();
+      adoptSession(data.token, data.user);
+      toast.success(t('auth.toast.welcome'));
+      navigate(data.user.role === 'admin' ? '/admin' : '/cuenta');
+    } catch (err) {
+      // Cancelar el dialogo del sistema no es un error que regañar.
+      if (err?.name !== 'NotAllowedError') {
+        toast.error(err.response?.data?.detail || t('passkey.loginFailed'));
+      }
     } finally { setLoading(false); }
   };
 
@@ -98,7 +135,7 @@ const Login = () => {
 
   const passwordField = (value, onChange, show, setShow, testid) => (
     <div className="relative mt-1.5">
-      <Input type={show ? 'text' : 'password'} className="pr-10" placeholder="••••••••" minLength={6} value={value} onChange={onChange} data-testid={testid} required />
+      <Input type={show ? 'text' : 'password'} className="pr-10 h-12 rounded-lg" placeholder="••••••••" minLength={6} value={value} onChange={onChange} data-testid={testid} required />
       <button type="button" onClick={() => setShow(!show)} className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground" aria-label={t(show ? 'auth.hidePassword' : 'auth.showPassword')}>
         {show ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
       </button>
@@ -116,17 +153,12 @@ const Login = () => {
 
   return (
     <div className="min-h-[70vh] flex items-center justify-center px-4 py-14 relative">
-      {/* Vuelta al inicio arriba a la izquierda, como en el alta de Resend. */}
-      <Link to="/" data-testid="auth-back-home"
-        className="absolute left-4 top-6 sm:left-8 inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors">
-        <ArrowLeft className="h-4 w-4" /> {t('common.home')}
-      </Link>
-
       <div className="w-full max-w-md">
-        {/* Marca + título grande + enlace de cambio de modo, como Resend:
-            "Create a Resend account / Already have an account? Log in." */}
+        {/* Como Resend: SOLO la molécula en su mosaico, título grande y el
+            enlace para cambiar de modo. Sin wordmark y sin link de "Inicio"
+            (órdenes de Christian, 2026-07-21). */}
         <div className="flex flex-col items-center text-center mb-9">
-          <BrandMark className="h-9 mb-7" />
+          <MoleculeTile className="h-14 w-14 mb-7 text-foreground" />
           <h1 className="font-heading text-3xl sm:text-4xl font-bold tracking-tight">
             {mode === 'signup' ? t('auth.resend.signupTitle') : t('auth.resend.loginTitle')}
           </h1>
@@ -134,14 +166,30 @@ const Login = () => {
             {mode === 'signup' ? t('auth.resend.haveAccount') : t('auth.resend.noAccount')}{' '}
             <button type="button" data-testid="auth-switch-mode"
               onClick={() => switchMode(mode === 'signup' ? 'login' : 'signup')}
-              className="font-semibold text-foreground hover:underline underline-offset-2">
+              className="font-semibold text-foreground underline underline-offset-4 decoration-border hover:decoration-foreground transition-colors">
               {mode === 'signup' ? t('auth.login.title') : t('auth.register.title')}
             </button>.
           </p>
         </div>
 
-        {/* Registrado: falta abrir el enlace del correo para poder entrar. */}
-        {pendingEmail ? (
+        {/* Cuenta con 2FA (admin): la contrasena ya paso, falta el codigo. */}
+        {totpToken ? (
+          <Card className="p-8 rounded-2xl shadow-sm text-center" data-testid="totp-step">
+            <KeyRound className="h-10 w-10 mx-auto mb-4 text-[hsl(var(--primary))]" />
+            <h2 className="font-heading text-xl font-bold mb-2">{t('totp.title')}</h2>
+            <p className="text-sm text-muted-foreground leading-relaxed">{t('totp.body')}</p>
+            <form onSubmit={submitTotp} className="mt-6 space-y-3">
+              <Input inputMode="numeric" autoComplete="one-time-code" maxLength={6} autoFocus
+                className="h-12 rounded-lg text-center text-xl tracking-[0.4em] font-mono-tech"
+                value={totpCode} onChange={(e) => setTotpCode(e.target.value.replace(/\D/g, ''))}
+                data-testid="totp-code-input" required />
+              <Button type="submit" size="lg" className="w-full h-12 rounded-xl" disabled={loading || totpCode.length !== 6} data-testid="totp-submit">
+                {loading ? t('auth.login.loading') : t('totp.submit')}
+              </Button>
+              <Button type="button" variant="ghost" className="w-full" onClick={() => setTotpToken('')}>{t('verify.backToLogin')}</Button>
+            </form>
+          </Card>
+        ) : pendingEmail ? (
           <Card className="p-8 rounded-2xl shadow-sm text-center" data-testid="register-pending">
             <MailCheck className="h-10 w-10 mx-auto mb-4 text-[hsl(var(--primary))]" />
             <h2 className="font-heading text-xl font-bold mb-2">{t('verify.sentTitle')}</h2>
@@ -173,7 +221,7 @@ const Login = () => {
             <form onSubmit={submitLogin} className="space-y-4">
               <div>
                 <Label>{t('auth.email')}</Label>
-                <Input type="email" className="mt-1.5" placeholder={t('auth.emailPlaceholder')} value={email} onChange={(e) => setEmail(e.target.value)} data-testid="login-email-input" required />
+                <Input type="email" className="mt-1.5 h-12 rounded-lg" placeholder={t('auth.emailPlaceholder')} value={email} onChange={(e) => setEmail(e.target.value)} data-testid="login-email-input" required />
               </div>
               <div>
                 <div className="flex items-center justify-between">
@@ -182,17 +230,23 @@ const Login = () => {
                 </div>
                 {passwordField(password, (e) => setPassword(e.target.value), showPassword, setShowPassword, 'login-password-input')}
               </div>
-              <Button type="submit" size="lg" className="w-full" disabled={loading} data-testid="login-submit-button">{loading ? t('auth.login.loading') : t('auth.login.submit')}</Button>
+              <Button type="submit" size="lg" className="w-full h-12 rounded-xl" disabled={loading} data-testid="login-submit-button">{loading ? t('auth.login.loading') : t('auth.login.submit')}</Button>
+              {passkeysSupported() && (
+                <button type="button" onClick={passkeyLogin} disabled={loading} data-testid="login-passkey-button"
+                  className="w-full inline-flex items-center justify-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors py-1.5">
+                  <Fingerprint className="h-4 w-4" /> {t('passkey.loginCta')}
+                </button>
+              )}
             </form>
           ) : (
             <form onSubmit={submitRegister} className="space-y-4">
               <div>
                 <Label>{t('auth.name')}</Label>
-                <Input className="mt-1.5" value={regName} onChange={(e) => setRegName(e.target.value)} data-testid="register-name-input" required />
+                <Input className="mt-1.5 h-12 rounded-lg" value={regName} onChange={(e) => setRegName(e.target.value)} data-testid="register-name-input" required />
               </div>
               <div>
                 <Label>{t('auth.email')}</Label>
-                <Input type="email" className="mt-1.5" placeholder={t('auth.emailPlaceholder')} value={regEmail} onChange={(e) => setRegEmail(e.target.value)} data-testid="register-email-input" required />
+                <Input type="email" className="mt-1.5 h-12 rounded-lg" placeholder={t('auth.emailPlaceholder')} value={regEmail} onChange={(e) => setRegEmail(e.target.value)} data-testid="register-email-input" required />
               </div>
               <div>
                 <Label>{t('auth.password')}</Label>
@@ -225,7 +279,7 @@ const Login = () => {
                 {t('auth.consent.statement')}
               </p>
 
-              <Button type="submit" size="lg" className="w-full" disabled={loading || !canRegister} data-testid="register-submit-button">
+              <Button type="submit" size="lg" className="w-full h-12 rounded-xl" disabled={loading || !canRegister} data-testid="register-submit-button">
                 {loading ? t('auth.register.loading') : t('auth.consent.submit')}
               </Button>
               {!canRegister && <p className="text-xs text-muted-foreground text-center">{t('auth.consent.required')}</p>}

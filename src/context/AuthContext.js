@@ -23,6 +23,9 @@ export const AuthProvider = ({ children }) => {
 
   const login = async (email, password) => {
     const res = await api.post('/auth/login', { email, password });
+    // Cuentas con 2FA (admins): la contrasena sola no basta; la pantalla de
+    // login pide el codigo con el pase corto que manda el servidor.
+    if (res.data.needs_totp) return res.data;
     localStorage.setItem('np_token', res.data.token);
     setUser(res.data.user);
     return res.data.user;

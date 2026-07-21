@@ -100,8 +100,8 @@ const GoogleSignInButton = () => {
           theme: isDark ? 'filled_black' : 'outline',
           size: 'large',
           text: 'continue_with',
-          shape: 'pill',
-          width: slotRef.current.offsetWidth || 320,
+          shape: 'rectangular',
+          width: 400,
           locale: language,
         });
         setEnabled(true);
@@ -126,11 +126,25 @@ const GoogleSignInButton = () => {
     } finally { setSubmitting(false); }
   };
 
-  // Estilo Resend: el botón de Google va ARRIBA del formulario y el divisor
-  // "o" lo separa de los campos de correo y contraseña.
+  // Estilo Resend: botón oscuro propio con la G de color, y el botón real de
+  // Google (un iframe que no se puede re-estilizar) invisible ENCIMA, para que
+  // el clic de verdad caiga en Google. Va arriba del formulario, con el
+  // divisor "o" separándolo de los campos.
   return (
     <div className={enabled ? 'mb-6' : 'hidden'} data-testid="google-signin">
-      <div ref={slotRef} className="flex justify-center" />
+      <div className="relative h-12 w-full">
+        <div className="absolute inset-0 flex items-center justify-center gap-3 rounded-xl border border-border bg-secondary/60 text-sm font-semibold text-foreground">
+          <svg viewBox="0 0 24 24" className="h-[18px] w-[18px]" aria-hidden>
+            <path fill="#4285F4" d="M23.5 12.27c0-.85-.08-1.66-.22-2.45H12v4.64h6.45a5.52 5.52 0 0 1-2.39 3.62v3h3.87c2.26-2.09 3.57-5.16 3.57-8.81z" />
+            <path fill="#34A853" d="M12 24c3.24 0 5.96-1.07 7.93-2.91l-3.87-3c-1.07.72-2.44 1.14-4.06 1.14-3.12 0-5.77-2.11-6.71-4.95H1.29v3.1A12 12 0 0 0 12 24z" />
+            <path fill="#FBBC05" d="M5.29 14.28a7.2 7.2 0 0 1 0-4.56v-3.1H1.29a12 12 0 0 0 0 10.76l4-3.1z" />
+            <path fill="#EA4335" d="M12 4.77c1.76 0 3.34.6 4.58 1.79l3.44-3.44C17.95 1.19 15.23 0 12 0A12 12 0 0 0 1.29 6.62l4 3.1C6.23 6.88 8.88 4.77 12 4.77z" />
+          </svg>
+          {t('auth.google.cta')}
+        </div>
+        {/* El iframe de Google, invisible pero clicable, cubriendo el botón. */}
+        <div ref={slotRef} className="absolute inset-0 overflow-hidden opacity-[0.02] [&>div]:!w-full [&_iframe]:!w-full" />
+      </div>
       <div className="flex items-center gap-3 mt-6">
         <div className="h-px flex-1 bg-border" />
         <span className="text-xs text-muted-foreground">{t('auth.google.divider')}</span>

@@ -19,6 +19,20 @@ export const BrandMark = ({ className = 'h-8', noMolecule = false }) => (
   />
 );
 
+// La molécula sola, en un mosaico redondeado estilo Resend (su tile con la R).
+// Colores del tema: átomos en el color del texto, enlace y caja en el acento.
+export const MoleculeTile = ({ className = 'h-14 w-14' }) => (
+  <div className={`${className} rounded-2xl border border-border bg-card flex items-center justify-center shadow-sm`}>
+    <svg viewBox="0 0 32 32" className="h-3/5 w-3/5" role="img" aria-label="Exygen Labs">
+      <rect x="6.5" y="6.5" width="19" height="19" rx="3.5" fill="none"
+        stroke="hsl(var(--primary))" strokeWidth="1.6" strokeDasharray="3.2 2.6" />
+      <circle cx="11.6" cy="20.2" r="2.5" fill="currentColor" />
+      <circle cx="20.4" cy="11.8" r="2.5" fill="currentColor" />
+      <line x1="11.6" y1="20.2" x2="20.4" y2="11.8" stroke="hsl(var(--primary))" strokeWidth="3.2" strokeLinecap="round" />
+    </svg>
+  </div>
+);
+
 const BrandLogo = ({ compact = false, nameOnly = false }) => (
   <img
     src={nameOnly ? LOGO_NAME_SRC : LOGO_SRC}
