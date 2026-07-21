@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { useNavigate, Link, useSearchParams } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { useNavigate, Link, useSearchParams, useLocation } from 'react-router-dom';
 import { Eye, EyeOff, ArrowLeft, ShieldCheck, Truck, Lock, MailCheck, Fingerprint, KeyRound } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -30,8 +30,17 @@ const Login = () => {
   const { login, register, adoptSession } = useAuth();
   const { t, language } = useLanguage();
   const navigate = useNavigate();
-  const [params, setParams] = useSearchParams();
-  const mode = params.get('tab') === 'signup' ? 'signup' : 'login';
+  const [params] = useSearchParams();
+  const { pathname } = useLocation();
+  // Como Resend: /login y /registro son paginas separadas. El viejo
+  // /login?tab=signup sigue funcionando: manda a /registro.
+  const mode = pathname === '/registro' ? 'signup' : 'login';
+
+  useEffect(() => {
+    if (pathname === '/login' && params.get('tab') === 'signup') {
+      navigate('/registro', { replace: true });
+    }
+  }, [pathname, params, navigate]);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
@@ -53,7 +62,7 @@ const Login = () => {
   const setConsent = (key) => (e) => setConsents((prev) => ({ ...prev, [key]: e.target.checked }));
   const canRegister = consents.age_confirmed && consents.privacy_accepted;
 
-  const switchMode = (next) => setParams(next === 'signup' ? { tab: 'signup' } : {}, { replace: true });
+  const switchMode = (next) => navigate(next === 'signup' ? '/registro' : '/login');
 
   const submitLogin = async (e) => {
     e.preventDefault();

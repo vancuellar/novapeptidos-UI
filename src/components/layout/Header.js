@@ -338,7 +338,7 @@ const Header = () => {
               <>
                 {/* Un solo boton: la pagina /login ya trae las dos pestanas
                     (entrar y crear cuenta), asi que dos botones sobraban. */}
-                <button onClick={() => navigate('/login')} data-testid="header-signup-button"
+                <button onClick={() => navigate('/registro')} data-testid="header-signup-button"
                   className="btn-resend btn-resend-sm hidden sm:inline-flex ml-1">
                   {t('header.getStarted')}
                 </button>

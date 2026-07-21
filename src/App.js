@@ -19,7 +19,6 @@ import Cart from '@/pages/Cart';
 import Checkout from '@/pages/Checkout';
 import OrderConfirmation from '@/pages/OrderConfirmation';
 import Login from '@/pages/Login';
-import Register from '@/pages/Register';
 import Account from '@/pages/Account';
 import Distributor from '@/pages/Distributor';
 import ForgotPassword from '@/pages/ForgotPassword';
@@ -36,7 +35,7 @@ import Compendium from '@/pages/Compendium';
 
 // /login es una pantalla independiente al estilo del alta de Resend (siempre
 // oscura, sin barra ni pie): el sitio no debe asomarse detrás.
-const STANDALONE_ROUTES = ['/login'];
+const STANDALONE_ROUTES = ['/login', '/registro'];
 
 const SiteChrome = ({ children }) => {
   const { pathname } = useLocation();
@@ -68,7 +67,7 @@ function App() {
                     <Route path="/checkout" element={<Checkout />} />
                     <Route path="/pedido/:orderNumber" element={<OrderConfirmation />} />
                     <Route path="/login" element={<Login />} />
-                    <Route path="/registro" element={<Register />} />
+                    <Route path="/registro" element={<Login />} />
                     <Route path="/recuperar" element={<ForgotPassword />} />
                     <Route path="/restablecer" element={<ResetPassword />} />
                     <Route path="/confirmar" element={<ConfirmEmail />} />
