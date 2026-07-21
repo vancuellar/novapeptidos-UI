@@ -551,10 +551,28 @@ API solo permite exygenlabs.com; no es bug.
   título grande ("Entra a…" / "Crea tu cuenta en…"), enlace para cambiar de modo, botón de
   Google ARRIBA, divisor "o" y formulario directo sobre el fondo, sin tarjeta. Sin GitHub (no
   aplica). Verificado en producción en claro y oscuro.
-- **Passkeys/2FA: PENDIENTE DE DECISIÓN.** Recomendación dada a Christian: (1) el botón de
-  Google ya delega la seguridad (incl. 2FA) en Google; (2) agregar passkeys como opción de
-  entrada (simple + muy seguro, sin códigos); (3) 2FA TOTP obligatorio SOLO para admin (y
-  quizá distribuidores); (4) NO 2FA por SMS. Nada implementado aún.
+- **Passkeys + 2FA: CONSTRUIDO Y EN VIVO (2026-07-21, madrugada).**
+  - **Passkeys (todos los usuarios):** WebAuthn con py_webauthn 3.0. Alta/lista/baja en
+    Mi cuenta > Perfil (`SecurityKeys.js`); "Entrar con llave de acceso" en /login (login
+    sin usuario, llave descubrible). Retos de un solo uso, 5 min, en `webauthn_challenges`.
+    RP ID = exygenlabs.com (por env `PASSKEY_RP_ID`/`PASSKEY_ORIGIN` si algún día cambia).
+    Un login con passkey NO pide TOTP (ya es factor fuerte anti-phishing).
+  - **2FA TOTP SOLO admins:** setup con QR en Mi cuenta > Perfil (aparece solo a rol admin),
+    se enciende únicamente tras verificar un código real. Login en dos pasos: contraseña →
+    pase de 5 min (`account_tokens` purpose totp) → código. El pase NO se consume con un
+    código mal tecleado. Secretos excluidos de /auth/me. Helpers puros en `auth_factors.py`
+    (pyotp + qrcode); deps nuevas en requirements: webauthn, pyotp, qrcode[pil].
+  - **PENDIENTE DE CHRISTIAN:** entrar a exygenlabs.com/cuenta?tab=profile con su cuenta
+    admin y ACTIVAR el 2FA (escanear QR); opcionalmente crear su passkey ahí mismo.
+  - SMS: descartado para siempre (marketing y 2FA).
+- **Login v2 estilo Resend EXACTO (2026-07-21):** sin link "Inicio", molécula sola en
+  mosaico (`MoleculeTile` en BrandLogo.js), título grande, enlace de cambio de modo, botón
+  de Google OSCURO propio (el iframe real de Google va invisible encima para recibir el
+  clic), divisor "o", campos h-12. Verificado en producción.
+- **Direcciones/tarjetas en checkout (pregunta de Christian):** las direcciones de envío y
+  facturación YA se guardan en Mi cuenta y el checkout las precarga. Tarjetas guardadas y
+  botones tipo Link = SOLO vía pasarela (Stripe las guarda, nunca nosotros — PCI); depende
+  de postular a Stripe MX (§C). NO construir bóveda de tarjetas propia JAMÁS.
 
 ### 2bis. PROGRAMA DE LEALTAD — CONSTRUIDO Y EN VIVO 2026-07-20 (noche)
 Orden de Christian: puntos por compra canjeables por producto, **distribuidores NO participan**.
