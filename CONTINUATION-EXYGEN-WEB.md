@@ -565,6 +565,10 @@ API solo permite exygenlabs.com; no es bug.
   - **PENDIENTE DE CHRISTIAN:** entrar a exygenlabs.com/cuenta?tab=profile con su cuenta
     admin y ACTIVAR el 2FA (escanear QR); opcionalmente crear su passkey ahí mismo.
   - SMS: descartado para siempre (marketing y 2FA).
+- **URLs separadas como Resend (2026-07-21):** `/login` (entrar) y `/registro` (crear
+  cuenta) son páginas propias; el enlace de cada una lleva a la otra. `/login?tab=signup`
+  redirige a /registro. El `Register.js` viejo (sin consentimientos) se ELIMINÓ. "Comenzar"
+  del header va a /registro. Ambas en `STANDALONE_ROUTES` (sin barra ni pie).
 - **Login v3 estilo Resend EXACTO (2026-07-21, correcciones de Christian):** pantalla
   INDEPENDIENTE y SIEMPRE OSCURA (sin barra ni pie — `SiteChrome` en App.js la excluye;
   clase `dark` propia + lienzo negro + resplandor azul), aunque el sitio esté en claro.
