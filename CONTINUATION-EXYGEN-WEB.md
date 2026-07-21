@@ -567,6 +567,20 @@ envían a ningún procesador. SPEI funciona porque es transferencia manual.
    programa (vigencia/caducidad de puntos, quién califica, límites) y la **política de
    devoluciones** y cómo interactúan (una devolución debe revertir puntos — el código ya
    revierte al cancelar, pero falta la política escrita).
+2bis. **MONELO — INVESTIGADO (2026-07-21):** Es real: **Monelo Pay, S.A.P.I. de C.V.**
+   (fiscal: Torreón, Coahuila; oficina: Bosques de las Lomas, CDMX). Procesador/agregador
+   mexicano: terminales, links de pago, API en línea con **tokenización y sandbox**; portal
+   pay.monelo.mx; dice ser **PCI DSS Nivel 1**. **Confirmado que es el procesador de tarjeta
+   de Exoma** (sus funciones monelo-charge y monelo-3ds-status/sweep → 3DS en producción).
+   Tarifas NO públicas: cotizan "por giro y volumen" (típico de quien acepta alto riesgo).
+   Contacto: contacto@monelo.mx · +52 56 3634 3634.
+   **Focos amarillos:** empresa muy joven (© 2025), casi invisible en internet (cero
+   reseñas/quejas/noticias), y en su sitio los enlaces de "Términos y condiciones" e
+   "Información legal" están VACÍOS — todo tendría que firmarse en contrato, con reserva,
+   plazos de depósito y aceptación del giro POR ESCRITO. OJO: Exoma manda tarjeta+CVV crudos
+   por su propio servidor (PCI SAQ-D, lo que dijimos NO copiar); con Monelo se puede integrar
+   BIEN vía tokens. Plan: cotizar con Monelo Y postular a Mercado Pago en paralelo.
+
 2. **PROCESADOR DE PAGOS — DECISIÓN FIRME DE CHRISTIAN: STRIPE NO.** Stripe congeló en el
    pasado las cuentas de Certified y de Exoma con miles de dólares dentro. **Usar el mismo
    procesador que usan ellos:** Certified → **Mercado Pago** (confirmado en su código);
