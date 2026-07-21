@@ -560,6 +560,25 @@ envían a ningún procesador. SPEI funciona porque es transferencia manual.
 - HCG 5,000IU arriba de Certified = deliberado (piso); el vigía da falsa alarma ahí —
   pendiente enseñarle a reconocer precios en piso.
 
+## 🚩 PENDIENTES NUEVOS DE CHRISTIAN (2026-07-21, madrugada) — APUNTADOS, SIN EJECUTAR
+
+1. **Hablar del programa de lealtad:** hoy es 5% sobre compras pagadas (tasa que eligió el
+   asistente como arranque). Christian quiere revisar el % y DEFINIR las políticas del
+   programa (vigencia/caducidad de puntos, quién califica, límites) y la **política de
+   devoluciones** y cómo interactúan (una devolución debe revertir puntos — el código ya
+   revierte al cancelar, pero falta la política escrita).
+2. **PROCESADOR DE PAGOS — DECISIÓN FIRME DE CHRISTIAN: STRIPE NO.** Stripe congeló en el
+   pasado las cuentas de Certified y de Exoma con miles de dólares dentro. **Usar el mismo
+   procesador que usan ellos:** Certified → **Mercado Pago** (confirmado en su código);
+   Exoma → **"Monelo"** + SPEI. Ruta: postular a Mercado Pago (tiene acreditación para
+   suplementos) y/o investigar Monelo. La advertencia de NUNCA declarar mercancía falsa
+   (§C) sigue aplicando igual con cualquier procesador. Esto REEMPLAZA la ruta "Stripe
+   primero" del §C.
+3. **Correos del negocio:** crear los buzones para hablar con clientes y distribuidores
+   (hoy solo existe hola@exygenlabs.com como remitente vía Resend). Falta definir y crear
+   p.ej. soporte@, pedidos@, distribuidores@ — la RECEPCIÓN se puede resolver gratis con
+   Cloudflare Email Routing (el DNS ya está en Cloudflare); Resend solo envía.
+
 ## 🚩 LO PRIMERO QUE DEBE HACER EL PRÓXIMO CHAT
 
 ### 1. ~~Llave de Gemini nueva~~ — HECHO 2026-07-20 (noche). EL CHAT DE IA ESTÁ VIVO.
