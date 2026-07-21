@@ -599,6 +599,20 @@ envían a ningún procesador. SPEI funciona porque es transferencia manual.
        `/payments/btcpay/webhook` confirma el pedido al liquidarse (dispara puntos);
        `GET /payments/config`. Frontend: opción "Criptomoneda" en checkout que aparece solo
        si config lo dice; paga en la factura BTCPay y regresa a /pedido/. 52 pruebas verdes.
+     - **DECISIÓN DE CHRISTIAN (2026-07-21): LOS DOS.** NOWPayments ya para cobrar pronto;
+       BTCPay autoalojado después. **NOWPayments YA ESTÁ PROGRAMADO Y EN MAIN** (RBAC PR #10,
+       apagado): `nowpayments.py` (factura + IPN HMAC-SHA512 fail-closed); el método 'cripto'
+       del checkout usa NOWPayments si está encendido (BTCPay de respaldo); webhook
+       `/payments/nowpayments/webhook`. 56 pruebas verdes.
+       - **PASOS QUE LE TOCAN A CHRISTIAN para encender NOWPayments:** (1) registrarse en
+         nowpayments.io con la ENTIDAD real y pasar su KYB; (2) configurar un wallet de
+         cobro (o auto-conversión a USDT en su panel, para no cargar riesgo de precio);
+         (3) generar API key + IPN secret y ponerlos en su panel el IPN callback a
+         `https://api.exygenlabs.com/api/payments/nowpayments/webhook`; (4) pasarme
+         `NOWPAYMENTS_API_KEY` y `NOWPAYMENTS_IPN_SECRET` → van al `.env` del backend y se
+         reinicia. Christian ofreció CLABE: **NO se necesita** para cripto (ni para NOW ni
+         BTCPay); la CLABE solo aplicaría al reforzar SPEI, y Claude nunca captura datos
+         bancarios en formularios.
      - **SCRIPTS DE DESPLIEGUE YA ESCRITOS (2026-07-21):** `../btcpay-userdata.sh` (instala
        BTCPay + nodo BTC podado xs + TLS para pay.exygenlabs.com) y `../deploy-btcpay.sh`
        (lanza t3.medium 60GB en certis — CORRER EN CLAUDE INTERACTIVO, run-instances lo
