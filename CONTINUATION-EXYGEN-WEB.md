@@ -599,13 +599,20 @@ envían a ningún procesador. SPEI funciona porque es transferencia manual.
        `/payments/btcpay/webhook` confirma el pedido al liquidarse (dispara puntos);
        `GET /payments/config`. Frontend: opción "Criptomoneda" en checkout que aparece solo
        si config lo dice; paga en la factura BTCPay y regresa a /pedido/. 52 pruebas verdes.
-     - **PARA ENCENDERLO (pasos pendientes):** (1) montar BTCPay Server (instancia propia,
-       docker, nodo BTC podado — o LND) con dominio p.ej. pay.exygenlabs.com; (2) crear
-       tienda + API key Greenfield + webhook apuntando a
-       `https://api.exygenlabs.com/api/payments/btcpay/webhook`; (3) poner en el `.env` del
-       servidor: `BTCPAY_URL`, `BTCPAY_STORE_ID`, `BTCPAY_API_KEY`, `BTCPAY_WEBHOOK_SECRET`
-       y reiniciar. Conversión a MXN vía Bitso cuando se quiera. Alternativa sin nodo:
-       NOWPayments (0.5%, auto-USDT) sujeto a su KYB.
+     - **SCRIPTS DE DESPLIEGUE YA ESCRITOS (2026-07-21):** `../btcpay-userdata.sh` (instala
+       BTCPay + nodo BTC podado xs + TLS para pay.exygenlabs.com) y `../deploy-btcpay.sh`
+       (lanza t3.medium 60GB en certis — CORRER EN CLAUDE INTERACTIVO, run-instances lo
+       bloquea el modo auto). Tras lanzar: A `pay` -> IP en Cloudflare.
+     - **PIEZAS QUE REQUIEREN A CHRISTIAN / INTERACTIVO:** (a) aprobar el run-instances
+       (modo auto lo bloquea); (b) la **WALLET es de Christian** — al crear la tienda en
+       BTCPay conecta el xpub de su hardware wallet, o genera hot wallet y GUARDA ÉL la
+       frase semilla (nadie más). Claude NUNCA debe crear/guardar esa semilla (frontera de
+       credenciales financieras); (c) la **sincronización del nodo BTC tarda HORAS**. Luego:
+       API key Greenfield + webhook a `https://api.exygenlabs.com/api/payments/btcpay/webhook`
+       y poner `BTCPAY_URL/STORE_ID/API_KEY/WEBHOOK_SECRET` en el `.env` del backend.
+       Conversión a MXN vía Bitso. **Alternativa pragmática sin nodo ni servidor 24/7:
+       NOWPayments** (0.5%, API key, auto-USDT, KYB con la entidad real) — decisión abierta
+       de Christian (self-hosted control total vs hosted más simple).
      - **⚠️ DEPLOY DEL BACKEND PENDIENTE:** el código de cripto está en `main` del RBAC
        (commit merge PR #9) pero **el servidor 44.204.127.242 NO se ha actualizado** — el
        clasificador bloqueó el `ssh`. No urge: sin las BTCPAY_* no cambia nada. Correr en
