@@ -77,11 +77,11 @@ export const fallbackProducts = [
     "presentation": "10 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
-    "price": 1299,
+    "price": 2559,
     "variants": [
       {
         "presentation": "10 mg",
-        "price": 1299,
+        "price": 2559,
         "stock": 40,
         "batch_number": "NP-BRON10-2601"
       }
@@ -317,11 +317,11 @@ export const fallbackProducts = [
     "presentation": "10 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
-    "price": 1439,
+    "price": 1759,
     "variants": [
       {
         "presentation": "10 mg",
-        "price": 1439,
+        "price": 1759,
         "stock": 40,
         "batch_number": "NP-THYM10-2601"
       }
@@ -401,11 +401,11 @@ export const fallbackProducts = [
     "presentation": "50 mg – 100 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
-    "price": 899,
+    "price": 1129,
     "variants": [
       {
         "presentation": "50 mg",
-        "price": 899,
+        "price": 1789,
         "stock": 40,
         "batch_number": "NP-AHKC50-2601"
       },
@@ -441,11 +441,11 @@ export const fallbackProducts = [
     "presentation": "100 IU",
     "form": "Liofilizado",
     "purity": "99.0%",
-    "price": 1529,
+    "price": 3049,
     "variants": [
       {
         "presentation": "100 IU",
-        "price": 1529,
+        "price": 3049,
         "stock": 40,
         "batch_number": "NP-BOTU100-2601"
       }
@@ -521,11 +521,11 @@ export const fallbackProducts = [
     "presentation": "10 mL",
     "form": "Liofilizado",
     "purity": "99.0%",
-    "price": 949,
+    "price": 1059,
     "variants": [
       {
         "presentation": "10 mL",
-        "price": 949,
+        "price": 1059,
         "stock": 40,
         "batch_number": "NP-LEMO10-2601"
       }
@@ -599,7 +599,7 @@ export const fallbackProducts = [
       },
       {
         "presentation": "100 mg",
-        "price": 3849,
+        "price": 5259,
         "stock": 40,
         "batch_number": "NP-SNAP100-2601"
       }
@@ -668,11 +668,11 @@ export const fallbackProducts = [
     "presentation": "10 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
-    "price": 1019,
+    "price": 2039,
     "variants": [
       {
         "presentation": "10 mg",
-        "price": 1019,
+        "price": 2039,
         "stock": 40,
         "batch_number": "NP-FRAG10-2601"
       }
@@ -718,7 +718,7 @@ export const fallbackProducts = [
       },
       {
         "presentation": "15 mg",
-        "price": 1149,
+        "price": 2139,
         "stock": 40,
         "batch_number": "NP-GHRP15-2601"
       }
@@ -798,17 +798,17 @@ export const fallbackProducts = [
     "presentation": "2 mg – 5 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
-    "price": 859,
+    "price": 1719,
     "variants": [
       {
         "presentation": "2 mg",
-        "price": 859,
+        "price": 1719,
         "stock": 40,
         "batch_number": "NP-HEXA2-2601"
       },
       {
         "presentation": "5 mg",
-        "price": 1439,
+        "price": 2629,
         "stock": 40,
         "batch_number": "NP-HEXA5-2601"
       }
@@ -843,17 +843,17 @@ export const fallbackProducts = [
     "presentation": "24 IU – 40 IU",
     "form": "Liofilizado",
     "purity": "99.0%",
-    "price": 2109,
+    "price": 4209,
     "variants": [
       {
         "presentation": "24 IU",
-        "price": 2109,
+        "price": 4209,
         "stock": 40,
         "batch_number": "NP-HGH24-2601"
       },
       {
         "presentation": "40 IU",
-        "price": 3869,
+        "price": 7739,
         "stock": 40,
         "batch_number": "NP-HGH40-2601"
       }
@@ -888,11 +888,11 @@ export const fallbackProducts = [
     "presentation": "1 mg – 15 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
-    "price": 509,
+    "price": 779,
     "variants": [
       {
         "presentation": "1 mg",
-        "price": 509,
+        "price": 1019,
         "stock": 40,
         "batch_number": "NP-HGHF1-2601"
       },
@@ -910,13 +910,13 @@ export const fallbackProducts = [
       },
       {
         "presentation": "10 mg",
-        "price": 3099,
+        "price": 4729,
         "stock": 40,
         "batch_number": "NP-HGHF10-2601"
       },
       {
         "presentation": "15 mg",
-        "price": 4299,
+        "price": 6829,
         "stock": 40,
         "batch_number": "NP-HGHF15-2601"
       }
@@ -1125,11 +1125,11 @@ export const fallbackProducts = [
     "presentation": "2 mg – 10 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
-    "price": 649,
+    "price": 1099,
     "variants": [
       {
         "presentation": "2 mg",
-        "price": 649,
+        "price": 1229,
         "stock": 40,
         "batch_number": "NP-SERM2-2601"
       },
@@ -1176,11 +1176,11 @@ export const fallbackProducts = [
     "presentation": "15 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
-    "price": 4499,
+    "price": 8999,
     "variants": [
       {
         "presentation": "15 mg",
-        "price": 4499,
+        "price": 8999,
         "stock": 40,
         "batch_number": "NP-TESA15-2601"
       }
@@ -1255,17 +1255,17 @@ export const fallbackProducts = [
     "presentation": "2 mg – 10 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
-    "price": 1449,
+    "price": 2879,
     "variants": [
       {
         "presentation": "2 mg",
-        "price": 1449,
+        "price": 2879,
         "stock": 40,
         "batch_number": "NP-FOXO2-2601"
       },
       {
         "presentation": "10 mg",
-        "price": 6799,
+        "price": 11209,
         "stock": 40,
         "batch_number": "NP-FOXO10-2601"
       }
@@ -1295,11 +1295,11 @@ export const fallbackProducts = [
     "presentation": "600 mg – 1500 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
-    "price": 899,
+    "price": 1159,
     "variants": [
       {
         "presentation": "600 mg",
-        "price": 899,
+        "price": 1159,
         "stock": 40,
         "batch_number": "NP-GLUT600-2601"
       },
@@ -1350,7 +1350,7 @@ export const fallbackProducts = [
       },
       {
         "presentation": "20 mg",
-        "price": 6839,
+        "price": 8159,
         "stock": 40,
         "batch_number": "NP-HUMA20-2601"
       }
@@ -1515,11 +1515,11 @@ export const fallbackProducts = [
     "presentation": "2 mg – 10 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
-    "price": 599,
+    "price": 959,
     "variants": [
       {
         "presentation": "2 mg",
-        "price": 599,
+        "price": 1059,
         "stock": 40,
         "batch_number": "NP-DSIP2-2601"
       },
@@ -1566,11 +1566,11 @@ export const fallbackProducts = [
     "presentation": "10 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
-    "price": 1159,
+    "price": 2319,
     "variants": [
       {
         "presentation": "10 mg",
-        "price": 1159,
+        "price": 2319,
         "stock": 40,
         "batch_number": "NP-MELA10-2601"
       }
@@ -1600,11 +1600,11 @@ export const fallbackProducts = [
     "presentation": "10 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
-    "price": 9369,
+    "price": 18729,
     "variants": [
       {
         "presentation": "10 mg",
-        "price": 9369,
+        "price": 18729,
         "stock": 40,
         "batch_number": "NP-OREX10-2601"
       }
@@ -1634,17 +1634,17 @@ export const fallbackProducts = [
     "presentation": "5 mg – 10 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
-    "price": 1849,
+    "price": 3679,
     "variants": [
       {
         "presentation": "5 mg",
-        "price": 1849,
+        "price": 3679,
         "stock": 40,
         "batch_number": "NP-OREX5-2601"
       },
       {
         "presentation": "10 mg",
-        "price": 3509,
+        "price": 7009,
         "stock": 40,
         "batch_number": "NP-OREX10-2601"
       }
@@ -1832,11 +1832,11 @@ export const fallbackProducts = [
     "presentation": "5 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
-    "price": 899,
+    "price": 1759,
     "variants": [
       {
         "presentation": "5 mg",
-        "price": 899,
+        "price": 1759,
         "stock": 40,
         "batch_number": "NP-ACTH5-2601"
       }
@@ -1866,17 +1866,17 @@ export const fallbackProducts = [
     "presentation": "5 mg – 10 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
-    "price": 1649,
+    "price": 2459,
     "variants": [
       {
         "presentation": "5 mg",
-        "price": 1649,
+        "price": 2459,
         "stock": 40,
         "batch_number": "NP-ADMA5-2601"
       },
       {
         "presentation": "10 mg",
-        "price": 2469,
+        "price": 3509,
         "stock": 40,
         "batch_number": "NP-ADMA10-2601"
       }
@@ -1906,17 +1906,17 @@ export const fallbackProducts = [
     "presentation": "2 mg – 10 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
-    "price": 949,
+    "price": 1899,
     "variants": [
       {
         "presentation": "2 mg",
-        "price": 949,
+        "price": 1899,
         "stock": 40,
         "batch_number": "NP-B7332-2601"
       },
       {
         "presentation": "10 mg",
-        "price": 2899,
+        "price": 5779,
         "stock": 40,
         "batch_number": "NP-B73310-2601"
       }
@@ -1991,11 +1991,11 @@ export const fallbackProducts = [
     "presentation": "2 mg – 10 mg",
     "form": "Liofilizado",
     "purity": "99.1%",
-    "price": 799,
+    "price": 1089,
     "variants": [
       {
         "presentation": "2 mg",
-        "price": 799,
+        "price": 1229,
         "stock": 40,
         "batch_number": "NP-CJCN2-2601"
       },
@@ -2042,11 +2042,11 @@ export const fallbackProducts = [
     "presentation": "500 u",
     "form": "Liofilizado",
     "purity": "99.0%",
-    "price": 799,
+    "price": 1579,
     "variants": [
       {
         "presentation": "500 u",
-        "price": 799,
+        "price": 1579,
         "stock": 40,
         "batch_number": "NP-DYSP500-2601"
       }
@@ -2076,11 +2076,11 @@ export const fallbackProducts = [
     "presentation": "3000 IU",
     "form": "Liofilizado",
     "purity": "99.0%",
-    "price": 1249,
+    "price": 2069,
     "variants": [
       {
         "presentation": "3000 IU",
-        "price": 1249,
+        "price": 2069,
         "stock": 40,
         "batch_number": "NP-EPO3000-2601"
       }
@@ -2110,11 +2110,11 @@ export const fallbackProducts = [
     "presentation": "100 mil",
     "form": "Liofilizado",
     "purity": "99.0%",
-    "price": 14009,
+    "price": 28009,
     "variants": [
       {
         "presentation": "100 mil",
-        "price": 14009,
+        "price": 28009,
         "stock": 40,
         "batch_number": "NP-HUMS100-2601"
       }
@@ -2189,17 +2189,17 @@ export const fallbackProducts = [
     "presentation": "5 mg – 10 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
-    "price": 2039,
+    "price": 3159,
     "variants": [
       {
         "presentation": "5 mg",
-        "price": 2039,
+        "price": 3159,
         "stock": 40,
         "batch_number": "NP-MAZD5-2601"
       },
       {
         "presentation": "10 mg",
-        "price": 2809,
+        "price": 5609,
         "stock": 40,
         "batch_number": "NP-MAZD10-2601"
       }
@@ -2235,11 +2235,11 @@ export const fallbackProducts = [
     "presentation": "10 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
-    "price": 1049,
+    "price": 1199,
     "variants": [
       {
         "presentation": "10 mg",
-        "price": 1049,
+        "price": 1199,
         "stock": 40,
         "batch_number": "NP-MELA10-2601"
       }
@@ -2275,11 +2275,11 @@ export const fallbackProducts = [
     "presentation": "10 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
-    "price": 959,
+    "price": 1199,
     "variants": [
       {
         "presentation": "10 mg",
-        "price": 959,
+        "price": 1199,
         "stock": 40,
         "batch_number": "NP-MT210-2601"
       }
@@ -2314,11 +2314,11 @@ export const fallbackProducts = [
     "presentation": "10 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
-    "price": 2099,
+    "price": 3159,
     "variants": [
       {
         "presentation": "10 mg",
-        "price": 2099,
+        "price": 3159,
         "stock": 40,
         "batch_number": "NP-MICL10-2601"
       }
@@ -2348,23 +2348,23 @@ export const fallbackProducts = [
     "presentation": "2 mg – 10 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
-    "price": 779,
+    "price": 809,
     "variants": [
       {
         "presentation": "2 mg",
-        "price": 779,
+        "price": 809,
         "stock": 40,
         "batch_number": "NP-OXY2-2601"
       },
       {
         "presentation": "5 mg",
-        "price": 959,
+        "price": 1409,
         "stock": 40,
         "batch_number": "NP-OXY5-2601"
       },
       {
         "presentation": "10 mg",
-        "price": 1199,
+        "price": 1929,
         "stock": 40,
         "batch_number": "NP-OXY10-2601"
       }
@@ -2394,11 +2394,11 @@ export const fallbackProducts = [
     "presentation": "5 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
-    "price": 4909,
+    "price": 9809,
     "variants": [
       {
         "presentation": "5 mg",
-        "price": 4909,
+        "price": 9809,
         "stock": 40,
         "batch_number": "NP-P215-2601"
       }
@@ -2428,23 +2428,23 @@ export const fallbackProducts = [
     "presentation": "10 IU – 15 IU",
     "form": "Liofilizado",
     "purity": "99.0%",
-    "price": 689,
+    "price": 1369,
     "variants": [
       {
         "presentation": "10 IU",
-        "price": 689,
+        "price": 1369,
         "stock": 40,
         "batch_number": "NP-SOMA10-2601"
       },
       {
         "presentation": "12 IU",
-        "price": 1059,
+        "price": 2109,
         "stock": 40,
         "batch_number": "NP-SOMA12-2601"
       },
       {
         "presentation": "15 IU",
-        "price": 1369,
+        "price": 2739,
         "stock": 40,
         "batch_number": "NP-SOMA15-2601"
       }
@@ -2650,23 +2650,23 @@ export const fallbackProducts = [
     "presentation": "2 mg – 10 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
-    "price": 1559,
+    "price": 2109,
     "variants": [
       {
         "presentation": "2 mg",
-        "price": 1559,
+        "price": 2109,
         "stock": 40,
         "batch_number": "NP-ADIP2-2601"
       },
       {
         "presentation": "5 mg",
-        "price": 2879,
+        "price": 4559,
         "stock": 40,
         "batch_number": "NP-ADIP5-2601"
       },
       {
         "presentation": "10 mg",
-        "price": 4399,
+        "price": 7359,
         "stock": 40,
         "batch_number": "NP-ADIP10-2601"
       }
@@ -2787,11 +2787,11 @@ export const fallbackProducts = [
     "presentation": "5 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
-    "price": 899,
+    "price": 1759,
     "variants": [
       {
         "presentation": "5 mg",
-        "price": 899,
+        "price": 1759,
         "stock": 40,
         "batch_number": "NP-CAGR5-2601"
       }
@@ -2821,11 +2821,11 @@ export const fallbackProducts = [
     "presentation": "2 mg – 10 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
-    "price": 899,
+    "price": 1189,
     "variants": [
       {
         "presentation": "2 mg",
-        "price": 899,
+        "price": 1759,
         "stock": 40,
         "batch_number": "NP-CAGR2-2601"
       },
@@ -2872,11 +2872,11 @@ export const fallbackProducts = [
     "presentation": "10 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
-    "price": 4169,
+    "price": 8339,
     "variants": [
       {
         "presentation": "10 mg",
-        "price": 4169,
+        "price": 8339,
         "stock": 40,
         "batch_number": "NP-DULA10-2601"
       }
@@ -2911,29 +2911,29 @@ export const fallbackProducts = [
     "presentation": "2 mg – 1200 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
-    "price": 529,
+    "price": 1059,
     "variants": [
       {
         "presentation": "2 mg",
-        "price": 529,
+        "price": 1059,
         "stock": 40,
         "batch_number": "NP-LCAR2-2601"
       },
       {
         "presentation": "400 mg",
-        "price": 899,
+        "price": 1759,
         "stock": 40,
         "batch_number": "NP-LCAR400-2601"
       },
       {
         "presentation": "600 mg",
-        "price": 1049,
+        "price": 1929,
         "stock": 40,
         "batch_number": "NP-LCAR600-2601"
       },
       {
         "presentation": "1200 mg",
-        "price": 1569,
+        "price": 2109,
         "stock": 40,
         "batch_number": "NP-LCAR1200-2601"
       }
@@ -2968,11 +2968,11 @@ export const fallbackProducts = [
     "presentation": "10 mL",
     "form": "Liofilizado",
     "purity": "99.0%",
-    "price": 1099,
+    "price": 1999,
     "variants": [
       {
         "presentation": "10 mL",
-        "price": 1099,
+        "price": 1999,
         "stock": 40,
         "batch_number": "NP-LIPO10-2601"
       }
@@ -3063,7 +3063,7 @@ export const fallbackProducts = [
       },
       {
         "presentation": "15 mg",
-        "price": 1489,
+        "price": 2979,
         "stock": 40,
         "batch_number": "NP-MOTS15-2601"
       },
@@ -3191,11 +3191,11 @@ export const fallbackProducts = [
     "presentation": "60 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
-    "price": 3699,
+    "price": 7359,
     "variants": [
       {
         "presentation": "60 mg",
-        "price": 3699,
+        "price": 7359,
         "stock": 40,
         "batch_number": "NP-RETA60-2601"
       }
@@ -3265,7 +3265,7 @@ export const fallbackProducts = [
       },
       {
         "presentation": "50 mg",
-        "price": 2689,
+        "price": 4379,
         "stock": 40,
         "batch_number": "NP-SEMA50-2601"
       }
@@ -3300,11 +3300,11 @@ export const fallbackProducts = [
     "presentation": "5 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
-    "price": 1849,
+    "price": 2279,
     "variants": [
       {
         "presentation": "5 mg",
-        "price": 1849,
+        "price": 2279,
         "stock": 40,
         "batch_number": "NP-SLUP5-2601"
       }
@@ -3334,11 +3334,11 @@ export const fallbackProducts = [
     "presentation": "10 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
-    "price": 4799,
+    "price": 8229,
     "variants": [
       {
         "presentation": "10 mg",
-        "price": 4799,
+        "price": 8229,
         "stock": 40,
         "batch_number": "NP-SURV10-2601"
       }
@@ -3419,7 +3419,7 @@ export const fallbackProducts = [
       },
       {
         "presentation": "120 mg",
-        "price": 4909,
+        "price": 9809,
         "stock": 40,
         "batch_number": "NP-TIRZ120-2601"
       }
@@ -3498,7 +3498,7 @@ export const fallbackProducts = [
       },
       {
         "presentation": "16 mg",
-        "price": 1999,
+        "price": 3159,
         "stock": 40,
         "batch_number": "NP-ARA216-2601"
       }
@@ -3533,11 +3533,11 @@ export const fallbackProducts = [
     "presentation": "2 mg – 20 mg",
     "form": "Liofilizado",
     "purity": "99.4%",
-    "price": 529,
+    "price": 609,
     "variants": [
       {
         "presentation": "2 mg",
-        "price": 529,
+        "price": 1059,
         "stock": 40,
         "batch_number": "NP-BPC2-2601"
       },
@@ -3658,11 +3658,11 @@ export const fallbackProducts = [
     "presentation": "1 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
-    "price": 4029,
+    "price": 8059,
     "variants": [
       {
         "presentation": "1 mg",
-        "price": 4029,
+        "price": 8059,
         "stock": 40,
         "batch_number": "NP-FOLL1-2601"
       }
@@ -3697,11 +3697,11 @@ export const fallbackProducts = [
     "presentation": "1 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
-    "price": 2899,
+    "price": 5779,
     "variants": [
       {
         "presentation": "1 mg",
-        "price": 2899,
+        "price": 5779,
         "stock": 40,
         "batch_number": "NP-GDF81-2601"
       }
@@ -3878,11 +3878,11 @@ export const fallbackProducts = [
     "presentation": "5 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
-    "price": 969,
+    "price": 1929,
     "variants": [
       {
         "presentation": "5 mg",
-        "price": 969,
+        "price": 1929,
         "stock": 40,
         "batch_number": "NP-PTD15-2601"
       }
@@ -3912,11 +3912,11 @@ export const fallbackProducts = [
     "presentation": "1 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
-    "price": 2259,
+    "price": 4519,
     "variants": [
       {
         "presentation": "1 mg",
-        "price": 2259,
+        "price": 4519,
         "stock": 40,
         "batch_number": "NP-PTDD1-2601"
       }
@@ -3946,11 +3946,11 @@ export const fallbackProducts = [
     "presentation": "2 mg – 10 mg",
     "form": "Liofilizado",
     "purity": "99.1%",
-    "price": 949,
+    "price": 1089,
     "variants": [
       {
         "presentation": "2 mg",
-        "price": 949,
+        "price": 1409,
         "stock": 40,
         "batch_number": "NP-TB2-2601"
       },
@@ -3997,17 +3997,17 @@ export const fallbackProducts = [
     "presentation": "5 mg – 10 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
-    "price": 799,
+    "price": 1579,
     "variants": [
       {
         "presentation": "5 mg",
-        "price": 799,
+        "price": 1579,
         "stock": 40,
         "batch_number": "NP-DERM5-2601"
       },
       {
         "presentation": "10 mg",
-        "price": 1229,
+        "price": 2459,
         "stock": 40,
         "batch_number": "NP-DERM10-2601"
       }
@@ -4037,17 +4037,17 @@ export const fallbackProducts = [
     "presentation": "2 mg – 5 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
-    "price": 659,
+    "price": 1199,
     "variants": [
       {
         "presentation": "2 mg",
-        "price": 659,
+        "price": 1199,
         "stock": 40,
         "batch_number": "NP-GONA2-2601"
       },
       {
         "presentation": "5 mg",
-        "price": 989,
+        "price": 1789,
         "stock": 40,
         "batch_number": "NP-GONA5-2601"
       }
@@ -4082,23 +4082,23 @@ export const fallbackProducts = [
     "presentation": "2,000IU – 10,000IU",
     "form": "Liofilizado",
     "purity": "99.0%",
-    "price": 739,
+    "price": 1479,
     "variants": [
       {
         "presentation": "2,000IU",
-        "price": 739,
+        "price": 1479,
         "stock": 40,
         "batch_number": "NP-HCG2000-2601"
       },
       {
         "presentation": "5,000IU",
-        "price": 1289,
+        "price": 2279,
         "stock": 40,
         "batch_number": "NP-HCG5000-2601"
       },
       {
         "presentation": "10,000IU",
-        "price": 2109,
+        "price": 4209,
         "stock": 40,
         "batch_number": "NP-HCG10000-2601"
       }
@@ -4133,11 +4133,11 @@ export const fallbackProducts = [
     "presentation": "75 IU",
     "form": "Liofilizado",
     "purity": "99.0%",
-    "price": 1139,
+    "price": 2109,
     "variants": [
       {
         "presentation": "75 IU",
-        "price": 1139,
+        "price": 2109,
         "stock": 40,
         "batch_number": "NP-HMG75-2601"
       }
@@ -4206,11 +4206,11 @@ export const fallbackProducts = [
     "presentation": "2 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
-    "price": 709,
+    "price": 1409,
     "variants": [
       {
         "presentation": "2 mg",
-        "price": 709,
+        "price": 1409,
         "stock": 40,
         "batch_number": "NP-TRIP2-2601"
       }
@@ -4280,11 +4280,11 @@ export const fallbackProducts = [
     "presentation": "1 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
-    "price": 1159,
+    "price": 2319,
     "variants": [
       {
         "presentation": "1 mg",
-        "price": 1159,
+        "price": 2319,
         "stock": 40,
         "batch_number": "NP-B121-2601"
       }
@@ -4314,11 +4314,11 @@ export const fallbackProducts = [
     "presentation": "10 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
-    "price": 949,
+    "price": 1409,
     "variants": [
       {
         "presentation": "10 mg",
-        "price": 949,
+        "price": 1409,
         "stock": 40,
         "batch_number": "NP-VITA10-2601"
       }
