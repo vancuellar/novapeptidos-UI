@@ -565,10 +565,13 @@ API solo permite exygenlabs.com; no es bug.
   - **PENDIENTE DE CHRISTIAN:** entrar a exygenlabs.com/cuenta?tab=profile con su cuenta
     admin y ACTIVAR el 2FA (escanear QR); opcionalmente crear su passkey ahí mismo.
   - SMS: descartado para siempre (marketing y 2FA).
-- **Login v2 estilo Resend EXACTO (2026-07-21):** sin link "Inicio", molécula sola en
-  mosaico (`MoleculeTile` en BrandLogo.js), título grande, enlace de cambio de modo, botón
-  de Google OSCURO propio (el iframe real de Google va invisible encima para recibir el
-  clic), divisor "o", campos h-12. Verificado en producción.
+- **Login v3 estilo Resend EXACTO (2026-07-21, correcciones de Christian):** pantalla
+  INDEPENDIENTE y SIEMPRE OSCURA (sin barra ni pie — `SiteChrome` en App.js la excluye;
+  clase `dark` propia + lienzo negro + resplandor azul), aunque el sitio esté en claro.
+  Mosaico con la **molécula REAL del logo** (`public/images/exygen-molecule.png`, recortada
+  del PNG oficial; `MoleculeTile`), título en **Marcellus** (la fuente del logotipo, clase
+  `.font-brand` en index.css), sin link "Inicio", botón de Google oscuro propio (iframe real
+  invisible encima, opacity 0.001), divisor "o", campos h-12. Verificado en producción.
 - **Direcciones/tarjetas en checkout (pregunta de Christian):** las direcciones de envío y
   facturación YA se guardan en Mi cuenta y el checkout las precarga. Tarjetas guardadas y
   botones tipo Link = SOLO vía pasarela (Stripe las guarda, nunca nosotros — PCI); depende
