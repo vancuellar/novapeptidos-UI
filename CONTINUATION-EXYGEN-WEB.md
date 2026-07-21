@@ -539,6 +539,12 @@ Client ID de Christian: `961192855720-9pqikhgl5p3vmcu69df9broh7jsfi4kj.apps.goog
 claro/oscuro, `src/components/GoogleSignInButton.js`); solo aparece si `/auth/google/config`
 dice enabled. **Verificado en producción.** OJO: desde localhost el botón NO sale — CORS del
 API solo permite exygenlabs.com; no es bug.
+- **Consentimientos con Google (orden de Christian, 2026-07-20 noche):** una cuenta NUEVA por
+  Google NO nace aceptando nada — el servidor devuelve `needs_consent` y el sitio abre un
+  diálogo con las casillas (18+/Términos y Privacidad obligatorias; bonos y correo opt-in)
+  antes de crearla. Cuenta existente entra directo (ya consintió al registrarse).
+- **Consentimiento de SMS ELIMINADO en todo el sitio** (Christian: "ya casi no se usa").
+  Verificado en producción: 4 casillas en el registro, cero referencias a marketing_sms.
 
 ### 2bis. PROGRAMA DE LEALTAD — CONSTRUIDO Y EN VIVO 2026-07-20 (noche)
 Orden de Christian: puntos por compra canjeables por producto, **distribuidores NO participan**.
