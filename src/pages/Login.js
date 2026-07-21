@@ -42,7 +42,7 @@ const Login = () => {
   // Los dos primeros son obligatorios; los otros tres son opt-in real (nacen apagados).
   const [consents, setConsents] = useState({
     age_confirmed: false, privacy_accepted: false,
-    promos: false, marketing_email: false, marketing_sms: false,
+    promos: false, marketing_email: false,
   });
   const setConsent = (key) => (e) => setConsents((prev) => ({ ...prev, [key]: e.target.checked }));
   const canRegister = consents.age_confirmed && consents.privacy_accepted;
@@ -205,9 +205,6 @@ const Login = () => {
                   </Consent>
                   <Consent checked={consents.marketing_email} onChange={setConsent('marketing_email')} testid="consent-email">
                     {t('auth.consent.email')}
-                  </Consent>
-                  <Consent checked={consents.marketing_sms} onChange={setConsent('marketing_sms')} testid="consent-sms">
-                    {t('auth.consent.sms')}
                   </Consent>
                   <Consent checked={consents.privacy_accepted} onChange={setConsent('privacy_accepted')} testid="consent-privacy">
                     {t('auth.consent.privacy')}{' '}
