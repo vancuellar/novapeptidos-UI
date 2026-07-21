@@ -126,14 +126,16 @@ const GoogleSignInButton = () => {
     } finally { setSubmitting(false); }
   };
 
+  // Estilo Resend: el botón de Google va ARRIBA del formulario y el divisor
+  // "o" lo separa de los campos de correo y contraseña.
   return (
-    <div className={enabled ? 'mt-5' : 'hidden'} data-testid="google-signin">
-      <div className="flex items-center gap-3 mb-5">
+    <div className={enabled ? 'mb-6' : 'hidden'} data-testid="google-signin">
+      <div ref={slotRef} className="flex justify-center" />
+      <div className="flex items-center gap-3 mt-6">
         <div className="h-px flex-1 bg-border" />
         <span className="text-xs text-muted-foreground">{t('auth.google.divider')}</span>
         <div className="h-px flex-1 bg-border" />
       </div>
-      <div ref={slotRef} className="flex justify-center" />
 
       <Dialog open={!!pendingCredential} onOpenChange={(open) => { if (!open) setPendingCredential(''); }}>
         <DialogContent className="max-w-md" data-testid="google-consent-dialog">

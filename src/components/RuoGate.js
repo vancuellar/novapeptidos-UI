@@ -20,6 +20,7 @@ const RuoGate = () => {
   const { t } = useLanguage();
   const { pathname } = useLocation();
   const [accepted, setAccepted] = useState(true);   // se asume aceptado hasta comprobar
+  const [checked, setChecked] = useState(false);    // la casilla: sin marcar no hay botón
 
   useEffect(() => {
     try {
@@ -84,7 +85,16 @@ const RuoGate = () => {
           ))}
         </ul>
 
-        <button onClick={accept} data-testid="ruo-gate-accept" className="btn-resend w-full mt-8">
+        {/* Aceptar es un acto, no un clic de paso: la casilla deja constancia
+            de que la persona afirmó los tres puntos. */}
+        <label className="mt-7 flex items-start gap-3 cursor-pointer rounded-xl border border-border bg-secondary/40 p-4" data-testid="ruo-gate-checkbox">
+          <input type="checkbox" checked={checked} onChange={(e) => setChecked(e.target.checked)}
+            className="h-5 w-5 mt-0.5 shrink-0 accent-[hsl(var(--primary))] cursor-pointer" />
+          <span className="text-sm leading-relaxed font-medium">{t('ruo.gate.checkbox')}</span>
+        </label>
+
+        <button onClick={accept} disabled={!checked} data-testid="ruo-gate-accept"
+          className="btn-resend w-full mt-5 disabled:opacity-40 disabled:pointer-events-none">
           {t('ruo.gate.accept')}
         </button>
 
