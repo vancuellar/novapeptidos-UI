@@ -516,6 +516,29 @@ envían a ningún procesador. SPEI funciona porque es transferencia manual.
   existe); ahora apunta a `https://api.exygenlabs.com`. Respaldo del viejo en el scratchpad de
   la sesión 2026-07-20.
 
+## 8octies. OCTAVA TANDA (2026-07-21, madrugada) — EN VIVO
+
+- **OJO: hubo DOS sesiones simultáneas** sobre esta carpeta (esta + una de precios). La de
+  precios cambió ramas bajo nuestros pies; mis WIP se recuperaron del stash y todo quedó en
+  main. Se borraron 22 duplicados basura "archivo 2.js" (idénticos). **Regla: una sesión a
+  la vez en el repo.** La de precios dejó ramas `precios-*` y el commit "piso ROI >=10x tras
+  50% comision (publico >= 2x costo caja)" — el piso de ROI vive en el sistema de precios.
+- **Fuente Marcellus (la del logo) en TODO el sitio:** `--font-heading` cambió de Cormorant
+  Garamond a Marcellus (index.css). Pedido de Christian: la parte interna del cliente debía
+  hablar la misma letra que la marca.
+- **Aviso de agua bacteriostática INTELIGENTE (Cart.js):** calcula mL por carrito (≤15 mg →
+  2 mL; 16–40 → 3 mL; >40 → 4 mL por vial) y sugiere 1×3 mL o N×10 mL; agrega la cantidad
+  sugerida al carrito. Solo aparece si hay viales en mg. Probado: 2×40mg+1×80mg → 1×10 mL;
+  1×10mg → 1×3 mL.
+- **Fix:** la línea de puntos del checkout no interpolaba (el i18n usa {{param}}, no {param}).
+- **Admin ve todas las herramientas sin compra** (Mi cuenta > candado con bypass por rol).
+- **Comisiones (reglas de Christian):** (1) tope duro **50%** en servidor (`COMMISSION_CAP`,
+  al crear y al editar); (2) **edición individual** de tasas: `PUT
+  /admin/distributors/{id}/rates` + botón "Editar tasas" en Admin > Distribuidores;
+  (3) **candado histórico verificado**: cada orden guarda `commission` en PESOS al crearse
+  y todos los reportes suman lo guardado — cambiar precio o tasa NUNCA toca ventas pasadas
+  (test explícito en test_core). 48 pruebas en verde.
+
 ## 🚩 LO PRIMERO QUE DEBE HACER EL PRÓXIMO CHAT
 
 ### 1. ~~Llave de Gemini nueva~~ — HECHO 2026-07-20 (noche). EL CHAT DE IA ESTÁ VIVO.

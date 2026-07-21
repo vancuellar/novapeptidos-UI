@@ -111,7 +111,8 @@ const Account = () => {
   // estado y los posteriores cuentan; "pendiente" y "cancelado" no.
   const PAID_STATUSES = ['confirmado', 'enviado', 'entregado'];
   const paidOrders = orders.filter((o) => PAID_STATUSES.includes(o.status));
-  const toolsUnlocked = paidOrders.length > 0;
+  // El admin (Christian) ve todas las herramientas sin necesidad de compra.
+  const toolsUnlocked = paidOrders.length > 0 || user.role === 'admin';
 
   // Péptidos que este cliente ya compró, para pre-cargar la calculadora.
   // Solo los que el catálogo maneja en mg (los únicos que se reconstituyen).

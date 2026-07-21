@@ -12,7 +12,31 @@ import { fallbackProducts } from '@/data/fallbackCatalog';
 import { useLanguage } from '@/context/LanguageContext';
 
 const BAC = fallbackProducts.find((p) => p.slug === 'agua-bacteriostatica');
-const BAC_VARIANT = BAC?.variants?.[0]; // 3 mL, el más económico
+
+// Cuánta agua pide un vial según su tamaño (mg). Regla práctica de
+// reconstitución: chico ~2 mL, mediano ~3 mL, grande (60-100 mg, blends) ~4 mL.
+const waterPerVial = (mg) => (mg <= 15 ? 2 : mg <= 40 ? 3 : 4);
+
+// Plan inteligente: suma los mL que necesita el carrito y sugiere la
+// presentación correcta — 1 de 3 mL si alcanza, o N de 10 mL si no.
+const buildBacPlan = (items) => {
+  if (!BAC?.variants?.length) return null;
+  let vials = 0;
+  let ml = 0;
+  for (const item of items) {
+    if (/agua-bacteriostatica/.test(item.product_id)) continue;
+    const match = /([\d.]+)\s*mg/i.exec(item.presentation || '');
+    if (!match) continue;   // cápsulas, mL, etc.: no se reconstituyen
+    vials += item.quantity;
+    ml += waterPerVial(parseFloat(match[1])) * item.quantity;
+  }
+  if (!vials) return null;
+  const v3 = BAC.variants.find((v) => v.presentation.startsWith('3'));
+  const v10 = BAC.variants.find((v) => v.presentation.startsWith('10'));
+  const variant = ml <= 3 && v3 ? v3 : (v10 || v3);
+  const qty = ml <= 3 ? 1 : Math.max(1, Math.ceil(ml / 10));
+  return { vials, ml, qty, variant, size: variant.presentation };
+};
 
 const Cart = () => {
   const { items, addItem, updateQty, removeItem, subtotal, discount, discountRate, discountSource, nextTier, distCode, distRate, applyDistCode, clearDistCode } = useCart();
@@ -23,15 +47,17 @@ const Cart = () => {
   const afterDiscount = subtotal - discount; // el envío se cotiza por separado
 
   const hasBac = items.some((i) => /agua-bacteriostatica/.test(i.product_id));
-  const needsBac = items.some((i) => !/agua-bacteriostatica/.test(i.product_id));
+  const bacPlan = buildBacPlan(items);
 
   const goCheckout = () => navigate('/checkout');
   const onCheckoutClick = () => {
-    if (needsBac && !hasBac && BAC_VARIANT) setBacOpen(true);
+    // Solo recordamos el agua si hay viales que de verdad se reconstituyen.
+    if (bacPlan && !hasBac) setBacOpen(true);
     else goCheckout();
   };
   const addBacAndCheckout = () => {
-    addItem({ ...BAC, id: `${BAC.id}::${BAC_VARIANT.presentation}`, name: `${BAC.name} ${BAC_VARIANT.presentation}`, price: BAC_VARIANT.price, presentation: BAC_VARIANT.presentation, stock: BAC_VARIANT.stock });
+    const v = bacPlan.variant;
+    addItem({ ...BAC, id: `${BAC.id}::${v.presentation}`, name: `${BAC.name} ${v.presentation}`, price: v.price, presentation: v.presentation, stock: v.stock }, bacPlan.qty);
     setBacOpen(false);
     goCheckout();
   };
@@ -119,9 +145,14 @@ const Cart = () => {
             <DialogTitle className="text-center">{t('bac.title')}</DialogTitle>
           </DialogHeader>
           <p className="text-sm text-muted-foreground">{t('bac.body')}</p>
+          {bacPlan && (
+            <div className="rounded-lg border border-border bg-[hsl(var(--secondary))]/60 px-3 py-2.5 text-sm" data-testid="bac-smart-line">
+              {t('bac.smart', { vials: bacPlan.vials, ml: bacPlan.ml, qty: bacPlan.qty, size: bacPlan.size })}
+            </div>
+          )}
           <div className="rounded-lg border border-border bg-[hsl(var(--secondary))]/60 px-3 py-2 text-xs text-muted-foreground">{t('bac.note')}</div>
           <div className="flex flex-col gap-2 mt-2">
-            <Button onClick={addBacAndCheckout} data-testid="bac-add-button"><Droplet className="h-4 w-4 mr-1.5" /> {t('bac.add', { price: formatMXN(BAC_VARIANT?.price || 0) })}</Button>
+            <Button onClick={addBacAndCheckout} data-testid="bac-add-button"><Droplet className="h-4 w-4 mr-1.5" /> {t('bac.add', { qty: bacPlan?.qty || 1, size: bacPlan?.size || '', price: formatMXN((bacPlan?.variant.price || 0) * (bacPlan?.qty || 1)) })}</Button>
             <Button variant="outline" onClick={() => { setBacOpen(false); goCheckout(); }} data-testid="bac-skip-button">{t('bac.skip')}</Button>
             <Button variant="ghost" onClick={() => setBacOpen(false)}>{t('bac.back')}</Button>
           </div>

@@ -85,6 +85,10 @@ const Admin = () => {
   const [stockMap, setStockMap] = useState({});
   const [stockFilter, setStockFilter] = useState('');
   const [distForm, setDistForm] = useState({ name: '', email: '', commission: 25, customerDiscount: 10 });
+  // Edición de tasas por distribuidor. Solo hacia adelante: lo ya vendido
+  // conserva su comisión congelada en cada orden.
+  const [ratesDist, setRatesDist] = useState(null);
+  const [ratesForm, setRatesForm] = useState({ commission: 25, customerDiscount: 10 });
   const [distDialogOpen, setDistDialogOpen] = useState(false);
   const [distCreated, setDistCreated] = useState(null);
   const [inviteForm, setInviteForm] = useState({ name: '', email: '' });
@@ -185,6 +189,29 @@ const Admin = () => {
   };
 
   const copyText = (text, msg) => { navigator.clipboard?.writeText(text); toast.success(msg); };
+
+  const openRates = (d) => {
+    setRatesForm({
+      commission: Math.round((d.commission_rate || 0) * 100),
+      customerDiscount: Math.round((d.customer_discount_rate || 0) * 100),
+    });
+    setRatesDist(d);
+  };
+
+  const saveRates = async () => {
+    try {
+      await api.put(`/admin/distributors/${ratesDist.id}/rates`, {
+        // Tope 50% también aquí; el servidor lo vuelve a exigir.
+        commission_rate: Math.max(0, Math.min(50, Number(ratesForm.commission) || 0)) / 100,
+        customer_discount_rate: Math.max(5, Math.min(50, Number(ratesForm.customerDiscount) || 10)) / 100,
+      });
+      toast.success(t('admin.dist.ratesSaved'));
+      setRatesDist(null);
+      loadAll();
+    } catch (err) {
+      toast.error(err.response?.data?.detail || t('admin.toast.saveError'));
+    }
+  };
 
   const inviteCustomer = async () => {
     if (!inviteForm.name || !inviteForm.email) { toast.error(t('admin.toast.required')); return; }
@@ -408,11 +435,12 @@ const Admin = () => {
                   <TableHead>{t('admin.dist.name')}</TableHead><TableHead>{t('admin.dist.code')}</TableHead>
                   <TableHead>{t('admin.dist.commission')}</TableHead><TableHead>{t('admin.dist.customerDiscountCol')}</TableHead><TableHead>{t('admin.dist.clients')}</TableHead>
                   <TableHead>{t('admin.dist.sales')}</TableHead><TableHead>{t('admin.dist.earnings')}</TableHead>
+                  <TableHead></TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
                 {distributors.length === 0 ? (
-                  <TableRow><TableCell colSpan={6} className="text-center text-muted-foreground py-8">{t('admin.dist.noDistributors')}</TableCell></TableRow>
+                  <TableRow><TableCell colSpan={8} className="text-center text-muted-foreground py-8">{t('admin.dist.noDistributors')}</TableCell></TableRow>
                 ) : distributors.map((d) => (
                   <TableRow key={d.id}>
                     <TableCell><div className="text-sm font-medium">{d.name}</div><div className="text-xs text-muted-foreground">{d.email}</div></TableCell>
@@ -422,6 +450,11 @@ const Admin = () => {
                     <TableCell>{d.clients_count}</TableCell>
                     <TableCell>{formatMXN(d.sales_total)}</TableCell>
                     <TableCell className="font-medium text-[hsl(var(--primary))]">{formatMXN(d.earnings)}</TableCell>
+                    <TableCell>
+                      <Button variant="ghost" size="sm" onClick={() => openRates(d)} data-testid={`admin-dist-edit-${d.distributor_code}`}>
+                        <Pencil className="h-3.5 w-3.5 mr-1" /> {t('admin.dist.editRates')}
+                      </Button>
+                    </TableCell>
                   </TableRow>
                 ))}
               </TableBody>
@@ -675,6 +708,31 @@ const Admin = () => {
               </DialogFooter>
             </>
           )}
+        </DialogContent>
+      </Dialog>
+
+      {/* Ajuste de tasas de UN distribuidor. Solo afecta ventas futuras. */}
+      <Dialog open={!!ratesDist} onOpenChange={(open) => { if (!open) setRatesDist(null); }}>
+        <DialogContent className="max-w-sm" data-testid="admin-rates-dialog">
+          <DialogHeader><DialogTitle>{t('admin.dist.editRatesTitle', { name: ratesDist?.name || '' })}</DialogTitle></DialogHeader>
+          <div className="space-y-4">
+            <div>
+              <Label>{t('admin.dist.commission')} (%)</Label>
+              <Input type="number" min="0" max="50" className="mt-1.5" value={ratesForm.commission}
+                onChange={(e) => setRatesForm((f) => ({ ...f, commission: e.target.value }))} data-testid="admin-rates-commission" />
+              <p className="text-xs text-muted-foreground mt-1">{t('admin.dist.commissionCap')}</p>
+            </div>
+            <div>
+              <Label>{t('admin.dist.customerDiscount')} (%)</Label>
+              <Input type="number" min="5" max="50" className="mt-1.5" value={ratesForm.customerDiscount}
+                onChange={(e) => setRatesForm((f) => ({ ...f, customerDiscount: e.target.value }))} data-testid="admin-rates-discount" />
+            </div>
+            <p className="text-xs text-muted-foreground leading-relaxed">{t('admin.dist.ratesForwardNote')}</p>
+          </div>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setRatesDist(null)}>{t('common.cancel')}</Button>
+            <Button onClick={saveRates} data-testid="admin-rates-save">{t('admin.dist.ratesSave')}</Button>
+          </DialogFooter>
         </DialogContent>
       </Dialog>
 
