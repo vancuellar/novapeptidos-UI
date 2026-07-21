@@ -539,6 +539,27 @@ envían a ningún procesador. SPEI funciona porque es transferencia manual.
   y todos los reportes suman lo guardado — cambiar precio o tasa NUNCA toca ventas pasadas
   (test explícito en test_core). 48 pruebas en verde.
 
+## 8nonies. AUDITORÍA + PISO 5× TRAS COMISIÓN (2026-07-21, madrugada) — EN VIVO
+
+- **Auditoría completa (todo verde):** sitio = maestra al centavo (198 variantes, 0
+  descuadres), terminación 9 en 205/205, tope de comisión 50% cumplido, cero secretos en
+  los repos públicos, ~25 ramas viejas borradas, dev↔main en paridad (PR #54).
+- **REGLA NUEVA de Christian (2026-07-21): piso de ROI 5× DESPUÉS de comisión, en TODO el
+  catálogo. Se recorta la comisión primero, NUNCA su ganancia.** Aplicado quirúrgicamente
+  a la maestra: 14 filas — 13 recortes de comisión (p.ej. BPC-157 20mg 40%→22%, IGF-1 LR3
+  9%→2%) y **Liraglutida 30mg subió $2,969→$3,229** (piso exacto 5×; Certified no la vende;
+  queda arriba de Exoma $2,970, deliberado, comisión 0%). Respaldo:
+  `pricing-system/backup_maestra_pre_piso5x_tras_comision.xlsx`.
+- **build_pricing_final.py parcheado para corridas futuras:** piso global 5× re-aplicado
+  DESPUÉS de la escalera/interpolación (antes la escalera podía hundir un precio bajo el
+  piso, como pasó con Liraglutida); `commission()` ya traía el piso tras comisión.
+- **OJO CRÍTICO:** la hoja "Precios y Competencia" actual fue generada por una versión del
+  script QUE YA NO EXISTE (los textos de base "abajo de Exoma unico" y "piso 50% com" no
+  están en ningún .py). **Regenerar con el script actual puede mover MUCHOS precios.**
+  Antes de la próxima regeneración, reconciliar el script con lo publicado.
+- HCG 5,000IU arriba de Certified = deliberado (piso); el vigía da falsa alarma ahí —
+  pendiente enseñarle a reconocer precios en piso.
+
 ## 🚩 LO PRIMERO QUE DEBE HACER EL PRÓXIMO CHAT
 
 ### 1. ~~Llave de Gemini nueva~~ — HECHO 2026-07-20 (noche). EL CHAT DE IA ESTÁ VIVO.
