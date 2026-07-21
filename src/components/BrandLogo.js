@@ -20,14 +20,13 @@ export const BrandMark = ({ className = 'h-8', noMolecule = false }) => (
 );
 
 // La molécula REAL del logo (el dipéptido completo, recortado del PNG
-// oficial), en un mosaico redondeado estilo Resend. En dark se invierte a
-// blanco monocromo, igual que el resto de la marca.
+// oficial), tal cual, SIN caja (orden de Christian, 2026-07-21). En dark se
+// invierte a blanco monocromo, igual que el resto de la marca.
 const MOLECULE_SRC = process.env.PUBLIC_URL + '/images/exygen-molecule.png';
 
-export const MoleculeTile = ({ className = 'h-16 w-16' }) => (
-  <div className={`${className} rounded-2xl border border-border bg-card flex items-center justify-center shadow-sm`}>
-    <img src={MOLECULE_SRC} alt="Exygen Labs" className="w-3/4 object-contain dark:brightness-0 dark:invert" />
-  </div>
+export const MoleculeMark = ({ className = 'h-12' }) => (
+  <img src={MOLECULE_SRC} alt="Exygen Labs"
+    className={`${className} w-auto object-contain dark:brightness-0 dark:invert`} />
 );
 
 const BrandLogo = ({ compact = false, nameOnly = false }) => (

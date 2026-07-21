@@ -10,7 +10,7 @@ import { toast } from 'sonner';
 import api from '@/lib/api';
 import { useAuth } from '@/context/AuthContext';
 import { useLanguage } from '@/context/LanguageContext';
-import { MoleculeTile } from '@/components/BrandLogo';
+import { MoleculeMark } from '@/components/BrandLogo';
 import GoogleSignInButton from '@/components/GoogleSignInButton';
 import { passkeysSupported, loginWithPasskey } from '@/lib/webauthn';
 
@@ -23,6 +23,19 @@ const Consent = ({ checked, onChange, testid, children }) => (
     <span className="text-sm leading-relaxed">{children}</span>
   </label>
 );
+
+// El nombre de la marca dentro del título, como en el logotipo: MAYÚSCULAS
+// con espaciado. Funciona en los 3 idiomas porque todos dicen "Exygen Labs".
+const BrandTitle = ({ text }) => {
+  const [pre, post] = text.split('Exygen Labs');
+  return (
+    <>
+      {pre}
+      <span className="uppercase tracking-[0.12em] whitespace-nowrap">Exygen&nbsp;Labs</span>
+      {post}
+    </>
+  );
+};
 
 // Enlace monocromo estilo Resend: texto claro, subrayado tenue.
 const monoLink = 'text-foreground underline underline-offset-4 decoration-white/25 hover:decoration-white transition-colors';
@@ -182,11 +195,17 @@ const Login = () => {
     <div className="dark min-h-screen flex items-center justify-center px-4 py-14 relative overflow-hidden bg-[#020204] text-foreground">
       <div aria-hidden className="pointer-events-none absolute -top-40 right-[-15%] h-[560px] w-[560px] rounded-full opacity-20"
         style={{ background: 'radial-gradient(circle at center, hsl(0 0% 85% / 0.35), transparent 65%)' }} />
+      {/* Vuelta al sitio arriba a la izquierda: aquí no hay barra superior. */}
+      <Link to="/" data-testid="auth-back-home"
+        className="absolute left-4 top-6 sm:left-8 inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors">
+        <ArrowLeft className="h-4 w-4" /> {t('auth.backToSite')}
+      </Link>
+
       <div className="w-full max-w-md relative">
         <div className="flex flex-col items-center text-center mb-9">
-          <MoleculeTile className="h-16 w-16 mb-7 text-foreground" />
+          <MoleculeMark className="h-12 mb-7" />
           <h1 className="font-brand text-3xl sm:text-4xl tracking-tight">
-            {mode === 'signup' ? t('auth.resend.signupTitle') : t('auth.resend.loginTitle')}
+            <BrandTitle text={mode === 'signup' ? t('auth.resend.signupTitle') : t('auth.resend.loginTitle')} />
           </h1>
           <p className="text-sm text-muted-foreground mt-3">
             {mode === 'signup' ? t('auth.resend.haveAccount') : t('auth.resend.noAccount')}{' '}
@@ -288,9 +307,6 @@ const Login = () => {
         </div>
         )}
 
-        <div className="text-center mt-8">
-          <Link to="/" className="inline-flex items-center gap-1.5 text-xs text-muted-foreground hover:text-foreground transition-colors"><ArrowLeft className="h-3.5 w-3.5" /> {t('auth.backToSite')}</Link>
-        </div>
       </div>
 
       {/* Paso 2 del registro: los consentimientos. El dialogo se monta en un
