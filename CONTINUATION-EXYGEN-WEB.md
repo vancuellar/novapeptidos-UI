@@ -560,6 +560,20 @@ envían a ningún procesador. SPEI funciona porque es transferencia manual.
 - HCG 5,000IU arriba de Certified = deliberado (piso); el vigía da falsa alarma ahí —
   pendiente enseñarle a reconocer precios en piso.
 
+## 8dec. SPEI CON CLABE (2026-07-21) — EN VIVO
+- El cliente que elige SPEI ahora SÍ ve la cuenta para depositar: caja con Beneficiario,
+  Banco, CLABE (copiable), Monto y Referencia (nº de pedido), en `/pedido/…` y en el correo.
+  Datos por env (`SPEI_CLABE/BENEFICIARY/BANK`, en el server + `~/.config/exygen/spei.env`),
+  **nunca en el repo ni en páginas públicas**; solo aparecen en un pedido SPEI ya hecho.
+  Cuenta por defecto = la de Christian (ver memoria privada [[exygen-entidad-y-pagos]]).
+- **BUG CRÍTICO cazado y corregido el mismo día:** un helper (`spei_details`) quedó insertado
+  ENTRE el decorador y `get_order`, robándose la ruta → GET /orders/{n} devolvía la CLABE en
+  vez del pedido (live ~unos minutos; sin clientes reales, CLABE no es secreta). Corregido +
+  prueba de regresión de ruteo en test_core. **Lección: al meter un helper cerca de una ruta,
+  revisar que el decorador siga pegado a su función.** 58 pruebas en verde.
+- **OXXO:** NO se puede con sola CLABE — necesita un PSP (Conekta/OpenPay OXXO Pay) que emita
+  ficha, con el mismo riesgo de giro. Diferido.
+
 ## 🚩 PENDIENTES NUEVOS DE CHRISTIAN (2026-07-21, madrugada) — APUNTADOS, SIN EJECUTAR
 
 1. **Hablar del programa de lealtad:** hoy es 5% sobre compras pagadas (tasa que eligió el
