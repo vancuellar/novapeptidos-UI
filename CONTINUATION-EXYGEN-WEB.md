@@ -574,6 +574,19 @@ envían a ningún procesador. SPEI funciona porque es transferencia manual.
 - **OXXO:** NO se puede con sola CLABE — necesita un PSP (Conekta/OpenPay OXXO Pay) que emita
   ficha, con el mismo riesgo de giro. Diferido.
 
+## 8undec. COMPROBANTE SPEI + UI DE MI CUENTA (2026-07-21) — EN VIVO
+- **Comprobante SPEI (lo pidió Christian: la cuenta receptora QUIMIMID no busca la
+  transferencia sin comprobante):** el cliente sube su comprobante en la página del pedido
+  SPEI (`POST /orders/{n}/spei-receipt`, multipart, valida tipo/tamaño, guarda en Mongo
+  colección `spei_receipts`, marca `spei_receipt_at`). El **admin lo descarga** en
+  Admin > Pedidos (columna "Comprobante", `GET /admin/orders/{id}/spei-receipt`, solo admin).
+  Probado de punta a punta. 58 pruebas.
+- **Mi cuenta:** las tabs (Pedidos, Herramientas, Estudios, Certificados, Perfil) ahora son
+  **sidebar vertical flotante (sticky)** a la izquierda en desktop, siempre visible; barra
+  horizontal en móvil.
+- **Header:** nombre del usuario (primer nombre) junto al icono de Perfil; se quitó el botón
+  "Cerrar sesión" duplicado de Mi cuenta (queda solo en el dropdown del Perfil).
+
 ## 🚩 PENDIENTES NUEVOS DE CHRISTIAN (2026-07-21, madrugada) — APUNTADOS, SIN EJECUTAR
 
 1. **Hablar del programa de lealtad:** hoy es 5% sobre compras pagadas (tasa que eligió el
