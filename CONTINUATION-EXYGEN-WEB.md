@@ -545,6 +545,16 @@ API solo permite exygenlabs.com; no es bug.
   antes de crearla. Cuenta existente entra directo (ya consintió al registrarse).
 - **Consentimiento de SMS ELIMINADO en todo el sitio** (Christian: "ya casi no se usa").
   Verificado en producción: 4 casillas en el registro, cero referencias a marketing_sms.
+- **Aviso RUO de primera visita con casilla (Christian, 2026-07-20 noche):** hay que marcar
+  "Confirmo los tres puntos anteriores" para que se encienda "Entiendo y acepto" (`RuoGate.js`).
+- **/login rediseñado al estilo del alta de Resend (pedido explícito):** sin pestañas — logo,
+  título grande ("Entra a…" / "Crea tu cuenta en…"), enlace para cambiar de modo, botón de
+  Google ARRIBA, divisor "o" y formulario directo sobre el fondo, sin tarjeta. Sin GitHub (no
+  aplica). Verificado en producción en claro y oscuro.
+- **Passkeys/2FA: PENDIENTE DE DECISIÓN.** Recomendación dada a Christian: (1) el botón de
+  Google ya delega la seguridad (incl. 2FA) en Google; (2) agregar passkeys como opción de
+  entrada (simple + muy seguro, sin códigos); (3) 2FA TOTP obligatorio SOLO para admin (y
+  quizá distribuidores); (4) NO 2FA por SMS. Nada implementado aún.
 
 ### 2bis. PROGRAMA DE LEALTAD — CONSTRUIDO Y EN VIVO 2026-07-20 (noche)
 Orden de Christian: puntos por compra canjeables por producto, **distribuidores NO participan**.
