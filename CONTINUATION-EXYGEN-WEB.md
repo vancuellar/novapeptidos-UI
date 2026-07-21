@@ -565,6 +565,14 @@ API solo permite exygenlabs.com; no es bug.
   - **PENDIENTE DE CHRISTIAN:** entrar a exygenlabs.com/cuenta?tab=profile con su cuenta
     admin y ACTIVAR el 2FA (escanear QR); opcionalmente crear su passkey ahí mismo.
   - SMS: descartado para siempre (marketing y 2FA).
+- **Login/registro v4 — MONOCROMO Y MINIMALISTA TOTAL (2026-07-21, orden de Christian):**
+  cero color en ambas pantallas (enlaces subrayados gris/blanco, CTA gris oscuro
+  `#1e1f22`, **G de Google en blanco** como Resend, casillas blancas, resplandor neutro);
+  sin iconos de confianza y sin el botón verde de chat (AIChatWidget va dentro de
+  `SiteChrome`). **El registro pide solo nombre/correo/contraseña** (sin confirmar
+  contraseña); los **consentimientos son el paso siguiente**: diálogo oscuro (con clase
+  `dark` propia porque el portal se monta fuera del árbol) con las 2 obligatorias y las
+  2 opcionales. El servidor sigue exigiéndolas. Verificado en producción.
 - **URLs separadas como Resend (2026-07-21):** `/login` (entrar) y `/registro` (crear
   cuenta) son páginas propias; el enlace de cada una lleva a la otra. `/login?tab=signup`
   redirige a /registro. El `Register.js` viejo (sin consentimientos) se ELIMINÓ. "Comenzar"
