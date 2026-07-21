@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, Link, useSearchParams, useLocation } from 'react-router-dom';
-import { Eye, EyeOff, ArrowLeft, ShieldCheck, Truck, Lock, MailCheck, Fingerprint, KeyRound } from 'lucide-react';
+import { Eye, EyeOff, ArrowLeft, MailCheck, Fingerprint, KeyRound } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card } from '@/components/ui/card';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { toast } from 'sonner';
 import api from '@/lib/api';
 import { useAuth } from '@/context/AuthContext';
@@ -13,19 +14,25 @@ import { MoleculeTile } from '@/components/BrandLogo';
 import GoogleSignInButton from '@/components/GoogleSignInButton';
 import { passkeysSupported, loginWithPasskey } from '@/lib/webauthn';
 
-// Casilla de consentimiento. Etiqueta clicable completa: en móvil el cuadrito
-// solo es un blanco de 20 px y la gente falla el toque.
+// Casilla de consentimiento, monocroma. Etiqueta clicable completa: en móvil
+// el cuadrito solo es un blanco de 20 px y la gente falla el toque.
 const Consent = ({ checked, onChange, testid, children }) => (
   <label className="flex items-start gap-3 cursor-pointer">
     <input type="checkbox" checked={checked} onChange={onChange} data-testid={testid}
-      className="h-5 w-5 mt-0.5 shrink-0 accent-[hsl(var(--primary))] cursor-pointer" />
+      className="h-5 w-5 mt-0.5 shrink-0 accent-white cursor-pointer" />
     <span className="text-sm leading-relaxed">{children}</span>
   </label>
 );
 
-// Pantalla de entrada al estilo del alta de Resend (gusto explícito de
-// Christian): logo, título grande, enlace para cambiar de modo, Google arriba,
-// divisor "o" y el formulario directo sobre el fondo, sin tarjeta.
+// Enlace monocromo estilo Resend: texto claro, subrayado tenue.
+const monoLink = 'text-foreground underline underline-offset-4 decoration-white/25 hover:decoration-white transition-colors';
+// CTA monocromo estilo Resend: gris oscuro con borde tenue, nada de color.
+const monoCta = 'w-full h-12 rounded-xl bg-[#1e1f22] border border-white/10 text-white text-sm font-semibold hover:bg-[#2a2b2f] transition-colors disabled:opacity-40 disabled:pointer-events-none';
+
+// Pantallas de entrada y registro al estilo Resend (gusto explícito de
+// Christian): SIEMPRE oscuras, monocromas y extremadamente minimalistas.
+// El registro pide solo nombre/correo/contraseña; los consentimientos son el
+// PASO SIGUIENTE (diálogo), no un formulario kilométrico.
 const Login = () => {
   const { login, register, adoptSession } = useAuth();
   const { t, language } = useLanguage();
@@ -41,6 +48,7 @@ const Login = () => {
       navigate('/registro', { replace: true });
     }
   }, [pathname, params, navigate]);
+
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
@@ -48,12 +56,12 @@ const Login = () => {
   const [regEmail, setRegEmail] = useState('');
   const [regPassword, setRegPassword] = useState('');
   const [showRegPassword, setShowRegPassword] = useState(false);
-  const [regConfirm, setRegConfirm] = useState('');
   const [loading, setLoading] = useState(false);
   const [pendingEmail, setPendingEmail] = useState('');   // registrado, falta confirmar
   const [unverified, setUnverified] = useState('');       // intento de entrar sin confirmar
   const [totpToken, setTotpToken] = useState('');         // cuenta con 2FA: falta el codigo
   const [totpCode, setTotpCode] = useState('');
+  const [consentOpen, setConsentOpen] = useState(false);  // paso 2 del registro
   // Los dos primeros son obligatorios; los otros dos son opt-in real (nacen apagados).
   const [consents, setConsents] = useState({
     age_confirmed: false, privacy_accepted: false,
@@ -112,13 +120,19 @@ const Login = () => {
     } finally { setLoading(false); }
   };
 
-  const submitRegister = async (e) => {
+  // Paso 1 del registro: solo valida el formulario y abre los consentimientos.
+  const openConsents = (e) => {
     e.preventDefault();
-    if (regPassword !== regConfirm) { toast.error(t('auth.reset.mismatch')); return; }
+    setConsentOpen(true);
+  };
+
+  // Paso 2: con las casillas obligatorias marcadas, ahora sí se crea la cuenta.
+  const submitRegister = async () => {
     if (!canRegister) { toast.error(t('auth.consent.required')); return; }
     setLoading(true);
     try {
       const res = await register(regName, regEmail, regPassword, consents);
+      setConsentOpen(false);
       // Si el servidor no exige confirmacion (correo saliente apagado) ya viene
       // la sesion lista: entramos directo en vez de pedir un correo que no llegara.
       if (res?.pending_verification === false && res.token) {
@@ -154,26 +168,23 @@ const Login = () => {
   const termsLine = (
     <p className="text-center text-xs text-muted-foreground mt-8 leading-relaxed">
       {t('auth.terms.pre')}{' '}
-      <Link to="/info/terminos" className="text-[hsl(var(--primary))] font-medium hover:underline underline-offset-2">{t('auth.terms.service')}</Link>{' '}
+      <Link to="/info/terminos" className={monoLink}>{t('auth.terms.service')}</Link>{' '}
       {t('auth.terms.and')}{' '}
-      <Link to="/info/privacidad" className="text-[hsl(var(--primary))] font-medium hover:underline underline-offset-2">{t('auth.terms.privacy')}</Link>.
+      <Link to="/info/privacidad" className={monoLink}>{t('auth.terms.privacy')}</Link>.
     </p>
   );
 
   return (
     // Pantalla independiente SIEMPRE oscura, como el alta de Resend (orden de
-    // Christian, 2026-07-21): clase `dark` propia para que todos los tokens
-    // del tema se resuelvan en oscuro aunque el sitio esté en claro, lienzo
-    // negro y un resplandor suave arriba a la derecha.
+    // Christian): clase `dark` propia para que todos los tokens del tema se
+    // resuelvan en oscuro aunque el sitio esté en claro, lienzo negro y un
+    // resplandor suave arriba a la derecha.
     <div className="dark min-h-screen flex items-center justify-center px-4 py-14 relative overflow-hidden bg-[#020204] text-foreground">
-      <div aria-hidden className="pointer-events-none absolute -top-40 right-[-15%] h-[560px] w-[560px] rounded-full opacity-25"
-        style={{ background: 'radial-gradient(circle at center, hsl(225 72% 60% / 0.55), transparent 65%)' }} />
+      <div aria-hidden className="pointer-events-none absolute -top-40 right-[-15%] h-[560px] w-[560px] rounded-full opacity-20"
+        style={{ background: 'radial-gradient(circle at center, hsl(0 0% 85% / 0.35), transparent 65%)' }} />
       <div className="w-full max-w-md relative">
-        {/* Como Resend: SOLO la molécula en su mosaico, título grande y el
-            enlace para cambiar de modo. Sin wordmark y sin link de "Inicio"
-            (órdenes de Christian, 2026-07-21). */}
         <div className="flex flex-col items-center text-center mb-9">
-          <MoleculeTile className="h-14 w-14 mb-7 text-foreground" />
+          <MoleculeTile className="h-16 w-16 mb-7 text-foreground" />
           <h1 className="font-brand text-3xl sm:text-4xl tracking-tight">
             {mode === 'signup' ? t('auth.resend.signupTitle') : t('auth.resend.loginTitle')}
           </h1>
@@ -181,7 +192,7 @@ const Login = () => {
             {mode === 'signup' ? t('auth.resend.haveAccount') : t('auth.resend.noAccount')}{' '}
             <button type="button" data-testid="auth-switch-mode"
               onClick={() => switchMode(mode === 'signup' ? 'login' : 'signup')}
-              className="font-semibold text-foreground underline underline-offset-4 decoration-border hover:decoration-foreground transition-colors">
+              className={`font-semibold ${monoLink}`}>
               {mode === 'signup' ? t('auth.login.title') : t('auth.register.title')}
             </button>.
           </p>
@@ -190,7 +201,7 @@ const Login = () => {
         {/* Cuenta con 2FA (admin): la contrasena ya paso, falta el codigo. */}
         {totpToken ? (
           <Card className="p-8 rounded-2xl shadow-sm text-center" data-testid="totp-step">
-            <KeyRound className="h-10 w-10 mx-auto mb-4 text-[hsl(var(--primary))]" />
+            <KeyRound className="h-10 w-10 mx-auto mb-4 text-foreground" />
             <h2 className="font-heading text-xl font-bold mb-2">{t('totp.title')}</h2>
             <p className="text-sm text-muted-foreground leading-relaxed">{t('totp.body')}</p>
             <form onSubmit={submitTotp} className="mt-6 space-y-3">
@@ -198,15 +209,15 @@ const Login = () => {
                 className="h-12 rounded-lg text-center text-xl tracking-[0.4em] font-mono-tech"
                 value={totpCode} onChange={(e) => setTotpCode(e.target.value.replace(/\D/g, ''))}
                 data-testid="totp-code-input" required />
-              <Button type="submit" size="lg" className="w-full h-12 rounded-xl" disabled={loading || totpCode.length !== 6} data-testid="totp-submit">
+              <button type="submit" className={monoCta} disabled={loading || totpCode.length !== 6} data-testid="totp-submit">
                 {loading ? t('auth.login.loading') : t('totp.submit')}
-              </Button>
+              </button>
               <Button type="button" variant="ghost" className="w-full" onClick={() => setTotpToken('')}>{t('verify.backToLogin')}</Button>
             </form>
           </Card>
         ) : pendingEmail ? (
           <Card className="p-8 rounded-2xl shadow-sm text-center" data-testid="register-pending">
-            <MailCheck className="h-10 w-10 mx-auto mb-4 text-[hsl(var(--primary))]" />
+            <MailCheck className="h-10 w-10 mx-auto mb-4 text-foreground" />
             <h2 className="font-heading text-xl font-bold mb-2">{t('verify.sentTitle')}</h2>
             <p className="text-sm text-muted-foreground leading-relaxed">
               {t('verify.sentBody', { email: pendingEmail })}
@@ -222,7 +233,7 @@ const Login = () => {
         ) : (
         <div>
           {unverified && (
-            <div className="mb-6 rounded-xl border border-[hsl(var(--warning-border))] bg-[hsl(var(--warning))]/10 p-4" data-testid="login-unverified">
+            <div className="mb-6 rounded-xl border border-border bg-secondary/40 p-4" data-testid="login-unverified">
               <p className="text-sm leading-relaxed">{t('verify.blockedBody')}</p>
               <Button variant="outline" size="sm" className="mt-3" onClick={() => resendVerification(unverified)} disabled={loading} data-testid="login-resend">
                 {loading ? t('verify.sending') : t('verify.resendCta')}
@@ -241,11 +252,11 @@ const Login = () => {
               <div>
                 <div className="flex items-center justify-between">
                   <Label>{t('auth.password')}</Label>
-                  <Link to="/recuperar" className="text-xs text-[hsl(var(--primary))] font-medium hover:underline" data-testid="login-forgot-link">{t('auth.forgotLink')}</Link>
+                  <Link to="/recuperar" className="text-xs text-muted-foreground hover:text-foreground transition-colors" data-testid="login-forgot-link">{t('auth.forgotLink')}</Link>
                 </div>
                 {passwordField(password, (e) => setPassword(e.target.value), showPassword, setShowPassword, 'login-password-input')}
               </div>
-              <Button type="submit" size="lg" className="w-full h-12 rounded-xl" disabled={loading} data-testid="login-submit-button">{loading ? t('auth.login.loading') : t('auth.login.submit')}</Button>
+              <button type="submit" className={monoCta} disabled={loading} data-testid="login-submit-button">{loading ? t('auth.login.loading') : t('auth.login.submit')}</button>
               {passkeysSupported() && (
                 <button type="button" onClick={passkeyLogin} disabled={loading} data-testid="login-passkey-button"
                   className="w-full inline-flex items-center justify-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors py-1.5">
@@ -254,7 +265,7 @@ const Login = () => {
               )}
             </form>
           ) : (
-            <form onSubmit={submitRegister} className="space-y-4">
+            <form onSubmit={openConsents} className="space-y-4">
               <div>
                 <Label>{t('auth.name')}</Label>
                 <Input className="mt-1.5 h-12 rounded-lg" value={regName} onChange={(e) => setRegName(e.target.value)} data-testid="register-name-input" required />
@@ -266,38 +277,10 @@ const Login = () => {
               <div>
                 <Label>{t('auth.password')}</Label>
                 {passwordField(regPassword, (e) => setRegPassword(e.target.value), showRegPassword, setShowRegPassword, 'register-password-input')}
-                <p className="text-xs text-muted-foreground mt-1.5">{t('auth.passwordHint')}</p>
               </div>
-              <div>
-                <Label>{t('auth.confirmPassword')}</Label>
-                {passwordField(regConfirm, (e) => setRegConfirm(e.target.value), showRegPassword, setShowRegPassword, 'register-confirm-input')}
-              </div>
-
-              <div className="space-y-3 pt-2" data-testid="register-consents">
-                <Consent checked={consents.age_confirmed} onChange={setConsent('age_confirmed')} testid="consent-age">
-                  {t('auth.consent.age')}{' '}
-                  <Link to="/info/terminos" target="_blank" className="text-[hsl(var(--primary))] font-medium hover:underline underline-offset-2">{t('auth.terms.service')}</Link>
-                </Consent>
-                <Consent checked={consents.privacy_accepted} onChange={setConsent('privacy_accepted')} testid="consent-privacy">
-                  {t('auth.consent.privacy')}{' '}
-                  <Link to="/info/privacidad" target="_blank" className="text-[hsl(var(--primary))] font-medium hover:underline underline-offset-2">{t('auth.terms.privacy')}</Link>
-                </Consent>
-                <Consent checked={consents.promos} onChange={setConsent('promos')} testid="consent-promos">
-                  {t('auth.consent.promos')}
-                </Consent>
-                <Consent checked={consents.marketing_email} onChange={setConsent('marketing_email')} testid="consent-email">
-                  {t('auth.consent.email')}
-                </Consent>
-              </div>
-
-              <p className="text-xs text-muted-foreground leading-relaxed">
-                {t('auth.consent.statement')}
-              </p>
-
-              <Button type="submit" size="lg" className="w-full h-12 rounded-xl" disabled={loading || !canRegister} data-testid="register-submit-button">
-                {loading ? t('auth.register.loading') : t('auth.consent.submit')}
-              </Button>
-              {!canRegister && <p className="text-xs text-muted-foreground text-center">{t('auth.consent.required')}</p>}
+              <button type="submit" className={monoCta} disabled={loading} data-testid="register-submit-button">
+                {t('auth.register.title')}
+              </button>
             </form>
           )}
 
@@ -305,16 +288,39 @@ const Login = () => {
         </div>
         )}
 
-        <div className="mt-7 flex items-center justify-center gap-x-5 gap-y-2 flex-wrap text-xs text-muted-foreground">
-          <span className="inline-flex items-center gap-1.5"><ShieldCheck className="h-3.5 w-3.5 text-[hsl(var(--primary))]" /> {t('auth.login.bullet1')}</span>
-          <span className="inline-flex items-center gap-1.5"><Truck className="h-3.5 w-3.5 text-[hsl(var(--primary))]" /> {t('auth.login.bullet2')}</span>
-          <span className="inline-flex items-center gap-1.5"><Lock className="h-3.5 w-3.5 text-[hsl(var(--primary))]" /> {t('auth.securePayment')}</span>
-        </div>
-
-        <div className="text-center mt-6">
-          <Link to="/" className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground"><ArrowLeft className="h-4 w-4" /> {t('auth.backToSite')}</Link>
+        <div className="text-center mt-8">
+          <Link to="/" className="inline-flex items-center gap-1.5 text-xs text-muted-foreground hover:text-foreground transition-colors"><ArrowLeft className="h-3.5 w-3.5" /> {t('auth.backToSite')}</Link>
         </div>
       </div>
+
+      {/* Paso 2 del registro: los consentimientos. El dialogo se monta en un
+          portal fuera de este arbol, por eso lleva su propia clase `dark`. */}
+      <Dialog open={consentOpen} onOpenChange={setConsentOpen}>
+        <DialogContent className="dark max-w-md bg-[#0d0d0f] border-white/10 text-foreground" data-testid="register-consent-dialog">
+          <DialogHeader><DialogTitle className="font-brand">{t('auth.google.consentTitle')}</DialogTitle></DialogHeader>
+          <div className="space-y-3" data-testid="register-consents">
+            <Consent checked={consents.age_confirmed} onChange={setConsent('age_confirmed')} testid="consent-age">
+              {t('auth.consent.age')}{' '}
+              <Link to="/info/terminos" target="_blank" className={monoLink}>{t('auth.terms.service')}</Link>
+            </Consent>
+            <Consent checked={consents.privacy_accepted} onChange={setConsent('privacy_accepted')} testid="consent-privacy">
+              {t('auth.consent.privacy')}{' '}
+              <Link to="/info/privacidad" target="_blank" className={monoLink}>{t('auth.terms.privacy')}</Link>
+            </Consent>
+            <Consent checked={consents.promos} onChange={setConsent('promos')} testid="consent-promos">
+              {t('auth.consent.promos')}
+            </Consent>
+            <Consent checked={consents.marketing_email} onChange={setConsent('marketing_email')} testid="consent-email">
+              {t('auth.consent.email')}
+            </Consent>
+          </div>
+          <p className="text-xs text-muted-foreground leading-relaxed">{t('auth.consent.statement')}</p>
+          <button type="button" className={monoCta} onClick={submitRegister} disabled={loading || !canRegister} data-testid="register-consent-submit">
+            {loading ? t('auth.register.loading') : t('auth.consent.submit')}
+          </button>
+          {!canRegister && <p className="text-xs text-muted-foreground text-center">{t('auth.consent.required')}</p>}
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };

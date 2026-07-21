@@ -81,7 +81,7 @@ function App() {
                 </main>
                 <SiteChrome><Footer /></SiteChrome>
                 <RuoGate />
-                <AIChatWidget />
+                <SiteChrome><AIChatWidget /></SiteChrome>
                 <Toaster position="top-right" richColors closeButton duration={2500} />
               </BrowserRouter>
             </CartProvider>
