@@ -587,6 +587,41 @@ envían a ningún procesador. SPEI funciona porque es transferencia manual.
 - **Header:** nombre del usuario (primer nombre) junto al icono de Perfil; se quitó el botón
   "Cerrar sesión" duplicado de Mi cuenta (queda solo en el dropdown del Perfil).
 
+## 8duodec. CORREO DE PAGO + E2E + ENVÍOS (2026-07-21) — EN VIVO
+
+- **Correo de pago confirmado:** al pasar un pedido a `confirmado` (SPEI verificado por el
+  admin o cripto liquidada), el cliente recibe "Confirmamos tu pago — pedido X".
+  `send_payment_confirmed_email` en emails.py; disparado en `update_order_status` (solo al
+  ENTRAR a confirmado) y en `_confirm_crypto_order`. 59 pruebas en verde.
+
+- **E2E COMPLETO (2026-07-21, cero fallas):** 59 pruebas backend + build limpio.
+  29 rutas del sitio renderizan con **cero errores de consola** (incl. /cuenta /admin
+  /distribuidor que redirigen a /login sin sesión — correcto). API: products 198,
+  categories 8, stock 198, payments crypto_enabled, google enabled, AI chat responde,
+  admin/distributor gated (401). Flujo de cliente: pedidos **tarjeta/SPEI/cripto** se
+  crean OK (cripto devuelve URL real de NOWPayments); la página del pedido SPEI muestra
+  CLABE + botón de comprobante. Todos los datos de prueba borrados (DB en 0 pedidos).
+  Pendiente probar EN VIVO como admin/distribuidor: no hay credenciales admin en esta
+  sesión y aún no existe ningún distribuidor en la DB (su UI está verificada por código).
+
+- **ENVÍOS — estado y decisión (Christian, 2026-07-21):**
+  - **Lo que HAY hoy:** rastreo MANUAL. El admin captura paquetería + nº de guía en
+    Pedidos; `build_tracking_url()` arma el enlace de rastreo (FedEx, DHL, Estafeta, UPS,
+    Paquetexpress, Redpack, Correos) y el cliente lo ve en su pedido/cuenta. Funciona.
+  - **Lo que NO hay:** cotización automática en el checkout por CP+peso, ni jalar el estatus
+    dentro del sitio. Eso necesita API de envíos (Skydropx primario / Envia respaldo, §B).
+  - **Intel de competencia (verificado 2026-07-21):** **Certified envía por FedEx** (FedEx
+    3 Day / aéreo, declarando "compuestos de investigación") — abiertamente, en su página de
+    rastreo. NO se confirmó lo de "J&T/paquetería chafita". Exoma: no expuesto. → FedEx es el
+    canal de consenso (coincide con nuestra política de envíos ya publicada).
+  - **Pasos para cotización+tracking auto (cuando se quiera):** (1) ANTES de código, mandar
+    la lista de productos a Skydropx y FedEx y pedir su **clasificación por escrito**
+    (SDS/MSDS para polvos) — los transportistas no te vetan como remitente, pero la
+    declaración de contenido y **Carta Porte** (clave UNSPSC + unidad) es lo que importa;
+    (2) integrar Skydropx (OAuth2+JSON: 1 endpoint de cotización + 1 de tracking), cachear por
+    (CP, rango de peso) y dejar tarifa plana de respaldo. Gated en la clasificación → NO se
+    construyó aún; el manual sostiene mientras.
+
 ## 🚩 PENDIENTES NUEVOS DE CHRISTIAN (2026-07-21, madrugada) — APUNTADOS, SIN EJECUTAR
 
 1. **Hablar del programa de lealtad:** hoy es 5% sobre compras pagadas (tasa que eligió el
