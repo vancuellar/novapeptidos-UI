@@ -584,14 +584,19 @@ envían a ningún procesador. SPEI funciona porque es transferencia manual.
 2ter. **RUTA DE PAGOS ELEGIDA POR CHRISTIAN (2026-07-21): adquirente especialista de alto
    riesgo + cripto.** (Mercado Pago y la vía "mismo procesador que la competencia" quedaron
    descartadas; los motivos finos están en la memoria privada, NO escribirlos aquí.)
-   - **Tarjeta (alto riesgo, giro declarado):** especialistas que aceptan péptidos RUO
-     explícitamente: **AllayPay** (procesamiento doméstico US para péptidos RUO),
-     **PaymentCloud** (bróker, ~3.49–3.95% + $0.25, $10–50 USD/mes), **Paycron**
-     (infraestructura para research chemicals). Términos realistas del nicho: 3.5–6.5%,
-     reserva rodante 5–15% (se libera ~mes 7), contracargo $50–100. La mayoría pide
-     **entidad en EE.UU.** → probable LLC americana + EIN (trámite corto). Nuestro sitio ya
-     trae lo que su underwriting pide: puerta 18+/RUO, avisos en cada ficha, cero dosis.
-     Siguiente paso: decidir lo de la LLC y aplicar a 2–3 en paralelo con giro real.
+   - **Tarjeta (alto riesgo, giro declarado). DECISIÓN Christian 2026-07-21: ir por LOS DOS
+     — offshore (sin entidad EUA) AHORA + la ruta con LLC en paralelo.**
+     - **Offshore / internacionales (aceptan entidad NO-EUA, p.ej. SAPI mexicana, y
+       multi-moneda):** Instabill (bróker offshore, largo historial en nutracéuticos/research
+       chemicals), Corepay (bancos adquirentes offshore), QuadraPay, OffshoreGateways,
+       OffshoreUniPay. Usan bancos en UE/Caribe/Asia. Terminos del nicho: 3.5–8%, reserva
+       rodante 5–15% (~6 meses), KYB con la entidad.
+     - **US (mejor tasa/aprobación, piden LLC americana + EIN — trámite corto):** AllayPay
+       (péptidos RUO doméstico), PaymentCloud (~3.49–3.95% + $0.25), Paycron.
+     - Nuestro sitio ya trae lo que pide su underwriting: puerta 18+/RUO, avisos en cada
+       ficha, cero dosis. **Siguiente paso: Claude redacta el correo de outreach veraz +
+       checklist de documentos; Christian aplica a 2–3 offshore y arranca la LLC en paralelo.
+       Pendiente de Christian: entidad a usar, estimado de ventas/mes, ticket promedio.**
    - **Cripto (complemento): BTCPay Server AUTOALOJADO — CÓDIGO YA CONSTRUIDO Y EN MAIN,
      APAGADO hasta configurar.** 0% comisión, sin intermediario, nadie lo congela.
      - Backend: `btcpay.py` (crear factura Greenfield + verificar webhook HMAC fail-closed);
