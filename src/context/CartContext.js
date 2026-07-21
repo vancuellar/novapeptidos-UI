@@ -1,5 +1,7 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { toast } from 'sonner';
+import api from '@/lib/api';
+import { productImage } from '@/data/productImages';
 
 const CartContext = createContext(null);
 
@@ -26,7 +28,9 @@ export const CartProvider = ({ children }) => {
         price: product.price,
         quantity: qty,
         presentation: product.presentation,
-        image_url: product.image_url,
+        slug: product.slug,
+        // Misma imagen que muestra el catálogo (foto de vial real o imagen de categoría).
+        image_url: productImage(product) || product.image_url,
         stock: product.stock,
       }];
     });
@@ -47,26 +51,45 @@ export const CartProvider = ({ children }) => {
   const subtotal = items.reduce((sum, i) => sum + i.price * i.quantity, 0);
   const count = items.reduce((sum, i) => sum + i.quantity, 0);
 
-  // Códigos de descuento
-  const PROMOS = { INTRO10: 0.10 };
-  const [promo, setPromo] = useState(() => (localStorage.getItem('np_promo') || ''));
-  useEffect(() => { localStorage.setItem('np_promo', promo); }, [promo]);
-  const discountRate = PROMOS[promo] || 0;
-  const discount = Math.round(subtotal * discountRate);
-  const applyPromo = (code) => {
+  // Descuento AUTOMÁTICO por volumen (sin código): 10% lanzamiento, 15% ≥ $20k, 20% ≥ $40k.
+  // Código de distribuidor: da su propio % (5–50%). NUNCA se acumulan: aplica el MAYOR.
+  // El backend aplica la misma regla; esto es solo para mostrarlo en vivo.
+  const DISCOUNT_TIERS = [
+    { min: 40000, rate: 0.20 },
+    { min: 20000, rate: 0.15 },
+    { min: 0, rate: 0.10 },
+  ];
+  const tier = DISCOUNT_TIERS.find((d) => subtotal >= d.min) || DISCOUNT_TIERS[DISCOUNT_TIERS.length - 1];
+  const autoRate = items.length ? tier.rate : 0;
+
+  const [distCode, setDistCode] = useState(() => localStorage.getItem('np_dist_code') || '');
+  const [distRate, setDistRate] = useState(() => Number(localStorage.getItem('np_dist_rate')) || 0);
+  useEffect(() => { localStorage.setItem('np_dist_code', distCode); localStorage.setItem('np_dist_rate', String(distRate)); }, [distCode, distRate]);
+
+  const applyDistCode = async (code) => {
     const c = (code || '').trim().toUpperCase();
-    if (PROMOS[c]) {
-      setPromo(c);
-      toast.success('Código aplicado', { description: `${Math.round(PROMOS[c] * 100)}% de descuento` });
+    if (!c) return false;
+    try {
+      const r = await api.get(`/discount-code/${encodeURIComponent(c)}`);
+      setDistCode(r.data.code);
+      setDistRate(r.data.discount_rate || 0);
+      toast.success(`Código ${r.data.code} aplicado`, { description: `${Math.round((r.data.discount_rate || 0) * 100)}% de descuento` });
       return true;
+    } catch {
+      toast.error('Código no válido');
+      return false;
     }
-    toast.error('Código no válido');
-    return false;
   };
-  const clearPromo = () => setPromo('');
+  const clearDistCode = () => { setDistCode(''); setDistRate(0); };
+
+  const codeRate = items.length && distCode ? distRate : 0;
+  const discountRate = Math.max(autoRate, codeRate);
+  const discountSource = codeRate > autoRate ? 'code' : 'auto';
+  const discount = Math.round(subtotal * discountRate);
+  const nextTier = subtotal < 20000 ? { min: 20000, rate: 0.15 } : subtotal < 40000 ? { min: 40000, rate: 0.20 } : null;
 
   return (
-    <CartContext.Provider value={{ items, addItem, updateQty, removeItem, clearCart, subtotal, count, promo, discount, discountRate, applyPromo, clearPromo }}>
+    <CartContext.Provider value={{ items, addItem, updateQty, removeItem, clearCart, subtotal, count, discount, discountRate, discountSource, nextTier, distCode, distRate, applyDistCode, clearDistCode }}>
       {children}
     </CartContext.Provider>
   );

@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { LayoutDashboard, Package, ShoppingBag, Plus, Pencil, Trash2, DollarSign, Users, Clock, TrendingUp, MapPin, Phone, Receipt, Store, Copy } from 'lucide-react';
+import { LayoutDashboard, Package, ShoppingBag, Plus, Pencil, Trash2, DollarSign, Users, Clock, TrendingUp, MapPin, Phone, Receipt, Store, Copy, Boxes, Truck, RefreshCw, MailCheck } from 'lucide-react';
+import { fallbackProducts } from '@/data/fallbackCatalog';
 import { ResponsiveContainer, AreaChart, Area, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip } from 'recharts';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -28,6 +29,16 @@ const STATUS_COLORS = {
 };
 const EMPTY = { name: '', slug: '', category: '', short_description: '', description: '', presentation: '', form: 'Liofilizado', purity: '99%', price: 0, stock: 0, image_url: '', coa_url: '', batch_number: '', storage: 'Conservar a -20 C, protegido de la luz.', featured: false, is_new: false };
 
+// Todas las presentaciones del catalogo curado (key = id::presentacion, igual que el carrito)
+const STOCK_VARIANTS = fallbackProducts.flatMap((p) => {
+  const vs = p.variants?.length ? p.variants : [{ presentation: p.presentation }];
+  return vs.map((v) => ({
+    key: p.variants?.length ? `${p.id}::${v.presentation}` : p.id,
+    name: p.name,
+    presentation: v.presentation || '',
+  }));
+});
+
 const CHART_TOOLTIP_STYLE = {
   backgroundColor: 'hsl(var(--card))',
   border: '1px solid hsl(var(--border))',
@@ -35,6 +46,27 @@ const CHART_TOOLTIP_STYLE = {
   fontSize: 12,
   color: 'hsl(var(--foreground))',
 };
+
+// Resultado de una invitación. Con el correo saliente apagado el admin
+// necesita el enlace en pantalla para poder compartirlo el mismo.
+const InviteResult = ({ created, t, copyText }) => (
+  created.invitation_sent ? (
+    <div className="rounded-lg border border-[hsl(var(--border))] bg-[hsl(var(--muted))]/40 p-3">
+      <div className="flex items-start gap-2">
+        <MailCheck className="h-4 w-4 mt-0.5 text-[hsl(var(--primary))] shrink-0" />
+        <p className="text-xs text-muted-foreground leading-relaxed">{t('admin.invite.linkSent')}</p>
+      </div>
+    </div>
+  ) : (
+    <div className="rounded-lg border border-[hsl(var(--warning-border))] bg-[hsl(var(--warning))]/10 p-3" data-testid="invite-manual-link">
+      <p className="text-xs leading-relaxed mb-2">{t('admin.invite.emailOff')}</p>
+      <button onClick={() => copyText(created.invitation_link, t('admin.invite.linkCopied'))}
+        className="text-xs font-mono-tech break-all text-left inline-flex items-start gap-2 hover:text-[hsl(var(--primary))]">
+        {created.invitation_link} <Copy className="h-3.5 w-3.5 shrink-0 mt-0.5" />
+      </button>
+    </div>
+  )
+);
 
 const Admin = () => {
   const { user, loading } = useAuth();
@@ -47,10 +79,17 @@ const Admin = () => {
   const [customers, setCustomers] = useState([]);
   const [analytics, setAnalytics] = useState(null);
   const [customerOpen, setCustomerOpen] = useState(null);
+  const [shippingOpen, setShippingOpen] = useState(null);
+  const [repurchase, setRepurchase] = useState([]);
   const [distributors, setDistributors] = useState([]);
-  const [distForm, setDistForm] = useState({ name: '', email: '', commission: 25 });
+  const [stockMap, setStockMap] = useState({});
+  const [stockFilter, setStockFilter] = useState('');
+  const [distForm, setDistForm] = useState({ name: '', email: '', commission: 25, customerDiscount: 10 });
   const [distDialogOpen, setDistDialogOpen] = useState(false);
   const [distCreated, setDistCreated] = useState(null);
+  const [inviteForm, setInviteForm] = useState({ name: '', email: '' });
+  const [inviteDialogOpen, setInviteDialogOpen] = useState(false);
+  const [inviteCreated, setInviteCreated] = useState(null);
   const [editing, setEditing] = useState(null);
   const [form, setForm] = useState(EMPTY);
   const [dialogOpen, setDialogOpen] = useState(false);
@@ -62,9 +101,11 @@ const Admin = () => {
     api.get('/products').then((r) => setProducts(r.data)).catch(() => {});
     api.get('/categories').then((r) => setCategories(r.data)).catch(() => {});
     api.get('/admin/orders').then((r) => setOrders(r.data)).catch(() => {});
+    api.get('/admin/repurchase').then((r) => setRepurchase(r.data)).catch(() => {});
     api.get('/admin/customers').then((r) => setCustomers(r.data)).catch(() => {});
     api.get('/admin/analytics').then((r) => setAnalytics(r.data)).catch(() => {});
     api.get('/admin/distributors').then((r) => setDistributors(r.data)).catch(() => {});
+    api.get('/stock').then((r) => setStockMap(r.data || {})).catch(() => {});
   }, []);
 
   useEffect(() => { if (user?.role === 'admin') loadAll(); }, [user, loadAll]);
@@ -101,6 +142,26 @@ const Admin = () => {
     catch { toast.error(t('admin.toast.deleteError')); }
   };
 
+  const openShipping = (order) => setShippingOpen({
+    id: order.id,
+    order_number: order.order_number,
+    carrier: order.carrier || 'FedEx',
+    tracking_number: order.tracking_number || '',
+    tracking_url: order.tracking_url || '',
+    eta: order.eta || '',
+  });
+
+  const saveShipping = async () => {
+    const { id, ...body } = shippingOpen;
+    delete body.order_number;
+    try {
+      await api.put(`/admin/orders/${id}/shipping`, body);
+      toast.success(t('admin.shipping.saved'));
+      setShippingOpen(null);
+      loadAll();
+    } catch { toast.error(t('admin.shipping.error')); }
+  };
+
   const updateStatus = async (order, status) => {
     try { await api.put(`/admin/orders/${order.id}/status`, { status }); toast.success(t('admin.toast.statusUpdated')); loadAll(); }
     catch { toast.error(t('admin.toast.statusError')); }
@@ -113,9 +174,10 @@ const Admin = () => {
         name: distForm.name,
         email: distForm.email,
         commission_rate: Math.max(0, Math.min(100, Number(distForm.commission) || 0)) / 100,
+        customer_discount_rate: Math.max(5, Math.min(50, Number(distForm.customerDiscount) || 10)) / 100,
       });
       setDistCreated(r.data);
-      setDistForm({ name: '', email: '', commission: 25 });
+      setDistForm({ name: '', email: '', commission: 25, customerDiscount: 10 });
       loadAll();
     } catch (err) {
       toast.error(err.response?.data?.detail || t('admin.toast.saveError'));
@@ -123,6 +185,26 @@ const Admin = () => {
   };
 
   const copyText = (text, msg) => { navigator.clipboard?.writeText(text); toast.success(msg); };
+
+  const inviteCustomer = async () => {
+    if (!inviteForm.name || !inviteForm.email) { toast.error(t('admin.toast.required')); return; }
+    try {
+      const r = await api.post('/admin/customers/invite', inviteForm);
+      setInviteCreated(r.data);
+      setInviteForm({ name: '', email: '' });
+      loadAll();
+    } catch (err) {
+      toast.error(err.response?.data?.detail || t('admin.toast.saveError'));
+    }
+  };
+
+  const saveStock = async (key, patch) => {
+    const prev = stockMap[key] || { qty: 0, in_hand: false };
+    const next = { ...prev, ...patch };
+    setStockMap((m) => ({ ...m, [key]: next }));
+    try { await api.put('/admin/stock', { key, ...next }); }
+    catch { setStockMap((m) => ({ ...m, [key]: prev })); toast.error(t('admin.toast.saveError')); }
+  };
 
   const fmtDate = (iso) => (iso ? new Date(iso).toLocaleDateString(language) : '—');
   const fmtMonth = (m) => new Date(`${m}-02T00:00:00`).toLocaleDateString(language, { month: 'short', year: '2-digit' });
@@ -138,7 +220,7 @@ const Admin = () => {
   const payMax = analytics?.by_payment?.[0]?.revenue || 1;
 
   return (
-    <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 py-8">
       <h1 className="font-heading text-2xl sm:text-3xl font-bold tracking-tight mb-1 flex items-center gap-2"><LayoutDashboard className="h-6 w-6 text-[hsl(var(--primary))]" /> {t('admin.title')}</h1>
       <p className="text-muted-foreground text-sm mb-6">{t('admin.subtitle')}</p>
 
@@ -158,7 +240,55 @@ const Admin = () => {
           <TabsTrigger value="distributors"><Store className="h-4 w-4 mr-1.5" /> {t('admin.distributorsTab')}</TabsTrigger>
           <TabsTrigger value="orders"><ShoppingBag className="h-4 w-4 mr-1.5" /> {t('admin.ordersTab')}</TabsTrigger>
           <TabsTrigger value="products"><Package className="h-4 w-4 mr-1.5" /> {t('admin.productsTab')}</TabsTrigger>
+          <TabsTrigger value="stock"><Boxes className="h-4 w-4 mr-1.5" /> {t('admin.stockTab')}</TabsTrigger>
+          <TabsTrigger value="repurchase"><RefreshCw className="h-4 w-4 mr-1.5" /> {t('admin.repurchaseTab')}</TabsTrigger>
         </TabsList>
+
+        <TabsContent value="stock" className="mt-5">
+          <div className="flex flex-wrap items-center justify-between gap-3 mb-4">
+            <h3 className="font-heading font-semibold">{t('admin.stock.title', { count: STOCK_VARIANTS.length })}</h3>
+            <Input className="w-64" placeholder={t('admin.stock.search')} value={stockFilter} onChange={(e) => setStockFilter(e.target.value)} data-testid="admin-stock-search" />
+          </div>
+          <p className="text-xs text-muted-foreground mb-3">{t('admin.stock.hint')}</p>
+          <Card className="overflow-x-auto">
+            <Table data-testid="admin-stock-table">
+              <TableHeader>
+                <TableRow>
+                  <TableHead>{t('admin.table.name')}</TableHead><TableHead>{t('admin.presentation')}</TableHead>
+                  <TableHead>{t('admin.stock.qty')}</TableHead><TableHead>{t('admin.stock.inHand')}</TableHead>
+                  <TableHead>{t('admin.stock.shownAs')}</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {STOCK_VARIANTS
+                  .filter((v) => (v.name + ' ' + v.presentation).toLowerCase().includes(stockFilter.toLowerCase()))
+                  .map((v) => {
+                    const s = stockMap[v.key] || { qty: 0, in_hand: false };
+                    const inHand = s.in_hand && s.qty > 0;
+                    return (
+                      <TableRow key={v.key}>
+                        <TableCell className="font-medium text-sm">{v.name}</TableCell>
+                        <TableCell className="font-mono-tech text-xs">{v.presentation}</TableCell>
+                        <TableCell>
+                          <Input type="number" min="0" className="w-20 h-8" value={s.qty}
+                            onChange={(e) => saveStock(v.key, { qty: Math.max(0, Number(e.target.value) || 0) })} />
+                        </TableCell>
+                        <TableCell>
+                          <input type="checkbox" className="h-4 w-4 accent-[hsl(var(--primary))]" checked={!!s.in_hand}
+                            onChange={(e) => saveStock(v.key, { in_hand: e.target.checked })} />
+                        </TableCell>
+                        <TableCell>
+                          {inHand
+                            ? <span className="text-xs text-[hsl(var(--success))]">✓ {t('admin.stock.immediate')}</span>
+                            : <span className="text-xs text-muted-foreground">{t('admin.stock.oneWeek')}</span>}
+                        </TableCell>
+                      </TableRow>
+                    );
+                  })}
+              </TableBody>
+            </Table>
+          </Card>
+        </TabsContent>
 
         <TabsContent value="sales" className="mt-5">
           {!analytics || analytics.monthly.length === 0 ? (
@@ -232,7 +362,10 @@ const Admin = () => {
         </TabsContent>
 
         <TabsContent value="customers" className="mt-5">
-          <h3 className="font-heading font-semibold mb-4">{t('admin.customersCount', { count: customers.length })}</h3>
+          <div className="flex justify-between items-center mb-4">
+            <h3 className="font-heading font-semibold">{t('admin.customersCount', { count: customers.length })}</h3>
+            <Button onClick={() => { setInviteCreated(null); setInviteDialogOpen(true); }} data-testid="admin-invite-customer-button"><Plus className="h-4 w-4 mr-1.5" /> {t('admin.inviteCustomer')}</Button>
+          </div>
           <Card className="overflow-x-auto">
             <Table data-testid="admin-customers-table">
               <TableHeader>
@@ -273,7 +406,7 @@ const Admin = () => {
               <TableHeader>
                 <TableRow>
                   <TableHead>{t('admin.dist.name')}</TableHead><TableHead>{t('admin.dist.code')}</TableHead>
-                  <TableHead>{t('admin.dist.commission')}</TableHead><TableHead>{t('admin.dist.clients')}</TableHead>
+                  <TableHead>{t('admin.dist.commission')}</TableHead><TableHead>{t('admin.dist.customerDiscountCol')}</TableHead><TableHead>{t('admin.dist.clients')}</TableHead>
                   <TableHead>{t('admin.dist.sales')}</TableHead><TableHead>{t('admin.dist.earnings')}</TableHead>
                 </TableRow>
               </TableHeader>
@@ -285,6 +418,7 @@ const Admin = () => {
                     <TableCell><div className="text-sm font-medium">{d.name}</div><div className="text-xs text-muted-foreground">{d.email}</div></TableCell>
                     <TableCell><button onClick={() => copyText(d.distributor_code, t('distributor.codeCopied'))} className="font-mono-tech text-xs inline-flex items-center gap-1 hover:text-[hsl(var(--primary))]">{d.distributor_code} <Copy className="h-3 w-3" /></button></TableCell>
                     <TableCell>{Math.round((d.commission_rate || 0) * 100)}%</TableCell>
+                    <TableCell>{Math.round((d.customer_discount_rate || 0) * 100)}%</TableCell>
                     <TableCell>{d.clients_count}</TableCell>
                     <TableCell>{formatMXN(d.sales_total)}</TableCell>
                     <TableCell className="font-medium text-[hsl(var(--primary))]">{formatMXN(d.earnings)}</TableCell>
@@ -302,11 +436,12 @@ const Admin = () => {
                 <TableRow>
                   <TableHead>{t('admin.table.order')}</TableHead><TableHead>{t('admin.table.customer')}</TableHead><TableHead>{t('common.total')}</TableHead>
                   <TableHead>{t('admin.table.payment')}</TableHead><TableHead>{t('admin.table.date')}</TableHead><TableHead>{t('admin.table.status')}</TableHead>
+                  <TableHead>{t('admin.table.tracking')}</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
                 {orders.length === 0 ? (
-                  <TableRow><TableCell colSpan={6} className="text-center text-muted-foreground py-8">{t('admin.noOrders')}</TableCell></TableRow>
+                  <TableRow><TableCell colSpan={7} className="text-center text-muted-foreground py-8">{t('admin.noOrders')}</TableCell></TableRow>
                 ) : orders.map((o) => (
                   <TableRow key={o.id}>
                     <TableCell className="font-mono-tech text-xs">{o.order_number}</TableCell>
@@ -319,6 +454,19 @@ const Admin = () => {
                         <SelectTrigger className="w-36 h-8" data-testid="admin-update-order-status-select"><SelectValue /></SelectTrigger>
                         <SelectContent>{STATUSES.map((s) => <SelectItem key={s} value={s}>{t(`status.${s}`)}</SelectItem>)}</SelectContent>
                       </Select>
+                    </TableCell>
+                    <TableCell>
+                      {o.tracking_number ? (
+                        <button type="button" onClick={() => openShipping(o)} data-testid="admin-edit-tracking"
+                          className="text-xs text-left hover:text-[hsl(var(--primary))] transition">
+                          <div className="text-muted-foreground">{o.carrier || '—'}</div>
+                          <div className="font-mono-tech">{o.tracking_number}</div>
+                        </button>
+                      ) : (
+                        <Button variant="outline" size="sm" className="h-8 text-xs" onClick={() => openShipping(o)} data-testid="admin-add-tracking">
+                          <Truck className="h-3.5 w-3.5 mr-1.5" /> {t('admin.shipping.add')}
+                        </Button>
+                      )}
                     </TableCell>
                   </TableRow>
                 ))}
@@ -351,7 +499,7 @@ const Admin = () => {
                     <TableCell className="font-mono-tech text-xs">{p.batch_number}</TableCell>
                     <TableCell className="text-right whitespace-nowrap">
                       <Button variant="ghost" size="icon" onClick={() => openEdit(p)} data-testid="admin-edit-product-button"><Pencil className="h-4 w-4" /></Button>
-                      <Button variant="ghost" size="icon" onClick={() => remove(p)} className="text-destructive" data-testid="admin-delete-product-button"><Trash2 className="h-4 w-4" /></Button>
+                      <Button variant="destructive" size="icon" onClick={() => remove(p)} className="ml-1" data-testid="admin-delete-product-button"><Trash2 className="h-4 w-4" /></Button>
                     </TableCell>
                   </TableRow>
                 ))}
@@ -359,7 +507,75 @@ const Admin = () => {
             </Table>
           </Card>
         </TabsContent>
+        <TabsContent value="repurchase" className="mt-5 space-y-4">
+          <p className="text-sm text-muted-foreground">{t('admin.repurchase.hint')}</p>
+          <Card className="overflow-x-auto">
+            <Table data-testid="admin-repurchase-table">
+              <TableHeader>
+                <TableRow>
+                  <TableHead>{t('distributor.table.client')}</TableHead>
+                  <TableHead>{t('calc.product')}</TableHead>
+                  <TableHead>{t('admin.repurchase.daysLeft')}</TableHead>
+                  <TableHead>{t('admin.repurchase.runsOut')}</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {repurchase.length === 0 ? (
+                  <TableRow><TableCell colSpan={4} className="text-center text-muted-foreground py-8">{t('admin.repurchase.empty')}</TableCell></TableRow>
+                ) : repurchase.map((r, i) => (
+                  <TableRow key={i} className={r.needs_repurchase ? 'bg-[hsl(var(--warning))]/10' : ''}>
+                    <TableCell><div className="text-sm">{r.customer_name}</div><div className="text-xs text-muted-foreground">{r.customer_email}</div></TableCell>
+                    <TableCell className="text-sm">{r.product_name}</TableCell>
+                    <TableCell className={r.needs_repurchase ? 'font-semibold text-[hsl(var(--primary))]' : ''}>
+                      {t('admin.repurchase.days', { count: r.days_left })}
+                    </TableCell>
+                    <TableCell className="text-xs text-muted-foreground">{fmtDate(r.runs_out_at)}</TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </Card>
+        </TabsContent>
       </Tabs>
+
+      <Dialog open={!!shippingOpen} onOpenChange={(v) => !v && setShippingOpen(null)}>
+        <DialogContent className="max-w-md">
+          {shippingOpen && (
+            <>
+              <DialogHeader>
+                <DialogTitle className="flex items-center gap-2"><Truck className="h-5 w-5" /> {t('admin.shipping.title')}</DialogTitle>
+              </DialogHeader>
+              <div className="space-y-4">
+                <div className="text-xs text-muted-foreground font-mono-tech">{shippingOpen.order_number}</div>
+                <div>
+                  <Label className="text-sm mb-1.5 block">{t('admin.shipping.carrier')}</Label>
+                  <Select value={shippingOpen.carrier} onValueChange={(v) => setShippingOpen({ ...shippingOpen, carrier: v })}>
+                    <SelectTrigger data-testid="admin-shipping-carrier"><SelectValue /></SelectTrigger>
+                    <SelectContent>
+                      {['FedEx', 'DHL', 'Estafeta', 'UPS', 'Paquete Express', 'Redpack', 'Correos de México'].map((c) => <SelectItem key={c} value={c}>{c}</SelectItem>)}
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div>
+                  <Label className="text-sm mb-1.5 block">{t('admin.shipping.number')}</Label>
+                  <Input value={shippingOpen.tracking_number} data-testid="admin-shipping-number"
+                    onChange={(e) => setShippingOpen({ ...shippingOpen, tracking_number: e.target.value })} />
+                  <p className="text-[11px] text-muted-foreground mt-1">{t('admin.shipping.autoUrl')}</p>
+                </div>
+                <div>
+                  <Label className="text-sm mb-1.5 block">{t('admin.shipping.eta')}</Label>
+                  <Input value={shippingOpen.eta} placeholder="3-5 días hábiles" data-testid="admin-shipping-eta"
+                    onChange={(e) => setShippingOpen({ ...shippingOpen, eta: e.target.value })} />
+                </div>
+              </div>
+              <DialogFooter>
+                <Button variant="outline" onClick={() => setShippingOpen(null)}>{t('common.cancel')}</Button>
+                <Button onClick={saveShipping} data-testid="admin-shipping-save">{t('common.saveChanges')}</Button>
+              </DialogFooter>
+            </>
+          )}
+        </DialogContent>
+      </Dialog>
 
       <Dialog open={!!customerOpen} onOpenChange={(v) => !v && setCustomerOpen(null)}>
         <DialogContent className="max-w-lg max-h-[85vh] overflow-y-auto">
@@ -408,6 +624,30 @@ const Admin = () => {
         </DialogContent>
       </Dialog>
 
+      <Dialog open={inviteDialogOpen} onOpenChange={(v) => { setInviteDialogOpen(v); if (!v) setInviteCreated(null); }}>
+        <DialogContent className="max-w-md">
+          <DialogHeader><DialogTitle>{inviteCreated ? t('admin.invite.createdTitle') : t('admin.inviteCustomer')}</DialogTitle></DialogHeader>
+          {inviteCreated ? (
+            <div className="space-y-4 text-sm">
+              <div className="font-medium">{inviteCreated.name}<span className="text-muted-foreground font-normal"> · {inviteCreated.email}</span></div>
+              <InviteResult created={inviteCreated} t={t} copyText={copyText} />
+              <DialogFooter><Button onClick={() => { setInviteDialogOpen(false); setInviteCreated(null); }}>{t('admin.dist.close')}</Button></DialogFooter>
+            </div>
+          ) : (
+            <>
+              <div className="space-y-4">
+                <div><Label>{t('admin.dist.name')}</Label><Input className="mt-1.5" value={inviteForm.name} onChange={(e) => setInviteForm((f) => ({ ...f, name: e.target.value }))} data-testid="admin-invite-name-input" /></div>
+                <div><Label>{t('admin.dist.email')}</Label><Input type="email" className="mt-1.5" value={inviteForm.email} onChange={(e) => setInviteForm((f) => ({ ...f, email: e.target.value }))} data-testid="admin-invite-email-input" /></div>
+              </div>
+              <DialogFooter>
+                <Button variant="outline" onClick={() => setInviteDialogOpen(false)}>{t('common.cancel')}</Button>
+                <Button onClick={inviteCustomer} data-testid="admin-send-invite-button">{t('admin.invite.send')}</Button>
+              </DialogFooter>
+            </>
+          )}
+        </DialogContent>
+      </Dialog>
+
       <Dialog open={distDialogOpen} onOpenChange={(v) => { setDistDialogOpen(v); if (!v) setDistCreated(null); }}>
         <DialogContent className="max-w-md">
           <DialogHeader><DialogTitle>{distCreated ? t('admin.dist.createdTitle') : t('admin.newDistributor')}</DialogTitle></DialogHeader>
@@ -418,10 +658,7 @@ const Admin = () => {
                 <div className="text-xs text-muted-foreground mb-1">{t('admin.dist.shareCode')}</div>
                 <button onClick={() => copyText(distCreated.distributor_code, t('distributor.codeCopied'))} className="font-mono-tech font-bold text-lg inline-flex items-center gap-2 hover:text-[hsl(var(--primary))]">{distCreated.distributor_code} <Copy className="h-4 w-4" /></button>
               </div>
-              <div>
-                <div className="text-xs text-muted-foreground mb-1">{t('admin.dist.tempPassword')}</div>
-                <button onClick={() => copyText(distCreated.temp_password, t('distributor.codeCopied'))} className="font-mono-tech inline-flex items-center gap-2 hover:text-[hsl(var(--primary))]">{distCreated.temp_password} <Copy className="h-4 w-4" /></button>
-              </div>
+              <InviteResult created={distCreated} t={t} copyText={copyText} />
               <DialogFooter><Button onClick={() => { setDistDialogOpen(false); setDistCreated(null); }}>{t('admin.dist.close')}</Button></DialogFooter>
             </div>
           ) : (
@@ -430,6 +667,7 @@ const Admin = () => {
                 <div><Label>{t('admin.dist.name')}</Label><Input className="mt-1.5" value={distForm.name} onChange={(e) => setDistForm((f) => ({ ...f, name: e.target.value }))} data-testid="admin-distributor-name-input" /></div>
                 <div><Label>{t('admin.dist.email')}</Label><Input type="email" className="mt-1.5" value={distForm.email} onChange={(e) => setDistForm((f) => ({ ...f, email: e.target.value }))} data-testid="admin-distributor-email-input" /></div>
                 <div><Label>{t('admin.dist.commission')}</Label><Input type="number" min="0" max="100" className="mt-1.5" value={distForm.commission} onChange={(e) => setDistForm((f) => ({ ...f, commission: e.target.value }))} /></div>
+                <div><Label>{t('admin.dist.customerDiscount')}</Label><Input type="number" min="5" max="50" className="mt-1.5" value={distForm.customerDiscount} onChange={(e) => setDistForm((f) => ({ ...f, customerDiscount: e.target.value }))} /><p className="text-xs text-muted-foreground mt-1">{t('admin.dist.customerDiscountHint')}</p></div>
               </div>
               <DialogFooter>
                 <Button variant="outline" onClick={() => setDistDialogOpen(false)}>{t('common.cancel')}</Button>

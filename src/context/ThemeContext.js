@@ -3,7 +3,9 @@ import React, { createContext, useContext, useEffect, useMemo, useState } from '
 export const THEMES = ['light', 'dark', 'system'];
 
 const STORAGE_KEY = 'nova-theme';
-const DEFAULT_THEME = 'light';
+// Por defecto el sitio abre en oscuro (orden de Christian, 2026-07-20).
+// Solo aplica a quien nunca ha elegido tema: la eleccion guardada manda.
+const DEFAULT_THEME = 'dark';
 const ThemeContext = createContext(null);
 
 const normalizeTheme = (value) => {

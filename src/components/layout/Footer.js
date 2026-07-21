@@ -1,20 +1,21 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { ShieldCheck, Truck, BadgeCheck, Mail, Phone, Store, Landmark, CreditCard } from 'lucide-react';
+import { ShieldCheck, Truck, BadgeCheck, Mail, Phone, Landmark, CreditCard } from 'lucide-react';
 import { useLanguage } from '@/context/LanguageContext';
 import BrandLogo from '@/components/BrandLogo';
+import HomeLogoLink from '@/components/HomeLogoLink';
 
 const Footer = () => {
   const { t } = useLanguage();
 
   return (
     <footer className="mt-16 border-t border-border bg-card text-card-foreground">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-14">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+      <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 py-14">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-8">
           <div>
-            <Link to="/" className="inline-flex items-center mb-4">
+            <HomeLogoLink className="inline-flex items-center mb-4" data-testid="footer-logo">
               <BrandLogo />
-            </Link>
+            </HomeLogoLink>
             <p className="text-sm text-muted-foreground leading-relaxed">{t('footer.description')}</p>
             <div className="flex gap-3 mt-5 text-[hsl(var(--primary))]">
               <ShieldCheck className="h-5 w-5" /><BadgeCheck className="h-5 w-5" /><Truck className="h-5 w-5" />
@@ -30,12 +31,26 @@ const Footer = () => {
             </ul>
           </div>
           <div>
+            <h4 className="kicker mb-4">{t('nav.learn')}</h4>
+            <ul className="space-y-2.5 text-sm text-muted-foreground">
+              <li><Link to="/aprende/empieza-aqui" className="hover:text-foreground transition-colors">Empieza aquí</Link></li>
+              <li><Link to="/aprende/reconstitucion-paso-a-paso" className="hover:text-foreground transition-colors">Cómo reconstituir</Link></li>
+              <li><Link to="/compuestos" className="hover:text-foreground transition-colors">Fichas de compuestos</Link></li>
+              <li><Link to="/aprende/preguntas-frecuentes" className="hover:text-foreground transition-colors">Preguntas frecuentes</Link></li>
+              <li><Link to="/aprende" className="hover:text-foreground transition-colors">Todas las guías</Link></li>
+            </ul>
+          </div>
+          <div>
             <h4 className="kicker mb-4">{t('footer.infoTitle')}</h4>
             <ul className="space-y-2.5 text-sm text-muted-foreground">
               <li><Link to="/info/envios" className="hover:text-foreground transition-colors">{t('footer.shipping')}</Link></li>
               <li><Link to="/info/devoluciones" className="hover:text-foreground transition-colors">{t('footer.returns')}</Link></li>
               <li><Link to="/info/calidad" className="hover:text-foreground transition-colors">{t('footer.quality')}</Link></li>
+              <li><Link to="/info/contacto" className="hover:text-foreground transition-colors">{t('nav.contact')}</Link></li>
+              <li><Link to="/info/soporte" className="hover:text-foreground transition-colors">{t('nav.support')}</Link></li>
+              <li><Link to="/info/rastreo" className="hover:text-foreground transition-colors">{t('nav.orderStatus')}</Link></li>
               <li><Link to="/info/terminos" className="hover:text-foreground transition-colors">{t('footer.terms')}</Link></li>
+              <li><Link to="/info/privacidad" className="hover:text-foreground transition-colors">{t('footer.privacy')}</Link></li>
             </ul>
           </div>
           <div>
@@ -45,7 +60,7 @@ const Footer = () => {
               <li className="flex items-center gap-2"><Phone className="h-4 w-4 text-[hsl(var(--primary))]" /> +52 (994) 494-6889</li>
             </ul>
             <div className="flex flex-wrap gap-2 mt-5">
-              {[{ i: Store, l: 'OXXO' }, { i: Landmark, l: 'SPEI' }, { i: CreditCard, l: 'Visa · MC' }].map((p, i) => (
+              {[{ i: CreditCard, l: 'Visa · MC · Amex' }, { i: Landmark, l: 'SPEI' }].map((p, i) => (
                 <span key={i} className="inline-flex items-center gap-1.5 rounded-md border border-border bg-[hsl(var(--secondary))] px-2.5 py-1.5 text-[11px]">
                   <p.i className="h-3 w-3 text-[hsl(var(--primary))]" /> {p.l}
                 </span>

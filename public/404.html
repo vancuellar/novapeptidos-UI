@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <title>Exygen Labs</title>
+    <script>
+      // GitHub Pages sirve archivos estáticos: una ruta interna como
+      // /confirmar?token=... no existe como archivo y cae aquí. Sin esto, los
+      // enlaces de confirmación de correo, de invitación, de restablecer
+      // contraseña y de producto se rompían al abrirlos directamente.
+      //
+      // Truco estándar para SPA en GitHub Pages: se codifica la ruta en la
+      // query, se redirige a la raíz (que sí existe) y el script de index.html
+      // reconstruye la URL original. La cadena de consulta se conserva, que es
+      // justo donde viaja el token.
+      (function () {
+        var l = window.location;
+        var path = l.pathname.slice(1).split('/').map(function (s) {
+          return s.replace(/&/g, '~and~');
+        }).join('/');
+        var query = l.search ? '&' + l.search.slice(1).replace(/&/g, '~and~') : '';
+        l.replace(l.origin + '/?/' + path + query + l.hash);
+      })();
+    </script>
+  </head>
+  <body></body>
+</html>

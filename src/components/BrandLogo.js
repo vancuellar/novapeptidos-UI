@@ -1,19 +1,40 @@
 import React from 'react';
 
 // Logo oficial de Exygen Labs (estructura del dipéptido + wordmark + subtítulo).
-// En dark theme se invierte a blanco monocromo.
+// En dark theme se invierte a blanco monocromo. `nameOnly` usa el recorte con
+// SOLO "EXYGEN LABS" (sin molécula ni "RESEARCH PEPTIDES") — es exclusivo de
+// la barra superior por orden de Christian (2026-07-20); no usarlo en otro lado.
 const LOGO_SRC = process.env.PUBLIC_URL + '/images/exygen-logo.png';
+const LOGO_NAME_SRC = process.env.PUBLIC_URL + '/images/exygen-logo-wordmark.png';
+// "EXYGEN LABS" + "RESEARCH PEPTIDES", sin la molécula.
+const LOGO_TEXT_SRC = process.env.PUBLIC_URL + '/images/exygen-logo-name.png';
 
-export const BrandMark = ({ className = 'h-8' }) => (
-  <img src={LOGO_SRC} alt="Exygen Labs" className={`${className} w-auto object-contain dark:brightness-0 dark:invert`} />
+// `noMolecule` deja el nombre y el subtítulo, sin la estructura del dipéptido.
+// Lo usa el aviso RUO de la primera visita (orden de Christian, 2026-07-20).
+export const BrandMark = ({ className = 'h-8', noMolecule = false }) => (
+  <img
+    src={noMolecule ? LOGO_TEXT_SRC : LOGO_SRC}
+    alt="Exygen Labs"
+    className={`${className} w-auto object-contain dark:brightness-0 dark:invert`}
+  />
 );
 
-const BrandLogo = ({ compact = false }) => (
+// La molécula REAL del logo (el dipéptido completo, recortado del PNG
+// oficial), tal cual, SIN caja (orden de Christian, 2026-07-21). En dark se
+// invierte a blanco monocromo, igual que el resto de la marca.
+const MOLECULE_SRC = process.env.PUBLIC_URL + '/images/exygen-molecule.png';
+
+export const MoleculeMark = ({ className = 'h-12' }) => (
+  <img src={MOLECULE_SRC} alt="Exygen Labs"
+    className={`${className} w-auto object-contain dark:brightness-0 dark:invert`} />
+);
+
+const BrandLogo = ({ compact = false, nameOnly = false }) => (
   <img
-    src={LOGO_SRC}
+    src={nameOnly ? LOGO_NAME_SRC : LOGO_SRC}
     alt="Exygen Labs — Research Peptides"
     data-testid="brand-logo"
-    className={`w-auto object-contain dark:brightness-0 dark:invert ${compact ? 'h-8 sm:h-9' : 'h-10'}`}
+    className={`w-auto object-contain dark:brightness-0 dark:invert ${compact ? (nameOnly ? 'h-3.5 sm:h-4' : 'h-8 sm:h-9') : 'h-10'}`}
   />
 );
 

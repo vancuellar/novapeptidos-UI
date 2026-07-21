@@ -1,6 +1,6 @@
 import React from 'react';
 import '@/App.css';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
 import { Toaster } from '@/components/ui/sonner';
 import { AuthProvider } from '@/context/AuthContext';
 import { CartProvider } from '@/context/CartContext';
@@ -9,6 +9,7 @@ import { ThemeProvider } from '@/context/ThemeContext';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import AIChatWidget from '@/components/AIChatWidget';
+import RuoGate from '@/components/RuoGate';
 import Home from '@/pages/Home';
 import Catalog from '@/pages/Catalog';
 import Calculator from '@/pages/Calculator';
@@ -18,15 +19,29 @@ import Cart from '@/pages/Cart';
 import Checkout from '@/pages/Checkout';
 import OrderConfirmation from '@/pages/OrderConfirmation';
 import Login from '@/pages/Login';
-import Register from '@/pages/Register';
 import Account from '@/pages/Account';
 import Distributor from '@/pages/Distributor';
 import ForgotPassword from '@/pages/ForgotPassword';
 import ResetPassword from '@/pages/ResetPassword';
+import ConfirmEmail from '@/pages/ConfirmEmail';
+import ActivateAccount from '@/pages/ActivateAccount';
 import Admin from '@/pages/Admin';
 import InfoPage from '@/pages/InfoPage';
 import Education from '@/pages/Education';
 import Advisor from '@/pages/Advisor';
+import LearnHub from '@/pages/LearnHub';
+import LearnPage from '@/pages/LearnPage';
+import Compendium from '@/pages/Compendium';
+
+// /login es una pantalla independiente al estilo del alta de Resend (siempre
+// oscura, sin barra ni pie): el sitio no debe asomarse detrás.
+const STANDALONE_ROUTES = ['/login', '/registro'];
+
+const SiteChrome = ({ children }) => {
+  const { pathname } = useLocation();
+  if (STANDALONE_ROUTES.includes(pathname)) return null;
+  return children;
+};
 
 function App() {
   return (
@@ -36,7 +51,7 @@ function App() {
           <AuthProvider>
             <CartProvider>
               <BrowserRouter basename={process.env.PUBLIC_URL || '/'}>
-                <Header />
+                <SiteChrome><Header /></SiteChrome>
                 <main className="min-h-[70vh]">
                   <Routes>
                     <Route path="/" element={<Home />} />
@@ -44,14 +59,19 @@ function App() {
                     <Route path="/calculadora" element={<Calculator />} />
                     <Route path="/educacion" element={<Education />} />
                     <Route path="/asesor" element={<Advisor />} />
+                    <Route path="/aprende" element={<LearnHub />} />
+                    <Route path="/aprende/:slug" element={<LearnPage />} />
+                    <Route path="/compuestos" element={<Compendium />} />
                     <Route path="/producto/:slug" element={<ProductDetail />} />
                     <Route path="/carrito" element={<Cart />} />
                     <Route path="/checkout" element={<Checkout />} />
                     <Route path="/pedido/:orderNumber" element={<OrderConfirmation />} />
                     <Route path="/login" element={<Login />} />
-                    <Route path="/registro" element={<Register />} />
+                    <Route path="/registro" element={<Login />} />
                     <Route path="/recuperar" element={<ForgotPassword />} />
                     <Route path="/restablecer" element={<ResetPassword />} />
+                    <Route path="/confirmar" element={<ConfirmEmail />} />
+                    <Route path="/activar" element={<ActivateAccount />} />
                     <Route path="/cuenta" element={<Account />} />
                     <Route path="/distribuidor" element={<Distributor />} />
                     <Route path="/admin" element={<Admin />} />
@@ -59,9 +79,10 @@ function App() {
                     <Route path="*" element={<NotFound />} />
                   </Routes>
                 </main>
-                <Footer />
-                <AIChatWidget />
-                <Toaster position="top-right" richColors />
+                <SiteChrome><Footer /></SiteChrome>
+                <RuoGate />
+                <SiteChrome><AIChatWidget /></SiteChrome>
+                <Toaster position="top-right" richColors closeButton duration={2500} />
               </BrowserRouter>
             </CartProvider>
           </AuthProvider>

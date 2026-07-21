@@ -9,9 +9,9 @@ import { useLanguage } from '@/context/LanguageContext';
 const CHAT_API = 'https://chat.exygenlabs.com/api';
 
 const QUICK = [
+  'chat.quick.order',
   'chat.quick.ruo',
   'chat.quick.goal',
-  'chat.quick.shipping',
   'chat.quick.coa',
 ];
 
@@ -25,7 +25,7 @@ const getSessionId = () => {
 };
 
 const AIChatWidget = () => {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
   const [open, setOpen] = useState(false);
   const [messages, setMessages] = useState([
     { role: 'assistant', content: t('chat.initial') },
@@ -41,6 +41,14 @@ const AIChatWidget = () => {
     }
   }, [messages, open]);
 
+  // Si el usuario cambia de idioma antes de escribir, el saludo se traduce.
+  // Ya empezada la conversación no se toca, para no borrar lo que se dijo.
+  useEffect(() => {
+    setMessages((prev) => (prev.length === 1 && prev[0].role === 'assistant'
+      ? [{ role: 'assistant', content: t('chat.initial') }]
+      : prev));
+  }, [language, t]);
+
   const send = async (text) => {
     const message = (text || input).trim();
     if (!message || loading) return;
@@ -49,10 +57,18 @@ const AIChatWidget = () => {
     setLoading(true);
 
     try {
+      // Con sesión iniciada mandamos el token: así el asistente puede consultar
+      // el estatus y la guía de los pedidos del propio cliente.
+      const token = localStorage.getItem('np_token');
       const res = await fetch(`${CHAT_API}/ai/chat`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ session_id: sessionId.current, message }),
+        headers: {
+          'Content-Type': 'application/json',
+          ...(token ? { Authorization: `Bearer ${token}` } : {}),
+        },
+        // El idioma va en cada mensaje: el asistente responde en el que el
+        // usuario tenga elegido en el sitio, no siempre en español.
+        body: JSON.stringify({ session_id: sessionId.current, message, language }),
       });
       if (!res.body) throw new Error('No stream');
       const reader = res.body.getReader();
@@ -86,7 +102,7 @@ const AIChatWidget = () => {
         <button
           onClick={() => setOpen(true)}
           data-testid="ai-chat-open-button"
-          className="fixed bottom-24 right-5 z-50 h-14 w-14 rounded-full bg-[#106153] text-white shadow-[var(--shadow-md)] flex items-center justify-center hover:scale-105 transition-transform"
+          className="fixed bottom-24 right-5 z-50 h-14 w-14 rounded-full bg-[#25D366] text-[#0b3d1f] shadow-[var(--shadow-md)] flex items-center justify-center hover:scale-105 transition-transform"
           aria-label={t('chat.open')}
         >
           <MessageCircle className="h-6 w-6" />
@@ -98,7 +114,7 @@ const AIChatWidget = () => {
         <div className="fixed bottom-0 right-0 sm:bottom-24 sm:right-5 z-50 w-full sm:w-[400px] h-[100dvh] sm:h-[600px] sm:max-h-[75vh] bg-card text-card-foreground sm:rounded-2xl border border-border shadow-[var(--shadow-md)] flex flex-col overflow-hidden">
           <div className="px-4 py-3 border-b border-border bg-[hsl(var(--secondary))] flex items-center justify-between">
             <div className="flex items-center gap-2">
-              <div className="h-8 w-8 rounded-lg bg-[#106153] flex items-center justify-center"><FlaskConical className="h-4 w-4 text-white" /></div>
+              <div className="h-8 w-8 rounded-lg bg-[#25D366] flex items-center justify-center"><FlaskConical className="h-4 w-4 text-[#0b3d1f]" /></div>
               <div>
                 <div className="font-heading font-semibold text-sm leading-tight">{t('chat.title')}</div>
                 <div className="text-[10px] text-muted-foreground">{t('chat.online')}</div>
@@ -110,7 +126,7 @@ const AIChatWidget = () => {
           <div ref={scrollRef} className="flex-1 overflow-y-auto p-4 space-y-3" data-testid="ai-chat-messages">
             {messages.map((m, i) => (
               <div key={i} className={`flex ${m.role === 'user' ? 'justify-end' : 'justify-start'}`}>
-                <div className={`max-w-[85%] rounded-2xl px-3.5 py-2.5 text-sm whitespace-pre-wrap leading-relaxed ${m.role === 'user' ? 'bg-[#106153] text-white rounded-br-sm' : 'bg-[hsl(var(--accent))] text-[hsl(var(--accent-foreground))] rounded-bl-sm'}`}>
+                <div className={`max-w-[85%] rounded-2xl px-3.5 py-2.5 text-sm whitespace-pre-wrap leading-relaxed ${m.role === 'user' ? 'bg-[#25D366] text-[#0b3d1f] rounded-br-sm' : 'bg-[hsl(var(--accent))] text-[hsl(var(--accent-foreground))] rounded-bl-sm'}`}>
                   {m.content || (loading && i === messages.length - 1 ? '…' : '')}
                 </div>
               </div>

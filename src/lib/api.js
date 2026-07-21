@@ -18,9 +18,6 @@ export const formatMXN = (value) =>
   new Intl.NumberFormat('es-MX', { style: 'currency', currency: 'MXN', minimumFractionDigits: 0, maximumFractionDigits: 0 }).format(value || 0);
 
 export const PAYMENT_METHODS = [
-  { id: 'mercado_pago', icon: 'Wallet' },
   { id: 'tarjeta', icon: 'CreditCard' },
-  { id: 'oxxo', icon: 'Store' },
   { id: 'spei', icon: 'Landmark' },
-  { id: 'contra_entrega', icon: 'Truck' },
 ];

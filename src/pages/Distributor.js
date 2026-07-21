@@ -1,11 +1,13 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Store, Users, DollarSign, TrendingUp, ShoppingBag, Copy, Percent } from 'lucide-react';
+import { Store, Users, DollarSign, TrendingUp, ShoppingBag, Copy, Percent, Truck, ExternalLink, FileText } from 'lucide-react';
 import { ResponsiveContainer, AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip } from 'recharts';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import CoaLibrary from '@/components/CoaLibrary';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { toast } from 'sonner';
 import api, { formatMXN } from '@/lib/api';
@@ -35,6 +37,11 @@ const Distributor = () => {
   const [summary, setSummary] = useState(null);
   const [clients, setClients] = useState([]);
   const [sales, setSales] = useState([]);
+  const [orders, setOrders] = useState([]);
+  const [period, setPeriod] = useState('all');
+  const [statusFilter, setStatusFilter] = useState('all');
+  const [orderPeriod, setOrderPeriod] = useState('all');
+  const [orderStatus, setOrderStatus] = useState('all');
 
   useEffect(() => {
     if (!loading && (!user || !['distributor', 'admin'].includes(user.role))) navigate('/login');
@@ -44,6 +51,7 @@ const Distributor = () => {
     api.get('/distributor/summary').then((r) => setSummary(r.data)).catch(() => {});
     api.get('/distributor/clients').then((r) => setClients(r.data)).catch(() => {});
     api.get('/distributor/sales').then((r) => setSales(r.data)).catch(() => {});
+    api.get('/distributor/orders').then((r) => setOrders(r.data)).catch(() => {});
   }, []);
 
   useEffect(() => { if (user) loadAll(); }, [user, loadAll]);
@@ -60,6 +68,25 @@ const Distributor = () => {
     }
   };
 
+  // Filtro de ventas por periodo y estado (del lado del cliente).
+  const inPeriod = (iso, p) => {
+    if (p === 'all' || !iso) return true;
+    const d = new Date(iso);
+    const now = new Date();
+    if (p === 'month') return d.getFullYear() === now.getFullYear() && d.getMonth() === now.getMonth();
+    if (p === 'year') return d.getFullYear() === now.getFullYear();
+    if (p === '90d') return (now - d) / 86400000 <= 90;
+    return true;
+  };
+  const filteredSales = sales.filter((o) => inPeriod(o.created_at, period) && (statusFilter === 'all' || o.status === statusFilter));
+  const filteredOrders = orders.filter((o) => inPeriod(o.created_at, orderPeriod) && (orderStatus === 'all' || o.status === orderStatus));
+
+  const copyTracking = (n) => {
+    navigator.clipboard?.writeText(n);
+    toast.success(t('distributor.copyTracking'));
+  };
+  const filteredEarnings = filteredSales.filter((o) => o.status !== 'cancelado').reduce((s, o) => s + (o.commission || 0), 0);
+
   const STAT_CARDS = summary ? [
     { i: DollarSign, t: t('distributor.stats.earnings'), v: formatMXN(summary.earnings_total) },
     { i: TrendingUp, t: t('distributor.stats.sales'), v: formatMXN(summary.sales_total) },
@@ -68,7 +95,7 @@ const Distributor = () => {
   ] : [];
 
   return (
-    <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 py-8">
       <div className="flex flex-wrap items-start justify-between gap-4 mb-6">
         <div>
           <h1 className="font-heading text-2xl sm:text-3xl font-bold tracking-tight mb-1 flex items-center gap-2"><Store className="h-6 w-6 text-[hsl(var(--primary))]" /> {t('distributor.title')}</h1>
@@ -97,7 +124,7 @@ const Distributor = () => {
       {summary && (
         <Card className="p-4 mb-6 flex items-center gap-2 text-sm text-muted-foreground">
           <Percent className="h-4 w-4 text-[hsl(var(--primary))]" />
-          {t('distributor.commissionNote', { rate: Math.round((summary.commission_rate || 0) * 100) })}
+          {t('distributor.commissionNote', { rate: Math.round((summary.commission_rate || 0) * 100) })}{summary.customer_discount_rate > 0 && <> · {t('distributor.customerDiscountNote', { rate: Math.round(summary.customer_discount_rate * 100) })}</>}
         </Card>
       )}
 
@@ -105,7 +132,9 @@ const Distributor = () => {
         <TabsList>
           <TabsTrigger value="overview"><TrendingUp className="h-4 w-4 mr-1.5" /> {t('distributor.overviewTab')}</TabsTrigger>
           <TabsTrigger value="clients"><Users className="h-4 w-4 mr-1.5" /> {t('distributor.clientsTab')}</TabsTrigger>
+          <TabsTrigger value="orders"><Truck className="h-4 w-4 mr-1.5" /> {t('distributor.ordersTab')}</TabsTrigger>
           <TabsTrigger value="sales"><ShoppingBag className="h-4 w-4 mr-1.5" /> {t('distributor.salesTab')}</TabsTrigger>
+          <TabsTrigger value="coas"><FileText className="h-4 w-4 mr-1.5" /> {t('account.coasTab')}</TabsTrigger>
         </TabsList>
 
         <TabsContent value="overview" className="mt-5">
@@ -161,7 +190,118 @@ const Distributor = () => {
           </Card>
         </TabsContent>
 
-        <TabsContent value="sales" className="mt-5">
+        <TabsContent value="orders" className="mt-5 space-y-4">
+          <p className="text-sm text-muted-foreground">{t('distributor.ordersHint')}</p>
+          <div className="flex flex-wrap items-center gap-3" data-testid="distributor-orders-filters">
+            <Select value={orderPeriod} onValueChange={setOrderPeriod}>
+              <SelectTrigger className="w-44 h-9" data-testid="distributor-orders-period"><SelectValue /></SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">{t('distributor.filter.allTime')}</SelectItem>
+                <SelectItem value="month">{t('distributor.filter.thisMonth')}</SelectItem>
+                <SelectItem value="90d">{t('distributor.filter.last90')}</SelectItem>
+                <SelectItem value="year">{t('distributor.filter.thisYear')}</SelectItem>
+              </SelectContent>
+            </Select>
+            <Select value={orderStatus} onValueChange={setOrderStatus}>
+              <SelectTrigger className="w-40 h-9" data-testid="distributor-orders-status"><SelectValue /></SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">{t('distributor.filter.allStatus')}</SelectItem>
+                {['pendiente', 'confirmado', 'enviado', 'entregado', 'cancelado'].map((s) => <SelectItem key={s} value={s}>{t(`status.${s}`)}</SelectItem>)}
+              </SelectContent>
+            </Select>
+            <div className="ml-auto text-sm text-muted-foreground">{t('distributor.ordersCount', { count: filteredOrders.length })}</div>
+          </div>
+          <Card className="overflow-x-auto">
+            <Table data-testid="distributor-orders-table">
+              <TableHeader>
+                <TableRow>
+                  <TableHead>{t('distributor.table.order')}</TableHead>
+                  <TableHead>{t('distributor.table.client')}</TableHead>
+                  <TableHead>{t('distributor.table.items')}</TableHead>
+                  <TableHead>{t('distributor.table.destination')}</TableHead>
+                  <TableHead>{t('admin.table.status')}</TableHead>
+                  <TableHead>{t('distributor.table.shipping')}</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {filteredOrders.length === 0 ? (
+                  <TableRow><TableCell colSpan={6} className="text-center text-muted-foreground py-8">{t('distributor.noOrders')}</TableCell></TableRow>
+                ) : filteredOrders.map((o) => (
+                  <TableRow key={o.order_number}>
+                    <TableCell>
+                      <div className="font-mono-tech text-xs">{o.order_number}</div>
+                      <div className="text-[11px] text-muted-foreground">{fmtDate(o.created_at)} · {formatMXN(o.total)}</div>
+                    </TableCell>
+                    <TableCell>
+                      <div className="text-sm">{o.customer_name}</div>
+                      {o.customer_phone && <div className="text-[11px] text-muted-foreground">{o.customer_phone}</div>}
+                    </TableCell>
+                    <TableCell className="text-xs text-muted-foreground max-w-[220px]">
+                      {o.items.map((it, i) => (
+                        <div key={i}>{it.quantity}× {it.name}{it.presentation ? ` · ${it.presentation}` : ''}</div>
+                      ))}
+                    </TableCell>
+                    <TableCell className="text-xs text-muted-foreground">{o.destination || '—'}</TableCell>
+                    <TableCell>
+                      <Badge className={`${STATUS_COLORS[o.status]} text-[10px]`}>{t(`status.${o.status}`)}</Badge>
+                      {o.delivered_at
+                        ? <div className="text-[11px] text-muted-foreground mt-1">{t('distributor.deliveredOn', { date: fmtDate(o.delivered_at) })}</div>
+                        : o.shipped_at
+                          ? <div className="text-[11px] text-muted-foreground mt-1">{t('distributor.shippedOn', { date: fmtDate(o.shipped_at) })}</div>
+                          : null}
+                    </TableCell>
+                    <TableCell className="text-xs">
+                      {o.tracking_number ? (
+                        <div className="space-y-1">
+                          <div className="text-muted-foreground">{o.carrier || '—'}</div>
+                          <button type="button" onClick={() => copyTracking(o.tracking_number)}
+                            className="font-mono-tech hover:text-[hsl(var(--primary))] transition">{o.tracking_number}</button>
+                          {o.tracking_url && (
+                            <a href={o.tracking_url} target="_blank" rel="noreferrer"
+                              className="flex items-center gap-1 text-[hsl(var(--primary))] hover:underline">
+                              <ExternalLink className="h-3 w-3" /> {t('distributor.track')}
+                            </a>
+                          )}
+                        </div>
+                      ) : (
+                        <span className="text-muted-foreground">{o.eta || t('distributor.noTracking')}</span>
+                      )}
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </Card>
+        </TabsContent>
+
+        <TabsContent value="coas" className="mt-5">
+          <CoaLibrary />
+        </TabsContent>
+
+        <TabsContent value="sales" className="mt-5 space-y-4">
+          <div className="flex flex-wrap items-center gap-3" data-testid="distributor-sales-filters">
+            <Select value={period} onValueChange={setPeriod}>
+              <SelectTrigger className="w-44 h-9" data-testid="distributor-period-filter"><SelectValue /></SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">{t('distributor.filter.allTime')}</SelectItem>
+                <SelectItem value="month">{t('distributor.filter.thisMonth')}</SelectItem>
+                <SelectItem value="90d">{t('distributor.filter.last90')}</SelectItem>
+                <SelectItem value="year">{t('distributor.filter.thisYear')}</SelectItem>
+              </SelectContent>
+            </Select>
+            <Select value={statusFilter} onValueChange={setStatusFilter}>
+              <SelectTrigger className="w-40 h-9" data-testid="distributor-status-filter"><SelectValue /></SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">{t('distributor.filter.allStatus')}</SelectItem>
+                {['pendiente', 'confirmado', 'enviado', 'entregado', 'cancelado'].map((s) => <SelectItem key={s} value={s}>{t(`status.${s}`)}</SelectItem>)}
+              </SelectContent>
+            </Select>
+            <div className="ml-auto text-sm">
+              <span className="text-muted-foreground">{t('distributor.filter.earnedInPeriod')} </span>
+              <span className="font-heading font-bold text-[hsl(var(--primary))]" data-testid="distributor-filtered-earnings">{formatMXN(filteredEarnings)}</span>
+              <span className="text-muted-foreground"> · {t('common.items', { count: filteredSales.length })}</span>
+            </div>
+          </div>
           <Card className="overflow-x-auto">
             <Table data-testid="distributor-sales-table">
               <TableHeader>
@@ -172,9 +312,9 @@ const Distributor = () => {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {sales.length === 0 ? (
+                {filteredSales.length === 0 ? (
                   <TableRow><TableCell colSpan={6} className="text-center text-muted-foreground py-8">{t('distributor.noSales')}</TableCell></TableRow>
-                ) : sales.map((o) => (
+                ) : filteredSales.map((o) => (
                   <TableRow key={o.order_number}>
                     <TableCell className="font-mono-tech text-xs">{o.order_number}</TableCell>
                     <TableCell className="text-sm">{o.customer_name}</TableCell>

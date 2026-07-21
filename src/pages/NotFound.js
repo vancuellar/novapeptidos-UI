@@ -12,7 +12,7 @@ const NotFound = () => {
     { to: '/calculadora', icon: Calculator, label: t('nf.calc') },
   ];
   return (
-    <div className="max-w-6xl mx-auto px-4 sm:px-6 py-20 sm:py-28 text-center">
+    <div className="max-w-[1280px] mx-auto px-4 sm:px-6 py-20 sm:py-28 text-center">
       {/* Vial vacío estilizado + 404 */}
       <div className="relative inline-flex items-center justify-center mb-6">
         <span className="font-heading text-[7rem] sm:text-[9rem] leading-none font-bold tracking-tight text-[hsl(var(--primary))]/15 select-none">404</span>
