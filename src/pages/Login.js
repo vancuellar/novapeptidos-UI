@@ -152,14 +152,20 @@ const Login = () => {
   );
 
   return (
-    <div className="min-h-[70vh] flex items-center justify-center px-4 py-14 relative">
-      <div className="w-full max-w-md">
+    // Pantalla independiente SIEMPRE oscura, como el alta de Resend (orden de
+    // Christian, 2026-07-21): clase `dark` propia para que todos los tokens
+    // del tema se resuelvan en oscuro aunque el sitio esté en claro, lienzo
+    // negro y un resplandor suave arriba a la derecha.
+    <div className="dark min-h-screen flex items-center justify-center px-4 py-14 relative overflow-hidden bg-[#020204] text-foreground">
+      <div aria-hidden className="pointer-events-none absolute -top-40 right-[-15%] h-[560px] w-[560px] rounded-full opacity-25"
+        style={{ background: 'radial-gradient(circle at center, hsl(225 72% 60% / 0.55), transparent 65%)' }} />
+      <div className="w-full max-w-md relative">
         {/* Como Resend: SOLO la molécula en su mosaico, título grande y el
             enlace para cambiar de modo. Sin wordmark y sin link de "Inicio"
             (órdenes de Christian, 2026-07-21). */}
         <div className="flex flex-col items-center text-center mb-9">
           <MoleculeTile className="h-14 w-14 mb-7 text-foreground" />
-          <h1 className="font-heading text-3xl sm:text-4xl font-bold tracking-tight">
+          <h1 className="font-brand text-3xl sm:text-4xl tracking-tight">
             {mode === 'signup' ? t('auth.resend.signupTitle') : t('auth.resend.loginTitle')}
           </h1>
           <p className="text-sm text-muted-foreground mt-3">

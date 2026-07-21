@@ -1,6 +1,6 @@
 import React from 'react';
 import '@/App.css';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
 import { Toaster } from '@/components/ui/sonner';
 import { AuthProvider } from '@/context/AuthContext';
 import { CartProvider } from '@/context/CartContext';
@@ -34,6 +34,16 @@ import LearnHub from '@/pages/LearnHub';
 import LearnPage from '@/pages/LearnPage';
 import Compendium from '@/pages/Compendium';
 
+// /login es una pantalla independiente al estilo del alta de Resend (siempre
+// oscura, sin barra ni pie): el sitio no debe asomarse detrás.
+const STANDALONE_ROUTES = ['/login'];
+
+const SiteChrome = ({ children }) => {
+  const { pathname } = useLocation();
+  if (STANDALONE_ROUTES.includes(pathname)) return null;
+  return children;
+};
+
 function App() {
   return (
     <div className="App">
@@ -42,7 +52,7 @@ function App() {
           <AuthProvider>
             <CartProvider>
               <BrowserRouter basename={process.env.PUBLIC_URL || '/'}>
-                <Header />
+                <SiteChrome><Header /></SiteChrome>
                 <main className="min-h-[70vh]">
                   <Routes>
                     <Route path="/" element={<Home />} />
@@ -70,7 +80,7 @@ function App() {
                     <Route path="*" element={<NotFound />} />
                   </Routes>
                 </main>
-                <Footer />
+                <SiteChrome><Footer /></SiteChrome>
                 <RuoGate />
                 <AIChatWidget />
                 <Toaster position="top-right" richColors closeButton duration={2500} />

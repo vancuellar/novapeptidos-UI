@@ -119,6 +119,12 @@ body {
     body {
         @apply bg-background text-foreground;
     }
+    /* La fuente del logotipo (Marcellus), para cuando el titulo debe hablar
+       con la misma voz que la marca (p. ej. la pantalla de entrada). */
+    .font-brand {
+        font-family: 'Marcellus', Georgia, serif;
+    }
+
     h1, h2, h3, h4, .font-heading {
         font-family: var(--font-heading);
     }
