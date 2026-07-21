@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { CreditCard, Landmark, ShieldCheck, Package, UserRound, MapPin, ChevronDown } from 'lucide-react';
+import { CreditCard, Landmark, ShieldCheck, Package, UserRound, MapPin, ChevronDown, Bitcoin } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -14,7 +14,7 @@ import { useCart } from '@/context/CartContext';
 import { useAuth } from '@/context/AuthContext';
 import { useLanguage } from '@/context/LanguageContext';
 
-const ICONS = { CreditCard, Landmark };
+const ICONS = { CreditCard, Landmark, Bitcoin };
 
 // ---- utilidades de tarjeta (SOLO en el navegador; el numero jamas sale de aqui) ----
 const onlyDigits = (s) => (s || '').replace(/\D/g, '');
@@ -62,6 +62,13 @@ const Checkout = () => {
   const [card, setCard] = useState({ number: '', expiry: '', cvc: '', name: '' });
   const [loyalty, setLoyalty] = useState({ eligible: false, balance: 0 });
   const [usePoints, setUsePoints] = useState(false);
+  const [cryptoOn, setCryptoOn] = useState(false);
+
+  // Cripto (BTCPay) solo aparece si el servidor lo tiene encendido.
+  useEffect(() => {
+    api.get('/payments/config').then((r) => setCryptoOn(!!r.data?.crypto_enabled)).catch(() => {});
+  }, []);
+  const methods = [...PAYMENT_METHODS, ...(cryptoOn ? [{ id: 'cripto', icon: 'Bitcoin' }] : [])];
   const sectionRefs = { 0: useRef(null), 1: useRef(null), 2: useRef(null) };
 
   // Puntos de lealtad: solo cuentas de cliente (el servidor decide quién participa).
@@ -111,6 +118,12 @@ const Checkout = () => {
       const res = await api.post('/orders', payload);
       clearCart();
       toast.success(t('checkout.toast.success'));
+      // Cripto: el servidor devuelve el enlace de la factura de BTCPay; ahí
+      // paga el cliente y de regreso lo trae la redirectURL a /pedido/...
+      if (res.data.crypto_checkout_url) {
+        window.location.href = res.data.crypto_checkout_url;
+        return;
+      }
       navigate(`/pedido/${res.data.order_number}`);
     } catch (err) {
       toast.error(err.response?.data?.detail || t('checkout.toast.error'));
@@ -179,7 +192,7 @@ const Checkout = () => {
           <Card className="p-5 scroll-mt-36" ref={sectionRefs[2]} data-testid="checkout-section-payment">
             {sectionHeader(3, t('checkout.step3'), t('checkout.paymentHint'))}
             <RadioGroup value={payment} onValueChange={setPayment} className="space-y-3" data-testid="checkout-payment-method-radio">
-              {PAYMENT_METHODS.map((m) => {
+              {methods.map((m) => {
                 const Icon = ICONS[m.icon] || CreditCard;
                 return (
                   <Label key={m.id} htmlFor={m.id} className={`flex items-center gap-3 rounded-xl border p-4 cursor-pointer transition-all ${payment === m.id ? 'border-[hsl(var(--primary))] ring-2 ring-[hsl(var(--ring))] ring-offset-1' : 'border-border hover:bg-[hsl(var(--secondary))]'}`} data-testid={`checkout-payment-${m.id}`}>
@@ -221,6 +234,12 @@ const Checkout = () => {
             {payment === 'spei' && (
               <div className="mt-4 rounded-xl border border-border bg-[hsl(var(--secondary))]/50 p-4 text-sm text-muted-foreground" data-testid="checkout-spei-note">
                 {t('checkout.speiNote')}
+              </div>
+            )}
+
+            {payment === 'cripto' && (
+              <div className="mt-4 rounded-xl border border-border bg-[hsl(var(--secondary))]/50 p-4 text-sm text-muted-foreground" data-testid="checkout-crypto-note">
+                {t('checkout.cryptoNote')}
               </div>
             )}
 

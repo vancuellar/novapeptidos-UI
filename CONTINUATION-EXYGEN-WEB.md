@@ -560,6 +560,58 @@ envían a ningún procesador. SPEI funciona porque es transferencia manual.
 - HCG 5,000IU arriba de Certified = deliberado (piso); el vigía da falsa alarma ahí —
   pendiente enseñarle a reconocer precios en piso.
 
+## 🚩 PENDIENTES NUEVOS DE CHRISTIAN (2026-07-21, madrugada) — APUNTADOS, SIN EJECUTAR
+
+1. **Hablar del programa de lealtad:** hoy es 5% sobre compras pagadas (tasa que eligió el
+   asistente como arranque). Christian quiere revisar el % y DEFINIR las políticas del
+   programa (vigencia/caducidad de puntos, quién califica, límites) y la **política de
+   devoluciones** y cómo interactúan (una devolución debe revertir puntos — el código ya
+   revierte al cancelar, pero falta la política escrita).
+2bis. **MONELO — INVESTIGADO (2026-07-21):** Es real: **Monelo Pay, S.A.P.I. de C.V.**
+   (fiscal: Torreón, Coahuila; oficina: Bosques de las Lomas, CDMX). Procesador/agregador
+   mexicano: terminales, links de pago, API en línea con **tokenización y sandbox**; portal
+   pay.monelo.mx; dice ser **PCI DSS Nivel 1**. **Confirmado que es el procesador de tarjeta
+   de Exoma** (sus funciones monelo-charge y monelo-3ds-status/sweep → 3DS en producción).
+   Tarifas NO públicas: cotizan "por giro y volumen" (típico de quien acepta alto riesgo).
+   Contacto: contacto@monelo.mx · +52 56 3634 3634.
+   **Focos amarillos:** empresa muy joven (© 2025), casi invisible en internet (cero
+   reseñas/quejas/noticias), y en su sitio los enlaces de "Términos y condiciones" e
+   "Información legal" están VACÍOS — todo tendría que firmarse en contrato, con reserva,
+   plazos de depósito y aceptación del giro POR ESCRITO. OJO: Exoma manda tarjeta+CVV crudos
+   por su propio servidor (PCI SAQ-D, lo que dijimos NO copiar); con Monelo se puede integrar
+   BIEN vía tokens. Plan: cotizar con Monelo Y postular a Mercado Pago en paralelo.
+
+2ter. **RUTA DE PAGOS ELEGIDA POR CHRISTIAN (2026-07-21): adquirente especialista de alto
+   riesgo + cripto.** (Mercado Pago y la vía "mismo procesador que la competencia" quedaron
+   descartadas; los motivos finos están en la memoria privada, NO escribirlos aquí.)
+   - **Tarjeta (alto riesgo, giro declarado):** especialistas que aceptan péptidos RUO
+     explícitamente: **AllayPay** (procesamiento doméstico US para péptidos RUO),
+     **PaymentCloud** (bróker, ~3.49–3.95% + $0.25, $10–50 USD/mes), **Paycron**
+     (infraestructura para research chemicals). Términos realistas del nicho: 3.5–6.5%,
+     reserva rodante 5–15% (se libera ~mes 7), contracargo $50–100. La mayoría pide
+     **entidad en EE.UU.** → probable LLC americana + EIN (trámite corto). Nuestro sitio ya
+     trae lo que su underwriting pide: puerta 18+/RUO, avisos en cada ficha, cero dosis.
+     Siguiente paso: decidir lo de la LLC y aplicar a 2–3 en paralelo con giro real.
+   - **Cripto (complemento): BTCPay Server AUTOALOJADO** — 0% de comisión, sin
+     intermediario, nadie lo puede congelar (misma filosofía que SPEI). Corre en un
+     servidor propio (instancia aparte en la cuenta certis; nodo podado). Integración:
+     método "Cripto" en el checkout → factura BTCPay en MXN con ventana de 15 min →
+     webhook confirma el pedido. Conversión a pesos vía Bitso (exchange mexicano regulado)
+     cuando se quiera. Opcional después: NOWPayments (0.5%, 350+ monedas, auto-convert a
+     stablecoin) si se quiere USDT sin operar nodo — sujeto a su propio KYB.
+
+2. **PROCESADOR DE PAGOS — DECISIÓN FIRME DE CHRISTIAN: STRIPE NO.** Stripe congeló en el
+   pasado las cuentas de Certified y de Exoma con miles de dólares dentro. **Usar el mismo
+   procesador que usan ellos:** Certified → **Mercado Pago** (confirmado en su código);
+   Exoma → **"Monelo"** + SPEI. Ruta: postular a Mercado Pago (tiene acreditación para
+   suplementos) y/o investigar Monelo. La advertencia de NUNCA declarar mercancía falsa
+   (§C) sigue aplicando igual con cualquier procesador. Esto REEMPLAZA la ruta "Stripe
+   primero" del §C.
+3. **Correos del negocio:** crear los buzones para hablar con clientes y distribuidores
+   (hoy solo existe hola@exygenlabs.com como remitente vía Resend). Falta definir y crear
+   p.ej. soporte@, pedidos@, distribuidores@ — la RECEPCIÓN se puede resolver gratis con
+   Cloudflare Email Routing (el DNS ya está en Cloudflare); Resend solo envía.
+
 ## 🚩 LO PRIMERO QUE DEBE HACER EL PRÓXIMO CHAT
 
 ### 1. ~~Llave de Gemini nueva~~ — HECHO 2026-07-20 (noche). EL CHAT DE IA ESTÁ VIVO.
