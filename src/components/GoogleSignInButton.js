@@ -143,7 +143,7 @@ const GoogleSignInButton = () => {
           {t('auth.google.cta')}
         </div>
         {/* El iframe de Google, invisible pero clicable, cubriendo el botón. */}
-        <div ref={slotRef} className="absolute inset-0 overflow-hidden opacity-[0.02] [&>div]:!w-full [&_iframe]:!w-full" />
+        <div ref={slotRef} className="absolute inset-0 overflow-hidden opacity-[0.001] [&>div]:!w-full [&_iframe]:!w-full" />
       </div>
       <div className="flex items-center gap-3 mt-6">
         <div className="h-px flex-1 bg-border" />
