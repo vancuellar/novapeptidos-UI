@@ -604,7 +604,17 @@ envían a ningún procesador. SPEI funciona porque es transferencia manual.
        apagado): `nowpayments.py` (factura + IPN HMAC-SHA512 fail-closed); el método 'cripto'
        del checkout usa NOWPayments si está encendido (BTCPay de respaldo); webhook
        `/payments/nowpayments/webhook`. 56 pruebas verdes.
-       - **PASOS QUE LE TOCAN A CHRISTIAN para encender NOWPayments:** (1) registrarse en
+       - **YA ENCENDIDO Y EN VIVO (2026-07-21):** Christian dio API key + IPN secret; guardadas
+         en `~/.config/exygen/nowpayments.env` (600) y en el `.env` del servidor. Backend
+         desplegado; `/api/payments/config` → `crypto_enabled:true`; el webhook rechaza sin
+         firma (401). El checkout en vivo YA muestra "Cryptocurrency". La API key se probó
+         contra NOWPayments (autentica OK). **NO volver a pedir esas llaves.**
+       - **FALTA DEL LADO DE CHRISTIAN para que un cliente pueda pagar de verdad:** (a)
+         **Settings > Coins**: prender las monedas a aceptar (BTC, ETH, USDT…) — hoy la lista
+         sale VACÍA, por eso ningún cliente tendría con qué pagar; (b) **Verify account**
+         (KYB, badge naranja); (c) **Settings > Payout wallets / Coins**: elegir que caiga en
+         **USDT** (en Custody o wallet propia) para no cargar riesgo de precio.
+       - **(Pasos originales de referencia):** (1) registrarse en
          nowpayments.io con la ENTIDAD real y pasar su KYB; (2) configurar un wallet de
          cobro (o auto-conversión a USDT en su panel, para no cargar riesgo de precio);
          (3) generar API key + IPN secret y ponerlos en su panel el IPN callback a
