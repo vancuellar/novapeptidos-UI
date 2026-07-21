@@ -518,11 +518,19 @@ envían a ningún procesador. SPEI funciona porque es transferencia manual.
 
 ## 🚩 LO PRIMERO QUE DEBE HACER EL PRÓXIMO CHAT
 
-### 1. Llave de Gemini nueva (cuando Christian la pase)
-**Lo único caído sigue siendo el chat de IA** (llave revocada por Google el 2026-07-20).
-Al recibirla: guardarla SOLO en `~/.config/exygen/gemini.env` (600) y en el `.env` del
-servidor (`ssh ubuntu@44.204.127.242`, `/opt/exygen/app/.env`, `sudo docker compose up -d`),
-NUNCA en repos ni en este archivo.
+### 1. ~~Llave de Gemini nueva~~ — HECHO 2026-07-20 (noche). EL CHAT DE IA ESTÁ VIVO.
+Christian pasó la llave nueva (formato nuevo `AQ.…`, ya no `AIza…`). Guardada en
+`~/.config/exygen/gemini.env` (600) y en el `.env` del servidor; container recreado y
+**probado en producción** (`POST /api/ai/chat` con `{session_id, message}` responde bien).
+**OJO:** el default del código (`gemini-3.5-flash`) NO existe para esta llave — en el `.env`
+del servidor quedó `AI_MODEL_NAME=gemini-flash-latest` (probado). Ya no hay nada caído.
+
+### 1bis. Idea de Christian (2026-07-20): elementos estilo ticket Soriana
+Le gusta el ticket de Soriana (PDF en Downloads). Elementos que mapean bien al correo de
+pedido / página de pedido: (i) línea "¡AHORRASTE $X!" destacada (el descuento ya se calcula),
+(ii) saludo personalizado tipo "APRECIABLE: NOMBRE", (iii) "¡GRACIAS POR TU COMPRA!" al pie,
+(iv) puntos de recompensa (NO existe programa de puntos — sería feature nueva, decisión de
+Christian). Pendiente que Christian diga cuáles quiere.
 
 ### 2. Google Sign-In
 El backend ya está listo (commit `2a60cca`, apagado hasta tener CLIENT ID). Falta: Christian
