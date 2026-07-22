@@ -788,20 +788,32 @@ gemini, google (público), nowpayments, spei. Server: 44.204.127.242, deploy =
    NO aguantan: los 9 regulados (HGH, HCG…) y margen corto. **HGH 40iu está DEBAJO del piso
    aun con cero comisión** — precio por revisar, preguntado a Christian sin respuesta aún.
    Propuesta de niveles 30/25/20 techo 40% con escalera por $1M neto — esperando su OK.
-4ter. **PIRÁMIDE DE DISTRIBUIDORES — ESQUEMA CERRADO 2026-07-21 (noche), FALTA CONSTRUIR:**
-   (i) 3 niveles: Junior 20 / Senior 25 / Master 30 de inicio; escalera +5 pts a TODO el
-   árbol por cada hito de $1M neto para Christian (tras comisiones); Master tope 40%; a
-   Master solo lo nombra Christian. (ii) Reparto por DIFERENCIA, nunca suma: total repartido
-   = % del Master. (iii) El descuento al cliente SALE de la comisión del propio vendedor,
-   tope la mitad de su % (J hasta 10, S hasta 12, M hasta 20) — cada quien decide.
-   (iv) Ventajas exclusivas del canal: cash back 4% para clientes por distribuidor (vs 3%
-   general; falta confirmación final de Christian entre 3.5 y 4), envío gratis ≥$3,000 con
-   código (cuando existan envíos auto), acceso anticipado. (v) Escalones del sitio YA
-   ajustados y EN VIVO (UI PR #69/#70, RBAC PR #13): 10% base, 15% ≥$35,000, 20% ELIMINADO.
-   (vi) Altas de subs: master propone, Christian aprueba. (vii) Techo 40% cabe en 180/205
-   productos; los regulados necesitan tope por producto (columna ya existe en la maestra).
-   También EN VIVO 2026-07-21: footer reordenado (sellos+RUO arriba, solo copyright abajo,
-   UI PR #67/#68).
+4ter. **PIRÁMIDE DE DISTRIBUIDORES — ESQUEMA FINAL, CERRADO POR CHRISTIAN 2026-07-21 noche
+   ("cerramos con riesgo cero"). FALTA SOLO LA ORDEN DE CONSTRUIR. Reglas definitivas:**
+   (i) Sobrecomisión FIJA e intocable de 3.5% por nivel de arriba. Vende Junior:
+   Jr 22.5 + Sr 3.5 + M 3.5 = 29.5. Vende Senior: Sr 26 + M 3.5. Vende Master: bolsa entera.
+   (ii) El descuento al cliente sale SOLO de la tajada del vendedor (tope = su propia
+   comisión; ej. Jr da 15% → le quedan 7.5; los 3.5 de arriba no se tocan).
+   (iii) Carrera: el premio del Jr es ascender a Senior y el del Senior a Master (saltos de
+   categoría, ganados con SUS ventas, aprueba Christian). Ya de Master: sube de 0.5 en 0.5
+   con métrica por definir (propuesta: +0.5 por cada $500k netos) hasta tope 40%; el 45%
+   queda como rango de élite que solo Christian otorga a mano. La bolsa crece → abre espacio
+   abajo que se GANA; lo no ganado se queda con Christian.
+   (iv) ASCENSO RIESGO CERO (regla cerrada): al ascender un Senior a Master, su Master
+   original conserva el 3.5% SOLO sobre las ventas personales del ascendido; sobre el árbol
+   nuevo NO cobra. El reparto jamás excede bolsa + 4% cash back, sin importar generaciones.
+   Bono único de graduación: opcional, monto por decidir.
+   (v) Ventajas del canal (paga Christian, fuera de la bolsa): cash back 4%, envío gratis
+   ≥$2,500 con código (manual hasta que haya envíos auto), 1 agua bac 3ml de regalo en todo
+   pedido con código (costo real $16, percepción $179), acceso anticipado a productos.
+   (vi) PRICE PARITY: la página directa nunca da más descuento del que puede dar el
+   distribuidor más nuevo. Escalones del sitio EN VIVO: 10% base, 15% ≥$35,000 (20%
+   eliminado; UI PR #69/#70, RBAC PR #13). Escalones por piezas: descartados por parity.
+   (vii) Techo 40 cabe en 180/205 productos; los regulados (HGH, HCG…) requieren tope por
+   producto (la columna ya existe en la maestra). HGH 40iu sigue DEBAJO del piso aun sin
+   comisión — decisión de precio pendiente de Christian.
+   También EN VIVO 2026-07-21: footer reordenado y compacto (UI PR #67/#68, #71/#72) y
+   tarjetas de producto de altura idéntica (h-full).
 5. **Buzones de correo del negocio** (soporte@, pedidos@, distribuidores@) vía Cloudflare Email
    Routing (recepción gratis; Resend solo envía).
 6. **Google Sign-In / 2FA admin:** Christian debe ACTIVAR su 2FA (Mi cuenta > Perfil).
