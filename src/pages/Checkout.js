@@ -10,7 +10,8 @@ import { Separator } from '@/components/ui/separator';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { toast } from 'sonner';
 import api, { formatMXN, PAYMENT_METHODS } from '@/lib/api';
-import { formatPhoneMX, phoneDigits } from '@/lib/utils';
+import { phoneValid } from '@/lib/utils';
+import { CountrySelect, PhoneField, composePhone, parsePhone } from '@/components/CountryPhoneFields';
 import { useCart } from '@/context/CartContext';
 import { useAuth } from '@/context/AuthContext';
 import { useLanguage } from '@/context/LanguageContext';
@@ -54,10 +55,13 @@ const Checkout = () => {
   const [submitting, setSubmitting] = useState(false);
   const [consent, setConsent] = useState(false);
   const [summaryOpen, setSummaryOpen] = useState(true);
+  const savedPhone = parsePhone(user?.phone);
+  const [phoneCountry, setPhoneCountry] = useState(savedPhone.country);
   const [form, setForm] = useState({
-    full_name: user?.name || '', email: user?.email || '', phone: user?.phone || '',
+    full_name: user?.name || '', email: user?.email || '', phone: savedPhone.national,
     address: user?.shipping_address?.address || '', city: user?.shipping_address?.city || '',
     state: user?.shipping_address?.state || '', postal_code: user?.shipping_address?.postal_code || '',
+    country: user?.shipping_address?.country || 'MX',
     notes: '',
   });
   const [card, setCard] = useState({ number: '', expiry: '', cvc: '', name: '' });
@@ -97,7 +101,7 @@ const Checkout = () => {
       toast.error(t('checkout.toast.required'));
       return;
     }
-    if (phoneDigits(form.phone).length !== 10) {
+    if (!phoneValid(form.phone, phoneCountry)) {
       toast.error(t('checkout.toast.phone'));
       return;
     }
@@ -112,7 +116,7 @@ const Checkout = () => {
     try {
       const payload = {
         items: items.map((i) => ({ product_id: i.product_id, name: i.name, price: i.price, quantity: i.quantity, presentation: i.presentation, image_url: i.image_url })),
-        customer: form,
+        customer: { ...form, phone: composePhone(phoneCountry, form.phone) },
         payment_method: payment,
         shipping: 0,
         discount,
@@ -179,7 +183,7 @@ const Checkout = () => {
             <div className="grid sm:grid-cols-2 gap-4">
               <div className="sm:col-span-2"><Label>{t('checkout.fullName')}</Label><Input className="mt-1.5" value={form.full_name} onChange={(e) => set('full_name', e.target.value)} data-testid="checkout-name-input" /></div>
               <div><Label>{t('checkout.email')}</Label><Input type="email" className="mt-1.5" value={form.email} onChange={(e) => set('email', e.target.value)} data-testid="checkout-email-input" /></div>
-              <div><Label>{t('checkout.phone')}</Label><Input className="mt-1.5" type="tel" inputMode="numeric" autoComplete="tel-national" placeholder="(55) 1234-5678" value={form.phone} onChange={(e) => set('phone', formatPhoneMX(e.target.value))} data-testid="checkout-phone-input" /></div>
+              <div><Label>{t('checkout.phone')}</Label><PhoneField country={phoneCountry} onCountryChange={setPhoneCountry} value={form.phone} onChange={(v) => set('phone', v)} testid="checkout-phone-input" /></div>
             </div>
           </Card>
 
@@ -190,6 +194,7 @@ const Checkout = () => {
               <div><Label>{t('checkout.city')}</Label><Input className="mt-1.5" value={form.city} onChange={(e) => set('city', e.target.value)} data-testid="checkout-city-input" /></div>
               <div><Label>{t('checkout.state')}</Label><Input className="mt-1.5" value={form.state} onChange={(e) => set('state', e.target.value)} data-testid="checkout-state-input" /></div>
               <div><Label>{t('checkout.postalCode')}</Label><Input className="mt-1.5" value={form.postal_code} onChange={(e) => set('postal_code', e.target.value)} data-testid="checkout-postal-code-input" /></div>
+              <div><Label>{t('checkout.country')}</Label><CountrySelect value={form.country} onChange={(v) => set('country', v)} testid="checkout-country-select" /></div>
               <div className="sm:col-span-2"><Label>{t('checkout.notes')}</Label><Textarea className="mt-1.5" value={form.notes} onChange={(e) => set('notes', e.target.value)} data-testid="checkout-notes-input" /></div>
             </div>
           </Card>
