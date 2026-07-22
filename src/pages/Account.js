@@ -18,7 +18,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Separator } from '@/components/ui/separator';
 import { toast } from 'sonner';
 import api, { formatMXN, PAYMENT_METHODS } from '@/lib/api';
-import { formatPhoneMX } from '@/lib/utils';
+import { CountrySelect, PhoneField, composePhone, parsePhone } from '@/components/CountryPhoneFields';
 import { useAuth } from '@/context/AuthContext';
 import { useLanguage } from '@/context/LanguageContext';
 
@@ -30,7 +30,7 @@ const STATUS_COLORS = {
   cancelado: 'bg-[hsl(var(--muted))] text-[hsl(var(--muted-foreground))] border border-border',
 };
 
-const EMPTY_ADDR = { address: '', city: '', state: '', postal_code: '' };
+const EMPTY_ADDR = { address: '', city: '', state: '', postal_code: '', country: 'MX' };
 
 const AddressFields = ({ value, onChange, t, testid }) => (
   <div className="grid sm:grid-cols-2 gap-3">
@@ -38,6 +38,7 @@ const AddressFields = ({ value, onChange, t, testid }) => (
     <div><Label>{t('profile.addr.city')}</Label><Input className="mt-1.5" value={value.city} onChange={(e) => onChange({ ...value, city: e.target.value })} /></div>
     <div><Label>{t('profile.addr.state')}</Label><Input className="mt-1.5" value={value.state} onChange={(e) => onChange({ ...value, state: e.target.value })} /></div>
     <div><Label>{t('profile.addr.zip')}</Label><Input className="mt-1.5" value={value.postal_code} onChange={(e) => onChange({ ...value, postal_code: e.target.value })} /></div>
+    <div><Label>{t('profile.addr.country')}</Label><CountrySelect value={value.country} onChange={(v) => onChange({ ...value, country: v })} testid={`${testid}-country`} /></div>
   </div>
 );
 
@@ -65,6 +66,7 @@ const Account = () => {
   const [email, setEmail] = useState('');
   const [emailPassword, setEmailPassword] = useState('');
   const [phone, setPhone] = useState('');
+  const [phoneCountry, setPhoneCountry] = useState('MX');
   // direcciones
   const [shipping, setShipping] = useState(EMPTY_ADDR);
   const [billing, setBilling] = useState(EMPTY_ADDR);
@@ -94,7 +96,9 @@ const Account = () => {
       loadProtocols();
       setName(user.name || '');
       setEmail(user.email || '');
-      setPhone(user.phone || '');
+      const saved = parsePhone(user.phone);
+      setPhone(saved.national);
+      setPhoneCountry(saved.country);
       setShipping({ ...EMPTY_ADDR, ...(user.shipping_address || {}) });
       setBilling({ ...EMPTY_ADDR, ...(user.billing_address || {}) });
       setSameBilling(!user.billing_address || !user.billing_address.address);
@@ -147,7 +151,7 @@ const Account = () => {
     try {
       await api.put('/auth/profile', {
         name,
-        phone,
+        phone: composePhone(phoneCountry, phone),
         email: emailChanged ? email.trim() : undefined,
         current_password: emailChanged ? emailPassword : undefined,
         shipping_address: shipping,
@@ -344,7 +348,7 @@ const Account = () => {
                     <PasswordInput value={emailPassword} onChange={(e) => setEmailPassword(e.target.value)} show={showCur} setShow={setShowCur} t={t} testid="profile-email-password" />
                   </div>
                 )}
-                <div><Label>{t('profile.phone')}</Label><Input type="tel" inputMode="numeric" autoComplete="tel-national" placeholder="(55) 1234-5678" className="mt-1.5" value={phone} onChange={(e) => setPhone(formatPhoneMX(e.target.value))} data-testid="profile-phone-input" /></div>
+                <div><Label>{t('profile.phone')}</Label><PhoneField country={phoneCountry} onCountryChange={setPhoneCountry} value={phone} onChange={setPhone} testid="profile-phone-input" /></div>
               </div>
             </Card>
 
