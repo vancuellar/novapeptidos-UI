@@ -137,11 +137,11 @@ const page = {
             'Agitar crea interfaz aire-líquido y espuma; en esa interfaz las moléculas se desnaturalizan y pierden actividad. La espuma persistente es señal de daño, no de mezcla.',
         },
         {
-          title: 'Etiqueta y refrigera (2 minutos)',
+          title: 'Refrigera de inmediato',
           body:
-            'Anota sobre el vial: compuesto, lote, volumen de diluyente añadido, concentración resultante en mg/mL, fecha y hora de reconstitución, e iniciales de quien lo hizo. Guárdalo de inmediato a 2–8 °C, en la parte trasera del refrigerador y protegido de la luz. Registra lo mismo en la bitácora.',
+            'Guárdalo enseguida a 2–8 °C, en la parte trasera del refrigerador y protegido de la luz. El vial ya viene etiquetado con producto, lote y caducidad; solo añade la fecha de reconstitución y la concentración resultante (mg/mL), que son los datos que cambian al reconstituir.',
           note:
-            'Un vial sin fecha de reconstitución es un vial que en dos semanas nadie sabrá si sigue siendo válido. En la práctica, se tira.',
+            'Anotar la fecha de reconstitución evita la duda de si el vial sigue siendo válido semanas después.',
         },
       ],
     },

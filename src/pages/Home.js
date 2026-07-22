@@ -440,13 +440,6 @@ const Home = () => {
         </div>
       </section>
 
-      {/* ===== RUO notice ===== */}
-      <section className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 pb-16">
-        <div className="rounded-xl border border-[hsl(var(--warning-border))] bg-[hsl(var(--warning))] text-[hsl(var(--warning-foreground))] p-5 flex items-start gap-3">
-          <FlaskConical className="h-5 w-5 shrink-0 mt-0.5" />
-          <p className="text-sm leading-relaxed"><strong>{t('home.heroRuo')}</strong> {t('home.ruoNotice')}</p>
-        </div>
-      </section>
     </div>
   );
 };
