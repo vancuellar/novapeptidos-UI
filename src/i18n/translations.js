@@ -651,7 +651,7 @@ const esMX = {
   'checkout.securePayment': 'Pago seguro',
   'checkout.coaByLot': 'Pureza HPLC',
   'checkout.toast.required': 'Completa los campos obligatorios',
-  'checkout.toast.phone': 'El telefono debe tener 10 digitos (ej. 55 1234 5678)',
+  'checkout.toast.phone': 'El telefono debe tener 10 digitos (ej. (55) 1234-5678)',
   'checkout.toast.success': 'Pedido realizado con exito',
   'checkout.toast.error': 'Error al crear el pedido',
 
@@ -1527,7 +1527,7 @@ const enUS = {
   'checkout.securePayment': 'Secure payment',
   'checkout.coaByLot': 'HPLC purity',
   'checkout.toast.required': 'Complete the required fields',
-  'checkout.toast.phone': 'The phone number must have 10 digits (e.g. 55 1234 5678)',
+  'checkout.toast.phone': 'The phone number must have 10 digits (e.g. (55) 1234-5678)',
   'checkout.toast.success': 'Order placed successfully',
   'checkout.toast.error': 'Error creating the order',
 
@@ -2359,7 +2359,7 @@ const ptBR = {
   'checkout.securePayment': 'Pagamento seguro',
   'checkout.coaByLot': 'Pureza HPLC',
   'checkout.toast.required': 'Preencha os campos obrigatorios',
-  'checkout.toast.phone': 'O telefone deve ter 10 digitos (ex. 55 1234 5678)',
+  'checkout.toast.phone': 'O telefone deve ter 10 digitos (ex. (55) 1234-5678)',
   'checkout.toast.success': 'Pedido realizado com sucesso',
   'checkout.toast.error': 'Erro ao criar o pedido',
 

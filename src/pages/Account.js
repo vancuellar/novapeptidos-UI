@@ -344,7 +344,7 @@ const Account = () => {
                     <PasswordInput value={emailPassword} onChange={(e) => setEmailPassword(e.target.value)} show={showCur} setShow={setShowCur} t={t} testid="profile-email-password" />
                   </div>
                 )}
-                <div><Label>{t('profile.phone')}</Label><Input type="tel" inputMode="numeric" autoComplete="tel-national" placeholder="55 1234 5678" className="mt-1.5" value={phone} onChange={(e) => setPhone(formatPhoneMX(e.target.value))} data-testid="profile-phone-input" /></div>
+                <div><Label>{t('profile.phone')}</Label><Input type="tel" inputMode="numeric" autoComplete="tel-national" placeholder="(55) 1234-5678" className="mt-1.5" value={phone} onChange={(e) => setPhone(formatPhoneMX(e.target.value))} data-testid="profile-phone-input" /></div>
               </div>
             </Card>
 
