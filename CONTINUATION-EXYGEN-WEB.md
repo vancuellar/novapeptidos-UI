@@ -1,6 +1,6 @@
 # Exygen Labs — Website Continuation File
 
-> **Propósito:** fuente única de verdad del SITIO WEB (frontend, backend, IA, marca, despliegue). Pega este archivo en un chat nuevo para retomar con todo el contexto. Complementa a `../NOVA-PRICING-SYSTEM-CONTINUATION.md` (el sistema de precios). **Última actualización: 2026-07-21 (madrugada).** Empieza por la sección 🚩 LO PRIMERO QUE DEBE HACER EL PRÓXIMO CHAT.
+> **Propósito:** fuente única de verdad del SITIO WEB (frontend, backend, IA, marca, despliegue). Pega este archivo en un chat nuevo para retomar con todo el contexto. Complementa a `../NOVA-PRICING-SYSTEM-CONTINUATION.md` (el sistema de precios). **Última actualización: 2026-07-21 (noche).** Empieza por la sección 🚩 LO PRIMERO QUE DEBE HACER EL PRÓXIMO CHAT.
 
 > **Estilo con Christian:** abogado, no dev ("abogado de 95 años haciendo vibe coding"). Respuestas **ultra cortas, español claro, sin jerga**. Corre TÚ los comandos (nunca le pidas abrir terminal). Términos de git en inglés (commit, push, merge — no "commitear").
 
@@ -725,6 +725,37 @@ envían a ningún procesador. SPEI funciona porque es transferencia manual.
    (hoy solo existe hola@exygenlabs.com como remitente vía Resend). Falta definir y crear
    p.ej. soporte@, pedidos@, distribuidores@ — la RECEPCIÓN se puede resolver gratis con
    Cloudflare Email Routing (el DNS ya está en Cloudflare); Resend solo envía.
+
+## 🤝 HANDOFF — ESTADO AL 2026-07-21 (noche) Y PENDIENTES
+
+**EN VIVO Y FUNCIONANDO (verificado E2E, cero fallas):** sitio + API + chat IA; catálogo 198;
+login/registro estilo Resend (monocromo, molécula real, Marcellus); Google Sign-In con
+consentimientos; passkeys + 2FA admin; lealtad 5% con piso; correos claro/oscuro (bienvenida,
+pedido estilo ticket, pago confirmado, SPEI con CLABE, acciones); **3 vías de cobro: SPEI con
+CLABE + comprobante que sube el cliente, cripto por NOWPayments→USDT (en vivo), y tarjeta
+pendiente**; comprobante SPEI descargable por admin; Mi cuenta con sidebar flotante; envíos
+con rastreo manual + sección para clientes/distribuidores. 59 pruebas backend en verde.
+
+**LLAVES/CONFIG (todas en `~/.config/exygen/*.env`, NUNCA en repos):** cloudflare, resend,
+gemini, google (público), nowpayments, spei. Server: 44.204.127.242, deploy =
+`ssh ... 'cd /opt/exygen/app && sudo git pull && sudo docker compose up -d --build'`.
+
+**PENDIENTES, por prioridad:**
+1. **Tarjeta:** esperando respuesta de Instabill + Corepay (offshore, giro declarado). Correos
+   en `../payment-applications/SOLICITUDES-adquirente-alto-riesgo.md`. Al llegar términos,
+   comparar reserva/tasa/mínimo. AllayPay = ruta con LLC US, después.
+2. **Envíos automáticos:** correos a Skydropx + FedEx pidiendo clasificación por escrito en
+   `../payment-applications/SOLICITUD-clasificacion-envios-FedEx-Skydropx.md`. Certified usa
+   FedEx (confirmado); Exoma lo oculta. Integrar Skydropx solo tras clasificación + Carta Porte.
+3. **Chat de IA:** el correo de Christian se conecta por CONECTOR de Gmail en su app Claude
+   (Claude Code aquí NO puede leer buzones ni tomar contraseñas — decírselo si insiste).
+4. **Programa de lealtad + devoluciones:** falta escribir las POLÍTICAS (vigencia de puntos,
+   quién califica, cómo una devolución revierte puntos — el código ya revierte al cancelar).
+5. **Buzones de correo del negocio** (soporte@, pedidos@, distribuidores@) vía Cloudflare Email
+   Routing (recepción gratis; Resend solo envía).
+6. **Google Sign-In / 2FA admin:** Christian debe ACTIVAR su 2FA (Mi cuenta > Perfil).
+7. **Legales:** Christian revisa términos/privacidad y define domicilio del responsable + INAI.
+8. **Redirigir dominios `nova*` → exygenlabs.com** (GoDaddy 301). Falta lista completa.
 
 ## 🚩 LO PRIMERO QUE DEBE HACER EL PRÓXIMO CHAT
 
