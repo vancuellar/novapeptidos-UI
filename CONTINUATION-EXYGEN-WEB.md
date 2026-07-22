@@ -750,6 +750,20 @@ siguen llamándose `novapeptidos-UI` y `novapeptidos-RBAC` (GitHub: vancuellar/�
    eso es contenido/criterio suyo (qué fuente usar y qué valores publicar), no se inventó.
    Mientras, la calculadora ya funciona con TODOS los péptidos.
 
+### ➕ 2026-07-22 (tarde): DOSIS DE REFERENCIA DE LA CALCULADORA — 63/90 EN VIVO
+Se investigaron (literatura + protocolos comunitarios RUO; NO se copió a Exoma) y se
+llenaron `start_levels` de 12 productos más (commit `16ae37c`): 7 mezclas derivadas de sus
+componentes (KLOW 3/5/8mg, GLOW 3/4.5/7mg, BPC10+TB10 2/3/4mg, BPC5+TB5 1/1.5/2mg,
+Tesa+Ipa 1.5/2.25/3mg, Cagri+Sema 0.5/1/2mg, Reta+Tirze 2/5/10mg) y 5 individuales con
+referencia clara (VIP 50/75/100mcg, LL-37 100/175/250mcg, Oxitocina 20/30/40mcg, B12 y
+Vit B12 1000/2500/5000mcg). **Quedan 27 A PROPÓSITO sin niveles** (usan el fallback
+medible): químicos de investigación pura sin dosis humana (SLU-PP-332, AICAR, Adipotide,
+FOXO4, PNC-27, P21, GDF-8, ACE-031, PTD-1/DBM, B7-33, PE-22-28, ADMAX, Fragment 17-23),
+tópicos (AHK-Cu, Matrixyl, SNAP-8), formato que no encaja (Cerebrolysin mL, Melatonina y
+1MQ orales, MIC multi-ingrediente) y hormonas potentes/opioide (Triptorelin, ACTH,
+Orexin A/B, Dermorphin). Poner número ahí sería inventar dosis. Si Christian quiere
+cerrarlos, tiene que dar/aprobar la fuente por compuesto.
+
 ### ➕ 2026-07-22 (tarde): DISTRIBUIDORES CON FULL ACCESS A HERRAMIENTAS — EN VIVO
 Orden de Christian: rol `distributor` entra al bypass del candado de Mi cuenta igual que
 admin (calculadora completa, seguimiento, estudios, COAs) sin necesidad de compra pagada
