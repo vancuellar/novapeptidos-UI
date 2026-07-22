@@ -261,15 +261,6 @@ const Admin = () => {
       <h1 className="font-heading text-2xl sm:text-3xl font-bold tracking-tight mb-1 flex items-center gap-2"><LayoutDashboard className="h-6 w-6 text-[hsl(var(--primary))]" /> {t('admin.title')}</h1>
       <p className="text-muted-foreground text-sm mb-6">{t('admin.subtitle')}</p>
 
-      <div className="grid grid-cols-2 md:grid-cols-5 gap-3 mb-8">
-        {STAT_CARDS.map((s, i) => (
-          <Card key={i} className="p-4">
-            <div className="flex items-center gap-2 text-muted-foreground text-xs"><s.i className="h-4 w-4" /> {s.t}</div>
-            <div className="font-heading text-xl font-bold mt-1">{s.v}</div>
-          </Card>
-        ))}
-      </div>
-
       <Tabs defaultValue="sales" className="lg:flex lg:gap-8 lg:items-start">
         <DashboardSidebar items={[
           { value: 'sales', icon: TrendingUp, label: t('admin.salesTab') },
@@ -281,6 +272,15 @@ const Admin = () => {
           { value: 'repurchase', icon: RefreshCw, label: t('admin.repurchaseTab') },
         ]} />
         <div className="min-w-0 flex-1">
+
+        <div className="grid grid-cols-2 md:grid-cols-5 gap-3 mb-8">
+          {STAT_CARDS.map((s, i) => (
+            <Card key={i} className="p-4">
+              <div className="flex items-center gap-2 text-muted-foreground text-xs"><s.i className="h-4 w-4" /> {s.t}</div>
+              <div className="font-heading text-xl font-bold mt-1">{s.v}</div>
+            </Card>
+          ))}
+        </div>
 
         <TabsContent value="stock" className="mt-5">
           <div className="flex flex-wrap items-center justify-between gap-3 mb-4">

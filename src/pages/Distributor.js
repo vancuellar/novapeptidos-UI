@@ -113,22 +113,6 @@ const Distributor = () => {
         )}
       </div>
 
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-4">
-        {STAT_CARDS.map((s, i) => (
-          <Card key={i} className="p-4">
-            <div className="flex items-center gap-2 text-muted-foreground text-xs"><s.i className="h-4 w-4" /> {s.t}</div>
-            <div className="font-heading text-xl font-bold mt-1">{s.v}</div>
-          </Card>
-        ))}
-      </div>
-
-      {summary && (
-        <Card className="p-4 mb-6 flex items-center gap-2 text-sm text-muted-foreground">
-          <Percent className="h-4 w-4 text-[hsl(var(--primary))]" />
-          {t('distributor.commissionNote', { rate: Math.round((summary.commission_rate || 0) * 100) })}{summary.customer_discount_rate > 0 && <> · {t('distributor.customerDiscountNote', { rate: Math.round(summary.customer_discount_rate * 100) })}</>}
-        </Card>
-      )}
-
       <Tabs defaultValue="overview" className="lg:flex lg:gap-8 lg:items-start">
         <DashboardSidebar items={[
           { value: 'overview', icon: TrendingUp, label: t('distributor.overviewTab') },
@@ -138,6 +122,22 @@ const Distributor = () => {
           { value: 'coas', icon: FileText, label: t('account.coasTab') },
         ]} />
         <div className="min-w-0 flex-1">
+
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-4">
+          {STAT_CARDS.map((s, i) => (
+            <Card key={i} className="p-4">
+              <div className="flex items-center gap-2 text-muted-foreground text-xs"><s.i className="h-4 w-4" /> {s.t}</div>
+              <div className="font-heading text-xl font-bold mt-1">{s.v}</div>
+            </Card>
+          ))}
+        </div>
+
+        {summary && (
+          <Card className="p-4 mb-6 flex items-center gap-2 text-sm text-muted-foreground">
+            <Percent className="h-4 w-4 text-[hsl(var(--primary))]" />
+            {t('distributor.commissionNote', { rate: Math.round((summary.commission_rate || 0) * 100) })}{summary.customer_discount_rate > 0 && <> · {t('distributor.customerDiscountNote', { rate: Math.round(summary.customer_discount_rate * 100) })}</>}
+          </Card>
+        )}
 
         <TabsContent value="overview" className="mt-5">
           {!summary || summary.monthly.length === 0 ? (
