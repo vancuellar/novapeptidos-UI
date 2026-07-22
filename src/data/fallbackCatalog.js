@@ -1191,9 +1191,14 @@ export const fallbackProducts = [
     "coa_url": "https://exygenlabs.com/coa/tesamorelin-10-ipamorelin-5.pdf",
     "batch_number": "NP-TESA15-2601",
     "storage": "Conservar a -20 °C, protegido de la luz. Reconstituido: 2–8 °C.",
-    "start_dose": null,
-    "start_unit": null,
-    "start_levels": null,
+    "start_dose": 1.5,
+    "start_unit": "mg",
+    "start_levels": {
+      "inicial": 1.5,
+      "tipica": 2.25,
+      "avanzada": 3,
+      "unit": "mg"
+    },
     "featured": false,
     "is_new": false
   },
@@ -2375,9 +2380,14 @@ export const fallbackProducts = [
     "coa_url": "https://exygenlabs.com/coa/oxitocina.pdf",
     "batch_number": "NP-OXY2-2601",
     "storage": "Conservar a -20 °C, protegido de la luz. Reconstituido: 2–8 °C.",
-    "start_dose": null,
-    "start_unit": null,
-    "start_levels": null,
+    "start_dose": 20,
+    "start_unit": "mcg",
+    "start_levels": {
+      "inicial": 20,
+      "tipica": 30,
+      "avanzada": 40,
+      "unit": "mcg"
+    },
     "featured": false,
     "is_new": false
   },
@@ -2557,9 +2567,14 @@ export const fallbackProducts = [
     "coa_url": "https://exygenlabs.com/coa/vip.pdf",
     "batch_number": "NP-VIP5-2601",
     "storage": "Conservar a -20 °C, protegido de la luz. Reconstituido: 2–8 °C.",
-    "start_dose": null,
-    "start_unit": null,
-    "start_levels": null,
+    "start_dose": 50,
+    "start_unit": "mcg",
+    "start_levels": {
+      "inicial": 50,
+      "tipica": 75,
+      "avanzada": 100,
+      "unit": "mcg"
+    },
     "featured": false,
     "is_new": false
   },
@@ -2802,9 +2817,14 @@ export const fallbackProducts = [
     "coa_url": "https://exygenlabs.com/coa/cagri-sema-2-5mg-2-5mg.pdf",
     "batch_number": "NP-CAGR5-2601",
     "storage": "Conservar a -20 °C, protegido de la luz. Reconstituido: 2–8 °C.",
-    "start_dose": null,
-    "start_unit": null,
-    "start_levels": null,
+    "start_dose": 0.5,
+    "start_unit": "mg",
+    "start_levels": {
+      "inicial": 0.5,
+      "tipica": 1,
+      "avanzada": 2,
+      "unit": "mg"
+    },
     "featured": false,
     "is_new": false
   },
@@ -3206,9 +3226,14 @@ export const fallbackProducts = [
     "coa_url": "https://exygenlabs.com/coa/retatrutide-20mg-tirzepatide-40mg.pdf",
     "batch_number": "NP-RETA60-2601",
     "storage": "Conservar a -20 °C, protegido de la luz. Reconstituido: 2–8 °C.",
-    "start_dose": null,
-    "start_unit": null,
-    "start_levels": null,
+    "start_dose": 2,
+    "start_unit": "mg",
+    "start_levels": {
+      "inicial": 2,
+      "tipica": 5,
+      "avanzada": 10,
+      "unit": "mg"
+    },
     "featured": false,
     "is_new": false
   },
@@ -3605,9 +3630,14 @@ export const fallbackProducts = [
     "coa_url": "https://exygenlabs.com/coa/bpc-157-10mg-tb-500-10mg.pdf",
     "batch_number": "NP-BPC120-2601",
     "storage": "Conservar a -20 °C, protegido de la luz. Reconstituido: 2–8 °C.",
-    "start_dose": null,
-    "start_unit": null,
-    "start_levels": null,
+    "start_dose": 2,
+    "start_unit": "mg",
+    "start_levels": {
+      "inicial": 2,
+      "tipica": 3,
+      "avanzada": 4,
+      "unit": "mg"
+    },
     "featured": false,
     "is_new": false
   },
@@ -3639,9 +3669,14 @@ export const fallbackProducts = [
     "coa_url": "https://exygenlabs.com/coa/bpc-157-5mg-tb-500-5mg.pdf",
     "batch_number": "NP-BPC110-2601",
     "storage": "Conservar a -20 °C, protegido de la luz. Reconstituido: 2–8 °C.",
-    "start_dose": null,
-    "start_unit": null,
-    "start_levels": null,
+    "start_dose": 1,
+    "start_unit": "mg",
+    "start_levels": {
+      "inicial": 1,
+      "tipica": 1.5,
+      "avanzada": 2,
+      "unit": "mg"
+    },
     "featured": false,
     "is_new": false
   },
@@ -3746,9 +3781,14 @@ export const fallbackProducts = [
     "coa_url": "https://exygenlabs.com/coa/glow-bpc-157-10mg-ghk-cu-50mg-tb-500-10mg.pdf",
     "batch_number": "NP-GLOW70-2601",
     "storage": "Conservar a -20 °C, protegido de la luz. Reconstituido: 2–8 °C.",
-    "start_dose": null,
-    "start_unit": null,
-    "start_levels": null,
+    "start_dose": 3,
+    "start_unit": "mg",
+    "start_levels": {
+      "inicial": 3,
+      "tipica": 4.5,
+      "avanzada": 7,
+      "unit": "mg"
+    },
     "featured": false,
     "is_new": false
   },
@@ -3780,9 +3820,14 @@ export const fallbackProducts = [
     "coa_url": "https://exygenlabs.com/coa/klow-bpc-ghk-cu-tb-500-kpv.pdf",
     "batch_number": "NP-KLOW80-2601",
     "storage": "Conservar a -20 °C, protegido de la luz. Reconstituido: 2–8 °C.",
-    "start_dose": null,
-    "start_unit": null,
-    "start_levels": null,
+    "start_dose": 3,
+    "start_unit": "mg",
+    "start_levels": {
+      "inicial": 3,
+      "tipica": 5,
+      "avanzada": 8,
+      "unit": "mg"
+    },
     "featured": false,
     "is_new": false
   },
@@ -3859,9 +3904,14 @@ export const fallbackProducts = [
     "coa_url": "https://exygenlabs.com/coa/ll-37.pdf",
     "batch_number": "NP-LL375-2601",
     "storage": "Conservar a -20 °C, protegido de la luz. Reconstituido: 2–8 °C.",
-    "start_dose": null,
-    "start_unit": null,
-    "start_levels": null,
+    "start_dose": 100,
+    "start_unit": "mcg",
+    "start_levels": {
+      "inicial": 100,
+      "tipica": 175,
+      "avanzada": 250,
+      "unit": "mcg"
+    },
     "featured": false,
     "is_new": false
   },
@@ -4295,9 +4345,14 @@ export const fallbackProducts = [
     "coa_url": "https://exygenlabs.com/coa/b12.pdf",
     "batch_number": "NP-B121-2601",
     "storage": "Conservar a -20 °C, protegido de la luz. Reconstituido: 2–8 °C.",
-    "start_dose": null,
-    "start_unit": null,
-    "start_levels": null,
+    "start_dose": 1000,
+    "start_unit": "mcg",
+    "start_levels": {
+      "inicial": 1000,
+      "tipica": 2500,
+      "avanzada": 5000,
+      "unit": "mcg"
+    },
     "featured": false,
     "is_new": false
   },
@@ -4329,9 +4384,14 @@ export const fallbackProducts = [
     "coa_url": "https://exygenlabs.com/coa/vitamina-b12.pdf",
     "batch_number": "NP-VITA10-2601",
     "storage": "Conservar a -20 °C, protegido de la luz. Reconstituido: 2–8 °C.",
-    "start_dose": null,
-    "start_unit": null,
-    "start_levels": null,
+    "start_dose": 1000,
+    "start_unit": "mcg",
+    "start_levels": {
+      "inicial": 1000,
+      "tipica": 2500,
+      "avanzada": 5000,
+      "unit": "mcg"
+    },
     "featured": false,
     "is_new": false
   },

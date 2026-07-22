@@ -34,7 +34,7 @@ export const mgProducts = fallbackProducts
 const MIN_UNITS = 2;                       // menos de esto no se puede medir en la jeringa
 
 // Péptidos que se dosifican en mg (GLP-1/incretinas + unos pocos). El resto va en mcg.
-const MG_DOSED = /tirzepat|retatrut|semaglut|cagrilint|mazdut|survodut|liraglut|dulaglut|nad|carnit|glutat|humanin|reta|sema|tirze/i;
+const MG_DOSED = /tirzepat|retatrut|semaglut|cagrilint|mazdut|survodut|liraglut|dulaglut|nad|carnit|glutat|humanin|reta|sema|tirze|klow|glow|tesamorelin|tb-500|ghk/i;
 const unitFor = (name) => (MG_DOSED.test(name || '') ? 'mg' : 'mcg');
 // dosis inicial neutral según unidad (solo un punto de partida, RUO)
 const defaultDose = (unit) => (unit === 'mg' ? 2 : 250);
