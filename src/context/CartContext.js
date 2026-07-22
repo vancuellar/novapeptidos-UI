@@ -54,9 +54,10 @@ export const CartProvider = ({ children }) => {
   // Descuento AUTOMÁTICO por volumen (sin código): 10% lanzamiento, 15% ≥ $20k, 20% ≥ $40k.
   // Código de distribuidor: da su propio % (5–50%). NUNCA se acumulan: aplica el MAYOR.
   // El backend aplica la misma regla; esto es solo para mostrarlo en vivo.
+  // Orden de Christian (2026-07-21): se quitó el escalón del 20% y el 15% sube
+  // a $35,000, para no competir con los descuentos de sus distribuidores.
   const DISCOUNT_TIERS = [
-    { min: 40000, rate: 0.20 },
-    { min: 20000, rate: 0.15 },
+    { min: 35000, rate: 0.15 },
     { min: 0, rate: 0.10 },
   ];
   const tier = DISCOUNT_TIERS.find((d) => subtotal >= d.min) || DISCOUNT_TIERS[DISCOUNT_TIERS.length - 1];
@@ -86,7 +87,7 @@ export const CartProvider = ({ children }) => {
   const discountRate = Math.max(autoRate, codeRate);
   const discountSource = codeRate > autoRate ? 'code' : 'auto';
   const discount = Math.round(subtotal * discountRate);
-  const nextTier = subtotal < 20000 ? { min: 20000, rate: 0.15 } : subtotal < 40000 ? { min: 40000, rate: 0.20 } : null;
+  const nextTier = subtotal < 35000 ? { min: 35000, rate: 0.15 } : null;
 
   return (
     <CartContext.Provider value={{ items, addItem, updateQty, removeItem, clearCart, subtotal, count, discount, discountRate, discountSource, nextTier, distCode, distRate, applyDistCode, clearDistCode }}>
