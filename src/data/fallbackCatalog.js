@@ -847,13 +847,13 @@ export const fallbackProducts = [
     "variants": [
       {
         "presentation": "24 IU",
-        "price": 4209,
+        "price": 1139,
         "stock": 40,
         "batch_number": "NP-HGH24-2601"
       },
       {
         "presentation": "40 IU",
-        "price": 7739,
+        "price": 1449,
         "stock": 40,
         "batch_number": "NP-HGH40-2601"
       }
@@ -2432,19 +2432,19 @@ export const fallbackProducts = [
     "variants": [
       {
         "presentation": "10 IU",
-        "price": 1369,
+        "price": 539,
         "stock": 40,
         "batch_number": "NP-SOMA10-2601"
       },
       {
         "presentation": "12 IU",
-        "price": 2109,
+        "price": 659,
         "stock": 40,
         "batch_number": "NP-SOMA12-2601"
       },
       {
         "presentation": "15 IU",
-        "price": 2739,
+        "price": 779,
         "stock": 40,
         "batch_number": "NP-SOMA15-2601"
       }
