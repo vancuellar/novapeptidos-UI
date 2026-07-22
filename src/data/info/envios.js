@@ -95,6 +95,18 @@ const page = {
       ],
     },
     {
+      type: 'list',
+      title: 'Si tienes cuenta o eres distribuidor',
+      intro:
+        'Con sesión iniciada tienes más visibilidad que un invitado, sin tener que escribirnos.',
+      items: [
+        'Cliente con cuenta: en Mi cuenta > Mis pedidos ves cada pedido, su estado, la guía y el enlace de rastreo en cuanto existen. Si pagaste por SPEI, ahí mismo subes tu comprobante para agilizar la confirmación.',
+        'Cada cambio de estado (confirmado, enviado, entregado) te llega también por correo, con la guía cuando aplica.',
+        'Distribuidor: en tu portal, la pestaña Pedidos y envíos muestra los pedidos de TUS clientes con su estado, destino y número de guía, para que des seguimiento sin depender de nosotros. Nunca ves el margen interno del negocio, solo lo necesario para atender a tu cliente.',
+        'El asistente del sitio también responde el estado de un pedido por su número EX-AAAAMMDD-1234 cuando estás dentro de tu cuenta.',
+      ],
+    },
+    {
       type: 'prose',
       title: 'Tu dirección: revísala dos veces',
       paragraphs: [
