@@ -29,7 +29,7 @@ const page = {
         },
         {
           q: '¿Qué necesito además del vial? No quiero que me falte algo.',
-          a: 'Cuatro cosas: agua bacteriostática (o estéril, según el caso), jeringas de insulina graduadas, toallitas con alcohol isopropílico y un espacio en el refrigerador. Todo eso está en /catalogo y conviene pedirlo en el mismo pedido para no pagar dos envíos.',
+          a: 'Cuatro cosas: agua bacteriostática (o estéril, según el caso), jeringas de insulina graduadas, toallitas con alcohol isopropílico y un espacio en el refrigerador. Todo eso está en /catálogo y conviene pedirlo en el mismo pedido para no pagar dos envíos.',
         },
         {
           q: '¿Cómo elijo entre 5 mg y 10 mg del mismo compuesto?',
@@ -169,7 +169,7 @@ const page = {
         },
         {
           q: '¿Qué evidencia hay realmente detrás de estos compuestos?',
-          a: 'Es desigual y hay que decirlo tal cual. Algunos tienen ensayos clínicos serios y son fármacos aprobados en otras jurisdicciones; otros tienen solo estudios en animales o in vitro; otros apenas preliminares. En las fichas de /catalogo y en las guías de /aprende decimos en qué nivel está cada uno, sin adornarlo.',
+          a: 'Es desigual y hay que decirlo tal cual. Algunos tienen ensayos clínicos serios y son fármacos aprobados en otras jurisdicciones; otros tienen solo estudios en animales o in vitro; otros apenas preliminares. En las fichas de /catálogo y en las guías de /aprende decimos en qué nivel está cada uno, sin adornarlo.',
         },
       ],
     },

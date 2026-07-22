@@ -49,7 +49,7 @@ const page = {
         },
         {
           q: '¿Venden agua bacteriostática, jeringas y material de laboratorio?',
-          a: 'Sí, manejamos consumibles: agua bacteriostática, agua estéril para inyección, jeringas de insulina, toallitas con alcohol isopropílico y viales vacíos estériles. Puedes verlos en /catalogo y agregarlos al mismo pedido.',
+          a: 'Sí, manejamos consumibles: agua bacteriostática, agua estéril para inyección, jeringas de insulina, toallitas con alcohol isopropílico y viales vacíos estériles. Puedes verlos en /catálogo y agregarlos al mismo pedido.',
         },
         {
           q: '¿Cómo sé qué compuesto corresponde a lo que quiero investigar?',
