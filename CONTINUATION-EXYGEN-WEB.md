@@ -741,6 +741,18 @@ gemini, google (público), nowpayments, spei. Server: 44.204.127.242, deploy =
 `ssh ... 'cd /opt/exygen/app && sudo git pull && sudo docker compose up -d --build'`.
 
 **PENDIENTES, por prioridad:**
+0. ~~**Sidebar izquierdo en los 3 tableros**~~ — HECHO 2026-07-21 (tarde), PENDIENTE DE DEPLOY.
+   Orden de Christian: como el sidebar de la app de Claude — flotante, SIEMPRE visible al
+   hacer scroll (sticky top-28) y colapsable POR COMPLETO (colapsado solo queda el botón).
+   Componente nuevo `src/components/layout/DashboardSidebar.js`, usado en Account, Admin y
+   Distributor (Tabs pasó de grid/barra horizontal a `lg:flex` + sidebar vertical; en móvil
+   sigue la barra horizontal). Estado colapsado compartido en localStorage
+   (`exygen-dash-sidebar-collapsed`). Llaves i18n `dash.collapse/expand` en es/en/pt.
+   **Verificado en local con backend local + Mongo docker efímeros** (cuentas de prueba en DB
+   `exygen_sidebar_test`, ya destruida): los 3 tableros renderizan su sidebar (5/7/5
+   secciones), sticky comprobado (top fijo a 112px con scroll), colapso/expansión OK, cambio
+   de pestañas OK, build limpio, cero errores de consola. `.env.local` quedó restaurado a
+   producción.
 1. **Tarjeta:** esperando respuesta de Instabill + Corepay (offshore, giro declarado). Correos
    en `../payment-applications/SOLICITUDES-adquirente-alto-riesgo.md`. Al llegar términos,
    comparar reserva/tasa/mínimo. AllayPay = ruta con LLC US, después.

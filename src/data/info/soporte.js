@@ -27,7 +27,7 @@ const page = {
       type: 'prose',
       title: 'Problemas con el pago',
       paragraphs: [
-        'Aceptamos únicamente tarjeta (crédito o débito) y transferencia SPEI. No manejamos pagos contra entrega ni criptomonedas.',
+        'Aceptamos tarjeta (crédito o débito: Visa, Mastercard y American Express), transferencia SPEI y criptomonedas. No manejamos pagos contra entrega.',
         'Si tu tarjeta fue rechazada, el motivo casi nunca está de nuestro lado. Las causas más comunes son: el banco bloqueó el cargo por ser un comercio nuevo para ti, los datos de facturación no coinciden con los registrados en el banco, o la tarjeta no tiene habilitadas las compras en línea. La solución práctica es hablar con tu banco para autorizar el cargo y volver a intentar, o pagar por SPEI.',
         'Si pagaste por SPEI y tu pedido sigue en "pendiente", revisa el tiempo: las transferencias suelen reflejarse en minutos dentro del horario bancario, pero una hecha de noche, en fin de semana o en festivo puede tardar hasta el siguiente día hábil. Si ya pasó ese plazo, mándanos el comprobante con tu número de pedido y lo confirmamos a mano.',
       ],
@@ -118,7 +118,7 @@ const page = {
         },
         {
           q: '¿Por qué mi pedido dice "pendiente" si ya pagué?',
-          a: 'Con tarjeta, la verificación es casi inmediata y algo salió mal; escríbenos. Con SPEI, el pedido queda en pendiente hasta que el banco refleja la transferencia: en horario bancario suele ser cuestión de minutos, pero de noche, en fin de semana o en festivo puede pasar al siguiente día hábil. Mandarnos el comprobante lo resuelve al momento.',
+          a: 'Con tarjeta, la verificación es casi inmediata y algo salió mal; escríbenos. Con SPEI, el pedido queda en pendiente hasta que el banco refleja la transferencia: en horario bancario suele ser cuestión de minutos, pero de noche, en fin de semana o en festivo puede pasar al siguiente día hábil. Mandarnos el comprobante lo resuelve al momento. Con criptomoneda, el pedido se confirma solo en cuanto la red acredita el pago; normalmente son minutos.',
         },
       ],
     },

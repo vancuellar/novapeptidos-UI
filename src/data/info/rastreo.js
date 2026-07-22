@@ -93,7 +93,7 @@ const page = {
       items: [
         {
           q: 'Mi pedido lleva un día en "pendiente", ¿está mal?',
-          a: 'Si pagaste con tarjeta, escríbenos: la verificación debería ser casi inmediata. Si pagaste por SPEI, revisa cuándo transferiste: fuera de horario bancario, en fin de semana o en festivo, la confirmación puede tardar hasta el siguiente día hábil. Mandarnos el comprobante acelera todo.',
+          a: 'Si pagaste con tarjeta, escríbenos: la verificación debería ser casi inmediata. Si pagaste por SPEI, revisa cuándo transferiste: fuera de horario bancario, en fin de semana o en festivo, la confirmación puede tardar hasta el siguiente día hábil. Mandarnos el comprobante acelera todo. Si pagaste con criptomoneda, la confirmación llega sola en cuanto la red acredita el pago.',
         },
         {
           q: 'Dice "enviado" pero el rastreo no muestra nada.',
