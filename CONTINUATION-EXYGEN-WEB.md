@@ -728,6 +728,25 @@ envían a ningún procesador. SPEI funciona porque es transferencia manual.
 
 ## 🤝 HANDOFF — ESTADO AL 2026-07-21 (noche) Y PENDIENTES
 
+**OJO 2026-07-22: la carpeta local se RENOMBRÓ de "Nova Peptidos" a "Exygen Peptides"**
+(`/Users/christian/Documents/Exygen Peptides/`). Los launch.json ya apuntan ahí.
+
+**EN VIVO 2026-07-22 (UI PR #73/#74, RBAC PR #14, ambos desplegados):**
+- **HGH a precio neto:** familia HGH (no el Fragment) excluida de TODO descuento
+  (auto y por código), servidor y carrito; nota "precio neto" en el item. Sigue
+  la regla: producto sin margen = solo venta directa sin descuento. Precio del
+  40iu quedó en $1,449 (Exoma no vende 40iu pero su 50iu $1,750 lo tapa; Certified
+  no vende HGH; el resto de HGH lo vende Exoma MÁS BARATO que nosotros).
+- **Bloqueo de cuentas** (curiosos que entran "solo para ver"): botón en Admin >
+  Clientes; bloqueado no entra ni con contraseña, ni Google, ni token vigente.
+- **Menú de Mi cuenta recortado:** sin compra pagada solo Mis pedidos + Perfil
+  (pedidos se queda por el comprobante SPEI).
+- **Fotos protegidas:** sin clic derecho/arrastre/selección de imágenes (capturas
+  de pantalla no se pueden impedir — dicho a Christian).
+- **Formulario "Quiero ser distribuidor"** en Home > Mayoreo → solicitudes en
+  Admin > Distribuidores con Aprobar (convierte cliente o invita, topes de
+  siempre) / Rechazar; aviso a hola@ si el correo está encendido.
+
 **EN VIVO Y FUNCIONANDO (verificado E2E, cero fallas):** sitio + API + chat IA; catálogo 198;
 login/registro estilo Resend (monocromo, molécula real, Marcellus); Google Sign-In con
 consentimientos; passkeys + 2FA admin; lealtad 5% con piso; correos claro/oscuro (bienvenida,

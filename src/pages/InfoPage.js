@@ -1,3 +1,4 @@
+import { WHATSAPP_URL } from '@/lib/contact';
 import React from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { Card } from '@/components/ui/card';
@@ -57,7 +58,7 @@ const InfoPage = () => {
               </div>
               <div className="flex gap-2">
                 <a href="mailto:hola@exygenlabs.com"><Button variant="outline" size="sm">Escribir correo</Button></a>
-                <a href="https://wa.me/5219944946889" target="_blank" rel="noreferrer"><Button size="sm">WhatsApp</Button></a>
+                {WHATSAPP_URL && <a href={WHATSAPP_URL} target="_blank" rel="noreferrer"><Button size="sm">WhatsApp</Button></a>}
               </div>
             </div>
           </Card>
