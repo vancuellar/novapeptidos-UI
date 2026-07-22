@@ -794,8 +794,14 @@ gemini, google (público), nowpayments, spei. Server: 44.204.127.242, deploy =
    Jr 22.5 + Sr 3.5 + M 3.5 = 29.5. Vende Senior: Sr 26 + M 3.5. Vende Master: bolsa entera.
    (ii) El descuento al cliente sale SOLO de la tajada del vendedor (tope = su propia
    comisión; ej. Jr da 15% → le quedan 7.5; los 3.5 de arriba no se tocan).
-   (ii-bis) TODO sub nuevo que trae un Master entra como JUNIOR (22.5%), sin excepciones;
-   a Senior solo se llega por ascenso.
+   (ii-bis) TODO sub nuevo — lo traiga Master O Senior — entra como JUNIOR (22.5%), sin
+   excepciones; a Senior solo se llega por ascenso.
+   (ii-ter) CATÁLOGO DISTRIBUIDOR (Christian 2026-07-22): producto que no aguanta comisión
+   NO entra al catálogo de distribuidores; venta solo directa y SIN descuento alguno
+   (excluido también del 10/15% automático). Corte propuesto: repartible < 44% (bolsa 40 +
+   cash back 4) → ~29 productos fuera (HGH, HCG, IGF-1, CJC-DAC, Liraglutida 30, Tesamorelin,
+   MOTS-c 20, TB-500 10, Cagrilintida, GLOW, Selank 10, Kisspeptin 5…). OJO: HGH 40iu rompe
+   el piso AUN vendido directo a precio lleno (3.7× costo) — precio pendiente.
    (iii) Carrera: el premio del Jr es ascender a Senior y el del Senior a Master (saltos de
    categoría, ganados con SUS ventas, aprueba Christian). Ya de Master: sube de 0.5 en 0.5
    con métrica por definir (propuesta: +0.5 por cada $500k netos) hasta tope 40%; el 45%
