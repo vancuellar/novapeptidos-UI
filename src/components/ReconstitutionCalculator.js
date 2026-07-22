@@ -29,7 +29,26 @@ export const mgProducts = fallbackProducts
     startDose: p.start_dose,      // dosis de referencia RUO (o null)
     startUnit: p.start_unit,
     startLevels: p.start_levels,  // {inicial, tipica, avanzada, unit} o null
+    startFreq: p.start_freq,      // código de frecuencia RUO (o null)
   }));
+
+// Cada cuándo se aplica, en lenguaje llano. Referencia RUO por clase de péptido;
+// no es pauta médica. El código vive en el catálogo (start_freq).
+const FREQ_PHRASES = {
+  weekly:      { es: '1 vez por semana',   en: 'once a week',   pt: '1 vez por semana' },
+  daily:       { es: '1 vez al día',       en: 'once a day',    pt: '1 vez ao dia' },
+  daily_2x:    { es: '2 veces al día (mañana y noche)', en: 'twice a day (morning and night)', pt: '2 vezes ao dia (manhã e noite)' },
+  '2x_week':   { es: '2 veces por semana',  en: 'twice a week',  pt: '2 vezes por semana' },
+  '3x_week':   { es: '3 veces por semana',  en: '3 times a week', pt: '3 vezes por semana' },
+  eod:         { es: 'un día sí y un día no', en: 'every other day', pt: 'em dias alternados' },
+  as_needed:   { es: 'solo cuando lo necesites', en: 'only when you need it', pt: 'só quando precisar' },
+  daily_cycle: { es: '1 vez al día, en ciclos de 10 a 20 días', en: 'once a day, in 10–20 day cycles', pt: '1 vez ao dia, em ciclos de 10 a 20 dias' },
+  mt:          { es: '1 vez al día para empezar; al lograr el tono, 1–2 por semana', en: 'once a day to start; then 1–2 times a week', pt: '1 vez ao dia para começar; depois 1–2 vezes por semana' },
+};
+const freqPhrase = (code, lang) => (FREQ_PHRASES[code] ? (FREQ_PHRASES[code][lang] || FREQ_PHRASES[code].es) : '');
+// Frase "para empezar" en lenguaje simple (para que la entienda cualquiera).
+const START_LEAD = { es: 'Para empezar', en: 'To start', pt: 'Para começar' };
+const START_APPLY = { es: 'aplica', en: 'apply', pt: 'aplique' };
 
 const MIN_UNITS = 2;                       // menos de esto no se puede medir en la jeringa
 
@@ -124,7 +143,7 @@ const SyringeSVG = ({ units, maxUnits, onChange }) => {
  * ya compró (`purchased`) y el botón para registrar seguimiento (`onTrack`).
  */
 const ReconstitutionCalculator = ({ variant = 'full', purchased = [], onTrack, syncUrl = true }) => {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
   const full = variant === 'full';
   const [mode, setMode] = useState('suggest');          // 'suggest' | 'known'
   const [product, setProduct] = useState('');
@@ -450,6 +469,17 @@ const ReconstitutionCalculator = ({ variant = 'full', purchased = [], onTrack, s
 
         {/* Resultado */}
         <Card className="p-7 flex flex-col lg:col-span-3">
+          {/* Resumen en una frase: cuánto + cada cuándo (referencia RUO). */}
+          {full && currentProduct?.startFreq && (parseFloat(dose) > 0) && (
+            <div className="mb-5 rounded-xl border border-[hsl(var(--primary))]/40 bg-[hsl(var(--primary))]/10 p-4" data-testid="calc-plain-summary">
+              <div className="text-[11px] uppercase tracking-wide text-muted-foreground mb-1">{START_LEAD[language] || START_LEAD.es} · RUO</div>
+              <div className="text-lg leading-snug">
+                {START_APPLY[language] || START_APPLY.es}{' '}
+                <span className="font-bold text-[hsl(var(--primary))]">{dose} {effUnit}</span>,{' '}
+                <span className="font-bold text-[hsl(var(--primary))]">{freqPhrase(currentProduct.startFreq, language)}</span>.
+              </div>
+            </div>
+          )}
           {mode === 'suggest' ? (
             !suggest ? (
               <div className="flex-1 flex items-center justify-center text-sm text-muted-foreground text-center">

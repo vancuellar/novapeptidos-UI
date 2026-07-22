@@ -94,6 +94,7 @@ export const fallbackProducts = [
     "storage": "Conservar a -20 °C, protegido de la luz. Reconstituido: 2–8 °C.",
     "start_dose": 5,
     "start_unit": "mg",
+    "start_freq": "daily_cycle",
     "start_levels": {
       "inicial": 5,
       "tipica": 7.5,
@@ -133,6 +134,7 @@ export const fallbackProducts = [
     "storage": "Conservar a -20 °C, protegido de la luz. Reconstituido: 2–8 °C.",
     "start_dose": 5,
     "start_unit": "mg",
+    "start_freq": "daily_cycle",
     "start_levels": {
       "inicial": 5,
       "tipica": 7.5,
@@ -172,6 +174,7 @@ export const fallbackProducts = [
     "storage": "Conservar a -20 °C, protegido de la luz. Reconstituido: 2–8 °C.",
     "start_dose": 5,
     "start_unit": "mg",
+    "start_freq": "daily_cycle",
     "start_levels": {
       "inicial": 5,
       "tipica": 7.5,
@@ -211,6 +214,7 @@ export const fallbackProducts = [
     "storage": "Conservar a -20 °C, protegido de la luz. Reconstituido: 2–8 °C.",
     "start_dose": 5,
     "start_unit": "mg",
+    "start_freq": "daily_cycle",
     "start_levels": {
       "inicial": 5,
       "tipica": 7.5,
@@ -250,6 +254,7 @@ export const fallbackProducts = [
     "storage": "Conservar a -20 °C, protegido de la luz. Reconstituido: 2–8 °C.",
     "start_dose": 5,
     "start_unit": "mg",
+    "start_freq": "daily_cycle",
     "start_levels": {
       "inicial": 5,
       "tipica": 7.5,
@@ -295,6 +300,7 @@ export const fallbackProducts = [
     "storage": "Conservar a -20 °C, protegido de la luz. Reconstituido: 2–8 °C.",
     "start_dose": 5,
     "start_unit": "mg",
+    "start_freq": "daily_cycle",
     "start_levels": {
       "inicial": 5,
       "tipica": 7.5,
@@ -334,6 +340,7 @@ export const fallbackProducts = [
     "storage": "Conservar a -20 °C, protegido de la luz. Reconstituido: 2–8 °C.",
     "start_dose": 5,
     "start_unit": "mg",
+    "start_freq": "daily_cycle",
     "start_levels": {
       "inicial": 5,
       "tipica": 7.5,
@@ -379,6 +386,7 @@ export const fallbackProducts = [
     "storage": "Conservar a -20 °C, protegido de la luz. Reconstituido: 2–8 °C.",
     "start_dose": 1.6,
     "start_unit": "mg",
+    "start_freq": "2x_week",
     "start_levels": {
       "inicial": 1.6,
       "tipica": 3,
@@ -499,6 +507,7 @@ export const fallbackProducts = [
     "storage": "Conservar a -20 °C, protegido de la luz. Reconstituido: 2–8 °C.",
     "start_dose": 2,
     "start_unit": "mg",
+    "start_freq": "daily",
     "start_levels": {
       "inicial": 2,
       "tipica": 3,
@@ -646,6 +655,7 @@ export const fallbackProducts = [
     "storage": "Conservar a -20 °C, protegido de la luz. Reconstituido: 2–8 °C.",
     "start_dose": 100,
     "start_unit": "mcg",
+    "start_freq": "daily",
     "start_levels": {
       "inicial": 100,
       "tipica": 150,
@@ -731,6 +741,7 @@ export const fallbackProducts = [
     "storage": "Conservar a -20 °C, protegido de la luz. Reconstituido: 2–8 °C.",
     "start_dose": 100,
     "start_unit": "mcg",
+    "start_freq": "daily",
     "start_levels": {
       "inicial": 100,
       "tipica": 150,
@@ -776,6 +787,7 @@ export const fallbackProducts = [
     "storage": "Conservar a -20 °C, protegido de la luz. Reconstituido: 2–8 °C.",
     "start_dose": 100,
     "start_unit": "mcg",
+    "start_freq": "daily",
     "start_levels": {
       "inicial": 100,
       "tipica": 150,
@@ -821,6 +833,7 @@ export const fallbackProducts = [
     "storage": "Conservar a -20 °C, protegido de la luz. Reconstituido: 2–8 °C.",
     "start_dose": 100,
     "start_unit": "mcg",
+    "start_freq": "daily",
     "start_levels": {
       "inicial": 100,
       "tipica": 150,
@@ -929,6 +942,7 @@ export const fallbackProducts = [
     "storage": "Conservar a -20 °C, protegido de la luz. Reconstituido: 2–8 °C.",
     "start_dose": 250,
     "start_unit": "mcg",
+    "start_freq": "daily",
     "start_levels": {
       "inicial": 250,
       "tipica": 375,
@@ -974,6 +988,7 @@ export const fallbackProducts = [
     "storage": "Conservar a -20 °C, protegido de la luz. Reconstituido: 2–8 °C.",
     "start_dose": 20,
     "start_unit": "mcg",
+    "start_freq": "daily",
     "start_levels": {
       "inicial": 20,
       "tipica": 30,
@@ -1025,6 +1040,7 @@ export const fallbackProducts = [
     "storage": "Conservar a -20 °C, protegido de la luz. Reconstituido: 2–8 °C.",
     "start_dose": 200,
     "start_unit": "mcg",
+    "start_freq": "daily",
     "start_levels": {
       "inicial": 200,
       "tipica": 250,
@@ -1064,6 +1080,7 @@ export const fallbackProducts = [
     "storage": "Conservar a -20 °C, protegido de la luz. Reconstituido: 2–8 °C.",
     "start_dose": 200,
     "start_unit": "mcg",
+    "start_freq": "eod",
     "start_levels": {
       "inicial": 200,
       "tipica": 300,
@@ -1103,6 +1120,7 @@ export const fallbackProducts = [
     "storage": "Conservar a -20 °C, protegido de la luz. Reconstituido: 2–8 °C.",
     "start_dose": 200,
     "start_unit": "mcg",
+    "start_freq": "2x_week",
     "start_levels": {
       "inicial": 200,
       "tipica": 300,
@@ -1154,6 +1172,7 @@ export const fallbackProducts = [
     "storage": "Conservar a -20 °C, protegido de la luz. Reconstituido: 2–8 °C.",
     "start_dose": 200,
     "start_unit": "mcg",
+    "start_freq": "daily",
     "start_levels": {
       "inicial": 200,
       "tipica": 300,
@@ -1193,6 +1212,7 @@ export const fallbackProducts = [
     "storage": "Conservar a -20 °C, protegido de la luz. Reconstituido: 2–8 °C.",
     "start_dose": 1.5,
     "start_unit": "mg",
+    "start_freq": "daily",
     "start_levels": {
       "inicial": 1.5,
       "tipica": 2.25,
@@ -1238,6 +1258,7 @@ export const fallbackProducts = [
     "storage": "Conservar a -20 °C, protegido de la luz. Reconstituido: 2–8 °C.",
     "start_dose": 5,
     "start_unit": "mg",
+    "start_freq": "daily_cycle",
     "start_levels": {
       "inicial": 5,
       "tipica": 7.5,
@@ -1323,6 +1344,7 @@ export const fallbackProducts = [
     "storage": "Conservar a -20 °C, protegido de la luz. Reconstituido: 2–8 °C.",
     "start_dose": 200,
     "start_unit": "mg",
+    "start_freq": "3x_week",
     "start_levels": {
       "inicial": 200,
       "tipica": 400,
@@ -1368,6 +1390,7 @@ export const fallbackProducts = [
     "storage": "Conservar a -20 °C, protegido de la luz. Reconstituido: 2–8 °C.",
     "start_dose": 1,
     "start_unit": "mg",
+    "start_freq": "eod",
     "start_levels": {
       "inicial": 1,
       "tipica": 2,
@@ -1419,6 +1442,7 @@ export const fallbackProducts = [
     "storage": "Conservar a -20 °C, protegido de la luz. Reconstituido: 2–8 °C.",
     "start_dose": 50,
     "start_unit": "mg",
+    "start_freq": "3x_week",
     "start_levels": {
       "inicial": 50,
       "tipica": 75,
@@ -1464,6 +1488,7 @@ export const fallbackProducts = [
     "storage": "Conservar a -20 °C, protegido de la luz. Reconstituido: 2–8 °C.",
     "start_dose": 5,
     "start_unit": "mg",
+    "start_freq": "daily",
     "start_levels": {
       "inicial": 5,
       "tipica": 7.5,
@@ -1549,6 +1574,7 @@ export const fallbackProducts = [
     "storage": "Conservar a -20 °C, protegido de la luz. Reconstituido: 2–8 °C.",
     "start_dose": 100,
     "start_unit": "mcg",
+    "start_freq": "daily",
     "start_levels": {
       "inicial": 100,
       "tipica": 200,
@@ -1770,6 +1796,7 @@ export const fallbackProducts = [
     "storage": "Conservar a -20 °C, protegido de la luz. Reconstituido: 2–8 °C.",
     "start_dose": 300,
     "start_unit": "mcg",
+    "start_freq": "daily",
     "start_levels": {
       "inicial": 300,
       "tipica": 600,
@@ -1815,6 +1842,7 @@ export const fallbackProducts = [
     "storage": "Conservar a -20 °C, protegido de la luz. Reconstituido: 2–8 °C.",
     "start_dose": 300,
     "start_unit": "mcg",
+    "start_freq": "daily",
     "start_levels": {
       "inicial": 300,
       "tipica": 600,
@@ -1974,6 +2002,7 @@ export const fallbackProducts = [
     "storage": "Conservar a -20 °C, protegido de la luz. Reconstituido: 2–8 °C.",
     "start_dose": 1,
     "start_unit": "mg",
+    "start_freq": "2x_week",
     "start_levels": {
       "inicial": 1,
       "tipica": 1.5,
@@ -2025,6 +2054,7 @@ export const fallbackProducts = [
     "storage": "Conservar a -20 °C, protegido de la luz. Reconstituido: 2–8 °C.",
     "start_dose": 100,
     "start_unit": "mcg",
+    "start_freq": "daily",
     "start_levels": {
       "inicial": 100,
       "tipica": 150,
@@ -2172,6 +2202,7 @@ export const fallbackProducts = [
     "storage": "Conservar a -20 °C, protegido de la luz. Reconstituido: 2–8 °C.",
     "start_dose": 100,
     "start_unit": "mcg",
+    "start_freq": "2x_week",
     "start_levels": {
       "inicial": 100,
       "tipica": 150,
@@ -2217,6 +2248,7 @@ export const fallbackProducts = [
     "storage": "Conservar a -20 °C, protegido de la luz. Reconstituido: 2–8 °C.",
     "start_dose": 2.5,
     "start_unit": "mg",
+    "start_freq": "weekly",
     "start_levels": {
       "inicial": 2.5,
       "tipica": 4,
@@ -2257,6 +2289,7 @@ export const fallbackProducts = [
     "storage": "Conservar a -20 °C, protegido de la luz. Reconstituido: 2–8 °C.",
     "start_dose": 250,
     "start_unit": "mcg",
+    "start_freq": "mt",
     "start_levels": {
       "inicial": 250,
       "tipica": 500,
@@ -2297,6 +2330,7 @@ export const fallbackProducts = [
     "storage": "Conservar a -20 °C, protegido de la luz. Reconstituido: 2–8 °C.",
     "start_dose": 250,
     "start_unit": "mcg",
+    "start_freq": "mt",
     "start_levels": {
       "inicial": 250,
       "tipica": 500,
@@ -2382,6 +2416,7 @@ export const fallbackProducts = [
     "storage": "Conservar a -20 °C, protegido de la luz. Reconstituido: 2–8 °C.",
     "start_dose": 20,
     "start_unit": "mcg",
+    "start_freq": "daily",
     "start_levels": {
       "inicial": 20,
       "tipica": 30,
@@ -2524,6 +2559,7 @@ export const fallbackProducts = [
     "storage": "Conservar a -20 °C, protegido de la luz. Reconstituido: 2–8 °C.",
     "start_dose": 1,
     "start_unit": "mg",
+    "start_freq": "daily",
     "start_levels": {
       "inicial": 1,
       "tipica": 1.5,
@@ -2569,6 +2605,7 @@ export const fallbackProducts = [
     "storage": "Conservar a -20 °C, protegido de la luz. Reconstituido: 2–8 °C.",
     "start_dose": 50,
     "start_unit": "mcg",
+    "start_freq": "daily_2x",
     "start_levels": {
       "inicial": 50,
       "tipica": 75,
@@ -2780,6 +2817,7 @@ export const fallbackProducts = [
     "storage": "Conservar a -20 °C, protegido de la luz. Reconstituido: 2–8 °C.",
     "start_dose": 300,
     "start_unit": "mcg",
+    "start_freq": "daily",
     "start_levels": {
       "inicial": 300,
       "tipica": 400,
@@ -2819,6 +2857,7 @@ export const fallbackProducts = [
     "storage": "Conservar a -20 °C, protegido de la luz. Reconstituido: 2–8 °C.",
     "start_dose": 0.5,
     "start_unit": "mg",
+    "start_freq": "weekly",
     "start_levels": {
       "inicial": 0.5,
       "tipica": 1,
@@ -2870,6 +2909,7 @@ export const fallbackProducts = [
     "storage": "Conservar a -20 °C, protegido de la luz. Reconstituido: 2–8 °C.",
     "start_dose": 0.3,
     "start_unit": "mg",
+    "start_freq": "weekly",
     "start_levels": {
       "inicial": 0.3,
       "tipica": 0.6,
@@ -2909,6 +2949,7 @@ export const fallbackProducts = [
     "storage": "Conservar a -20 °C, protegido de la luz. Reconstituido: 2–8 °C.",
     "start_dose": 1.5,
     "start_unit": "mg",
+    "start_freq": "weekly",
     "start_levels": {
       "inicial": 1.5,
       "tipica": 3,
@@ -2966,6 +3007,7 @@ export const fallbackProducts = [
     "storage": "Conservar a -20 °C, protegido de la luz. Reconstituido: 2–8 °C.",
     "start_dose": 500,
     "start_unit": "mg",
+    "start_freq": "daily",
     "start_levels": {
       "inicial": 500,
       "tipica": 750,
@@ -3051,6 +3093,7 @@ export const fallbackProducts = [
     "storage": "Conservar a -20 °C, protegido de la luz. Reconstituido: 2–8 °C.",
     "start_dose": 0.6,
     "start_unit": "mg",
+    "start_freq": "daily",
     "start_levels": {
       "inicial": 0.6,
       "tipica": 1.2,
@@ -3108,6 +3151,7 @@ export const fallbackProducts = [
     "storage": "Conservar a -20 °C, protegido de la luz. Reconstituido: 2–8 °C.",
     "start_dose": 5,
     "start_unit": "mg",
+    "start_freq": "3x_week",
     "start_levels": {
       "inicial": 5,
       "tipica": 7.5,
@@ -3189,6 +3233,7 @@ export const fallbackProducts = [
     "storage": "Conservar a -20 °C, protegido de la luz. Reconstituido: 2–8 °C.",
     "start_dose": 2,
     "start_unit": "mg",
+    "start_freq": "weekly",
     "start_levels": {
       "inicial": 2,
       "tipica": 4,
@@ -3228,6 +3273,7 @@ export const fallbackProducts = [
     "storage": "Conservar a -20 °C, protegido de la luz. Reconstituido: 2–8 °C.",
     "start_dose": 2,
     "start_unit": "mg",
+    "start_freq": "weekly",
     "start_levels": {
       "inicial": 2,
       "tipica": 5,
@@ -3303,6 +3349,7 @@ export const fallbackProducts = [
     "storage": "Conservar a -20 °C, protegido de la luz. Reconstituido: 2–8 °C.",
     "start_dose": 0.25,
     "start_unit": "mg",
+    "start_freq": "weekly",
     "start_levels": {
       "inicial": 0.25,
       "tipica": 0.5,
@@ -3376,6 +3423,7 @@ export const fallbackProducts = [
     "storage": "Conservar a -20 °C, protegido de la luz. Reconstituido: 2–8 °C.",
     "start_dose": 0.6,
     "start_unit": "mg",
+    "start_freq": "weekly",
     "start_levels": {
       "inicial": 0.6,
       "tipica": 2.4,
@@ -3457,6 +3505,7 @@ export const fallbackProducts = [
     "storage": "Conservar a -20 °C, protegido de la luz. Reconstituido: 2–8 °C.",
     "start_dose": 2.5,
     "start_unit": "mg",
+    "start_freq": "weekly",
     "start_levels": {
       "inicial": 2.5,
       "tipica": 5,
@@ -3536,6 +3585,7 @@ export const fallbackProducts = [
     "storage": "Conservar a -20 °C, protegido de la luz. Reconstituido: 2–8 °C.",
     "start_dose": 2,
     "start_unit": "mg",
+    "start_freq": "daily",
     "start_levels": {
       "inicial": 2,
       "tipica": 3,
@@ -3593,6 +3643,7 @@ export const fallbackProducts = [
     "storage": "Conservar a -20 °C, protegido de la luz. Reconstituido: 2–8 °C.",
     "start_dose": 250,
     "start_unit": "mcg",
+    "start_freq": "daily",
     "start_levels": {
       "inicial": 250,
       "tipica": 375,
@@ -3632,6 +3683,7 @@ export const fallbackProducts = [
     "storage": "Conservar a -20 °C, protegido de la luz. Reconstituido: 2–8 °C.",
     "start_dose": 2,
     "start_unit": "mg",
+    "start_freq": "daily",
     "start_levels": {
       "inicial": 2,
       "tipica": 3,
@@ -3671,6 +3723,7 @@ export const fallbackProducts = [
     "storage": "Conservar a -20 °C, protegido de la luz. Reconstituido: 2–8 °C.",
     "start_dose": 1,
     "start_unit": "mg",
+    "start_freq": "daily",
     "start_levels": {
       "inicial": 1,
       "tipica": 1.5,
@@ -3710,6 +3763,7 @@ export const fallbackProducts = [
     "storage": "Conservar a -20 °C, protegido de la luz. Reconstituido: 2–8 °C.",
     "start_dose": 100,
     "start_unit": "mcg",
+    "start_freq": "daily",
     "start_levels": {
       "inicial": 100,
       "tipica": 200,
@@ -3783,6 +3837,7 @@ export const fallbackProducts = [
     "storage": "Conservar a -20 °C, protegido de la luz. Reconstituido: 2–8 °C.",
     "start_dose": 3,
     "start_unit": "mg",
+    "start_freq": "daily",
     "start_levels": {
       "inicial": 3,
       "tipica": 4.5,
@@ -3822,6 +3877,7 @@ export const fallbackProducts = [
     "storage": "Conservar a -20 °C, protegido de la luz. Reconstituido: 2–8 °C.",
     "start_dose": 3,
     "start_unit": "mg",
+    "start_freq": "daily",
     "start_levels": {
       "inicial": 3,
       "tipica": 5,
@@ -3867,6 +3923,7 @@ export const fallbackProducts = [
     "storage": "Conservar a -20 °C, protegido de la luz. Reconstituido: 2–8 °C.",
     "start_dose": 250,
     "start_unit": "mcg",
+    "start_freq": "daily",
     "start_levels": {
       "inicial": 250,
       "tipica": 400,
@@ -3906,6 +3963,7 @@ export const fallbackProducts = [
     "storage": "Conservar a -20 °C, protegido de la luz. Reconstituido: 2–8 °C.",
     "start_dose": 100,
     "start_unit": "mcg",
+    "start_freq": "daily",
     "start_levels": {
       "inicial": 100,
       "tipica": 175,
@@ -4025,6 +4083,7 @@ export const fallbackProducts = [
     "storage": "Conservar a -20 °C, protegido de la luz. Reconstituido: 2–8 °C.",
     "start_dose": 2,
     "start_unit": "mg",
+    "start_freq": "2x_week",
     "start_levels": {
       "inicial": 2,
       "tipica": 3,
@@ -4110,6 +4169,7 @@ export const fallbackProducts = [
     "storage": "Conservar a -20 °C, protegido de la luz. Reconstituido: 2–8 °C.",
     "start_dose": 100,
     "start_unit": "mcg",
+    "start_freq": "eod",
     "start_levels": {
       "inicial": 100,
       "tipica": 150,
@@ -4234,6 +4294,7 @@ export const fallbackProducts = [
     "storage": "Conservar a -20 °C, protegido de la luz. Reconstituido: 2–8 °C.",
     "start_dose": 1,
     "start_unit": "mg",
+    "start_freq": "as_needed",
     "start_levels": {
       "inicial": 1,
       "tipica": 1.5,
@@ -4347,6 +4408,7 @@ export const fallbackProducts = [
     "storage": "Conservar a -20 °C, protegido de la luz. Reconstituido: 2–8 °C.",
     "start_dose": 1000,
     "start_unit": "mcg",
+    "start_freq": "weekly",
     "start_levels": {
       "inicial": 1000,
       "tipica": 2500,
@@ -4386,6 +4448,7 @@ export const fallbackProducts = [
     "storage": "Conservar a -20 °C, protegido de la luz. Reconstituido: 2–8 °C.",
     "start_dose": 1000,
     "start_unit": "mcg",
+    "start_freq": "weekly",
     "start_levels": {
       "inicial": 1000,
       "tipica": 2500,
