@@ -399,6 +399,7 @@ const esMX = {
   'footer.terms': 'Términos y RUO',
   'footer.legalTitle': 'Aviso legal (RUO):',
   'footer.legalBody': 'Todos los productos se venden exclusivamente para uso en investigación y desarrollo. No están destinados al consumo humano ni animal, ni para diagnóstico, tratamiento, cura o prevención de enfermedades. Al comprar, el cliente confirma que es un investigador calificado.',
+  'footer.backToTop': 'Volver arriba',
   'footer.rights': 'Exygen Labs. Todos los derechos reservados.',
   'controls.language': 'Idioma',
   'ruo.gate.badge': 'Uso exclusivo en investigación',
@@ -1310,6 +1311,7 @@ const enUS = {
   'footer.terms': 'Terms and RUO',
   'footer.legalTitle': 'Legal notice (RUO):',
   'footer.legalBody': 'All products are sold exclusively for research and development use. They are not intended for human or animal consumption, diagnosis, treatment, cure, or disease prevention. By purchasing, the customer confirms they are a qualified researcher.',
+  'footer.backToTop': 'Back to top',
   'footer.rights': 'Exygen Labs. All rights reserved.',
   'controls.language': 'Language',
   'ruo.gate.badge': 'Research use only',
@@ -2196,6 +2198,7 @@ const ptBR = {
   'footer.terms': 'Termos e RUO',
   'footer.legalTitle': 'Aviso legal (RUO):',
   'footer.legalBody': 'Todos os produtos sao vendidos exclusivamente para uso em pesquisa e desenvolvimento. Nao sao destinados ao consumo humano ou animal, nem para diagnostico, tratamento, cura ou prevencao de doencas. Ao comprar, o cliente confirma que e um pesquisador qualificado.',
+  'footer.backToTop': 'Voltar ao topo',
   'footer.rights': 'Exygen Labs. Todos os direitos reservados.',
 
   'common.catalog': 'Catalogo',

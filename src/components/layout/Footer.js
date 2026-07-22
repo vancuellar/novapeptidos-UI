@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom';
 import { ShieldCheck, Truck, BadgeCheck, Mail, Phone, Landmark, CreditCard, Bitcoin } from 'lucide-react';
 import { useLanguage } from '@/context/LanguageContext';
 import BrandLogo from '@/components/BrandLogo';
-import HomeLogoLink from '@/components/HomeLogoLink';
 
 const Footer = () => {
   const { t } = useLanguage();
@@ -22,9 +21,12 @@ const Footer = () => {
         </p>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-8">
           <div>
-            <HomeLogoLink className="inline-flex items-center mb-4" data-testid="footer-logo">
+            {/* El logo del pie SOLO sube al tope de la página actual (orden de
+                Christian): no navega al home como el de la barra. */}
+            <button type="button" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+              className="inline-flex items-center mb-4" data-testid="footer-logo" aria-label={t('footer.backToTop')}>
               <BrandLogo />
-            </HomeLogoLink>
+            </button>
             <p className="text-sm text-muted-foreground leading-relaxed">{t('footer.description')}</p>
             <div className="flex gap-3 mt-5 text-[hsl(var(--primary))]">
               <ShieldCheck className="h-5 w-5" /><BadgeCheck className="h-5 w-5" /><Truck className="h-5 w-5" />
