@@ -788,13 +788,20 @@ gemini, google (público), nowpayments, spei. Server: 44.204.127.242, deploy =
    NO aguantan: los 9 regulados (HGH, HCG…) y margen corto. **HGH 40iu está DEBAJO del piso
    aun con cero comisión** — precio por revisar, preguntado a Christian sin respuesta aún.
    Propuesta de niveles 30/25/20 techo 40% con escalera por $1M neto — esperando su OK.
-4ter. **PIRÁMIDE DE DISTRIBUIDORES (diseño en curso, 2026-07-21):** reglas de Christian:
-   (i) masters primeros con comisión mayor (40% hasta 50% tope); (ii) masters traen subs y la
-   comisión SE REPARTE, no se suma: sub 25% → master se lleva la diferencia; (iii) invariante
-   duro: comisión master + comisiones subs + descuento al cliente final ≤ X% asignado
-   manualmente por Christian a ese árbol; (iv) su ROI nunca < 50%; (v) el master propone subs
-   pero cada alta y su % pasan por Christian; (vi) niveles: quiere ~3 con posibilidad de
-   SUBIR de nivel (por reclutas o por ventas) — pendiente definir mecánica con propuesta.
+4ter. **PIRÁMIDE DE DISTRIBUIDORES — ESQUEMA CERRADO 2026-07-21 (noche), FALTA CONSTRUIR:**
+   (i) 3 niveles: Junior 20 / Senior 25 / Master 30 de inicio; escalera +5 pts a TODO el
+   árbol por cada hito de $1M neto para Christian (tras comisiones); Master tope 40%; a
+   Master solo lo nombra Christian. (ii) Reparto por DIFERENCIA, nunca suma: total repartido
+   = % del Master. (iii) El descuento al cliente SALE de la comisión del propio vendedor,
+   tope la mitad de su % (J hasta 10, S hasta 12, M hasta 20) — cada quien decide.
+   (iv) Ventajas exclusivas del canal: cash back 4% para clientes por distribuidor (vs 3%
+   general; falta confirmación final de Christian entre 3.5 y 4), envío gratis ≥$3,000 con
+   código (cuando existan envíos auto), acceso anticipado. (v) Escalones del sitio YA
+   ajustados y EN VIVO (UI PR #69/#70, RBAC PR #13): 10% base, 15% ≥$35,000, 20% ELIMINADO.
+   (vi) Altas de subs: master propone, Christian aprueba. (vii) Techo 40% cabe en 180/205
+   productos; los regulados necesitan tope por producto (columna ya existe en la maestra).
+   También EN VIVO 2026-07-21: footer reordenado (sellos+RUO arriba, solo copyright abajo,
+   UI PR #67/#68).
 5. **Buzones de correo del negocio** (soporte@, pedidos@, distribuidores@) vía Cloudflare Email
    Routing (recepción gratis; Resend solo envía).
 6. **Google Sign-In / 2FA admin:** Christian debe ACTIVAR su 2FA (Mi cuenta > Perfil).
