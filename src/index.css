@@ -517,3 +517,11 @@ body {
 .btn-resend-ghost:hover {
     color: hsl(var(--foreground));
 }
+
+/* Protección de fotos (Christian, 2026-07-22): sin arrastre ni selección de
+   imágenes. El clic derecho sobre IMG se bloquea por JS en App.js. */
+img {
+    -webkit-user-drag: none;
+    user-select: none;
+    -webkit-user-select: none;
+}

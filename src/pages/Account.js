@@ -187,11 +187,17 @@ const Account = () => {
 
       <Tabs value={params.get('tab') || 'orders'} onValueChange={(v) => setParams(v === 'orders' ? {} : { tab: v }, { replace: true })}
         className="lg:flex lg:gap-8 lg:items-start">
-        <DashboardSidebar items={[
+        {/* Antes de la primera compra pagada el menú se muestra recortado:
+            solo Mis pedidos (necesario para pagar/subir comprobante SPEI) y
+            Perfil. El resto aparece cuando se confirma su primer pago. */}
+        <DashboardSidebar items={toolsUnlocked ? [
           { value: 'orders', icon: Package, label: t('account.ordersTab') },
           { value: 'tools', icon: Syringe, label: t('account.toolsTab') },
           { value: 'labs', icon: FlaskConical, label: t('account.labsTab') },
           { value: 'coas', icon: FileText, label: t('account.coasTab') },
+          { value: 'profile', icon: User, label: t('account.profileTab') },
+        ] : [
+          { value: 'orders', icon: Package, label: t('account.ordersTab') },
           { value: 'profile', icon: User, label: t('account.profileTab') },
         ]} />
         <div className="min-w-0 flex-1">
