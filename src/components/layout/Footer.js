@@ -10,7 +10,7 @@ const Footer = () => {
 
   return (
     <footer className="mt-16 border-t border-border bg-card text-card-foreground">
-      <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 pt-[5px] pb-7">
+      <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 pt-[5px] pb-2.5">
         {/* Orden pedido por Christian: sellos y aviso RUO ARRIBA de los links;
             debajo de los links no va NADA más que el copyright. */}
         <div className="flex flex-wrap items-center justify-center gap-x-5 gap-y-2 text-xs text-muted-foreground mb-5">
@@ -95,8 +95,8 @@ const Footer = () => {
             </div>
           </div>
         </div>
-        <div className="mt-2.5 pt-1.5 border-t border-border">
-          <p className="text-xs text-muted-foreground text-center font-mono-tech">© {new Date().getFullYear()} {t('footer.rights')}</p>
+        <div className="mt-2.5 py-2.5 border-t border-border flex items-center justify-center">
+          <p className="text-xs text-muted-foreground text-center font-mono-tech leading-none">© {new Date().getFullYear()} {t('footer.rights')}</p>
         </div>
       </div>
     </footer>
