@@ -181,6 +181,17 @@ const Account = () => {
         <p className="text-muted-foreground text-sm">{user.name} · {user.email}</p>
       </div>
 
+      <Tabs value={params.get('tab') || 'orders'} onValueChange={(v) => setParams(v === 'orders' ? {} : { tab: v }, { replace: true })}
+        className="lg:flex lg:gap-8 lg:items-start">
+        <DashboardSidebar items={[
+          { value: 'orders', icon: Package, label: t('account.ordersTab') },
+          { value: 'tools', icon: Syringe, label: t('account.toolsTab') },
+          { value: 'labs', icon: FlaskConical, label: t('account.labsTab') },
+          { value: 'coas', icon: FileText, label: t('account.coasTab') },
+          { value: 'profile', icon: User, label: t('account.profileTab') },
+        ]} />
+        <div className="min-w-0 flex-1">
+
       <div className={`grid grid-cols-2 ${loyalty.eligible ? 'sm:grid-cols-3' : ''} gap-3 mb-6`}>
         <Card className="p-4">
           <div className="flex items-center gap-2 text-muted-foreground text-xs"><ShoppingBag className="h-4 w-4" /> {t('account.stats.orders')}</div>
@@ -224,17 +235,6 @@ const Account = () => {
           </Dialog>
         )}
       </div>
-
-      <Tabs value={params.get('tab') || 'orders'} onValueChange={(v) => setParams(v === 'orders' ? {} : { tab: v }, { replace: true })}
-        className="lg:flex lg:gap-8 lg:items-start">
-        <DashboardSidebar items={[
-          { value: 'orders', icon: Package, label: t('account.ordersTab') },
-          { value: 'tools', icon: Syringe, label: t('account.toolsTab') },
-          { value: 'labs', icon: FlaskConical, label: t('account.labsTab') },
-          { value: 'coas', icon: FileText, label: t('account.coasTab') },
-          { value: 'profile', icon: User, label: t('account.profileTab') },
-        ]} />
-        <div className="min-w-0 flex-1">
 
         <TabsContent value="tools" className="mt-5 space-y-8">
           {!toolsUnlocked ? (

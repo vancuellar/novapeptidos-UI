@@ -37,7 +37,7 @@ const DashboardSidebar = ({ items }) => {
 
       {/* Escritorio: panel flotante, siempre visible al hacer scroll */}
       <div className="hidden lg:block sticky top-28 self-start shrink-0" data-testid="dash-sidebar">
-        <div className={`rounded-xl border border-border bg-card/85 backdrop-blur shadow-sm transition-all duration-200 ${collapsed ? 'p-1.5' : 'w-[210px] p-2'}`}>
+        <div className={`rounded-xl border border-border bg-card/85 backdrop-blur shadow-sm transition-all duration-200 ${collapsed ? 'p-1.5' : 'w-[230px] p-2.5'}`}>
           <button
             type="button"
             onClick={toggle}
@@ -52,7 +52,7 @@ const DashboardSidebar = ({ items }) => {
           {!collapsed && (
             <TabsList className="h-auto w-full flex flex-col items-stretch justify-start gap-1 bg-transparent p-0 mt-1">
               {items.map(({ value, icon: Icon, label }) => (
-                <TabsTrigger key={value} value={value} className="justify-start w-full gap-2 rounded-lg">
+                <TabsTrigger key={value} value={value} className="justify-start w-full gap-2.5 rounded-lg py-2">
                   <Icon className="h-4 w-4 shrink-0" /> <span className="truncate">{label}</span>
                 </TabsTrigger>
               ))}
