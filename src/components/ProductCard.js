@@ -40,7 +40,7 @@ const ProductCard = ({ product }) => {
   };
 
   return (
-    <Card data-testid="product-card" className="group overflow-hidden border-border bg-card text-card-foreground shadow-[var(--shadow-sm)] hover:shadow-[var(--shadow-md)] hover:border-[hsl(var(--primary))]/40 transition-all duration-200 flex flex-col">
+    <Card data-testid="product-card" className="group h-full overflow-hidden border-border bg-card text-card-foreground shadow-[var(--shadow-sm)] hover:shadow-[var(--shadow-md)] hover:border-[hsl(var(--primary))]/40 transition-all duration-200 flex flex-col">
       <Link to={`/producto/${product.slug}`} className="block relative">
         <div className="bg-[hsl(var(--secondary))] overflow-hidden">
           <AspectRatio ratio={4 / 3}>
