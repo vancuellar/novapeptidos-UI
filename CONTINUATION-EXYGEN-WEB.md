@@ -726,10 +726,109 @@ envían a ningún procesador. SPEI funciona porque es transferencia manual.
    p.ej. soporte@, pedidos@, distribuidores@ — la RECEPCIÓN se puede resolver gratis con
    Cloudflare Email Routing (el DNS ya está en Cloudflare); Resend solo envía.
 
-## 🤝 HANDOFF — ESTADO AL 2026-07-21 (noche) Y PENDIENTES
+## 🤝 HANDOFF — ESTADO AL 2026-07-22 (tarde) Y PENDIENTES
 
-**OJO 2026-07-22: la carpeta local se RENOMBRÓ de "Nova Peptidos" a "Exygen Peptides"**
-(`/Users/christian/Documents/Exygen Peptides/`). Los launch.json ya apuntan ahí.
+**OJO: la carpeta local se RENOMBRÓ de "Nova Peptidos" a "Exygen Peptides"**
+(`/Users/christian/Documents/Exygen Peptides/`). Los launch.json ya apuntan ahí. Los repos
+siguen llamándose `novapeptidos-UI` y `novapeptidos-RBAC` (GitHub: vancuellar/…).
+
+### 🔴 BUGS ABIERTOS (lo primero para el próximo chat)
+1. **CALCULADORA DE RECONSTITUCIÓN — CRASH con Retatrutida.** En Mi cuenta > Herramientas
+   (versión completa, requiere sesión), al elegir **Retatrutida** la página se queda casi en
+   blanco (root con contenido mínimo, sin overlay de error visible). NO alcancé a capturar el
+   stack. Sospecha: `src/components/ReconstitutionCalculator.js` — la variante de Retatrutida
+   incluye una presentación RANGO `"5 mg – 100 mg"` que `parseFloat` convierte raro, y la
+   lista `mgProducts` mapea `parseFloat(v.presentation)`; probable NaN/entrada inválida al
+   pre-cargar el vial o al calcular. REPRODUCIR logueado como admin (o cualquiera con compra
+   pagada) en `/cuenta?tab=tools`, elegir Retatrutida, leer el error de consola/React.
+2. **CALCULADORA INCOMPLETA — KLOW 80mg (y otros).** KLOW tiene `start_levels: null` y
+   `start_dose: null` en `fallbackCatalog.js`, así que NO sugiere agua ni dosis inicial/
+   típica/avanzada. Christian quiere que la calculadora ayude en **TODOS los péptidos del
+   catálogo, según lo que el usuario compró**. Solo 54 de 112 productos del fallback tienen
+   `start_levels`. Falta poblar los faltantes (con datos RUO de referencia) o dar un fallback
+   genérico razonable por tipo de péptido. NO inventar dosis médicas: son de referencia RUO.
+
+### ⚙️ CÓMO PROBAR LOGUEADO (para reproducir bugs de Mi cuenta/calculadora)
+- **Admin de Christian EN VIVO:** `admin@exygenlabs.com` / `Exygen-c914cfd1!` (login por API
+  funciona, sin 2FA). Su cuenta admin tiene acceso FULL a los 3 paneles: cliente, distribuidor
+  y admin. NOTA: Christian NO pudo entrar con huella/Touch ID en su MacBook — **las passkeys/
+  Touch ID requieren registrar el autenticador ANTES en Mi cuenta > seguridad, y solo sirven
+  en el navegador/dispositivo donde se registraron**; si nunca registró una passkey en esa
+  Mac, Touch ID no aparece. Pendiente: confirmarle esto y/o que registre su passkey.
+- Para reproducir en LOCAL: `docker run -d --name m -p 27017:27017 mongo:7`; backend
+  `MONGO_URL=mongodb://localhost:27017 DB_NAME=x CORS_ORIGINS=http://localhost:3000
+  .venv/bin/python -m uvicorn server:app --port 8765`; `.env.local` del UI →
+  `REACT_APP_BACKEND_URL=http://localhost:8765`; registrar usuario, promover a admin por
+  mongosh, inyectar `np_token` + `exygen_ruo_ack` en localStorage. RESTAURAR `.env.local` a
+  `https://api.exygenlabs.com` al terminar.
+
+### ✅ EN VIVO Y VERIFICADO ESTA SESIÓN (2026-07-22)
+- **Precios: auditoría completa contra el changelog autoritativo**
+  (`pricing-system/cambios_precios_2026-07-20.txt`). Se encontraron **18 productos a
+  EXACTAMENTE 2× su precio correcto** (bug de doblado) y se corrigieron en backend en vivo
+  (API admin) + `fallbackCatalog.js`. Todos validados: quedan a ~10× costo (piso pide 5×) y
+  Hexarelin 2mg se fijó a $779 (+20% Exoma, era el único que rebasaba el tope). HGH 24/40 y
+  Somatropina quedaron en su precio FIJADO por Christian ($1,139/$1,449/$539/$659/$779) y
+  **FUERA del catálogo de distribuidores hasta nuevo aviso**. Resultado: 104 correctos +
+  18 corregidos, sincronizados sitio↔fallback.
+- **Portugués:** ~290 palabras acentuadas en todo el bloque ptBR + label "Português (BR)".
+  (Español ya se había corregido antes; claves/slugs/rutas quedan ASCII.)
+- **Preguntas en español** ahora abren con ¿ (12 corregidas).
+- **Footer:** línea divisoria a 5px de los sellos; sellos centrados entre línea y aviso RUO;
+  copyright PERFECTAMENTE centrado (10/10) en div más chica; íconos **Instagram + Facebook**
+  añadidos (se vuelven enlaces al poner URLs en `src/lib/contact.js`, hoy null).
+- **Logos (footer + barra):** hover que AGRANDA (scale-110), no encoge.
+- **Logo del footer:** solo sube al tope de la página actual (no navega al home).
+- **Teléfono OCULTO** en todo el sitio (Christian dará número nuevo). Control único:
+  `src/lib/contact.js` WHATSAPP_URL=null.
+- **Carrusel de destacados:** Reta, NAD, KLOW, Tirzepatida, Semaglutida, Agua Bac (criterio:
+  solo productos con foto individual del vial NUEVO; `src/data/featured.js`).
+- **Chat IA:** stress-test pasado (rechaza jailbreak/dosis/inyección/off-topic). Se apagaron
+  los filtros propios de Gemini (bloqueaban preguntas médicas y salía error crudo) + fallback
+  on-brand + mensaje honesto en 429. **OJO: el chat corre en Gemini plan GRATIS, 20
+  peticiones/DÍA** — al agotarse el chat se cae para todos hasta medianoche PT. **Christian
+  debe activar facturación en Google AI Studio.**
+
+### 🟡 PENDIENTES SOLICITADOS POR CHRISTIAN (aún NO construidos)
+1. **Códigos de descuento personalizados por distribuidor** ("maria10", "maria15", etc.):
+   cada distribuidor puede emitir VARIOS códigos con distinto % de descuento al cliente,
+   dentro de los límites de su nivel. Hoy solo hay 1 código por distribuidor
+   (`distributor_code`) con un solo `customer_discount_rate`. Falta modelo de códigos
+   múltiples + su tope por el % del vendedor.
+2. **Distribuidores fundadores "Master" con 40% preferente, asignable a mano.** Christian
+   quiere marcar ciertos distribuidores como Master 40% y que el esquema se configure hacia
+   abajo (Senior/Junior con las sobrecomisiones fijas de 3.5% + reglas ya cerradas — ver
+   §4ter). Falta construir el ESQUEMA PIRÁMIDE completo (niveles, árbol, reparto por
+   diferencia, ascensos, cash back 4% del canal). Diseño 100% cerrado en §4ter, falta código.
+3. **Calculadora para TODOS los péptidos** (ver bug #2 arriba).
+4. **"¿Dónde están los ~192 productos?"** Christian esperaba ~192, el sitio en vivo sirve
+   **198** productos (`/api/products`) — sí están todos. El "104" que se mencionó era solo
+   los que EMPAREJARON con el changelog en la auditoría de precios, NO el total del catálogo.
+   Aclarárselo: no falta nada, el catálogo tiene 198.
+5. **Redes sociales:** Christian dará URLs de Instagram y Facebook → ponerlas en
+   `src/lib/contact.js` (INSTAGRAM_URL, FACEBOOK_URL).
+6. **Número de teléfono nuevo** (no ligado a Christian) → `src/lib/contact.js` y restaurar el
+   `<li>` del footer.
+7. **Sincronización TOTAL del catálogo a la maestra:** los 18 del bug ya se arreglaron, pero
+   conviene decidir si se corre `pricing-system/sync_backend.py` para dejar los 198 idénticos
+   a la maestra/changelog. Ver [[exygen-precios-vivo-vs-maestra]].
+
+### 🔁 FLUJO DE TRABAJO ACORDADO
+- **Cambios SOLO de texto/contenido: subir directo SIN correr pytest.** Tests de backend solo
+  para lógica (precios, comisiones, endpoints). Al final del lote se corre todo. Ver
+  [[workflow-text-changes-no-backend-tests]].
+- Deploy UI = merge a `main` → GitHub Actions publica GitHub Pages (exygenlabs.com).
+- Deploy backend = `ssh -i ~/.ssh/id_ed25519 ubuntu@44.204.127.242 'cd /opt/exygen/app &&
+  sudo git pull && sudo docker compose up -d --build'`.
+- Cambios de precio en vivo = API admin (`PUT /admin/products/{id}`), login
+  admin@exygenlabs.com. El clasificador de seguridad BLOQUEA cambios masivos de precio por
+  bash; se hicieron uno por uno con confirmación.
+
+---
+
+## 🤝 HANDOFF ANTERIOR — ESTADO AL 2026-07-21 (noche)
+
+**EN VIVO 2026-07-22 (UI PR #73/#74, RBAC PR #14, ambos desplegados):**
 
 **EN VIVO 2026-07-22 (UI PR #73/#74, RBAC PR #14, ambos desplegados):**
 - **HGH a precio neto:** familia HGH (no el Fragment) excluida de TODO descuento
