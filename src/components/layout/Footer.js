@@ -10,10 +10,12 @@ const Footer = () => {
 
   return (
     <footer className="mt-16 border-t border-border bg-card text-card-foreground">
-      <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 pt-[5px] pb-2.5">
+      <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 pt-[10px] pb-0">
         {/* Orden pedido por Christian: sellos y aviso RUO ARRIBA de los links;
-            debajo de los links no va NADA más que el copyright. */}
-        <div className="flex flex-wrap items-center justify-center gap-x-5 gap-y-2 text-xs text-muted-foreground mb-5">
+            debajo de los links no va NADA más que el copyright. Los sellos van
+            centrados verticalmente entre la línea divisoria (10px arriba) y el
+            aviso RUO (10px abajo). */}
+        <div className="flex flex-wrap items-center justify-center gap-x-5 gap-y-2 text-xs text-muted-foreground mb-[10px]">
           <span className="flex items-center gap-1.5"><ShieldCheck className="h-3.5 w-3.5 text-[hsl(var(--primary))]" /> {t('header.coa')}</span>
           <span className="flex items-center gap-1.5"><Truck className="h-3.5 w-3.5 text-[hsl(var(--primary))]" /> {t('header.shipping')}</span>
         </div>
@@ -25,7 +27,7 @@ const Footer = () => {
             {/* El logo del pie SOLO sube al tope de la página actual (orden de
                 Christian): no navega al home como el de la barra. */}
             <button type="button" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-              className="inline-flex items-center mb-4" data-testid="footer-logo" aria-label={t('footer.backToTop')}>
+              className="inline-flex items-center mb-4 transition duration-200 hover:opacity-70 hover:-translate-y-0.5" data-testid="footer-logo" aria-label={t('footer.backToTop')}>
               <BrandLogo />
             </button>
             <p className="text-sm text-muted-foreground leading-relaxed">{t('footer.description')}</p>
@@ -95,7 +97,10 @@ const Footer = () => {
             </div>
           </div>
         </div>
-        <div className="mt-2.5 py-2.5 border-t border-border flex items-center justify-center">
+        {/* Línea divisoria aparte del bloque, para que el copyright quede
+            PERFECTAMENTE centrado (el borde no roba 1px al centrado flex). */}
+        <div className="mt-2 border-t border-border" />
+        <div className="flex items-center justify-center h-8">
           <p className="text-xs text-muted-foreground text-center font-mono-tech leading-none">© {new Date().getFullYear()} {t('footer.rights')}</p>
         </div>
       </div>

@@ -112,7 +112,7 @@ const Header = () => {
           {/* Izquierda: logo y el menú móvil. La navegación va aparte, centrada. */}
           <div className="flex items-center gap-3 min-w-0 shrink-0">
           {/* Logo pegado a la izquierda */}
-          <HomeLogoLink className="shrink-0 order-first" data-testid="header-logo">
+          <HomeLogoLink className="shrink-0 order-first transition duration-200 hover:opacity-70 hover:-translate-y-0.5" data-testid="header-logo">
             <BrandLogo compact nameOnly />
           </HomeLogoLink>
 
