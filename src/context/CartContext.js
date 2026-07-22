@@ -10,7 +10,9 @@ export const useCart = () => useContext(CartContext);
 // Productos a PRECIO NETO (sin descuento alguno, regla de Christian 2026-07-22):
 // la familia HGH — no así el HGH Fragment, que sí tiene margen.
 export const isNetPriceItem = (item) => {
-  const key = `${item.product_id || ''} ${item.slug || ''}`.toLowerCase();
+  // Miramos id, slug Y nombre: en producción el product_id es un UUID que no
+  // dice "hgh"; el nombre ("HGH 40 IU") y el slug (hgh-40-iu) sí.
+  const key = `${item.product_id || ''} ${item.slug || ''} ${item.name || ''}`.toLowerCase();
   return key.includes('hgh') && !key.includes('fragment');
 };
 
