@@ -12,7 +12,7 @@ const page = {
       paragraphs: [
         'Aquí están las respuestas concretas a lo que la gente nos pregunta todos los días por correo y por WhatsApp. Está ordenada por bloques: primero los productos, luego el proceso de compra, después pagos, envíos, garantías y por último la parte legal.',
         'Todo lo que vendemos es material de investigación (RUO, research use only). No es medicamento, no está aprobado para consumo humano ni animal, y no damos indicaciones de dosificación en personas. Si buscas la parte científica y de manejo en laboratorio, esa vive en /aprende.',
-        'Si no encuentras tu respuesta, escríbenos a hola@exygenlabs.com o por WhatsApp al wa.me/5219944946889. El chat de IA del sitio también puede consultar el estatus de un pedido si le das tu número de orden.',
+        'Si no encuentras tu respuesta, escríbenos a hola@exygenlabs.com. El chat de IA del sitio también puede consultar el estatus de un pedido si le das tu número de orden.',
       ],
     },
     {
@@ -79,7 +79,7 @@ const page = {
         },
         {
           q: '¿Puedo modificar o cancelar un pedido ya hecho?',
-          a: 'Sí, mientras no haya salido del almacén. Como surtimos el mismo día para los pedidos que entran antes de las 5 pm, la ventana es corta: escríbenos de inmediato por WhatsApp al wa.me/5219944946889 con tu número EX. Si la guía ya se generó y el paquete ya está con FedEx, ya no se puede detener.',
+          a: 'Sí, mientras no haya salido del almacén. Como surtimos el mismo día para los pedidos que entran antes de las 5 pm, la ventana es corta: escríbenos de inmediato a hola@exygenlabs.com con tu número EX en el asunto. Si la guía ya se generó y el paquete ya está con FedEx, ya no se puede detener.',
         },
         {
           q: '¿Puedo agregar algo a un pedido que ya pagué?',
