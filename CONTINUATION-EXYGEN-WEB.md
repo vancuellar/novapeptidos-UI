@@ -767,6 +767,21 @@ gemini, google (público), nowpayments, spei. Server: 44.204.127.242, deploy =
    (Claude Code aquí NO puede leer buzones ni tomar contraseñas — decírselo si insiste).
 4. **Programa de lealtad + devoluciones:** falta escribir las POLÍTICAS (vigencia de puntos,
    quién califica, cómo una devolución revierte puntos — el código ya revierte al cancelar).
+   **OJO: la tasa bajó de 5% a 3% (orden de Christian 2026-07-21, RBAC PR #11 + UI PR #63,
+   EN VIVO).** Razón: con la promo del 10% y descuentos de distribuidor, 5% regalaba mucho.
+4bis. **Cliente → distribuidor — HECHO Y EN VIVO 2026-07-21:** botón "Hacer distribuidor" en
+   Admin > Clientes (RBAC PR #11: POST /admin/customers/{id}/make-distributor). Conserva
+   historial y contraseña; topes de siempre; al convertirse deja de ganar/canjear lealtad.
+   Regla de Christian: el distribuidor solo tiene SU descuento máximo (individual, fijado por
+   él), compre para sí o comparta código; NUNCA se combina con otras promos (el carrito ya
+   aplica "el mayor", no suma).
+4ter. **PIRÁMIDE DE DISTRIBUIDORES (diseño en curso, 2026-07-21):** reglas de Christian:
+   (i) masters primeros con comisión mayor (40% hasta 50% tope); (ii) masters traen subs y la
+   comisión SE REPARTE, no se suma: sub 25% → master se lleva la diferencia; (iii) invariante
+   duro: comisión master + comisiones subs + descuento al cliente final ≤ X% asignado
+   manualmente por Christian a ese árbol; (iv) su ROI nunca < 50%; (v) el master propone subs
+   pero cada alta y su % pasan por Christian; (vi) niveles: quiere ~3 con posibilidad de
+   SUBIR de nivel (por reclutas o por ventas) — pendiente definir mecánica con propuesta.
 5. **Buzones de correo del negocio** (soporte@, pedidos@, distribuidores@) vía Cloudflare Email
    Routing (recepción gratis; Resend solo envía).
 6. **Google Sign-In / 2FA admin:** Christian debe ACTIVAR su 2FA (Mi cuenta > Perfil).
