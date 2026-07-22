@@ -95,6 +95,10 @@ const Admin = () => {
   const [inviteForm, setInviteForm] = useState({ name: '', email: '' });
   const [inviteDialogOpen, setInviteDialogOpen] = useState(false);
   const [inviteCreated, setInviteCreated] = useState(null);
+  // Conversión de un cliente existente a distribuidor (conserva su historial).
+  const [convertTarget, setConvertTarget] = useState(null);
+  const [convertForm, setConvertForm] = useState({ commission: 25, customerDiscount: 10 });
+  const [convertDone, setConvertDone] = useState(null);
   const [editing, setEditing] = useState(null);
   const [form, setForm] = useState(EMPTY);
   const [dialogOpen, setDialogOpen] = useState(false);
@@ -217,6 +221,19 @@ const Admin = () => {
       });
       toast.success(t('admin.dist.ratesSaved'));
       setRatesDist(null);
+      loadAll();
+    } catch (err) {
+      toast.error(err.response?.data?.detail || t('admin.toast.saveError'));
+    }
+  };
+
+  const convertToDistributor = async () => {
+    try {
+      const r = await api.post(`/admin/customers/${convertTarget.id}/make-distributor`, {
+        commission_rate: Math.max(0, Math.min(50, Number(convertForm.commission) || 0)) / 100,
+        customer_discount_rate: Math.max(5, Math.min(50, Number(convertForm.customerDiscount) || 10)) / 100,
+      });
+      setConvertDone(r.data);
       loadAll();
     } catch (err) {
       toast.error(err.response?.data?.detail || t('admin.toast.saveError'));
@@ -424,7 +441,13 @@ const Admin = () => {
                     <TableCell className="font-medium">{formatMXN(c.total_spent)}</TableCell>
                     <TableCell className="text-xs text-muted-foreground">{fmtDate(c.last_order_at)}</TableCell>
                     <TableCell className="text-xs text-muted-foreground">{fmtDate(c.created_at)}</TableCell>
-                    <TableCell className="text-right">
+                    <TableCell className="text-right whitespace-nowrap">
+                      {c.role !== 'distributor' && (
+                        <Button variant="ghost" size="sm" className="mr-1" data-testid="admin-convert-distributor-button"
+                          onClick={() => { setConvertDone(null); setConvertForm({ commission: 25, customerDiscount: 10 }); setConvertTarget(c); }}>
+                          <Store className="h-3.5 w-3.5 mr-1" /> {t('admin.convert.button')}
+                        </Button>
+                      )}
                       <Button variant="outline" size="sm" onClick={() => setCustomerOpen(c)} data-testid="admin-open-customer-button">{t('account.detail')}</Button>
                     </TableCell>
                   </TableRow>
@@ -727,6 +750,44 @@ const Admin = () => {
               <DialogFooter>
                 <Button variant="outline" onClick={() => setDistDialogOpen(false)}>{t('common.cancel')}</Button>
                 <Button onClick={createDistributor} data-testid="admin-create-distributor-button">{t('admin.dist.create')}</Button>
+              </DialogFooter>
+            </>
+          )}
+        </DialogContent>
+      </Dialog>
+
+      {/* Convertir un cliente existente en distribuidor (conserva historial y contraseña). */}
+      <Dialog open={!!convertTarget} onOpenChange={(open) => { if (!open) { setConvertTarget(null); setConvertDone(null); } }}>
+        <DialogContent className="max-w-sm" data-testid="admin-convert-dialog">
+          <DialogHeader><DialogTitle>{t('admin.convert.title')}</DialogTitle></DialogHeader>
+          {convertDone ? (
+            <div className="space-y-4 text-sm">
+              <div className="font-medium">{convertDone.name}<span className="text-muted-foreground font-normal"> · {convertDone.email}</span></div>
+              <div>
+                <div className="text-xs text-muted-foreground mb-1">{t('admin.dist.shareCode')}</div>
+                <button onClick={() => copyText(convertDone.distributor_code, t('distributor.codeCopied'))} className="font-mono-tech font-bold text-lg inline-flex items-center gap-2 hover:text-[hsl(var(--primary))]" data-testid="admin-convert-code">{convertDone.distributor_code} <Copy className="h-4 w-4" /></button>
+              </div>
+              <DialogFooter><Button onClick={() => { setConvertTarget(null); setConvertDone(null); }}>{t('admin.dist.close')}</Button></DialogFooter>
+            </div>
+          ) : convertTarget && (
+            <>
+              <div className="space-y-4">
+                <div className="text-sm font-medium">{convertTarget.name}<span className="text-muted-foreground font-normal"> · {convertTarget.email}</span></div>
+                <p className="text-xs text-muted-foreground leading-relaxed">{t('admin.convert.note')}</p>
+                <div>
+                  <Label>{t('admin.dist.commission')} (%)</Label>
+                  <Input type="number" min="0" max="50" className="mt-1.5" value={convertForm.commission}
+                    onChange={(e) => setConvertForm((f) => ({ ...f, commission: e.target.value }))} data-testid="admin-convert-commission" />
+                </div>
+                <div>
+                  <Label>{t('admin.dist.customerDiscount')} (%)</Label>
+                  <Input type="number" min="5" max="50" className="mt-1.5" value={convertForm.customerDiscount}
+                    onChange={(e) => setConvertForm((f) => ({ ...f, customerDiscount: e.target.value }))} data-testid="admin-convert-discount" />
+                </div>
+              </div>
+              <DialogFooter>
+                <Button variant="outline" onClick={() => setConvertTarget(null)}>{t('common.cancel')}</Button>
+                <Button onClick={convertToDistributor} data-testid="admin-convert-save">{t('admin.convert.confirm')}</Button>
               </DialogFooter>
             </>
           )}
