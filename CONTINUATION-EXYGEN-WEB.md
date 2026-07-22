@@ -732,21 +732,23 @@ envían a ningún procesador. SPEI funciona porque es transferencia manual.
 (`/Users/christian/Documents/Exygen Peptides/`). Los launch.json ya apuntan ahí. Los repos
 siguen llamándose `novapeptidos-UI` y `novapeptidos-RBAC` (GitHub: vancuellar/…).
 
-### 🔴 BUGS ABIERTOS (lo primero para el próximo chat)
-1. **CALCULADORA DE RECONSTITUCIÓN — CRASH con Retatrutida.** En Mi cuenta > Herramientas
-   (versión completa, requiere sesión), al elegir **Retatrutida** la página se queda casi en
-   blanco (root con contenido mínimo, sin overlay de error visible). NO alcancé a capturar el
-   stack. Sospecha: `src/components/ReconstitutionCalculator.js` — la variante de Retatrutida
-   incluye una presentación RANGO `"5 mg – 100 mg"` que `parseFloat` convierte raro, y la
-   lista `mgProducts` mapea `parseFloat(v.presentation)`; probable NaN/entrada inválida al
-   pre-cargar el vial o al calcular. REPRODUCIR logueado como admin (o cualquiera con compra
-   pagada) en `/cuenta?tab=tools`, elegir Retatrutida, leer el error de consola/React.
-2. **CALCULADORA INCOMPLETA — KLOW 80mg (y otros).** KLOW tiene `start_levels: null` y
-   `start_dose: null` en `fallbackCatalog.js`, así que NO sugiere agua ni dosis inicial/
-   típica/avanzada. Christian quiere que la calculadora ayude en **TODOS los péptidos del
-   catálogo, según lo que el usuario compró**. Solo 54 de 112 productos del fallback tienen
-   `start_levels`. Falta poblar los faltantes (con datos RUO de referencia) o dar un fallback
-   genérico razonable por tipo de péptido. NO inventar dosis médicas: son de referencia RUO.
+### 🔴 BUGS ABIERTOS — ~~AMBOS RESUELTOS 2026-07-22 (commit `dfd1b84`, EN VIVO)~~
+1. ~~**CRASH con Retatrutida.**~~ **RESUELTO.** NO era el `parseFloat` del rango (parseFloat
+   de "5 mg – 100 mg" da 5 sin problema). Era un **ReferenceError por TDZ** en
+   `ReconstitutionCalculator.js`: `activeLevel` usaba `effUnit` ANTES de su declaración
+   `const`. Solo tronaba con péptidos que tienen `start_levels` (Retatrutida sí; KLOW no —
+   por eso solo se veía con Reta) y solo en la variante `full`. Fix: mover la declaración
+   de `effUnit` arriba. Verificado logueado en local (backend+Mongo efímeros): Retatrutida
+   renderiza completa con niveles Inicial/Típica/Avanzada, cero errores de consola.
+2. ~~**KLOW 80mg no sugiere agua.**~~ **RESUELTO (fallback genérico, opción B).** La causa:
+   la dosis default fija (250 mcg) es inmedible en un vial de 80 mg (< 2 rayitas aun con
+   5 mL) → la calculadora decía "ni con la máxima agua se puede medir". Ahora
+   `measurableDefault()` sube el default a un número redondo MEDIBLE según el vial (KLOW
+   80mg → 350 mcg → 5 mL / 2.2 rayitas). Es solo aritmética de medición, NO dosis sugerida.
+   **PENDIENTE DE DECISIÓN (Christian):** poblar `start_levels` (Inicial/Típica/Avanzada)
+   para los ~58 productos que no los tienen requiere DATOS RUO de referencia por compuesto —
+   eso es contenido/criterio suyo (qué fuente usar y qué valores publicar), no se inventó.
+   Mientras, la calculadora ya funciona con TODOS los péptidos.
 
 ### ⚙️ CÓMO PROBAR LOGUEADO (para reproducir bugs de Mi cuenta/calculadora)
 - **Admin de Christian EN VIVO:** `admin@exygenlabs.com` / `Exygen-c914cfd1!` (login por API
