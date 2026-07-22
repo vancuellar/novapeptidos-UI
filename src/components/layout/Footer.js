@@ -27,7 +27,7 @@ const Footer = () => {
             {/* El logo del pie SOLO sube al tope de la página actual (orden de
                 Christian): no navega al home como el de la barra. */}
             <button type="button" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-              className="inline-flex items-center mb-4 transition duration-200 hover:opacity-70 hover:-translate-y-0.5" data-testid="footer-logo" aria-label={t('footer.backToTop')}>
+              className="inline-flex items-center mb-4 origin-left transition-transform duration-200 hover:scale-110" data-testid="footer-logo" aria-label={t('footer.backToTop')}>
               <BrandLogo />
             </button>
             <p className="text-sm text-muted-foreground leading-relaxed">{t('footer.description')}</p>
