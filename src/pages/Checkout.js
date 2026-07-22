@@ -179,7 +179,7 @@ const Checkout = () => {
             <div className="grid sm:grid-cols-2 gap-4">
               <div className="sm:col-span-2"><Label>{t('checkout.fullName')}</Label><Input className="mt-1.5" value={form.full_name} onChange={(e) => set('full_name', e.target.value)} data-testid="checkout-name-input" /></div>
               <div><Label>{t('checkout.email')}</Label><Input type="email" className="mt-1.5" value={form.email} onChange={(e) => set('email', e.target.value)} data-testid="checkout-email-input" /></div>
-              <div><Label>{t('checkout.phone')}</Label><Input className="mt-1.5" type="tel" inputMode="numeric" autoComplete="tel-national" placeholder="55 1234 5678" value={form.phone} onChange={(e) => set('phone', formatPhoneMX(e.target.value))} data-testid="checkout-phone-input" /></div>
+              <div><Label>{t('checkout.phone')}</Label><Input className="mt-1.5" type="tel" inputMode="numeric" autoComplete="tel-national" placeholder="(55) 1234-5678" value={form.phone} onChange={(e) => set('phone', formatPhoneMX(e.target.value))} data-testid="checkout-phone-input" /></div>
             </div>
           </Card>
 
