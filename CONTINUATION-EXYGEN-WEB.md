@@ -741,7 +741,11 @@ gemini, google (público), nowpayments, spei. Server: 44.204.127.242, deploy =
 `ssh ... 'cd /opt/exygen/app && sudo git pull && sudo docker compose up -d --build'`.
 
 **PENDIENTES, por prioridad:**
-0. ~~**Sidebar izquierdo en los 3 tableros**~~ — HECHO 2026-07-21 (tarde), PENDIENTE DE DEPLOY.
+0. ~~**Sidebar izquierdo en los 3 tableros**~~ — HECHO Y EN VIVO 2026-07-21 (noche, PRs #57/#58;
+   GitHub Pages desplegó y el bundle en produccion ya trae el cambio). En el mismo par de PRs:
+   cripto y Amex visibles en todo el sitio (Home, Footer, metodos, textos de
+   soporte/terminos/envios/rastreo) y telefono con formato MX 10 digitos (checkout y perfil)
+   + footer con +52 994 494 6889 clickeable.
    Orden de Christian: como el sidebar de la app de Claude — flotante, SIEMPRE visible al
    hacer scroll (sticky top-28) y colapsable POR COMPLETO (colapsado solo queda el botón).
    Componente nuevo `src/components/layout/DashboardSidebar.js`, usado en Account, Admin y
