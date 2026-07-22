@@ -11,6 +11,15 @@ const Footer = () => {
   return (
     <footer className="mt-16 border-t border-border bg-card text-card-foreground">
       <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 py-14">
+        {/* Orden pedido por Christian: sellos y aviso RUO ARRIBA de los links;
+            debajo de los links no va NADA más que el copyright. */}
+        <div className="flex flex-wrap items-center justify-center gap-x-5 gap-y-2 text-xs text-muted-foreground mb-5">
+          <span className="flex items-center gap-1.5"><ShieldCheck className="h-3.5 w-3.5 text-[hsl(var(--primary))]" /> {t('header.coa')}</span>
+          <span className="flex items-center gap-1.5"><Truck className="h-3.5 w-3.5 text-[hsl(var(--primary))]" /> {t('header.shipping')}</span>
+        </div>
+        <p className="text-xs leading-relaxed rounded-lg border border-[hsl(var(--warning-border))] bg-[hsl(var(--warning))] text-[hsl(var(--warning-foreground))] p-3.5 mb-10">
+          <strong>{t('footer.legalTitle')}</strong> {t('footer.legalBody')}
+        </p>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-8">
           <div>
             <HomeLogoLink className="inline-flex items-center mb-4" data-testid="footer-logo">
@@ -69,14 +78,7 @@ const Footer = () => {
           </div>
         </div>
         <div className="mt-10 pt-6 border-t border-border">
-          <div className="flex flex-wrap items-center justify-center gap-x-5 gap-y-2 text-xs text-muted-foreground mb-6">
-            <span className="flex items-center gap-1.5"><ShieldCheck className="h-3.5 w-3.5 text-[hsl(var(--primary))]" /> {t('header.coa')}</span>
-            <span className="flex items-center gap-1.5"><Truck className="h-3.5 w-3.5 text-[hsl(var(--primary))]" /> {t('header.shipping')}</span>
-          </div>
-          <p className="text-xs leading-relaxed rounded-lg border border-[hsl(var(--warning-border))] bg-[hsl(var(--warning))] text-[hsl(var(--warning-foreground))] p-3.5">
-            <strong>{t('footer.legalTitle')}</strong> {t('footer.legalBody')}
-          </p>
-          <p className="text-xs text-muted-foreground mt-5 text-center font-mono-tech">© {new Date().getFullYear()} {t('footer.rights')}</p>
+          <p className="text-xs text-muted-foreground text-center font-mono-tech">© {new Date().getFullYear()} {t('footer.rights')}</p>
         </div>
       </div>
     </footer>
