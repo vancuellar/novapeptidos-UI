@@ -65,8 +65,10 @@ const Footer = () => {
           <div>
             <h4 className="kicker mb-4">{t('footer.contactTitle')}</h4>
             <ul className="space-y-2.5 text-sm text-muted-foreground">
+              {/* Teléfono oculto (2026-07-22): Christian dará un número nuevo no
+                  ligado a él. Al tenerlo, restaurar aquí el <li> con formato
+                  +52 (XXX) XXX-XXXX y liga tel:. */}
               <li className="flex items-center gap-2"><Mail className="h-4 w-4 text-[hsl(var(--primary))]" /> hola@exygenlabs.com</li>
-              <li className="flex items-center gap-2"><Phone className="h-4 w-4 text-[hsl(var(--primary))]" /> <a href="tel:+529944946889" className="hover:text-foreground transition-colors">+52 (994) 494-6889</a></li>
             </ul>
             <div className="flex flex-wrap gap-2 mt-5">
               {[{ i: CreditCard, l: 'Visa · MC · Amex' }, { i: Landmark, l: 'SPEI' }, { i: Bitcoin, l: 'Cripto' }].map((p, i) => (

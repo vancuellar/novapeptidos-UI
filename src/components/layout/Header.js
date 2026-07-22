@@ -36,7 +36,7 @@ const CAT_EXAMPLES = {
   'suministros': 'Agua bacteriostática', 'otros': 'Especialidad',
 };
 const CAT_TOP = new Set(['perdida-peso', 'recuperacion']);
-const WHATSAPP_URL = 'https://wa.me/5219944946889';
+import { WHATSAPP_URL } from '@/lib/contact';
 
 // Menú "Recursos": herramientas y aprendizaje, en dos columnas.
 // Lo de servicio al cliente (contacto, envíos, devoluciones) vive en "Ayuda".
@@ -189,11 +189,17 @@ const Header = () => {
                 </div>
               </div>
 
-              {/* Contactar experto — WhatsApp, fijo abajo */}
+              {/* Contactar experto — WhatsApp si hay número; si no, página de contacto. */}
               <div className="border-t border-border p-4">
-                <a href={WHATSAPP_URL} target="_blank" rel="noreferrer" className="flex items-center justify-center gap-2 rounded-xl bg-[#1fa855] hover:bg-[#188c46] text-white font-semibold py-3.5 transition-colors" data-testid="mobile-whatsapp">
-                  <MessageCircle className="h-5 w-5" /> {t('nav.contactExpert')}
-                </a>
+                {WHATSAPP_URL ? (
+                  <a href={WHATSAPP_URL} target="_blank" rel="noreferrer" className="flex items-center justify-center gap-2 rounded-xl bg-[#1fa855] hover:bg-[#188c46] text-white font-semibold py-3.5 transition-colors" data-testid="mobile-whatsapp">
+                    <MessageCircle className="h-5 w-5" /> {t('nav.contactExpert')}
+                  </a>
+                ) : (
+                  <Link to="/info/contacto" onClick={() => setMobileOpen(false)} className="flex items-center justify-center gap-2 rounded-xl bg-[hsl(var(--primary))] hover:opacity-90 text-[hsl(var(--primary-foreground))] font-semibold py-3.5 transition-colors" data-testid="mobile-contact">
+                    <MessageCircle className="h-5 w-5" /> {t('nav.contactExpert')}
+                  </Link>
+                )}
               </div>
             </SheetContent>
           </Sheet>

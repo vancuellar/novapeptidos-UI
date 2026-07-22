@@ -1,4 +1,6 @@
-const WHATSAPP = 'https://wa.me/5219944946889';
+// WhatsApp APAGADO temporalmente (2026-07-22): Christian dará número nuevo.
+// Al tenerlo: poner la URL en src/lib/contact.js y restaurar aquí la tarjeta.
+const WHATSAPP = null;
 
 const page = {
   slug: 'contacto',
@@ -13,12 +15,6 @@ const page = {
       title: 'Elige el canal',
       intro: 'Todos llegan a las mismas personas. Lo que cambia es la velocidad y el tipo de asunto que resuelve mejor cada uno.',
       items: [
-        {
-          href: WHATSAPP,
-          title: 'WhatsApp',
-          body: 'El canal más rápido. Ideal para dudas antes de comprar, estado de un pedido o mandar fotos de una incidencia.',
-          cta: 'Abrir WhatsApp',
-        },
         {
           href: 'mailto:hola@exygenlabs.com',
           title: 'Correo — hola@exygenlabs.com',
@@ -45,7 +41,6 @@ const page = {
       intro: 'Horario del centro de México. Fuera de estos horarios los mensajes se contestan al siguiente día hábil.',
       columns: ['Canal', 'Horario de atención', 'Respuesta típica'],
       rows: [
-        ['WhatsApp', 'Lunes a viernes, 9:00 am – 6:00 pm', 'Menos de 2 horas hábiles'],
         ['Correo', 'Lunes a viernes, 9:00 am – 6:00 pm', 'Mismo día hábil, máximo 24 horas'],
         ['Incidencias de envío', 'Lunes a viernes', 'Prioridad: primeras 24 horas hábiles'],
         ['Mayoreo y distribución', 'Lunes a viernes', '1 a 2 días hábiles'],
