@@ -72,7 +72,7 @@ const page = {
       type: 'list',
       title: '6. Pagos',
       items: [
-        'Aceptamos tarjeta de crédito o débito y transferencia SPEI. No manejamos pago contra entrega.',
+        'Aceptamos tarjeta de crédito o débito (Visa, Mastercard y American Express), transferencia SPEI y criptomonedas. No manejamos pago contra entrega.',
         'No almacenamos números de tarjeta en nuestros servidores: el cobro lo procesa el proveedor de pago correspondiente.',
         'Un pedido pagado por SPEI queda apartado cuando la transferencia se refleja; fuera de horario bancario esto puede ocurrir hasta el siguiente día hábil.',
         'Emitimos factura electrónica (CFDI) a solicitud, con los datos fiscales que nos proporciones dentro del mes de la compra.',

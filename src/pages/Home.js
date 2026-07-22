@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import {
   ShieldCheck, FlaskConical, Truck, BadgeCheck, ArrowRight, HeartPulse, Activity, Flame, Hourglass,
   Brain, Sparkles, Layers, CheckCircle2, MinusCircle, FileCheck2, ScanSearch, Landmark, CreditCard,
-  ChevronLeft, ChevronRight, Building2, Mail,
+  ChevronLeft, ChevronRight, Building2, Mail, Bitcoin,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
@@ -373,7 +373,7 @@ const Home = () => {
             <div className="text-xs text-muted-foreground mt-0.5">{t('home.paymentsNote')}</div>
           </div>
           <div className="flex flex-wrap items-center justify-center gap-2.5">
-            {[{ i: Landmark, l: 'SPEI' }, { i: CreditCard, l: 'Visa · Mastercard' }].map((p, i) => (
+            {[{ i: Landmark, l: 'SPEI' }, { i: CreditCard, l: 'Visa · Mastercard · Amex' }, { i: Bitcoin, l: 'Cripto' }].map((p, i) => (
               <span key={i} className="inline-flex items-center gap-1.5 rounded-lg border border-border bg-[hsl(var(--secondary))] px-3 py-2 text-xs font-medium">
                 <p.i className="h-3.5 w-3.5 text-[hsl(var(--primary))]" /> {p.l}
               </span>

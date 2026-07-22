@@ -1,6 +1,6 @@
 # Exygen Labs — Website Continuation File
 
-> **Propósito:** fuente única de verdad del SITIO WEB (frontend, backend, IA, marca, despliegue). Pega este archivo en un chat nuevo para retomar con todo el contexto. Complementa a `../NOVA-PRICING-SYSTEM-CONTINUATION.md` (el sistema de precios). **Última actualización: 2026-07-21 (madrugada).** Empieza por la sección 🚩 LO PRIMERO QUE DEBE HACER EL PRÓXIMO CHAT.
+> **Propósito:** fuente única de verdad del SITIO WEB (frontend, backend, IA, marca, despliegue). Pega este archivo en un chat nuevo para retomar con todo el contexto. Complementa a `../NOVA-PRICING-SYSTEM-CONTINUATION.md` (el sistema de precios). **Última actualización: 2026-07-21 (noche).** Empieza por la sección 🚩 LO PRIMERO QUE DEBE HACER EL PRÓXIMO CHAT.
 
 > **Estilo con Christian:** abogado, no dev ("abogado de 95 años haciendo vibe coding"). Respuestas **ultra cortas, español claro, sin jerga**. Corre TÚ los comandos (nunca le pidas abrir terminal). Términos de git en inglés (commit, push, merge — no "commitear").
 
@@ -560,6 +560,68 @@ envían a ningún procesador. SPEI funciona porque es transferencia manual.
 - HCG 5,000IU arriba de Certified = deliberado (piso); el vigía da falsa alarma ahí —
   pendiente enseñarle a reconocer precios en piso.
 
+## 8dec. SPEI CON CLABE (2026-07-21) — EN VIVO
+- El cliente que elige SPEI ahora SÍ ve la cuenta para depositar: caja con Beneficiario,
+  Banco, CLABE (copiable), Monto y Referencia (nº de pedido), en `/pedido/…` y en el correo.
+  Datos por env (`SPEI_CLABE/BENEFICIARY/BANK`, en el server + `~/.config/exygen/spei.env`),
+  **nunca en el repo ni en páginas públicas**; solo aparecen en un pedido SPEI ya hecho.
+  Cuenta por defecto = la de Christian (ver memoria privada [[exygen-entidad-y-pagos]]).
+- **BUG CRÍTICO cazado y corregido el mismo día:** un helper (`spei_details`) quedó insertado
+  ENTRE el decorador y `get_order`, robándose la ruta → GET /orders/{n} devolvía la CLABE en
+  vez del pedido (live ~unos minutos; sin clientes reales, CLABE no es secreta). Corregido +
+  prueba de regresión de ruteo en test_core. **Lección: al meter un helper cerca de una ruta,
+  revisar que el decorador siga pegado a su función.** 58 pruebas en verde.
+- **OXXO:** NO se puede con sola CLABE — necesita un PSP (Conekta/OpenPay OXXO Pay) que emita
+  ficha, con el mismo riesgo de giro. Diferido.
+
+## 8undec. COMPROBANTE SPEI + UI DE MI CUENTA (2026-07-21) — EN VIVO
+- **Comprobante SPEI (lo pidió Christian: la cuenta receptora QUIMIMID no busca la
+  transferencia sin comprobante):** el cliente sube su comprobante en la página del pedido
+  SPEI (`POST /orders/{n}/spei-receipt`, multipart, valida tipo/tamaño, guarda en Mongo
+  colección `spei_receipts`, marca `spei_receipt_at`). El **admin lo descarga** en
+  Admin > Pedidos (columna "Comprobante", `GET /admin/orders/{id}/spei-receipt`, solo admin).
+  Probado de punta a punta. 58 pruebas.
+- **Mi cuenta:** las tabs (Pedidos, Herramientas, Estudios, Certificados, Perfil) ahora son
+  **sidebar vertical flotante (sticky)** a la izquierda en desktop, siempre visible; barra
+  horizontal en móvil.
+- **Header:** nombre del usuario (primer nombre) junto al icono de Perfil; se quitó el botón
+  "Cerrar sesión" duplicado de Mi cuenta (queda solo en el dropdown del Perfil).
+
+## 8duodec. CORREO DE PAGO + E2E + ENVÍOS (2026-07-21) — EN VIVO
+
+- **Correo de pago confirmado:** al pasar un pedido a `confirmado` (SPEI verificado por el
+  admin o cripto liquidada), el cliente recibe "Confirmamos tu pago — pedido X".
+  `send_payment_confirmed_email` en emails.py; disparado en `update_order_status` (solo al
+  ENTRAR a confirmado) y en `_confirm_crypto_order`. 59 pruebas en verde.
+
+- **E2E COMPLETO (2026-07-21, cero fallas):** 59 pruebas backend + build limpio.
+  29 rutas del sitio renderizan con **cero errores de consola** (incl. /cuenta /admin
+  /distribuidor que redirigen a /login sin sesión — correcto). API: products 198,
+  categories 8, stock 198, payments crypto_enabled, google enabled, AI chat responde,
+  admin/distributor gated (401). Flujo de cliente: pedidos **tarjeta/SPEI/cripto** se
+  crean OK (cripto devuelve URL real de NOWPayments); la página del pedido SPEI muestra
+  CLABE + botón de comprobante. Todos los datos de prueba borrados (DB en 0 pedidos).
+  Pendiente probar EN VIVO como admin/distribuidor: no hay credenciales admin en esta
+  sesión y aún no existe ningún distribuidor en la DB (su UI está verificada por código).
+
+- **ENVÍOS — estado y decisión (Christian, 2026-07-21):**
+  - **Lo que HAY hoy:** rastreo MANUAL. El admin captura paquetería + nº de guía en
+    Pedidos; `build_tracking_url()` arma el enlace de rastreo (FedEx, DHL, Estafeta, UPS,
+    Paquetexpress, Redpack, Correos) y el cliente lo ve en su pedido/cuenta. Funciona.
+  - **Lo que NO hay:** cotización automática en el checkout por CP+peso, ni jalar el estatus
+    dentro del sitio. Eso necesita API de envíos (Skydropx primario / Envia respaldo, §B).
+  - **Intel de competencia (verificado 2026-07-21):** **Certified envía por FedEx** (FedEx
+    3 Day / aéreo, declarando "compuestos de investigación") — abiertamente, en su página de
+    rastreo. NO se confirmó lo de "J&T/paquetería chafita". Exoma: no expuesto. → FedEx es el
+    canal de consenso (coincide con nuestra política de envíos ya publicada).
+  - **Pasos para cotización+tracking auto (cuando se quiera):** (1) ANTES de código, mandar
+    la lista de productos a Skydropx y FedEx y pedir su **clasificación por escrito**
+    (SDS/MSDS para polvos) — los transportistas no te vetan como remitente, pero la
+    declaración de contenido y **Carta Porte** (clave UNSPSC + unidad) es lo que importa;
+    (2) integrar Skydropx (OAuth2+JSON: 1 endpoint de cotización + 1 de tracking), cachear por
+    (CP, rango de peso) y dejar tarifa plana de respaldo. Gated en la clasificación → NO se
+    construyó aún; el manual sostiene mientras.
+
 ## 🚩 PENDIENTES NUEVOS DE CHRISTIAN (2026-07-21, madrugada) — APUNTADOS, SIN EJECUTAR
 
 1. **Hablar del programa de lealtad:** hoy es 5% sobre compras pagadas (tasa que eligió el
@@ -584,21 +646,73 @@ envían a ningún procesador. SPEI funciona porque es transferencia manual.
 2ter. **RUTA DE PAGOS ELEGIDA POR CHRISTIAN (2026-07-21): adquirente especialista de alto
    riesgo + cripto.** (Mercado Pago y la vía "mismo procesador que la competencia" quedaron
    descartadas; los motivos finos están en la memoria privada, NO escribirlos aquí.)
-   - **Tarjeta (alto riesgo, giro declarado):** especialistas que aceptan péptidos RUO
-     explícitamente: **AllayPay** (procesamiento doméstico US para péptidos RUO),
-     **PaymentCloud** (bróker, ~3.49–3.95% + $0.25, $10–50 USD/mes), **Paycron**
-     (infraestructura para research chemicals). Términos realistas del nicho: 3.5–6.5%,
-     reserva rodante 5–15% (se libera ~mes 7), contracargo $50–100. La mayoría pide
-     **entidad en EE.UU.** → probable LLC americana + EIN (trámite corto). Nuestro sitio ya
-     trae lo que su underwriting pide: puerta 18+/RUO, avisos en cada ficha, cero dosis.
-     Siguiente paso: decidir lo de la LLC y aplicar a 2–3 en paralelo con giro real.
-   - **Cripto (complemento): BTCPay Server AUTOALOJADO** — 0% de comisión, sin
-     intermediario, nadie lo puede congelar (misma filosofía que SPEI). Corre en un
-     servidor propio (instancia aparte en la cuenta certis; nodo podado). Integración:
-     método "Cripto" en el checkout → factura BTCPay en MXN con ventana de 15 min →
-     webhook confirma el pedido. Conversión a pesos vía Bitso (exchange mexicano regulado)
-     cuando se quiera. Opcional después: NOWPayments (0.5%, 350+ monedas, auto-convert a
-     stablecoin) si se quiere USDT sin operar nodo — sujeto a su propio KYB.
+   - **Tarjeta (alto riesgo, giro declarado). DECISIÓN Christian 2026-07-21: ir por LOS DOS
+     — offshore (sin entidad EUA) AHORA + la ruta con LLC en paralelo.**
+     - **Offshore / internacionales (aceptan entidad NO-EUA, p.ej. SAPI mexicana, y
+       multi-moneda):** Instabill (bróker offshore, largo historial en nutracéuticos/research
+       chemicals), Corepay (bancos adquirentes offshore), QuadraPay, OffshoreGateways,
+       OffshoreUniPay. Usan bancos en UE/Caribe/Asia. Terminos del nicho: 3.5–8%, reserva
+       rodante 5–15% (~6 meses), KYB con la entidad.
+     - **US (mejor tasa/aprobación, piden LLC americana + EIN — trámite corto):** AllayPay
+       (péptidos RUO doméstico), PaymentCloud (~3.49–3.95% + $0.25), Paycron.
+     - Nuestro sitio ya trae lo que pide su underwriting: puerta 18+/RUO, avisos en cada
+       ficha, cero dosis. **Siguiente paso: Claude redacta el correo de outreach veraz +
+       checklist de documentos; Christian aplica a 2–3 offshore y arranca la LLC en paralelo.
+       Pendiente de Christian: entidad a usar, estimado de ventas/mes, ticket promedio.**
+   - **Cripto (complemento): BTCPay Server AUTOALOJADO — CÓDIGO YA CONSTRUIDO Y EN MAIN,
+     APAGADO hasta configurar.** 0% comisión, sin intermediario, nadie lo congela.
+     - Backend: `btcpay.py` (crear factura Greenfield + verificar webhook HMAC fail-closed);
+       `POST /orders` acepta 'cripto' solo si `btcpay.enabled()`; webhook
+       `/payments/btcpay/webhook` confirma el pedido al liquidarse (dispara puntos);
+       `GET /payments/config`. Frontend: opción "Criptomoneda" en checkout que aparece solo
+       si config lo dice; paga en la factura BTCPay y regresa a /pedido/. 52 pruebas verdes.
+     - **DECISIÓN DE CHRISTIAN (2026-07-21): LOS DOS.** NOWPayments ya para cobrar pronto;
+       BTCPay autoalojado después. **NOWPayments YA ESTÁ PROGRAMADO Y EN MAIN** (RBAC PR #10,
+       apagado): `nowpayments.py` (factura + IPN HMAC-SHA512 fail-closed); el método 'cripto'
+       del checkout usa NOWPayments si está encendido (BTCPay de respaldo); webhook
+       `/payments/nowpayments/webhook`. 56 pruebas verdes.
+       - **YA ENCENDIDO Y EN VIVO (2026-07-21):** Christian dio API key + IPN secret; guardadas
+         en `~/.config/exygen/nowpayments.env` (600) y en el `.env` del servidor. Backend
+         desplegado; `/api/payments/config` → `crypto_enabled:true`; el webhook rechaza sin
+         firma (401). El checkout en vivo YA muestra "Cryptocurrency". La API key se probó
+         contra NOWPayments (autentica OK). **NO volver a pedir esas llaves.**
+       - **FALTA DEL LADO DE CHRISTIAN para que un cliente pueda pagar de verdad:** (a)
+         **Settings > Coins**: prender las monedas a aceptar (BTC, ETH, USDT…) — hoy la lista
+         sale VACÍA, por eso ningún cliente tendría con qué pagar; (b) **Verify account**
+         (KYB, badge naranja); (c) **Settings > Payout wallets / Coins**: elegir que caiga en
+         **USDT** (en Custody o wallet propia) para no cargar riesgo de precio.
+       - **(Pasos originales de referencia):** (1) registrarse en
+         nowpayments.io con la ENTIDAD real y pasar su KYB; (2) configurar un wallet de
+         cobro (o auto-conversión a USDT en su panel, para no cargar riesgo de precio);
+         (3) generar API key + IPN secret y ponerlos en su panel el IPN callback a
+         `https://api.exygenlabs.com/api/payments/nowpayments/webhook`; (4) pasarme
+         `NOWPAYMENTS_API_KEY` y `NOWPAYMENTS_IPN_SECRET` → van al `.env` del backend y se
+         reinicia. Christian ofreció CLABE: **NO se necesita** para cripto (ni para NOW ni
+         BTCPay); la CLABE solo aplicaría al reforzar SPEI, y Claude nunca captura datos
+         bancarios en formularios.
+     - **SCRIPTS DE DESPLIEGUE YA ESCRITOS (2026-07-21):** `../btcpay-userdata.sh` (instala
+       BTCPay + nodo BTC podado xs + TLS para pay.exygenlabs.com) y `../deploy-btcpay.sh`
+       (lanza t3.medium 60GB en certis — CORRER EN CLAUDE INTERACTIVO, run-instances lo
+       bloquea el modo auto). Tras lanzar: A `pay` -> IP en Cloudflare.
+     - **PIEZAS QUE REQUIEREN A CHRISTIAN / INTERACTIVO:** (a) aprobar el run-instances
+       (modo auto lo bloquea); (b) la **WALLET es de Christian** — al crear la tienda en
+       BTCPay conecta el xpub de su hardware wallet, o genera hot wallet y GUARDA ÉL la
+       frase semilla (nadie más). Claude NUNCA debe crear/guardar esa semilla (frontera de
+       credenciales financieras); (c) la **sincronización del nodo BTC tarda HORAS**. Luego:
+       API key Greenfield + webhook a `https://api.exygenlabs.com/api/payments/btcpay/webhook`
+       y poner `BTCPAY_URL/STORE_ID/API_KEY/WEBHOOK_SECRET` en el `.env` del backend.
+       Conversión a MXN vía Bitso. **Alternativa pragmática sin nodo ni servidor 24/7:
+       NOWPayments** (0.5%, API key, auto-USDT, KYB con la entidad real) — decisión abierta
+       de Christian (self-hosted control total vs hosted más simple).
+     - **⚠️ DEPLOY DEL BACKEND PENDIENTE:** el código de cripto está en `main` del RBAC
+       (commit merge PR #9) pero **el servidor 44.204.127.242 NO se ha actualizado** — el
+       clasificador bloqueó el `ssh`. No urge: sin las BTCPAY_* no cambia nada. Correr en
+       Claude interactivo: `ssh -i ~/.ssh/id_ed25519 ubuntu@44.204.127.242 "cd /opt/exygen/app
+       && sudo git pull && sudo docker compose up -d --build"`.
+     - **OJO SEGURIDAD:** se agregó la IP `66.9.186.74/32` (egress de esta sesión) al SG
+       `sg-09f6bd49dc4ea40d3` puerto 22 para intentar el deploy. Si no se va a reusar,
+       **revocarla**: `aws ec2 revoke-security-group-ingress --group-id sg-09f6bd49dc4ea40d3
+       --protocol tcp --port 22 --cidr 66.9.186.74/32 --profile certis --region us-east-1`.
 
 2. **PROCESADOR DE PAGOS — DECISIÓN FIRME DE CHRISTIAN: STRIPE NO.** Stripe congeló en el
    pasado las cuentas de Certified y de Exoma con miles de dólares dentro. **Usar el mismo
@@ -611,6 +725,49 @@ envían a ningún procesador. SPEI funciona porque es transferencia manual.
    (hoy solo existe hola@exygenlabs.com como remitente vía Resend). Falta definir y crear
    p.ej. soporte@, pedidos@, distribuidores@ — la RECEPCIÓN se puede resolver gratis con
    Cloudflare Email Routing (el DNS ya está en Cloudflare); Resend solo envía.
+
+## 🤝 HANDOFF — ESTADO AL 2026-07-21 (noche) Y PENDIENTES
+
+**EN VIVO Y FUNCIONANDO (verificado E2E, cero fallas):** sitio + API + chat IA; catálogo 198;
+login/registro estilo Resend (monocromo, molécula real, Marcellus); Google Sign-In con
+consentimientos; passkeys + 2FA admin; lealtad 5% con piso; correos claro/oscuro (bienvenida,
+pedido estilo ticket, pago confirmado, SPEI con CLABE, acciones); **3 vías de cobro: SPEI con
+CLABE + comprobante que sube el cliente, cripto por NOWPayments→USDT (en vivo), y tarjeta
+pendiente**; comprobante SPEI descargable por admin; Mi cuenta con sidebar flotante; envíos
+con rastreo manual + sección para clientes/distribuidores. 59 pruebas backend en verde.
+
+**LLAVES/CONFIG (todas en `~/.config/exygen/*.env`, NUNCA en repos):** cloudflare, resend,
+gemini, google (público), nowpayments, spei. Server: 44.204.127.242, deploy =
+`ssh ... 'cd /opt/exygen/app && sudo git pull && sudo docker compose up -d --build'`.
+
+**PENDIENTES, por prioridad:**
+0. ~~**Sidebar izquierdo en los 3 tableros**~~ — HECHO 2026-07-21 (tarde), PENDIENTE DE DEPLOY.
+   Orden de Christian: como el sidebar de la app de Claude — flotante, SIEMPRE visible al
+   hacer scroll (sticky top-28) y colapsable POR COMPLETO (colapsado solo queda el botón).
+   Componente nuevo `src/components/layout/DashboardSidebar.js`, usado en Account, Admin y
+   Distributor (Tabs pasó de grid/barra horizontal a `lg:flex` + sidebar vertical; en móvil
+   sigue la barra horizontal). Estado colapsado compartido en localStorage
+   (`exygen-dash-sidebar-collapsed`). Llaves i18n `dash.collapse/expand` en es/en/pt.
+   **Verificado en local con backend local + Mongo docker efímeros** (cuentas de prueba en DB
+   `exygen_sidebar_test`, ya destruida): los 3 tableros renderizan su sidebar (5/7/5
+   secciones), sticky comprobado (top fijo a 112px con scroll), colapso/expansión OK, cambio
+   de pestañas OK, build limpio, cero errores de consola. `.env.local` quedó restaurado a
+   producción.
+1. **Tarjeta:** esperando respuesta de Instabill + Corepay (offshore, giro declarado). Correos
+   en `../payment-applications/SOLICITUDES-adquirente-alto-riesgo.md`. Al llegar términos,
+   comparar reserva/tasa/mínimo. AllayPay = ruta con LLC US, después.
+2. **Envíos automáticos:** correos a Skydropx + FedEx pidiendo clasificación por escrito en
+   `../payment-applications/SOLICITUD-clasificacion-envios-FedEx-Skydropx.md`. Certified usa
+   FedEx (confirmado); Exoma lo oculta. Integrar Skydropx solo tras clasificación + Carta Porte.
+3. **Chat de IA:** el correo de Christian se conecta por CONECTOR de Gmail en su app Claude
+   (Claude Code aquí NO puede leer buzones ni tomar contraseñas — decírselo si insiste).
+4. **Programa de lealtad + devoluciones:** falta escribir las POLÍTICAS (vigencia de puntos,
+   quién califica, cómo una devolución revierte puntos — el código ya revierte al cancelar).
+5. **Buzones de correo del negocio** (soporte@, pedidos@, distribuidores@) vía Cloudflare Email
+   Routing (recepción gratis; Resend solo envía).
+6. **Google Sign-In / 2FA admin:** Christian debe ACTIVAR su 2FA (Mi cuenta > Perfil).
+7. **Legales:** Christian revisa términos/privacidad y define domicilio del responsable + INAI.
+8. **Redirigir dominios `nova*` → exygenlabs.com** (GoDaddy 301). Falta lista completa.
 
 ## 🚩 LO PRIMERO QUE DEBE HACER EL PRÓXIMO CHAT
 

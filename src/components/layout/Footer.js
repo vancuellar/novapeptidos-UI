@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { ShieldCheck, Truck, BadgeCheck, Mail, Phone, Landmark, CreditCard } from 'lucide-react';
+import { ShieldCheck, Truck, BadgeCheck, Mail, Phone, Landmark, CreditCard, Bitcoin } from 'lucide-react';
 import { useLanguage } from '@/context/LanguageContext';
 import BrandLogo from '@/components/BrandLogo';
 import HomeLogoLink from '@/components/HomeLogoLink';
@@ -57,10 +57,10 @@ const Footer = () => {
             <h4 className="kicker mb-4">{t('footer.contactTitle')}</h4>
             <ul className="space-y-2.5 text-sm text-muted-foreground">
               <li className="flex items-center gap-2"><Mail className="h-4 w-4 text-[hsl(var(--primary))]" /> hola@exygenlabs.com</li>
-              <li className="flex items-center gap-2"><Phone className="h-4 w-4 text-[hsl(var(--primary))]" /> +52 (994) 494-6889</li>
+              <li className="flex items-center gap-2"><Phone className="h-4 w-4 text-[hsl(var(--primary))]" /> <a href="tel:+529944946889" className="hover:text-foreground transition-colors">+52 994 494 6889</a></li>
             </ul>
             <div className="flex flex-wrap gap-2 mt-5">
-              {[{ i: CreditCard, l: 'Visa · MC · Amex' }, { i: Landmark, l: 'SPEI' }].map((p, i) => (
+              {[{ i: CreditCard, l: 'Visa · MC · Amex' }, { i: Landmark, l: 'SPEI' }, { i: Bitcoin, l: 'Cripto' }].map((p, i) => (
                 <span key={i} className="inline-flex items-center gap-1.5 rounded-md border border-border bg-[hsl(var(--secondary))] px-2.5 py-1.5 text-[11px]">
                   <p.i className="h-3 w-3 text-[hsl(var(--primary))]" /> {p.l}
                 </span>

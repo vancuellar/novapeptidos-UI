@@ -28,7 +28,7 @@ const page = {
         {
           title: 'Verificamos el pago (estado: confirmado)',
           body:
-            'Con tarjeta la verificación es prácticamente inmediata. Con SPEI depende de tu banco: las transferencias suelen reflejarse en minutos en horario bancario, pero una transferencia hecha de noche, en fin de semana o en día festivo puede tardar hasta el siguiente día hábil en aparecer.',
+            'Con tarjeta y con criptomoneda la verificación es prácticamente inmediata. Con SPEI depende de tu banco: las transferencias suelen reflejarse en minutos en horario bancario, pero una transferencia hecha de noche, en fin de semana o en día festivo puede tardar hasta el siguiente día hábil en aparecer.',
           note: 'Si transferiste y no ves el cambio al siguiente día hábil, mándanos el comprobante.',
         },
         {
@@ -92,6 +92,18 @@ const page = {
         'También te llega por correo automáticamente al momento de generar la guía. Revisa la carpeta de no deseados si no lo ves.',
         'Puedes preguntarle al asistente del sitio por el estado de tu pedido con tu número EX-AAAAMMDD-1234, o estando dentro de tu cuenta.',
         'El rastreo tarda de 2 a 6 horas en mostrar movimientos después de generarse la guía. Que diga "sin información" recién creada es normal.',
+      ],
+    },
+    {
+      type: 'list',
+      title: 'Si tienes cuenta o eres distribuidor',
+      intro:
+        'Con sesión iniciada tienes más visibilidad que un invitado, sin tener que escribirnos.',
+      items: [
+        'Cliente con cuenta: en Mi cuenta > Mis pedidos ves cada pedido, su estado, la guía y el enlace de rastreo en cuanto existen. Si pagaste por SPEI, ahí mismo subes tu comprobante para agilizar la confirmación.',
+        'Cada cambio de estado (confirmado, enviado, entregado) te llega también por correo, con la guía cuando aplica.',
+        'Distribuidor: en tu portal, la pestaña Pedidos y envíos muestra los pedidos de TUS clientes con su estado, destino y número de guía, para que des seguimiento sin depender de nosotros. Nunca ves el margen interno del negocio, solo lo necesario para atender a tu cliente.',
+        'El asistente del sitio también responde el estado de un pedido por su número EX-AAAAMMDD-1234 cuando estás dentro de tu cuenta.',
       ],
     },
     {

@@ -9,7 +9,8 @@ import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Tabs, TabsContent } from '@/components/ui/tabs';
+import DashboardSidebar from '@/components/layout/DashboardSidebar';
 import CoaLibrary from '@/components/CoaLibrary';
 import SecurityKeys from '@/components/SecurityKeys';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
@@ -17,6 +18,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Separator } from '@/components/ui/separator';
 import { toast } from 'sonner';
 import api, { formatMXN, PAYMENT_METHODS } from '@/lib/api';
+import { formatPhoneMX } from '@/lib/utils';
 import { useAuth } from '@/context/AuthContext';
 import { useLanguage } from '@/context/LanguageContext';
 
@@ -174,12 +176,9 @@ const Account = () => {
 
   return (
     <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 py-8">
-      <div className="flex items-center justify-between mb-6">
-        <div>
-          <h1 className="font-heading text-2xl sm:text-3xl font-bold tracking-tight">{t('account.title')}</h1>
-          <p className="text-muted-foreground text-sm">{user.name} · {user.email}</p>
-        </div>
-        <Button variant="destructive" onClick={() => { logout(); navigate('/'); }} data-testid="account-logout-button"><LogOut className="h-4 w-4 mr-1.5" /> {t('account.signOut')}</Button>
+      <div className="mb-6">
+        <h1 className="font-heading text-2xl sm:text-3xl font-bold tracking-tight">{t('account.title')}</h1>
+        <p className="text-muted-foreground text-sm">{user.name} · {user.email}</p>
       </div>
 
       <div className={`grid grid-cols-2 ${loyalty.eligible ? 'sm:grid-cols-3' : ''} gap-3 mb-6`}>
@@ -226,14 +225,16 @@ const Account = () => {
         )}
       </div>
 
-      <Tabs value={params.get('tab') || 'orders'} onValueChange={(v) => setParams(v === 'orders' ? {} : { tab: v }, { replace: true })}>
-        <TabsList>
-          <TabsTrigger value="orders"><Package className="h-4 w-4 mr-1.5" /> {t('account.ordersTab')}</TabsTrigger>
-          <TabsTrigger value="tools"><Syringe className="h-4 w-4 mr-1.5" /> {t('account.toolsTab')}</TabsTrigger>
-          <TabsTrigger value="labs"><FlaskConical className="h-4 w-4 mr-1.5" /> {t('account.labsTab')}</TabsTrigger>
-          <TabsTrigger value="coas"><FileText className="h-4 w-4 mr-1.5" /> {t('account.coasTab')}</TabsTrigger>
-          <TabsTrigger value="profile"><User className="h-4 w-4 mr-1.5" /> {t('account.profileTab')}</TabsTrigger>
-        </TabsList>
+      <Tabs value={params.get('tab') || 'orders'} onValueChange={(v) => setParams(v === 'orders' ? {} : { tab: v }, { replace: true })}
+        className="lg:flex lg:gap-8 lg:items-start">
+        <DashboardSidebar items={[
+          { value: 'orders', icon: Package, label: t('account.ordersTab') },
+          { value: 'tools', icon: Syringe, label: t('account.toolsTab') },
+          { value: 'labs', icon: FlaskConical, label: t('account.labsTab') },
+          { value: 'coas', icon: FileText, label: t('account.coasTab') },
+          { value: 'profile', icon: User, label: t('account.profileTab') },
+        ]} />
+        <div className="min-w-0 flex-1">
 
         <TabsContent value="tools" className="mt-5 space-y-8">
           {!toolsUnlocked ? (
@@ -343,7 +344,7 @@ const Account = () => {
                     <PasswordInput value={emailPassword} onChange={(e) => setEmailPassword(e.target.value)} show={showCur} setShow={setShowCur} t={t} testid="profile-email-password" />
                   </div>
                 )}
-                <div><Label>{t('profile.phone')}</Label><Input type="tel" className="mt-1.5" value={phone} onChange={(e) => setPhone(e.target.value)} data-testid="profile-phone-input" /></div>
+                <div><Label>{t('profile.phone')}</Label><Input type="tel" inputMode="numeric" autoComplete="tel-national" placeholder="55 1234 5678" className="mt-1.5" value={phone} onChange={(e) => setPhone(formatPhoneMX(e.target.value))} data-testid="profile-phone-input" /></div>
               </div>
             </Card>
 
@@ -391,6 +392,7 @@ const Account = () => {
 
           <SecurityKeys user={user} onUserChange={refreshUser} />
         </TabsContent>
+        </div>
       </Tabs>
     </div>
   );

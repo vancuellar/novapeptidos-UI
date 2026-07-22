@@ -9,7 +9,8 @@ import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Tabs, TabsContent } from '@/components/ui/tabs';
+import DashboardSidebar from '@/components/layout/DashboardSidebar';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
@@ -190,6 +191,15 @@ const Admin = () => {
 
   const copyText = (text, msg) => { navigator.clipboard?.writeText(text); toast.success(msg); };
 
+  // Abre el comprobante SPEI del cliente (endpoint solo-admin; el api client
+  // manda el token, por eso lo bajamos como blob en vez de un <a href>).
+  const openReceipt = async (orderId) => {
+    try {
+      const res = await api.get(`/admin/orders/${orderId}/spei-receipt`, { responseType: 'blob' });
+      window.open(URL.createObjectURL(res.data), '_blank');
+    } catch { toast.error(t('admin.receipt.none')); }
+  };
+
   const openRates = (d) => {
     setRatesForm({
       commission: Math.round((d.commission_rate || 0) * 100),
@@ -260,16 +270,17 @@ const Admin = () => {
         ))}
       </div>
 
-      <Tabs defaultValue="sales">
-        <TabsList className="flex-wrap h-auto">
-          <TabsTrigger value="sales"><TrendingUp className="h-4 w-4 mr-1.5" /> {t('admin.salesTab')}</TabsTrigger>
-          <TabsTrigger value="customers"><Users className="h-4 w-4 mr-1.5" /> {t('admin.customersTab')}</TabsTrigger>
-          <TabsTrigger value="distributors"><Store className="h-4 w-4 mr-1.5" /> {t('admin.distributorsTab')}</TabsTrigger>
-          <TabsTrigger value="orders"><ShoppingBag className="h-4 w-4 mr-1.5" /> {t('admin.ordersTab')}</TabsTrigger>
-          <TabsTrigger value="products"><Package className="h-4 w-4 mr-1.5" /> {t('admin.productsTab')}</TabsTrigger>
-          <TabsTrigger value="stock"><Boxes className="h-4 w-4 mr-1.5" /> {t('admin.stockTab')}</TabsTrigger>
-          <TabsTrigger value="repurchase"><RefreshCw className="h-4 w-4 mr-1.5" /> {t('admin.repurchaseTab')}</TabsTrigger>
-        </TabsList>
+      <Tabs defaultValue="sales" className="lg:flex lg:gap-8 lg:items-start">
+        <DashboardSidebar items={[
+          { value: 'sales', icon: TrendingUp, label: t('admin.salesTab') },
+          { value: 'customers', icon: Users, label: t('admin.customersTab') },
+          { value: 'distributors', icon: Store, label: t('admin.distributorsTab') },
+          { value: 'orders', icon: ShoppingBag, label: t('admin.ordersTab') },
+          { value: 'products', icon: Package, label: t('admin.productsTab') },
+          { value: 'stock', icon: Boxes, label: t('admin.stockTab') },
+          { value: 'repurchase', icon: RefreshCw, label: t('admin.repurchaseTab') },
+        ]} />
+        <div className="min-w-0 flex-1">
 
         <TabsContent value="stock" className="mt-5">
           <div className="flex flex-wrap items-center justify-between gap-3 mb-4">
@@ -469,12 +480,13 @@ const Admin = () => {
                 <TableRow>
                   <TableHead>{t('admin.table.order')}</TableHead><TableHead>{t('admin.table.customer')}</TableHead><TableHead>{t('common.total')}</TableHead>
                   <TableHead>{t('admin.table.payment')}</TableHead><TableHead>{t('admin.table.date')}</TableHead><TableHead>{t('admin.table.status')}</TableHead>
+                  <TableHead>{t('admin.table.receipt')}</TableHead>
                   <TableHead>{t('admin.table.tracking')}</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
                 {orders.length === 0 ? (
-                  <TableRow><TableCell colSpan={7} className="text-center text-muted-foreground py-8">{t('admin.noOrders')}</TableCell></TableRow>
+                  <TableRow><TableCell colSpan={8} className="text-center text-muted-foreground py-8">{t('admin.noOrders')}</TableCell></TableRow>
                 ) : orders.map((o) => (
                   <TableRow key={o.id}>
                     <TableCell className="font-mono-tech text-xs">{o.order_number}</TableCell>
@@ -482,6 +494,15 @@ const Admin = () => {
                     <TableCell className="font-medium">{formatMXN(o.total)}</TableCell>
                     <TableCell className="text-xs">{t(`payment.${o.payment_method}.label`) || o.payment_method}</TableCell>
                     <TableCell className="text-xs text-muted-foreground">{new Date(o.created_at).toLocaleDateString(language)}</TableCell>
+                    <TableCell>
+                      {o.spei_receipt_at ? (
+                        <Button variant="outline" size="sm" className="h-8 text-xs" onClick={() => openReceipt(o.id)} data-testid="admin-view-receipt">
+                          <Receipt className="h-3.5 w-3.5 mr-1.5 text-[hsl(var(--success))]" /> {t('admin.receipt.view')}
+                        </Button>
+                      ) : o.payment_method === 'spei' ? (
+                        <span className="text-xs text-muted-foreground">{t('admin.receipt.pending')}</span>
+                      ) : <span className="text-xs text-muted-foreground">—</span>}
+                    </TableCell>
                     <TableCell>
                       <Select value={o.status} onValueChange={(v) => updateStatus(o, v)}>
                         <SelectTrigger className="w-36 h-8" data-testid="admin-update-order-status-select"><SelectValue /></SelectTrigger>
@@ -569,6 +590,7 @@ const Admin = () => {
             </Table>
           </Card>
         </TabsContent>
+        </div>
       </Tabs>
 
       <Dialog open={!!shippingOpen} onOpenChange={(v) => !v && setShippingOpen(null)}>
