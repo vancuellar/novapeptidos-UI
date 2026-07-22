@@ -10,6 +10,7 @@ import { Separator } from '@/components/ui/separator';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { toast } from 'sonner';
 import api, { formatMXN, PAYMENT_METHODS } from '@/lib/api';
+import { formatPhoneMX, phoneDigits } from '@/lib/utils';
 import { useCart } from '@/context/CartContext';
 import { useAuth } from '@/context/AuthContext';
 import { useLanguage } from '@/context/LanguageContext';
@@ -68,7 +69,7 @@ const Checkout = () => {
   useEffect(() => {
     api.get('/payments/config').then((r) => setCryptoOn(!!r.data?.crypto_enabled)).catch(() => {});
   }, []);
-  const methods = [...PAYMENT_METHODS, ...(cryptoOn ? [{ id: 'cripto', icon: 'Bitcoin' }] : [])];
+  const methods = PAYMENT_METHODS.filter((m) => m.id !== 'cripto' || cryptoOn);
   const sectionRefs = { 0: useRef(null), 1: useRef(null), 2: useRef(null) };
 
   // Puntos de lealtad: solo cuentas de cliente (el servidor decide quién participa).
@@ -94,6 +95,10 @@ const Checkout = () => {
     e.preventDefault();
     if (!form.full_name || !form.email || !form.phone || !form.address) {
       toast.error(t('checkout.toast.required'));
+      return;
+    }
+    if (phoneDigits(form.phone).length !== 10) {
+      toast.error(t('checkout.toast.phone'));
       return;
     }
     if (!consent) { toast.error(t('checkout.toast.consent')); return; }
@@ -174,7 +179,7 @@ const Checkout = () => {
             <div className="grid sm:grid-cols-2 gap-4">
               <div className="sm:col-span-2"><Label>{t('checkout.fullName')}</Label><Input className="mt-1.5" value={form.full_name} onChange={(e) => set('full_name', e.target.value)} data-testid="checkout-name-input" /></div>
               <div><Label>{t('checkout.email')}</Label><Input type="email" className="mt-1.5" value={form.email} onChange={(e) => set('email', e.target.value)} data-testid="checkout-email-input" /></div>
-              <div><Label>{t('checkout.phone')}</Label><Input className="mt-1.5" value={form.phone} onChange={(e) => set('phone', e.target.value)} data-testid="checkout-phone-input" /></div>
+              <div><Label>{t('checkout.phone')}</Label><Input className="mt-1.5" type="tel" inputMode="numeric" autoComplete="tel-national" placeholder="55 1234 5678" value={form.phone} onChange={(e) => set('phone', formatPhoneMX(e.target.value))} data-testid="checkout-phone-input" /></div>
             </div>
           </Card>
 
@@ -267,7 +272,7 @@ const Checkout = () => {
                 <div className="space-y-3 max-h-60 overflow-y-auto">
                   {items.map((i) => (
                     <div key={i.product_id} className="flex gap-3 items-center text-sm">
-                      <img src={i.image_url} alt={i.name} className="h-12 w-12 rounded-md object-cover border border-border" />
+                      <img src={i.image_url || null} alt={i.name} className="h-12 w-12 rounded-md object-cover border border-border" />
                       <div className="flex-1 min-w-0"><div className="line-clamp-1">{i.name}</div><div className="text-xs text-muted-foreground">x{i.quantity}</div></div>
                       <div>{formatMXN(i.price * i.quantity)}</div>
                     </div>

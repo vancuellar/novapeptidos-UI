@@ -9,7 +9,8 @@ import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Tabs, TabsContent } from '@/components/ui/tabs';
+import DashboardSidebar from '@/components/layout/DashboardSidebar';
 import CoaLibrary from '@/components/CoaLibrary';
 import SecurityKeys from '@/components/SecurityKeys';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
@@ -17,6 +18,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Separator } from '@/components/ui/separator';
 import { toast } from 'sonner';
 import api, { formatMXN, PAYMENT_METHODS } from '@/lib/api';
+import { formatPhoneMX } from '@/lib/utils';
 import { useAuth } from '@/context/AuthContext';
 import { useLanguage } from '@/context/LanguageContext';
 
@@ -224,17 +226,15 @@ const Account = () => {
       </div>
 
       <Tabs value={params.get('tab') || 'orders'} onValueChange={(v) => setParams(v === 'orders' ? {} : { tab: v }, { replace: true })}
-        className="lg:grid lg:grid-cols-[210px_minmax(0,1fr)] lg:gap-8 lg:items-start">
-        {/* Sidebar flotante: en pantallas grandes queda pegado a media altura y
-            sigue el scroll (siempre visible); en móvil, barra horizontal arriba. */}
-        <TabsList className="h-auto w-full flex flex-row lg:flex-col items-stretch justify-start gap-1 bg-transparent p-0 overflow-x-auto lg:overflow-visible lg:sticky lg:top-28 lg:self-start mb-4 lg:mb-0">
-          <TabsTrigger value="orders" className="justify-start w-full gap-2 rounded-lg"><Package className="h-4 w-4" /> {t('account.ordersTab')}</TabsTrigger>
-          <TabsTrigger value="tools" className="justify-start w-full gap-2 rounded-lg"><Syringe className="h-4 w-4" /> {t('account.toolsTab')}</TabsTrigger>
-          <TabsTrigger value="labs" className="justify-start w-full gap-2 rounded-lg"><FlaskConical className="h-4 w-4" /> {t('account.labsTab')}</TabsTrigger>
-          <TabsTrigger value="coas" className="justify-start w-full gap-2 rounded-lg"><FileText className="h-4 w-4" /> {t('account.coasTab')}</TabsTrigger>
-          <TabsTrigger value="profile" className="justify-start w-full gap-2 rounded-lg"><User className="h-4 w-4" /> {t('account.profileTab')}</TabsTrigger>
-        </TabsList>
-        <div className="min-w-0">
+        className="lg:flex lg:gap-8 lg:items-start">
+        <DashboardSidebar items={[
+          { value: 'orders', icon: Package, label: t('account.ordersTab') },
+          { value: 'tools', icon: Syringe, label: t('account.toolsTab') },
+          { value: 'labs', icon: FlaskConical, label: t('account.labsTab') },
+          { value: 'coas', icon: FileText, label: t('account.coasTab') },
+          { value: 'profile', icon: User, label: t('account.profileTab') },
+        ]} />
+        <div className="min-w-0 flex-1">
 
         <TabsContent value="tools" className="mt-5 space-y-8">
           {!toolsUnlocked ? (
@@ -344,7 +344,7 @@ const Account = () => {
                     <PasswordInput value={emailPassword} onChange={(e) => setEmailPassword(e.target.value)} show={showCur} setShow={setShowCur} t={t} testid="profile-email-password" />
                   </div>
                 )}
-                <div><Label>{t('profile.phone')}</Label><Input type="tel" className="mt-1.5" value={phone} onChange={(e) => setPhone(e.target.value)} data-testid="profile-phone-input" /></div>
+                <div><Label>{t('profile.phone')}</Label><Input type="tel" inputMode="numeric" autoComplete="tel-national" placeholder="55 1234 5678" className="mt-1.5" value={phone} onChange={(e) => setPhone(formatPhoneMX(e.target.value))} data-testid="profile-phone-input" /></div>
               </div>
             </Card>
 

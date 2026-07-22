@@ -5,7 +5,8 @@ import { ResponsiveContainer, AreaChart, Area, XAxis, YAxis, CartesianGrid, Tool
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Tabs, TabsContent } from '@/components/ui/tabs';
+import DashboardSidebar from '@/components/layout/DashboardSidebar';
 import CoaLibrary from '@/components/CoaLibrary';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
@@ -128,14 +129,15 @@ const Distributor = () => {
         </Card>
       )}
 
-      <Tabs defaultValue="overview">
-        <TabsList>
-          <TabsTrigger value="overview"><TrendingUp className="h-4 w-4 mr-1.5" /> {t('distributor.overviewTab')}</TabsTrigger>
-          <TabsTrigger value="clients"><Users className="h-4 w-4 mr-1.5" /> {t('distributor.clientsTab')}</TabsTrigger>
-          <TabsTrigger value="orders"><Truck className="h-4 w-4 mr-1.5" /> {t('distributor.ordersTab')}</TabsTrigger>
-          <TabsTrigger value="sales"><ShoppingBag className="h-4 w-4 mr-1.5" /> {t('distributor.salesTab')}</TabsTrigger>
-          <TabsTrigger value="coas"><FileText className="h-4 w-4 mr-1.5" /> {t('account.coasTab')}</TabsTrigger>
-        </TabsList>
+      <Tabs defaultValue="overview" className="lg:flex lg:gap-8 lg:items-start">
+        <DashboardSidebar items={[
+          { value: 'overview', icon: TrendingUp, label: t('distributor.overviewTab') },
+          { value: 'clients', icon: Users, label: t('distributor.clientsTab') },
+          { value: 'orders', icon: Truck, label: t('distributor.ordersTab') },
+          { value: 'sales', icon: ShoppingBag, label: t('distributor.salesTab') },
+          { value: 'coas', icon: FileText, label: t('account.coasTab') },
+        ]} />
+        <div className="min-w-0 flex-1">
 
         <TabsContent value="overview" className="mt-5">
           {!summary || summary.monthly.length === 0 ? (
@@ -328,6 +330,7 @@ const Distributor = () => {
             </Table>
           </Card>
         </TabsContent>
+        </div>
       </Tabs>
     </div>
   );

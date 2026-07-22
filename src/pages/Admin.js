@@ -9,7 +9,8 @@ import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Tabs, TabsContent } from '@/components/ui/tabs';
+import DashboardSidebar from '@/components/layout/DashboardSidebar';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
@@ -269,16 +270,17 @@ const Admin = () => {
         ))}
       </div>
 
-      <Tabs defaultValue="sales">
-        <TabsList className="flex-wrap h-auto">
-          <TabsTrigger value="sales"><TrendingUp className="h-4 w-4 mr-1.5" /> {t('admin.salesTab')}</TabsTrigger>
-          <TabsTrigger value="customers"><Users className="h-4 w-4 mr-1.5" /> {t('admin.customersTab')}</TabsTrigger>
-          <TabsTrigger value="distributors"><Store className="h-4 w-4 mr-1.5" /> {t('admin.distributorsTab')}</TabsTrigger>
-          <TabsTrigger value="orders"><ShoppingBag className="h-4 w-4 mr-1.5" /> {t('admin.ordersTab')}</TabsTrigger>
-          <TabsTrigger value="products"><Package className="h-4 w-4 mr-1.5" /> {t('admin.productsTab')}</TabsTrigger>
-          <TabsTrigger value="stock"><Boxes className="h-4 w-4 mr-1.5" /> {t('admin.stockTab')}</TabsTrigger>
-          <TabsTrigger value="repurchase"><RefreshCw className="h-4 w-4 mr-1.5" /> {t('admin.repurchaseTab')}</TabsTrigger>
-        </TabsList>
+      <Tabs defaultValue="sales" className="lg:flex lg:gap-8 lg:items-start">
+        <DashboardSidebar items={[
+          { value: 'sales', icon: TrendingUp, label: t('admin.salesTab') },
+          { value: 'customers', icon: Users, label: t('admin.customersTab') },
+          { value: 'distributors', icon: Store, label: t('admin.distributorsTab') },
+          { value: 'orders', icon: ShoppingBag, label: t('admin.ordersTab') },
+          { value: 'products', icon: Package, label: t('admin.productsTab') },
+          { value: 'stock', icon: Boxes, label: t('admin.stockTab') },
+          { value: 'repurchase', icon: RefreshCw, label: t('admin.repurchaseTab') },
+        ]} />
+        <div className="min-w-0 flex-1">
 
         <TabsContent value="stock" className="mt-5">
           <div className="flex flex-wrap items-center justify-between gap-3 mb-4">
@@ -588,6 +590,7 @@ const Admin = () => {
             </Table>
           </Card>
         </TabsContent>
+        </div>
       </Tabs>
 
       <Dialog open={!!shippingOpen} onOpenChange={(v) => !v && setShippingOpen(null)}>

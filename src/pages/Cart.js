@@ -87,7 +87,7 @@ const Cart = () => {
         <div className="lg:col-span-8 space-y-3" data-testid="cart-items-table">
           {items.map((item) => (
             <Card key={item.product_id} className="p-4 flex gap-4 items-center">
-              <img src={item.image_url} alt={item.name} className="h-20 w-20 rounded-lg object-cover border border-border bg-[hsl(var(--secondary))]" />
+              <img src={item.image_url || null} alt={item.name} className="h-20 w-20 rounded-lg object-cover border border-border bg-[hsl(var(--secondary))]" />
               <div className="flex-1 min-w-0">
                 <Link to={`/producto/${item.product_id}`} className="font-medium hover:text-[hsl(var(--primary))] line-clamp-1">{item.name}</Link>
                 <div className="text-xs text-muted-foreground font-mono-tech mt-0.5">{item.presentation}</div>
