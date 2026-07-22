@@ -794,6 +794,8 @@ gemini, google (público), nowpayments, spei. Server: 44.204.127.242, deploy =
    Jr 22.5 + Sr 3.5 + M 3.5 = 29.5. Vende Senior: Sr 26 + M 3.5. Vende Master: bolsa entera.
    (ii) El descuento al cliente sale SOLO de la tajada del vendedor (tope = su propia
    comisión; ej. Jr da 15% → le quedan 7.5; los 3.5 de arriba no se tocan).
+   (ii-bis) TODO sub nuevo que trae un Master entra como JUNIOR (22.5%), sin excepciones;
+   a Senior solo se llega por ascenso.
    (iii) Carrera: el premio del Jr es ascender a Senior y el del Senior a Master (saltos de
    categoría, ganados con SUS ventas, aprueba Christian). Ya de Master: sube de 0.5 en 0.5
    con métrica por definir (propuesta: +0.5 por cada $500k netos) hasta tope 40%; el 45%
