@@ -775,6 +775,19 @@ gemini, google (público), nowpayments, spei. Server: 44.204.127.242, deploy =
    Regla de Christian: el distribuidor solo tiene SU descuento máximo (individual, fijado por
    él), compre para sí o comparta código; NUNCA se combina con otras promos (el carrito ya
    aplica "el mayor", no suma).
+4quater. **País + lada — HECHO Y EN VIVO 2026-07-21 (noche):** selector de país con bandera
+   (225 países, `src/data/countries.js`, nombres via Intl.DisplayNames es/en/pt, México
+   default) en direcciones de envío/facturación del perfil y del checkout, y selector de
+   lada (🇲🇽 +52 default) en los teléfonos, estilo jadalegal.com (UI PR #65/#66; RBAC PR #12
+   agrega `country` a AddressInput/CustomerInfo, visible en admin/distribuidor/correo solo
+   si no es MX). El teléfono se guarda como una sola cadena "+52 (55) 1234-5678"
+   (`parsePhone`/`composePhone` en `src/components/CountryPhoneFields.js`); formato MX
+   (55) 1234-5678, EUA/Canadá (305) 555-0123, resto libre 6-15 dígitos.
+4quinquies. **Análisis ROI repartible (2026-07-21):** con la regla existente "quedarme con
+   5× costo por caja": techo 40% cabe en 180/205 productos, 50% en 150, 60% en 84. Los que
+   NO aguantan: los 9 regulados (HGH, HCG…) y margen corto. **HGH 40iu está DEBAJO del piso
+   aun con cero comisión** — precio por revisar, preguntado a Christian sin respuesta aún.
+   Propuesta de niveles 30/25/20 techo 40% con escalera por $1M neto — esperando su OK.
 4ter. **PIRÁMIDE DE DISTRIBUIDORES (diseño en curso, 2026-07-21):** reglas de Christian:
    (i) masters primeros con comisión mayor (40% hasta 50% tope); (ii) masters traen subs y la
    comisión SE REPARTE, no se suma: sub 25% → master se lleva la diferencia; (iii) invariante
