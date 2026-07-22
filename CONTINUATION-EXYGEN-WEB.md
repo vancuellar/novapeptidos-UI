@@ -750,6 +750,13 @@ siguen llamándose `novapeptidos-UI` y `novapeptidos-RBAC` (GitHub: vancuellar/�
    eso es contenido/criterio suyo (qué fuente usar y qué valores publicar), no se inventó.
    Mientras, la calculadora ya funciona con TODOS los péptidos.
 
+### ➕ 2026-07-22 (tarde): DISTRIBUIDORES CON FULL ACCESS A HERRAMIENTAS — EN VIVO
+Orden de Christian: rol `distributor` entra al bypass del candado de Mi cuenta igual que
+admin (calculadora completa, seguimiento, estudios, COAs) sin necesidad de compra pagada
+(commit `81f0c00`, verificado logueado como distribuidor en local). Los COAs siguen
+acotados por el servidor a productos comprados. PENDIENTE DE CHRISTIAN: definir la fuente
+de las dosis de referencia (start_levels) de los ~58 productos que no las tienen.
+
 ### ⚙️ CÓMO PROBAR LOGUEADO (para reproducir bugs de Mi cuenta/calculadora)
 - **Admin de Christian EN VIVO:** `admin@exygenlabs.com` / `Exygen-c914cfd1!` (login por API
   funciona, sin 2FA). Su cuenta admin tiene acceso FULL a los 3 paneles: cliente, distribuidor
