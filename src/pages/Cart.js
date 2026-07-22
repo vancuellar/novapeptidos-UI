@@ -6,7 +6,7 @@ import { Input } from '@/components/ui/input';
 import { Card } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
-import { useCart } from '@/context/CartContext';
+import { useCart, isNetPriceItem } from '@/context/CartContext';
 import { formatMXN } from '@/lib/api';
 import { fallbackProducts } from '@/data/fallbackCatalog';
 import { useLanguage } from '@/context/LanguageContext';
@@ -91,6 +91,9 @@ const Cart = () => {
                 <Link to={`/producto/${item.product_id}`} className="font-medium hover:text-[hsl(var(--primary))] line-clamp-1">{item.name}</Link>
                 <div className="text-xs text-muted-foreground font-mono-tech mt-0.5">{item.presentation}</div>
                 <div className="font-heading font-semibold mt-1">{formatMXN(item.price)}</div>
+                {isNetPriceItem(item) && (
+                  <div className="text-[11px] text-muted-foreground mt-0.5" data-testid="cart-net-price-note">{t('cart.netPrice')}</div>
+                )}
               </div>
               <div className="flex flex-col items-end gap-2">
                 <div className="flex items-center border border-border rounded-lg">

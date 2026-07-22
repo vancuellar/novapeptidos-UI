@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import '@/App.css';
 import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
 import { Toaster } from '@/components/ui/sonner';
@@ -44,6 +44,13 @@ const SiteChrome = ({ children }) => {
 };
 
 function App() {
+  // Protección de fotos: sin clic derecho sobre imágenes (el CSS ya quita
+  // arrastre y selección). No detiene capturas de pantalla — nada lo hace.
+  useEffect(() => {
+    const blockImgMenu = (e) => { if (e.target?.tagName === 'IMG') e.preventDefault(); };
+    document.addEventListener('contextmenu', blockImgMenu);
+    return () => document.removeEventListener('contextmenu', blockImgMenu);
+  }, []);
   return (
     <div className="App">
       <ThemeProvider>

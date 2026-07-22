@@ -7,6 +7,12 @@ import {
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Textarea } from '@/components/ui/textarea';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { toast } from 'sonner';
 import ProductCard from '@/components/ProductCard';
 import api from '@/lib/api';
 import { fallbackCategories } from '@/data/fallbackCatalog';
@@ -52,6 +58,22 @@ const Home = () => {
   const [hoveredVial, setHoveredVial] = useState(null);
   const carouselRef = useRef(null);
   const { language, t } = useLanguage();
+  // Solicitud "Quiero ser distribuidor" (sección Mayoreo). Christian aprueba en su Admin.
+  const [b2bOpen, setB2bOpen] = useState(false);
+  const [b2bSent, setB2bSent] = useState(false);
+  const [b2bSending, setB2bSending] = useState(false);
+  const [b2bForm, setB2bForm] = useState({ name: '', email: '', phone: '', kind: '', message: '' });
+  const setB2b = (k, v) => setB2bForm((f) => ({ ...f, [k]: v }));
+  const submitB2b = async () => {
+    if (!b2bForm.name.trim() || !/.+@.+\..+/.test(b2bForm.email)) { toast.error(t('b2b.form.required')); return; }
+    setB2bSending(true);
+    try {
+      await api.post('/distributor-applications', b2bForm);
+      setB2bSent(true);
+    } catch (err) {
+      toast.error(err.response?.data?.detail || t('b2b.form.error'));
+    } finally { setB2bSending(false); }
+  };
 
   const scrollCarousel = (dir) => {
     if (carouselRef.current) carouselRef.current.scrollBy({ left: dir * 300, behavior: 'smooth' });
@@ -355,14 +377,50 @@ const Home = () => {
             <p className="mt-3 text-muted-foreground leading-relaxed max-w-lg">{t('home.b2bBody')}</p>
           </div>
           <div className="flex flex-col sm:flex-row lg:flex-col gap-3 lg:items-end">
-            <Button asChild className="rounded-full h-12 px-7 uppercase tracking-[0.14em] text-xs font-bold" data-testid="b2b-quote-button">
-              <a href="mailto:hola@exygenlabs.com?subject=Mayoreo"><Mail className="h-4 w-4 mr-2" /> {t('home.b2bCta1')}</a>
+            <Button className="rounded-full h-12 px-7 uppercase tracking-[0.14em] text-xs font-bold" data-testid="b2b-apply-button"
+              onClick={() => { setB2bSent(false); setB2bOpen(true); }}>
+              <Mail className="h-4 w-4 mr-2" /> {t('b2b.cta')}
             </Button>
             <Button asChild variant="outline" className="rounded-full h-12 px-7 uppercase tracking-[0.14em] text-xs font-semibold">
               <Link to="/catalogo">{t('home.b2bCta2')}</Link>
             </Button>
           </div>
         </div>
+
+        {/* Solicitud de distribuidor: llega al Admin de Christian, nada se aprueba solo. */}
+        <Dialog open={b2bOpen} onOpenChange={setB2bOpen}>
+          <DialogContent className="max-w-md" data-testid="b2b-dialog">
+            <DialogHeader><DialogTitle>{t('b2b.form.title')}</DialogTitle></DialogHeader>
+            {b2bSent ? (
+              <div className="space-y-4">
+                <p className="text-sm text-muted-foreground leading-relaxed" data-testid="b2b-sent">{t('b2b.form.sent')}</p>
+                <DialogFooter><Button onClick={() => setB2bOpen(false)}>{t('admin.dist.close')}</Button></DialogFooter>
+              </div>
+            ) : (
+              <>
+                <div className="space-y-3">
+                  <div><Label>{t('b2b.form.name')}</Label><Input className="mt-1.5" value={b2bForm.name} onChange={(e) => setB2b('name', e.target.value)} data-testid="b2b-name" /></div>
+                  <div><Label>{t('b2b.form.email')}</Label><Input type="email" className="mt-1.5" value={b2bForm.email} onChange={(e) => setB2b('email', e.target.value)} data-testid="b2b-email" /></div>
+                  <div><Label>{t('b2b.form.phone')}</Label><Input type="tel" className="mt-1.5" value={b2bForm.phone} onChange={(e) => setB2b('phone', e.target.value)} data-testid="b2b-phone" /></div>
+                  <div>
+                    <Label>{t('b2b.form.kind')}</Label>
+                    <Select value={b2bForm.kind || undefined} onValueChange={(v) => setB2b('kind', v)}>
+                      <SelectTrigger className="mt-1.5" data-testid="b2b-kind"><SelectValue placeholder={t('admin.select')} /></SelectTrigger>
+                      <SelectContent>
+                        {['clinica', 'laboratorio', 'revendedor', 'otro'].map((k) => <SelectItem key={k} value={k}>{t(`b2b.kind.${k}`)}</SelectItem>)}
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  <div><Label>{t('b2b.form.message')}</Label><Textarea className="mt-1.5" rows={3} value={b2bForm.message} onChange={(e) => setB2b('message', e.target.value)} data-testid="b2b-message" /></div>
+                </div>
+                <DialogFooter>
+                  <Button variant="outline" onClick={() => setB2bOpen(false)}>{t('common.cancel')}</Button>
+                  <Button onClick={submitB2b} disabled={b2bSending} data-testid="b2b-submit">{b2bSending ? t('common.loading') : t('b2b.form.send')}</Button>
+                </DialogFooter>
+              </>
+            )}
+          </DialogContent>
+        </Dialog>
       </section>
 
       {/* ===== Payments ===== */}
