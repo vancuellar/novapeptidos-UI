@@ -38,6 +38,18 @@ const MG_DOSED = /tirzepat|retatrut|semaglut|cagrilint|mazdut|survodut|liraglut|
 const unitFor = (name) => (MG_DOSED.test(name || '') ? 'mg' : 'mcg');
 // dosis inicial neutral según unidad (solo un punto de partida, RUO)
 const defaultDose = (unit) => (unit === 'mg' ? 2 : 250);
+// Punto de partida MEDIBLE para péptidos sin dosis de referencia: si el default
+// no alcanza ni 2 rayitas con 5 mL de agua (viales grandes, p.ej. blends de
+// 80 mg), se sube a un número redondo que sí se pueda medir en la jeringa.
+// Es solo aritmética de medición, no una dosis sugerida.
+const measurableDefault = (unit, vialMg) => {
+  const base = defaultDose(unit);
+  const minMcg = 4 * (vialMg || 0);            // 2 rayitas con 5 mL en U-100
+  const baseMcg = unit === 'mg' ? base * 1000 : base;
+  if (!vialMg || baseMcg >= minMcg) return base;
+  if (unit === 'mg') return Math.ceil((minMcg / 1000) * 2) / 2;   // a 0.5 mg
+  return Math.ceil(minMcg / 50) * 50;                              // a 50 mcg
+};
 
 const Stat = ({ icon: Icon, label, value, unit }) => (
   <div className="rounded-xl border border-[hsl(var(--border))] bg-[hsl(var(--muted))]/30 p-4">
@@ -128,12 +140,12 @@ const ReconstitutionCalculator = ({ variant = 'full', purchased = [], onTrack, s
   const hasRef = currentProduct?.startDose != null;
   const levels = full ? currentProduct?.startLevels || null : null;
   const mcgDisabled = product && unitFor(product) === 'mg';   // péptido mg-dosado → mcg apagado
+  const effUnit = mcgDisabled ? 'mg' : doseUnit;
   // Nivel de referencia activo (inicial | tipica | avanzada), derivado de la
   // dosis actual. Se guarda con el seguimiento porque la reconstitución cambia.
   const activeLevel = levels
     ? ['inicial', 'tipica', 'avanzada'].find((k) => effUnit === levels.unit && Number(dose) === levels[k]) || ''
     : '';
-  const effUnit = mcgDisabled ? 'mg' : doseUnit;
   const doseMcg = (parseFloat(dose) || 0) * (effUnit === 'mg' ? 1000 : 1);
   const mg = parseFloat(vialMg) || 0;
 
@@ -178,16 +190,17 @@ const ReconstitutionCalculator = ({ variant = 'full', purchased = [], onTrack, s
     setProduct(name);
     setPickerOpen(false);
     const p = mgProducts.find((x) => x.name === name);
-    if (presetMg) setVialMg(presetMg);
-    else if (p && p.variants.length) setVialMg(Math.min(...p.variants));
-    // Dosis de referencia (RUO) si existe; si no, unidad automática + valor genérico.
+    const vial = presetMg || (p && p.variants.length ? Math.min(...p.variants) : null);
+    if (vial) setVialMg(vial);
+    // Dosis de referencia (RUO) si existe; si no, unidad automática + valor
+    // genérico ajustado para que se pueda medir en la jeringa con este vial.
     if (full && p && p.startDose != null) {
       setDoseUnit(p.startUnit === 'mg' ? 'mg' : 'mcg');
       setDose(p.startDose);
     } else {
       const u = unitFor(name);
       setDoseUnit(u);
-      setDose(defaultDose(u));
+      setDose(measurableDefault(u, vial));
     }
   };
 
