@@ -4,20 +4,19 @@
 // lo genera `gen_catalog.py` y se sobrescribe en cada corrida del sistema de
 // precios. Esta lista manda sobre ese campo.
 //
-// Criterio: primero los productos estrella (Retatrutida, NAD+, KLOW, 5-AMINO-1MQ)
-// y después los que la competencia mexicana no ofrece o casi no ofrece, que es
-// lo que nos diferencia. Para cambiar el orden, basta reordenar esta lista.
+// Criterio (Christian, 2026-07-22): SOLO productos que ya tienen su foto
+// individual del vial con el logotipo y diseño nuevos. Se van agregando más
+// conforme lleguen las fotos. Para cambiar el orden, basta reordenar esta lista.
 import { fallbackProducts } from '@/data/fallbackCatalog';
 
 export const FEATURED_SLUGS = [
   'retatrutida',                    // el estrella de la casa
   'nad-plus',
   'klow-bpc-ghk-cu-tb-500-kpv',     // mezcla de 4 péptidos, poco común
-  '5-amino-1mq',
-  'slu-pp-332',                     // agonista ERR, casi nadie lo tiene en México
-  '10-amino-1mq',                   // el análogo, todavía más raro
-  'b7-33',                          // análogo monomérico de relaxina, muy poco común
-  'foxo4',                          // senolítico, catálogo corto en el mercado
+  'tirzepatida',
+  'semaglutida',
+  'agua-bacteriostatica',
+  // Siguientes: agregar aquí conforme lleguen las fotos individuales nuevas.
 ];
 
 /** Destacados de la home, en el orden de FEATURED_SLUGS. */
