@@ -7,6 +7,13 @@ const CartContext = createContext(null);
 
 export const useCart = () => useContext(CartContext);
 
+// Productos a PRECIO NETO (sin descuento alguno, regla de Christian 2026-07-22):
+// la familia HGH — no así el HGH Fragment, que sí tiene margen.
+export const isNetPriceItem = (item) => {
+  const key = `${item.product_id || ''} ${item.slug || ''}`.toLowerCase();
+  return key.includes('hgh') && !key.includes('fragment');
+};
+
 export const CartProvider = ({ children }) => {
   const [items, setItems] = useState(() => {
     try { return JSON.parse(localStorage.getItem('np_cart') || '[]'); } catch { return []; }
@@ -60,7 +67,12 @@ export const CartProvider = ({ children }) => {
     { min: 35000, rate: 0.15 },
     { min: 0, rate: 0.10 },
   ];
-  const tier = DISCOUNT_TIERS.find((d) => subtotal >= d.min) || DISCOUNT_TIERS[DISCOUNT_TIERS.length - 1];
+  // Familia HGH (no el Fragment): precio neto SIEMPRE — su margen no aguanta
+  // ningún descuento (Christian, 2026-07-22). El servidor aplica la misma regla.
+  const discountableSubtotal = items
+    .filter((i) => !isNetPriceItem(i))
+    .reduce((sum, i) => sum + i.price * i.quantity, 0);
+  const tier = DISCOUNT_TIERS.find((d) => discountableSubtotal >= d.min) || DISCOUNT_TIERS[DISCOUNT_TIERS.length - 1];
   const autoRate = items.length ? tier.rate : 0;
 
   const [distCode, setDistCode] = useState(() => localStorage.getItem('np_dist_code') || '');
@@ -86,8 +98,8 @@ export const CartProvider = ({ children }) => {
   const codeRate = items.length && distCode ? distRate : 0;
   const discountRate = Math.max(autoRate, codeRate);
   const discountSource = codeRate > autoRate ? 'code' : 'auto';
-  const discount = Math.round(subtotal * discountRate);
-  const nextTier = subtotal < 35000 ? { min: 35000, rate: 0.15 } : null;
+  const discount = Math.round(discountableSubtotal * discountRate);
+  const nextTier = discountableSubtotal < 35000 ? { min: 35000, rate: 0.15 } : null;
 
   return (
     <CartContext.Provider value={{ items, addItem, updateQty, removeItem, clearCart, subtotal, count, discount, discountRate, discountSource, nextTier, distCode, distRate, applyDistCode, clearDistCode }}>

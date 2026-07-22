@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { LayoutDashboard, Package, ShoppingBag, Plus, Pencil, Trash2, DollarSign, Users, Clock, TrendingUp, MapPin, Phone, Receipt, Store, Copy, Boxes, Truck, RefreshCw, MailCheck } from 'lucide-react';
+import { LayoutDashboard, Package, ShoppingBag, Plus, Pencil, Trash2, DollarSign, Users, Clock, TrendingUp, MapPin, Phone, Receipt, Store, Copy, Boxes, Truck, RefreshCw, MailCheck, Ban } from 'lucide-react';
 import { fallbackProducts } from '@/data/fallbackCatalog';
 import { ResponsiveContainer, AreaChart, Area, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip } from 'recharts';
 import { Button } from '@/components/ui/button';
@@ -95,6 +95,11 @@ const Admin = () => {
   const [inviteForm, setInviteForm] = useState({ name: '', email: '' });
   const [inviteDialogOpen, setInviteDialogOpen] = useState(false);
   const [inviteCreated, setInviteCreated] = useState(null);
+  // Solicitudes "Quiero ser distribuidor" del formulario público del home.
+  const [applications, setApplications] = useState([]);
+  const [appTarget, setAppTarget] = useState(null);
+  const [appForm, setAppForm] = useState({ commission: 25, customerDiscount: 10 });
+  const [appResult, setAppResult] = useState(null);
   // Conversión de un cliente existente a distribuidor (conserva su historial).
   const [convertTarget, setConvertTarget] = useState(null);
   const [convertForm, setConvertForm] = useState({ commission: 25, customerDiscount: 10 });
@@ -114,6 +119,7 @@ const Admin = () => {
     api.get('/admin/customers').then((r) => setCustomers(r.data)).catch(() => {});
     api.get('/admin/analytics').then((r) => setAnalytics(r.data)).catch(() => {});
     api.get('/admin/distributors').then((r) => setDistributors(r.data)).catch(() => {});
+    api.get('/admin/distributor-applications').then((r) => setApplications(r.data)).catch(() => {});
     api.get('/stock').then((r) => setStockMap(r.data || {})).catch(() => {});
   }, []);
 
@@ -221,6 +227,33 @@ const Admin = () => {
       });
       toast.success(t('admin.dist.ratesSaved'));
       setRatesDist(null);
+      loadAll();
+    } catch (err) {
+      toast.error(err.response?.data?.detail || t('admin.toast.saveError'));
+    }
+  };
+
+  const resolveApplication = async (app, action) => {
+    if (action === 'rechazar' && !window.confirm(t('admin.apps.rejectConfirm', { name: app.name }))) return;
+    try {
+      const body = action === 'aprobar'
+        ? { action, commission_rate: Math.max(0, Math.min(50, Number(appForm.commission) || 0)) / 100,
+            customer_discount_rate: Math.max(5, Math.min(50, Number(appForm.customerDiscount) || 10)) / 100 }
+        : { action };
+      const r = await api.put(`/admin/distributor-applications/${app.id}`, body);
+      if (action === 'aprobar') setAppResult(r.data); else { setAppTarget(null); toast.success(t('admin.apps.rejected')); }
+      loadAll();
+    } catch (err) {
+      toast.error(err.response?.data?.detail || t('admin.toast.saveError'));
+    }
+  };
+
+  const toggleBlocked = async (c) => {
+    const blocking = !c.blocked;
+    if (blocking && !window.confirm(t('admin.block.confirm', { name: c.name }))) return;
+    try {
+      await api.put(`/admin/customers/${c.id}/blocked`, { blocked: blocking });
+      toast.success(t(blocking ? 'admin.block.done' : 'admin.block.undone'));
       loadAll();
     } catch (err) {
       toast.error(err.response?.data?.detail || t('admin.toast.saveError'));
@@ -434,8 +467,11 @@ const Admin = () => {
                 {customers.length === 0 ? (
                   <TableRow><TableCell colSpan={7} className="text-center text-muted-foreground py-8">{t('admin.noCustomers')}</TableCell></TableRow>
                 ) : customers.map((c) => (
-                  <TableRow key={c.id}>
-                    <TableCell><div className="text-sm font-medium">{c.name}</div><div className="text-xs text-muted-foreground">{c.email}</div></TableCell>
+                  <TableRow key={c.id} className={c.blocked ? 'opacity-60' : ''}>
+                    <TableCell>
+                      <div className="text-sm font-medium">{c.name}{c.blocked && <Badge variant="outline" className="ml-2 text-[10px] text-destructive border-destructive/40">{t('admin.block.badge')}</Badge>}</div>
+                      <div className="text-xs text-muted-foreground">{c.email}</div>
+                    </TableCell>
                     <TableCell className="text-xs">{c.phones?.[0] || '—'}</TableCell>
                     <TableCell>{c.orders_count}</TableCell>
                     <TableCell className="font-medium">{formatMXN(c.total_spent)}</TableCell>
@@ -448,6 +484,10 @@ const Admin = () => {
                           <Store className="h-3.5 w-3.5 mr-1" /> {t('admin.convert.button')}
                         </Button>
                       )}
+                      <Button variant="ghost" size="sm" className={`mr-1 ${c.blocked ? 'text-[hsl(var(--success))]' : 'text-destructive hover:text-destructive'}`}
+                        onClick={() => toggleBlocked(c)} data-testid="admin-block-customer-button">
+                        <Ban className="h-3.5 w-3.5 mr-1" /> {t(c.blocked ? 'admin.block.unblock' : 'admin.block.block')}
+                      </Button>
                       <Button variant="outline" size="sm" onClick={() => setCustomerOpen(c)} data-testid="admin-open-customer-button">{t('account.detail')}</Button>
                     </TableCell>
                   </TableRow>
@@ -458,6 +498,25 @@ const Admin = () => {
         </TabsContent>
 
         <TabsContent value="distributors" className="mt-5">
+          {applications.filter((a) => a.status === 'pendiente').length > 0 && (
+            <Card className="p-4 mb-4 border-[hsl(var(--warning-border))]" data-testid="admin-applications">
+              <h3 className="font-heading font-semibold text-sm mb-3">{t('admin.apps.title', { count: applications.filter((a) => a.status === 'pendiente').length })}</h3>
+              <div className="space-y-2">
+                {applications.filter((a) => a.status === 'pendiente').map((a) => (
+                  <div key={a.id} className="flex flex-wrap items-center justify-between gap-2 border-b border-border last:border-0 pb-2">
+                    <div className="min-w-0">
+                      <div className="text-sm font-medium">{a.name} <span className="text-xs text-muted-foreground font-normal">· {a.email}{a.phone ? ` · ${a.phone}` : ''}{a.kind ? ` · ${t(`b2b.kind.${a.kind}`)}` : ''}</span></div>
+                      {a.message && <div className="text-xs text-muted-foreground line-clamp-2 max-w-xl">{a.message}</div>}
+                    </div>
+                    <div className="flex gap-2 shrink-0">
+                      <Button size="sm" onClick={() => { setAppResult(null); setAppForm({ commission: 25, customerDiscount: 10 }); setAppTarget(a); }} data-testid="admin-app-approve">{t('admin.apps.approve')}</Button>
+                      <Button size="sm" variant="outline" className="text-destructive" onClick={() => resolveApplication(a, 'rechazar')} data-testid="admin-app-reject">{t('admin.apps.reject')}</Button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </Card>
+          )}
           <div className="flex justify-between items-center mb-4">
             <h3 className="font-heading font-semibold">{t('admin.distributorsCount', { count: distributors.length })}</h3>
             <Button onClick={() => { setDistCreated(null); setDistDialogOpen(true); }} data-testid="admin-add-distributor-button"><Plus className="h-4 w-4 mr-1.5" /> {t('admin.newDistributor')}</Button>
@@ -750,6 +809,48 @@ const Admin = () => {
               <DialogFooter>
                 <Button variant="outline" onClick={() => setDistDialogOpen(false)}>{t('common.cancel')}</Button>
                 <Button onClick={createDistributor} data-testid="admin-create-distributor-button">{t('admin.dist.create')}</Button>
+              </DialogFooter>
+            </>
+          )}
+        </DialogContent>
+      </Dialog>
+
+      {/* Aprobar una solicitud del formulario público: convierte al cliente o manda invitación. */}
+      <Dialog open={!!appTarget} onOpenChange={(open) => { if (!open) { setAppTarget(null); setAppResult(null); } }}>
+        <DialogContent className="max-w-sm" data-testid="admin-app-dialog">
+          <DialogHeader><DialogTitle>{t('admin.apps.approveTitle')}</DialogTitle></DialogHeader>
+          {appResult ? (
+            <div className="space-y-4 text-sm">
+              <div className="font-medium">{appTarget?.name}<span className="text-muted-foreground font-normal"> · {appTarget?.email}</span></div>
+              {appResult.distributor_code && (
+                <div>
+                  <div className="text-xs text-muted-foreground mb-1">{t('admin.dist.shareCode')}</div>
+                  <button onClick={() => copyText(appResult.distributor_code, t('distributor.codeCopied'))} className="font-mono-tech font-bold text-lg inline-flex items-center gap-2 hover:text-[hsl(var(--primary))]">{appResult.distributor_code} <Copy className="h-4 w-4" /></button>
+                </div>
+              )}
+              {appResult.invited && <InviteResult created={appResult} t={t} copyText={copyText} />}
+              {appResult.converted && <p className="text-xs text-muted-foreground">{t('admin.apps.convertedNote')}</p>}
+              {appResult.already && <p className="text-xs text-muted-foreground">{t('admin.apps.alreadyNote')}</p>}
+              <DialogFooter><Button onClick={() => { setAppTarget(null); setAppResult(null); }}>{t('admin.dist.close')}</Button></DialogFooter>
+            </div>
+          ) : appTarget && (
+            <>
+              <div className="space-y-4">
+                <div className="text-sm font-medium">{appTarget.name}<span className="text-muted-foreground font-normal"> · {appTarget.email}</span></div>
+                <div>
+                  <Label>{t('admin.dist.commission')} (%)</Label>
+                  <Input type="number" min="0" max="50" className="mt-1.5" value={appForm.commission}
+                    onChange={(e) => setAppForm((f) => ({ ...f, commission: e.target.value }))} data-testid="admin-app-commission" />
+                </div>
+                <div>
+                  <Label>{t('admin.dist.customerDiscount')} (%)</Label>
+                  <Input type="number" min="5" max="50" className="mt-1.5" value={appForm.customerDiscount}
+                    onChange={(e) => setAppForm((f) => ({ ...f, customerDiscount: e.target.value }))} data-testid="admin-app-discount" />
+                </div>
+              </div>
+              <DialogFooter>
+                <Button variant="outline" onClick={() => setAppTarget(null)}>{t('common.cancel')}</Button>
+                <Button onClick={() => resolveApplication(appTarget, 'aprobar')} data-testid="admin-app-approve-save">{t('admin.apps.approve')}</Button>
               </DialogFooter>
             </>
           )}
