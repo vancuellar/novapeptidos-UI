@@ -1,7 +1,8 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { ShieldCheck, Truck, BadgeCheck, Mail, Phone, Landmark, CreditCard, Bitcoin } from 'lucide-react';
+import { ShieldCheck, Truck, BadgeCheck, Mail, Phone, Landmark, CreditCard, Bitcoin, Instagram, Facebook } from 'lucide-react';
 import { useLanguage } from '@/context/LanguageContext';
+import { INSTAGRAM_URL, FACEBOOK_URL } from '@/lib/contact';
 import BrandLogo from '@/components/BrandLogo';
 
 const Footer = () => {
@@ -9,7 +10,7 @@ const Footer = () => {
 
   return (
     <footer className="mt-16 border-t border-border bg-card text-card-foreground">
-      <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 pt-14 pb-7">
+      <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 pt-[5px] pb-7">
         {/* Orden pedido por Christian: sellos y aviso RUO ARRIBA de los links;
             debajo de los links no va NADA más que el copyright. */}
         <div className="flex flex-wrap items-center justify-center gap-x-5 gap-y-2 text-xs text-muted-foreground mb-5">
@@ -28,8 +29,21 @@ const Footer = () => {
               <BrandLogo />
             </button>
             <p className="text-sm text-muted-foreground leading-relaxed">{t('footer.description')}</p>
-            <div className="flex gap-3 mt-5 text-[hsl(var(--primary))]">
+            <div className="flex items-center gap-3 mt-5 text-[hsl(var(--primary))]">
               <ShieldCheck className="h-5 w-5" /><BadgeCheck className="h-5 w-5" /><Truck className="h-5 w-5" />
+              {/* Redes sociales: se vuelven enlaces en cuanto Christian ponga las
+                  URLs en src/lib/contact.js. */}
+              <span className="mx-1 h-4 w-px bg-border" aria-hidden="true" />
+              {INSTAGRAM_URL ? (
+                <a href={INSTAGRAM_URL} target="_blank" rel="noreferrer" aria-label="Instagram" className="hover:opacity-70 transition-opacity" data-testid="footer-instagram"><Instagram className="h-5 w-5" /></a>
+              ) : (
+                <Instagram className="h-5 w-5 opacity-70" data-testid="footer-instagram" />
+              )}
+              {FACEBOOK_URL ? (
+                <a href={FACEBOOK_URL} target="_blank" rel="noreferrer" aria-label="Facebook" className="hover:opacity-70 transition-opacity" data-testid="footer-facebook"><Facebook className="h-5 w-5" /></a>
+              ) : (
+                <Facebook className="h-5 w-5 opacity-70" data-testid="footer-facebook" />
+              )}
             </div>
           </div>
           <div>
@@ -81,7 +95,7 @@ const Footer = () => {
             </div>
           </div>
         </div>
-        <div className="mt-5 pt-3 border-t border-border">
+        <div className="mt-2.5 pt-1.5 border-t border-border">
           <p className="text-xs text-muted-foreground text-center font-mono-tech">© {new Date().getFullYear()} {t('footer.rights')}</p>
         </div>
       </div>
