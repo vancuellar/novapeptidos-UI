@@ -80,7 +80,6 @@ const Cart = () => {
         <span className="inline-flex items-center gap-1.5 font-medium"><BadgePercent className="h-4 w-4 text-[hsl(var(--primary))]" /> {t('discount.bannerTitle')}</span>
         <span className="rounded-full bg-[hsl(var(--primary))]/10 text-[hsl(var(--primary))] font-medium px-2.5 py-0.5">−10% {t('discount.launch')}</span>
         <span className="rounded-full bg-[hsl(var(--primary))]/10 text-[hsl(var(--primary))] font-medium px-2.5 py-0.5">−15% {t('discount.from20k')}</span>
-        <span className="rounded-full bg-[hsl(var(--primary))]/10 text-[hsl(var(--primary))] font-medium px-2.5 py-0.5">−20% {t('discount.from40k')}</span>
         <span className="text-muted-foreground">{t('discount.noCode')}</span>
       </div>
       <div className="grid lg:grid-cols-12 gap-6">
