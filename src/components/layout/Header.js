@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { User, Menu, LogOut, LayoutDashboard, ChevronDown, Search, ShoppingCart, Moon, Sun, SlidersHorizontal, Home, LayoutGrid, BadgeCheck, GraduationCap, MessageCircle, Calculator, Sparkles, FlaskConical, Flame, Activity, HeartPulse, Hourglass, HeartHandshake, Brain, ShieldPlus, Package } from 'lucide-react';
+import { User, Menu, LogOut, Bell, LayoutDashboard, ChevronDown, Search, ShoppingCart, Moon, Sun, SlidersHorizontal, Home, LayoutGrid, BadgeCheck, GraduationCap, MessageCircle, Calculator, Sparkles, FlaskConical, Flame, Activity, HeartPulse, Hourglass, HeartHandshake, Brain, ShieldPlus, Package } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Sheet, SheetContent, SheetTrigger, SheetHeader, SheetTitle } from '@/components/ui/sheet';
@@ -79,10 +79,21 @@ const Header = () => {
   const [search, setSearch] = useState('');
   const [categories, setCategories] = useState([]);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [unread, setUnread] = useState(0);
   const [scrolled, setScrolled] = useState(false);
 
   // Como Resend: la barra nace transparente y fundida con el hero; solo al
   // hacer scroll gana fondo con blur para que el contenido no se le encime.
+  useEffect(() => {
+    if (!user) { setUnread(0); return; }
+    let alive = true;
+    const load = () => api.get('/me/notifications')
+      .then((r) => { if (alive) setUnread(r.data.unread || 0); }).catch(() => {});
+    load();
+    const id = setInterval(load, 60000);   // refresca cada minuto
+    return () => { alive = false; clearInterval(id); };
+  }, [user]);
+
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 8);
     onScroll();
@@ -324,9 +335,10 @@ const Header = () => {
             {user ? (
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <Button variant="ghost" data-testid="header-account-button" className="gap-2 px-2 sm:px-3">
+                  <Button variant="ghost" data-testid="header-account-button" className="relative gap-2 px-2 sm:px-3">
                     <User className="h-5 w-5" />
                     <span className="hidden sm:inline max-w-[120px] truncate text-sm">{(user.name || '').split(' ')[0]}</span>
+                  {unread > 0 && <span className="absolute -top-0.5 -right-0.5 h-2.5 w-2.5 rounded-full bg-[hsl(var(--primary))] ring-2 ring-[hsl(var(--background))]" data-testid="header-news-dot" />}
                   </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end" className="w-52">
@@ -339,6 +351,14 @@ const Header = () => {
                   {['distributor', 'admin'].includes(user.role) && (
                     <DropdownMenuItem onClick={() => navigate('/distribuidor')} data-testid="header-distributor-link"><LayoutDashboard className="h-4 w-4 mr-2" /> {t('header.distributor')}</DropdownMenuItem>
                   )}
+                  <DropdownMenuItem onClick={() => navigate(user.role === 'admin' ? '/admin?tab=news' : user.role === 'distributor' ? '/distribuidor?tab=news' : '/cuenta?tab=news')} data-testid="header-news-link">
+                    <Bell className="h-4 w-4 mr-2" /> {t('news.tab')}
+                    {unread > 0 && (
+                      <span className="ml-auto inline-flex h-5 min-w-[1.25rem] items-center justify-center rounded-full bg-[hsl(var(--primary))] px-1.5 text-[11px] font-semibold text-[hsl(var(--primary-foreground))]" data-testid="header-news-badge">
+                        {unread > 99 ? '99+' : unread}
+                      </span>
+                    )}
+                  </DropdownMenuItem>
                   <DropdownMenuItem onClick={() => navigate('/tutoriales')} data-testid="header-tutorials-link"><GraduationCap className="h-4 w-4 mr-2" /> {t('header.tutorials')}</DropdownMenuItem>
                   <DropdownMenuSeparator />
                   <DropdownMenuItem onClick={() => { logout(); navigate('/'); }} data-testid="header-logout-button" className="text-destructive focus:text-destructive [&_svg]:text-destructive"><LogOut className="h-4 w-4 mr-2" /> {t('header.logout')}</DropdownMenuItem>

@@ -1316,7 +1316,13 @@ export const fallbackProducts = [
     "storage": "Conservar a -20 °C, protegido de la luz. Reconstituido: 2–8 °C.",
     "start_dose": null,
     "start_unit": null,
-    "start_levels": null,
+    "start_levels": {
+      "inicial": 10,
+      "tipica": 20,
+      "avanzada": 28,
+      "unit": "mg",
+      "orientativa": true
+    },
     "featured": false,
     "is_new": false
   },
@@ -1540,7 +1546,13 @@ export const fallbackProducts = [
     "storage": "Conservar a -20 °C, protegido de la luz. Reconstituido: 2–8 °C.",
     "start_dose": null,
     "start_unit": null,
-    "start_levels": null,
+    "start_levels": {
+      "inicial": 1075,
+      "tipica": 2150,
+      "avanzada": 6450,
+      "unit": "mg",
+      "orientativa": true
+    },
     "featured": false,
     "is_new": false
   },
@@ -1626,7 +1638,13 @@ export const fallbackProducts = [
     "storage": "Conservar a -20 °C, protegido de la luz. Reconstituido: 2–8 °C.",
     "start_dose": null,
     "start_unit": null,
-    "start_levels": null,
+    "start_levels": {
+      "inicial": 1,
+      "tipica": 3,
+      "avanzada": 5,
+      "unit": "mg",
+      "orientativa": true
+    },
     "featured": false,
     "is_new": false
   },
@@ -1660,7 +1678,13 @@ export const fallbackProducts = [
     "storage": "Conservar a -20 °C, protegido de la luz. Reconstituido: 2–8 °C.",
     "start_dose": null,
     "start_unit": null,
-    "start_levels": null,
+    "start_levels": {
+      "inicial": 750,
+      "tipica": 1500,
+      "avanzada": 1800,
+      "unit": "mcg",
+      "orientativa": true
+    },
     "featured": false,
     "is_new": false
   },
@@ -1734,7 +1758,13 @@ export const fallbackProducts = [
     "storage": "Conservar a -20 °C, protegido de la luz. Reconstituido: 2–8 °C.",
     "start_dose": null,
     "start_unit": null,
-    "start_levels": null,
+    "start_levels": {
+      "inicial": 10,
+      "tipica": 20,
+      "avanzada": 25,
+      "unit": "mcg",
+      "orientativa": true
+    },
     "featured": false,
     "is_new": false
   },
@@ -1768,7 +1798,13 @@ export const fallbackProducts = [
     "storage": "Conservar a -20 °C, protegido de la luz. Reconstituido: 2–8 °C.",
     "start_dose": null,
     "start_unit": null,
-    "start_levels": null,
+    "start_levels": {
+      "inicial": 3,
+      "tipica": 6,
+      "avanzada": 10,
+      "unit": "mg",
+      "orientativa": true
+    },
     "featured": false,
     "is_new": false
   },
@@ -1974,7 +2010,13 @@ export const fallbackProducts = [
     "storage": "Conservar a -20 °C, protegido de la luz. Reconstituido: 2–8 °C.",
     "start_dose": null,
     "start_unit": null,
-    "start_levels": null,
+    "start_levels": {
+      "inicial": 500,
+      "tipica": 1000,
+      "avanzada": 1400,
+      "unit": "mcg",
+      "orientativa": true
+    },
     "featured": false,
     "is_new": false
   },
@@ -2697,7 +2739,13 @@ export const fallbackProducts = [
     "storage": "Conservar a -20 °C, protegido de la luz. Reconstituido: 2–8 °C.",
     "start_dose": null,
     "start_unit": null,
-    "start_levels": null,
+    "start_levels": {
+      "inicial": 50,
+      "tipica": 100,
+      "avanzada": 150,
+      "unit": "mg",
+      "orientativa": true
+    },
     "featured": false,
     "is_new": false
   },
@@ -2783,7 +2831,13 @@ export const fallbackProducts = [
     "storage": "Conservar a -20 °C, protegido de la luz. Reconstituido: 2–8 °C.",
     "start_dose": null,
     "start_unit": null,
-    "start_levels": null,
+    "start_levels": {
+      "inicial": 350,
+      "tipica": 1400,
+      "avanzada": 2940,
+      "unit": "mg",
+      "orientativa": true
+    },
     "featured": false,
     "is_new": false
   },
@@ -4352,7 +4406,13 @@ export const fallbackProducts = [
     "storage": "Conservar a -20 °C, protegido de la luz. Reconstituido: 2–8 °C.",
     "start_dose": null,
     "start_unit": null,
-    "start_levels": null,
+    "start_levels": {
+      "inicial": 50,
+      "tipica": 100,
+      "avanzada": 200,
+      "unit": "mcg",
+      "orientativa": true
+    },
     "featured": false,
     "is_new": false
   },

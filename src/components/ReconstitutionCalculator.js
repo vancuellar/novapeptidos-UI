@@ -437,6 +437,11 @@ const ReconstitutionCalculator = ({ variant = 'full', purchased = [], onTrack, s
                 })}
               </div>
             )}
+            {levels?.orientativa && (
+              <p className="text-[11px] text-[hsl(var(--warning-foreground))] mt-1.5" data-testid="calc-orientative-note">
+                {t('calc.orientativeNote')}
+              </p>
+            )}
             {full && hasRef && <p className="text-[11px] text-muted-foreground mt-1.5">{t('calc.refNote')}</p>}
           </div>
 

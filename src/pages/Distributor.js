@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useCallback } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { Store, Users, DollarSign, TrendingUp, ShoppingBag, Copy, Percent, Truck, ExternalLink, FileText, Award, Ticket, RefreshCw, Bell } from 'lucide-react';
 import { ResponsiveContainer, AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip } from 'recharts';
 import { Button } from '@/components/ui/button';
@@ -48,6 +48,7 @@ const Distributor = () => {
   const [maxDiscount, setMaxDiscount] = useState(0);
   const [rotateDays, setRotateDays] = useState(30);
   const [notifUnread, setNotifUnread] = useState(0);
+  const [params, setParams] = useSearchParams();
 
   useEffect(() => {
     if (!loading && (!user || !['distributor', 'admin'].includes(user.role))) navigate('/login');
@@ -139,7 +140,8 @@ const Distributor = () => {
         )}
       </div>
 
-      <Tabs defaultValue="overview" className="lg:flex lg:gap-8 lg:items-start">
+      <Tabs value={params.get('tab') || 'overview'} onValueChange={(v) => setParams(v === 'overview' ? {} : { tab: v }, { replace: true })}
+        className="lg:flex lg:gap-8 lg:items-start">
         <DashboardSidebar items={[
           { value: 'overview', icon: TrendingUp, label: t('distributor.overviewTab') },
           { value: 'news', icon: Bell, label: t('news.tab') + (notifUnread ? ` (${notifUnread})` : '') },

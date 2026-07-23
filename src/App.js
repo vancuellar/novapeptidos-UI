@@ -22,6 +22,7 @@ import Login from '@/pages/Login';
 import Account from '@/pages/Account';
 import Distributor from '@/pages/Distributor';
 import Tutorials from '@/pages/Tutorials';
+import ViewAsBanner from '@/components/ViewAsBanner';
 import ForgotPassword from '@/pages/ForgotPassword';
 import ResetPassword from '@/pages/ResetPassword';
 import ConfirmEmail from '@/pages/ConfirmEmail';
@@ -59,7 +60,7 @@ function App() {
           <AuthProvider>
             <CartProvider>
               <BrowserRouter basename={process.env.PUBLIC_URL || '/'}>
-                <SiteChrome><Header /></SiteChrome>
+                <SiteChrome><ViewAsBanner /><Header /></SiteChrome>
                 <main className="min-h-[70vh]">
                   <Routes>
                     <Route path="/" element={<Home />} />

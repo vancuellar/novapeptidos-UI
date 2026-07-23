@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useCallback } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { LayoutDashboard, Package, ShoppingBag, Plus, Pencil, Trash2, DollarSign, Users, Clock, TrendingUp, MapPin, Phone, Receipt, Store, Copy, Boxes, Truck, RefreshCw, MailCheck, Ban, Megaphone } from 'lucide-react';
+import { useNavigate, useSearchParams } from 'react-router-dom';
+import { Eye, LayoutDashboard, Package, ShoppingBag, Plus, Pencil, Trash2, DollarSign, Users, Clock, TrendingUp, MapPin, Phone, Receipt, Store, Copy, Boxes, Truck, RefreshCw, MailCheck, Ban, Megaphone } from 'lucide-react';
 import { fallbackProducts } from '@/data/fallbackCatalog';
 import { ResponsiveContainer, AreaChart, Area, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip } from 'recharts';
 import { Button } from '@/components/ui/button';
@@ -81,6 +81,7 @@ const Admin = () => {
   const [customers, setCustomers] = useState([]);
   const [analytics, setAnalytics] = useState(null);
   const [customerOpen, setCustomerOpen] = useState(null);
+  const [params, setParams] = useSearchParams();
   const [customerDetail, setCustomerDetail] = useState(null);   // ficha extendida del cliente abierto
   const [couponForm, setCouponForm] = useState({ pct: 10, days: 30, note: '' });
   const [giftForm, setGiftForm] = useState({ points: 100, note: '' });
@@ -215,6 +216,15 @@ const Admin = () => {
     } catch { toast.error(t('admin.receipt.none')); }
   };
 
+  // "Ver como": guarda el token de admin, entra con el token temporal (solo lectura).
+  const viewAs = async (u) => {
+    try {
+      const r = await api.post(`/admin/view-as/${u.id}`);
+      localStorage.setItem('np_token_admin', localStorage.getItem('np_token'));
+      localStorage.setItem('np_token', r.data.token);
+      window.location.href = r.data.role === 'distributor' ? '/distribuidor' : '/cuenta';
+    } catch (e) { toast.error(e.response?.data?.detail || t('admin.ficha.loadError')); }
+  };
   const openDistProfile = async (d) => {
     try { const r = await api.get(`/admin/distributors/${d.id}/detail`); setDistOpen(r.data); }
     catch { toast.error(t('admin.ficha.loadError')); }
@@ -341,7 +351,7 @@ const Admin = () => {
       <h1 className="font-heading text-2xl sm:text-3xl font-bold tracking-tight mb-1 flex items-center gap-2"><LayoutDashboard className="h-6 w-6 text-[hsl(var(--primary))]" /> {t('admin.title')}</h1>
       <p className="text-muted-foreground text-sm mb-6">{t('admin.subtitle')}</p>
 
-      <Tabs defaultValue="sales" className="lg:flex lg:gap-8 lg:items-start">
+      <Tabs value={params.get('tab') || 'sales'} onValueChange={(v) => setParams(v === 'sales' ? {} : { tab: v }, { replace: true })} className="lg:flex lg:gap-8 lg:items-start">
         <DashboardSidebar items={[
           { value: 'sales', icon: TrendingUp, label: t('admin.salesTab') },
           { value: 'customers', icon: Users, label: t('admin.customersTab') },
@@ -525,6 +535,9 @@ const Admin = () => {
                       <Button variant="ghost" size="sm" className={`mr-1 ${c.blocked ? 'text-[hsl(var(--success))]' : 'text-destructive hover:text-destructive'}`}
                         onClick={() => toggleBlocked(c)} data-testid="admin-block-customer-button">
                         <Ban className="h-3.5 w-3.5 mr-1" /> {t(c.blocked ? 'admin.block.unblock' : 'admin.block.block')}
+                      </Button>
+                      <Button variant="ghost" size="sm" className="mr-1" onClick={() => viewAs(c)} data-testid="admin-view-as-customer">
+                        <Eye className="h-3.5 w-3.5" />
                       </Button>
                       <Button variant="outline" size="sm" onClick={() => openCustomerProfile(c)} data-testid="admin-open-customer-button">{t('account.detail')}</Button>
                     </TableCell>
@@ -886,6 +899,9 @@ const Admin = () => {
                 <div>
                   <Button variant="outline" size="sm" onClick={() => { setDistOpen(null); openRates(d); }} data-testid="admin-ficha-edit-rates">
                     <Pencil className="h-3.5 w-3.5 mr-1" /> {t('admin.dist.editRates')}
+                  </Button>
+                  <Button variant="outline" size="sm" className="ml-2" onClick={() => viewAs(d)} data-testid="admin-view-as-dist">
+                    <Eye className="h-3.5 w-3.5 mr-1" /> {t('viewAs.button')}
                   </Button>
                 </div>
                 <div>
