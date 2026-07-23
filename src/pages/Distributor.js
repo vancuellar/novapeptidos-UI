@@ -1,7 +1,6 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Store, Users, DollarSign, TrendingUp, ShoppingBag, Copy, Percent, Truck, ExternalLink, FileText, Award, Ticket, Plus, RefreshCw, Trash2 } from 'lucide-react';
-import { Input } from '@/components/ui/input';
+import { Store, Users, DollarSign, TrendingUp, ShoppingBag, Copy, Percent, Truck, ExternalLink, FileText, Award, Ticket, RefreshCw } from 'lucide-react';
 import { ResponsiveContainer, AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip } from 'recharts';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
@@ -46,15 +45,14 @@ const Distributor = () => {
   const [orderStatus, setOrderStatus] = useState('all');
   const [codes, setCodes] = useState([]);
   const [maxDiscount, setMaxDiscount] = useState(0);
-  const [newLabel, setNewLabel] = useState('');
-  const [newPct, setNewPct] = useState('');
+  const [rotateDays, setRotateDays] = useState(30);
 
   useEffect(() => {
     if (!loading && (!user || !['distributor', 'admin'].includes(user.role))) navigate('/login');
   }, [user, loading, navigate]);
 
   const loadCodes = useCallback(() => {
-    api.get('/distributor/codes').then((r) => { setCodes(r.data.codes || []); setMaxDiscount(r.data.max_discount || 0); }).catch(() => {});
+    api.get('/distributor/codes').then((r) => { setCodes(r.data.codes || []); setMaxDiscount(r.data.max_discount || 0); setRotateDays(r.data.rotate_days || 30); }).catch(() => {});
   }, []);
 
   const loadAll = useCallback(() => {
@@ -65,20 +63,8 @@ const Distributor = () => {
     loadCodes();
   }, [loadCodes]);
 
-  const createCode = async () => {
-    const pct = Math.max(0, Math.min(Math.round(maxDiscount * 100), parseInt(newPct, 10) || 0));
-    try {
-      await api.post('/distributor/codes', { label: newLabel.trim(), discount_rate: pct / 100 });
-      setNewLabel(''); setNewPct(''); loadCodes();
-      toast.success(t('distributor.codes.created'));
-    } catch { toast.error(t('distributor.codes.error')); }
-  };
-  const renewCode = async (id) => {
-    try { await api.post(`/distributor/codes/${id}/renew`); loadCodes(); toast.success(t('distributor.codes.renewed')); }
-    catch { toast.error(t('distributor.codes.error')); }
-  };
-  const deactivateCode = async (id) => {
-    try { await api.delete(`/distributor/codes/${id}`); loadCodes(); toast.success(t('distributor.codes.deactivated')); }
+  const rotateAll = async () => {
+    try { await api.post('/distributor/codes/rotate'); loadCodes(); toast.success(t('distributor.codes.renewed')); }
     catch { toast.error(t('distributor.codes.error')); }
   };
   const copyText = (txt) => { navigator.clipboard?.writeText(txt); toast.success(t('distributor.codes.copied')); };
@@ -277,58 +263,35 @@ const Distributor = () => {
         </TabsContent>
 
         <TabsContent value="codes" className="mt-5 space-y-4">
-          <div>
-            <h3 className="font-heading font-semibold">{t('distributor.codes.title')}</h3>
-            <p className="text-sm text-muted-foreground mt-1">{t('distributor.codes.hint', { max: Math.round(maxDiscount * 100) })}</p>
-          </div>
-          {/* Crear un código */}
-          <Card className="p-4">
-            <div className="flex flex-wrap items-end gap-3" data-testid="distributor-code-form">
-              <div className="flex-1 min-w-[160px]">
-                <label className="text-xs text-muted-foreground block mb-1">{t('distributor.codes.label')}</label>
-                <Input value={newLabel} onChange={(e) => setNewLabel(e.target.value)} placeholder={t('distributor.codes.labelPlaceholder')} maxLength={60} />
-              </div>
-              <div className="w-28">
-                <label className="text-xs text-muted-foreground block mb-1">{t('distributor.codes.discount')}</label>
-                <div className="relative">
-                  <Input type="number" min="0" max={Math.round(maxDiscount * 100)} value={newPct} onChange={(e) => setNewPct(e.target.value)} placeholder="0" className="pr-7" />
-                  <span className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-muted-foreground">%</span>
-                </div>
-              </div>
-              <Button onClick={createCode} data-testid="distributor-create-code"><Plus className="h-4 w-4 mr-1.5" /> {t('distributor.codes.create')}</Button>
+          <div className="flex items-start justify-between gap-3 flex-wrap">
+            <div>
+              <h3 className="font-heading font-semibold">{t('distributor.codes.title')}</h3>
+              <p className="text-sm text-muted-foreground mt-1 max-w-2xl">{t('distributor.codes.autoHint', { days: rotateDays })}</p>
             </div>
-            <p className="text-[11px] text-muted-foreground mt-2">{t('distributor.codes.tip')}</p>
-          </Card>
-          {/* Lista de códigos */}
+            <Button variant="outline" size="sm" onClick={rotateAll} data-testid="distributor-rotate-codes"><RefreshCw className="h-4 w-4 mr-1.5" /> {t('distributor.codes.rotateNow')}</Button>
+          </div>
           <Card className="overflow-x-auto">
             <Table data-testid="distributor-codes-table">
               <TableHeader>
                 <TableRow>
-                  <TableHead>{t('distributor.codes.code')}</TableHead><TableHead>{t('distributor.codes.label')}</TableHead>
-                  <TableHead>{t('distributor.codes.discount')}</TableHead><TableHead>{t('distributor.codes.status')}</TableHead>
+                  <TableHead>{t('distributor.codes.discount')}</TableHead>
+                  <TableHead>{t('distributor.codes.code')}</TableHead>
                   <TableHead className="text-right">{t('distributor.codes.actions')}</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
                 {codes.length === 0 ? (
-                  <TableRow><TableCell colSpan={5} className="text-center text-muted-foreground py-8">{t('distributor.codes.none')}</TableCell></TableRow>
+                  <TableRow><TableCell colSpan={3} className="text-center text-muted-foreground py-8">{t('distributor.codes.none')}</TableCell></TableRow>
                 ) : codes.map((c) => (
-                  <TableRow key={c.id} className={c.active && !c.expired ? '' : 'opacity-50'}>
+                  <TableRow key={c.id}>
+                    <TableCell><span className="font-heading text-lg font-bold text-[hsl(var(--primary))]">{Math.round(c.discount_rate * 100)}%</span> <span className="text-xs text-muted-foreground">{t('distributor.codes.off')}</span></TableCell>
                     <TableCell>
                       <button type="button" onClick={() => copyText(c.code)} className="font-mono-tech font-medium hover:text-[hsl(var(--primary))] transition inline-flex items-center gap-1.5">
                         {c.code} <Copy className="h-3.5 w-3.5" />
                       </button>
                     </TableCell>
-                    <TableCell className="text-sm">{c.label || '—'}</TableCell>
-                    <TableCell className="font-medium">{Math.round(c.discount_rate * 100)}%</TableCell>
-                    <TableCell>
-                      {!c.active ? <Badge className="bg-[hsl(var(--muted))] text-[hsl(var(--muted-foreground))] text-[10px]">{t('distributor.codes.inactive')}</Badge>
-                        : c.expired ? <Badge className="bg-[hsl(var(--warning))] text-[hsl(var(--warning-foreground))] text-[10px]">{t('distributor.codes.expired')}</Badge>
-                        : <Badge className="bg-[hsl(var(--success))] text-[hsl(var(--primary-foreground))] text-[10px]">{t('distributor.codes.active')}</Badge>}
-                    </TableCell>
-                    <TableCell className="text-right whitespace-nowrap">
-                      <Button variant="ghost" size="sm" onClick={() => renewCode(c.id)} title={t('distributor.codes.renew')}><RefreshCw className="h-4 w-4" /></Button>
-                      {c.active && <Button variant="ghost" size="sm" onClick={() => deactivateCode(c.id)} title={t('distributor.codes.deactivate')} className="text-[hsl(var(--destructive))]"><Trash2 className="h-4 w-4" /></Button>}
+                    <TableCell className="text-right">
+                      <Button variant="ghost" size="sm" onClick={() => copyText(c.code)}><Copy className="h-4 w-4 mr-1.5" /> {t('distributor.codes.copy')}</Button>
                     </TableCell>
                   </TableRow>
                 ))}
