@@ -934,6 +934,12 @@ export const fallbackProducts = [
         "batch_number": "NP-HGHF10-2601"
       },
       {
+        "presentation": "12 mg",
+        "price": 5419,
+        "stock": 40,
+        "batch_number": "NP-HGHF10-2601"
+      },
+      {
         "presentation": "15 mg",
         "price": 6819,
         "stock": 40,
@@ -4201,6 +4207,12 @@ export const fallbackProducts = [
     "price": 1479,
     "variants": [
       {
+        "presentation": "1,000 IU",
+        "price": 1259,
+        "stock": 40,
+        "batch_number": "NP-HCG2000-2601"
+      },
+      {
         "presentation": "2,000IU",
         "price": 739,
         "stock": 40,
@@ -4361,13 +4373,13 @@ export const fallbackProducts = [
     "variants": [
       {
         "presentation": "3 mL",
-        "price": 199,
+        "price": 179,
         "stock": 40,
         "batch_number": "NP-AGUA3-2601"
       },
       {
         "presentation": "10 mL",
-        "price": 199,
+        "price": 239,
         "stock": 40,
         "batch_number": "NP-AGUA10-2601"
       }
@@ -4400,8 +4412,8 @@ export const fallbackProducts = [
     "price": 2319,
     "variants": [
       {
-        "presentation": "1 mg",
-        "price": 2319,
+        "presentation": "1 mg/mL (10 mL)",
+        "price": 2309,
         "stock": 40,
         "batch_number": "NP-B121-2601"
       }
