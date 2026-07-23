@@ -81,6 +81,10 @@ const Admin = () => {
   const [customers, setCustomers] = useState([]);
   const [analytics, setAnalytics] = useState(null);
   const [customerOpen, setCustomerOpen] = useState(null);
+  const [customerDetail, setCustomerDetail] = useState(null);   // ficha extendida del cliente abierto
+  const [couponForm, setCouponForm] = useState({ pct: 10, days: 30, note: '' });
+  const [giftForm, setGiftForm] = useState({ points: 100, note: '' });
+  const [distOpen, setDistOpen] = useState(null);               // ficha del distribuidor {detalle}
   const [shippingOpen, setShippingOpen] = useState(null);
   const [repurchase, setRepurchase] = useState([]);
   const [distributors, setDistributors] = useState([]);
@@ -211,6 +215,31 @@ const Admin = () => {
     } catch { toast.error(t('admin.receipt.none')); }
   };
 
+  const openDistProfile = async (d) => {
+    try { const r = await api.get(`/admin/distributors/${d.id}/detail`); setDistOpen(r.data); }
+    catch { toast.error(t('admin.ficha.loadError')); }
+  };
+  const openCustomerProfile = async (c) => {
+    setCustomerOpen(c); setCustomerDetail(null);
+    setCouponForm({ pct: 10, days: 30, note: '' }); setGiftForm({ points: 100, note: '' });
+    try { const r = await api.get(`/admin/customers/${c.id}/detail`); setCustomerDetail(r.data); } catch {}
+  };
+  const sendCoupon = async () => {
+    try {
+      const r = await api.post(`/admin/customers/${customerOpen.id}/coupon`,
+        { discount_rate: (Number(couponForm.pct) || 10) / 100, expires_days: Number(couponForm.days) || 30, note: couponForm.note });
+      toast.success(t('admin.ficha.couponSent', { code: r.data.code }));
+      const d = await api.get(`/admin/customers/${customerOpen.id}/detail`); setCustomerDetail(d.data);
+    } catch (e) { toast.error(e.response?.data?.detail || 'Error'); }
+  };
+  const sendGiftPoints = async () => {
+    try {
+      const r = await api.post(`/admin/customers/${customerOpen.id}/gift-points`,
+        { points: Number(giftForm.points) || 0, note: giftForm.note });
+      toast.success(t('admin.ficha.pointsSent', { balance: r.data.points_balance }));
+      const d = await api.get(`/admin/customers/${customerOpen.id}/detail`); setCustomerDetail(d.data);
+    } catch (e) { toast.error(e.response?.data?.detail || 'Error'); }
+  };
   const openRates = (d) => {
     setRatesForm({
       commission: Math.round((d.commission_rate || 0) * 100),
@@ -494,7 +523,7 @@ const Admin = () => {
                         onClick={() => toggleBlocked(c)} data-testid="admin-block-customer-button">
                         <Ban className="h-3.5 w-3.5 mr-1" /> {t(c.blocked ? 'admin.block.unblock' : 'admin.block.block')}
                       </Button>
-                      <Button variant="outline" size="sm" onClick={() => setCustomerOpen(c)} data-testid="admin-open-customer-button">{t('account.detail')}</Button>
+                      <Button variant="outline" size="sm" onClick={() => openCustomerProfile(c)} data-testid="admin-open-customer-button">{t('account.detail')}</Button>
                     </TableCell>
                   </TableRow>
                 ))}
@@ -550,6 +579,9 @@ const Admin = () => {
                     <TableCell>{formatMXN(d.sales_total)}</TableCell>
                     <TableCell className="font-medium text-[hsl(var(--primary))]">{formatMXN(d.earnings)}</TableCell>
                     <TableCell>
+                      <Button variant="outline" size="sm" className="mr-1" onClick={() => openDistProfile(d)} data-testid={`admin-dist-profile-${d.distributor_code}`}>
+                        {t('admin.ficha.open')}
+                      </Button>
                       <Button variant="ghost" size="sm" onClick={() => openRates(d)} data-testid={`admin-dist-edit-${d.distributor_code}`}>
                         <Pencil className="h-3.5 w-3.5 mr-1" /> {t('admin.dist.editRates')}
                       </Button>
@@ -761,9 +793,135 @@ const Admin = () => {
                     </div>
                   ))}
                 </div>
+                {customerDetail && (
+                  <>
+                    <Separator />
+                    <div className="grid grid-cols-3 gap-2 text-center">
+                      <div className="rounded-lg border border-border p-2">
+                        <div className="text-[11px] text-muted-foreground">{t('admin.ficha.paid')}</div>
+                        <div className="font-semibold">{formatMXN(customerDetail.paid_total)}</div>
+                      </div>
+                      <div className="rounded-lg border border-border p-2">
+                        <div className="text-[11px] text-muted-foreground">{t('admin.ficha.paidOrders')}</div>
+                        <div className="font-semibold">{customerDetail.paid_count}</div>
+                      </div>
+                      <div className="rounded-lg border border-border p-2">
+                        <div className="text-[11px] text-muted-foreground">{t('admin.ficha.points')}</div>
+                        <div className="font-semibold">{customerDetail.customer.points_balance}</div>
+                      </div>
+                    </div>
+                    {customerDetail.coupons.length > 0 && (
+                      <div>
+                        <div className="text-xs text-muted-foreground mb-1">{t('admin.ficha.coupons')}</div>
+                        {customerDetail.coupons.map((cp) => (
+                          <div key={cp.code} className="flex items-center justify-between text-xs py-1 border-b border-border last:border-0">
+                            <span className="font-mono-tech">{cp.code}</span>
+                            <span>{Math.round(cp.discount_rate * 100)}%</span>
+                            <Badge variant="outline" className="text-[10px]">{cp.used ? t('admin.ficha.couponUsed') : (cp.active ? t('admin.ficha.couponActive') : t('admin.ficha.couponExpired'))}</Badge>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                    <Separator />
+                    <div className="rounded-xl border border-border p-3 space-y-2" data-testid="admin-send-coupon-box">
+                      <div className="text-xs font-semibold">{t('admin.ficha.sendCoupon')}</div>
+                      <div className="flex items-center gap-2">
+                        <Input type="number" min="5" max="50" className="h-8 w-20" value={couponForm.pct} onChange={(e) => setCouponForm((f) => ({ ...f, pct: e.target.value }))} data-testid="admin-coupon-pct" />
+                        <span className="text-xs text-muted-foreground">% ·</span>
+                        <Input type="number" min="1" className="h-8 w-20" value={couponForm.days} onChange={(e) => setCouponForm((f) => ({ ...f, days: e.target.value }))} data-testid="admin-coupon-days" />
+                        <span className="text-xs text-muted-foreground">{t('admin.ficha.days')}</span>
+                      </div>
+                      <Input className="h-8" placeholder={t('admin.ficha.noteOptional')} value={couponForm.note} onChange={(e) => setCouponForm((f) => ({ ...f, note: e.target.value }))} data-testid="admin-coupon-note" />
+                      <Button size="sm" onClick={sendCoupon} data-testid="admin-coupon-send">{t('admin.ficha.sendCouponBtn')}</Button>
+                    </div>
+                    <div className="rounded-xl border border-border p-3 space-y-2" data-testid="admin-gift-points-box">
+                      <div className="text-xs font-semibold">{t('admin.ficha.giftPoints')}</div>
+                      <div className="flex items-center gap-2">
+                        <Input type="number" min="1" className="h-8 w-28" value={giftForm.points} onChange={(e) => setGiftForm((f) => ({ ...f, points: e.target.value }))} data-testid="admin-gift-points-amount" />
+                        <Input className="h-8 flex-1" placeholder={t('admin.ficha.noteOptional')} value={giftForm.note} onChange={(e) => setGiftForm((f) => ({ ...f, note: e.target.value }))} data-testid="admin-gift-points-note" />
+                      </div>
+                      <Button size="sm" onClick={sendGiftPoints} data-testid="admin-gift-points-send">{t('admin.ficha.giftPointsBtn')}</Button>
+                    </div>
+                  </>
+                )}
               </div>
             </>
           )}
+        </DialogContent>
+      </Dialog>
+
+      <Dialog open={!!distOpen} onOpenChange={(v) => !v && setDistOpen(null)}>
+        <DialogContent className="max-w-3xl max-h-[85vh] overflow-y-auto" data-testid="admin-dist-profile-dialog">
+          {distOpen && (() => { const d = distOpen.distributor; return (
+            <>
+              <DialogHeader>
+                <DialogTitle className="flex items-center gap-2">{d.name}
+                  <Badge variant="outline" className="text-[10px] uppercase">{d.tier || 'junior'}</Badge>
+                </DialogTitle>
+              </DialogHeader>
+              <div className="space-y-5 text-sm">
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 text-center">
+                  <div className="rounded-lg border border-border p-2"><div className="text-[11px] text-muted-foreground">{t('admin.dist.commission')}</div><div className="font-semibold">{Math.round((d.commission_rate || 0) * 100)}%</div></div>
+                  <div className="rounded-lg border border-border p-2"><div className="text-[11px] text-muted-foreground">{t('admin.dist.sales')}</div><div className="font-semibold">{formatMXN(d.sales_total)}</div></div>
+                  <div className="rounded-lg border border-border p-2"><div className="text-[11px] text-muted-foreground">{t('admin.dist.earnings')}</div><div className="font-semibold text-[hsl(var(--primary))]">{formatMXN(d.earnings)}</div></div>
+                  <div className="rounded-lg border border-border p-2"><div className="text-[11px] text-muted-foreground">{t('admin.dist.clients')}</div><div className="font-semibold">{d.clients_count}</div></div>
+                </div>
+                <div className="text-xs text-muted-foreground">{d.email} · <span className="font-mono-tech">{d.distributor_code}</span></div>
+                <div>
+                  <Button variant="outline" size="sm" onClick={() => { setDistOpen(null); openRates(d); }} data-testid="admin-ficha-edit-rates">
+                    <Pencil className="h-3.5 w-3.5 mr-1" /> {t('admin.dist.editRates')}
+                  </Button>
+                </div>
+                <div>
+                  <div className="text-xs font-semibold mb-1">{t('admin.ficha.codes')}</div>
+                  {distOpen.codes.length === 0 ? <div className="text-xs text-muted-foreground">—</div> : distOpen.codes.map((c) => (
+                    <div key={c.id} className="flex items-center justify-between text-xs py-1 border-b border-border last:border-0">
+                      <span className="font-mono-tech">{c.code}</span>
+                      <span>{Math.round((c.discount_rate || 0) * 100)}%</span>
+                      <span className="text-muted-foreground">{c.expires_at ? fmtDate(c.expires_at) : '—'}</span>
+                      <Badge variant="outline" className="text-[10px]">{c.active ? t('admin.ficha.couponActive') : t('admin.ficha.couponExpired')}</Badge>
+                    </div>
+                  ))}
+                </div>
+                {distOpen.subdistributors.length > 0 && (
+                  <div>
+                    <div className="text-xs font-semibold mb-1">{t('admin.ficha.subs')}</div>
+                    {distOpen.subdistributors.map((sd) => (
+                      <div key={sd.id} className="flex items-center justify-between gap-2 text-xs py-1.5 border-b border-border last:border-0">
+                        <div><div className="font-medium">{sd.name}</div><div className="text-muted-foreground">{sd.email}</div></div>
+                        <Badge variant="outline" className="text-[10px] uppercase">{sd.tier}</Badge>
+                        <span>{formatMXN(sd.sales_total)}</span>
+                        <span className="text-muted-foreground">{sd.clients_count} {t('admin.ficha.clientsShort')}</span>
+                      </div>
+                    ))}
+                  </div>
+                )}
+                <div>
+                  <div className="text-xs font-semibold mb-1">{t('admin.ficha.clients')}</div>
+                  {distOpen.clients.length === 0 ? <div className="text-xs text-muted-foreground">{t('admin.customer.noOrders')}</div> : distOpen.clients.map((c) => (
+                    <div key={c.id} className="flex items-center justify-between gap-2 text-xs py-1.5 border-b border-border last:border-0">
+                      <div><div className="font-medium">{c.name}</div><div className="text-muted-foreground">{c.email}</div></div>
+                      <span>{c.orders} {t('admin.ficha.ordersShort')}</span>
+                      <span>{formatMXN(c.total)}</span>
+                      <span className="text-[hsl(var(--primary))]">{formatMXN(c.commission)}</span>
+                    </div>
+                  ))}
+                </div>
+                <div>
+                  <div className="text-xs font-semibold mb-1">{t('admin.ficha.recentSales')}</div>
+                  {distOpen.sales.slice(0, 12).map((o) => (
+                    <div key={o.order_number} className="flex items-center justify-between gap-2 text-xs py-1 border-b border-border last:border-0">
+                      <span className="font-mono-tech">{o.order_number}</span>
+                      <span className="text-muted-foreground">{fmtDate(o.created_at)}</span>
+                      <Badge className={`${STATUS_COLORS[o.status]} text-[10px]`}>{t(`status.${o.status}`)}</Badge>
+                      <span>{formatMXN(o.total)}</span>
+                      <span className="text-[hsl(var(--primary))]">{formatMXN(o.commission)}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </>
+          ); })()}
         </DialogContent>
       </Dialog>
 
