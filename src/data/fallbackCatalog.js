@@ -4373,13 +4373,13 @@ export const fallbackProducts = [
     "variants": [
       {
         "presentation": "3 mL",
-        "price": 179,
+        "price": 199,
         "stock": 40,
         "batch_number": "NP-AGUA3-2601"
       },
       {
         "presentation": "10 mL",
-        "price": 239,
+        "price": 349,
         "stock": 40,
         "batch_number": "NP-AGUA10-2601"
       }
