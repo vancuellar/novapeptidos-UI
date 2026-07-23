@@ -151,7 +151,7 @@ const Distributor = () => {
             </div>
 
             {level.kind === 'top' ? (
-              <p className="text-sm">{t('distributor.level.top', { rate: Math.round((level.rate || 0) * 100) })}</p>
+              <p className="text-sm">{t('distributor.level.top', { tier: tierName(level.current), rate: Math.round((level.rate || 0) * 100) })}</p>
             ) : (
               <>
                 <p className="text-sm font-medium mb-3">{t('distributor.level.toNextTitle', { next: tierName(level.next) })}</p>
