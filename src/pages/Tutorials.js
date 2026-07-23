@@ -4,6 +4,7 @@ import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import { useLanguage } from '@/context/LanguageContext';
+import { useAuth } from '@/context/AuthContext';
 
 const BASE = process.env.PUBLIC_URL || '';
 
@@ -12,49 +13,55 @@ const VIDEOS = [
     src: `${BASE}/videos/tutorial-1-panel-distribuidor.mp4`,
     title: 'Tu panel de distribuidor: resumen y cómo subir de nivel',
     duration: '1:02',
-    audience: 'Distribuidores',
+    audience: 'Distribuidores', role: 'dist',
   },
   {
     src: `${BASE}/videos/tutorial-2-mis-codigos.mp4`,
     title: 'Tus códigos de referido',
     duration: '0:40',
-    audience: 'Distribuidores',
+    audience: 'Distribuidores', role: 'dist',
   },
   {
     src: `${BASE}/videos/tutorial-3-mis-clientes.mp4`,
     title: 'Tus clientes y tu red',
     duration: '0:30',
-    audience: 'Distribuidores',
+    audience: 'Distribuidores', role: 'dist',
   },
   {
     src: `${BASE}/videos/tutorial-4-pedidos-y-ventas.mp4`,
     title: 'Pedidos, envíos y tus ventas',
     duration: '0:35',
-    audience: 'Distribuidores',
+    audience: 'Distribuidores', role: 'dist',
   },
   {
     src: `${BASE}/videos/tutorial-5-novedades.mp4`,
     title: 'Novedades: tu centro de avisos',
     duration: '0:30',
-    audience: 'Distribuidores',
+    audience: 'Distribuidores', role: 'dist',
   },
   {
     src: `${BASE}/videos/tutorial-6-comprar-con-codigo.mp4`,
     title: 'Comprar con código de referido',
     duration: '0:33',
-    audience: 'Clientes',
+    audience: 'Clientes', role: 'client',
   },
   {
     src: `${BASE}/videos/tutorial-7-cuenta-pedidos-puntos.mp4`,
     title: 'Tu cuenta: pedidos y puntos de lealtad',
     duration: '0:39',
-    audience: 'Clientes',
+    audience: 'Clientes', role: 'client',
   },
   {
     src: `${BASE}/videos/tutorial-8-herramientas.mp4`,
     title: 'Herramientas: calculadora, certificados y más',
     duration: '0:37',
-    audience: 'Clientes',
+    audience: 'Clientes', role: 'client',
+  },
+  {
+    src: `${BASE}/videos/tutorial-9-calculadora.mp4`,
+    title: 'La calculadora de reconstitución, paso a paso',
+    duration: '0:50',
+    audience: 'Clientes', role: 'client',
   },
 ];
 
@@ -189,6 +196,10 @@ const GuideAccordion = ({ items, prefix }) => (
 
 export default function Tutorials() {
   const { t } = useLanguage();
+  const { user } = useAuth();
+  // Los videos y la guía de distribuidor solo se muestran a distribuidores/admin.
+  const isDist = !!user && ['distributor', 'admin'].includes(user.role);
+  const videos = VIDEOS.filter((v) => v.role !== 'dist' || isDist);
   return (
     <div className="max-w-[960px] mx-auto px-4 sm:px-6 lg:px-8 py-8">
       <h1 className="font-heading text-2xl sm:text-3xl font-bold tracking-tight mb-1 flex items-center gap-2" data-testid="tutorials-title">
@@ -202,7 +213,7 @@ export default function Tutorials() {
           <PlayCircle className="h-5 w-5 text-[hsl(var(--primary))]" /> {t('tutorials.videos')}
         </h2>
         <div className="grid sm:grid-cols-2 gap-4">
-          {VIDEOS.map((v) => (
+          {videos.map((v) => (
             <Card key={v.src} className="overflow-hidden" data-testid="tutorial-video-card">
               <video controls preload="metadata" className="w-full aspect-video bg-black" src={v.src} />
               <div className="p-4">
@@ -218,6 +229,7 @@ export default function Tutorials() {
       </div>
 
       {/* Guía distribuidor */}
+      {isDist && (
       <Card className="p-6 mb-6" data-testid="tutorials-distributor-guide">
         <h2 className="font-heading text-lg font-bold mb-1 flex items-center gap-2">
           <Store className="h-5 w-5 text-[hsl(var(--primary))]" /> {t('tutorials.distGuide')}
@@ -225,6 +237,7 @@ export default function Tutorials() {
         <p className="text-sm text-muted-foreground mb-3">{t('tutorials.distGuideSub')}</p>
         <GuideAccordion items={DIST_GUIDE} prefix="dist" />
       </Card>
+      )}
 
       {/* Guía cliente */}
       <Card className="p-6" data-testid="tutorials-client-guide">
