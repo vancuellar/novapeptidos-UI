@@ -197,9 +197,30 @@ const GuideAccordion = ({ items, prefix }) => (
 export default function Tutorials() {
   const { t } = useLanguage();
   const { user } = useAuth();
-  // Los videos y la guía de distribuidor solo se muestran a distribuidores/admin.
+  // Tutoriales = solo miembros. Visitantes ven únicamente la invitación a entrar.
+  // La guía y videos de distribuidor solo se muestran a distribuidores/admin.
   const isDist = !!user && ['distributor', 'admin'].includes(user.role);
   const videos = VIDEOS.filter((v) => v.role !== 'dist' || isDist);
+
+  if (!user) {
+    return (
+      <div className="max-w-[960px] mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <h1 className="font-heading text-2xl sm:text-3xl font-bold tracking-tight mb-1 flex items-center gap-2" data-testid="tutorials-title">
+          <GraduationCap className="h-6 w-6 text-[hsl(var(--primary))]" /> {t('tutorials.title')}
+        </h1>
+        <p className="text-muted-foreground text-sm mb-8">{t('tutorials.subtitle')}</p>
+        <Card className="p-10 text-center" data-testid="tutorials-login-gate">
+          <PlayCircle className="h-8 w-8 mx-auto mb-4 text-muted-foreground opacity-50" />
+          <h2 className="font-heading font-semibold text-lg mb-2">{t('tutorials.membersTitle')}</h2>
+          <p className="text-sm text-muted-foreground max-w-md mx-auto leading-relaxed mb-5">{t('tutorials.membersBody')}</p>
+          <a href={`${BASE}/login`} className="inline-flex items-center justify-center rounded-xl bg-[hsl(var(--primary))] text-[hsl(var(--primary-foreground))] font-semibold px-6 py-2.5 text-sm hover:opacity-90 transition-opacity" data-testid="tutorials-login-cta">
+            {t('tutorials.membersCta')}
+          </a>
+        </Card>
+      </div>
+    );
+  }
+
   return (
     <div className="max-w-[960px] mx-auto px-4 sm:px-6 lg:px-8 py-8">
       <h1 className="font-heading text-2xl sm:text-3xl font-bold tracking-tight mb-1 flex items-center gap-2" data-testid="tutorials-title">
