@@ -14,6 +14,48 @@ const VIDEOS = [
     duration: '1:02',
     audience: 'Distribuidores',
   },
+  {
+    src: `${BASE}/videos/tutorial-2-mis-codigos.mp4`,
+    title: 'Tus códigos de referido',
+    duration: '0:40',
+    audience: 'Distribuidores',
+  },
+  {
+    src: `${BASE}/videos/tutorial-3-mis-clientes.mp4`,
+    title: 'Tus clientes y tu red',
+    duration: '0:30',
+    audience: 'Distribuidores',
+  },
+  {
+    src: `${BASE}/videos/tutorial-4-pedidos-y-ventas.mp4`,
+    title: 'Pedidos, envíos y tus ventas',
+    duration: '0:35',
+    audience: 'Distribuidores',
+  },
+  {
+    src: `${BASE}/videos/tutorial-5-novedades.mp4`,
+    title: 'Novedades: tu centro de avisos',
+    duration: '0:30',
+    audience: 'Distribuidores',
+  },
+  {
+    src: `${BASE}/videos/tutorial-6-comprar-con-codigo.mp4`,
+    title: 'Comprar con código de referido',
+    duration: '0:33',
+    audience: 'Clientes',
+  },
+  {
+    src: `${BASE}/videos/tutorial-7-cuenta-pedidos-puntos.mp4`,
+    title: 'Tu cuenta: pedidos y puntos de lealtad',
+    duration: '0:39',
+    audience: 'Clientes',
+  },
+  {
+    src: `${BASE}/videos/tutorial-8-herramientas.mp4`,
+    title: 'Herramientas: calculadora, certificados y más',
+    duration: '0:37',
+    audience: 'Clientes',
+  },
 ];
 
 // Guía escrita del panel de distribuidor
@@ -172,9 +214,6 @@ export default function Tutorials() {
               </div>
             </Card>
           ))}
-          <Card className="flex items-center justify-center p-6 border-dashed text-sm text-muted-foreground" data-testid="tutorial-video-soon">
-            {t('tutorials.moreSoon')}
-          </Card>
         </div>
       </div>
 
