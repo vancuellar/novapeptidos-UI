@@ -1,8 +1,57 @@
 # Exygen Labs — Website Continuation File
 
-> **Propósito:** fuente única de verdad del SITIO WEB (frontend, backend, IA, marca, despliegue). Pega este archivo en un chat nuevo para retomar con todo el contexto. Complementa a `../NOVA-PRICING-SYSTEM-CONTINUATION.md` (el sistema de precios). **Última actualización: 2026-07-21 (noche).** Empieza por la sección 🚩 LO PRIMERO QUE DEBE HACER EL PRÓXIMO CHAT.
+> **Propósito:** fuente única de verdad del SITIO WEB (frontend, backend, IA, marca, despliegue). Pega este archivo en un chat nuevo para retomar con todo el contexto. Complementa a `../NOVA-PRICING-SYSTEM-CONTINUATION.md` (el sistema de precios). **Última actualización: 2026-07-23.** Empieza por la sección 🤝 HANDOFF — ESTADO AL 2026-07-23.
 
 > **Estilo con Christian:** abogado, no dev ("abogado de 95 años haciendo vibe coding"). Respuestas **ultra cortas, español claro, sin jerga**. Corre TÚ los comandos (nunca le pidas abrir terminal). Términos de git en inglés (commit, push, merge — no "commitear").
+
+---
+
+## 🤝 HANDOFF — ESTADO AL 2026-07-23
+
+### Infraestructura (SÍ hay backend robusto)
+- **Frontend:** React (repo `novapeptidos-UI`, GitHub `vancuellar/novapeptidos-UI`) → GitHub Pages → **exygenlabs.com**. Deploy = commit directo a `main` → Actions publica (~1-2 min). Build: `CI=true npm run build`.
+- **Backend:** FastAPI (Python) + MongoDB (repo `novapeptidos-RBAC`, público) en **EC2 `44.204.127.242` (cuenta AWS certis)**, API en **api.exygenlabs.com**. Deploy = `ssh -i ~/.ssh/id_ed25519 ubuntu@44.204.127.242 "cd /opt/exygen/app && sudo git pull && sudo docker compose up -d --build"`.
+  - **OJO SSH:** el SG `sg-09f6bd49dc4ea40d3` abre el puerto 22 solo a IPs autorizadas. Cada sesión nueva debe agregar su IP: `aws ec2 authorize-security-group-ingress --group-id sg-09f6bd49dc4ea40d3 --protocol tcp --port 22 --cidr <MI_IP>/32 --profile certis --region us-east-1` (correr el comando **solo**, sin `$(...)`, o el clasificador lo bloquea). **Revocar al terminar** (`revoke-...`). El clasificador BLOQUEA ejecutar código suelto en prod por ssh (docker exec python) → para sembrar/cambiar datos usa endpoints del API, no scripts remotos.
+  - **Pruebas backend:** `docker run -d --name m -p 27017:27017 mongo:7`; luego `MONGO_URL=mongodb://localhost:27017 DB_NAME=x .venv/bin/python -m pytest test_core.py -q`. **88 pruebas, todas en verde.**
+- **Llaves/config:** todas en `~/.config/exygen/*.env` (cloudflare, resend, gemini, google, nowpayments, spei). NUNCA en repos.
+- **Login admin de Christian:** `admin@exygenlabs.com` / `Exygen-c914cfd1!` (sin 2FA aún; acceso a los 3 paneles).
+
+### Datos DEMO sembrados (para ver los paneles en vivo). Contraseña de todos: `Demo-1234!`
+- Endpoint temporal **`POST /admin/seed-demo`** (solo admin, idempotente, marca `seed:true`; `?clear=true` borra). **QUITAR tras las demos.**
+- Árbol: **María (Master)** > **Luis (Senior)** > 4 juniors (Ana/Beto/Caro/Dani). Logins: `maria.demo@` `luis.demo@` `ana.demo@` `carlos.demo@` (cliente) exygenlabs.com.
+- **Luis es el mejor para el video:** barras de nivel a ~50% (ventas equipo $4.29M/$10M, reclutas 4/8), 3 códigos, y novedades.
+
+### ✅ CONSTRUIDO Y EN VIVO EN ESTA TANDA (2026-07-22/23)
+1. **Calculadora arreglada** (crash con Retatrutida = bug de orden de variable, no el rango). **Dosis de referencia (start_levels) en 63/90 productos** + **frecuencia** ("cada cuándo") en frase simple ("PARA EMPEZAR · RUO — aplica X, [frecuencia]"). Faltan 27 sin literatura → ver pendientes.
+2. **Distribuidores con full access** a las herramientas de Mi cuenta.
+3. **Correo propio de distribuidor** (bienvenida al programa + código de referido).
+4. **Atribución SOLO por código** (regla Christian): una venta cuenta al distribuidor únicamente si esa compra usó su código.
+5. **PIRÁMIDE COMPLETA (6 niveles, override DIFERENCIAL):** Junior 0 (20%) · Junior 1 (25%) · Senior (30%) · Master (35%) · Elite (40%) · **Diamond (43%, SECRETO)**. La tasa ES la comisión Y el descuento máximo. Override diferencial: cada upline gana la diferencia; total = tasa del más alto de la cadena; el descuento sale de la tajada del vendedor. `pyramid.py` puro + 88 pruebas.
+   - **Barra de subir de nivel** con DOS metas (ventas + reclutas activos). Umbrales (constantes en `pyramid.LEVEL_STEPS`, ajustables): Jr0→Jr1 $500k/2 · Jr1→Senior $3M/4 · Senior→Master $10M equipo/8 · Master→Elite $30M equipo/16.
+   - **Diamond secreto:** no está en la escalera visible (tope visible = Elite). Se desbloquea a **$50M equipo + >32 activos**; el admin ve `diamond_eligible` en Admin>Distribuidores y lo otorga a mano (`PUT /admin/distributors/{id}/pyramid`).
+6. **Códigos de descuento AUTO-generados por nivel** (`pyramid.discount_tiers_for`): 15% y sube de 5% en 5% hasta 5% debajo de su comisión (Senior=15/20/25; Diamond=15…35,38). El sistema los crea; el distribuidor solo copia el que da. Opacos (`LUISSE-15-XXXX`, no adivinables), **rotan cada 90 días** (`CODE_TTL_DAYS`), pestaña "Mis códigos" solo-lectura + "Renovar ahora".
+7. **CENTRO DE NOTICIAS / notificaciones.** Feed por usuario (`GET /me/notifications` + globito de no-leídas + `POST /me/notifications/seen`). **Automáticas:** cliente (pedido entregado, pago confirmado, producto por terminarse según dosis); distribuidor (nueva venta suya/de su equipo con cuánto ganó, subió de nivel). **Avisos del admin** (pestaña Novedades en Admin): título+mensaje, audiencia Todos/Clientes/Distribuidores, opción de correo. Pestaña "Novedades" en los 3 paneles.
+8. **Lealtad (confirmado, ya cumple lo pedido):** los puntos **NO caducan** (sin lógica de expiración) y una **cancelación/devolución revierte** los puntos ganados y devuelve los canjeados (`revoke_order_points`). Tasa 3%.
+
+### 🎯 PRIORIDADES DE CONSTRUCCIÓN (orden de Christian, 2026-07-23)
+- **00 — PRIMER VIDEO orientativo para distribuidores nuevos** (niveles, cómo subir, panel: clientes, invitar subs). Con **Higgsfield** (ya autenticado como `christiancuellar@gmail.com`). **OJO: plan GRATIS, ~10 créditos → 1-2 videos; para varios, recargar.** Reto técnico abierto: animar screenshots reales requiere el archivo de imagen (las capturas del navegador llegan inline, no como archivo) → o se genera ilustrativo por prompt, o Christian baja capturas y las anima. Usar el panel de **Luis** (barras a ~50%).
+- **Luego — dosis orientativas para los 27 productos** sin literatura (Christian aprobó "rango orientativo, marcado sin literatura firme"). Los 27: AHK-Cu, Matrixyl, SNAP-8, Fragment 17-23, FOXO4, Cerebrolysin, Melatonina, Orexin A/B, PE-22-28, PNC-27, ACTH 1-39, ADMAX, B7-33, MIC, P21, 10/5-amino-1MQ, Adipotide, AICAR, SLU-PP-332, ACE-031, GDF-8, PTD-1, PTD-DBM, Dermorphin, Triptorelin.
+- **Luego — Admin "ver como" distribuidor/cliente** (ver TODO lo que ellos ven, solo lectura). NOTA: hoy ya se puede entrar con los logins demo; falta el "ver como" real (impersonar sin salir de la sesión admin).
+
+### 🔨 PENDIENTES NUEVOS DE CHRISTIAN (2026-07-23) — por construir
+- **Novedades en el dropdown del Perfil** (además/en vez de la pestaña): que se llegue a las novedades desde el menú de perfil del header, con globito de no-leídas.
+- **Passkey con huella / Face ID (retina):** "Entrar con llave de acceso" NO funciona bien; Christian quiere que sea **biométrico en el teléfono** (Touch ID / Face ID), mucho más fácil. Ajustar WebAuthn para **preferir el autenticador de plataforma** (`authenticatorAttachment: 'platform'`, `userVerification`) en registro y login. OJO: no se puede probar biometría en el entorno de Claude; probar en su teléfono.
+
+### 📥 DEL LADO DE CHRISTIAN (decisiones / datos / trámites)
+- **Pagos tarjeta:** esperando Instabill/Corepay (offshore alto riesgo); **NOWPayments** (cripto) está EN VIVO pero **falta prender las monedas** en su panel (Settings>Coins) + KYB, si no, cripto no cobra.
+- **Chat IA:** activar **facturación de Gemini** (hoy gratis, 20 mensajes/día, se cae).
+- **Seguridad:** activar su **2FA de admin** (Mi cuenta > Perfil).
+- **Legales:** revisar términos/privacidad + poner **domicilio del responsable** + decidir INAI (suyo, es abogado).
+- **Envíos automáticos:** mandar lista de productos a **Skydropx/FedEx** para clasificación por escrito (SDS/MSDS) + Carta Porte; luego integrar (Skydropx primario).
+- **Correos del negocio (recomendación):** ya tiene `hola@` (general/remitente) y `admin@`. Crear: **soporte@** (atención a clientes), **pedidos@** (pedidos/envíos/comprobantes SPEI), **distribuidores@** (canal). Opcionales: **mayoreo@** o **ventas@** (prospectos de distribuidor) y **facturacion@** (CFDI). Recepción **gratis** con **Cloudflare Email Routing** (el DNS ya está en Cloudflare); Resend solo envía.
+- **Dominios nuevos comprados (2026-07-23):** `exygenpeptides.com`, `exygenlabs.mx`, `exygenpeptides.mx` (Christian escribió "exigenpeptides.mx" — CONFIRMAR ortografía exacta). **Todos deben redirigir (301) a exygenlabs.com.** Ver dónde están (Cloudflare/GoDaddy) y poner forwarding. Sumar a la lista de dominios `nova*` que también faltan redirigir.
+- **Datos que dará Christian:** URLs de Instagram/Facebook (`src/lib/contact.js`), teléfono nuevo (hoy oculto, `WHATSAPP_URL=null`).
+- **Buzones + sync de catálogo:** decidir si correr `pricing-system/sync_backend.py` para dejar los 198 idénticos a la maestra.
 
 ---
 
