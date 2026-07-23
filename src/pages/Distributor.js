@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Store, Users, DollarSign, TrendingUp, ShoppingBag, Copy, Percent, Truck, ExternalLink, FileText, Award, Ticket, RefreshCw } from 'lucide-react';
+import { Store, Users, DollarSign, TrendingUp, ShoppingBag, Copy, Percent, Truck, ExternalLink, FileText, Award, Ticket, RefreshCw, Bell } from 'lucide-react';
 import { ResponsiveContainer, AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip } from 'recharts';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
@@ -8,6 +8,7 @@ import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent } from '@/components/ui/tabs';
 import DashboardSidebar from '@/components/layout/DashboardSidebar';
 import CoaLibrary from '@/components/CoaLibrary';
+import NotificationsFeed from '@/components/NotificationsFeed';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { toast } from 'sonner';
@@ -46,6 +47,7 @@ const Distributor = () => {
   const [codes, setCodes] = useState([]);
   const [maxDiscount, setMaxDiscount] = useState(0);
   const [rotateDays, setRotateDays] = useState(30);
+  const [notifUnread, setNotifUnread] = useState(0);
 
   useEffect(() => {
     if (!loading && (!user || !['distributor', 'admin'].includes(user.role))) navigate('/login');
@@ -60,6 +62,7 @@ const Distributor = () => {
     api.get('/distributor/clients').then((r) => setClients(r.data)).catch(() => {});
     api.get('/distributor/sales').then((r) => setSales(r.data)).catch(() => {});
     api.get('/distributor/orders').then((r) => setOrders(r.data)).catch(() => {});
+    api.get('/me/notifications').then((r) => setNotifUnread(r.data.unread || 0)).catch(() => {});
     loadCodes();
   }, [loadCodes]);
 
@@ -139,6 +142,7 @@ const Distributor = () => {
       <Tabs defaultValue="overview" className="lg:flex lg:gap-8 lg:items-start">
         <DashboardSidebar items={[
           { value: 'overview', icon: TrendingUp, label: t('distributor.overviewTab') },
+          { value: 'news', icon: Bell, label: t('news.tab') + (notifUnread ? ` (${notifUnread})` : '') },
           { value: 'codes', icon: Ticket, label: t('distributor.codesTab') },
           { value: 'clients', icon: Users, label: t('distributor.clientsTab') },
           { value: 'orders', icon: Truck, label: t('distributor.ordersTab') },
@@ -260,6 +264,11 @@ const Distributor = () => {
               </TableBody>
             </Table>
           </Card>
+        </TabsContent>
+
+        <TabsContent value="news" className="mt-5">
+          <h3 className="font-heading font-semibold mb-4">{t('news.tab')}</h3>
+          <NotificationsFeed onSeen={() => setNotifUnread(0)} />
         </TabsContent>
 
         <TabsContent value="codes" className="mt-5 space-y-4">

@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import { useNavigate, useSearchParams, Link } from 'react-router-dom';
-import { Package, User, LogOut, ShoppingBag, DollarSign, MapPin, CreditCard, LockKeyhole, Eye, EyeOff, Syringe, Truck, ExternalLink, Lock, FlaskConical, FileText, Coins } from 'lucide-react';
+import { Package, User, LogOut, ShoppingBag, DollarSign, MapPin, CreditCard, LockKeyhole, Eye, EyeOff, Syringe, Truck, ExternalLink, Lock, FlaskConical, FileText, Coins, Bell } from 'lucide-react';
 import ReconstitutionCalculator, { mgProducts } from '@/components/ReconstitutionCalculator';
 import ProtocolTracker from '@/components/ProtocolTracker';
 import LabReports from '@/components/LabReports';
@@ -12,6 +12,7 @@ import { Label } from '@/components/ui/label';
 import { Tabs, TabsContent } from '@/components/ui/tabs';
 import DashboardSidebar from '@/components/layout/DashboardSidebar';
 import CoaLibrary from '@/components/CoaLibrary';
+import NotificationsFeed from '@/components/NotificationsFeed';
 import SecurityKeys from '@/components/SecurityKeys';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
@@ -57,6 +58,7 @@ const Account = () => {
   const navigate = useNavigate();
   const [orders, setOrders] = useState([]);
   const [protocols, setProtocols] = useState([]);
+  const [notifUnread, setNotifUnread] = useState(0);
   const [loyalty, setLoyalty] = useState({ eligible: false, balance: 0, ledger: [] });
   const [saving, setSaving] = useState(false);
   const [params, setParams] = useSearchParams();
@@ -93,6 +95,7 @@ const Account = () => {
     if (user) {
       api.get('/orders/me').then((r) => setOrders(r.data)).catch(() => {});
       api.get('/me/points').then((r) => setLoyalty(r.data)).catch(() => {});
+      api.get('/me/notifications').then((r) => setNotifUnread(r.data.unread || 0)).catch(() => {});
       loadProtocols();
       setName(user.name || '');
       setEmail(user.email || '');
@@ -193,12 +196,14 @@ const Account = () => {
             Perfil. El resto aparece cuando se confirma su primer pago. */}
         <DashboardSidebar items={toolsUnlocked ? [
           { value: 'orders', icon: Package, label: t('account.ordersTab') },
+          { value: 'news', icon: Bell, label: t('news.tab') + (notifUnread ? ` (${notifUnread})` : '') },
           { value: 'tools', icon: Syringe, label: t('account.toolsTab') },
           { value: 'labs', icon: FlaskConical, label: t('account.labsTab') },
           { value: 'coas', icon: FileText, label: t('account.coasTab') },
           { value: 'profile', icon: User, label: t('account.profileTab') },
         ] : [
           { value: 'orders', icon: Package, label: t('account.ordersTab') },
+          { value: 'news', icon: Bell, label: t('news.tab') + (notifUnread ? ` (${notifUnread})` : '') },
           { value: 'profile', icon: User, label: t('account.profileTab') },
         ]} />
         <div className="min-w-0 flex-1">
@@ -246,6 +251,11 @@ const Account = () => {
           </Dialog>
         )}
       </div>
+
+        <TabsContent value="news" className="mt-5">
+          <h3 className="font-heading font-semibold mb-4">{t('news.tab')}</h3>
+          <NotificationsFeed onSeen={() => setNotifUnread(0)} />
+        </TabsContent>
 
         <TabsContent value="tools" className="mt-5 space-y-8">
           {!toolsUnlocked ? (

@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { LayoutDashboard, Package, ShoppingBag, Plus, Pencil, Trash2, DollarSign, Users, Clock, TrendingUp, MapPin, Phone, Receipt, Store, Copy, Boxes, Truck, RefreshCw, MailCheck, Ban } from 'lucide-react';
+import { LayoutDashboard, Package, ShoppingBag, Plus, Pencil, Trash2, DollarSign, Users, Clock, TrendingUp, MapPin, Phone, Receipt, Store, Copy, Boxes, Truck, RefreshCw, MailCheck, Ban, Megaphone } from 'lucide-react';
 import { fallbackProducts } from '@/data/fallbackCatalog';
 import { ResponsiveContainer, AreaChart, Area, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip } from 'recharts';
 import { Button } from '@/components/ui/button';
@@ -11,6 +11,7 @@ import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent } from '@/components/ui/tabs';
 import DashboardSidebar from '@/components/layout/DashboardSidebar';
+import AdminAnnouncements from '@/components/AdminAnnouncements';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
@@ -320,6 +321,7 @@ const Admin = () => {
           { value: 'products', icon: Package, label: t('admin.productsTab') },
           { value: 'stock', icon: Boxes, label: t('admin.stockTab') },
           { value: 'repurchase', icon: RefreshCw, label: t('admin.repurchaseTab') },
+          { value: 'news', icon: Megaphone, label: t('adminNews.tab') },
         ]} />
         <div className="min-w-0 flex-1">
 
@@ -331,6 +333,10 @@ const Admin = () => {
             </Card>
           ))}
         </div>
+
+        <TabsContent value="news" className="mt-5">
+          <AdminAnnouncements />
+        </TabsContent>
 
         <TabsContent value="stock" className="mt-5">
           <div className="flex flex-wrap items-center justify-between gap-3 mb-4">
