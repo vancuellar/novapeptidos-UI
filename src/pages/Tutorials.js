@@ -5,66 +5,73 @@ import { Badge } from '@/components/ui/badge';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import { useLanguage } from '@/context/LanguageContext';
 import { useAuth } from '@/context/AuthContext';
+import { API } from '@/lib/api';
 
 const BASE = process.env.PUBLIC_URL || '';
 
 const VIDEOS = [
   {
-    src: `${BASE}/videos/tutorial-1-panel-distribuidor.mp4`,
+    file: 'tutorial-1-panel-distribuidor.mp4',
     title: 'Tu panel de distribuidor: resumen y cómo subir de nivel',
     duration: '1:02',
     audience: 'Distribuidores', role: 'dist',
   },
   {
-    src: `${BASE}/videos/tutorial-2-mis-codigos.mp4`,
+    file: 'tutorial-2-mis-codigos.mp4',
     title: 'Tus códigos de referido',
     duration: '0:40',
     audience: 'Distribuidores', role: 'dist',
   },
   {
-    src: `${BASE}/videos/tutorial-3-mis-clientes.mp4`,
+    file: 'tutorial-3-mis-clientes.mp4',
     title: 'Tus clientes y tu red',
     duration: '0:30',
     audience: 'Distribuidores', role: 'dist',
   },
   {
-    src: `${BASE}/videos/tutorial-4-pedidos-y-ventas.mp4`,
+    file: 'tutorial-4-pedidos-y-ventas.mp4',
     title: 'Pedidos, envíos y tus ventas',
     duration: '0:35',
     audience: 'Distribuidores', role: 'dist',
   },
   {
-    src: `${BASE}/videos/tutorial-5-novedades.mp4`,
+    file: 'tutorial-5-novedades.mp4',
     title: 'Novedades: tu centro de avisos',
     duration: '0:30',
     audience: 'Distribuidores', role: 'dist',
   },
   {
-    src: `${BASE}/videos/tutorial-6-comprar-con-codigo.mp4`,
+    file: 'tutorial-6-comprar-con-codigo.mp4',
     title: 'Comprar con código de referido',
     duration: '0:33',
     audience: 'Clientes', role: 'client',
   },
   {
-    src: `${BASE}/videos/tutorial-7-cuenta-pedidos-puntos.mp4`,
+    file: 'tutorial-7-cuenta-pedidos-puntos.mp4',
     title: 'Tu cuenta: pedidos y puntos de lealtad',
     duration: '0:39',
     audience: 'Clientes', role: 'client',
   },
   {
-    src: `${BASE}/videos/tutorial-8-herramientas.mp4`,
+    file: 'tutorial-8-herramientas.mp4',
     title: 'Herramientas: calculadora, certificados y más',
     duration: '0:37',
     audience: 'Clientes', role: 'client',
   },
   {
-    src: `${BASE}/videos/tutorial-9-calculadora.mp4`,
+    file: 'tutorial-9-calculadora.mp4',
     title: 'La calculadora de reconstitución, paso a paso',
     duration: '0:50',
     audience: 'Clientes', role: 'client',
   },
   {
-    src: `${BASE}/videos/tutorial-10-reconstitucion.mp4`,
+    file: 'tutorial-11-asesor.mp4',
+    title: 'El Asesor de Péptidos: tu plan en 3 pasos',
+    duration: '0:50',
+    audience: 'Todos', role: 'client',
+  },
+  {
+    file: 'tutorial-10-reconstitucion.mp4',
     title: 'Cómo reconstituir tu vial con agua bacteriostática',
     duration: '1:06',
     audience: 'Todos', role: 'client',
@@ -207,6 +214,8 @@ export default function Tutorials() {
   // La guía y videos de distribuidor solo se muestran a distribuidores/admin.
   const isDist = !!user && ['distributor', 'admin'].includes(user.role);
   const videos = VIDEOS.filter((v) => v.role !== 'dist' || isDist);
+  // La etiqueta <video> no manda headers: el token de sesión viaja como query.
+  const videoSrc = (v) => `${API}/tutorials/${v.file}?token=${encodeURIComponent(localStorage.getItem('np_token') || '')}`;
 
   if (!user) {
     return (
@@ -241,8 +250,8 @@ export default function Tutorials() {
         </h2>
         <div className="grid sm:grid-cols-2 gap-4">
           {videos.map((v) => (
-            <Card key={v.src} className="overflow-hidden" data-testid="tutorial-video-card">
-              <video controls preload="metadata" className="w-full aspect-video bg-black" src={v.src} />
+            <Card key={v.file} className="overflow-hidden" data-testid="tutorial-video-card">
+              <video controls preload="metadata" className="w-full aspect-video bg-black" src={videoSrc(v)} />
               <div className="p-4">
                 <div className="flex items-center gap-2 mb-1">
                   <Badge variant="outline" className="text-[10px]">{v.audience}</Badge>
