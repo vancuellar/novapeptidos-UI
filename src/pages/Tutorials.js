@@ -63,6 +63,12 @@ const VIDEOS = [
     duration: '0:50',
     audience: 'Clientes', role: 'client',
   },
+  {
+    src: `${BASE}/videos/tutorial-10-reconstitucion.mp4`,
+    title: 'Cómo reconstituir tu vial con agua bacteriostática',
+    duration: '1:06',
+    audience: 'Todos', role: 'client',
+  },
 ];
 
 // Guía escrita del panel de distribuidor
