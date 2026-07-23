@@ -863,6 +863,11 @@ export const fallbackProducts = [
         "price": 1139,
         "stock": 40,
         "batch_number": "NP-HGH24-2601"
+      }, {
+        "presentation": "36 IU",
+        "price": 1548,
+        "stock": 40,
+        "batch_number": "NP-HGH36-2601"
       },
       {
         "presentation": "40 IU",
@@ -911,13 +916,13 @@ export const fallbackProducts = [
       },
       {
         "presentation": "2 mg",
-        "price": 779,
+        "price": 959,
         "stock": 40,
         "batch_number": "NP-HGHF2-2601"
       },
       {
         "presentation": "5 mg",
-        "price": 1089,
+        "price": 1319,
         "stock": 40,
         "batch_number": "NP-HGHF5-2601"
       },
