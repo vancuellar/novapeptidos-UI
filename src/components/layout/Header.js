@@ -339,6 +339,7 @@ const Header = () => {
                   {['distributor', 'admin'].includes(user.role) && (
                     <DropdownMenuItem onClick={() => navigate('/distribuidor')} data-testid="header-distributor-link"><LayoutDashboard className="h-4 w-4 mr-2" /> {t('header.distributor')}</DropdownMenuItem>
                   )}
+                  <DropdownMenuItem onClick={() => navigate('/tutoriales')} data-testid="header-tutorials-link"><GraduationCap className="h-4 w-4 mr-2" /> {t('header.tutorials')}</DropdownMenuItem>
                   <DropdownMenuSeparator />
                   <DropdownMenuItem onClick={() => { logout(); navigate('/'); }} data-testid="header-logout-button" className="text-destructive focus:text-destructive [&_svg]:text-destructive"><LogOut className="h-4 w-4 mr-2" /> {t('header.logout')}</DropdownMenuItem>
                 </DropdownMenuContent>

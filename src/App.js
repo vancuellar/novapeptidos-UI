@@ -21,6 +21,7 @@ import OrderConfirmation from '@/pages/OrderConfirmation';
 import Login from '@/pages/Login';
 import Account from '@/pages/Account';
 import Distributor from '@/pages/Distributor';
+import Tutorials from '@/pages/Tutorials';
 import ForgotPassword from '@/pages/ForgotPassword';
 import ResetPassword from '@/pages/ResetPassword';
 import ConfirmEmail from '@/pages/ConfirmEmail';
@@ -81,6 +82,7 @@ function App() {
                     <Route path="/activar" element={<ActivateAccount />} />
                     <Route path="/cuenta" element={<Account />} />
                     <Route path="/distribuidor" element={<Distributor />} />
+                    <Route path="/tutoriales" element={<Tutorials />} />
                     <Route path="/admin" element={<Admin />} />
                     <Route path="/info/:page" element={<InfoPage />} />
                     <Route path="*" element={<NotFound />} />
