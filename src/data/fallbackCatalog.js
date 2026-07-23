@@ -367,7 +367,7 @@ export const fallbackProducts = [
     "variants": [
       {
         "presentation": "5 mg",
-        "price": 1309,
+        "price": 1619,
         "stock": 40,
         "batch_number": "NP-THYM5-2601"
       },
@@ -413,7 +413,7 @@ export const fallbackProducts = [
     "variants": [
       {
         "presentation": "50 mg",
-        "price": 1789,
+        "price": 1779,
         "stock": 40,
         "batch_number": "NP-AHKC50-2601"
       },
@@ -453,7 +453,7 @@ export const fallbackProducts = [
     "variants": [
       {
         "presentation": "100 IU",
-        "price": 1529,
+        "price": 3039,
         "stock": 40,
         "batch_number": "NP-BOTU100-2601"
       }
@@ -534,7 +534,7 @@ export const fallbackProducts = [
     "variants": [
       {
         "presentation": "10 mL",
-        "price": 1059,
+        "price": 1049,
         "stock": 40,
         "batch_number": "NP-LEMO10-2601"
       }
@@ -608,7 +608,7 @@ export const fallbackProducts = [
       },
       {
         "presentation": "100 mg",
-        "price": 5259,
+        "price": 5249,
         "stock": 40,
         "batch_number": "NP-SNAP100-2601"
       }
@@ -682,7 +682,7 @@ export const fallbackProducts = [
     "variants": [
       {
         "presentation": "10 mg",
-        "price": 1019,
+        "price": 2029,
         "stock": 40,
         "batch_number": "NP-FRAG10-2601"
       }
@@ -774,7 +774,7 @@ export const fallbackProducts = [
       },
       {
         "presentation": "10 mg",
-        "price": 839,
+        "price": 899,
         "stock": 40,
         "batch_number": "NP-GHRP10-2601"
       }
@@ -863,7 +863,8 @@ export const fallbackProducts = [
         "price": 1139,
         "stock": 40,
         "batch_number": "NP-HGH24-2601"
-      }, {
+      },
+      {
         "presentation": "36 IU",
         "price": 1548,
         "stock": 40,
@@ -871,7 +872,7 @@ export const fallbackProducts = [
       },
       {
         "presentation": "40 IU",
-        "price": 1449,
+        "price": 1949,
         "stock": 40,
         "batch_number": "NP-HGH40-2601"
       }
@@ -910,7 +911,7 @@ export const fallbackProducts = [
     "variants": [
       {
         "presentation": "1 mg",
-        "price": 509,
+        "price": 1019,
         "stock": 40,
         "batch_number": "NP-HGHF1-2601"
       },
@@ -928,13 +929,13 @@ export const fallbackProducts = [
       },
       {
         "presentation": "10 mg",
-        "price": 4729,
+        "price": 4719,
         "stock": 40,
         "batch_number": "NP-HGHF10-2601"
       },
       {
         "presentation": "15 mg",
-        "price": 6829,
+        "price": 6819,
         "stock": 40,
         "batch_number": "NP-HGHF15-2601"
       }
@@ -1026,7 +1027,7 @@ export const fallbackProducts = [
       },
       {
         "presentation": "5 mg",
-        "price": 609,
+        "price": 1199,
         "stock": 40,
         "batch_number": "NP-IPA5-2601"
       },
@@ -1152,7 +1153,7 @@ export const fallbackProducts = [
     "variants": [
       {
         "presentation": "2 mg",
-        "price": 1229,
+        "price": 1219,
         "stock": 40,
         "batch_number": "NP-SERM2-2601"
       },
@@ -1204,7 +1205,7 @@ export const fallbackProducts = [
     "variants": [
       {
         "presentation": "15 mg",
-        "price": 8999,
+        "price": 1939,
         "stock": 40,
         "batch_number": "NP-TESA15-2601"
       }
@@ -1290,13 +1291,13 @@ export const fallbackProducts = [
     "variants": [
       {
         "presentation": "2 mg",
-        "price": 2879,
+        "price": 2869,
         "stock": 40,
         "batch_number": "NP-FOXO2-2601"
       },
       {
         "presentation": "10 mg",
-        "price": 11209,
+        "price": 11199,
         "stock": 40,
         "batch_number": "NP-FOXO10-2601"
       }
@@ -1554,7 +1555,7 @@ export const fallbackProducts = [
     "variants": [
       {
         "presentation": "2 mg",
-        "price": 1059,
+        "price": 1049,
         "stock": 40,
         "batch_number": "NP-DSIP2-2601"
       },
@@ -1606,7 +1607,7 @@ export const fallbackProducts = [
     "variants": [
       {
         "presentation": "10 mg",
-        "price": 1159,
+        "price": 2309,
         "stock": 40,
         "batch_number": "NP-MELA10-2601"
       }
@@ -1640,7 +1641,7 @@ export const fallbackProducts = [
     "variants": [
       {
         "presentation": "10 mg",
-        "price": 9369,
+        "price": 18719,
         "stock": 40,
         "batch_number": "NP-OREX10-2601"
       }
@@ -1680,7 +1681,7 @@ export const fallbackProducts = [
       },
       {
         "presentation": "10 mg",
-        "price": 3509,
+        "price": 6999,
         "stock": 40,
         "batch_number": "NP-OREX10-2601"
       }
@@ -1874,7 +1875,7 @@ export const fallbackProducts = [
     "variants": [
       {
         "presentation": "5 mg",
-        "price": 1759,
+        "price": 1749,
         "stock": 40,
         "batch_number": "NP-ACTH5-2601"
       }
@@ -1908,13 +1909,13 @@ export const fallbackProducts = [
     "variants": [
       {
         "presentation": "5 mg",
-        "price": 2459,
+        "price": 2449,
         "stock": 40,
         "batch_number": "NP-ADMA5-2601"
       },
       {
         "presentation": "10 mg",
-        "price": 3509,
+        "price": 3499,
         "stock": 40,
         "batch_number": "NP-ADMA10-2601"
       }
@@ -1948,7 +1949,7 @@ export const fallbackProducts = [
     "variants": [
       {
         "presentation": "2 mg",
-        "price": 1899,
+        "price": 1889,
         "stock": 40,
         "batch_number": "NP-B7332-2601"
       },
@@ -2034,7 +2035,7 @@ export const fallbackProducts = [
     "variants": [
       {
         "presentation": "2 mg",
-        "price": 1229,
+        "price": 1219,
         "stock": 40,
         "batch_number": "NP-CJCN2-2601"
       },
@@ -2120,7 +2121,7 @@ export const fallbackProducts = [
     "variants": [
       {
         "presentation": "3000 IU",
-        "price": 2069,
+        "price": 2059,
         "stock": 40,
         "batch_number": "NP-EPO3000-2601"
       }
@@ -2154,7 +2155,7 @@ export const fallbackProducts = [
     "variants": [
       {
         "presentation": "100 mil",
-        "price": 28009,
+        "price": 27999,
         "stock": 40,
         "batch_number": "NP-HUMS100-2601"
       }
@@ -2194,7 +2195,7 @@ export const fallbackProducts = [
       },
       {
         "presentation": "10 mg",
-        "price": 1219,
+        "price": 2619,
         "stock": 40,
         "batch_number": "NP-KISS10-2601"
       }
@@ -2281,7 +2282,7 @@ export const fallbackProducts = [
     "variants": [
       {
         "presentation": "10 mg",
-        "price": 1199,
+        "price": 1189,
         "stock": 40,
         "batch_number": "NP-MELA10-2601"
       }
@@ -2362,7 +2363,7 @@ export const fallbackProducts = [
     "variants": [
       {
         "presentation": "10 mg",
-        "price": 3159,
+        "price": 3149,
         "stock": 40,
         "batch_number": "NP-MICL10-2601"
       }
@@ -2448,7 +2449,7 @@ export const fallbackProducts = [
     "variants": [
       {
         "presentation": "5 mg",
-        "price": 9809,
+        "price": 9799,
         "stock": 40,
         "batch_number": "NP-P215-2601"
       }
@@ -2533,7 +2534,7 @@ export const fallbackProducts = [
     "variants": [
       {
         "presentation": "2 mg",
-        "price": 619,
+        "price": 439,
         "stock": 40,
         "batch_number": "NP-TESA2-2601"
       },
@@ -2637,13 +2638,13 @@ export const fallbackProducts = [
     "variants": [
       {
         "presentation": "10 mg",
-        "price": 959,
+        "price": 1049,
         "stock": 40,
         "batch_number": "NP-10AM10-2601"
       },
       {
         "presentation": "50 mg",
-        "price": 1309,
+        "price": 3149,
         "stock": 40,
         "batch_number": "NP-10AM50-2601"
       }
@@ -2723,7 +2724,7 @@ export const fallbackProducts = [
       },
       {
         "presentation": "10 mg",
-        "price": 7359,
+        "price": 7349,
         "stock": 40,
         "batch_number": "NP-ADIP10-2601"
       }
@@ -2797,7 +2798,7 @@ export const fallbackProducts = [
     "variants": [
       {
         "presentation": "2 mg",
-        "price": 779,
+        "price": 959,
         "stock": 40,
         "batch_number": "NP-AOD92-2601"
       },
@@ -2849,7 +2850,7 @@ export const fallbackProducts = [
     "variants": [
       {
         "presentation": "5 mg",
-        "price": 1759,
+        "price": 1749,
         "stock": 40,
         "batch_number": "NP-CAGR5-2601"
       }
@@ -2889,7 +2890,7 @@ export const fallbackProducts = [
     "variants": [
       {
         "presentation": "2 mg",
-        "price": 1759,
+        "price": 1749,
         "stock": 40,
         "batch_number": "NP-CAGR2-2601"
       },
@@ -2941,7 +2942,7 @@ export const fallbackProducts = [
     "variants": [
       {
         "presentation": "10 mg",
-        "price": 4169,
+        "price": 8329,
         "stock": 40,
         "batch_number": "NP-DULA10-2601"
       }
@@ -2981,25 +2982,25 @@ export const fallbackProducts = [
     "variants": [
       {
         "presentation": "2 mg",
-        "price": 529,
+        "price": 1049,
         "stock": 40,
         "batch_number": "NP-LCAR2-2601"
       },
       {
         "presentation": "400 mg",
-        "price": 1759,
+        "price": 1749,
         "stock": 40,
         "batch_number": "NP-LCAR400-2601"
       },
       {
         "presentation": "600 mg",
-        "price": 1929,
+        "price": 1919,
         "stock": 40,
         "batch_number": "NP-LCAR600-2601"
       },
       {
         "presentation": "1200 mg",
-        "price": 2109,
+        "price": 2099,
         "stock": 40,
         "batch_number": "NP-LCAR1200-2601"
       }
@@ -3085,7 +3086,7 @@ export const fallbackProducts = [
       },
       {
         "presentation": "30 mg",
-        "price": 3229,
+        "price": 2969,
         "stock": 40,
         "batch_number": "NP-LIRA30-2601"
       }
@@ -3207,7 +3208,7 @@ export const fallbackProducts = [
       },
       {
         "presentation": "30 mg",
-        "price": 2799,
+        "price": 3949,
         "stock": 40,
         "batch_number": "NP-RETA30-2601"
       },
@@ -3265,7 +3266,7 @@ export const fallbackProducts = [
     "variants": [
       {
         "presentation": "60 mg",
-        "price": 7359,
+        "price": 7349,
         "stock": 40,
         "batch_number": "NP-RETA60-2601"
       }
@@ -3323,19 +3324,19 @@ export const fallbackProducts = [
       },
       {
         "presentation": "15 mg",
-        "price": 1049,
+        "price": 1859,
         "stock": 40,
         "batch_number": "NP-SEMA15-2601"
       },
       {
         "presentation": "20 mg",
-        "price": 1219,
+        "price": 2039,
         "stock": 40,
         "batch_number": "NP-SEMA20-2601"
       },
       {
         "presentation": "30 mg",
-        "price": 1569,
+        "price": 2399,
         "stock": 40,
         "batch_number": "NP-SEMA30-2601"
       },
@@ -3461,7 +3462,7 @@ export const fallbackProducts = [
       },
       {
         "presentation": "20 mg",
-        "price": 1219,
+        "price": 1799,
         "stock": 40,
         "batch_number": "NP-TIRZ20-2601"
       },
@@ -3473,13 +3474,13 @@ export const fallbackProducts = [
       },
       {
         "presentation": "40 mg",
-        "price": 1919,
+        "price": 2639,
         "stock": 40,
         "batch_number": "NP-TIRZ40-2601"
       },
       {
         "presentation": "50 mg",
-        "price": 2269,
+        "price": 2879,
         "stock": 40,
         "batch_number": "NP-TIRZ50-2601"
       },
@@ -3491,13 +3492,13 @@ export const fallbackProducts = [
       },
       {
         "presentation": "100 mg",
-        "price": 3389,
+        "price": 4079,
         "stock": 40,
         "batch_number": "NP-TIRZ100-2601"
       },
       {
         "presentation": "120 mg",
-        "price": 4909,
+        "price": 9799,
         "stock": 40,
         "batch_number": "NP-TIRZ120-2601"
       }
@@ -3571,13 +3572,13 @@ export const fallbackProducts = [
     "variants": [
       {
         "presentation": "10 mg",
-        "price": 959,
+        "price": 1699,
         "stock": 40,
         "batch_number": "NP-ARA210-2601"
       },
       {
         "presentation": "16 mg",
-        "price": 3159,
+        "price": 3149,
         "stock": 40,
         "batch_number": "NP-ARA216-2601"
       }
@@ -3617,7 +3618,7 @@ export const fallbackProducts = [
     "variants": [
       {
         "presentation": "2 mg",
-        "price": 529,
+        "price": 1049,
         "stock": 40,
         "batch_number": "NP-BPC2-2601"
       },
@@ -3715,7 +3716,7 @@ export const fallbackProducts = [
     "variants": [
       {
         "presentation": "10 mg",
-        "price": 1389,
+        "price": 1759,
         "stock": 40,
         "batch_number": "NP-BPC110-2601"
       }
@@ -3755,7 +3756,7 @@ export const fallbackProducts = [
     "variants": [
       {
         "presentation": "1 mg",
-        "price": 4029,
+        "price": 8049,
         "stock": 40,
         "batch_number": "NP-FOLL1-2601"
       }
@@ -3995,7 +3996,7 @@ export const fallbackProducts = [
     "variants": [
       {
         "presentation": "5 mg",
-        "price": 969,
+        "price": 1919,
         "stock": 40,
         "batch_number": "NP-PTD15-2601"
       }
@@ -4029,7 +4030,7 @@ export const fallbackProducts = [
     "variants": [
       {
         "presentation": "1 mg",
-        "price": 2259,
+        "price": 4519,
         "stock": 40,
         "batch_number": "NP-PTDD1-2601"
       }
@@ -4063,7 +4064,7 @@ export const fallbackProducts = [
     "variants": [
       {
         "presentation": "2 mg",
-        "price": 1409,
+        "price": 1399,
         "stock": 40,
         "batch_number": "NP-TB2-2601"
       },
@@ -4121,7 +4122,7 @@ export const fallbackProducts = [
       },
       {
         "presentation": "10 mg",
-        "price": 1229,
+        "price": 2449,
         "stock": 40,
         "batch_number": "NP-DERM10-2601"
       }
@@ -4161,7 +4162,7 @@ export const fallbackProducts = [
       },
       {
         "presentation": "5 mg",
-        "price": 1789,
+        "price": 1779,
         "stock": 40,
         "batch_number": "NP-GONA5-2601"
       }
@@ -4207,7 +4208,7 @@ export const fallbackProducts = [
       },
       {
         "presentation": "5,000IU",
-        "price": 2279,
+        "price": 1519,
         "stock": 40,
         "batch_number": "NP-HCG5000-2601"
       },
@@ -4326,7 +4327,7 @@ export const fallbackProducts = [
     "variants": [
       {
         "presentation": "2 mg",
-        "price": 709,
+        "price": 1399,
         "stock": 40,
         "batch_number": "NP-TRIP2-2601"
       }
@@ -4440,7 +4441,7 @@ export const fallbackProducts = [
     "variants": [
       {
         "presentation": "10 mg",
-        "price": 1409,
+        "price": 1399,
         "stock": 40,
         "batch_number": "NP-VITA10-2601"
       }
@@ -4480,19 +4481,19 @@ export const fallbackProducts = [
     "variants": [
       {
         "presentation": "3 mL",
-        "price": 199,
+        "price": 349,
         "stock": 40,
         "batch_number": "NP-CIDO3-2601"
       },
       {
         "presentation": "5 mL",
-        "price": 199,
+        "price": 659,
         "stock": 40,
         "batch_number": "NP-CIDO5-2601"
       },
       {
         "presentation": "10 mL",
-        "price": 199,
+        "price": 299,
         "stock": 40,
         "batch_number": "NP-CIDO10-2601"
       }
