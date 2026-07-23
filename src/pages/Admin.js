@@ -506,6 +506,9 @@ const Admin = () => {
                     <TableCell>
                       <div className="text-sm font-medium">{c.name}{c.blocked && <Badge variant="outline" className="ml-2 text-[10px] text-destructive border-destructive/40">{t('admin.block.badge')}</Badge>}</div>
                       <div className="text-xs text-muted-foreground">{c.email}</div>
+                      <Badge variant="outline" className={`mt-1 text-[10px] ${c.email_verified ? 'text-[hsl(var(--success))]' : 'text-[hsl(var(--warning-foreground))]'}`} data-testid="customer-invite-status">
+                        {c.email_verified ? t('admin.ficha.inviteOk') : t('admin.ficha.invitePending')}
+                      </Badge>
                     </TableCell>
                     <TableCell className="text-xs">{c.phones?.[0] || '—'}</TableCell>
                     <TableCell>{c.orders_count}</TableCell>
@@ -571,7 +574,10 @@ const Admin = () => {
                   <TableRow><TableCell colSpan={8} className="text-center text-muted-foreground py-8">{t('admin.dist.noDistributors')}</TableCell></TableRow>
                 ) : distributors.map((d) => (
                   <TableRow key={d.id}>
-                    <TableCell><div className="text-sm font-medium">{d.name}</div><div className="text-xs text-muted-foreground">{d.email}</div></TableCell>
+                    <TableCell><div className="text-sm font-medium">{d.name}</div><div className="text-xs text-muted-foreground">{d.email}</div>
+                      <Badge variant="outline" className={`mt-1 text-[10px] ${d.email_verified ? 'text-[hsl(var(--success))]' : 'text-[hsl(var(--warning-foreground))]'}`} data-testid="dist-invite-status">
+                        {d.email_verified ? t('admin.ficha.inviteOk') : t('admin.ficha.invitePending')}
+                      </Badge></TableCell>
                     <TableCell><button onClick={() => copyText(d.distributor_code, t('distributor.codeCopied'))} className="font-mono-tech text-xs inline-flex items-center gap-1 hover:text-[hsl(var(--primary))]">{d.distributor_code} <Copy className="h-3 w-3" /></button></TableCell>
                     <TableCell>{Math.round((d.commission_rate || 0) * 100)}%</TableCell>
                     <TableCell>{Math.round((d.customer_discount_rate || 0) * 100)}%</TableCell>
@@ -867,6 +873,16 @@ const Admin = () => {
                   <div className="rounded-lg border border-border p-2"><div className="text-[11px] text-muted-foreground">{t('admin.dist.clients')}</div><div className="font-semibold">{d.clients_count}</div></div>
                 </div>
                 <div className="text-xs text-muted-foreground">{d.email} · <span className="font-mono-tech">{d.distributor_code}</span></div>
+                <div className="rounded-xl border border-border p-3 space-y-2" data-testid="admin-dist-notes-box">
+                  <div className="text-xs font-semibold">{t('admin.ficha.notes')}</div>
+                  <Textarea rows={3} defaultValue={d.admin_notes || ''} id="dist-notes-area" data-testid="admin-dist-notes-input" />
+                  <Button size="sm" variant="outline" onClick={async () => {
+                    try {
+                      await api.put(`/admin/distributors/${d.id}/notes`, { notes: document.getElementById('dist-notes-area').value });
+                      toast.success(t('admin.ficha.notesSaved')); loadAll();
+                    } catch { toast.error('Error'); }
+                  }} data-testid="admin-dist-notes-save">{t('admin.ficha.saveNotes')}</Button>
+                </div>
                 <div>
                   <Button variant="outline" size="sm" onClick={() => { setDistOpen(null); openRates(d); }} data-testid="admin-ficha-edit-rates">
                     <Pencil className="h-3.5 w-3.5 mr-1" /> {t('admin.dist.editRates')}
