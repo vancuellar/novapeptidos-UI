@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Store, Users, DollarSign, TrendingUp, ShoppingBag, Copy, Percent, Truck, ExternalLink, FileText } from 'lucide-react';
+import { Store, Users, DollarSign, TrendingUp, ShoppingBag, Copy, Percent, Truck, ExternalLink, FileText, Award } from 'lucide-react';
 import { ResponsiveContainer, AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip } from 'recharts';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
@@ -95,6 +95,16 @@ const Distributor = () => {
     { i: Users, t: t('distributor.stats.clients'), v: summary.clients_count },
   ] : [];
 
+  // Barra de nivel: texto según el tipo (ascenso Junior/Senior, o +0.5% del Master).
+  const level = summary?.level;
+  const tierName = (tk) => t(`distributor.level.${tk}`);
+  const levelMessage = () => {
+    if (!level) return '';
+    if (level.kind === 'promotion') return t('distributor.level.toNext', { amount: formatMXN(level.remaining), next: tierName(level.next) });
+    if (level.kind === 'maxed') return t('distributor.level.maxed', { rate: Math.round((level.rate || 0) * 100) });
+    return t('distributor.level.masterStep', { amount: formatMXN(level.remaining), rate: (level.next_rate * 100).toFixed(1) });
+  };
+
   return (
     <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 py-8">
       <div className="flex flex-wrap items-start justify-between gap-4 mb-6">
@@ -131,6 +141,35 @@ const Distributor = () => {
             </Card>
           ))}
         </div>
+
+        {level && (
+          <Card className="p-5 mb-4" data-testid="distributor-level-card">
+            <div className="flex items-center justify-between gap-3 mb-3 flex-wrap">
+              <div className="flex items-center gap-2">
+                <Award className="h-5 w-5 text-[hsl(var(--primary))]" />
+                <span className="text-xs text-muted-foreground">{t('distributor.level.title')}</span>
+                <Badge className="bg-[hsl(var(--primary))] text-[hsl(var(--primary-foreground))] text-xs px-2.5 py-0.5">{tierName(level.current)}</Badge>
+                <span className="text-xs text-muted-foreground">{t('distributor.level.rate', { rate: Math.round((summary.commission_rate || 0) * 100) })}</span>
+              </div>
+              {level.target != null && (
+                <span className="text-xs text-muted-foreground font-mono-tech">
+                  {t('distributor.level.progressOf', { current: formatMXN(level.current_value), target: formatMXN(level.target) })}
+                </span>
+              )}
+            </div>
+            <div className="h-2.5 w-full rounded-full bg-[hsl(var(--muted))] overflow-hidden">
+              <div className="h-full rounded-full bg-[hsl(var(--primary))] transition-all" style={{ width: `${Math.round((level.progress || 0) * 100)}%` }} data-testid="distributor-level-bar" />
+            </div>
+            <p className="text-sm mt-3">{levelMessage()}</p>
+            {level.kind === 'promotion' && <p className="text-[11px] text-muted-foreground mt-1">{t('distributor.level.approve')}</p>}
+            {(summary.override_earnings > 0 || summary.own_earnings > 0) && (
+              <div className="flex flex-wrap gap-x-6 gap-y-1 mt-4 pt-3 border-t border-[hsl(var(--border))] text-sm">
+                <span className="text-muted-foreground">{t('distributor.level.ownEarnings')}: <span className="font-semibold text-foreground">{formatMXN(summary.own_earnings)}</span></span>
+                <span className="text-muted-foreground">{t('distributor.level.overrideEarnings')}: <span className="font-semibold text-foreground">{formatMXN(summary.override_earnings)}</span></span>
+              </div>
+            )}
+          </Card>
+        )}
 
         {summary && (
           <Card className="p-4 mb-6 flex items-center gap-2 text-sm text-muted-foreground">
