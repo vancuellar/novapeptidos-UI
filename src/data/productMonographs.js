@@ -1585,5 +1585,22 @@ const monographs = {
   },
 };
 
-export const monographFor = (slug) => monographs[slug] || null;
+// Empareja la monografía con el producto. OJO: el slug del producto trae la
+// presentación pegada (bpc-157-10-mg), así que probamos el slug tal cual y luego
+// recortando la presentación del final. Sin esto, ninguna monografía se mostraba.
+const stripPresentation = (slug) => (slug || '')
+  .replace(/-\d+(?:[.,]\d+)?-?(?:mg|iu|ml|u|g)$/i, '')   // -10-mg, -2000iu, -5-ml
+  .replace(/-\d+$/, '');                                  // sobrante numérico
+
+export const monographFor = (slug) => {
+  if (!slug) return null;
+  if (monographs[slug]) return monographs[slug];
+  const base = stripPresentation(slug);
+  if (monographs[base]) return monographs[base];
+  // último intento: el slug más largo que sea prefijo del producto
+  const keys = Object.keys(monographs).filter((k) => slug.startsWith(k));
+  if (!keys.length) return null;
+  keys.sort((a, b) => b.length - a.length);
+  return monographs[keys[0]];
+};
 export default monographs;
