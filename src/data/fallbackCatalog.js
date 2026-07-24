@@ -4089,46 +4089,6 @@ export const fallbackProducts = [
     "is_new": false
   },
   {
-    "id": "fallback-dermorphin",
-    "name": "Dermorphin",
-    "slug": "dermorphin",
-    "category": "sexual-hormonal",
-    "categories": [
-      "sexual-hormonal"
-    ],
-    "short_description": "Heptapéptido opioide estudiado en receptores mu.",
-    "description": "Dermorphin es un heptapéptido de origen anfibio con alta afinidad por el receptor opioide mu, utilizado como herramienta farmacológica en estudios de señalización opioide. Solo para uso en investigación (RUO).",
-    "presentation": "5 mg – 10 mg",
-    "form": "Liofilizado",
-    "purity": "99.0%",
-    "price": 1579,
-    "variants": [
-      {
-        "presentation": "5 mg",
-        "price": 789,
-        "stock": 40,
-        "batch_number": "NP-DERM5-2601"
-      },
-      {
-        "presentation": "10 mg",
-        "price": 1219,
-        "stock": 40,
-        "batch_number": "NP-DERM10-2601"
-      }
-    ],
-    "tiers": [],
-    "stock": 40,
-    "image_url": "https://images.pexels.com/photos/6129873/pexels-photo-6129873.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
-    "coa_url": "https://exygenlabs.com/coa/dermorphin.pdf",
-    "batch_number": "NP-DERM5-2601",
-    "storage": "Conservar a -20 °C, protegido de la luz. Reconstituido: 2–8 °C.",
-    "start_dose": null,
-    "start_unit": null,
-    "start_levels": null,
-    "featured": false,
-    "is_new": false
-  },
-  {
     "id": "fallback-gonadorelin-acetate",
     "name": "Gonadorelin Acetate",
     "slug": "gonadorelin-acetate",

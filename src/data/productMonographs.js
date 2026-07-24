@@ -2573,27 +2573,6 @@ const monographs = {
     ],
   },
 
-  'dermorphin': {
-    tagline: 'Heptapéptido opioide mu de origen anfibio',
-    sections: [
-      {
-        title: 'Qué es',
-        paragraphs: ['La dermorfina es un heptapéptido natural aislado originalmente de la piel de ranas sudamericanas del género Phyllomedusa, con secuencia Tyr-D-Ala-Phe-Gly-Tyr-Pro-Ser amidada en el extremo C-terminal. Su rasgo estructural más notable es la presencia de D-alanina en la segunda posición, una configuración inusual en péptidos animales que le confiere gran resistencia a la degradación por peptidasas. Se sintetiza químicamente para fines de investigación farmacológica. Es un opioide peptídico de alta potencia y no un péptido regulador o cosmético, distinción esencial para entender su manejo.'],
-      },
-      {
-        title: 'Qué se estudia con él',
-        paragraphs: ['La dermorfina es un agonista extraordinariamente selectivo del receptor opioide mu, con afinidad muy superior por este subtipo frente a delta y kappa, perfil que la convirtió en compuesto de referencia en farmacología de receptores opioides. Se emplea en ensayos de unión a receptor, en estudios de transducción de señal y desensibilización, y como plantilla estructural para diseñar análogos híbridos y ligandos bifuncionales. También se ha investigado su capacidad de atravesar la barrera hematoencefálica y sus efectos analgésicos en modelos animales, con potencia notablemente superior a la de la morfina en base molar.'],
-      },
-      {
-        title: 'Qué dice la evidencia',
-        paragraphs: ['Su farmacología está bien establecida en la literatura revisada por pares, con estudios de unión y funcionalidad reproducidos por distintos laboratorios. Existen también reportes clínicos antiguos y limitados de administración intratecal. Lo que debe subrayarse es el contexto regulatorio y de riesgo: por ser un agonista mu de alta potencia, está sujeto a control estricto en muchas jurisdicciones, ha sido detectado como agente de dopaje en carreras de caballos y su manejo fuera de entornos regulados plantea riesgos serios de depresión respiratoria y dependencia. No tiene indicación terapéutica aprobada en México.'],
-      },
-      {
-        title: 'Manejo en laboratorio',
-        paragraphs: ['Se suministra como polvo liofilizado, forma en la que es estable durante periodos prolongados si se conserva congelado, seco y protegido de la luz. La reconstitución se realiza con técnica aséptica en agua estéril o en solución tampón adecuada al ensayo, evitando agitación fuerte. Las soluciones se conservan refrigeradas y alicuotadas para no repetir ciclos de congelación y descongelación. Por su potencia farmacológica requiere control de acceso, registro de inventario, uso de equipo de protección y descarte conforme a normativa de sustancias controladas.'],
-      },
-    ],
-  },
 
   'admax': {
     tagline: 'Preparación propietaria sin definición estandarizada',
