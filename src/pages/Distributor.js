@@ -37,6 +37,7 @@ const Distributor = () => {
   const { language, t } = useLanguage();
   const navigate = useNavigate();
   const [summary, setSummary] = useState(null);
+  const [bestSellers, setBestSellers] = useState([]);
   const [clients, setClients] = useState([]);
   const [sales, setSales] = useState([]);
   const [orders, setOrders] = useState([]);
@@ -60,6 +61,7 @@ const Distributor = () => {
 
   const loadAll = useCallback(() => {
     api.get('/distributor/summary').then((r) => setSummary(r.data)).catch(() => {});
+    api.get('/distributor/best-sellers').then((r) => setBestSellers(r.data.ranking || [])).catch(() => {});
     api.get('/distributor/clients').then((r) => setClients(r.data)).catch(() => {});
     api.get('/distributor/sales').then((r) => setSales(r.data)).catch(() => {});
     api.get('/distributor/orders').then((r) => setOrders(r.data)).catch(() => {});
@@ -236,6 +238,34 @@ const Distributor = () => {
                   <Area type="monotone" dataKey="earnings" stroke="hsl(var(--primary))" strokeWidth={2} fill="url(#earn)" activeDot={{ r: 4 }} />
                 </AreaChart>
               </ResponsiveContainer>
+            </Card>
+          )}
+
+          {bestSellers.length > 0 && (
+            <Card className="p-5 mt-4" data-testid="distributor-best-sellers">
+              <h3 className="font-heading font-semibold mb-1 flex items-center gap-2">
+                <TrendingUp className="h-4 w-4 text-[hsl(var(--primary))]" /> {t('distributor.bestSellers')}
+              </h3>
+              <p className="text-xs text-muted-foreground mb-4">{t('distributor.bestSellersSub')}</p>
+              <div className="space-y-2">
+                {bestSellers.map((p, i) => {
+                  const max = bestSellers[0].units || 1;
+                  return (
+                    <div key={p.name} className="flex items-center gap-3">
+                      <span className="text-xs text-muted-foreground w-5 shrink-0">{i + 1}.</span>
+                      <div className="min-w-0 flex-1">
+                        <div className="flex justify-between gap-2 text-sm">
+                          <span className="truncate">{p.name}</span>
+                          <span className="text-muted-foreground whitespace-nowrap">{t('common.items', { count: p.units })}</span>
+                        </div>
+                        <div className="h-1.5 mt-1 rounded-full bg-[hsl(var(--muted))] overflow-hidden">
+                          <div className="h-full rounded-full bg-[hsl(var(--primary))]" style={{ width: `${Math.round((p.units / max) * 100)}%` }} />
+                        </div>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
             </Card>
           )}
         </TabsContent>
