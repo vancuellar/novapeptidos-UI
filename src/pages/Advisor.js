@@ -164,7 +164,16 @@ const Advisor = () => {
       {step === 1 && (
         <div>
           <div className="flex items-center gap-2 mb-1"><Target className="h-4 w-4 text-[hsl(var(--primary))]" /><h2 className="font-heading text-lg font-semibold">¿Cuál es tu objetivo?</h2></div>
-          <p className="text-sm text-muted-foreground mb-4">Elige hasta {MAX_OBJ} áreas. {selected.length}/{MAX_OBJ} seleccionadas.</p>
+          <div className="flex items-center justify-between mb-1 gap-3">
+            <p className="text-sm text-muted-foreground">Elige hasta {MAX_OBJ} áreas. {selected.length}/{MAX_OBJ} seleccionadas.</p>
+            {selected.length > 0 && (
+              <button onClick={() => setStep(4)} data-testid="advisor-simple-mode"
+                className="shrink-0 inline-flex items-center gap-1.5 rounded-full border border-[hsl(var(--primary))] text-[hsl(var(--primary))] text-xs font-semibold px-3 py-1.5 hover:bg-[hsl(var(--primary))] hover:text-white transition-colors">
+                <Zap className="h-3.5 w-3.5" /> Plan rápido
+              </button>
+            )}
+          </div>
+          <p className="text-[11px] text-muted-foreground mb-4">Modo simple: plan al instante con valores estándar (nivel principiante, 8 semanas). Para afinar dosis, presupuesto y salud, sigue los 3 pasos.</p>
           <div className="space-y-2">
             {OBJECTIVES.map((o) => {
               const Icon = ICONS[o.iconKey] || Sparkles;
