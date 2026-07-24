@@ -319,10 +319,32 @@ const Account = () => {
                         <DialogContent>
                           <DialogHeader><DialogTitle>{t('account.orderTitle', { number: o.order_number })}</DialogTitle></DialogHeader>
                           <div className="space-y-2 text-sm">
-                            {o.items.map((it) => <div key={it.product_id} className="flex justify-between"><span className="text-muted-foreground">{it.quantity} × {it.name}</span><span>{formatMXN(it.price * it.quantity)}</span></div>)}
+                            {o.items.map((it) => (
+                              <div key={it.product_id} className="flex justify-between gap-3">
+                                <span className="text-muted-foreground">
+                                  {it.quantity} × {it.name}
+                                  {it.quantity > 1 && <span className="text-xs"> ({formatMXN(it.price)} c/u)</span>}
+                                </span>
+                                <span className="whitespace-nowrap">{formatMXN(it.price * it.quantity)}</span>
+                              </div>
+                            ))}
                             <Separator className="my-2" />
+                            <div className="flex justify-between"><span className="text-muted-foreground">{t('common.subtotal')}</span><span>{formatMXN(o.subtotal)}</span></div>
+                            {o.discount > 0 && (
+                              <div className="flex justify-between text-[hsl(var(--success))]" data-testid="account-order-discount">
+                                <span>{t('account.orderDiscount', { pct: Math.round((o.discount_rate || 0) * 100) })}</span>
+                                <span>−{formatMXN(o.discount)}</span>
+                              </div>
+                            )}
+                            {o.points_used > 0 && (
+                              <div className="flex justify-between text-[hsl(var(--success))]">
+                                <span>{t('account.orderPoints', { points: o.points_used })}</span>
+                                <span>−{formatMXN(o.points_used)}</span>
+                              </div>
+                            )}
                             <div className="flex justify-between"><span className="text-muted-foreground">{t('common.shipping')}</span><span>{o.shipping === 0 ? t('common.free') : formatMXN(o.shipping)}</span></div>
-                            <div className="flex justify-between font-bold"><span>{t('common.total')}</span><span>{formatMXN(o.total)}</span></div>
+                            <Separator className="my-2" />
+                            <div className="flex justify-between font-bold text-base"><span>{t('common.total')}</span><span>{formatMXN(o.total)}</span></div>
                             <div className="flex justify-between"><span className="text-muted-foreground">{t('common.payment')}</span><span>{t(`payment.${o.payment_method}.label`)}</span></div>
                             <div className="text-xs text-muted-foreground mt-2">{t('account.shipTo', { address: o.customer.address, city: o.customer.city, state: o.customer.state, postalCode: o.customer.postal_code })}</div>
                           </div>

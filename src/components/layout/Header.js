@@ -91,7 +91,9 @@ const Header = () => {
       .then((r) => { if (alive) setUnread(r.data.unread || 0); }).catch(() => {});
     load();
     const id = setInterval(load, 60000);   // refresca cada minuto
-    return () => { alive = false; clearInterval(id); };
+    const clear = () => setUnread(0);      // el usuario ya las vio / las borró
+    window.addEventListener('exygen:notifications-seen', clear);
+    return () => { alive = false; clearInterval(id); window.removeEventListener('exygen:notifications-seen', clear); };
   }, [user]);
 
   useEffect(() => {

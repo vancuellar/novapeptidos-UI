@@ -2750,52 +2750,6 @@ export const fallbackProducts = [
     "is_new": false
   },
   {
-    "id": "fallback-adipotide",
-    "name": "Adipotide",
-    "slug": "adipotide",
-    "category": "perdida-peso",
-    "categories": [
-      "perdida-peso"
-    ],
-    "short_description": "Adipotide — compuesto de investigación (RUO).",
-    "description": "Adipotide es un compuesto de investigación (RUO). Solo para uso en investigación; no destinado a consumo humano ni animal, ni a diagnóstico o tratamiento.",
-    "presentation": "2 mg – 10 mg",
-    "form": "Liofilizado",
-    "purity": "99.0%",
-    "price": 2109,
-    "variants": [
-      {
-        "presentation": "2 mg",
-        "price": 1559,
-        "stock": 40,
-        "batch_number": "NP-ADIP2-2601"
-      },
-      {
-        "presentation": "5 mg",
-        "price": 2879,
-        "stock": 40,
-        "batch_number": "NP-ADIP5-2601"
-      },
-      {
-        "presentation": "10 mg",
-        "price": 3679,
-        "stock": 40,
-        "batch_number": "NP-ADIP10-2601"
-      }
-    ],
-    "tiers": [],
-    "stock": 40,
-    "image_url": "https://images.pexels.com/photos/9259977/pexels-photo-9259977.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
-    "coa_url": "https://exygenlabs.com/coa/adipotide.pdf",
-    "batch_number": "NP-ADIP2-2601",
-    "storage": "Conservar a -20 °C, protegido de la luz. Reconstituido: 2–8 °C.",
-    "start_dose": null,
-    "start_unit": null,
-    "start_levels": null,
-    "featured": false,
-    "is_new": false
-  },
-  {
     "id": "fallback-aicar",
     "name": "AICAR",
     "slug": "aicar",
@@ -3580,40 +3534,6 @@ export const fallbackProducts = [
     },
     "featured": true,
     "is_new": true
-  },
-  {
-    "id": "fallback-ace-031",
-    "name": "ACE-031",
-    "slug": "ace-031",
-    "category": "recuperacion",
-    "categories": [
-      "recuperacion"
-    ],
-    "short_description": "ACE-031 — compuesto de investigación (RUO).",
-    "description": "ACE-031 es un compuesto de investigación (RUO). Solo para uso en investigación; no destinado a consumo humano ni animal, ni a diagnóstico o tratamiento.",
-    "presentation": "1 mg",
-    "form": "Liofilizado",
-    "purity": "99.0%",
-    "price": 1389,
-    "variants": [
-      {
-        "presentation": "1 mg",
-        "price": 1679,
-        "stock": 40,
-        "batch_number": "NP-ACE01-2601"
-      }
-    ],
-    "tiers": [],
-    "stock": 40,
-    "image_url": "https://images.pexels.com/photos/6129873/pexels-photo-6129873.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
-    "coa_url": "https://exygenlabs.com/coa/ace-031.pdf",
-    "batch_number": "NP-ACE01-2601",
-    "storage": "Conservar a -20 °C, protegido de la luz. Reconstituido: 2–8 °C.",
-    "start_dose": null,
-    "start_unit": null,
-    "start_levels": null,
-    "featured": false,
-    "is_new": false
   },
   {
     "id": "fallback-ara-290",

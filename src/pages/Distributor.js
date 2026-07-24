@@ -256,7 +256,7 @@ const Distributor = () => {
                   <TableRow><TableCell colSpan={5} className="text-center text-muted-foreground py-8">{t('distributor.noClients')}</TableCell></TableRow>
                 ) : clients.map((c) => (
                   <TableRow key={c.id}>
-                    <TableCell><div className="text-sm font-medium">{c.name}</div><div className="text-xs text-muted-foreground">{c.email}</div></TableCell>
+                    <TableCell><div className="text-sm font-medium">{c.name}</div></TableCell>
                     <TableCell>{c.orders_count}</TableCell>
                     <TableCell>{formatMXN(c.total_spent)}</TableCell>
                     <TableCell className="font-medium text-[hsl(var(--primary))]">{formatMXN(c.my_earnings)}</TableCell>
@@ -339,30 +339,21 @@ const Distributor = () => {
                   <TableHead>{t('distributor.table.order')}</TableHead>
                   <TableHead>{t('distributor.table.client')}</TableHead>
                   <TableHead>{t('distributor.table.items')}</TableHead>
-                  <TableHead>{t('distributor.table.destination')}</TableHead>
                   <TableHead>{t('admin.table.status')}</TableHead>
                   <TableHead>{t('distributor.table.shipping')}</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
                 {filteredOrders.length === 0 ? (
-                  <TableRow><TableCell colSpan={6} className="text-center text-muted-foreground py-8">{t('distributor.noOrders')}</TableCell></TableRow>
+                  <TableRow><TableCell colSpan={5} className="text-center text-muted-foreground py-8">{t('distributor.noOrders')}</TableCell></TableRow>
                 ) : filteredOrders.map((o) => (
                   <TableRow key={o.order_number}>
                     <TableCell>
                       <div className="font-mono-tech text-xs">{o.order_number}</div>
                       <div className="text-[11px] text-muted-foreground">{fmtDate(o.created_at)} · {formatMXN(o.total)}</div>
                     </TableCell>
-                    <TableCell>
-                      <div className="text-sm">{o.customer_name}</div>
-                      {o.customer_phone && <div className="text-[11px] text-muted-foreground">{o.customer_phone}</div>}
-                    </TableCell>
-                    <TableCell className="text-xs text-muted-foreground max-w-[220px]">
-                      {o.items.map((it, i) => (
-                        <div key={i}>{it.quantity}× {it.name}{it.presentation ? ` · ${it.presentation}` : ''}</div>
-                      ))}
-                    </TableCell>
-                    <TableCell className="text-xs text-muted-foreground">{o.destination || '—'}</TableCell>
+                    <TableCell><div className="text-sm">{o.customer_name}</div></TableCell>
+                    <TableCell className="text-xs text-muted-foreground">{t('common.items', { count: o.items_count || 0 })}</TableCell>
                     <TableCell>
                       <Badge className={`${STATUS_COLORS[o.status]} text-[10px]`}>{t(`status.${o.status}`)}</Badge>
                       {o.delivered_at
