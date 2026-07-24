@@ -23,6 +23,7 @@ import Account from '@/pages/Account';
 import Distributor from '@/pages/Distributor';
 import Tutorials from '@/pages/Tutorials';
 import ViewAsBanner from '@/components/ViewAsBanner';
+import WhatsAppButton from '@/components/WhatsAppButton';
 import ForgotPassword from '@/pages/ForgotPassword';
 import ResetPassword from '@/pages/ResetPassword';
 import ConfirmEmail from '@/pages/ConfirmEmail';
@@ -92,6 +93,7 @@ function App() {
                 <SiteChrome><Footer /></SiteChrome>
                 <RuoGate />
                 <SiteChrome><AIChatWidget /></SiteChrome>
+                <SiteChrome><WhatsAppButton /></SiteChrome>
                 <Toaster position="top-right" richColors closeButton duration={2500} />
               </BrowserRouter>
             </CartProvider>
