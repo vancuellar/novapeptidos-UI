@@ -631,7 +631,8 @@ export const fallbackProducts = [
     "slug": "cjc-1295-no-dac-5mg-ipamorelin-5mg",
     "category": "hormona-crecimiento",
     "categories": [
-      "hormona-crecimiento"
+      "hormona-crecimiento",
+      "stacks"
     ],
     "short_description": "CJC-1295 no DAC 5mg + Ipamorelin 5mg — compuesto de investigación (RUO).",
     "description": "CJC-1295 no DAC 5mg + Ipamorelin 5mg es un compuesto de investigación (RUO). Solo para uso en investigación; no destinado a consumo humano ni animal, ni a diagnóstico o tratamiento.",
@@ -1200,7 +1201,8 @@ export const fallbackProducts = [
     "slug": "tesamorelin-10-ipamorelin-5",
     "category": "hormona-crecimiento",
     "categories": [
-      "hormona-crecimiento"
+      "hormona-crecimiento",
+      "stacks"
     ],
     "short_description": "Tesamorelin 10 + Ipamorelin 5 — compuesto de investigación (RUO).",
     "description": "Tesamorelin 10 + Ipamorelin 5 es un compuesto de investigación (RUO). Solo para uso en investigación; no destinado a consumo humano ni animal, ni a diagnóstico o tratamiento.",
@@ -2400,7 +2402,8 @@ export const fallbackProducts = [
     "slug": "mic-lipo-c-b12",
     "category": "perdida-peso",
     "categories": [
-      "perdida-peso"
+      "perdida-peso",
+      "stacks"
     ],
     "short_description": "MIC (Lipo-C + B12) — compuesto de investigación (RUO).",
     "description": "MIC (Lipo-C + B12) es un compuesto de investigación (RUO). Solo para uso en investigación; no destinado a consumo humano ni animal, ni a diagnóstico o tratamiento.",
@@ -2853,7 +2856,8 @@ export const fallbackProducts = [
     "slug": "cagri-sema-2-5mg-2-5mg",
     "category": "perdida-peso",
     "categories": [
-      "perdida-peso"
+      "perdida-peso",
+      "stacks"
     ],
     "short_description": "Cagri + Sema (2.5mg + 2.5mg) — compuesto de investigación (RUO).",
     "description": "Cagri + Sema (2.5mg + 2.5mg) es un compuesto de investigación (RUO). Solo para uso en investigación; no destinado a consumo humano ni animal, ni a diagnóstico o tratamiento.",
@@ -3269,7 +3273,8 @@ export const fallbackProducts = [
     "slug": "retatrutide-20mg-tirzepatide-40mg",
     "category": "perdida-peso",
     "categories": [
-      "perdida-peso"
+      "perdida-peso",
+      "stacks"
     ],
     "short_description": "Retatrutide 20mg + Tirzepatide 40mg — compuesto de investigación (RUO).",
     "description": "Retatrutide 20mg + Tirzepatide 40mg es un compuesto de investigación (RUO). Solo para uso en investigación; no destinado a consumo humano ni animal, ni a diagnóstico o tratamiento.",
@@ -3645,7 +3650,8 @@ export const fallbackProducts = [
     "slug": "bpc-157-10mg-tb-500-10mg",
     "category": "recuperacion",
     "categories": [
-      "recuperacion"
+      "recuperacion",
+      "stacks"
     ],
     "short_description": "BPC-157 10mg + TB-500 10mg — compuesto de investigación (RUO).",
     "description": "BPC-157 10mg + TB-500 10mg es un compuesto de investigación (RUO). Solo para uso en investigación; no destinado a consumo humano ni animal, ni a diagnóstico o tratamiento.",
@@ -3685,7 +3691,8 @@ export const fallbackProducts = [
     "slug": "bpc-157-5mg-tb-500-5mg",
     "category": "recuperacion",
     "categories": [
-      "recuperacion"
+      "recuperacion",
+      "stacks"
     ],
     "short_description": "BPC-157 5mg + TB-500 5mg — compuesto de investigación (RUO).",
     "description": "BPC-157 5mg + TB-500 5mg es un compuesto de investigación (RUO). Solo para uso en investigación; no destinado a consumo humano ni animal, ni a diagnóstico o tratamiento.",
@@ -3799,7 +3806,8 @@ export const fallbackProducts = [
     "slug": "glow-bpc-157-10mg-ghk-cu-50mg-tb-500-10mg",
     "category": "recuperacion",
     "categories": [
-      "recuperacion"
+      "recuperacion",
+      "stacks"
     ],
     "short_description": "GLOW (BPC-157 10mg + GHK-Cu 50mg + TB-500 10mg) — compuesto de investigación (RUO).",
     "description": "GLOW (BPC-157 10mg + GHK-Cu 50mg + TB-500 10mg) es un compuesto de investigación (RUO). Solo para uso en investigación; no destinado a consumo humano ni animal, ni a diagnóstico o tratamiento.",
@@ -3839,7 +3847,8 @@ export const fallbackProducts = [
     "slug": "klow-bpc-ghk-cu-tb-500-kpv",
     "category": "recuperacion",
     "categories": [
-      "recuperacion"
+      "recuperacion",
+      "stacks"
     ],
     "short_description": "KLOW (BPC + GHK-Cu + TB-500 + KPV) — compuesto de investigación (RUO).",
     "description": "KLOW (BPC + GHK-Cu + TB-500 + KPV) es un compuesto de investigación (RUO). Solo para uso en investigación; no destinado a consumo humano ni animal, ni a diagnóstico o tratamiento.",
