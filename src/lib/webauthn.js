@@ -13,6 +13,22 @@ const toB64u = (buf) =>
 export const passkeysSupported = () =>
   typeof window !== 'undefined' && !!window.PublicKeyCredential;
 
+// ¿Este equipo tiene Touch ID / Face ID / Windows Hello disponible?
+export const platformAuthAvailable = async () => {
+  if (!passkeysSupported() || !window.PublicKeyCredential.isUserVerifyingPlatformAuthenticatorAvailable) return false;
+  try { return await window.PublicKeyCredential.isUserVerifyingPlatformAuthenticatorAvailable(); }
+  catch { return false; }
+};
+
+// Traduce los errores crípticos de WebAuthn a algo que el usuario entienda.
+export const passkeyErrorKey = (err) => {
+  const n = err?.name || '';
+  if (n === 'NotAllowedError') return 'passkey.err.cancelled';   // canceló o expiró
+  if (n === 'InvalidStateError') return 'passkey.err.exists';    // ya registrada en este equipo
+  if (n === 'NotSupportedError' || n === 'SecurityError') return 'passkey.err.unsupported';
+  return 'passkey.addFailed';
+};
+
 // Alta de una llave nueva (requiere sesión). Devuelve la lista actualizada.
 export const registerPasskey = async (name) => {
   const { data } = await api.post('/me/passkeys/options');

@@ -7,7 +7,7 @@ import { Badge } from '@/components/ui/badge';
 import { toast } from 'sonner';
 import api from '@/lib/api';
 import { useLanguage } from '@/context/LanguageContext';
-import { passkeysSupported, registerPasskey } from '@/lib/webauthn';
+import { passkeysSupported, platformAuthAvailable, registerPasskey, passkeyErrorKey } from '@/lib/webauthn';
 
 // Sección de seguridad de Mi cuenta: llaves de acceso para todos y, SOLO para
 // admins, el segundo factor por código (decisión de Christian, 2026-07-21).
@@ -32,7 +32,7 @@ const SecurityKeys = ({ user, onUserChange }) => {
       toast.success(t('passkey.added'));
     } catch (err) {
       if (err?.name !== 'NotAllowedError') {
-        toast.error(err.response?.data?.detail || t('passkey.addFailed'));
+        toast.error(err.response?.data?.detail || t(passkeyErrorKey(err)));
       }
     } finally { setBusy(false); }
   };
