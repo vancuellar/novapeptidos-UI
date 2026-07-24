@@ -91,6 +91,47 @@ export const FOCUS = [
   { id: 'stack', title: 'Stack combinado', desc: 'Combinaciones sinérgicas por objetivo.' },
 ];
 
+// Estilo de vida — personaliza notas y advertencias del plan (no es dosis médica).
+export const SEX = [
+  { id: 'na', title: 'Prefiero no decir' },
+  { id: 'hombre', title: 'Hombre' },
+  { id: 'mujer', title: 'Mujer' },
+];
+
+export const AGE = [
+  { id: '18-29', title: '18–29' },
+  { id: '30-44', title: '30–44' },
+  { id: '45-59', title: '45–59' },
+  { id: '60+', title: '60+' },
+];
+
+export const ACTIVITY = [
+  { id: 'sedentario', title: 'Sedentario', desc: 'Poco o nada de ejercicio' },
+  { id: 'ligero', title: 'Ligero', desc: '1–2 días por semana' },
+  { id: 'activo', title: 'Activo', desc: '3–5 días por semana' },
+  { id: 'atleta', title: 'Atleta', desc: '6+ días o competencia' },
+];
+
+export const SLEEP = [
+  { id: 'buena', title: 'Buena', desc: 'Descanso reparador' },
+  { id: 'regular', title: 'Regular', desc: 'Interrumpido a veces' },
+  { id: 'mala', title: 'Mala', desc: 'Cuesta dormir o descansar' },
+];
+
+export const DIET = [
+  { id: 'equilibrada', title: 'Equilibrada', desc: 'Balanceada y constante' },
+  { id: 'proteica', title: 'Alta en proteína', desc: 'Enfoque en masa magra' },
+  { id: 'deficit', title: 'En déficit', desc: 'Comiendo por debajo para bajar' },
+  { id: 'irregular', title: 'Irregular', desc: 'Sin patrón fijo' },
+];
+
+export const HABITS = [
+  { id: 'alcohol', title: 'Alcohol frecuente' },
+  { id: 'tabaco', title: 'Fumo / vapeo' },
+  { id: 'cafeina', title: 'Mucha cafeína' },
+  { id: 'ninguno', title: 'Ninguno de estos' },
+];
+
 export const DURATIONS = [
   { id: 4, title: '4 semanas', desc: 'Protocolo corto' },
   { id: 8, title: '8 semanas', desc: 'Protocolo estándar' },
@@ -177,7 +218,7 @@ export const doseText = (p, level) => {
  * Arma el plan completo a partir de las respuestas.
  * Devuelve un objeto con todas las secciones ya calculadas.
  */
-export function buildPlan({ selected, experience, focus, weeks, budget, conditions }) {
+export function buildPlan({ selected, experience, focus, weeks, budget, conditions, sex, age, activity, sleep, diet, habits }) {
   const budgetCfg = BUDGETS.find((b) => b.id === budget) || BUDGETS[1];
   const objectives = selected.map((id) => OBJECTIVES.find((o) => o.id === id)).filter(Boolean);
 
@@ -250,8 +291,24 @@ export function buildPlan({ selected, experience, focus, weeks, budget, conditio
     { week: weeks, expect: 'Cierre del ciclo. Compara contra tu punto de partida y decide con datos si repites.', flag: 'No encadenes un ciclo tras otro sin una pausa y sin revisar tus marcadores.' },
   ].filter((c, i, arr) => arr.findIndex((x) => x.week === c.week) === i && c.week <= weeks);
 
+  // Notas personalizadas por estilo de vida. No prescriben: contextualizan.
+  const goalIds = objectives.map((o) => o.id);
+  const lifestyleNotes = [];
+  const h = habits || [];
+  if (sleep === 'mala') lifestyleNotes.push('Registraste sueño de mala calidad. El descanso es donde se consolida casi todo lo que buscas; si el objetivo es recuperación, longevidad o composición, ordénalo en paralelo o el protocolo rinde a la mitad.');
+  if (activity === 'sedentario' && (goalIds.includes('composicion') || goalIds.includes('peso'))) lifestyleNotes.push('Marcaste actividad sedentaria. Para pérdida de peso o composición, el compuesto acelera lo que el movimiento empieza; sin algo de actividad, el resultado se aplana rápido.');
+  if (activity === 'atleta') lifestyleNotes.push('Marcaste carga de entrenamiento alta. Cuida la recuperación y las señales de sobreentrenamiento; más compuesto no sustituye el descanso entre sesiones.');
+  if (diet === 'deficit' && goalIds.includes('composicion')) lifestyleNotes.push('Estás en déficit calórico y buscas masa magra: son metas que jalan en direcciones opuestas. Prioriza una y deja la otra para otra fase.');
+  if (diet === 'irregular') lifestyleNotes.push('Marcaste alimentación irregular. Sin una base nutricional constante es difícil leer si un compuesto está funcionando o no.');
+  if (h.includes('alcohol')) lifestyleNotes.push('Registraste alcohol frecuente. Compite por la misma vía hepática que metaboliza varios de estos compuestos; reducirlo mejora tanto la seguridad como los resultados.');
+  if (h.includes('tabaco') && (goalIds.includes('recuperacion') || goalIds.includes('piel'))) lifestyleNotes.push('Marcaste tabaco. Reduce el flujo sanguíneo y la reparación de tejido, justo lo contrario de lo que buscan tus objetivos de recuperación o piel.');
+  if (age === '60+') lifestyleNotes.push('Registraste 60+. La respuesta y la eliminación cambian con la edad; empieza por el extremo bajo del rango de referencia y sube más despacio de lo habitual.');
+  if (sex === 'mujer' && goalIds.includes('piel')) lifestyleNotes.push('Nota para investigación: Melanotan y análogos tienen respuesta y efectos distintos según el perfil hormonal; documenta con cuidado.');
+
   return {
     objectives,
+    profile: { sex, age, activity, sleep, diet, habits: h },
+    lifestyleNotes,
     weeks,
     budget: budgetCfg,
     chosen,

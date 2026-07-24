@@ -14,7 +14,7 @@ import { toast } from 'sonner';
 import { formatMXN } from '@/lib/api';
 import { useCart } from '@/context/CartContext';
 import {
-  OBJECTIVES, EXPERIENCE, FOCUS, DURATIONS, BUDGETS, CONDITIONS, MAX_OBJ, buildPlan,
+  OBJECTIVES, EXPERIENCE, FOCUS, DURATIONS, BUDGETS, CONDITIONS, MAX_OBJ, SEX, AGE, ACTIVITY, SLEEP, DIET, HABITS, buildPlan,
 } from '@/data/advisorPlan';
 
 const ICONS = { Flame, Dumbbell, Hourglass, HeartPulse, Moon, Brain, Sparkles, HeartHandshake, Zap, ShieldPlus, Droplet };
@@ -49,6 +49,17 @@ const Advisor = () => {
   const [weeks, setWeeks] = useState(8);
   const [budget, setBudget] = useState('medio');
   const [conditions, setConditions] = useState([]);
+  const [sex, setSex] = useState('na');
+  const [age, setAge] = useState('30-44');
+  const [activity, setActivity] = useState('ligero');
+  const [sleep, setSleep] = useState('buena');
+  const [diet, setDiet] = useState('equilibrada');
+  const [habits, setHabits] = useState(['ninguno']);
+  const toggleHabit = (id) => setHabits((prev) => {
+    if (id === 'ninguno') return prev.includes('ninguno') ? [] : ['ninguno'];
+    const next = prev.filter((x) => x !== 'ninguno');
+    return next.includes(id) ? next.filter((x) => x !== id) : [...next, id];
+  });
   const [notes, setNotes] = useState('');
   const [excluded, setExcluded] = useState([]);          // slugs que el usuario desmarcó
 
@@ -72,13 +83,14 @@ const Advisor = () => {
   const reset = () => {
     setStep(1); setSelected([]); setParams({}); setExperience('inicial'); setFocus('simple');
     setWeeks(8); setBudget('medio'); setConditions([]); setNotes(''); setExcluded([]);
+    setSex('na'); setAge('30-44'); setActivity('ligero'); setSleep('buena'); setDiet('equilibrada'); setHabits(['ninguno']);
   };
 
   const openChat = () => document.querySelector('[data-testid="ai-chat-open-button"]')?.click();
 
   const plan = useMemo(
-    () => (selected.length ? buildPlan({ selected, experience, focus, weeks, budget, conditions }) : null),
-    [selected, experience, focus, weeks, budget, conditions],
+    () => (selected.length ? buildPlan({ selected, experience, focus, weeks, budget, conditions, sex, age, activity, sleep, diet, habits }) : null),
+    [selected, experience, focus, weeks, budget, conditions, sex, age, activity, sleep, diet, habits],
   );
 
   const included = plan ? plan.chosen.filter((c) => !excluded.includes(c.product.slug)) : [];
@@ -248,6 +260,80 @@ const Advisor = () => {
               ))}
             </div>
           </div>
+
+          {/* Estilo de vida — personaliza el plan */}
+          <div>
+            <div className="flex items-center gap-2 mb-1"><ClipboardList className="h-4 w-4 text-[hsl(var(--primary))]" /><h2 className="font-heading text-lg font-semibold">Tu estilo de vida</h2></div>
+            <p className="text-sm text-muted-foreground mb-4">Nos ayuda a afinar las recomendaciones y las advertencias. Nada de esto es obligatorio.</p>
+
+            <div className="space-y-5">
+              <div>
+                <div className="text-xs font-semibold mb-2">Sexo biológico</div>
+                <div className="grid grid-cols-3 gap-2">
+                  {SEX.map((o) => (
+                    <button key={o.id} onClick={() => setSex(o.id)} data-testid="advisor-sex"
+                      className={`rounded-lg border px-2 py-2 text-xs transition-colors ${sex === o.id ? 'border-[hsl(var(--primary))] bg-[hsl(var(--muted))]/30 font-semibold' : 'border-[hsl(var(--border))] hover:bg-[hsl(var(--muted))]/20'}`}>{o.title}</button>
+                  ))}
+                </div>
+              </div>
+
+              <div>
+                <div className="text-xs font-semibold mb-2">Edad</div>
+                <div className="grid grid-cols-4 gap-2">
+                  {AGE.map((o) => (
+                    <button key={o.id} onClick={() => setAge(o.id)} data-testid="advisor-age"
+                      className={`rounded-lg border px-2 py-2 text-xs transition-colors ${age === o.id ? 'border-[hsl(var(--primary))] bg-[hsl(var(--muted))]/30 font-semibold' : 'border-[hsl(var(--border))] hover:bg-[hsl(var(--muted))]/20'}`}>{o.title}</button>
+                  ))}
+                </div>
+              </div>
+
+              <div>
+                <div className="text-xs font-semibold mb-2">Nivel de actividad física</div>
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+                  {ACTIVITY.map((o) => (
+                    <button key={o.id} onClick={() => setActivity(o.id)} data-testid="advisor-activity"
+                      className={`rounded-lg border p-2.5 text-left transition-colors ${activity === o.id ? 'border-[hsl(var(--primary))] bg-[hsl(var(--muted))]/30' : 'border-[hsl(var(--border))] hover:bg-[hsl(var(--muted))]/20'}`}>
+                      <div className="text-xs font-semibold">{o.title}</div><div className="text-[11px] text-muted-foreground">{o.desc}</div>
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              <div className="grid sm:grid-cols-2 gap-5">
+                <div>
+                  <div className="text-xs font-semibold mb-2">¿Cómo duermes?</div>
+                  <div className="grid grid-cols-3 gap-2">
+                    {SLEEP.map((o) => (
+                      <button key={o.id} onClick={() => setSleep(o.id)} data-testid="advisor-sleep"
+                        className={`rounded-lg border px-2 py-2 text-xs transition-colors ${sleep === o.id ? 'border-[hsl(var(--primary))] bg-[hsl(var(--muted))]/30 font-semibold' : 'border-[hsl(var(--border))] hover:bg-[hsl(var(--muted))]/20'}`}>{o.title}</button>
+                    ))}
+                  </div>
+                </div>
+                <div>
+                  <div className="text-xs font-semibold mb-2">Tu alimentación</div>
+                  <div className="grid grid-cols-2 gap-2">
+                    {DIET.map((o) => (
+                      <button key={o.id} onClick={() => setDiet(o.id)} data-testid="advisor-diet"
+                        className={`rounded-lg border px-2 py-2 text-xs transition-colors ${diet === o.id ? 'border-[hsl(var(--primary))] bg-[hsl(var(--muted))]/30 font-semibold' : 'border-[hsl(var(--border))] hover:bg-[hsl(var(--muted))]/20'}`}>{o.title}</button>
+                    ))}
+                  </div>
+                </div>
+              </div>
+
+              <div>
+                <div className="text-xs font-semibold mb-2">Hábitos (marca los que apliquen)</div>
+                <div className="flex flex-wrap gap-2">
+                  {HABITS.map((o) => {
+                    const on = habits.includes(o.id);
+                    return (
+                      <button key={o.id} onClick={() => toggleHabit(o.id)} data-testid="advisor-habit"
+                        className={`text-xs rounded-full px-3 py-1.5 border transition-colors ${on ? 'bg-[hsl(var(--primary))] text-white border-[hsl(var(--primary))]' : 'border-[hsl(var(--border))] hover:bg-[hsl(var(--muted))]/40'}`}>{o.title}</button>
+                    );
+                  })}
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       )}
 
@@ -309,6 +395,19 @@ const Advisor = () => {
           <Section icon={Target} title="La estrategia">
             <p className="text-sm leading-relaxed">{plan.strategy}</p>
           </Section>
+
+          {plan.lifestyleNotes && plan.lifestyleNotes.length > 0 && (
+            <Section icon={ClipboardList} title="Ajustado a tu estilo de vida">
+              <ul className="space-y-2.5" data-testid="advisor-lifestyle-notes">
+                {plan.lifestyleNotes.map((n, i) => (
+                  <li key={i} className="flex gap-2.5 text-sm leading-relaxed">
+                    <ChevronRight className="h-4 w-4 text-[hsl(var(--primary))] shrink-0 mt-0.5" />
+                    <span>{n}</span>
+                  </li>
+                ))}
+              </ul>
+            </Section>
+          )}
 
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
             {[
