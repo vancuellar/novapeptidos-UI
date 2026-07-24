@@ -72,8 +72,8 @@ export const fallbackProducts = [
     "categories": [
       "bioreguladores"
     ],
-    "short_description": "Bronchogen — compuesto de investigación (RUO).",
-    "description": "Bronchogen es un compuesto de investigación (RUO). Solo para uso en investigación; no destinado a consumo humano ni animal, ni a diagnóstico o tratamiento.",
+    "short_description": "Péptido corto explorado en tejido bronquial.",
+    "description": "Bronchogen es un péptido corto de la serie Khavinson explorado en modelos de epitelio bronquial y pulmonar; su literatura es limitada y mayormente de origen ruso. Solo para uso en investigación (RUO).",
     "presentation": "10 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
@@ -112,8 +112,8 @@ export const fallbackProducts = [
     "categories": [
       "bioreguladores"
     ],
-    "short_description": "Cardiogen — compuesto de investigación (RUO).",
-    "description": "Cardiogen es un compuesto de investigación (RUO). Solo para uso en investigación; no destinado a consumo humano ni animal, ni a diagnóstico o tratamiento.",
+    "short_description": "Péptido corto explorado en tejido cardiaco.",
+    "description": "Cardiogen es un péptido corto de la serie Khavinson explorado en modelos de miocardio y tejido cardiovascular; la evidencia disponible es limitada y preliminar. Solo para uso en investigación (RUO).",
     "presentation": "20 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
@@ -152,8 +152,8 @@ export const fallbackProducts = [
     "categories": [
       "bioreguladores"
     ],
-    "short_description": "Cartalax — compuesto de investigación (RUO).",
-    "description": "Cartalax es un compuesto de investigación (RUO). Solo para uso en investigación; no destinado a consumo humano ni animal, ni a diagnóstico o tratamiento.",
+    "short_description": "Tripéptido explorado en cartílago y tejido conectivo.",
+    "description": "Cartalax es un tripéptido de la serie Khavinson explorado en modelos de condrocitos, cartílago y tejido conectivo; su literatura publicada es limitada. Solo para uso en investigación (RUO).",
     "presentation": "20 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
@@ -192,8 +192,8 @@ export const fallbackProducts = [
     "categories": [
       "bioreguladores"
     ],
-    "short_description": "Cortagen — compuesto de investigación (RUO).",
-    "description": "Cortagen es un compuesto de investigación (RUO). Solo para uso en investigación; no destinado a consumo humano ni animal, ni a diagnóstico o tratamiento.",
+    "short_description": "Péptido corto explorado en tejido nervioso.",
+    "description": "Cortagen es un péptido corto de la serie Khavinson explorado en modelos de corteza cerebral y nervio periférico; la evidencia publicada es limitada. Solo para uso en investigación (RUO).",
     "presentation": "20 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
@@ -232,8 +232,8 @@ export const fallbackProducts = [
     "categories": [
       "bioreguladores"
     ],
-    "short_description": "Crystagen — compuesto de investigación (RUO).",
-    "description": "Crystagen es un compuesto de investigación (RUO). Solo para uso en investigación; no destinado a consumo humano ni animal, ni a diagnóstico o tratamiento.",
+    "short_description": "Péptido corto explorado en respuesta inmune.",
+    "description": "Crystagen es un péptido de la serie Khavinson explorado en modelos de regulación inmunitaria y función de linfocitos; su respaldo experimental es limitado. Solo para uso en investigación (RUO).",
     "presentation": "20 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
@@ -272,8 +272,8 @@ export const fallbackProducts = [
     "categories": [
       "bioreguladores"
     ],
-    "short_description": "Pinealon — compuesto de investigación (RUO).",
-    "description": "Pinealon es un compuesto de investigación (RUO). Solo para uso en investigación; no destinado a consumo humano ni animal, ni a diagnóstico o tratamiento.",
+    "short_description": "Tripéptido corto explorado en tejido neuronal.",
+    "description": "Pinealon es un tripéptido de la serie Khavinson explorado en modelos de neuronas, estrés oxidativo y regulación de la expresión génica; su evidencia es limitada. Solo para uso en investigación (RUO).",
     "presentation": "5 mg – 10 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
@@ -318,8 +318,8 @@ export const fallbackProducts = [
     "categories": [
       "bioreguladores"
     ],
-    "short_description": "Thymalin — compuesto de investigación (RUO).",
-    "description": "Thymalin es un compuesto de investigación (RUO). Solo para uso en investigación; no destinado a consumo humano ni animal, ni a diagnóstico o tratamiento.",
+    "short_description": "Complejo peptídico tímico explorado en inmunidad.",
+    "description": "Thymalin es un complejo de péptidos obtenido de timo, explorado en modelos de maduración de linfocitos T y regulación inmunitaria; buena parte de su literatura es antigua. Solo para uso en investigación (RUO).",
     "presentation": "10 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
@@ -358,8 +358,8 @@ export const fallbackProducts = [
     "categories": [
       "bioreguladores"
     ],
-    "short_description": "Thymosin Alpha-1 — compuesto de investigación (RUO).",
-    "description": "Thymosin Alpha-1 es un compuesto de investigación (RUO). Solo para uso en investigación; no destinado a consumo humano ni animal, ni a diagnóstico o tratamiento.",
+    "short_description": "Péptido tímico estudiado en modulación inmunitaria.",
+    "description": "Timosina alfa-1 es un péptido de 28 aminoácidos de origen tímico, investigado en modelos de receptores tipo Toll, maduración de células dendríticas y respuesta inmune celular. Solo para uso en investigación (RUO).",
     "presentation": "5 mg – 10 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
@@ -404,8 +404,8 @@ export const fallbackProducts = [
     "categories": [
       "estetica"
     ],
-    "short_description": "AHK-Cu — compuesto de investigación (RUO).",
-    "description": "AHK-Cu es un compuesto de investigación (RUO). Solo para uso en investigación; no destinado a consumo humano ni animal, ni a diagnóstico o tratamiento.",
+    "short_description": "Tripéptido de cobre estudiado en folículo y vasos.",
+    "description": "AHK-Cu es un complejo de cobre investigado en modelos de angiogénesis, papila dérmica y folículo piloso, así como en estudios de matriz extracelular cutánea. Solo para uso en investigación (RUO).",
     "presentation": "50 mg – 100 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
@@ -444,8 +444,8 @@ export const fallbackProducts = [
     "categories": [
       "estetica"
     ],
-    "short_description": "Botulinum toxin — compuesto de investigación (RUO).",
-    "description": "Botulinum toxin es un compuesto de investigación (RUO). Solo para uso en investigación; no destinado a consumo humano ni animal, ni a diagnóstico o tratamiento.",
+    "short_description": "Neurotoxina de laboratorio medida en unidades biológicas.",
+    "description": "La toxina botulínica es una proteína neurotóxica estudiada por su bloqueo de la liberación de acetilcolina en la unión neuromuscular; se cuantifica en unidades biológicas, no en miligramos. Solo para uso en investigación (RUO).",
     "presentation": "100 IU",
     "form": "Liofilizado",
     "purity": "99.0%",
@@ -525,8 +525,8 @@ export const fallbackProducts = [
     "categories": [
       "estetica"
     ],
-    "short_description": "Lemon Bottle — compuesto de investigación (RUO).",
-    "description": "Lemon Bottle es un compuesto de investigación (RUO). Solo para uso en investigación; no destinado a consumo humano ni animal, ni a diagnóstico o tratamiento.",
+    "short_description": "Solución lipolítica con riboflavina, lecitina y bromelina.",
+    "description": "Lemon Bottle es una solución que combina riboflavina, lecitina y bromelina, estudiada en modelos de adipocitos y de degradación de tejido graso. Solo para uso en investigación (RUO).",
     "presentation": "10 mL",
     "form": "Liofilizado",
     "purity": "99.0%",
@@ -559,8 +559,8 @@ export const fallbackProducts = [
     "categories": [
       "estetica"
     ],
-    "short_description": "Matrixyl — compuesto de investigación (RUO).",
-    "description": "Matrixyl es un compuesto de investigación (RUO). Solo para uso en investigación; no destinado a consumo humano ni animal, ni a diagnóstico o tratamiento.",
+    "short_description": "Pentapéptido cosmético estudiado en síntesis de colágeno.",
+    "description": "Matrixyl (palmitoil pentapéptido-4) es un péptido señal investigado en fibroblastos dérmicos por su efecto sobre la síntesis de colágeno y componentes de la matriz extracelular. Solo para uso en investigación (RUO).",
     "presentation": "10 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
@@ -593,8 +593,8 @@ export const fallbackProducts = [
     "categories": [
       "estetica"
     ],
-    "short_description": "SNAP-8 — compuesto de investigación (RUO).",
-    "description": "SNAP-8 es un compuesto de investigación (RUO). Solo para uso en investigación; no destinado a consumo humano ni animal, ni a diagnóstico o tratamiento.",
+    "short_description": "Octapéptido cosmético estudiado en el complejo SNARE.",
+    "description": "SNAP-8 es un octapéptido derivado de SNAP-25 investigado en cosmética experimental por su interferencia con el complejo SNARE y la liberación de neurotransmisores en modelos in vitro. Solo para uso en investigación (RUO).",
     "presentation": "10 mg – 100 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
@@ -634,8 +634,8 @@ export const fallbackProducts = [
       "hormona-crecimiento",
       "stacks"
     ],
-    "short_description": "CJC-1295 no DAC 5mg + Ipamorelin 5mg — compuesto de investigación (RUO).",
-    "description": "CJC-1295 no DAC 5mg + Ipamorelin 5mg es un compuesto de investigación (RUO). Solo para uso en investigación; no destinado a consumo humano ni animal, ni a diagnóstico o tratamiento.",
+    "short_description": "Análogo de GHRH combinado con secretagogo selectivo.",
+    "description": "Une CJC-1295 sin DAC, análogo de GHRH de vida media corta, con Ipamorelin; la combinación se estudia por la señalización complementaria de las vías GHRH y grelina. Solo para uso en investigación (RUO).",
     "presentation": "10 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
@@ -674,8 +674,8 @@ export const fallbackProducts = [
     "categories": [
       "hormona-crecimiento"
     ],
-    "short_description": "Fragment 17-23 — compuesto de investigación (RUO).",
-    "description": "Fragment 17-23 es un compuesto de investigación (RUO). Solo para uso en investigación; no destinado a consumo humano ni animal, ni a diagnóstico o tratamiento.",
+    "short_description": "Heptapéptido central de TB-500 estudiado en reparación.",
+    "description": "Fragment 17-23 (Ac-LKKTETQ) es el heptapéptido central de la timosina beta-4 con el dominio de unión a actina, estudiado en migración celular y angiogénesis. Solo para uso en investigación (RUO).",
     "presentation": "10 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
@@ -708,8 +708,8 @@ export const fallbackProducts = [
     "categories": [
       "hormona-crecimiento"
     ],
-    "short_description": "GHRP-2 Acetate — compuesto de investigación (RUO).",
-    "description": "GHRP-2 Acetate es un compuesto de investigación (RUO). Solo para uso en investigación; no destinado a consumo humano ni animal, ni a diagnóstico o tratamiento.",
+    "short_description": "Secretagogo peptídico de hormona de crecimiento.",
+    "description": "GHRP-2 es un hexapéptido investigado por su acción sobre el receptor de secretagogos de hormona de crecimiento y por la señalización del eje somatotrópico. Solo para uso en investigación (RUO).",
     "presentation": "5 mg – 15 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
@@ -760,8 +760,8 @@ export const fallbackProducts = [
     "categories": [
       "hormona-crecimiento"
     ],
-    "short_description": "GHRP-6 Acetate — compuesto de investigación (RUO).",
-    "description": "GHRP-6 Acetate es un compuesto de investigación (RUO). Solo para uso en investigación; no destinado a consumo humano ni animal, ni a diagnóstico o tratamiento.",
+    "short_description": "Secretagogo estudiado en GH y señalización de grelina.",
+    "description": "GHRP-6 es un hexapéptido que actúa sobre el receptor de grelina, estudiado en modelos de liberación de hormona de crecimiento y de regulación del apetito. Solo para uso en investigación (RUO).",
     "presentation": "5 mg – 10 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
@@ -806,8 +806,8 @@ export const fallbackProducts = [
     "categories": [
       "hormona-crecimiento"
     ],
-    "short_description": "Hexarelin Acetate — compuesto de investigación (RUO).",
-    "description": "Hexarelin Acetate es un compuesto de investigación (RUO). Solo para uso en investigación; no destinado a consumo humano ni animal, ni a diagnóstico o tratamiento.",
+    "short_description": "Hexapéptido secretagogo estudiado en GH y corazón.",
+    "description": "Hexarelin es un hexapéptido sintético investigado por su acción sobre receptores de grelina y CD36, en modelos de liberación de hormona de crecimiento y de tejido cardiaco. Solo para uso en investigación (RUO).",
     "presentation": "2 mg – 5 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
@@ -852,8 +852,8 @@ export const fallbackProducts = [
     "categories": [
       "hormona-crecimiento"
     ],
-    "short_description": "HGH — compuesto de investigación (RUO).",
-    "description": "HGH es un compuesto de investigación (RUO). Solo para uso en investigación; no destinado a consumo humano ni animal, ni a diagnóstico o tratamiento.",
+    "short_description": "Hormona de crecimiento recombinante, ampliamente estudiada.",
+    "description": "HGH es hormona de crecimiento humana recombinante, investigada en modelos de señalización del receptor de GH, producción hepática de IGF-1 y metabolismo de proteínas y lípidos. Solo para uso en investigación (RUO).",
     "presentation": "24 IU – 40 IU",
     "form": "Liofilizado",
     "purity": "99.0%",
@@ -903,8 +903,8 @@ export const fallbackProducts = [
     "categories": [
       "hormona-crecimiento"
     ],
-    "short_description": "HGH Fragment 176-191 — compuesto de investigación (RUO).",
-    "description": "HGH Fragment 176-191 es un compuesto de investigación (RUO). Solo para uso en investigación; no destinado a consumo humano ni animal, ni a diagnóstico o tratamiento.",
+    "short_description": "Fragmento C-terminal de GH estudiado en lipólisis.",
+    "description": "Corresponde a la región 176-191 de la hormona de crecimiento, investigada en modelos de adipocitos y movilización de lípidos sin los efectos somatotrópicos de la molécula completa. Solo para uso en investigación (RUO).",
     "presentation": "1 mg – 15 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
@@ -973,8 +973,8 @@ export const fallbackProducts = [
     "categories": [
       "hormona-crecimiento"
     ],
-    "short_description": "IGF-1 LR3 — compuesto de investigación (RUO).",
-    "description": "IGF-1 LR3 es un compuesto de investigación (RUO). Solo para uso en investigación; no destinado a consumo humano ni animal, ni a diagnóstico o tratamiento.",
+    "short_description": "Análogo de IGF-1 de vida media prolongada.",
+    "description": "IGF-1 LR3 es un análogo con baja afinidad por las proteínas de unión a IGF, estudiado en cultivos celulares por su señalización sostenida sobre el receptor de IGF-1. Solo para uso en investigación (RUO).",
     "presentation": "0.1 mg – 1 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
@@ -1071,8 +1071,8 @@ export const fallbackProducts = [
     "categories": [
       "hormona-crecimiento"
     ],
-    "short_description": "MGF — compuesto de investigación (RUO).",
-    "description": "MGF es un compuesto de investigación (RUO). Solo para uso en investigación; no destinado a consumo humano ni animal, ni a diagnóstico o tratamiento.",
+    "short_description": "Variante de IGF-1 estudiada en reparación muscular.",
+    "description": "MGF es una variante de splicing del IGF-1 asociada al estímulo mecánico, investigada en modelos de células satélite, regeneración de fibra muscular y respuesta al daño. Solo para uso en investigación (RUO).",
     "presentation": "2 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
@@ -1111,8 +1111,8 @@ export const fallbackProducts = [
     "categories": [
       "hormona-crecimiento"
     ],
-    "short_description": "PEG-MGF — compuesto de investigación (RUO).",
-    "description": "PEG-MGF es un compuesto de investigación (RUO). Solo para uso en investigación; no destinado a consumo humano ni animal, ni a diagnóstico o tratamiento.",
+    "short_description": "MGF pegilado con mayor estabilidad en circulación.",
+    "description": "PEG-MGF es la versión pegilada del factor mecano-crecimiento, con vida media más larga, estudiada en modelos de activación de células satélite y reparación de músculo esquelético. Solo para uso en investigación (RUO).",
     "presentation": "2 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
@@ -1204,8 +1204,8 @@ export const fallbackProducts = [
       "hormona-crecimiento",
       "stacks"
     ],
-    "short_description": "Tesamorelin 10 + Ipamorelin 5 — compuesto de investigación (RUO).",
-    "description": "Tesamorelin 10 + Ipamorelin 5 es un compuesto de investigación (RUO). Solo para uso en investigación; no destinado a consumo humano ni animal, ni a diagnóstico o tratamiento.",
+    "short_description": "Análogo de GHRH junto a secretagogo selectivo.",
+    "description": "Combina tesamorelina, análogo estabilizado de GHRH, con ipamorelina; la mezcla se estudia por la señalización complementaria de los receptores de GHRH y de grelina en el eje somatotrópico. Solo para uso en investigación (RUO).",
     "presentation": "15 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
@@ -1290,8 +1290,8 @@ export const fallbackProducts = [
     "categories": [
       "longevidad"
     ],
-    "short_description": "FOXO4 — compuesto de investigación (RUO).",
-    "description": "FOXO4 es un compuesto de investigación (RUO). Solo para uso en investigación; no destinado a consumo humano ni animal, ni a diagnóstico o tratamiento.",
+    "short_description": "Péptido senolítico explorado en células senescentes.",
+    "description": "FOXO4 (FOXO4-DRI) es un péptido diseñado para interferir con la interacción FOXO4-p53, explorado en modelos de senescencia celular y depuración selectiva de células senescentes. Solo para uso en investigación (RUO).",
     "presentation": "2 mg – 10 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
@@ -1382,8 +1382,8 @@ export const fallbackProducts = [
     "categories": [
       "longevidad"
     ],
-    "short_description": "Humanin — compuesto de investigación (RUO).",
-    "description": "Humanin es un compuesto de investigación (RUO). Solo para uso en investigación; no destinado a consumo humano ni animal, ni a diagnóstico o tratamiento.",
+    "short_description": "Péptido mitocondrial explorado en citoprotección celular.",
+    "description": "Humanin es un péptido codificado en el ADN mitocondrial, investigado en modelos de estrés celular, apoptosis y neuroprotección, dentro del campo de los péptidos derivados de mitocondria. Solo para uso en investigación (RUO).",
     "presentation": "10 mg – 20 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
@@ -1480,8 +1480,8 @@ export const fallbackProducts = [
     "categories": [
       "longevidad"
     ],
-    "short_description": "SS-31 — compuesto de investigación (RUO).",
-    "description": "SS-31 es un compuesto de investigación (RUO). Solo para uso en investigación; no destinado a consumo humano ni animal, ni a diagnóstico o tratamiento.",
+    "short_description": "Péptido mitocondrial que se une a cardiolipina.",
+    "description": "SS-31 (elamipretida) es un tetrapéptido con afinidad por la cardiolipina de la membrana mitocondrial interna, estudiado en modelos de función mitocondrial y estrés oxidativo. Solo para uso en investigación (RUO).",
     "presentation": "10 mg – 50 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
@@ -1526,8 +1526,8 @@ export const fallbackProducts = [
     "categories": [
       "nootropicos"
     ],
-    "short_description": "Cerebrolysin — compuesto de investigación (RUO).",
-    "description": "Cerebrolysin es un compuesto de investigación (RUO). Solo para uso en investigación; no destinado a consumo humano ni animal, ni a diagnóstico o tratamiento.",
+    "short_description": "Mezcla de péptidos estudiada en modelos neuronales.",
+    "description": "Cerebrolysin es una mezcla de péptidos de bajo peso molecular de origen porcino, investigada en modelos de neuroprotección, plasticidad sináptica y daño cerebral isquémico. Solo para uso en investigación (RUO).",
     "presentation": "60 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
@@ -1618,8 +1618,8 @@ export const fallbackProducts = [
     "categories": [
       "nootropicos"
     ],
-    "short_description": "Melatonina — compuesto de investigación (RUO).",
-    "description": "Melatonina es un compuesto de investigación (RUO). Solo para uso en investigación; no destinado a consumo humano ni animal, ni a diagnóstico o tratamiento.",
+    "short_description": "Hormona pineal estudiada en ritmos circadianos.",
+    "description": "La melatonina es una indolamina producida por la glándula pineal, investigada en modelos de ritmo circadiano, receptores MT1 y MT2 y actividad antioxidante celular. Solo para uso en investigación (RUO).",
     "presentation": "10 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
@@ -1658,8 +1658,8 @@ export const fallbackProducts = [
     "categories": [
       "nootropicos"
     ],
-    "short_description": "Orexin A — compuesto de investigación (RUO).",
-    "description": "Orexin A es un compuesto de investigación (RUO). Solo para uso en investigación; no destinado a consumo humano ni animal, ni a diagnóstico o tratamiento.",
+    "short_description": "Neuropéptido hipotalámico estudiado en vigilia y apetito.",
+    "description": "Orexina A es un neuropéptido hipotalámico que actúa sobre los receptores OX1R y OX2R, investigado en modelos de vigilia, ritmo sueño-vigilia y conducta alimentaria. Solo para uso en investigación (RUO).",
     "presentation": "10 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
@@ -1698,8 +1698,8 @@ export const fallbackProducts = [
     "categories": [
       "nootropicos"
     ],
-    "short_description": "Orexin B — compuesto de investigación (RUO).",
-    "description": "Orexin B es un compuesto de investigación (RUO). Solo para uso en investigación; no destinado a consumo humano ni animal, ni a diagnóstico o tratamiento.",
+    "short_description": "Neuropéptido con preferencia por el receptor OX2R.",
+    "description": "Orexina B es la segunda forma del sistema orexinérgico, con preferencia por el receptor OX2R, estudiada en modelos de regulación del sueño, alerta y balance energético. Solo para uso en investigación (RUO).",
     "presentation": "5 mg – 10 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
@@ -1738,8 +1738,8 @@ export const fallbackProducts = [
     "categories": [
       "nootropicos"
     ],
-    "short_description": "PE-22-28 — compuesto de investigación (RUO).",
-    "description": "PE-22-28 es un compuesto de investigación (RUO). Solo para uso en investigación; no destinado a consumo humano ni animal, ni a diagnóstico o tratamiento.",
+    "short_description": "Análogo de spadina explorado en modelos de ánimo.",
+    "description": "PE-22-28 es un análogo corto de spadina que bloquea el canal TREK-1, explorado en modelos animales de conducta tipo depresiva y de plasticidad neuronal. Solo para uso en investigación (RUO).",
     "presentation": "10 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
@@ -1778,8 +1778,8 @@ export const fallbackProducts = [
     "categories": [
       "nootropicos"
     ],
-    "short_description": "PNC-27 — compuesto de investigación (RUO).",
-    "description": "PNC-27 es un compuesto de investigación (RUO). Solo para uso en investigación; no destinado a consumo humano ni animal, ni a diagnóstico o tratamiento.",
+    "short_description": "Péptido derivado de p53 estudiado en células tumorales.",
+    "description": "PNC-27 une una secuencia derivada de p53 a un dominio de penetración celular, investigado in vitro por su interacción con HDM-2 en membranas de líneas tumorales. Solo para uso en investigación (RUO).",
     "presentation": "5 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
@@ -1910,8 +1910,8 @@ export const fallbackProducts = [
     "categories": [
       "otros"
     ],
-    "short_description": "ACTH 1-39 — compuesto de investigación (RUO).",
-    "description": "ACTH 1-39 es un compuesto de investigación (RUO). Solo para uso en investigación; no destinado a consumo humano ni animal, ni a diagnóstico o tratamiento.",
+    "short_description": "Corticotropina completa estudiada en el eje suprarrenal.",
+    "description": "ACTH 1-39 es la secuencia completa de la hormona adrenocorticotrópica, investigada en modelos del eje hipotálamo-hipófisis-suprarrenal y en la esteroidogénesis de células adrenocorticales. Solo para uso en investigación (RUO).",
     "presentation": "5 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
@@ -1944,8 +1944,8 @@ export const fallbackProducts = [
     "categories": [
       "otros"
     ],
-    "short_description": "ADMAX — compuesto de investigación (RUO).",
-    "description": "ADMAX es un compuesto de investigación (RUO). Solo para uso en investigación; no destinado a consumo humano ni animal, ni a diagnóstico o tratamiento.",
+    "short_description": "Derivado de Semax explorado en neuroplasticidad.",
+    "description": "ADMAX (Adamax) es un análogo modificado de Semax, derivado de ACTH 4-10, explorado en modelos neuronales de expresión de BDNF y NGF. Su literatura es limitada. Solo para uso en investigación (RUO).",
     "presentation": "5 mg – 10 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
@@ -1984,8 +1984,8 @@ export const fallbackProducts = [
     "categories": [
       "otros"
     ],
-    "short_description": "B7-33 — compuesto de investigación (RUO).",
-    "description": "B7-33 es un compuesto de investigación (RUO). Solo para uso en investigación; no destinado a consumo humano ni animal, ni a diagnóstico o tratamiento.",
+    "short_description": "Análogo de relaxina explorado en fibrosis.",
+    "description": "B7-33 es un péptido monomérico derivado de la relaxina H2 que actúa sobre el receptor RXFP1, investigado en modelos preclínicos de fibrosis cardiaca, renal y pulmonar. Solo para uso en investigación (RUO).",
     "presentation": "2 mg – 10 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
@@ -2128,8 +2128,8 @@ export const fallbackProducts = [
     "categories": [
       "estetica"
     ],
-    "short_description": "Dysport — compuesto de investigación (RUO).",
-    "description": "Dysport es un compuesto de investigación (RUO). Solo para uso en investigación; no destinado a consumo humano ni animal, ni a diagnóstico o tratamiento.",
+    "short_description": "Toxina botulínica tipo A medida en unidades.",
+    "description": "Dysport (abobotulinumtoxinA) es una preparación de toxina botulínica tipo A estudiada en la unión neuromuscular; su potencia se expresa en unidades biológicas propias, no intercambiables. Solo para uso en investigación (RUO).",
     "presentation": "500 u",
     "form": "Liofilizado",
     "purity": "99.0%",
@@ -2162,8 +2162,8 @@ export const fallbackProducts = [
     "categories": [
       "otros"
     ],
-    "short_description": "EPO — compuesto de investigación (RUO).",
-    "description": "EPO es un compuesto de investigación (RUO). Solo para uso en investigación; no destinado a consumo humano ni animal, ni a diagnóstico o tratamiento.",
+    "short_description": "Eritropoyetina estudiada en producción de glóbulos rojos.",
+    "description": "La eritropoyetina es una glicoproteína investigada por su papel en la eritropoyesis y en modelos de hipoxia, progenitores eritroides y señalización del receptor de EPO. Solo para uso en investigación (RUO).",
     "presentation": "3000 IU",
     "form": "Liofilizado",
     "purity": "99.0%",
@@ -2196,8 +2196,8 @@ export const fallbackProducts = [
     "categories": [
       "otros"
     ],
-    "short_description": "HUMSC (células madre) — compuesto de investigación (RUO).",
-    "description": "HUMSC (células madre) es un compuesto de investigación (RUO). Solo para uso en investigación; no destinado a consumo humano ni animal, ni a diagnóstico o tratamiento.",
+    "short_description": "Células madre mesenquimales de cordón umbilical humano.",
+    "description": "Material biológico de investigación: células madre mesenquimales derivadas de cordón umbilical humano, usadas en estudios in vitro de diferenciación, secreción paracrina y modelos de reparación tisular. Solo para uso en investigación (RUO).",
     "presentation": "100 mil",
     "form": "Liofilizado",
     "purity": "99.0%",
@@ -2323,8 +2323,8 @@ export const fallbackProducts = [
       "estetica",
       "sexual-hormonal"
     ],
-    "short_description": "Melanotan I — compuesto de investigación (RUO).",
-    "description": "Melanotan I es un compuesto de investigación (RUO). Solo para uso en investigación; no destinado a consumo humano ni animal, ni a diagnóstico o tratamiento.",
+    "short_description": "Análogo de alfa-MSH estudiado en pigmentación.",
+    "description": "Melanotan I (afamelanotida) es un análogo de la hormona alfa-MSH investigado en modelos de melanocitos, receptor MC1R y regulación de la pigmentación cutánea. Solo para uso en investigación (RUO).",
     "presentation": "10 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
@@ -2405,8 +2405,8 @@ export const fallbackProducts = [
       "perdida-peso",
       "stacks"
     ],
-    "short_description": "MIC (Lipo-C + B12) — compuesto de investigación (RUO).",
-    "description": "MIC (Lipo-C + B12) es un compuesto de investigación (RUO). Solo para uso en investigación; no destinado a consumo humano ni animal, ni a diagnóstico o tratamiento.",
+    "short_description": "Mezcla lipotrópica con vitamina B12 añadida.",
+    "description": "MIC combina metionina, inositol y colina con vitamina B12, usada en estudios de metabolismo hepático de lípidos y de vías dependientes de grupos metilo. Solo para uso en investigación (RUO).",
     "presentation": "10 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
@@ -2491,8 +2491,8 @@ export const fallbackProducts = [
     "categories": [
       "nootropicos"
     ],
-    "short_description": "P21 — compuesto de investigación (RUO).",
-    "description": "P21 es un compuesto de investigación (RUO). Solo para uso en investigación; no destinado a consumo humano ni animal, ni a diagnóstico o tratamiento.",
+    "short_description": "Péptido derivado de CNTF explorado en neurogénesis.",
+    "description": "P21 es un péptido derivado del factor neurotrófico ciliar, explorado en modelos de neurogénesis del hipocampo y plasticidad sináptica; su literatura es todavía limitada. Solo para uso en investigación (RUO).",
     "presentation": "5 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
@@ -2525,8 +2525,8 @@ export const fallbackProducts = [
     "categories": [
       "hormona-crecimiento"
     ],
-    "short_description": "Somatropina (HGH 191AA) — compuesto de investigación (RUO).",
-    "description": "Somatropina (HGH 191AA) es un compuesto de investigación (RUO). Solo para uso en investigación; no destinado a consumo humano ni animal, ni a diagnóstico o tratamiento.",
+    "short_description": "Hormona de crecimiento recombinante de 191 aminoácidos.",
+    "description": "Somatropina es hormona de crecimiento humana recombinante de secuencia completa de 191 aminoácidos, investigada en modelos de señalización del receptor de GH y de producción de IGF-1. Solo para uso en investigación (RUO).",
     "presentation": "10 IU – 15 IU",
     "form": "Liofilizado",
     "purity": "99.0%",
@@ -2634,8 +2634,8 @@ export const fallbackProducts = [
     "categories": [
       "otros"
     ],
-    "short_description": "VIP — compuesto de investigación (RUO).",
-    "description": "VIP es un compuesto de investigación (RUO). Solo para uso en investigación; no destinado a consumo humano ni animal, ni a diagnóstico o tratamiento.",
+    "short_description": "Neuropéptido estudiado en vasodilatación e inflamación.",
+    "description": "El péptido intestinal vasoactivo es un neuropéptido de 28 aminoácidos investigado en modelos de vasodilatación, regulación inmunitaria y señalización de los receptores VPAC1 y VPAC2. Solo para uso en investigación (RUO).",
     "presentation": "5 mg – 10 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
@@ -2680,8 +2680,8 @@ export const fallbackProducts = [
     "categories": [
       "perdida-peso"
     ],
-    "short_description": "10-amino-1MQ — compuesto de investigación (RUO).",
-    "description": "10-amino-1MQ es un compuesto de investigación (RUO). Solo para uso en investigación; no destinado a consumo humano ni animal, ni a diagnóstico o tratamiento.",
+    "short_description": "Inhibidor de NNMT estudiado en metabolismo celular.",
+    "description": "10-amino-1MQ es una molécula pequeña investigada como inhibidor de la nicotinamida N-metiltransferasa en modelos de adipocitos, músculo esquelético y metabolismo energético. Solo para uso en investigación (RUO).",
     "presentation": "10 mg – 50 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
@@ -2720,8 +2720,8 @@ export const fallbackProducts = [
     "categories": [
       "perdida-peso"
     ],
-    "short_description": "5-AMINO-1MQ — compuesto de investigación (RUO).",
-    "description": "5-AMINO-1MQ es un compuesto de investigación (RUO). Solo para uso en investigación; no destinado a consumo humano ni animal, ni a diagnóstico o tratamiento.",
+    "short_description": "Inhibidor de NNMT explorado en adipocitos.",
+    "description": "5-amino-1MQ es un inhibidor de la nicotinamida N-metiltransferasa estudiado en líneas de adipocitos y en modelos preclínicos de metabolismo lipídico y regulación de NAD+. Solo para uso en investigación (RUO).",
     "presentation": "5 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
@@ -2760,8 +2760,8 @@ export const fallbackProducts = [
     "categories": [
       "perdida-peso"
     ],
-    "short_description": "AICAR — compuesto de investigación (RUO).",
-    "description": "AICAR es un compuesto de investigación (RUO). Solo para uso en investigación; no destinado a consumo humano ni animal, ni a diagnóstico o tratamiento.",
+    "short_description": "Activador de AMPK estudiado en metabolismo energético.",
+    "description": "AICAR es un análogo de AMP investigado como activador de la vía AMPK en modelos de músculo esquelético, oxidación de glucosa y metabolismo mitocondrial. Solo para uso en investigación (RUO).",
     "presentation": "50 mg – 100 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
@@ -2806,8 +2806,8 @@ export const fallbackProducts = [
     "categories": [
       "perdida-peso"
     ],
-    "short_description": "AOD-9604 — compuesto de investigación (RUO).",
-    "description": "AOD-9604 es un compuesto de investigación (RUO). Solo para uso en investigación; no destinado a consumo humano ni animal, ni a diagnóstico o tratamiento.",
+    "short_description": "Fragmento de HGH estudiado en metabolismo lipídico.",
+    "description": "AOD-9604 es un fragmento modificado de la región 176-191 de la hormona de crecimiento, investigado en modelos de lipólisis y adipocitos sin la actividad somatotrópica clásica. Solo para uso en investigación (RUO).",
     "presentation": "2 mg – 10 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
@@ -2859,8 +2859,8 @@ export const fallbackProducts = [
       "perdida-peso",
       "stacks"
     ],
-    "short_description": "Cagri + Sema (2.5mg + 2.5mg) — compuesto de investigación (RUO).",
-    "description": "Cagri + Sema (2.5mg + 2.5mg) es un compuesto de investigación (RUO). Solo para uso en investigación; no destinado a consumo humano ni animal, ni a diagnóstico o tratamiento.",
+    "short_description": "Análogo de amilina junto a agonista GLP-1.",
+    "description": "Combina cagrilintida, análogo de amilina, con semaglutida, agonista del receptor GLP-1; se investiga la señalización conjunta de ambas vías en modelos de regulación metabólica. Solo para uso en investigación (RUO).",
     "presentation": "5 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
@@ -2951,8 +2951,8 @@ export const fallbackProducts = [
     "categories": [
       "perdida-peso"
     ],
-    "short_description": "Dulaglutida — compuesto de investigación (RUO).",
-    "description": "Dulaglutida es un compuesto de investigación (RUO). Solo para uso en investigación; no destinado a consumo humano ni animal, ni a diagnóstico o tratamiento.",
+    "short_description": "Agonista GLP-1 de acción prolongada, ampliamente estudiado.",
+    "description": "Dulaglutida es una proteína de fusión que une un análogo de GLP-1 a un fragmento Fc, investigada en modelos de señalización incretínica y regulación de glucosa. Solo para uso en investigación (RUO).",
     "presentation": "10 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
@@ -2991,8 +2991,8 @@ export const fallbackProducts = [
     "categories": [
       "perdida-peso"
     ],
-    "short_description": "L-Carnitine — compuesto de investigación (RUO).",
-    "description": "L-Carnitine es un compuesto de investigación (RUO). Solo para uso en investigación; no destinado a consumo humano ni animal, ni a diagnóstico o tratamiento.",
+    "short_description": "Compuesto estudiado en transporte de ácidos grasos.",
+    "description": "La L-carnitina es un compuesto que participa en el transporte de ácidos grasos hacia la mitocondria, investigado en modelos de oxidación lipídica y metabolismo energético celular. Solo para uso en investigación (RUO).",
     "presentation": "2 mg – 1200 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
@@ -3049,8 +3049,8 @@ export const fallbackProducts = [
     "categories": [
       "perdida-peso"
     ],
-    "short_description": "LIPO-C — compuesto de investigación (RUO).",
-    "description": "LIPO-C es un compuesto de investigación (RUO). Solo para uso en investigación; no destinado a consumo humano ni animal, ni a diagnóstico o tratamiento.",
+    "short_description": "Solución lipotrópica estudiada en metabolismo de grasas.",
+    "description": "LIPO-C es una formulación lipotrópica con metionina, inositol y colina, usada en estudios de metabolismo hepático de lípidos y de movilización de grasa en modelos experimentales. Solo para uso en investigación (RUO).",
     "presentation": "10 mL",
     "form": "Liofilizado",
     "purity": "99.0%",
@@ -3083,8 +3083,8 @@ export const fallbackProducts = [
     "categories": [
       "perdida-peso"
     ],
-    "short_description": "Liraglutida — compuesto de investigación (RUO).",
-    "description": "Liraglutida es un compuesto de investigación (RUO). Solo para uso en investigación; no destinado a consumo humano ni animal, ni a diagnóstico o tratamiento.",
+    "short_description": "Agonista del receptor GLP-1, ampliamente estudiado.",
+    "description": "Liraglutida es un análogo acilado de GLP-1 con unión a albúmina, investigado en modelos de señalización incretínica, células beta pancreáticas y regulación del apetito. Solo para uso en investigación (RUO).",
     "presentation": "5 mg – 30 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
@@ -3276,8 +3276,8 @@ export const fallbackProducts = [
       "perdida-peso",
       "stacks"
     ],
-    "short_description": "Retatrutide 20mg + Tirzepatide 40mg — compuesto de investigación (RUO).",
-    "description": "Retatrutide 20mg + Tirzepatide 40mg es un compuesto de investigación (RUO). Solo para uso en investigación; no destinado a consumo humano ni animal, ni a diagnóstico o tratamiento.",
+    "short_description": "Combinación de agonistas incretínicos triple y dual.",
+    "description": "Une retatrutida, agonista triple de GLP-1, GIP y glucagón, con tirzepatida, agonista dual GLP-1/GIP; se investiga la superposición de estas vías en modelos metabólicos. Solo para uso en investigación (RUO).",
     "presentation": "60 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
@@ -3392,8 +3392,8 @@ export const fallbackProducts = [
     "categories": [
       "perdida-peso"
     ],
-    "short_description": "SLU-PP-332 — compuesto de investigación (RUO).",
-    "description": "SLU-PP-332 es un compuesto de investigación (RUO). Solo para uso en investigación; no destinado a consumo humano ni animal, ni a diagnóstico o tratamiento.",
+    "short_description": "Agonista de ERR explorado como mimético del ejercicio.",
+    "description": "SLU-PP-332 es una molécula pequeña agonista de los receptores relacionados con estrógenos, explorada en modelos de metabolismo oxidativo y de respuesta muscular tipo ejercicio. Solo para uso en investigación (RUO).",
     "presentation": "5 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
@@ -3426,8 +3426,8 @@ export const fallbackProducts = [
     "categories": [
       "perdida-peso"
     ],
-    "short_description": "Survodutide — compuesto de investigación (RUO).",
-    "description": "Survodutide es un compuesto de investigación (RUO). Solo para uso en investigación; no destinado a consumo humano ni animal, ni a diagnóstico o tratamiento.",
+    "short_description": "Agonista dual de GLP-1 y glucagón.",
+    "description": "Survodutide es un péptido agonista dual de los receptores de GLP-1 y glucagón, investigado en modelos de gasto energético, metabolismo hepático y regulación del peso corporal. Solo para uso en investigación (RUO).",
     "presentation": "10 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
@@ -3548,8 +3548,8 @@ export const fallbackProducts = [
     "categories": [
       "recuperacion"
     ],
-    "short_description": "ARA-290 — compuesto de investigación (RUO).",
-    "description": "ARA-290 es un compuesto de investigación (RUO). Solo para uso en investigación; no destinado a consumo humano ni animal, ni a diagnóstico o tratamiento.",
+    "short_description": "Péptido derivado de EPO explorado en nervio periférico.",
+    "description": "ARA-290 (cibinetide) es un péptido derivado de la eritropoyetina que actúa sobre el receptor innato de reparación, estudiado en modelos de neuropatía e inflamación tisular. Solo para uso en investigación (RUO).",
     "presentation": "10 mg – 16 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
@@ -3653,8 +3653,8 @@ export const fallbackProducts = [
       "recuperacion",
       "stacks"
     ],
-    "short_description": "BPC-157 10mg + TB-500 10mg — compuesto de investigación (RUO).",
-    "description": "BPC-157 10mg + TB-500 10mg es un compuesto de investigación (RUO). Solo para uso en investigación; no destinado a consumo humano ni animal, ni a diagnóstico o tratamiento.",
+    "short_description": "Combinación clásica estudiada en reparación de tejidos.",
+    "description": "Combina BPC-157, péptido gástrico estable, con TB-500, fragmento de timosina beta-4; ambos se investigan en modelos de angiogénesis, migración celular y remodelación de tejido conectivo. Solo para uso en investigación (RUO).",
     "presentation": "20 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
@@ -3694,8 +3694,8 @@ export const fallbackProducts = [
       "recuperacion",
       "stacks"
     ],
-    "short_description": "BPC-157 5mg + TB-500 5mg — compuesto de investigación (RUO).",
-    "description": "BPC-157 5mg + TB-500 5mg es un compuesto de investigación (RUO). Solo para uso en investigación; no destinado a consumo humano ni animal, ni a diagnóstico o tratamiento.",
+    "short_description": "Combinación de BPC-157 y TB-500 en reparación tisular.",
+    "description": "Presentación de menor gramaje de la combinación BPC-157 y TB-500, estudiada en modelos de cicatrización, angiogénesis y remodelación de tendón, músculo y mucosa intestinal. Solo para uso en investigación (RUO).",
     "presentation": "10 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
@@ -3734,8 +3734,8 @@ export const fallbackProducts = [
     "categories": [
       "recuperacion"
     ],
-    "short_description": "Follistatin — compuesto de investigación (RUO).",
-    "description": "Follistatin es un compuesto de investigación (RUO). Solo para uso en investigación; no destinado a consumo humano ni animal, ni a diagnóstico o tratamiento.",
+    "short_description": "Glicoproteína estudiada como antagonista de miostatina.",
+    "description": "La folistatina es una glicoproteína que une activinas y miostatina, investigada en modelos de músculo esquelético, señalización TGF-beta y regulación de la masa muscular. Solo para uso en investigación (RUO).",
     "presentation": "1 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
@@ -3774,8 +3774,8 @@ export const fallbackProducts = [
     "categories": [
       "recuperacion"
     ],
-    "short_description": "GDF-8 — compuesto de investigación (RUO).",
-    "description": "GDF-8 es un compuesto de investigación (RUO). Solo para uso en investigación; no destinado a consumo humano ni animal, ni a diagnóstico o tratamiento.",
+    "short_description": "Miostatina estudiada como regulador de masa muscular.",
+    "description": "GDF-8, conocida como miostatina, es un factor de la familia TGF-beta investigado como regulador negativo del crecimiento muscular en modelos de miocitos y músculo esquelético. Solo para uso en investigación (RUO).",
     "presentation": "1 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
@@ -3809,8 +3809,8 @@ export const fallbackProducts = [
       "recuperacion",
       "stacks"
     ],
-    "short_description": "GLOW (BPC-157 10mg + GHK-Cu 50mg + TB-500 10mg) — compuesto de investigación (RUO).",
-    "description": "GLOW (BPC-157 10mg + GHK-Cu 50mg + TB-500 10mg) es un compuesto de investigación (RUO). Solo para uso en investigación; no destinado a consumo humano ni animal, ni a diagnóstico o tratamiento.",
+    "short_description": "Mezcla de reparación tisular con tripéptido de cobre.",
+    "description": "GLOW combina BPC-157, GHK-Cu y TB-500; la mezcla se investiga por la superposición de vías de angiogénesis, migración celular y remodelación de matriz en piel y tejido conectivo. Solo para uso en investigación (RUO).",
     "presentation": "70 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
@@ -3850,8 +3850,8 @@ export const fallbackProducts = [
       "recuperacion",
       "stacks"
     ],
-    "short_description": "KLOW (BPC + GHK-Cu + TB-500 + KPV) — compuesto de investigación (RUO).",
-    "description": "KLOW (BPC + GHK-Cu + TB-500 + KPV) es un compuesto de investigación (RUO). Solo para uso en investigación; no destinado a consumo humano ni animal, ni a diagnóstico o tratamiento.",
+    "short_description": "Mezcla de cuatro péptidos de reparación y matriz.",
+    "description": "KLOW combina BPC-157, GHK-Cu, TB-500 y KPV; se investiga por la suma de vías de reparación tisular, remodelación de matriz y modulación de la respuesta inflamatoria. Solo para uso en investigación (RUO).",
     "presentation": "80 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
@@ -3936,8 +3936,8 @@ export const fallbackProducts = [
     "categories": [
       "recuperacion"
     ],
-    "short_description": "LL-37 — compuesto de investigación (RUO).",
-    "description": "LL-37 es un compuesto de investigación (RUO). Solo para uso en investigación; no destinado a consumo humano ni animal, ni a diagnóstico o tratamiento.",
+    "short_description": "Péptido antimicrobiano humano de la familia catelicidina.",
+    "description": "LL-37 es la única catelicidina humana, investigada en modelos de inmunidad innata, actividad antimicrobiana de amplio espectro, angiogénesis y cicatrización de heridas. Solo para uso en investigación (RUO).",
     "presentation": "5 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
@@ -3976,8 +3976,8 @@ export const fallbackProducts = [
     "categories": [
       "recuperacion"
     ],
-    "short_description": "PTD-1 — compuesto de investigación (RUO).",
-    "description": "PTD-1 es un compuesto de investigación (RUO). Solo para uso en investigación; no destinado a consumo humano ni animal, ni a diagnóstico o tratamiento.",
+    "short_description": "Dominio de transducción explorado como vehículo intracelular.",
+    "description": "PTD-1 es un péptido de penetración celular de la familia de dominios de transducción de proteínas, explorado como vehículo de entrega intracelular; su literatura pública es limitada. Solo para uso en investigación (RUO).",
     "presentation": "5 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
@@ -4010,8 +4010,8 @@ export const fallbackProducts = [
     "categories": [
       "recuperacion"
     ],
-    "short_description": "PTD-DBM — compuesto de investigación (RUO).",
-    "description": "PTD-DBM es un compuesto de investigación (RUO). Solo para uso en investigación; no destinado a consumo humano ni animal, ni a diagnóstico o tratamiento.",
+    "short_description": "Péptido que modula la vía Wnt en folículo.",
+    "description": "PTD-DBM es un péptido diseñado para interrumpir la interacción CXXC5-Dishevelled y liberar la señalización Wnt, investigado en modelos murinos de folículo piloso y cicatrización. Solo para uso en investigación (RUO).",
     "presentation": "1 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
@@ -4096,8 +4096,8 @@ export const fallbackProducts = [
     "categories": [
       "sexual-hormonal"
     ],
-    "short_description": "Dermorphin — compuesto de investigación (RUO).",
-    "description": "Dermorphin es un compuesto de investigación (RUO). Solo para uso en investigación; no destinado a consumo humano ni animal, ni a diagnóstico o tratamiento.",
+    "short_description": "Heptapéptido opioide estudiado en receptores mu.",
+    "description": "Dermorphin es un heptapéptido de origen anfibio con alta afinidad por el receptor opioide mu, utilizado como herramienta farmacológica en estudios de señalización opioide. Solo para uso en investigación (RUO).",
     "presentation": "5 mg – 10 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
@@ -4136,8 +4136,8 @@ export const fallbackProducts = [
     "categories": [
       "sexual-hormonal"
     ],
-    "short_description": "Gonadorelin Acetate — compuesto de investigación (RUO).",
-    "description": "Gonadorelin Acetate es un compuesto de investigación (RUO). Solo para uso en investigación; no destinado a consumo humano ni animal, ni a diagnóstico o tratamiento.",
+    "short_description": "GnRH sintética estudiada en el eje reproductivo.",
+    "description": "Gonadorelina es la forma sintética de la hormona liberadora de gonadotropinas, investigada en modelos del eje hipotálamo-hipófisis-gónada y de liberación pulsátil de LH y FSH. Solo para uso en investigación (RUO).",
     "presentation": "2 mg – 5 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
@@ -4182,8 +4182,8 @@ export const fallbackProducts = [
     "categories": [
       "sexual-hormonal"
     ],
-    "short_description": "HCG — compuesto de investigación (RUO).",
-    "description": "HCG es un compuesto de investigación (RUO). Solo para uso en investigación; no destinado a consumo humano ni animal, ni a diagnóstico o tratamiento.",
+    "short_description": "Gonadotropina que actúa sobre el receptor de LH.",
+    "description": "La gonadotropina coriónica humana es una hormona glicoproteica investigada por su actividad sobre el receptor de LH en células de Leydig y en modelos de esteroidogénesis gonadal. Solo para uso en investigación (RUO).",
     "presentation": "2,000IU – 10,000IU",
     "form": "Liofilizado",
     "purity": "99.0%",
@@ -4239,8 +4239,8 @@ export const fallbackProducts = [
     "categories": [
       "sexual-hormonal"
     ],
-    "short_description": "HMG — compuesto de investigación (RUO).",
-    "description": "HMG es un compuesto de investigación (RUO). Solo para uso en investigación; no destinado a consumo humano ni animal, ni a diagnóstico o tratamiento.",
+    "short_description": "Gonadotropinas menopáusicas estudiadas en foliculogénesis.",
+    "description": "HMG (menotropinas) es una preparación con actividad FSH y LH, investigada en modelos de foliculogénesis, esteroidogénesis ovárica y estimulación gonadal. Solo para uso en investigación (RUO).",
     "presentation": "75 IU",
     "form": "Liofilizado",
     "purity": "99.0%",
@@ -4313,8 +4313,8 @@ export const fallbackProducts = [
     "categories": [
       "sexual-hormonal"
     ],
-    "short_description": "Triptorelin Acetate — compuesto de investigación (RUO).",
-    "description": "Triptorelin Acetate es un compuesto de investigación (RUO). Solo para uso en investigación; no destinado a consumo humano ni animal, ni a diagnóstico o tratamiento.",
+    "short_description": "Agonista de GnRH estudiado en el eje gonadal.",
+    "description": "Triptorelina es un análogo agonista de GnRH investigado en modelos del eje hipotálamo-hipófisis-gónada, donde la estimulación sostenida produce desensibilización de los receptores hipofisarios. Solo para uso en investigación (RUO).",
     "presentation": "2 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
@@ -4353,8 +4353,8 @@ export const fallbackProducts = [
     "categories": [
       "suministros"
     ],
-    "short_description": "Agua bacteriostática — compuesto de investigación (RUO).",
-    "description": "Agua bacteriostática es un compuesto de investigación (RUO). Solo para uso en investigación; no destinado a consumo humano ni animal, ni a diagnóstico o tratamiento.",
+    "short_description": "Diluyente estéril de laboratorio con conservador.",
+    "description": "Insumo de laboratorio: agua estéril con alcohol bencílico como conservador, utilizada para reconstituir compuestos liofilizados en trabajo experimental. No es un péptido. Solo para uso en investigación (RUO).",
     "presentation": "3 mL – 10 mL",
     "form": "Liofilizado",
     "purity": "99.0%",
@@ -4393,8 +4393,8 @@ export const fallbackProducts = [
     "categories": [
       "suministros"
     ],
-    "short_description": "B12 — compuesto de investigación (RUO).",
-    "description": "B12 es un compuesto de investigación (RUO). Solo para uso en investigación; no destinado a consumo humano ni animal, ni a diagnóstico o tratamiento.",
+    "short_description": "Solución de cianocobalamina para uso en laboratorio.",
+    "description": "Solución de vitamina B12 (cianocobalamina) a 1 mg/mL, utilizada como reactivo y control en estudios de metabolismo de un carbono y en ensayos bioquímicos. Solo para uso en investigación (RUO).",
     "presentation": "1 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
@@ -4433,8 +4433,8 @@ export const fallbackProducts = [
     "categories": [
       "suministros"
     ],
-    "short_description": "Vitamina B12 — compuesto de investigación (RUO).",
-    "description": "Vitamina B12 es un compuesto de investigación (RUO). Solo para uso en investigación; no destinado a consumo humano ni animal, ni a diagnóstico o tratamiento.",
+    "short_description": "Cianocobalamina usada como reactivo de laboratorio.",
+    "description": "La vitamina B12 (cianocobalamina) es un cofactor esencial estudiado en el metabolismo de un carbono, la síntesis de mielina y ensayos bioquímicos de referencia. Solo para uso en investigación (RUO).",
     "presentation": "10 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
@@ -4473,8 +4473,8 @@ export const fallbackProducts = [
     "categories": [
       "suministros"
     ],
-    "short_description": "Ácido acético — compuesto de investigación (RUO).",
-    "description": "Ácido acético es un compuesto de investigación (RUO). Solo para uso en investigación; no destinado a consumo humano ni animal, ni a diagnóstico o tratamiento.",
+    "short_description": "Disolvente de laboratorio para péptidos poco solubles.",
+    "description": "Insumo de laboratorio: solución diluida de ácido acético utilizada como disolvente para reconstituir péptidos de baja solubilidad en agua. No es un péptido. Solo para uso en investigación (RUO).",
     "presentation": "3 mL – 10 mL",
     "form": "Liofilizado",
     "purity": "99.0%",
