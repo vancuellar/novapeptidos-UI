@@ -2,6 +2,7 @@ import React, { createContext, useContext, useState, useEffect } from 'react';
 import { toast } from 'sonner';
 import { track } from '@/lib/track';
 import api from '@/lib/api';
+import { useAuth } from '@/context/AuthContext';
 import { productImage } from '@/data/productImages';
 import { fallbackProducts } from '@/data/fallbackCatalog';
 
@@ -115,6 +116,18 @@ export const CartProvider = ({ children }) => {
   const tier = DISCOUNT_TIERS.find((d) => discountableSubtotal >= d.min) || DISCOUNT_TIERS[DISCOUNT_TIERS.length - 1];
   const autoRate = items.length ? tier.rate : 0;
 
+  // COMPRA PROPIA de un distribuidor: compra para sí mismo con SU comisión máxima
+  // como descuento (Christian, 2026-07-25). Ese descuento ES su comisión, cobrada
+  // por adelantado — no gana comisión encima. Sigue acotado al tope de cada producto.
+  const { user } = useAuth();
+  const [selfRate, setSelfRate] = useState(0);
+  useEffect(() => {
+    if (!user || user.role !== 'distributor') { setSelfRate(0); return; }
+    if (typeof user.self_discount_rate === 'number') { setSelfRate(user.self_discount_rate); return; }
+    // El login devuelve un usuario mínimo; pedimos su tasa a /auth/me.
+    api.get('/auth/me').then((r) => setSelfRate(r.data.self_discount_rate || 0)).catch(() => {});
+  }, [user]);
+
   const [distCode, setDistCode] = useState(() => localStorage.getItem('np_dist_code') || '');
   const [distRate, setDistRate] = useState(() => Number(localStorage.getItem('np_dist_rate')) || 0);
   useEffect(() => { localStorage.setItem('np_dist_code', distCode); localStorage.setItem('np_dist_rate', String(distRate)); }, [distCode, distRate]);
@@ -136,8 +149,10 @@ export const CartProvider = ({ children }) => {
   const clearDistCode = () => { setDistCode(''); setDistRate(0); };
 
   const codeRate = items.length && distCode ? distRate : 0;
-  const discountRate = Math.max(autoRate, codeRate);
-  const discountSource = codeRate > autoRate ? 'code' : 'auto';
+  const ownRate = items.length ? selfRate : 0;
+  const discountRate = Math.max(autoRate, codeRate, ownRate);
+  const discountSource = ownRate >= discountRate && ownRate > 0 ? 'self'
+    : (codeRate > autoRate ? 'code' : 'auto');
   // Renglón por renglón: cada producto recibe lo que su tope aguanta, ni más.
   const discount = items.reduce(
     (sum, i) => sum + Math.round(i.price * i.quantity * itemDiscountRate(i, discountRate)), 0);

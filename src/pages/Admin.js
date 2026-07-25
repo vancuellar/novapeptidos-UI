@@ -87,6 +87,7 @@ const Admin = () => {
   const [customerDetail, setCustomerDetail] = useState(null);   // ficha extendida del cliente abierto
   const [couponForm, setCouponForm] = useState({ pct: 10, days: 30, note: '' });
   const [giftForm, setGiftForm] = useState({ points: 100, note: '' });
+  const [personalPct, setPersonalPct] = useState(0);
   const [distOpen, setDistOpen] = useState(null);               // ficha del distribuidor {detalle}
   const [shippingOpen, setShippingOpen] = useState(null);
   const [repurchase, setRepurchase] = useState([]);
@@ -235,7 +236,11 @@ const Admin = () => {
   const openCustomerProfile = async (c) => {
     setCustomerOpen(c); setCustomerDetail(null);
     setCouponForm({ pct: 10, days: 30, note: '' }); setGiftForm({ points: 100, note: '' });
-    try { const r = await api.get(`/admin/customers/${c.id}/detail`); setCustomerDetail(r.data); } catch {}
+    try {
+      const r = await api.get(`/admin/customers/${c.id}/detail`);
+      setCustomerDetail(r.data);
+      setPersonalPct(Math.round((r.data.customer?.personal_discount_rate || 0) * 100));
+    } catch {}
   };
   const sendCoupon = async () => {
     try {
@@ -250,6 +255,16 @@ const Admin = () => {
       const r = await api.post(`/admin/customers/${customerOpen.id}/gift-points`,
         { points: Number(giftForm.points) || 0, note: giftForm.note });
       toast.success(t('admin.ficha.pointsSent', { balance: r.data.points_balance }));
+      const d = await api.get(`/admin/customers/${customerOpen.id}/detail`); setCustomerDetail(d.data);
+    } catch (e) { toast.error(e.response?.data?.detail || 'Error'); }
+  };
+  const savePersonalDiscount = async () => {
+    try {
+      const r = await api.put(`/admin/customers/${customerOpen.id}/personal-discount`,
+        { rate: (Number(personalPct) || 0) / 100 });
+      toast.success(r.data.personal_discount_rate > 0
+        ? `${customerOpen.name}: ${Math.round(r.data.personal_discount_rate * 100)}% permanente`
+        : `${customerOpen.name}: trato especial quitado`);
       const d = await api.get(`/admin/customers/${customerOpen.id}/detail`); setCustomerDetail(d.data);
     } catch (e) { toast.error(e.response?.data?.detail || 'Error'); }
   };
@@ -961,6 +976,15 @@ const Admin = () => {
                       </div>
                       <Input className="h-8" placeholder={t('admin.ficha.noteOptional')} value={couponForm.note} onChange={(e) => setCouponForm((f) => ({ ...f, note: e.target.value }))} data-testid="admin-coupon-note" />
                       <Button size="sm" onClick={sendCoupon} data-testid="admin-coupon-send">{t('admin.ficha.sendCouponBtn')}</Button>
+                    </div>
+                    <div className="rounded-xl border border-border p-3 space-y-2" data-testid="admin-personal-discount-box">
+                      <div className="text-xs font-semibold">{t('admin.ficha.personalDiscount')}</div>
+                      <p className="text-[11px] text-muted-foreground">{t('admin.ficha.personalDiscountHint')}</p>
+                      <div className="flex items-center gap-2">
+                        <Input type="number" min="0" max="50" className="h-8 w-20" value={personalPct} onChange={(e) => setPersonalPct(e.target.value)} data-testid="admin-personal-discount-pct" />
+                        <span className="text-xs text-muted-foreground">%</span>
+                        <Button size="sm" onClick={savePersonalDiscount} data-testid="admin-personal-discount-save">{t('admin.ficha.personalDiscountBtn')}</Button>
+                      </div>
                     </div>
                     <div className="rounded-xl border border-border p-3 space-y-2" data-testid="admin-gift-points-box">
                       <div className="text-xs font-semibold">{t('admin.ficha.giftPoints')}</div>
