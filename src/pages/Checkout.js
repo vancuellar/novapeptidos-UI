@@ -85,6 +85,27 @@ const Checkout = () => {
       .catch(() => {});
   }, [user]);
 
+  // Registra el intento de compra mientras llena sus datos: si no cierra, queda
+  // como 'pendiente' y la IA le da seguimiento (Christian, 2026-07-25). Se manda
+  // con retraso para no pegarle al servidor en cada tecla.
+  useEffect(() => {
+    if (!items.length) return;
+    const email = (form.email || '').trim();
+    if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) return;
+    const t = setTimeout(() => {
+      api.post('/checkout/intento', {
+        email,
+        name: form.full_name || '',
+        phone: form.phone || '',
+        items: items.map((i) => ({ name: i.name, quantity: i.quantity, price: i.price, sku: i.sku || '' })),
+        subtotal,
+        total: subtotal - discount,
+        session_id: localStorage.getItem('np_track_session') || '',
+      }).catch(() => {});
+    }, 2500);
+    return () => clearTimeout(t);
+  }, [form.email, form.full_name, form.phone, items, subtotal, discount]);
+
   const afterDiscount = subtotal - discount;
   const pointsApplied = usePoints && loyalty.eligible
     ? Math.min(loyalty.balance, Math.floor(afterDiscount)) : 0;

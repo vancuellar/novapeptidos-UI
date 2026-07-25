@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import { Filter, Eye, LayoutDashboard, Package, ShoppingBag, Plus, Pencil, Trash2, DollarSign, Users, Clock, TrendingUp, MapPin, Phone, Receipt, Store, Copy, Boxes, Truck, RefreshCw, MailCheck, Ban, Megaphone, BarChart3, Upload } from 'lucide-react';
+import { Filter, Eye, LayoutDashboard, Package, ShoppingBag, Plus, Pencil, Trash2, DollarSign, Users, Clock, TrendingUp, MapPin, Phone, Receipt, Store, Copy, Boxes, Truck, RefreshCw, MailCheck, Ban, Megaphone, BarChart3, Upload, ShoppingCart } from 'lucide-react';
 import { fallbackProducts } from '@/data/fallbackCatalog';
 import { ResponsiveContainer, AreaChart, Area, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip } from 'recharts';
 import { Button } from '@/components/ui/button';
@@ -83,6 +83,7 @@ const Admin = () => {
   const [funnel, setFunnel] = useState(null);
   const [orderOpen, setOrderOpen] = useState(null);   // pedido abierto para prepararlo
   const [orderKill, setOrderKill] = useState(null);   // pedido que se va a BORRAR
+  const [intentos, setIntentos] = useState(null);    // carritos que no se cerraron
   const [meta, setMeta] = useState(null);
   const [metaBusy, setMetaBusy] = useState(false);
   const [funnelDays, setFunnelDays] = useState(30);
@@ -133,6 +134,7 @@ const Admin = () => {
     api.get('/admin/analytics').then((r) => setAnalytics(r.data)).catch(() => {});
     api.get('/admin/funnel?days=30').then((r) => setFunnel(r.data)).catch(() => {});
     api.get('/admin/meta/dashboard').then((r) => setMeta(r.data)).catch(() => {});
+    api.get('/admin/intentos').then((r) => setIntentos(r.data)).catch(() => {});
     api.get('/admin/distributors').then((r) => setDistributors(r.data)).catch(() => {});
     api.get('/admin/distributor-applications').then((r) => setApplications(r.data)).catch(() => {});
     api.get('/stock').then((r) => setStockMap(r.data || {})).catch(() => {});
@@ -296,6 +298,18 @@ const Admin = () => {
       load();
     } catch (e) { toast.error(e.response?.data?.detail || 'Error'); }
   };
+  const recargarIntentos = () => api.get('/admin/intentos').then((r) => setIntentos(r.data)).catch(() => {});
+  const mandarOferta = async (it) => {
+    try {
+      const r = await api.post(`/admin/intentos/${it.id}/oferta`);
+      toast.success(r.data.codigo ? t('admin.try.sentCode', { code: r.data.codigo }) : t('admin.try.sentNote'));
+      recargarIntentos();
+    } catch (e) { toast.error(e.response?.data?.detail || 'Error'); }
+  };
+  const borrarIntento = async (it) => {
+    try { await api.delete(`/admin/intentos/${it.id}`); recargarIntentos(); }
+    catch (e) { toast.error(e.response?.data?.detail || 'Error'); }
+  };
   const openRates = (d) => {
     setRatesForm({
       commission: Math.round((d.commission_rate || 0) * 100),
@@ -402,6 +416,7 @@ const Admin = () => {
           { value: 'sales', icon: TrendingUp, label: t('admin.salesTab') },
           { value: 'funnel', icon: Filter, label: t('admin.funnelTab') },
           { value: 'meta', icon: BarChart3, label: t('admin.metaTab') },
+          { value: 'intentos', icon: ShoppingCart, label: t('admin.tryTab') },
           { value: 'customers', icon: Users, label: t('admin.customersTab') },
           { value: 'distributors', icon: Store, label: t('admin.distributorsTab') },
           { value: 'orders', icon: ShoppingBag, label: t('admin.ordersTab') },
@@ -469,6 +484,83 @@ const Admin = () => {
               </TableBody>
             </Table>
           </Card>
+        </TabsContent>
+
+        <TabsContent value="intentos" className="mt-5 space-y-4">
+          <div>
+            <h3 className="font-heading font-semibold">{t('admin.try.title')}</h3>
+            <p className="text-xs text-muted-foreground max-w-2xl">{t('admin.try.sub', { min: formatMXN(intentos?.minimo_para_cupon || 2500) })}</p>
+          </div>
+
+          {!intentos || intentos.intentos.length === 0 ? (
+            <Card className="p-6" data-testid="admin-try-empty"><p className="text-sm">{t('admin.try.empty')}</p></Card>
+          ) : (
+            <>
+              <div className="grid grid-cols-3 gap-3">
+                <Card className="p-4"><div className="text-xs text-muted-foreground">{t('admin.try.pending')}</div>
+                  <div className="font-heading text-xl font-bold mt-1">{intentos.pendientes}</div></Card>
+                <Card className="p-4"><div className="text-xs text-muted-foreground">{t('admin.try.atStake')}</div>
+                  <div className="font-heading text-xl font-bold mt-1 text-[hsl(var(--primary))]">{formatMXN(intentos.valor_pendiente)}</div></Card>
+                <Card className="p-4"><div className="text-xs text-muted-foreground">{t('admin.try.recovered')}</div>
+                  <div className="font-heading text-xl font-bold mt-1 text-[hsl(var(--success))]">{intentos.recuperados}</div></Card>
+              </div>
+
+              <Card className="overflow-x-auto">
+                <Table data-testid="admin-try-table">
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead>{t('admin.table.customer')}</TableHead>
+                      <TableHead>{t('admin.try.cart')}</TableHead>
+                      <TableHead>{t('common.total')}</TableHead>
+                      <TableHead>{t('admin.table.status')}</TableHead>
+                      <TableHead>{t('admin.try.offer')}</TableHead>
+                      <TableHead className="w-12"></TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    {intentos.intentos.map((it) => (
+                      <TableRow key={it.id}>
+                        <TableCell>
+                          <div className="text-sm">{it.name || '—'}</div>
+                          <div className="text-xs text-muted-foreground break-all">{it.email}</div>
+                          {it.phone && <div className="text-xs text-muted-foreground">{it.phone}</div>}
+                        </TableCell>
+                        <TableCell className="text-xs text-muted-foreground max-w-xs">
+                          {(it.items || []).map((i) => `${i.quantity}× ${i.name}`).join(', ')}
+                        </TableCell>
+                        <TableCell className="font-medium">{formatMXN(it.total)}</TableCell>
+                        <TableCell>
+                          <Badge variant="outline" className={`text-[10px] uppercase ${it.status === 'convertido' ? 'text-[hsl(var(--success))]' : ''}`}>
+                            {t(`admin.try.status.${it.status}`)}
+                          </Badge>
+                        </TableCell>
+                        <TableCell className="text-xs">
+                          {it.offer_code ? (
+                            <div>
+                              <div className="font-mono-tech">{it.offer_code}</div>
+                              <div className="text-muted-foreground">{Math.round((it.offer_rate || 0) * 100)}% · min {formatMXN(it.offer_min_order || 0)}</div>
+                            </div>
+                          ) : it.contacted ? (
+                            <span className="text-muted-foreground">{t('admin.try.followedUp')}</span>
+                          ) : it.status === 'pendiente' ? (
+                            <Button variant="outline" size="sm" className="h-7 text-xs" onClick={() => mandarOferta(it)} data-testid="admin-try-send">
+                              {t('admin.try.sendNow')}
+                            </Button>
+                          ) : <span className="text-muted-foreground">—</span>}
+                        </TableCell>
+                        <TableCell>
+                          <Button variant="ghost" size="icon" className="h-8 w-8 text-destructive hover:bg-destructive hover:text-white"
+                            onClick={() => borrarIntento(it)} data-testid="admin-try-delete">
+                            <Trash2 className="h-4 w-4" />
+                          </Button>
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </Card>
+            </>
+          )}
         </TabsContent>
 
         <TabsContent value="meta" className="mt-5 space-y-4">
