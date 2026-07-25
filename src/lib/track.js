@@ -36,8 +36,36 @@ const origin = () => {
   } catch { return { utm_source: '', utm_medium: '', utm_campaign: '', referrer: '' }; }
 };
 
+// El mismo evento se le avisa a Meta (Facebook/Instagram) para que su
+// publicidad aprenda a quién mostrarle los anuncios. Nombres estandar de Meta.
+const META = {
+  visit: 'PageView',
+  product_view: 'ViewContent',
+  add_to_cart: 'AddToCart',
+  checkout: 'InitiateCheckout',
+  purchase: 'Purchase',
+};
+
+const avisarAMeta = (type, extra) => {
+  try {
+    if (typeof window.fbq !== 'function') return;
+    const nombre = META[type];
+    if (!nombre) return;
+    const datos = {};
+    if (extra.value) { datos.value = Number(extra.value) || 0; datos.currency = 'MXN'; }
+    if (extra.product) datos.content_ids = [String(extra.product)];
+    if (type === 'product_view' || type === 'add_to_cart') datos.content_type = 'product';
+    window.fbq('track', nombre, datos);
+    // El checkout no tiene evento propio: la visita a /checkout lo es.
+    if (type === 'visit' && window.location.pathname === '/checkout') {
+      window.fbq('track', 'InitiateCheckout');
+    }
+  } catch { /* medir nunca debe estorbar */ }
+};
+
 // Nunca debe romper la página ni frenar la navegación: falla en silencio.
 export const track = (type, extra = {}) => {
+  avisarAMeta(type, extra);
   try {
     const body = JSON.stringify({ type, session_id: sessionId(), path: window.location.pathname, ...origin(), ...extra });
     // sendBeacon sobrevive al cambio de página (clave para medir la compra).
