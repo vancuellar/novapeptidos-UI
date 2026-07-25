@@ -97,10 +97,7 @@ const Footer = () => {
             </div>
           </div>
         </div>
-        {/* Línea divisoria aparte del bloque, para que el copyright quede
-            PERFECTAMENTE centrado (el borde no roba 1px al centrado flex). */}
-        <div className="mt-2 border-t border-border" />
-        <div className="flex items-center justify-center h-8">
+        <div className="flex items-center justify-center h-5">
           <p className="text-xs text-muted-foreground text-center font-mono-tech leading-none">© {new Date().getFullYear()} {t('footer.rights')}</p>
         </div>
       </div>
