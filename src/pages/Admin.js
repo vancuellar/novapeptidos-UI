@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import { Filter, Eye, LayoutDashboard, Package, ShoppingBag, Plus, Pencil, Trash2, DollarSign, Users, Clock, TrendingUp, MapPin, Phone, Receipt, Store, Copy, Boxes, Truck, RefreshCw, MailCheck, Ban, Megaphone } from 'lucide-react';
+import { Filter, Eye, LayoutDashboard, Package, ShoppingBag, Plus, Pencil, Trash2, DollarSign, Users, Clock, TrendingUp, MapPin, Phone, Receipt, Store, Copy, Boxes, Truck, RefreshCw, MailCheck, Ban, Megaphone, BarChart3, Upload } from 'lucide-react';
 import { fallbackProducts } from '@/data/fallbackCatalog';
 import { ResponsiveContainer, AreaChart, Area, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip } from 'recharts';
 import { Button } from '@/components/ui/button';
@@ -81,6 +81,8 @@ const Admin = () => {
   const [customers, setCustomers] = useState([]);
   const [analytics, setAnalytics] = useState(null);
   const [funnel, setFunnel] = useState(null);
+  const [meta, setMeta] = useState(null);
+  const [metaBusy, setMetaBusy] = useState(false);
   const [funnelDays, setFunnelDays] = useState(30);
   const [customerOpen, setCustomerOpen] = useState(null);
   const [params, setParams] = useSearchParams();
@@ -128,6 +130,7 @@ const Admin = () => {
     api.get('/admin/customers').then((r) => setCustomers(r.data)).catch(() => {});
     api.get('/admin/analytics').then((r) => setAnalytics(r.data)).catch(() => {});
     api.get('/admin/funnel?days=30').then((r) => setFunnel(r.data)).catch(() => {});
+    api.get('/admin/meta/dashboard').then((r) => setMeta(r.data)).catch(() => {});
     api.get('/admin/distributors').then((r) => setDistributors(r.data)).catch(() => {});
     api.get('/admin/distributor-applications').then((r) => setApplications(r.data)).catch(() => {});
     api.get('/stock').then((r) => setStockMap(r.data || {})).catch(() => {});
@@ -268,6 +271,19 @@ const Admin = () => {
       const d = await api.get(`/admin/customers/${customerOpen.id}/detail`); setCustomerDetail(d.data);
     } catch (e) { toast.error(e.response?.data?.detail || 'Error'); }
   };
+  // Sube el CSV del Administrador de Anuncios. Cuando Christian consiga el token
+  // de Meta, el panel cambia solo de fuente y esto queda como respaldo.
+  const subirMetaCsv = async (file) => {
+    if (!file) return;
+    setMetaBusy(true);
+    try {
+      const csv = await file.text();
+      const r = await api.post('/admin/meta/import', { csv });
+      toast.success(t('admin.meta.imported', { n: r.data.imported }));
+      const d = await api.get('/admin/meta/dashboard'); setMeta(d.data);
+    } catch (e) { toast.error(e.response?.data?.detail || 'Error'); }
+    finally { setMetaBusy(false); }
+  };
   const openRates = (d) => {
     setRatesForm({
       commission: Math.round((d.commission_rate || 0) * 100),
@@ -373,6 +389,7 @@ const Admin = () => {
         <DashboardSidebar items={[
           { value: 'sales', icon: TrendingUp, label: t('admin.salesTab') },
           { value: 'funnel', icon: Filter, label: t('admin.funnelTab') },
+          { value: 'meta', icon: BarChart3, label: t('admin.metaTab') },
           { value: 'customers', icon: Users, label: t('admin.customersTab') },
           { value: 'distributors', icon: Store, label: t('admin.distributorsTab') },
           { value: 'orders', icon: ShoppingBag, label: t('admin.ordersTab') },
@@ -440,6 +457,104 @@ const Admin = () => {
               </TableBody>
             </Table>
           </Card>
+        </TabsContent>
+
+        <TabsContent value="meta" className="mt-5 space-y-4">
+          <div className="flex items-start justify-between gap-3 flex-wrap">
+            <div>
+              <h3 className="font-heading font-semibold">{t('admin.meta.title')}</h3>
+              <p className="text-xs text-muted-foreground max-w-2xl">{t('admin.meta.sub')}</p>
+            </div>
+            <label className="inline-flex items-center gap-2 text-xs rounded-lg border border-border px-3 py-2 cursor-pointer hover:bg-[hsl(var(--muted))]/40" data-testid="admin-meta-upload">
+              <Upload className="h-4 w-4" />
+              {metaBusy ? t('admin.meta.uploading') : t('admin.meta.upload')}
+              <input type="file" accept=".csv,text/csv" className="hidden"
+                onChange={(e) => subirMetaCsv(e.target.files?.[0])} />
+            </label>
+          </div>
+
+          {(!meta || meta.fuente === 'sin_datos') ? (
+            <Card className="p-6" data-testid="admin-meta-empty">
+              <p className="text-sm">{t('admin.meta.empty')}</p>
+            </Card>
+          ) : (
+            <>
+              <div className="flex items-center gap-2 text-[11px] text-muted-foreground">
+                <span className={`rounded-full px-2 py-0.5 ${meta.fuente === 'meta_en_vivo' ? 'bg-[hsl(var(--success))]/15 text-[hsl(var(--success))]' : 'bg-[hsl(var(--muted))]'}`}>
+                  {meta.fuente === 'meta_en_vivo' ? t('admin.meta.live') : t('admin.meta.fromCsv')}
+                </span>
+                {meta.resumen.date_start && <span>{meta.resumen.date_start} → {meta.resumen.date_end}</span>}
+              </div>
+
+              <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3" data-testid="admin-meta-kpis">
+                <Card className="p-4"><div className="text-xs text-muted-foreground">{t('admin.meta.spend')}</div>
+                  <div className="font-heading text-xl font-bold mt-1">${meta.resumen.spend.toLocaleString()} <span className="text-xs font-normal text-muted-foreground">{meta.resumen.currency}</span></div></Card>
+                <Card className="p-4"><div className="text-xs text-muted-foreground">{t('admin.meta.reach')}</div>
+                  <div className="font-heading text-xl font-bold mt-1">{meta.resumen.reach.toLocaleString()}</div></Card>
+                <Card className="p-4"><div className="text-xs text-muted-foreground">{t('admin.meta.clicks')}</div>
+                  <div className="font-heading text-xl font-bold mt-1">{meta.resumen.clicks.toLocaleString()}</div></Card>
+                <Card className="p-4"><div className="text-xs text-muted-foreground">{t('admin.meta.cpc')}</div>
+                  <div className="font-heading text-xl font-bold mt-1">${meta.resumen.cpc.toFixed(3)}</div></Card>
+                <Card className="p-4"><div className="text-xs text-muted-foreground">{t('admin.meta.purchases')}</div>
+                  <div className="font-heading text-xl font-bold mt-1">{meta.resumen.purchases}</div></Card>
+                <Card className="p-4"><div className="text-xs text-muted-foreground">{t('admin.meta.siteRevenue')}</div>
+                  <div className="font-heading text-xl font-bold mt-1 text-[hsl(var(--primary))]">{formatMXN(meta.sitio.ingreso)}</div></Card>
+              </div>
+
+              {meta.recomendaciones?.length > 0 && (
+                <div className="space-y-2" data-testid="admin-meta-advice">
+                  {meta.recomendaciones.map((r, i) => (
+                    <Card key={i} className={`p-4 border-l-4 ${r.level === 'alto' ? 'border-l-destructive' : r.level === 'medio' ? 'border-l-[hsl(var(--warning-border))]' : 'border-l-[hsl(var(--success))]'}`}>
+                      <div className="font-medium text-sm">{r.title}</div>
+                      <p className="text-xs text-muted-foreground mt-1 leading-relaxed">{r.body}</p>
+                    </Card>
+                  ))}
+                </div>
+              )}
+
+              {meta.apagar?.length > 0 && (
+                <Card className="p-4 border-destructive/40" data-testid="admin-meta-kill">
+                  <div className="text-sm font-medium mb-2">{t('admin.meta.killTitle')}</div>
+                  {meta.apagar.map((k, i) => (
+                    <div key={i} className="text-xs text-muted-foreground flex justify-between gap-3 py-0.5">
+                      <span className="truncate">{k.campaign}</span>
+                      <span className="shrink-0">${k.spend} — {k.razon}</span>
+                    </div>
+                  ))}
+                </Card>
+              )}
+
+              <Card className="overflow-x-auto">
+                <Table data-testid="admin-meta-table">
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead>{t('admin.meta.campaign')}</TableHead>
+                      <TableHead>{t('admin.meta.spend')}</TableHead>
+                      <TableHead>{t('admin.meta.impressions')}</TableHead>
+                      <TableHead>{t('admin.meta.clicks')}</TableHead>
+                      <TableHead>{t('admin.meta.cpc')}</TableHead>
+                      <TableHead>{t('admin.meta.purchases')}</TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    {meta.campanas.map((c, i) => (
+                      <TableRow key={i}>
+                        <TableCell className="text-sm max-w-xs truncate" title={c.campaign}>
+                          {c.status === 'active' && <span className="inline-block h-2 w-2 rounded-full bg-[hsl(var(--success))] mr-2" />}
+                          {c.campaign}
+                        </TableCell>
+                        <TableCell className="font-mono-tech text-xs">${c.spend}</TableCell>
+                        <TableCell className="font-mono-tech text-xs">{c.impressions.toLocaleString()}</TableCell>
+                        <TableCell className="font-mono-tech text-xs">{c.clicks.toLocaleString()}</TableCell>
+                        <TableCell className="font-mono-tech text-xs">{c.cpc ? '$' + c.cpc.toFixed(3) : '—'}</TableCell>
+                        <TableCell className="font-mono-tech text-xs">{c.purchases || '—'}</TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </Card>
+            </>
+          )}
         </TabsContent>
 
         <TabsContent value="funnel" className="mt-5 space-y-4">
