@@ -105,13 +105,57 @@ instalado), eso explica cero ventas por publicidad.
   triplica las ventas con el mismo dinero. Usar el panel **Admin → Embudo** para ver dónde se
   cae la gente (ahora que los datos están limpios, cada número es real).
 
-### 🟡 LO SIGUIENTE (pedido explícito de Christian, SIN EMPEZAR)
+### 🟡 LO SIGUIENTE (pedido explícito de Christian)
 
-1. **Códigos automáticos al subir comisión.** A Alanís se le subió a 40% → automáticamente
-   debería tener códigos para otorgar hasta **35%** de descuento a sus clientes. Hoy hay un
-   solo código por distribuidor. (Relacionado con el pendiente #1 del handoff del 07-23.)
-2. **Descuentos por encima de la tarifa publicada, otorgados por el admin.** Christian quiere
-   poder darle a un cliente un % mayor al que marca el esquema.
+1. ~~**Códigos automáticos al subir comisión.**~~ ✅ **HECHO 2026-07-25.** Ver abajo.
+2. ~~**Descuentos por encima de la tarifa publicada, otorgados por el admin.**~~ ✅ **YA
+   EXISTÍA:** Admin → Clientes → ficha del cliente → "Enviar cupón de descuento", de **5% a
+   50%**, un solo uso, con caducidad y nota. Genera un código `GIFT-XXXXXX`, le manda
+   notificación al cliente y **no le cuesta comisión a nadie** (no es de distribuidor). La
+   tarifa publicada de la página es 10%/15%; esto la brinca sin tocarla.
+3. **Falta decidir:** fusionar **"Stacks/Combos"** con **"Especialidad"**.
+
+### ✅ LA COMISIÓN QUE EL ADMIN PONE A MANO AHORA MANDA (2026-07-25, en vivo)
+
+**El bug:** Christian le subió la comisión a Alanís a 40%, pero su `tier` seguía siendo
+`junior` (20%). El sistema le generaba los 5 códigos (15/20/25/30/**35%**) a partir del 40%…
+pero al **usarlos**, `_resolve_code` y el reparto de comisiones recortaban todo a la tasa del
+NIVEL (20%). O sea: código que decía 35% cobraba 20%, y ella ganaba 20% en vez de 40%.
+
+**El arreglo** (`novapeptidos-RBAC`, commit `2314bf0`):
+- **`pyramid.effective_rate(dist)`** — la tasa real es la **MAYOR** entre la del nivel y la
+  que el admin puso a mano (`commission_rate`), tope `MANUAL_CAP = 0.50`. Se usa en TODO: el
+  descuento máximo, el cobro del código en el checkout, y el reparto (vendedor y uplines).
+- **`pyramid.normalize_tier()`** — el nivel viejo `'junior'` guardado en la base se lee como
+  `junior0` (antes caía en un `else` silencioso).
+- **Al cambiar la comisión O el nivel, los códigos se rehacen EN EL ACTO** (antes había que
+  esperar a que el distribuidor abriera su panel) y le llega notificación: *"Tu comisión ahora
+  es 40%. Ya tienes códigos para dar hasta 35%."*
+- Admin → Distribuidores ahora devuelve `effective_rate` y `max_discount`.
+- **104 pruebas de backend en verde** (eran 99).
+
+**VERIFICADO CON UNA COMPRA REAL** en exygenlabs.com (pedido `EX-20260725-1965`, después
+cancelado): NAD+ 100 mg $839 → código `ALANIS-35-K020` → **−$294 (35%) → total $545**. Antes
+del arreglo hubiera dado 20%.
+
+### ⚠️ EL DATO QUE SALIÓ DE ESA COMPRA REAL (decisión pendiente de Christian)
+
+Cada producto tiene un **tope de comisión** (`commission_cap`) que protege el margen 5x de la
+casa: **descuento + comisiones nunca lo rebasan**. Con 195 productos el reparto es:
+
+| Tope | Productos | Qué pasa con un código de 35% |
+|---|---|---|
+| 20% | 7 | el 35% **ni se aplica** |
+| 25% | 14 | el 35% **ni se aplica** |
+| 30% | 47 | el 35% **ni se aplica** |
+| 35% | 58 | se aplica, pero el distribuidor gana **$0** |
+| 40% | 66 | se aplica y gana 5% |
+| 50% | 3 | se aplica y gana 5% |
+
+En la compra de prueba el NAD+ (tope 35%) quedó con `amount: 0, capped: true` — **correcto
+según la regla, pero conviene que Alanís lo sepa**: el código de 35% le sirve de verdad solo
+en **69 de 195 productos**, y ahí gana 5%. Si Christian quiere que el 35% sea usable en todo
+el catálogo, hay que **subir el `commission_cap` de los productos**, no la comisión de ella.
 
 ### 📌 Otros pendientes que siguen abiertos
 
@@ -120,6 +164,8 @@ instalado), eso explica cero ventas por publicidad.
   producción**.
 - **Categorías:** quedó la pregunta abierta de si fusionar **"Stacks/Combos"** con
   **"Especialidad"**.
+- **Topes de comisión por producto:** decidir si subirlos (ver tabla arriba) para que los
+  códigos de 35% sirvan en todo el catálogo y no solo en 69 de 195 productos.
 - Lo de Christian: KYB de pagos, billing de Gemini, 2FA del admin, legal/INAI, envíos
   Skydropx, redirecciones 301 del dominio.
 
