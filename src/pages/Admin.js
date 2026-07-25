@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import { Eye, LayoutDashboard, Package, ShoppingBag, Plus, Pencil, Trash2, DollarSign, Users, Clock, TrendingUp, MapPin, Phone, Receipt, Store, Copy, Boxes, Truck, RefreshCw, MailCheck, Ban, Megaphone } from 'lucide-react';
+import { Filter, Eye, LayoutDashboard, Package, ShoppingBag, Plus, Pencil, Trash2, DollarSign, Users, Clock, TrendingUp, MapPin, Phone, Receipt, Store, Copy, Boxes, Truck, RefreshCw, MailCheck, Ban, Megaphone } from 'lucide-react';
 import { fallbackProducts } from '@/data/fallbackCatalog';
 import { ResponsiveContainer, AreaChart, Area, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip } from 'recharts';
 import { Button } from '@/components/ui/button';
@@ -80,6 +80,8 @@ const Admin = () => {
   const [orders, setOrders] = useState([]);
   const [customers, setCustomers] = useState([]);
   const [analytics, setAnalytics] = useState(null);
+  const [funnel, setFunnel] = useState(null);
+  const [funnelDays, setFunnelDays] = useState(30);
   const [customerOpen, setCustomerOpen] = useState(null);
   const [params, setParams] = useSearchParams();
   const [customerDetail, setCustomerDetail] = useState(null);   // ficha extendida del cliente abierto
@@ -124,6 +126,7 @@ const Admin = () => {
     api.get('/admin/repurchase').then((r) => setRepurchase(r.data)).catch(() => {});
     api.get('/admin/customers').then((r) => setCustomers(r.data)).catch(() => {});
     api.get('/admin/analytics').then((r) => setAnalytics(r.data)).catch(() => {});
+    api.get('/admin/funnel?days=30').then((r) => setFunnel(r.data)).catch(() => {});
     api.get('/admin/distributors').then((r) => setDistributors(r.data)).catch(() => {});
     api.get('/admin/distributor-applications').then((r) => setApplications(r.data)).catch(() => {});
     api.get('/stock').then((r) => setStockMap(r.data || {})).catch(() => {});
@@ -354,6 +357,7 @@ const Admin = () => {
       <Tabs value={params.get('tab') || 'sales'} onValueChange={(v) => setParams(v === 'sales' ? {} : { tab: v }, { replace: true })} className="lg:flex lg:gap-8 lg:items-start">
         <DashboardSidebar items={[
           { value: 'sales', icon: TrendingUp, label: t('admin.salesTab') },
+          { value: 'funnel', icon: Filter, label: t('admin.funnelTab') },
           { value: 'customers', icon: Users, label: t('admin.customersTab') },
           { value: 'distributors', icon: Store, label: t('admin.distributorsTab') },
           { value: 'orders', icon: ShoppingBag, label: t('admin.ordersTab') },
@@ -421,6 +425,111 @@ const Admin = () => {
               </TableBody>
             </Table>
           </Card>
+        </TabsContent>
+
+        <TabsContent value="funnel" className="mt-5 space-y-4">
+          <div className="flex items-center justify-between gap-3 flex-wrap">
+            <div>
+              <h3 className="font-heading font-semibold">{t('admin.funnel.title')}</h3>
+              <p className="text-xs text-muted-foreground">{t('admin.funnel.sub')}</p>
+            </div>
+            <div className="flex gap-2">
+              {[7, 30, 90].map((d) => (
+                <button key={d} onClick={() => { setFunnelDays(d); api.get(`/admin/funnel?days=${d}`).then((r) => setFunnel(r.data)).catch(() => {}); }}
+                  data-testid={`funnel-days-${d}`}
+                  className={`text-xs rounded-full px-3 py-1.5 border transition-colors ${funnelDays === d ? 'bg-[hsl(var(--primary))] text-white border-[hsl(var(--primary))]' : 'border-border hover:bg-[hsl(var(--muted))]/40'}`}>
+                  {t('admin.funnel.days', { n: d })}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {funnel?.sin_datos && (
+            <Card className="p-6 border-[hsl(var(--warning-border))]" data-testid="funnel-empty">
+              <p className="text-sm">{t('admin.funnel.empty')}</p>
+            </Card>
+          )}
+
+          {funnel && !funnel.sin_datos && (
+            <>
+              <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+                <Card className="p-4"><div className="text-xs text-muted-foreground">{t('admin.funnel.visits')}</div>
+                  <div className="font-heading text-xl font-bold mt-1">{funnel.embudo[0]?.sesiones || 0}</div></Card>
+                <Card className="p-4"><div className="text-xs text-muted-foreground">{t('admin.funnel.conversion')}</div>
+                  <div className="font-heading text-xl font-bold mt-1">{funnel.conversion_total}%</div></Card>
+                <Card className="p-4"><div className="text-xs text-muted-foreground">{t('admin.funnel.revenue')}</div>
+                  <div className="font-heading text-xl font-bold mt-1">{formatMXN(funnel.ingreso)}</div></Card>
+              </div>
+
+              <Card className="p-5" data-testid="funnel-steps">
+                <h4 className="font-heading font-semibold mb-1">{t('admin.funnel.stepsTitle')}</h4>
+                <p className="text-xs text-muted-foreground mb-4">{t('admin.funnel.stepsSub')}</p>
+                <div className="space-y-3">
+                  {funnel.embudo.map((e, i) => {
+                    const top = funnel.embudo[0]?.sesiones || 1;
+                    const prev = i > 0 ? funnel.embudo[i - 1].sesiones : null;
+                    const caida = prev && prev > 0 ? Math.round((1 - e.sesiones / prev) * 100) : null;
+                    const LABELS = { visit: 'Visitaron el sitio', product_view: 'Vieron un producto', add_to_cart: 'Agregaron al carrito', checkout_start: 'Empezaron el pago', purchase: 'Compraron' };
+                    return (
+                      <div key={e.paso}>
+                        <div className="flex justify-between text-sm mb-1">
+                          <span>{LABELS[e.paso] || e.paso}</span>
+                          <span className="text-muted-foreground">
+                            {e.sesiones}
+                            {caida !== null && caida > 0 && <span className="text-[hsl(var(--destructive))] ml-2">−{caida}%</span>}
+                          </span>
+                        </div>
+                        <div className="h-2 rounded-full bg-[hsl(var(--muted))] overflow-hidden">
+                          <div className="h-full rounded-full bg-[hsl(var(--primary))]" style={{ width: `${Math.round((e.sesiones / top) * 100)}%` }} />
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              </Card>
+
+              <Card className="p-5" data-testid="funnel-sources">
+                <h4 className="font-heading font-semibold mb-1">{t('admin.funnel.sourcesTitle')}</h4>
+                <p className="text-xs text-muted-foreground mb-4">{t('admin.funnel.sourcesSub')}</p>
+                <Table>
+                  <TableHeader><TableRow>
+                    <TableHead>{t('admin.funnel.source')}</TableHead>
+                    <TableHead>{t('admin.funnel.visits')}</TableHead>
+                    <TableHead>{t('admin.funnel.purchases')}</TableHead>
+                    <TableHead>{t('admin.funnel.conversion')}</TableHead>
+                    <TableHead>{t('admin.funnel.revenue')}</TableHead>
+                  </TableRow></TableHeader>
+                  <TableBody>
+                    {funnel.por_origen.length === 0 ? (
+                      <TableRow><TableCell colSpan={5} className="text-center text-muted-foreground py-6">{t('admin.funnel.noSources')}</TableCell></TableRow>
+                    ) : funnel.por_origen.map((o) => (
+                      <TableRow key={o.origen}>
+                        <TableCell className="text-sm font-medium">{o.origen}</TableCell>
+                        <TableCell>{o.visitas}</TableCell>
+                        <TableCell>{o.compras}</TableCell>
+                        <TableCell className={o.conversion > 0 ? 'text-[hsl(var(--success))]' : 'text-muted-foreground'}>{o.conversion}%</TableCell>
+                        <TableCell>{formatMXN(o.ingreso)}</TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </Card>
+
+              {funnel.top_vistos.length > 0 && (
+                <Card className="p-5" data-testid="funnel-top-viewed">
+                  <h4 className="font-heading font-semibold mb-3">{t('admin.funnel.topViewed')}</h4>
+                  <div className="space-y-2">
+                    {funnel.top_vistos.map((v) => (
+                      <div key={v.producto} className="flex justify-between text-sm">
+                        <span className="truncate">{v.producto}</span>
+                        <span className="text-muted-foreground">{v.vistas}</span>
+                      </div>
+                    ))}
+                  </div>
+                </Card>
+              )}
+            </>
+          )}
         </TabsContent>
 
         <TabsContent value="sales" className="mt-5">

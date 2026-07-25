@@ -8,6 +8,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Skeleton } from '@/components/ui/skeleton';
 import { monographFor } from '@/data/productMonographs';
+import { track } from '@/lib/track';
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from '@/components/ui/breadcrumb';
 import ProductCard from '@/components/ProductCard';
 import api, { formatMXN } from '@/lib/api';
@@ -44,6 +45,10 @@ const ProductDetail = () => {
   useEffect(() => {
     api.get('/stock').then((r) => setStockMap(r.data || null)).catch(() => setStockMap(null));
   }, []);
+
+  // Medición del embudo. Va con los demás hooks (antes de cualquier return):
+  // si se pone después de un return condicional, React truena.
+  useEffect(() => { if (product?.slug) track('product_view', { product: product.slug }); }, [product?.slug]);
 
   if (loading) return <div className="max-w-[1280px] mx-auto px-4 py-10"><Skeleton className="h-96 rounded-xl" /></div>;
   if (!product) return <div className="max-w-[1280px] mx-auto px-4 py-20 text-center">{t('product.notFound')} <Link to="/catalogo" className="text-[hsl(var(--primary))]">{t('product.backToCatalog')}</Link></div>;

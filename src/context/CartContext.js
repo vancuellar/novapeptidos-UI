@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { toast } from 'sonner';
+import { track } from '@/lib/track';
 import api from '@/lib/api';
 import { productImage } from '@/data/productImages';
 
@@ -44,6 +45,7 @@ export const CartProvider = ({ children }) => {
         stock: product.stock,
       }];
     });
+    track('add_to_cart', { product: product.sku || product.id, value: (product.price || 0) * qty });
     toast.success('Agregado al carrito', { description: product.name });
   };
 

@@ -24,6 +24,7 @@ import Distributor from '@/pages/Distributor';
 import Tutorials from '@/pages/Tutorials';
 import ViewAsBanner from '@/components/ViewAsBanner';
 import WhatsAppButton from '@/components/WhatsAppButton';
+import { track } from '@/lib/track';
 import ForgotPassword from '@/pages/ForgotPassword';
 import ResetPassword from '@/pages/ResetPassword';
 import ConfirmEmail from '@/pages/ConfirmEmail';
@@ -39,6 +40,13 @@ import Compendium from '@/pages/Compendium';
 // /login es una pantalla independiente al estilo del alta de Resend (siempre
 // oscura, sin barra ni pie): el sitio no debe asomarse detrás.
 const STANDALONE_ROUTES = ['/login', '/registro'];
+
+// Cada cambio de página cuenta como visita (entra al embudo).
+const TrackPageViews = () => {
+  const { pathname } = useLocation();
+  useEffect(() => { track('visit'); }, [pathname]);
+  return null;
+};
 
 const SiteChrome = ({ children }) => {
   const { pathname } = useLocation();
@@ -61,6 +69,7 @@ function App() {
           <AuthProvider>
             <CartProvider>
               <BrowserRouter basename={process.env.PUBLIC_URL || '/'}>
+                <TrackPageViews />
                 <SiteChrome><ViewAsBanner /><Header /></SiteChrome>
                 <main className="min-h-[70vh]">
                   <Routes>

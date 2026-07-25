@@ -9,6 +9,7 @@ import { Card } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { toast } from 'sonner';
+import { track } from '@/lib/track';
 import api, { formatMXN, PAYMENT_METHODS } from '@/lib/api';
 import { phoneValid } from '@/lib/utils';
 import { CountrySelect, PhoneField, composePhone, parsePhone } from '@/components/CountryPhoneFields';
@@ -125,6 +126,7 @@ const Checkout = () => {
         // Seguridad: los datos de la tarjeta NUNCA se envian ni se guardan en nuestro servidor.
       };
       const res = await api.post('/orders', payload);
+      track('purchase', { value: res.data.total || 0, order_number: res.data.order_number || '' });
       clearCart();
       toast.success(t('checkout.toast.success'));
       // Cripto: el servidor devuelve el enlace de la factura de BTCPay; ahí
