@@ -80,27 +80,20 @@ function main() {
     n++;
   }
 
+  // Una pagina por PRODUCTO (no por presentacion): la ficha ya trae el selector
+  // de tamanos, y 195 URLs casi identicas se pelearian entre si en Google.
   const productos = leerCatalogo();
   const urls = [];
   for (const p of productos) {
-    const variantes = p.variants && p.variants.length ? p.variants : [null];
-    for (const v of variantes) {
-      const slug = v && v.slug ? v.slug : p.slug;
-      if (!slug) continue;
-      const nombre = v ? `${p.name} ${v.presentation}` : p.name;
-      const desc = p.short_description || `${p.name} — péptido de investigación (RUO) con pureza HPLC.`;
-      const ruta = `producto/${slug}`;
-      escribir(ruta, conMeta(base, nombre, desc, `${SITE}/${ruta}`));
-      urls.push(`${SITE}/${ruta}`);
-      n++;
-    }
-    if (p.slug && !urls.includes(`${SITE}/producto/${p.slug}`)) {
-      escribir(`producto/${p.slug}`, conMeta(base, p.name,
-        p.short_description || `${p.name} — péptido de investigación (RUO).`,
-        `${SITE}/producto/${p.slug}`));
-      urls.push(`${SITE}/producto/${p.slug}`);
-      n++;
-    }
+    if (!p.slug) continue;
+    const tamanos = (p.variants || []).map((v) => v.presentation).filter(Boolean);
+    const titulo = tamanos.length > 1 ? `${p.name} (${tamanos.join(', ')})` : p.name;
+    const desc = p.short_description
+      || `${p.name} — péptido de investigación (RUO) con pureza HPLC y certificado por lote.`;
+    const ruta = `producto/${p.slug}`;
+    escribir(ruta, conMeta(base, titulo, desc, `${SITE}/${ruta}`));
+    urls.push(`${SITE}/${ruta}`);
+    n++;
   }
 
   // Mapa del sitio, para que Google encuentre todo sin adivinar.
