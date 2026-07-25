@@ -13,6 +13,11 @@ import { useLanguage } from '@/context/LanguageContext';
 
 const BAC = fallbackProducts.find((p) => p.slug === 'agua-bacteriostatica');
 
+// ¿Este renglón del carrito es agua bacteriostática? Por slug/SKU — el id ya es
+// un uuid real y el regex viejo sobre product_id dejó de reconocerla.
+const isBac = (item) => /agua-bacteriostatica|AGUABACTERIOST/i.test(
+  `${item.slug || ''} ${item.sku || ''} ${item.product_id || ''}`);
+
 // Cuánta agua pide un vial según su tamaño (mg). Regla práctica de
 // reconstitución: chico ~2 mL, mediano ~3 mL, grande (60-100 mg, blends) ~4 mL.
 const waterPerVial = (mg) => (mg <= 15 ? 2 : mg <= 40 ? 3 : 4);
@@ -24,7 +29,7 @@ const buildBacPlan = (items) => {
   let vials = 0;
   let ml = 0;
   for (const item of items) {
-    if (/agua-bacteriostatica/.test(item.product_id)) continue;
+    if (isBac(item)) continue;   // el agua no se reconstituye a sí misma
     const match = /([\d.]+)\s*mg/i.exec(item.presentation || '');
     if (!match) continue;   // cápsulas, mL, etc.: no se reconstituyen
     vials += item.quantity;
@@ -46,7 +51,7 @@ const Cart = () => {
   const [bacOpen, setBacOpen] = useState(false);
   const afterDiscount = subtotal - discount; // el envío se cotiza por separado
 
-  const hasBac = items.some((i) => /agua-bacteriostatica/.test(i.product_id));
+  const hasBac = items.some(isBac);
   const bacPlan = buildBacPlan(items);
 
   const goCheckout = () => navigate('/checkout');
@@ -57,7 +62,10 @@ const Cart = () => {
   };
   const addBacAndCheckout = () => {
     const v = bacPlan.variant;
-    addItem({ ...BAC, id: `${BAC.id}::${v.presentation}`, name: `${BAC.name} ${v.presentation}`, price: v.price, presentation: v.presentation, stock: v.stock }, bacPlan.qty);
+    // El id DEBE existir en el catálogo real (id o SKU de la presentación). Antes se
+    // inventaba "id::10 mL": el backend no lo encontraba, el agua se saltaba la regla
+    // de "los insumos no llevan descuento" y sí se descontaba (bug, 2026-07-25).
+    addItem({ ...BAC, id: v.id || v.sku || BAC.id, sku: v.sku, name: `${BAC.name} ${v.presentation}`, price: v.price, presentation: v.presentation, stock: v.stock }, bacPlan.qty);
     setBacOpen(false);
     goCheckout();
   };

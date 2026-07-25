@@ -100,9 +100,13 @@ const Advisor = () => {
     if (!included.length) { toast.error('Selecciona al menos un compuesto'); return; }
     included.forEach((c) => {
       const hasVariants = (c.product.variants || []).length > 0;
+      // El id que va al carrito DEBE existir en el catálogo real: usamos el id o el
+      // SKU de la presentación. Antes se inventaba "id::5 mg", el backend no lo
+      // encontraba al cobrar y el producto se saltaba su tope (bug, 2026-07-25).
       addItem(hasVariants ? {
         ...c.product,
-        id: `${c.product.id}::${c.variant.presentation}`,
+        id: c.variant.id || c.variant.sku || c.product.id,
+        sku: c.variant.sku || c.product.sku,
         name: `${c.product.name} ${c.variant.presentation}`,
         price: c.variant.price,
         presentation: c.variant.presentation,
