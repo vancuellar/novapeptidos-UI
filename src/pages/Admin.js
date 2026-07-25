@@ -539,6 +539,7 @@ const Admin = () => {
                             <div>
                               <div className="font-mono-tech">{it.offer_code}</div>
                               <div className="text-muted-foreground">{Math.round((it.offer_rate || 0) * 100)}% · min {formatMXN(it.offer_min_order || 0)}</div>
+                              {it.offer_perk_text && <div className="text-muted-foreground">+ {it.offer_perk_text}</div>}
                             </div>
                           ) : it.contacted ? (
                             <span className="text-muted-foreground">{t('admin.try.followedUp')}</span>
