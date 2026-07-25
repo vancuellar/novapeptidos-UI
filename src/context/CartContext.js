@@ -3,10 +3,45 @@ import { toast } from 'sonner';
 import { track } from '@/lib/track';
 import api from '@/lib/api';
 import { productImage } from '@/data/productImages';
+import { fallbackProducts } from '@/data/fallbackCatalog';
 
 const CartContext = createContext(null);
 
 export const useCart = () => useContext(CartContext);
+
+// Insumos (agua bacteriostática, viales, jeringas): NUNCA entran a ningún
+// descuento. Se venden casi al costo (Christian, 2026-07-25). Misma lista que
+// NO_DISCOUNT_CATEGORIES en el backend.
+const NO_DISCOUNT_CATEGORIES = ['suministros', 'accesorios'];
+
+// Tope de comisión POR PRODUCTO: cuánto descuento aguanta sin comerse el ROI.
+// Se busca por id/SKU en el catálogo, no en lo que quedó guardado en el carrito,
+// para que un carrito viejo del navegador también calcule bien.
+const CAPS = (() => {
+  const map = {};
+  for (const p of fallbackProducts) {
+    const cats = p.categories || [p.category];
+    const blocked = cats.some((c) => NO_DISCOUNT_CATEGORIES.includes(c));
+    for (const v of p.variants || []) {
+      const info = {
+        cap: v.commission_cap == null ? 0.5 : v.commission_cap,
+        eligible: v.distributor_eligible !== false && !blocked,
+      };
+      if (v.id) map[v.id] = info;
+      if (v.sku) map[v.sku] = info;
+    }
+  }
+  return map;
+})();
+
+/** Descuento REAL de un renglón: el menor entre el pedido y el tope del producto.
+ *  0 si el producto no participa (insumos, HGH neto, no elegibles). */
+export const itemDiscountRate = (item, rate) => {
+  if (isNetPriceItem(item)) return 0;
+  const info = CAPS[item.product_id] || CAPS[item.sku] || { cap: 0.5, eligible: true };
+  if (!info.eligible) return 0;
+  return Math.min(rate || 0, info.cap);
+};
 
 // Productos a PRECIO NETO (sin descuento alguno, regla de Christian 2026-07-22):
 // la familia HGH — no así el HGH Fragment, que sí tiene margen.
@@ -75,7 +110,7 @@ export const CartProvider = ({ children }) => {
   // Familia HGH (no el Fragment): precio neto SIEMPRE — su margen no aguanta
   // ningún descuento (Christian, 2026-07-22). El servidor aplica la misma regla.
   const discountableSubtotal = items
-    .filter((i) => !isNetPriceItem(i))
+    .filter((i) => itemDiscountRate(i, 1) > 0)
     .reduce((sum, i) => sum + i.price * i.quantity, 0);
   const tier = DISCOUNT_TIERS.find((d) => discountableSubtotal >= d.min) || DISCOUNT_TIERS[DISCOUNT_TIERS.length - 1];
   const autoRate = items.length ? tier.rate : 0;
@@ -103,11 +138,17 @@ export const CartProvider = ({ children }) => {
   const codeRate = items.length && distCode ? distRate : 0;
   const discountRate = Math.max(autoRate, codeRate);
   const discountSource = codeRate > autoRate ? 'code' : 'auto';
-  const discount = Math.round(discountableSubtotal * discountRate);
+  // Renglón por renglón: cada producto recibe lo que su tope aguanta, ni más.
+  const discount = items.reduce(
+    (sum, i) => sum + Math.round(i.price * i.quantity * itemDiscountRate(i, discountRate)), 0);
+  // Los que recibieron MENOS de lo pedido, para avisarle al cliente.
+  const cappedItems = items
+    .map((i) => ({ ...i, applied: itemDiscountRate(i, discountRate) }))
+    .filter((i) => i.applied < discountRate - 1e-9);
   const nextTier = discountableSubtotal < 35000 ? { min: 35000, rate: 0.15 } : null;
 
   return (
-    <CartContext.Provider value={{ items, addItem, updateQty, removeItem, clearCart, subtotal, count, discount, discountRate, discountSource, nextTier, distCode, distRate, applyDistCode, clearDistCode }}>
+    <CartContext.Provider value={{ items, addItem, updateQty, removeItem, clearCart, subtotal, count, discount, discountRate, discountSource, cappedItems, nextTier, distCode, distRate, applyDistCode, clearDistCode }}>
       {children}
     </CartContext.Provider>
   );

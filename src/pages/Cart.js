@@ -39,7 +39,7 @@ const buildBacPlan = (items) => {
 };
 
 const Cart = () => {
-  const { items, addItem, updateQty, removeItem, subtotal, discount, discountRate, discountSource, nextTier, distCode, distRate, applyDistCode, clearDistCode } = useCart();
+  const { items, addItem, updateQty, removeItem, subtotal, discount, discountRate, discountSource, cappedItems, nextTier, distCode, distRate, applyDistCode, clearDistCode } = useCart();
   const { t } = useLanguage();
   const navigate = useNavigate();
   const [code, setCode] = useState('');
@@ -127,6 +127,20 @@ const Cart = () => {
               <div className="flex justify-between"><span className="text-muted-foreground">{t('common.subtotal')}</span><span data-testid="cart-subtotal">{formatMXN(subtotal)}</span></div>
               {discount > 0 && <div className="flex justify-between text-[hsl(var(--success))]"><span>{discountSource === 'code' ? t('discount.lineCode', { code: distCode, rate: Math.round(discountRate * 100) }) : t('discount.line', { rate: Math.round(discountRate * 100) })}</span><span data-testid="cart-discount">− {formatMXN(discount)}</span></div>}
               {discountSource === 'auto' && nextTier && <p className="text-xs text-muted-foreground">{t('discount.nextTier', { amount: formatMXN(nextTier.min - subtotal), rate: Math.round(nextTier.rate * 100) })}</p>}
+              {cappedItems.length > 0 && (
+                <div className="rounded-lg border border-border bg-[hsl(var(--secondary))] px-3 py-2 text-[11px] leading-relaxed text-muted-foreground" data-testid="cart-capped-notice">
+                  <span className="font-medium text-foreground">{t('discount.cappedTitle')}</span>{' '}
+                  {t('discount.cappedBody')}
+                  <ul className="mt-1.5 space-y-0.5">
+                    {cappedItems.map((i) => (
+                      <li key={i.product_id} className="flex justify-between gap-2">
+                        <span className="truncate">{i.name}</span>
+                        <span className="shrink-0 font-mono-tech">{i.applied > 0 ? `−${Math.round(i.applied * 100)}%` : t('discount.cappedNone')}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
               <div className="flex justify-between"><span className="text-muted-foreground">{t('common.shipping')}</span><span className="text-muted-foreground">{t('cart.shippingTBD')}</span></div>
               <p className="text-xs text-muted-foreground">{t('cart.freeShippingLine')}</p>
             </div>
