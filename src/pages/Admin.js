@@ -82,6 +82,7 @@ const Admin = () => {
   const [analytics, setAnalytics] = useState(null);
   const [funnel, setFunnel] = useState(null);
   const [orderOpen, setOrderOpen] = useState(null);   // pedido abierto para prepararlo
+  const [orderKill, setOrderKill] = useState(null);   // pedido que se va a BORRAR
   const [meta, setMeta] = useState(null);
   const [metaBusy, setMetaBusy] = useState(false);
   const [funnelDays, setFunnelDays] = useState(30);
@@ -284,6 +285,16 @@ const Admin = () => {
       const d = await api.get('/admin/meta/dashboard'); setMeta(d.data);
     } catch (e) { toast.error(e.response?.data?.detail || 'Error'); }
     finally { setMetaBusy(false); }
+  };
+  // Borrar es para siempre y no hay deshacer: por eso pasa por confirmacion.
+  const deleteOrder = async () => {
+    const o = orderKill;
+    try {
+      await api.delete(`/admin/orders/${o.id}`);
+      toast.success(t('admin.order.deleted', { n: o.order_number }));
+      setOrderKill(null); setOrderOpen(null);
+      load();
+    } catch (e) { toast.error(e.response?.data?.detail || 'Error'); }
   };
   const openRates = (d) => {
     setRatesForm({
@@ -861,11 +872,12 @@ const Admin = () => {
                   <TableHead>{t('admin.table.payment')}</TableHead><TableHead>{t('admin.table.date')}</TableHead><TableHead>{t('admin.table.status')}</TableHead>
                   <TableHead>{t('admin.table.receipt')}</TableHead>
                   <TableHead>{t('admin.table.tracking')}</TableHead>
+                  <TableHead className="w-12"></TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
                 {orders.length === 0 ? (
-                  <TableRow><TableCell colSpan={8} className="text-center text-muted-foreground py-8">{t('admin.noOrders')}</TableCell></TableRow>
+                  <TableRow><TableCell colSpan={9} className="text-center text-muted-foreground py-8">{t('admin.noOrders')}</TableCell></TableRow>
                 ) : orders.map((o) => (
                   <TableRow key={o.id}>
                     <TableCell>
@@ -892,6 +904,12 @@ const Admin = () => {
                         <SelectTrigger className="w-36 h-8" data-testid="admin-update-order-status-select"><SelectValue /></SelectTrigger>
                         <SelectContent>{STATUSES.map((s) => <SelectItem key={s} value={s}>{t(`status.${s}`)}</SelectItem>)}</SelectContent>
                       </Select>
+                    </TableCell>
+                    <TableCell>
+                      <Button variant="ghost" size="icon" className="h-8 w-8 text-destructive hover:bg-destructive hover:text-white"
+                        onClick={() => setOrderKill(o)} title={t('admin.order.delete')} data-testid="admin-delete-order">
+                        <Trash2 className="h-4 w-4" />
+                      </Button>
                     </TableCell>
                     <TableCell>
                       {o.tracking_number ? (
@@ -1123,6 +1141,30 @@ const Admin = () => {
         </DialogContent>
       </Dialog>
 
+      <Dialog open={!!orderKill} onOpenChange={(v) => !v && setOrderKill(null)}>
+        <DialogContent className="max-w-md" data-testid="admin-delete-order-dialog">
+          {orderKill && (
+            <>
+              <DialogHeader><DialogTitle>{t('admin.order.deleteTitle')}</DialogTitle></DialogHeader>
+              <p className="text-sm text-muted-foreground">
+                {t('admin.order.deleteBody', {
+                  n: orderKill.order_number,
+                  name: orderKill.customer?.full_name || '',
+                  total: formatMXN(orderKill.total),
+                })}
+              </p>
+              <p className="text-xs text-muted-foreground">{t('admin.order.deleteHint')}</p>
+              <div className="flex justify-end gap-2 mt-2">
+                <Button variant="outline" size="sm" onClick={() => setOrderKill(null)}>{t('common.cancel')}</Button>
+                <Button variant="destructive" size="sm" onClick={deleteOrder} data-testid="admin-delete-order-confirm">
+                  <Trash2 className="h-4 w-4 mr-1.5" /> {t('admin.order.deleteConfirm')}
+                </Button>
+              </div>
+            </>
+          )}
+        </DialogContent>
+      </Dialog>
+
       {/* Hoja de empaque: qué meter en la caja y a dónde mandarla. */}
       <Dialog open={!!orderOpen} onOpenChange={(v) => !v && setOrderOpen(null)}>
         <DialogContent className="max-w-2xl max-h-[85vh] overflow-y-auto" data-testid="admin-order-detail-dialog">
@@ -1210,6 +1252,9 @@ const Admin = () => {
                       <Receipt className="h-4 w-4 mr-1.5" /> {t('admin.receipt.view')}
                     </Button>
                   )}
+                  <Button variant="destructive" size="sm" className="ml-auto" onClick={() => setOrderKill(orderOpen)} data-testid="admin-order-delete">
+                    <Trash2 className="h-4 w-4 mr-1.5" /> {t('admin.order.delete')}
+                  </Button>
                 </div>
               </div>
             </>
