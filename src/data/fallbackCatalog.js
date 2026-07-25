@@ -4864,5 +4864,25 @@ export const fallbackProducts = [
 ];
 
 export const getFallbackFeaturedProducts = () => fallbackProducts.filter((product) => product.featured).slice(0, 8);
-export const getFallbackProductBySlug = (slug) => fallbackProducts.find((product) => product.slug === slug);
+// Busca por slug tolerando la presentacion pegada al final. El backend guarda
+// un producto por presentacion ("bpc-157-10-mg") mientras que aqui viven
+// agrupados ("bpc-157"): sin esta tolerancia, cualquier enlace del servidor, del
+// chat o compartido caia en "Producto no encontrado" (Christian, 2026-07-25).
+const stripPresentation = (slug) => (slug || '')
+  .replace(/-\d+(?:[.,]\d+)?-?(?:mg|iu|ml|u|g)$/i, '')
+  .replace(/-\d+$/, '');
+
+export const getFallbackProductBySlug = (slug) => {
+  if (!slug) return undefined;
+  const exacto = fallbackProducts.find((product) => product.slug === slug);
+  if (exacto) return exacto;
+  const base = stripPresentation(slug);
+  const porBase = fallbackProducts.find((product) => product.slug === base);
+  if (porBase) return porBase;
+  // ultimo intento: el slug mas largo que sea prefijo del pedido
+  const candidatos = fallbackProducts
+    .filter((product) => slug.startsWith(product.slug))
+    .sort((a, b) => b.slug.length - a.slug.length);
+  return candidatos[0];
+};
 export const getFallbackProductsByCategory = (category) => fallbackProducts.filter((product) => (product.categories || [product.category]).includes(category));
