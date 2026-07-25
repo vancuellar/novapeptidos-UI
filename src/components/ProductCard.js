@@ -28,7 +28,9 @@ const ProductCard = ({ product }) => {
     if (hasVariants) {
       addItem({
         ...product,
-        id: `${product.id}::${active.presentation}`,
+        // id real de la presentacion (nunca inventado): ver ProductDetail.js
+        id: active.id || active.sku || product.id,
+        sku: active.sku || product.sku,
         name: `${product.name} ${active.presentation}`,
         price: active.price,
         presentation: active.presentation,

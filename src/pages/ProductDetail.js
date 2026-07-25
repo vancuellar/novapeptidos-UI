@@ -63,9 +63,13 @@ const ProductDetail = () => {
     { label: t('common.form'), value: localizedProduct.form },
     { label: t('common.batchNumber'), value: active.batch_number, testid: 'pdp-lot-number' },
   ];
+  // El id que va al carrito DEBE existir en el catalogo real: usamos el id o el
+  // SKU de la presentacion. Antes se inventaba "id::5 mg" y el backend no lo
+  // encontraba al cobrar (bug de checkout, 2026-07-25).
   const addToCart = () => addItem({
     ...localizedProduct,
-    id: variants.length ? `${product.id}::${active.presentation}` : product.id,
+    id: active.id || active.sku || product.id,
+    sku: active.sku || product.sku,
     name: variants.length ? `${localizedProduct.name} ${active.presentation}` : localizedProduct.name,
     price: active.price,
     presentation: active.presentation,

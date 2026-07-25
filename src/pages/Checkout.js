@@ -115,7 +115,7 @@ const Checkout = () => {
     setSubmitting(true);
     try {
       const payload = {
-        items: items.map((i) => ({ product_id: i.product_id, name: i.name, price: i.price, quantity: i.quantity, presentation: i.presentation, image_url: i.image_url })),
+        items: items.map((i) => ({ product_id: i.sku || i.product_id, name: i.name, price: i.price, quantity: i.quantity, presentation: i.presentation, image_url: i.image_url })),
         customer: { ...form, phone: composePhone(phoneCountry, form.phone) },
         payment_method: payment,
         shipping: 0,
