@@ -81,6 +81,7 @@ const Admin = () => {
   const [customers, setCustomers] = useState([]);
   const [analytics, setAnalytics] = useState(null);
   const [funnel, setFunnel] = useState(null);
+  const [orderOpen, setOrderOpen] = useState(null);   // pedido abierto para prepararlo
   const [meta, setMeta] = useState(null);
   const [metaBusy, setMetaBusy] = useState(false);
   const [funnelDays, setFunnelDays] = useState(30);
@@ -867,7 +868,12 @@ const Admin = () => {
                   <TableRow><TableCell colSpan={8} className="text-center text-muted-foreground py-8">{t('admin.noOrders')}</TableCell></TableRow>
                 ) : orders.map((o) => (
                   <TableRow key={o.id}>
-                    <TableCell className="font-mono-tech text-xs">{o.order_number}</TableCell>
+                    <TableCell>
+                      <button type="button" onClick={() => setOrderOpen(o)} data-testid="admin-open-order"
+                        className="font-mono-tech text-xs underline decoration-dotted underline-offset-4 hover:text-[hsl(var(--primary))] transition">
+                        {o.order_number}
+                      </button>
+                    </TableCell>
                     <TableCell><div className="text-sm">{o.customer.full_name}</div><div className="text-xs text-muted-foreground">{o.customer.email}</div></TableCell>
                     <TableCell className="font-medium">{formatMXN(o.total)}</TableCell>
                     <TableCell className="text-xs">{t(`payment.${o.payment_method}.label`) || o.payment_method}</TableCell>
@@ -1111,6 +1117,100 @@ const Admin = () => {
                     </div>
                   </>
                 )}
+              </div>
+            </>
+          )}
+        </DialogContent>
+      </Dialog>
+
+      {/* Hoja de empaque: qué meter en la caja y a dónde mandarla. */}
+      <Dialog open={!!orderOpen} onOpenChange={(v) => !v && setOrderOpen(null)}>
+        <DialogContent className="max-w-2xl max-h-[85vh] overflow-y-auto" data-testid="admin-order-detail-dialog">
+          {orderOpen && (
+            <>
+              <DialogHeader>
+                <DialogTitle className="flex items-center gap-2 flex-wrap">
+                  <span className="font-mono-tech text-base">{orderOpen.order_number}</span>
+                  <Badge variant="outline" className="text-[10px] uppercase">{t(`status.${orderOpen.status}`)}</Badge>
+                </DialogTitle>
+              </DialogHeader>
+              <div className="space-y-4 text-sm">
+                <div>
+                  <div className="text-xs font-semibold mb-2">{t('admin.order.pack')}</div>
+                  <Card className="divide-y divide-border" data-testid="admin-order-items">
+                    {(orderOpen.items || []).map((it, i) => (
+                      <div key={i} className="flex items-center justify-between gap-3 p-3">
+                        <div className="min-w-0">
+                          <div className="font-medium truncate">{it.name}</div>
+                          <div className="text-xs text-muted-foreground font-mono-tech">{it.presentation}</div>
+                        </div>
+                        <div className="shrink-0 text-right">
+                          <div className="font-heading text-lg font-bold">×{it.quantity}</div>
+                          <div className="text-xs text-muted-foreground">{formatMXN(it.price * it.quantity)}</div>
+                        </div>
+                      </div>
+                    ))}
+                  </Card>
+                </div>
+
+                <div className="grid sm:grid-cols-2 gap-3">
+                  <Card className="p-3 space-y-1" data-testid="admin-order-address">
+                    <div className="text-xs font-semibold mb-1">{t('admin.order.shipTo')}</div>
+                    <div className="font-medium">{orderOpen.customer?.full_name}</div>
+                    <div className="text-xs text-muted-foreground">{orderOpen.customer?.address}</div>
+                    <div className="text-xs text-muted-foreground">
+                      {[orderOpen.customer?.city, orderOpen.customer?.state, orderOpen.customer?.postal_code].filter(Boolean).join(', ')}
+                    </div>
+                    <div className="text-xs text-muted-foreground">{orderOpen.customer?.country}</div>
+                    <div className="pt-1 text-xs"><Phone className="h-3 w-3 inline mr-1" />{orderOpen.customer?.phone}</div>
+                    <div className="text-xs break-all">{orderOpen.customer?.email}</div>
+                    <Button variant="outline" size="sm" className="h-7 text-xs mt-2"
+                      onClick={() => { navigator.clipboard?.writeText(
+                        [orderOpen.customer?.full_name, orderOpen.customer?.address,
+                         [orderOpen.customer?.city, orderOpen.customer?.state, orderOpen.customer?.postal_code].filter(Boolean).join(', '),
+                         orderOpen.customer?.country, orderOpen.customer?.phone].filter(Boolean).join('\n'));
+                        toast.success(t('admin.order.copied')); }}
+                      data-testid="admin-order-copy-address">
+                      <Copy className="h-3 w-3 mr-1.5" /> {t('admin.order.copyAddress')}
+                    </Button>
+                  </Card>
+
+                  <Card className="p-3 space-y-1.5" data-testid="admin-order-money">
+                    <div className="text-xs font-semibold mb-1">{t('admin.order.payment')}</div>
+                    <div className="flex justify-between text-xs"><span className="text-muted-foreground">{t('common.subtotal')}</span><span>{formatMXN(orderOpen.subtotal)}</span></div>
+                    {orderOpen.discount > 0 && (
+                      <div className="flex justify-between text-xs text-[hsl(var(--success))]">
+                        <span>{t('admin.order.discount')} ({Math.round((orderOpen.discount_rate || 0) * 100)}%)</span>
+                        <span>− {formatMXN(orderOpen.discount)}</span>
+                      </div>
+                    )}
+                    {orderOpen.points_used > 0 && (
+                      <div className="flex justify-between text-xs text-[hsl(var(--success))]"><span>{t('loyalty.line')}</span><span>− {formatMXN(orderOpen.points_used)}</span></div>
+                    )}
+                    <Separator className="my-1" />
+                    <div className="flex justify-between font-heading font-bold"><span>{t('common.total')}</span><span>{formatMXN(orderOpen.total)}</span></div>
+                    <div className="text-xs text-muted-foreground pt-1">{t(`payment.${orderOpen.payment_method}.label`) || orderOpen.payment_method}</div>
+                    <div className="text-xs text-muted-foreground">{new Date(orderOpen.created_at).toLocaleString(language)}</div>
+                  </Card>
+                </div>
+
+                {orderOpen.customer?.notes && (
+                  <Card className="p-3" data-testid="admin-order-notes">
+                    <div className="text-xs font-semibold mb-1">{t('admin.order.notes')}</div>
+                    <p className="text-xs text-muted-foreground whitespace-pre-wrap">{orderOpen.customer.notes}</p>
+                  </Card>
+                )}
+
+                <div className="flex flex-wrap gap-2">
+                  <Button size="sm" onClick={() => { const o = orderOpen; setOrderOpen(null); openShipping(o); }} data-testid="admin-order-ship">
+                    <Truck className="h-4 w-4 mr-1.5" /> {orderOpen.tracking_number ? t('admin.shipping.edit') : t('admin.shipping.add')}
+                  </Button>
+                  {orderOpen.spei_receipt_at && (
+                    <Button variant="outline" size="sm" onClick={() => openReceipt(orderOpen.id)}>
+                      <Receipt className="h-4 w-4 mr-1.5" /> {t('admin.receipt.view')}
+                    </Button>
+                  )}
+                </div>
               </div>
             </>
           )}
