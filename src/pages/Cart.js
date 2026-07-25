@@ -44,7 +44,7 @@ const buildBacPlan = (items) => {
 };
 
 const Cart = () => {
-  const { items, addItem, updateQty, removeItem, subtotal, discount, discountRate, discountSource, cappedItems, nextTier, distCode, distRate, applyDistCode, clearDistCode } = useCart();
+  const { items, addItem, updateQty, removeItem, subtotal, discount, discountRate, discountSource, cappedItems, nextTier, distCode, distRate, codeMin, codeMinMet, applyDistCode, clearDistCode } = useCart();
   const { t } = useLanguage();
   const navigate = useNavigate();
   const [code, setCode] = useState('');
@@ -128,6 +128,11 @@ const Cart = () => {
                   <Input placeholder={t('discount.codePlaceholder')} value={code} onChange={(e) => setCode(e.target.value)} className="h-9" data-testid="cart-distcode-input" />
                   <Button type="submit" variant="outline" className="h-9" data-testid="cart-distcode-apply">{t('discount.apply')}</Button>
                 </form>
+              )}
+              {distCode && !codeMinMet && (
+                <p className="text-[11px] text-destructive mt-1.5" data-testid="cart-code-min">
+                  {t('discount.codeMin', { amount: formatMXN(codeMin) })}
+                </p>
               )}
               <p className="text-[11px] text-muted-foreground mt-1.5">{t('discount.noStack')}</p>
             </div>

@@ -130,7 +130,14 @@ export const CartProvider = ({ children }) => {
 
   const [distCode, setDistCode] = useState(() => localStorage.getItem('np_dist_code') || '');
   const [distRate, setDistRate] = useState(() => Number(localStorage.getItem('np_dist_rate')) || 0);
-  useEffect(() => { localStorage.setItem('np_dist_code', distCode); localStorage.setItem('np_dist_rate', String(distRate)); }, [distCode, distRate]);
+  // Monto mínimo del cupón (los de recuperación de carrito exigen comprar lo mismo
+  // o más). Se guarda para que el carrito no muestre un descuento que no se va a cobrar.
+  const [codeMin, setCodeMin] = useState(() => Number(localStorage.getItem('np_dist_min')) || 0);
+  useEffect(() => {
+    localStorage.setItem('np_dist_code', distCode);
+    localStorage.setItem('np_dist_rate', String(distRate));
+    localStorage.setItem('np_dist_min', String(codeMin));
+  }, [distCode, distRate, codeMin]);
 
   const applyDistCode = async (code) => {
     const c = (code || '').trim().toUpperCase();
@@ -139,16 +146,25 @@ export const CartProvider = ({ children }) => {
       const r = await api.get(`/discount-code/${encodeURIComponent(c)}`);
       setDistCode(r.data.code);
       setDistRate(r.data.discount_rate || 0);
-      toast.success(`Código ${r.data.code} aplicado`, { description: `${Math.round((r.data.discount_rate || 0) * 100)}% de descuento` });
+      setCodeMin(Number(r.data.min_order) || 0);
+      const min = Number(r.data.min_order) || 0;
+      toast.success(`Código ${r.data.code} aplicado`, {
+        description: min > 0
+          ? `${Math.round((r.data.discount_rate || 0) * 100)}% en compras desde $${min.toLocaleString('es-MX')}`
+          : `${Math.round((r.data.discount_rate || 0) * 100)}% de descuento`,
+      });
       return true;
     } catch {
       toast.error('Código no válido');
       return false;
     }
   };
-  const clearDistCode = () => { setDistCode(''); setDistRate(0); };
+  const clearDistCode = () => { setDistCode(''); setDistRate(0); setCodeMin(0); };
 
-  const codeRate = items.length && distCode ? distRate : 0;
+  // Si el cupón exige un mínimo y el carrito no llega, NO se aplica — igual que
+  // en el servidor, para que el total en pantalla sea el que se cobra.
+  const codeMinMet = !codeMin || discountableSubtotal >= codeMin;
+  const codeRate = items.length && distCode && codeMinMet ? distRate : 0;
   const ownRate = items.length ? selfRate : 0;
   const discountRate = Math.max(autoRate, codeRate, ownRate);
   const discountSource = ownRate >= discountRate && ownRate > 0 ? 'self'
@@ -163,7 +179,7 @@ export const CartProvider = ({ children }) => {
   const nextTier = discountableSubtotal < 35000 ? { min: 35000, rate: 0.15 } : null;
 
   return (
-    <CartContext.Provider value={{ items, addItem, updateQty, removeItem, clearCart, subtotal, count, discount, discountRate, discountSource, cappedItems, nextTier, distCode, distRate, applyDistCode, clearDistCode }}>
+    <CartContext.Provider value={{ items, addItem, updateQty, removeItem, clearCart, subtotal, count, discount, discountRate, discountSource, cappedItems, nextTier, distCode, distRate, codeMin, codeMinMet, applyDistCode, clearDistCode }}>
       {children}
     </CartContext.Provider>
   );
