@@ -157,8 +157,28 @@ Backend: `.venv/bin/python -m pytest test_core.py -q` — **134 pruebas**.
    `arreglar_peplides.py` construye la T con pedazos de las mismas letras de esa línea
    (el palo de la "I" y la barra de la "E") para que el trazo pegue exacto — con una fuente
    parecida nunca calza. Deja `Vial ... (PEPTIDES).PNG`; **el original no se toca**.
-   ⏳ **Falta subirlas al sitio:** hoy los 195 SKUs siguen usando fotos de stock de Pexels
-   (98 comparten la misma). Habría que redimensionar para web — 2048² pesa demasiado.
+   ✅ **YA ESTÁN EN EL SITIO** — PR #93 a `dev` (falta que Christian haga merge).
+   · **Una foto POR SKU, no por producto** (decisión de Christian, 2026-07-26): la etiqueta
+     lleva el gramaje impreso, así que la imagen cambia con el selector de presentación.
+     `productImages.js` resuelve por SKU y `vialImages.js` lista los 195 (se autogenera).
+   · `publicar_viales_web.py` recorta el fondo, achica y exporta WebP a
+     `public/images/products/<SKU>.webp` — **195 imágenes en 5.4 MB**.
+   · ⚠️ **El vial base NO era transparente** pese a llamarse "sin fondo": traía blanco
+     sólido, que en tema oscuro se ve como un recuadro. El recorte entra POR LOS BORDES,
+     no por color, para no comerse los brillos casi blancos del propio vial.
+   · ⚠️ **WebP `method=6` tarda 3 s por imagen y solo ahorra 1 KB frente a `method=4`**
+     (0.05 s). Con 195 imágenes eso son 10 minutos contra 1.
+   · Las tarjetas pasaron a `object-contain`: con `object-cover` el vial salía cortado.
+   · **Los LÍQUIDOS llevan otra etiqueta y el vial va SIN polvo** — el agua es transparente.
+     Texto que dictó Christian: "Bacteriostatic Water / Multiple Dose Vial · 0.9% Benzyl
+     Alcohol / 3 mL". Para el ácido acético el catálogo dice "solución diluida" sin dar
+     el porcentaje: **no se inventó un número en la etiqueta**.
+   · **HERO: de 5 viales a 10**, rotando de a 5 (`publicar_viales_hero.py`). Se detiene al
+     pasar el cursor y no rota con `prefers-reduced-motion`. Los 5 viejos se regeneraron:
+     traían el PEPLIDES y habrían quedado junto a los nuevos bien escritos.
+   ⚠️ **Dato mal en el catálogo, no es de las fotos:** el agua bacteriostática y el ácido
+   acético dicen `Forma: Liofilizado` en la ficha. Son líquidos. Hay que corregirlo en la
+   maestra/backend.
 4. **Los COA no existen.** Cada ficha promete *"al comprar, el PDF del lote aparece en Mi
    cuenta"* y `/api/coa/public` devuelve `{}`. Christian dijo que él los sube.
 
