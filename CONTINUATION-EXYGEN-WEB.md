@@ -1,8 +1,171 @@
 # Exygen Labs — Website Continuation File
 
-> **Propósito:** fuente única de verdad del SITIO WEB (frontend, backend, IA, marca, despliegue). Pega este archivo en un chat nuevo para retomar con todo el contexto. Complementa a `../NOVA-PRICING-SYSTEM-CONTINUATION.md` (el sistema de precios). **Última actualización: 2026-07-26.** Empieza por la sección 🤝 HANDOFF — ESTADO AL 2026-07-26.
+> **Propósito:** fuente única de verdad del SITIO WEB (frontend, backend, IA, marca, despliegue). Pega este archivo en un chat nuevo para retomar con todo el contexto. Complementa a `../NOVA-PRICING-SYSTEM-CONTINUATION.md` (el sistema de precios). **Última actualización: 2026-07-26 (noche).** Empieza por 🤝 HANDOFF — CIERRE DEL 2026-07-26.
 
 > **Estilo con Christian:** abogado, no dev ("abogado de 95 años haciendo vibe coding"). Respuestas **ultra cortas, español claro, sin jerga**. Corre TÚ los comandos (nunca le pidas abrir terminal). Términos de git en inglés (commit, push, merge — no "commitear").
+
+---
+
+## 🤝 HANDOFF — CIERRE DEL 2026-07-26
+
+> Sesión larga. Esto es lo que cambió y, sobre todo, **lo que se descubrió que estaba mal**.
+> Lo de más abajo (HANDOFF — ESTADO AL 2026-07-26) sigue vigente como detalle de precios.
+
+### 🔴 LOS TRES BUGS DE DINERO Y MEDICIÓN QUE SE ENCONTRARON HOY
+
+**1. La tarjeta no cobraba. Nunca.** El checkout pedía número, vencimiento y CVC, los
+validaba con Luhn EN EL NAVEGADOR y **los tiraba**. No se enviaban a ningún lado. El pedido
+se creaba, el cliente veía "Pedido recibido" y se iba creyendo que había pagado. Y era el
+método que salía **seleccionado por defecto**. Arreglado con Mercado Pago (ver abajo).
+
+**2. Los "clics" de Meta no eran visitas.** El panel mostraba `clicks`, que incluye
+reacciones, comentarios, abrir la foto y entrar al perfil. En 30 días:
+**683 clics totales → 584 al ENLACE → 256 que CARGARON la página (43.8%)**.
+O sea que **328 le dieron clic y nunca llegaron** — dato accionable que estaba escondido.
+
+**3. Lo que el sitio llamaba "sesión" nunca caducaba.** El id vivía en localStorage para
+siempre: quien volvía un mes después seguía siendo la MISMA sesión. Eran *dispositivos*, no
+sesiones — 170 visitas salían repartidas en 16, y la conversión salía inflada. Ahora caduca
+a los **30 minutos** sin actividad y hay un **`visitor_id` permanente** aparte.
+
+### 💳 MERCADOPAGO — hecho y desplegado, esperando llaves
+
+`novapeptidos-RBAC/mercadopago.py` (Checkout Pro). Se manda al cliente a la página de Mercado
+Pago: **los datos de la tarjeta nunca tocan nuestro servidor**.
+
+- `'tarjeta'` **solo se acepta si hay `MERCADOPAGO_ACCESS_TOKEN`**. Sin llaves la vía no se
+  ofrece — antes se aceptaba siempre.
+- Webhook con **tres candados**: solo avisos `payment`; firma `x-signature` HMAC-SHA256
+  (sin secreto no pasa nada); y **el estado NO se cree del cuerpo** — se le pregunta a la API
+  de Mercado Pago con el id del pago. El cuerpo se puede falsificar; su API no.
+- Además **compara el monto**: un pago aprobado por menos de lo que costaba no confirma.
+- Solo `approved`. `authorized` es dinero apartado, no cobrado.
+- `_confirm_crypto_order` pasó a **`_confirm_paid_order`**: la usan cripto y tarjeta.
+
+⏳ **Faltan las 2 llaves.** Van a `~/.config/exygen/mercadopago.env`:
+`MERCADOPAGO_ACCESS_TOKEN` (empieza con `APP_USR-`) y `MERCADOPAGO_WEBHOOK_SECRET`.
+**Mientras tanto el checkout ofrece SPEI y cripto, no tarjeta.** Es a propósito.
+
+### 📊 META EN VIVO — resuelto el bloqueo de meses
+
+El panel ya lee la **API de Marketing** (`fuente: meta_en_vivo`), no el CSV.
+
+**Lo que destrabó el bloqueo de desarrollador:** había que confirmar el correo **como medio
+de contacto del perfil personal de Facebook**. Después de eso
+`developers.facebook.com/apps/create/` dejó pasar (el botón "Empezar" sigue rebotando).
+
+- Cuenta: **`act_1357297706382259`**. ⚠️ En el Administrador de Anuncios aparece también
+  `27680722504930078` bajo el mismo portafolio — **esa NO es**.
+- App **"Exygen Panel"** (id 1715117073159589), dentro de EXYGEN LABS, sin publicar.
+- Token del *Conversions API System User*, **no expira**. En `~/.config/exygen/meta.env` y en
+  el `.env` del EC2.
+- ⚠️ **El orden que sí funciona:** crear la app → darle rol al usuario del sistema desde
+  *Cuentas → Apps → Asignar personas* → recién entonces "Generar token" ofrece permisos.
+  La pestaña "Apps instaladas" **no tiene botón de agregar**: la app se instala al generar.
+- 🔑 **Rotar ese token**: se pegó en el chat.
+
+### 📈 GRÁFICAS DEL DASHBOARD — hechas
+
+Admin → Ventas, arriba de la gráfica de meses. `/admin/series?bucket=day|week|month&days=N`.
+
+- Sesiones y pedidos en barras, ingreso en línea **con su propio eje** (con eje compartido,
+  16 sesiones contra $3,347 dejaban las barras invisibles).
+- ⚠️ **Los periodos vacíos también salen.** Si no, una semana sin ventas desaparece y la línea
+  salta como si nunca hubiera existido: se ve un negocio que crece cuando estuvo parado.
+- ⚠️ **La semana se nombra por su LUNES.**
+- ⚠️ **La conversión se calcula sobre sesiones únicas del RANGO**, no sumando las de cada
+  cajón: una sesión que cruza la medianoche cae en dos días, y el mismo mes daba 5% visto por
+  día y 6.25% por semana.
+
+### 🧪 FOTOS DE VIAL — 195, una por SKU
+
+`pricing-system/generar_viales.py` + `publicar_viales_web.py` + `publicar_viales_hero.py`.
+
+- **Una por SKU, no por producto**: la etiqueta trae el gramaje, así que la foto cambia con
+  el selector de presentación.
+- ⚠️ **El vial base decía "RESEARCH PEPLIDES"**, con L. La T se armó con pedazos de las
+  letras de esa misma línea (el palo de la "I", la barra de la "E") — con una fuente parecida
+  nunca calza.
+- ⚠️ **El render trae un HALO translúcido a la derecha** (alpha 40-140) que no es la botella.
+  Recortando con `getbbox()` entraba el halo y el vial salía 32% más ancho: por eso se veían
+  separados en el hero y parecían de otra proporción. Se recorta con **umbral de alpha 140**.
+- ⚠️ **El vial base NO es transparente** pese a llamarse "sin fondo": trae blanco sólido.
+- ⚠️ **WebP `method=6` tarda 3 s por imagen y solo ahorra 1 KB** frente a `method=4` (0.05 s).
+- **Catálogo con fondo de estudio** (`Media/placa-estudio.png`, reconstruida de
+  retatrutida.jpg). **Hero sin fondo.** Tarjetas a 440 px: con la de 760 el navegador
+  descomprimía 2.3 MB por tarjeta × 99 y **el scroll se atrancaba**.
+- **Líquidos con su propia etiqueta y sin polvo**: agua bacteriostática, ácido acético y B12.
+  ⚠️ **Del ácido acético NO se sabe el porcentaje** — Christian no lo tiene y no está en
+  ninguna lista de proveedor. La etiqueta dice "Dilute Solution for Reconstitution", **sin
+  número**: no se inventa un dato en una etiqueta. Sale de la ficha técnica del proveedor.
+
+### 🎠 HERO — carrusel de 15
+
+Los **5 originales de Christian NO se tocaron**. Se agregaron 10 de familias distintas.
+Se ven 5 a la vez, escalonados como el diseño original (el del centro más grande).
+**Lo mueven las flechas o el dedo — NO gira solo, y NO sigue al mouse** (se probó, no gustó).
+⚠️ **Se iguala por ALTURA, nunca por ancho**, o los viales se aplastan.
+
+### 🐛 OTROS ARREGLOS
+
+- ⚠️ **`overscroll-behavior-y: none` ROMPIÓ EL SCROLL DE TODO EL SITIO.** Se había puesto para
+  tapar la franja negra del rebote al final de la página. **No volver a ponerlo.** Esa franja
+  no es página de más: el DOM termina 3 px después del aviso de derechos reservados.
+- **Tema e idioma en el móvil**: viven en un mini menú de 3 líneas **arriba** del drawer.
+  Antes el botón era `hidden lg:inline-flex` — o sea que **desde un teléfono no se podía
+  cambiar de idioma ni de tema**. "Mi cuenta" va primera en la cuadrícula, sin duplicar.
+- **Home**: Destacados antes que Categorías, con **pestañas** (Más vendidos, Nuevos, Bajar de
+  peso, Recuperación, Hormona de crecimiento).
+- **Hueco bajo la barra**: de 80/112 px a **40/56**.
+- **Agua, ácido acético y B12 ya no dicen "Liofilizado"**: dicen "Solución". Los 195 productos
+  lo traían por defecto.
+- **Cripto con precio congelado** (`is_fixed_rate`). Da **10 minutos** para pagar, contra 20
+  sin congelar. Es el mínimo de NOWPayments.
+- **Al abrir cualquier página, empieza ARRIBA** (`ScrollToTop` en `App.js`). Es una app de una
+  sola página: al cambiar de ruta el navegador no reposiciona nada, así que si venías a media
+  pantalla del catálogo, la ficha del producto abría a media pantalla.
+  ⚠️ Depende de `pathname` **a secas, sin `search`**: filtrar u ordenar el catálogo cambia la
+  query pero no es página nueva. Y **respeta el botón "atrás"** (`navType === 'POP'`), que
+  trae su propia posición guardada.
+
+### 🔐 CÓMO ENTRAR AL EC2 (no hay .pem)
+
+El bloqueo **nunca fue AWS**: es que el **puerto 22 solo está abierto para IPs viejas**
+(129.222.201.144, 66.9.186.74) y la IP de casa cambia.
+
+1. `authorize-security-group-ingress` al `sg-09f6bd49dc4ea40d3`, puerto 22, solo la IP actual.
+2. `ssh-keygen` temporal + `aws ec2-instance-connect send-ssh-public-key` (usuario `ubuntu`).
+   **La llave dura 60 segundos: hay que reenviarla antes de CADA ssh.**
+3. `/opt/exygen/app`, docker compose. `sudo git pull && sudo docker compose up -d --build api`.
+4. **Cerrar la regla al terminar.**
+
+SSM no sirve: el agente no está registrado (el rol `exygen-api-ses` no trae
+`AmazonSSMManagedInstanceCore`).
+
+### ✅ VERIFICACIÓN AL CIERRE
+
+`npm run auditoria` **37/37** · backend **148 pruebas** · `npm run e2e:cripto` **21/21**.
+
+### 🟡 LO QUE SIGUE
+
+**Míos:**
+1. **Auditoría de precios** — pedida y no hecha: escalera, Certified, Exoma +20%, piso de 5×.
+2. **Video de reconstitución con Hyperframes.**
+3. **COA** — las fichas los prometen y `/api/coa/public` devuelve vacío.
+4. **Ver correr las rutinas vigía** por primera vez.
+5. 📉 **Falta capturar ~la mitad del tráfico**: Meta dice 256 páginas cargadas desde anuncios y
+   el sitio registró 170 visitas de TODAS las fuentes. Probablemente bloqueadores contra
+   `/api/events`. No se persiguió: `sendBeacon` ya está bien puesto.
+
+**De Christian:**
+1. **MercadoPago:** las 2 llaves de producción.
+2. **NOWPayments:** ~$50 en USDT-TRC20 a un pedido de prueba — es lo único que falta.
+3. **Rotar el token de Meta.**
+4. **Gemini** (facturación) · **Skydropx** (SDS/MSDS + Carta Porte) · **2FA del admin** · INAI ·
+   **dominios** (301 de los `nova*`).
+5. **Ácido acético:** el porcentaje. ⚠️ **Ya se buscó en las 26 hojas de sus archivos y NO
+   ESTÁ.** Bainuo y Provider 2 lo listan como "Acetic acid 3ml / 5ml / 10ml", sin
+   concentración. Hay que pedírselo al proveedor. La etiqueta se queda sin número.
 
 ---
 
@@ -132,10 +295,24 @@ Backend: `.venv/bin/python -m pytest test_core.py -q` — **134 pruebas**.
    ⚠️ **La conversión se calcula sobre sesiones únicas del RANGO**, no sumando las de cada
    cajón: una sesión que cruza la medianoche cae en dos días, y el mismo mes daba 5% visto
    por día y 6.25% por semana.
-3. **La publicidad no cuadra con el tráfico.** Meta reporta **683 clics** al sitio en 30 días
-   y el sitio solo registró **16 sesiones**. O la gente da clic y no llega, o `/api/events`
-   no los está contando. Hay que mirarlo: es la diferencia entre saber si la publicidad
-   sirve o no.
+3. ~~**La publicidad no cuadra con el tráfico.**~~ ✅ **INVESTIGADO Y ARREGLADO 2026-07-26.**
+   Eran **DOS problemas distintos** y ninguno era lo que parecía:
+   · ⚠️ **`clicks` de Meta NO son visitas.** Incluye reacciones, comentarios, abrir la foto y
+     entrar al perfil. En una publicación impulsada la mayoría no son visitas. Lo real:
+     **683 clics totales → 584 al ENLACE → 256 que CARGARON la página (43.8%)**. O sea que
+     **328 le dieron clic y nunca llegaron**. El panel mostraba 683 como si fueran visitas.
+     Ahora muestra los tres y el CPC va sobre los clics al enlace (`inline_link_clicks` y
+     la acción `landing_page_view`).
+   · ⚠️ **Lo que el sitio llamaba "sesión" NUNCA CADUCABA.** El id vivía en localStorage para
+     siempre: quien volvía un mes después seguía siendo la MISMA sesión. Eran *dispositivos*,
+     no sesiones — por eso 170 visitas salían en solo 16, y la conversión salía inflada.
+     Ahora caduca a los **30 minutos** sin actividad, y hay un **`visitor_id` permanente**
+     aparte (los eventos viejos no lo traen, así que "visitantes" sale 0 hasta que se
+     acumulen datos nuevos).
+   📉 **Lo que queda por explicar:** Meta dice 256 páginas cargadas desde anuncios en 30 días
+   y el sitio registró 170 visitas EN TOTAL (de todas las fuentes). Falta capturar cerca de
+   la mitad. Lo más probable son bloqueadores de anuncios contra `/api/events`. No se
+   persiguió: `sendBeacon` ya está bien puesto y lo demás sería cacería.
 3. **Imágenes de los 84 productos sin foto propia.** Christian subió el vial en blanco a
    `Media/Viales individuales sin fondo para hero/Vial sin fondo, nombre ni gramaje.PNG`
    (2048×2048, fondo transparente). Ya hizo a mano: NAD+, Retatrutida, Tirzepatida,
