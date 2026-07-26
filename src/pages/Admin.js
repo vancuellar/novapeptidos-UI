@@ -2,7 +2,7 @@ import React, { useEffect, useState, useCallback } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { Filter, Eye, LayoutDashboard, Package, ShoppingBag, Plus, Pencil, Trash2, DollarSign, Users, Clock, TrendingUp, MapPin, Phone, Receipt, Store, Copy, Boxes, Truck, RefreshCw, MailCheck, Ban, Megaphone, BarChart3, Upload, ShoppingCart } from 'lucide-react';
 import { fallbackProducts } from '@/data/fallbackCatalog';
-import { ResponsiveContainer, AreaChart, Area, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip } from 'recharts';
+import { ResponsiveContainer, AreaChart, Area, BarChart, Bar, ComposedChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -80,6 +80,10 @@ const Admin = () => {
   const [orders, setOrders] = useState([]);
   const [customers, setCustomers] = useState([]);
   const [analytics, setAnalytics] = useState(null);
+  // Tráfico y ventas a lo largo del tiempo (Christian): el panel tenía totales
+  // pero no series, así que no se veía si algo sube o baja.
+  const [serie, setSerie] = useState(null);
+  const [serieBucket, setSerieBucket] = useState('day');
   const [funnel, setFunnel] = useState(null);
   const [orderOpen, setOrderOpen] = useState(null);   // pedido abierto para prepararlo
   const [orderKill, setOrderKill] = useState(null);   // pedido que se va a BORRAR
@@ -141,6 +145,16 @@ const Admin = () => {
   }, []);
 
   useEffect(() => { if (user?.role === 'admin') loadAll(); }, [user, loadAll]);
+
+  // La serie va aparte porque se recarga al cambiar de día/semana/mes, y no
+  // tiene por qué volver a pedir todo el panel para eso. El rango se estira con
+  // el periodo: 30 días sueltos, 12 semanas o 12 meses.
+  useEffect(() => {
+    if (user?.role !== 'admin') return;
+    const dias = serieBucket === 'day' ? 30 : serieBucket === 'week' ? 84 : 365;
+    api.get(`/admin/series?bucket=${serieBucket}&days=${dias}`)
+      .then((r) => setSerie(r.data)).catch(() => {});
+  }, [user, serieBucket]);
 
   if (!user || user.role !== 'admin') return null;
 
@@ -784,6 +798,79 @@ const Admin = () => {
                   </Card>
                 ))}
               </div>
+
+              {/* Tráfico y ventas en el tiempo. Christian lo pidió tres veces: el
+                  panel tenía totales pero no series, y sin serie no se ve si algo
+                  sube o baja. Las visitas van en barras y el ingreso en línea, con
+                  su propio eje: si compartieran eje, 16 visitas contra $3,347 harían
+                  que las barras no se vieran. */}
+              <Card className="p-5" data-testid="admin-serie">
+                <div className="flex flex-wrap items-center justify-between gap-3 mb-4">
+                  <h3 className="font-heading font-semibold">{t('admin.series.title')}</h3>
+                  <div className="flex gap-1 rounded-lg border border-border p-0.5">
+                    {['day', 'week', 'month'].map((b) => (
+                      <button
+                        key={b}
+                        type="button"
+                        onClick={() => setSerieBucket(b)}
+                        data-testid={`admin-serie-${b}`}
+                        className={`px-3 py-1.5 rounded-md text-xs font-medium transition-colors ${
+                          serieBucket === b
+                            ? 'bg-[hsl(var(--primary))] text-[hsl(var(--primary-foreground))]'
+                            : 'text-muted-foreground hover:text-foreground'
+                        }`}
+                      >
+                        {t(`admin.series.${b}`)}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                {!serie || !serie.serie?.length ? (
+                  <div className="py-10 text-center text-sm text-muted-foreground">{t('admin.sales.noData')}</div>
+                ) : (
+                  <>
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-5">
+                      <div>
+                        <div className="text-muted-foreground text-xs">{t('admin.series.sessions')}</div>
+                        <div className="font-heading text-xl font-bold mt-0.5">{serie.totales.sesiones}</div>
+                      </div>
+                      <div>
+                        <div className="text-muted-foreground text-xs">{t('admin.series.orders')}</div>
+                        <div className="font-heading text-xl font-bold mt-0.5">{serie.totales.pedidos}</div>
+                      </div>
+                      <div>
+                        <div className="text-muted-foreground text-xs">{t('admin.series.revenue')}</div>
+                        <div className="font-heading text-xl font-bold mt-0.5">{formatMXN(serie.totales.ingreso)}</div>
+                      </div>
+                      <div>
+                        <div className="text-muted-foreground text-xs">{t('admin.series.conversion')}</div>
+                        <div className="font-heading text-xl font-bold mt-0.5">{serie.totales.conversion}%</div>
+                      </div>
+                    </div>
+
+                    <ResponsiveContainer width="100%" height={280}>
+                      <ComposedChart data={serie.serie} margin={{ top: 4, right: 8, left: 8, bottom: 0 }}>
+                        <CartesianGrid vertical={false} stroke="hsl(var(--border))" strokeOpacity={0.5} />
+                        <XAxis dataKey="periodo" tickLine={false} axisLine={false} minTickGap={24}
+                          tick={{ fontSize: 11, fill: 'hsl(var(--muted-foreground))' }} />
+                        <YAxis yAxisId="izq" tickLine={false} axisLine={false} width={36} allowDecimals={false}
+                          tick={{ fontSize: 11, fill: 'hsl(var(--muted-foreground))' }} />
+                        <YAxis yAxisId="der" orientation="right" tickLine={false} axisLine={false} width={52}
+                          tickFormatter={(v) => (v >= 1000 ? `$${(v / 1000).toFixed(0)}k` : `$${v}`)}
+                          tick={{ fontSize: 11, fill: 'hsl(var(--muted-foreground))' }} />
+                        <Tooltip
+                          contentStyle={{ background: 'hsl(var(--popover))', border: '1px solid hsl(var(--border))', borderRadius: 12, fontSize: 12 }}
+                          formatter={(v, n) => (n === t('admin.series.revenue') ? formatMXN(v) : v)} />
+                        <Legend wrapperStyle={{ fontSize: 12 }} />
+                        <Bar yAxisId="izq" dataKey="sesiones" name={t('admin.series.sessions')} fill="hsl(var(--primary))" fillOpacity={0.35} radius={[4, 4, 0, 0]} />
+                        <Bar yAxisId="izq" dataKey="pedidos" name={t('admin.series.orders')} fill="hsl(var(--primary))" radius={[4, 4, 0, 0]} />
+                        <Line yAxisId="der" type="monotone" dataKey="ingreso" name={t('admin.series.revenue')} stroke="hsl(var(--info))" strokeWidth={2} dot={false} />
+                      </ComposedChart>
+                    </ResponsiveContainer>
+                  </>
+                )}
+              </Card>
 
               <Card className="p-5">
                 <h3 className="font-heading font-semibold mb-4">{t('admin.sales.monthly')}</h3>
