@@ -239,6 +239,36 @@ const Header = () => {
                     </Link>
                   ))}
                 </div>
+
+                {/* Tema e idioma. En el teléfono viven AQUÍ, dentro del menú de las
+                    3 líneas (Christian): el botón de preferencias de la barra es
+                    `hidden lg:inline-flex`, así que en móvil no existe. Antes no
+                    estaban en ningún lado y no se podía cambiar de idioma. */}
+                <div className="mt-6 mb-2 text-[11px] font-semibold uppercase tracking-[0.14em] text-muted-foreground">
+                  {t('controls.appearance')}
+                </div>
+                <div className="grid grid-cols-2 gap-2" data-testid="mobile-theme">
+                  {[{ v: 'light', I: Sun, k: 'controls.light' }, { v: 'dark', I: Moon, k: 'controls.dark' }].map(({ v, I, k }) => (
+                    <button key={v} type="button" onClick={() => setTheme(v)}
+                      data-testid={`mobile-theme-${v}`}
+                      className={`flex items-center justify-center gap-2 rounded-xl border px-3 py-2.5 text-sm transition-colors ${(v === 'dark') === isDark ? 'border-[hsl(var(--primary))] bg-[hsl(var(--primary))]/10 text-[hsl(var(--primary))] font-medium' : 'border-border hover:bg-[hsl(var(--secondary))]/60'}`}>
+                      <I className="h-4 w-4" /> {t(k)}
+                    </button>
+                  ))}
+                </div>
+
+                <div className="mt-5 mb-2 text-[11px] font-semibold uppercase tracking-[0.14em] text-muted-foreground">
+                  {t('controls.language')}
+                </div>
+                <div className="flex flex-col gap-1" data-testid="mobile-language">
+                  {languages.map((item) => (
+                    <button key={item.code} type="button" onClick={() => setLanguage(item.code)}
+                      data-testid={`mobile-language-${item.code}`}
+                      className={`flex items-center gap-2.5 rounded-lg px-2 py-2.5 text-sm transition-colors ${language === item.code ? 'bg-[hsl(var(--primary))]/10 text-[hsl(var(--primary))] font-medium' : 'hover:bg-[hsl(var(--secondary))]/60'}`}>
+                      <span aria-hidden="true">{item.flag}</span> {item.label}
+                    </button>
+                  ))}
+                </div>
               </div>
 
               {/* Contactar experto — WhatsApp si hay número; si no, página de contacto. */}

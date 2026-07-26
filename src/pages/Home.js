@@ -308,8 +308,35 @@ const Home = () => {
         </div>
       </section>
 
-      {/* ===== Categories ===== */}
+      {/* ===== Featured products ===== */}
       <section className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 py-24">
+        <div className="flex items-end justify-between mb-12">
+          <div>
+            <div className="kicker">{t('home.featuredKicker')}</div>
+            <h2 className="font-heading text-2xl sm:text-3xl font-bold tracking-tight mt-2">{t('home.featuredTitle')}</h2>
+            <p className="text-muted-foreground text-sm mt-1">{t('home.featuredSubtitle')}</p>
+          </div>
+          <div className="hidden sm:flex items-center gap-2">
+            <Button variant="outline" size="icon" className="rounded-full" onClick={() => scrollCarousel(-1)} aria-label="previous" data-testid="featured-prev">
+              <ChevronLeft className="h-4 w-4" />
+            </Button>
+            <Button variant="outline" size="icon" className="rounded-full" onClick={() => scrollCarousel(1)} aria-label="next" data-testid="featured-next">
+              <ChevronRight className="h-4 w-4" />
+            </Button>
+            <Button asChild variant="ghost"><Link to="/catalogo">{t('home.viewAll')} <ArrowRight className="h-4 w-4 ml-1.5" /></Link></Button>
+          </div>
+        </div>
+        <div ref={carouselRef} className="flex gap-4 sm:gap-6 overflow-x-auto snap-x snap-mandatory pb-2 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+          {localizeProducts(featured, language).map((p) => (
+            <div key={p.id} className="snap-start shrink-0 w-[65vw] xs:w-[240px] sm:w-[260px] max-w-[260px]">
+              <ProductCard product={p} />
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* ===== Categories ===== */}
+      <section className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 pb-24">
         <div className="mb-12">
           <div className="kicker">{t('home.categoriesKicker')}</div>
           <h2 className="font-heading text-2xl sm:text-3xl font-bold tracking-tight mt-2">{t('home.categoriesTitle')}</h2>
@@ -341,33 +368,6 @@ const Home = () => {
               </Link>
             );
           })}
-        </div>
-      </section>
-
-      {/* ===== Featured products ===== */}
-      <section className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 pb-24">
-        <div className="flex items-end justify-between mb-12">
-          <div>
-            <div className="kicker">{t('home.featuredKicker')}</div>
-            <h2 className="font-heading text-2xl sm:text-3xl font-bold tracking-tight mt-2">{t('home.featuredTitle')}</h2>
-            <p className="text-muted-foreground text-sm mt-1">{t('home.featuredSubtitle')}</p>
-          </div>
-          <div className="hidden sm:flex items-center gap-2">
-            <Button variant="outline" size="icon" className="rounded-full" onClick={() => scrollCarousel(-1)} aria-label="previous" data-testid="featured-prev">
-              <ChevronLeft className="h-4 w-4" />
-            </Button>
-            <Button variant="outline" size="icon" className="rounded-full" onClick={() => scrollCarousel(1)} aria-label="next" data-testid="featured-next">
-              <ChevronRight className="h-4 w-4" />
-            </Button>
-            <Button asChild variant="ghost"><Link to="/catalogo">{t('home.viewAll')} <ArrowRight className="h-4 w-4 ml-1.5" /></Link></Button>
-          </div>
-        </div>
-        <div ref={carouselRef} className="flex gap-4 sm:gap-6 overflow-x-auto snap-x snap-mandatory pb-2 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
-          {localizeProducts(featured, language).map((p) => (
-            <div key={p.id} className="snap-start shrink-0 w-[65vw] xs:w-[240px] sm:w-[260px] max-w-[260px]">
-              <ProductCard product={p} />
-            </div>
-          ))}
         </div>
       </section>
 
