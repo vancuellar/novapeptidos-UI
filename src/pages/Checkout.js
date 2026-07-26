@@ -19,40 +19,15 @@ import { useLanguage } from '@/context/LanguageContext';
 
 const ICONS = { CreditCard, Landmark, Bitcoin };
 
-// ---- utilidades de tarjeta (SOLO en el navegador; el numero jamas sale de aqui) ----
-const onlyDigits = (s) => (s || '').replace(/\D/g, '');
-const formatCardNumber = (s) => onlyDigits(s).slice(0, 16).replace(/(\d{4})(?=\d)/g, '$1 ').trim();
-const formatExpiry = (s) => {
-  const d = onlyDigits(s).slice(0, 4);
-  return d.length > 2 ? `${d.slice(0, 2)}/${d.slice(2)}` : d;
-};
-const luhnOk = (num) => {
-  const d = onlyDigits(num);
-  if (d.length < 15 || d.length > 16) return false;
-  let sum = 0;
-  for (let i = 0; i < d.length; i++) {
-    let n = Number(d[d.length - 1 - i]);
-    if (i % 2 === 1) { n *= 2; if (n > 9) n -= 9; }
-    sum += n;
-  }
-  return sum % 10 === 0;
-};
-const expiryOk = (exp) => {
-  const m = /^(\d{2})\/(\d{2})$/.exec(exp);
-  if (!m) return false;
-  const month = Number(m[1]);
-  if (month < 1 || month > 12) return false;
-  const year = 2000 + Number(m[2]);
-  const now = new Date();
-  return year > now.getFullYear() || (year === now.getFullYear() && month >= now.getMonth() + 1);
-};
+// Ya no hay utilidades de tarjeta: el numero se teclea en la pagina de Mercado
+// Pago, no aqui. Se borraron con el formulario (Christian, 2026-07-26).
 
 const Checkout = () => {
   const { items, subtotal, discount, discountRate, discountSource, cappedItems, shipping, faltaParaEnvioGratis, distCode, clearCart } = useCart();
   const { user } = useAuth();
   const { t } = useLanguage();
   const navigate = useNavigate();
-  const [payment, setPayment] = useState('tarjeta');
+  const [payment, setPayment] = useState('spei');
   const [submitting, setSubmitting] = useState(false);
   const [consent, setConsent] = useState(false);
   const [summaryOpen, setSummaryOpen] = useState(true);
@@ -65,16 +40,28 @@ const Checkout = () => {
     country: user?.shipping_address?.country || 'MX',
     notes: '',
   });
-  const [card, setCard] = useState({ number: '', expiry: '', cvc: '', name: '' });
   const [loyalty, setLoyalty] = useState({ eligible: false, balance: 0 });
   const [usePoints, setUsePoints] = useState(false);
   const [cryptoOn, setCryptoOn] = useState(false);
+  const [cardOn, setCardOn] = useState(false);
 
   // Cripto (BTCPay) solo aparece si el servidor lo tiene encendido.
   useEffect(() => {
-    api.get('/payments/config').then((r) => setCryptoOn(!!r.data?.crypto_enabled)).catch(() => {});
+    api.get('/payments/config').then((r) => {
+      setCryptoOn(!!r.data?.crypto_enabled);
+      setCardOn(!!r.data?.card_enabled);
+    }).catch(() => {});
   }, []);
-  const methods = PAYMENT_METHODS.filter((m) => m.id !== 'cripto' || cryptoOn);
+  // La TARJETA solo aparece si Mercado Pago esta configurado. Antes salia siempre
+  // — y por defecto — con un formulario que pedia el numero, lo validaba y lo
+  // TIRABA: nadie cobraba y el cliente se iba creyendo que habia pagado.
+  const methods = PAYMENT_METHODS.filter(
+    (m) => (m.id !== 'cripto' || cryptoOn) && (m.id !== 'tarjeta' || cardOn),
+  );
+  // Si el metodo elegido deja de estar disponible, cae al primero que si este.
+  useEffect(() => {
+    if (methods.length && !methods.some((m) => m.id === payment)) setPayment(methods[0].id);
+  }, [methods, payment]);
   const sectionRefs = { 0: useRef(null), 1: useRef(null), 2: useRef(null) };
 
   // Puntos de lealtad: solo cuentas de cliente (el servidor decide quién participa).
@@ -111,7 +98,6 @@ const Checkout = () => {
     ? Math.min(loyalty.balance, Math.floor(afterDiscount)) : 0;
   const total = afterDiscount - pointsApplied + shipping;
   const set = (k, v) => setForm((f) => ({ ...f, [k]: v }));
-  const setC = (k, v) => setCard((c) => ({ ...c, [k]: v }));
 
   if (items.length === 0) {
     return <div className="max-w-2xl mx-auto px-4 py-20 text-center"><p className="text-muted-foreground">{t('checkout.empty')}</p><Button className="mt-4" onClick={() => navigate('/catalogo')}>{t('home.viewCatalog')}</Button></div>;
@@ -128,12 +114,6 @@ const Checkout = () => {
       return;
     }
     if (!consent) { toast.error(t('checkout.toast.consent')); return; }
-    if (payment === 'tarjeta') {
-      if (!luhnOk(card.number)) { toast.error(t('checkout.toast.cardNumber')); return; }
-      if (!expiryOk(card.expiry)) { toast.error(t('checkout.toast.cardExpiry')); return; }
-      if (onlyDigits(card.cvc).length < 3) { toast.error(t('checkout.toast.cardCvc')); return; }
-      if (!card.name.trim()) { toast.error(t('checkout.toast.cardName')); return; }
-    }
     setSubmitting(true);
     try {
       const payload = {
@@ -150,10 +130,13 @@ const Checkout = () => {
       track('purchase', { value: res.data.total || 0, order_number: res.data.order_number || '' });
       clearCart();
       toast.success(t('checkout.toast.success'));
-      // Cripto: el servidor devuelve el enlace de la factura de BTCPay; ahí
-      // paga el cliente y de regreso lo trae la redirectURL a /pedido/...
-      if (res.data.crypto_checkout_url) {
-        window.location.href = res.data.crypto_checkout_url;
+      // El servidor devuelve el enlace de la pasarela y ahí paga el cliente:
+      // Mercado Pago para tarjeta, NOWPayments/BTCPay para cripto. De regreso lo
+      // trae la URL de retorno a /pedido/... El pedido NO se da por pagado aquí:
+      // eso solo pasa cuando la pasarela avisa por su webhook.
+      const pasarela = res.data.card_checkout_url || res.data.crypto_checkout_url;
+      if (pasarela) {
+        window.location.href = pasarela;
         return;
       }
       navigate(`/pedido/${res.data.order_number}`);
@@ -237,30 +220,13 @@ const Checkout = () => {
               })}
             </RadioGroup>
 
+            {/* La tarjeta ya NO se teclea aquí: al confirmar mandamos al cliente a
+                la página de Mercado Pago. Antes había un formulario que pedía el
+                número, lo validaba con Luhn y lo TIRABA — nadie cobraba. Además,
+                así los datos de la tarjeta nunca tocan nuestro servidor. */}
             {payment === 'tarjeta' && (
-              <div className="mt-4 rounded-xl border border-border bg-[hsl(var(--secondary))]/50 p-4" data-testid="checkout-card-fields">
-                <div className="grid sm:grid-cols-2 gap-4">
-                  <div className="sm:col-span-2">
-                    <Label>{t('checkout.card.number')}</Label>
-                    <div className="relative mt-1.5">
-                      <CreditCard className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                      <Input className="pl-9 font-mono-tech" inputMode="numeric" autoComplete="cc-number" placeholder="1234 5678 9012 3456" value={card.number} onChange={(e) => setC('number', formatCardNumber(e.target.value))} data-testid="checkout-card-number" />
-                    </div>
-                  </div>
-                  <div>
-                    <Label>{t('checkout.card.expiry')}</Label>
-                    <Input className="mt-1.5 font-mono-tech" inputMode="numeric" autoComplete="cc-exp" placeholder="MM/AA" value={card.expiry} onChange={(e) => setC('expiry', formatExpiry(e.target.value))} data-testid="checkout-card-expiry" />
-                  </div>
-                  <div>
-                    <Label>CVC</Label>
-                    <Input className="mt-1.5 font-mono-tech" inputMode="numeric" autoComplete="cc-csc" type="password" maxLength={4} placeholder="123" value={card.cvc} onChange={(e) => setC('cvc', onlyDigits(e.target.value).slice(0, 4))} data-testid="checkout-card-cvc" />
-                  </div>
-                  <div className="sm:col-span-2">
-                    <Label>{t('checkout.card.name')}</Label>
-                    <Input className="mt-1.5" autoComplete="cc-name" value={card.name} onChange={(e) => setC('name', e.target.value)} data-testid="checkout-card-name" />
-                  </div>
-                </div>
-                <p className="text-[11px] text-muted-foreground mt-3 flex items-center gap-1.5"><ShieldCheck className="h-3.5 w-3.5 shrink-0" /> {t('checkout.card.secureNote')}</p>
+              <div className="mt-4 rounded-xl border border-border bg-[hsl(var(--secondary))]/50 p-4 text-sm text-muted-foreground" data-testid="checkout-card-note">
+                {t('checkout.cardNote')}
               </div>
             )}
 
