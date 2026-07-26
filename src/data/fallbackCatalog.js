@@ -1728,7 +1728,8 @@ export const fallbackProducts = [
         "tipica": "2x_week",
         "avanzada": "3x_week"
       },
-      "fuente": "olympiapharmacy.com/blog/nad-dosage-chart-nad-dosage-per-day + extension.health NAD-500mg Patient Information"
+      "agua_ml": { "100": 1, "500": 3, "1000": 5 },
+      "fuente": "olympiapharmacy.com/blog/nad-dosage-chart-nad-dosage-per-day + peptidedosages.com (vial 500 mg) + extension.health NAD-500mg Patient Information"
     },
     "featured": true,
     "is_new": false
@@ -3851,7 +3852,9 @@ export const fallbackProducts = [
       "inicial": 2,
       "tipica": 4,
       "avanzada": 8,
-      "unit": "mg"
+      "unit": "mg",
+      "agua_ml": { "5": 0.5, "10": 1, "15": 1.5, "20": 2, "30": 3, "40": 4 },
+      "fuente": "Ensayo Fase 2 (1, 4, 8 y 12 mg semanales) vía thepeptidecatalog.com/articles/retatrutide-dosing-guide + peptidedosingprotocols.com/protocol/retatrutide"
     },
     "featured": true,
     "is_new": true
