@@ -1719,10 +1719,16 @@ export const fallbackProducts = [
     "start_unit": "mg",
     "start_freq": "3x_week",
     "start_levels": {
-      "inicial": 50,
-      "tipica": 75,
+      "inicial": 30,
+      "tipica": 50,
       "avanzada": 100,
-      "unit": "mg"
+      "unit": "mg",
+      "freq": {
+        "inicial": "daily",
+        "tipica": "2x_week",
+        "avanzada": "3x_week"
+      },
+      "fuente": "olympiapharmacy.com/blog/nad-dosage-chart-nad-dosage-per-day + extension.health NAD-500mg Patient Information"
     },
     "featured": true,
     "is_new": false

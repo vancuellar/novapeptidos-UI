@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useLayoutEffect } from 'react';
 import '@/App.css';
 import { BrowserRouter, Routes, Route, useLocation, useNavigationType } from 'react-router-dom';
 import { Toaster } from '@/components/ui/sonner';
@@ -48,25 +48,46 @@ const TrackPageViews = () => {
   return null;
 };
 
-// Al abrir cualquier página, empezar ARRIBA (Christian, 2026-07-26).
+// Al abrir cualquier página, empezar ARRIBA. Christian lo pidió DOS veces, así
+// que aquí queda el porqué de cada línea.
 //
-// Es una app de una sola página: al cambiar de ruta el navegador NO reposiciona
-// nada, así que si venías a media pantalla del catálogo, la ficha del producto
-// abría a media pantalla. Se veía como si la página estuviera rota.
+// Es una app de una sola página: al cambiar de ruta el navegador no reposiciona
+// nada por su cuenta. Si venías a media pantalla del catálogo, la ficha del
+// producto abría a media pantalla y se veía rota.
 //
-// `pathname` a secas, sin `search`: filtrar u ordenar el catálogo cambia la
-// query pero no es una página nueva — ahí NO hay que brincar al inicio.
+// La primera versión llamaba a `window.scrollTo(0,0)` desde un `useEffect` y aun
+// así "a veces" abría abajo. Dos motivos:
 //
-// Salto seco, no suave: al abrir algo nuevo no se anima un recorrido que el
-// visitante nunca hizo. Y se respeta la vuelta con el botón "atrás", que trae su
-// propia posición guardada.
+// 1. El `useEffect` corre DESPUÉS de pintar:
+//    el navegador alcanza a dibujar la página nueva en la posición vieja y luego
+//    brinca. En una página larga eso se ve como si hubiera abierto abajo.
+//    `useLayoutEffect` corre ANTES de pintar, así que nadie alcanza a ver nada.
+//
+// 2. `scrollRestoration = 'manual'`. Por defecto el navegador guarda la posición
+//    y la repone él solo, peleando con lo que hacemos aquí. Ganaba a veces él y a
+//    veces nosotros — de ahí que "a veces" abriera abajo.
+//
+// 3. Se mueven los TRES: `window`, `html` y `body`. Cuál de ellos scrollea
+//    depende del CSS, y ese CSS ya cambió una vez (ver la regla del header
+//    pegado). Moverlos todos cuesta nada y sobrevive al próximo cambio.
+//
+// Sigue dependiendo de `pathname` A SECAS, sin `search`: filtrar u ordenar el
+// catálogo cambia la query pero NO es una página nueva, y ahí brincar estorba.
 const ScrollToTop = () => {
   const { pathname } = useLocation();
   const navType = useNavigationType();
+
   useEffect(() => {
+    if ('scrollRestoration' in window.history) window.history.scrollRestoration = 'manual';
+  }, []);
+
+  useLayoutEffect(() => {
     if (navType === 'POP') return;      // "atrás"/"adelante": el navegador manda
     window.scrollTo(0, 0);
+    if (document.documentElement) document.documentElement.scrollTop = 0;
+    if (document.body) document.body.scrollTop = 0;
   }, [pathname, navType]);
+
   return null;
 };
 
