@@ -69,10 +69,12 @@ export const fallbackCategories = [
   }
 ];
 
-// Categorias que NO se le ensenan al cliente por ahora. Los productos siguen a la
-// venta y se pueden buscar; solo no aparece el boton de la categoria.
-// 'suministros' (accesorios): Christian aun no tiene surtido. 2026-07-25.
-export const HIDDEN_CATEGORIES = ['suministros'];
+// Categorias que NO se le ensenan al cliente. Los productos siguen a la venta y se
+// pueden buscar; solo no aparece el boton de la categoria. Hoy no hay ninguna
+// escondida: 'suministros' se volvio a mostrar porque si no, el agua bacteriostatica,
+// la B12, la Vitamina B12 y el acido acetico se quedaban sin categoria y no habia
+// forma de llegar a ellos navegando. Christian, 2026-07-25.
+export const HIDDEN_CATEGORIES = [];
 
 // LA lista de categorias que ve el cliente, en el header, la portada y el catalogo.
 // Se calcula al final del archivo (necesita fallbackProducts) y sale de AQUI, nunca
