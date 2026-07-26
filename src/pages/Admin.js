@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import { Filter, Eye, LayoutDashboard, Package, ShoppingBag, Plus, Pencil, Trash2, DollarSign, Users, Clock, TrendingUp, MapPin, Phone, Receipt, Store, Copy, Boxes, Truck, RefreshCw, MailCheck, Ban, Megaphone, BarChart3, Upload, ShoppingCart } from 'lucide-react';
+import { Filter, Eye, LayoutDashboard, Package, ShoppingBag, Plus, Pencil, Trash2, DollarSign, Users, Clock, TrendingUp, MapPin, Phone, Receipt, Store, Copy, Boxes, Truck, RefreshCw, MailCheck, Ban, Megaphone, BarChart3, Upload, ShoppingCart, Target } from 'lucide-react';
+import Marketing from '@/components/admin/Marketing';
 import { fallbackProducts } from '@/data/fallbackCatalog';
 import { ResponsiveContainer, AreaChart, Area, BarChart, Bar, ComposedChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts';
 import { Button } from '@/components/ui/button';
@@ -429,6 +430,7 @@ const Admin = () => {
         <DashboardSidebar items={[
           { value: 'sales', icon: TrendingUp, label: t('admin.salesTab') },
           { value: 'funnel', icon: Filter, label: t('admin.funnelTab') },
+          { value: 'marketing', icon: Target, label: 'Marketing' },
           { value: 'meta', icon: BarChart3, label: t('admin.metaTab') },
           { value: 'intentos', icon: ShoppingCart, label: t('admin.tryTab') },
           { value: 'customers', icon: Users, label: t('admin.customersTab') },
@@ -576,6 +578,13 @@ const Admin = () => {
               </Card>
             </>
           )}
+        </TabsContent>
+
+        {/* El área de marketing vive en su propio archivo: mete gráficas,
+            radiografía por campaña y el director, y aquí adentro Admin.js ya
+            pasaba de 1700 líneas. */}
+        <TabsContent value="marketing" className="mt-5">
+          <Marketing />
         </TabsContent>
 
         <TabsContent value="meta" className="mt-5 space-y-4">

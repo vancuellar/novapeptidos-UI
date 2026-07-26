@@ -18,7 +18,10 @@ import { localizeCategories, localizeProducts } from '@/i18n/catalog';
 
 // Productos estrella: salen primero dentro de su categoría (orden de Christian).
 // Retatrutida es la número uno; NAD+ y KLOW la siguen.
-export const FLAGSHIP_ORDER = ['retatrutida', 'nad-plus', 'klow-bpc-ghk-cu-tb-500-kpv'];
+// GHK-Cu entra a los destacados (Christian, 2026-07-26): la competencia lo
+// empuja mucho y nosotros ya lo vendemos tres veces sin darle protagonismo —
+// suelto, dentro de GLOW y dentro de KLOW.
+export const FLAGSHIP_ORDER = ['retatrutida', 'nad-plus', 'klow-bpc-ghk-cu-tb-500-kpv', 'ghk-cu'];
 const flagshipRank = (p) => {
   const i = FLAGSHIP_ORDER.indexOf(p.slug);
   return i === -1 ? FLAGSHIP_ORDER.length : i;

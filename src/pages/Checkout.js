@@ -9,7 +9,7 @@ import { Card } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { toast } from 'sonner';
-import { track } from '@/lib/track';
+import { track, attribution } from '@/lib/track';
 import api, { formatMXN, PAYMENT_METHODS } from '@/lib/api';
 import { phoneValid } from '@/lib/utils';
 import { CountrySelect, PhoneField, composePhone, parsePhone } from '@/components/CountryPhoneFields';
@@ -124,6 +124,10 @@ const Checkout = () => {
         discount,
         distributor_code: distCode || null,
         points_to_use: pointsApplied,
+        // De dónde salió este cliente (primer toque: utm/fbclid de su PRIMERA visita).
+        // Va en el pedido para poder sacar el costo por cliente que SÍ compró: sin
+        // esto, el gasto de Meta y las ventas no se pueden cruzar por campaña.
+        attribution: attribution(),
         // Seguridad: los datos de la tarjeta NUNCA se envian ni se guardan en nuestro servidor.
       };
       const res = await api.post('/orders', payload);

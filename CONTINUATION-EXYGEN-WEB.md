@@ -6,6 +6,65 @@
 
 ---
 
+## 📣 ÁREA DE MARKETING — nueva pestaña en el Admin (2026-07-26)
+
+Pedido de Christian: todas las gráficas, **el costo por cliente CON COMPRA HECHA**, poder
+abrir cada campaña al detalle, y un botón "director de marketing" que arme campañas nuevas.
+
+### El hueco que había que tapar primero
+**El pedido no guardaba de dónde venía el cliente.** La atribución se adivinaba cruzando
+sesiones con `utm_source` y solo llegaba a "facebook / instagram / directo", **nunca a la
+campaña**. Sin ese dato en la base, el costo por cliente no se puede calcular: solo adivinar.
+Por eso lo primero fue guardarlo.
+
+### Lo que se construyó
+1. **Atribución de primer toque en el pedido.** `src/lib/track.js` ya guardaba el origen de
+   la primera visita; ahora captura además `utm_content` (el ANUNCIO, no solo la campaña),
+   `utm_term` y **`fbclid`** — la pieza clave: Meta se lo pega a los enlaces de sus anuncios
+   aunque nadie los etiquete, así que sin él una publicación impulsada es indistinguible del
+   tráfico directo. El checkout lo manda y el pedido lo guarda, junto con **`first_order`**.
+2. **`marketing.py`** — el cruce, con tres reglas que impiden que el número se abarate solo:
+   - **Solo cuentan los clientes NUEVOS.** Si alguien que ya compraba vuelve, esa venta no la
+     consiguió el anuncio. (`first_order`, con el correo comparado sin distinguir mayúsculas.)
+   - **Lo que no se puede atribuir NO se reparte**: va a su cubeta "sin etiquetar", a la vista.
+   - **Con pocos datos no se juzga**: dice "falta información" en vez de mandar a apagar algo.
+   - Un CAC **nulo no es cero**: cero se lee "gratis", nulo se lee "todavía no trae clientes".
+3. **Meta siempre fresco.** `date_preset=last_30d` excluía HOY; ahora se pide `time_range`
+   explícito que **sí incluye el día en curso**. Y lo más importante: **ya no se sirve el CSV
+   viejo disfrazado de dato de hoy** — si la API falla, el panel lo grita en rojo. Caché de
+   60 s solo para no chocar con el límite de llamadas de Meta.
+4. **Radiografía por campaña** (clic en cualquier fila): día a día, **anuncio por anuncio con
+   su creativo**, edad/sexo, dónde se mostró, y **la lista de pedidos reales con su número**
+   para poder comprobarlo uno por uno. Todo del mismo token: no hace falta permiso nuevo.
+5. **Todos los canales, no solo Meta** (lo preguntó Christian): WhatsApp, Google, directo,
+   otro sitio… y **distribuidores, cuyo costo real es la comisión pagada**. Ojo: un pedido
+   puede llegar por un anuncio Y cerrarse con código de distribuidor — son dos preguntas
+   distintas (cómo llegó / quién lo cerró), salen en dos renglones y **el traslape se avisa**.
+6. **Director de marketing** (`director.py`): arma una campaña desde cero. La regla que lo
+   hace útil: **la IA no inventa los datos**. `briefing()` arma los hechos desde la base
+   (qué se vendió, qué campaña ganó, cuánto costó cada cliente, qué hay en existencia) y eso
+   es lo único que ve el modelo. Si no hay historial, lo dice y la propuesta sale marcada.
+   El prompt prohíbe promesas de salud y afirmaciones de legalidad (COFEPRIS, y Meta rechaza
+   esos anuncios). **Devuelve una propuesta para aprobar: no publica nada en Meta.**
+
+### ⚠️ Lo que hay que hacer para que esto sirva de verdad
+**Pegar el enlace etiquetado de cada campaña en su anuncio de Meta.** El panel los genera y
+los da listos para copiar. Sin eso, las ventas caen en "sin etiquetar" y esa campaña **nunca**
+va a tener costo por cliente. Es la acción que desbloquea todo lo demás.
+
+### Archivos
+`novapeptidos-RBAC/marketing.py`, `director.py`, `meta_ads.py` (rango que incluye hoy +
+cortes por anuncio/día/demografía), `server.py` (`/admin/marketing/resumen`,
+`/campana/{id}`, `/director`), `models.py` (`Attribution`, `first_order`);
+`novapeptidos-UI/src/components/admin/Marketing.js`, `src/lib/track.js`, `src/pages/Checkout.js`.
+
+**Pruebas: 181 del backend** (20 del cruce, 13 del director) **+ 18 comprobaciones de
+extremo a extremo contra un Mongo real** — se crea un pedido de verdad por el endpoint y se
+verifica que el costo por cliente salga bien. Probado también en el navegador con datos
+sembrados: la pestaña, la radiografía y el clic a campaña.
+
+---
+
 ## ⛔ LA BARRA SUPERIOR SIEMPRE VISIBLE — regla de oro (2026-07-26)
 
 **Orden de Christian, prioridad 00.** El top bar es `sticky top-0 z-40` y **no se despega
