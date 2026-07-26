@@ -8,46 +8,28 @@
 
 ## 🤝 HANDOFF — ESTADO AL 2026-07-26
 
-### 🔴 PENDIENTE 00 — FUSIONAR LAS DOS RUTINAS VIGÍA (lo primero que hay que hacer)
+### ✅ PENDIENTE 00 — RUTINAS VIGÍA: HECHO (2026-07-26)
 
-Hay **DOS rutinas diarias** haciendo lo mismo, las dos con información vieja:
+- **`vigia-precios-nova` borrada.** Era del negocio anterior y ni siquiera estaba dada de
+  alta en el programador (solo quedaba el archivo). Copia de respaldo en el scratchpad de
+  la sesión por si algún día se quiere ver.
+- **`vigia-precios-exygen` reescrita.** Sigue diaria a las 8:12 am. Ahora:
+  - **No trae ninguna regla de precio en su texto** — lo primero que hace es leer
+    `pricing-system/FUENTE-DE-VERDAD.md`. Así nunca vuelve a quedar desfasada.
+  - Corre **los dos** scripts: `check_competitors.py` (competencia en vivo) y
+    `auditar_catalogo.py` (las 10 revisiones internas), con la advertencia explícita de
+    por qué no basta uno solo.
+  - Rutas corregidas a `/Users/christian/Documents/Exygen Peptides/`.
+  - Sabe que el **Glutatión 1500 mg** es ruido conocido y no una alarma.
+  - **No cambia precios, no sincroniza, no publica.** Solo reporta en 5 líneas.
+- **`FUENTE-DE-VERDAD.md` actualizada** — traía las reglas del 07-23 y, peor, mandaba usar
+  `gen_catalog.py` para sincronizar (el que borra los `id`/`sku` y deja colar el descuento).
+  Ahora trae las reglas del 07-26, las 13 excepciones, el costo por caja de 10, la escalera,
+  la trampa de la auditoría ciega y el camino correcto de sincronización.
 
-| Rutina | Estado | Problema |
-|---|---|---|
-| `vigia-precios-exygen` | activa, 8:12 am | regla de precio VIEJA + rutas muertas |
-| `vigia-precios-nova` | existe | del negocio anterior (Nova), rutas muertas |
-
-Archivos: `~/.claude/scheduled-tasks/<nombre>/SKILL.md`
-
-**Qué está mal en las dos:**
-
-1. **La regla de precio que traen es OBSOLETA.** Dicen *"el precio debe quedar en el
-   PROMEDIO entre Certified y Exoma"* (regla del 2026-07-18). **Ya no es así.** La regla
-   vigente (Christian, 2026-07-26) es:
-   - ¿Certified lo vende? → **partimos de Certified**
-   - ¿Solo Exoma? → **Exoma +20%**
-   - ¿Nadie? → **nuestro costo × 10**
-   - Nunca ARRIBA de Certified · nunca ABAJO de Exoma · nunca abajo de **5× el costo**
-   - Excepción: si Exoma cobra MÁS que Certified, **manda Certified** (y sí quedamos
-     debajo de Exoma). Son 13 casos, todos anotados en la maestra.
-2. **Apuntan a `/Users/christian/Documents/Nova Peptidos/...`, carpeta que YA NO EXISTE.**
-   Lo correcto es `/Users/christian/Documents/Exygen Peptides/`.
-3. **No mencionan la fuente de verdad real:** `pricing-system/MAESTRA.xlsx`, hoja
-   "Precios y Competencia", columna **PRECIO SUGERIDO PÚBLICO**.
-4. **Reinventan lo que ya existe.** Hoy hay scripts que hacen todo esto solos:
-   - `check_competitors.py` — lee Exoma y Certified EN VIVO y avisa si quedamos arriba
-   - `auditar_catalogo.py` — las 10 revisiones del catálogo (banda, piso 5×, escalera)
-   - `reprecio.py` — aplica las reglas a toda la maestra
-   - `aplicar_precios_al_sitio.js` + `subir_precios_backend.js` — sincronizan
-
-**Qué hacer:** borrar `vigia-precios-nova`, y reescribir `vigia-precios-exygen` para que
-solo corra `check_competitors.py` + `auditar_catalogo.py` y reporte corto. Nada de reglas
-copiadas en el texto de la rutina: que lea `pricing-system/FUENTE-DE-VERDAD.md`.
-
-⚠️ **Ojo con la trampa:** `auditar_catalogo.py` lee la MAESTRA, así que **no puede ver
-cambios de la competencia**. El 2026-07-26 Certified empezó a vender KPV 10 mg a $1,400 y
-nosotros estábamos en $1,799 — lo cazó `check_competitors.py`, no la auditoría. **Hay que
-correr los dos.**
+Los dos scripts se corrieron para verificar: Exoma 183 variantes · Certified 47 · nosotros
+192 · nadie arriba de la competencia · 9 de 10 revisiones OK (la 10ª es el Glutatión ya
+decidido).
 
 ### 💰 PRECIOS — reparados y en vivo (2026-07-26)
 
@@ -139,7 +121,7 @@ Backend: `.venv/bin/python -m pytest test_core.py -q` — **134 pruebas**.
 
 ### 🟡 LO QUE SIGUE (pedido por Christian, SIN EMPEZAR)
 
-1. **PENDIENTE 00** — fusionar las dos rutinas vigía (arriba).
+1. ~~**PENDIENTE 00** — fusionar las dos rutinas vigía~~ ✅ hecho 2026-07-26.
 2. **Dashboard de Anuncios: gráficas de tráfico y ventas** por día / semana / mes. Christian
    lo pidió dos veces y NO está hecho. El panel de Meta ya existe (Admin → "Ads") pero solo
    muestra totales, sin series de tiempo.
@@ -152,7 +134,51 @@ Backend: `.venv/bin/python -m pytest test_core.py -q` — **134 pruebas**.
    HUMAN CONSUMPTION" (y 1552-1656). Hay que insertar DOS textos: el **nombre** (~y 872-1006,
    negrita grande) y el **gramaje** (~y 1326 arriba de "Lyophlized"). Comparar contra
    `NAD+ 500mg.PNG` para calcar tipografía y tamaños.
-   ⚠️ **Christian pidió VER UNA MUESTRA antes de generar las 190+.**
+   ✅ **HECHO el generador + MUESTRA entregada (2026-07-26):** `pricing-system/generar_viales.py`.
+   ⚠️ **Las coordenadas de arriba estaban MAL.** Lo medido de verdad: y 872-1006 es la banda del
+   LOGO, no el nombre. El vial en blanco (2048²) y el NAD+ a mano (1024²) son la MISMA imagen a
+   distinta escala — las bandas de texto fijo calzan exactas al ×2.
+   Lo correcto: **nombre** base y 1262, alto 146 · **gramaje** base y 1514, alto 98 · centro x 1017.
+   Tipografía: **Arial Bold con estirado vertical de 1.12** (a ancho igualado la altura salía
+   12% corta en los dos textos por igual, así que es un estirado real, no otra fuente).
+   Los nombres largos encogen solos para no pasar de 800 px.
+   Sombra: blur 4, opacidad 0.40, offset (2,3) — **hay que rellenar la máscara antes de
+   difuminarla o sale un rectángulo gris en vez de un halo**.
+   Control de calidad: el script regenera el NAD+ 500mg de Christian y calza con el suyo.
+   ✅ **GENERADOS LOS 188** (`python3 generar_viales.py --todos`, lee el catálogo EN VIVO).
+   Quedan en `Media/Viales generados/<SKU>.png`, 2048², fondo transparente, 418 MB en total.
+   · **Se saltan 7 a propósito:** agua bacteriostática, ácido acético y B12. Son líquidos y
+     el vial dice "Lyophlized Peptide Powder" con polvo blanco adentro — sería etiqueta falsa.
+   · Las mezclas van a **dos renglones** partiendo por el "+", y las que tienen marca se
+     quedan con la marca (GLOW, KLOW, HUMSC), como hizo Christian a mano.
+   · "100 mil" (HUMSC) conserva el espacio: "mil" no es unidad.
+   🔤 **SE CORRIGIÓ UNA FALTA DE ORTOGRAFÍA DE LA MARCA.** El vial base decía **"RESEARCH
+   PEPLIDES"** (con L). El KLOW que hizo Christian a mano dice PEPTIDES, y él confirmó.
+   `arreglar_peplides.py` construye la T con pedazos de las mismas letras de esa línea
+   (el palo de la "I" y la barra de la "E") para que el trazo pegue exacto — con una fuente
+   parecida nunca calza. Deja `Vial ... (PEPTIDES).PNG`; **el original no se toca**.
+   ✅ **YA ESTÁN EN EL SITIO** — PR #93 a `dev` (falta que Christian haga merge).
+   · **Una foto POR SKU, no por producto** (decisión de Christian, 2026-07-26): la etiqueta
+     lleva el gramaje impreso, así que la imagen cambia con el selector de presentación.
+     `productImages.js` resuelve por SKU y `vialImages.js` lista los 195 (se autogenera).
+   · `publicar_viales_web.py` recorta el fondo, achica y exporta WebP a
+     `public/images/products/<SKU>.webp` — **195 imágenes en 5.4 MB**.
+   · ⚠️ **El vial base NO era transparente** pese a llamarse "sin fondo": traía blanco
+     sólido, que en tema oscuro se ve como un recuadro. El recorte entra POR LOS BORDES,
+     no por color, para no comerse los brillos casi blancos del propio vial.
+   · ⚠️ **WebP `method=6` tarda 3 s por imagen y solo ahorra 1 KB frente a `method=4`**
+     (0.05 s). Con 195 imágenes eso son 10 minutos contra 1.
+   · Las tarjetas pasaron a `object-contain`: con `object-cover` el vial salía cortado.
+   · **Los LÍQUIDOS llevan otra etiqueta y el vial va SIN polvo** — el agua es transparente.
+     Texto que dictó Christian: "Bacteriostatic Water / Multiple Dose Vial · 0.9% Benzyl
+     Alcohol / 3 mL". Para el ácido acético el catálogo dice "solución diluida" sin dar
+     el porcentaje: **no se inventó un número en la etiqueta**.
+   · **HERO: de 5 viales a 10**, rotando de a 5 (`publicar_viales_hero.py`). Se detiene al
+     pasar el cursor y no rota con `prefers-reduced-motion`. Los 5 viejos se regeneraron:
+     traían el PEPLIDES y habrían quedado junto a los nuevos bien escritos.
+   ⚠️ **Dato mal en el catálogo, no es de las fotos:** el agua bacteriostática y el ácido
+   acético dicen `Forma: Liofilizado` en la ficha. Son líquidos. Hay que corregirlo en la
+   maestra/backend.
 4. **Los COA no existen.** Cada ficha promete *"al comprar, el PDF del lote aparece en Mi
    cuenta"* y `/api/coa/public` devuelve `{}`. Christian dijo que él los sube.
 
@@ -193,7 +219,12 @@ siempre.**
   habitualmente") — le pasa igual en iPhone. Salida sin pelear: Administrador de Anuncios →
   Informes → programar envío diario por correo, y subir ese CSV al panel.
 - **MercadoPago:** faltan sus 2 llaves de producción.
-- **NOWPayments:** prender las monedas (Settings > Coins) + KYB.
+- ~~**NOWPayments:** prender las monedas + KYB.~~ ✅ **YA ESTÁ.** Probado el 2026-07-26 contra
+  el sitio en vivo: 27 monedas prendidas (BTC, ETH, 9 USDT, USDC…), factura real con dirección
+  de depósito, webhook confirma el pedido y rechaza firmas falsas. **19 de 19 revisiones en
+  verde** con `npm run e2e:cripto` (compra real que se borra sola).
+  **Lo único que falta:** que llegue cripto de verdad. Christian tiene que mandar ~$50 en
+  USDT-TRC20 a la dirección de un pedido de prueba — Claude no puede mover dinero.
 - **Gemini:** activar facturación (el chat se cae a los 20 mensajes/día).
 - **2FA del admin**, domicilio del responsable en el aviso de privacidad, INAI.
 - **Skydropx:** clasificación por escrito de los productos (SDS/MSDS) + Carta Porte.

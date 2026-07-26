@@ -374,6 +374,11 @@ body {
 html, body {
     overflow-x: hidden;
     max-width: 100%;
+    /* En el telefono, al llegar al final la pagina rebotaba y dejaba ver una
+       franja negra DEBAJO del aviso de derechos reservados: parecia que
+       sobraba pagina. No sobraba — era el rebote del scroll. Con esto la
+       pagina se detiene justo donde termina. (Christian, movil.) */
+    overscroll-behavior-y: none;
 }
 
 .hero-vials { position: relative; }

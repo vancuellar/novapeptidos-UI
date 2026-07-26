@@ -66,7 +66,8 @@
     "build": "craco build && node scripts/prerender-routes.js",
     "test": "craco test",
     "auditoria": "node scripts/auditoria-e2e.js",
-    "auditoria:completa": "node scripts/auditoria-e2e.js --compras"
+    "auditoria:completa": "node scripts/auditoria-e2e.js --compras",
+    "e2e:cripto": "node scripts/e2e-nowpayments.js"
   },
   "browserslist": {
     "production": [

@@ -96,12 +96,12 @@ const ProductDetail = () => {
       <div className="grid lg:grid-cols-2 gap-8">
         <div>
           <div className="rounded-2xl border border-border bg-[hsl(var(--secondary))] overflow-hidden">
-            <img src={productImage(localizedProduct)} alt={localizedProduct.name} className="w-full object-cover aspect-square" />
+            <img src={productImage(localizedProduct, active)} alt={`${localizedProduct.name} ${active.presentation || ''}`.trim()} className="w-full object-cover aspect-square" />
           </div>
-          {isBrandImage(localizedProduct) && (
+          {isBrandImage(localizedProduct, active) && (
             <p className="mt-2 text-[11px] leading-relaxed text-muted-foreground text-center">{t('product.brandPhotoNote')}</p>
           )}
-          {hasProductPhoto(localizedProduct) && (
+          {hasProductPhoto(localizedProduct, active) && (
             <p className="mt-2 text-[11px] leading-relaxed text-muted-foreground text-center">{t('product.photoNote')}</p>
           )}
           <div className="mt-4 rounded-xl border border-[hsl(var(--warning-border))] bg-[hsl(var(--warning))] text-[hsl(var(--warning-foreground))] p-3 flex items-start gap-2 text-xs leading-relaxed">
