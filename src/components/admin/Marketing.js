@@ -15,7 +15,12 @@ import { Button } from '@/components/ui/button';
 import api from '@/lib/api';
 import { toast } from 'sonner';
 
-const money = (n) => `$${Math.round(Number(n) || 0).toLocaleString('es-MX')}`;
+// TODO EN DÓLARES (Christian, 2026-07-26). Meta le cobra en USD y sus costos con
+// proveedores están en USD; las ventas se convierten con el TC fijo de la
+// maestra (17.5), el mismo con el que se fijaron los precios. Usar otro haría
+// que este panel discutiera con la maestra sobre el mismo producto.
+const money = (n) => `$${(Number(n) || 0).toLocaleString('en-US', { maximumFractionDigits: 0 })}`;
+const pesos = (n) => `$${Math.round(Number(n) || 0).toLocaleString('es-MX')} MXN`;
 const num = (n) => (Number(n) || 0).toLocaleString('es-MX');
 
 // Un CAC nulo NO es cero. Cero se lee como "gratis"; nulo es "todavía no trae
@@ -107,11 +112,11 @@ const Radiografia = ({ id, dias, onVolver }) => {
       </div>
 
       <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
-        <Kpi icon={DollarSign} label="Gastado" value={money(c.gasto_mxn)} />
+        <Kpi icon={DollarSign} label="Gastado" value={money(c.gasto)} hint="USD" />
         <Kpi icon={Users} label="Clientes nuevos" value={num(c.clientes_nuevos)} hint={`${c.pedidos} pedidos en total`} />
         <Kpi icon={Target} label="Costo por cliente" value={cac(c.cac)} fuerte hint="solo primera compra" />
         <Kpi icon={TrendingUp} label="Ingreso atribuido" value={money(c.ingreso)} />
-        <Kpi icon={TrendingUp} label="Por cada peso" value={c.roas === null ? '—' : `$${c.roas}`} hint="ingreso ÷ gasto" />
+        <Kpi icon={TrendingUp} label="Por cada dólar" value={c.roas === null ? '—' : `$${c.roas}`} hint="ingreso ÷ gasto" />
       </div>
 
       {d.dia_a_dia?.length > 0 && (
@@ -405,8 +410,10 @@ const Marketing = () => {
         <div>
           <h3 className="font-heading font-semibold">Marketing</h3>
           <p className="text-xs text-muted-foreground max-w-2xl">
-            Lo que Meta cobra contra lo que el sitio de verdad vende. El costo por cliente cuenta
-            solo a quien compró por PRIMERA vez: si alguien que ya compraba vuelve, esa venta no la trajo el anuncio.
+            Lo que Meta cobra contra lo que el sitio de verdad vende, <strong>todo en dólares</strong> (Meta
+            te cobra en USD y tus costos de proveedor están en USD; las ventas se convierten a 17.50, el mismo
+            tipo de cambio de la maestra de precios). El costo por cliente cuenta solo a quien compró por
+            PRIMERA vez: si alguien que ya compraba vuelve, esa venta no la trajo el anuncio.
           </p>
         </div>
         <div className="flex gap-1">
@@ -419,11 +426,11 @@ const Marketing = () => {
       <Frescura estado={d} onRefrescar={cargar} cargando={cargando} />
 
       <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
-        <Kpi icon={DollarSign} label="Gastado en anuncios" value={money(T.gasto_mxn)} hint={`tipo de cambio $${d.fx}`} />
+        <Kpi icon={DollarSign} label="Gastado en anuncios" value={money(T.gasto)} hint="USD, tal como cobra Meta" />
         <Kpi icon={Users} label="Clientes nuevos" value={num(T.clientes_nuevos)} hint={`${num(T.pedidos)} pedidos en total`} />
         <Kpi icon={Target} label="Costo por cliente" value={cac(T.cac)} fuerte hint="con compra hecha" />
-        <Kpi icon={TrendingUp} label="Ingreso atribuido" value={money(T.ingreso)} />
-        <Kpi icon={TrendingUp} label="Por cada peso" value={T.roas === null ? '—' : `$${T.roas}`} hint="ingreso ÷ gasto" />
+        <Kpi icon={TrendingUp} label="Ingreso atribuido" value={money(T.ingreso)} hint={`${pesos(T.ingreso * (d.tc || 17.5))} · TC ${d.tc || 17.5}`} />
+        <Kpi icon={TrendingUp} label="Por cada dólar" value={T.roas === null ? '—' : `$${T.roas}`} hint="ingreso ÷ gasto" />
       </div>
 
       {d.sin_etiquetar?.pedidos > 0 && (
@@ -523,7 +530,7 @@ const Marketing = () => {
                 <YAxis tick={{ fontSize: 11 }} />
                 <Tooltip formatter={(v) => money(v)} />
                 <Legend />
-                <Bar dataKey="gasto_mxn" name="Gastado" fill="#f59e0b" />
+                <Bar dataKey="gasto" name="Gastado" fill="#f59e0b" />
                 <Bar dataKey="ingreso" name="Ingreso" fill="hsl(var(--primary))" />
               </BarChart>
             </ResponsiveContainer>
@@ -544,7 +551,7 @@ const Marketing = () => {
                 <th className="text-right">Clientes nuevos</th>
                 <th className="text-right">Costo/cliente</th>
                 <th className="text-right">Ingreso</th>
-                <th className="text-right">Por peso</th>
+                <th className="text-right">Por dólar</th>
                 <th className="text-left pl-3">Veredicto</th>
               </tr>
             </thead>
@@ -555,7 +562,7 @@ const Marketing = () => {
                     onClick={() => c.campaign_id && setAbierta(c.campaign_id)}
                     data-testid={`mkt-campana-${c.slug}`}>
                   <td className="py-2 font-medium">{c.campana}</td>
-                  <td className="text-right">{money(c.gasto_mxn)}</td>
+                  <td className="text-right">{money(c.gasto)}</td>
                   <td className="text-right">{num(c.clics_enlace)}</td>
                   <td className="text-right">{num(c.clientes_nuevos)}</td>
                   <td className="text-right font-semibold">{cac(c.cac)}</td>
