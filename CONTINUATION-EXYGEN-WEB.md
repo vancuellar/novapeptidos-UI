@@ -1,8 +1,175 @@
 # Exygen Labs — Website Continuation File
 
-> **Propósito:** fuente única de verdad del SITIO WEB (frontend, backend, IA, marca, despliegue). Pega este archivo en un chat nuevo para retomar con todo el contexto. Complementa a `../NOVA-PRICING-SYSTEM-CONTINUATION.md` (el sistema de precios). **Última actualización: 2026-07-25.** Empieza por la sección 🤝 HANDOFF — ESTADO AL 2026-07-25.
+> **Propósito:** fuente única de verdad del SITIO WEB (frontend, backend, IA, marca, despliegue). Pega este archivo en un chat nuevo para retomar con todo el contexto. Complementa a `../NOVA-PRICING-SYSTEM-CONTINUATION.md` (el sistema de precios). **Última actualización: 2026-07-26.** Empieza por la sección 🤝 HANDOFF — ESTADO AL 2026-07-26.
 
 > **Estilo con Christian:** abogado, no dev ("abogado de 95 años haciendo vibe coding"). Respuestas **ultra cortas, español claro, sin jerga**. Corre TÚ los comandos (nunca le pidas abrir terminal). Términos de git en inglés (commit, push, merge — no "commitear").
+
+---
+
+## 🤝 HANDOFF — ESTADO AL 2026-07-26
+
+### 🔴 PENDIENTE 00 — FUSIONAR LAS DOS RUTINAS VIGÍA (lo primero que hay que hacer)
+
+Hay **DOS rutinas diarias** haciendo lo mismo, las dos con información vieja:
+
+| Rutina | Estado | Problema |
+|---|---|---|
+| `vigia-precios-exygen` | activa, 8:12 am | regla de precio VIEJA + rutas muertas |
+| `vigia-precios-nova` | existe | del negocio anterior (Nova), rutas muertas |
+
+Archivos: `~/.claude/scheduled-tasks/<nombre>/SKILL.md`
+
+**Qué está mal en las dos:**
+
+1. **La regla de precio que traen es OBSOLETA.** Dicen *"el precio debe quedar en el
+   PROMEDIO entre Certified y Exoma"* (regla del 2026-07-18). **Ya no es así.** La regla
+   vigente (Christian, 2026-07-26) es:
+   - ¿Certified lo vende? → **partimos de Certified**
+   - ¿Solo Exoma? → **Exoma +20%**
+   - ¿Nadie? → **nuestro costo × 10**
+   - Nunca ARRIBA de Certified · nunca ABAJO de Exoma · nunca abajo de **5× el costo**
+   - Excepción: si Exoma cobra MÁS que Certified, **manda Certified** (y sí quedamos
+     debajo de Exoma). Son 13 casos, todos anotados en la maestra.
+2. **Apuntan a `/Users/christian/Documents/Nova Peptidos/...`, carpeta que YA NO EXISTE.**
+   Lo correcto es `/Users/christian/Documents/Exygen Peptides/`.
+3. **No mencionan la fuente de verdad real:** `pricing-system/MAESTRA.xlsx`, hoja
+   "Precios y Competencia", columna **PRECIO SUGERIDO PÚBLICO**.
+4. **Reinventan lo que ya existe.** Hoy hay scripts que hacen todo esto solos:
+   - `check_competitors.py` — lee Exoma y Certified EN VIVO y avisa si quedamos arriba
+   - `auditar_catalogo.py` — las 10 revisiones del catálogo (banda, piso 5×, escalera)
+   - `reprecio.py` — aplica las reglas a toda la maestra
+   - `aplicar_precios_al_sitio.js` + `subir_precios_backend.js` — sincronizan
+
+**Qué hacer:** borrar `vigia-precios-nova`, y reescribir `vigia-precios-exygen` para que
+solo corra `check_competitors.py` + `auditar_catalogo.py` y reporte corto. Nada de reglas
+copiadas en el texto de la rutina: que lea `pricing-system/FUENTE-DE-VERDAD.md`.
+
+⚠️ **Ojo con la trampa:** `auditar_catalogo.py` lee la MAESTRA, así que **no puede ver
+cambios de la competencia**. El 2026-07-26 Certified empezó a vender KPV 10 mg a $1,400 y
+nosotros estábamos en $1,799 — lo cazó `check_competitors.py`, no la auditoría. **Hay que
+correr los dos.**
+
+### 💰 PRECIOS — reparados y en vivo (2026-07-26)
+
+**El problema:** la regla vieja ("mezcla 75% hacia Certified") se aplicaba presentación por
+presentación sin mirar a las hermanas del mismo producto. Donde Certified competía el precio
+salía ALTO; donde solo estaba Exoma salía BAJO. Resultado: **escalera en zigzag**.
+Semaglutida 10 mg a $2,299 con el de 15 mg en $1,859 — nadie compraba el de 10.
+
+**Arreglado:** 26 precios corregidos + KPV + MOTS-c. Hoy el catálogo pasa las 10 revisiones:
+
+| Revisión | Estado |
+|---|---|
+| Nunca arriba de Certified | ✅ 192 presentaciones |
+| Nunca abajo de Exoma (fuera de excepción) | ✅ |
+| Piso de 5× el costo | ✅ el más flaco es 5.0× |
+| El vial grande nunca cuesta menos | ✅ 90 productos |
+| Sitio = backend | ✅ 195 SKUs |
+| Sin agotados ni stock negativo | ✅ |
+
+**183 notas escritas en la maestra** (`anotar_excepciones.py`) explicando por qué cada precio
+es como es — para que en tres meses nadie "corrija" una decisión intencional.
+
+🪤 **DOS TRAMPAS QUE COSTARON EL PRIMER INTENTO:**
+1. **El costo de la maestra viene por CAJA DE 10 VIALES, no por pieza.** Sin dividir entre 10,
+   el piso de 5× sale 10 veces más alto y Retatrutida 40 mg se iba a **$20,699**.
+2. **`gen_catalog.py` NO SE DEBE USAR para sincronizar precios.** Regenera
+   `fallbackCatalog.js` de cero y BORRA el `id` y el `sku` reales de cada presentación (sin
+   ellos el backend no reconoce el producto al cobrar y **se le cuela el descuento**), el
+   `commission_cap`, el `distributor_eligible` y los exports de categorías. Usa
+   `aplicar_precios_al_sitio.js`, que solo toca el campo `price`.
+
+**Pendiente de decisión:** Glutatión 1500 mg sale 3.5% más caro por mg que el de 600 mg. Es
+ruido; está pegado al piso de Exoma. Christian dijo que se queda.
+
+### 🛒 REGLAS DE DINERO — todas en vivo y probadas con compras reales
+
+1. **El ROI primero:** el descuento se **recorta al tope de cada producto** (`commission_cap`).
+   Ya no se da cero: se da lo que el producto aguanta, y al cliente se le avisa.
+2. **Los insumos NUNCA llevan descuento** (categorías `suministros`/`accesorios`).
+3. **Descuento propio sin código:** un distribuidor comprando para sí mismo usa su comisión
+   máxima (ese descuento ES su comisión, cobrada por adelantado — no gana comisión encima).
+   Un cliente puede tener `personal_discount_rate` puesto por el admin (Paz Cambray al 40%).
+4. Es **piso, no techo**: si trae un código mejor, gana el mayor.
+5. **ENVÍO: gratis desde $2,500**, abajo se cobran $250 (lo que de verdad cuesta). Se mide
+   sobre lo que el cliente PAGA, no sobre lista. Lo decide el SERVIDOR.
+6. **Carritos abandonados:** UNA sola oferta. Nada abajo de $2,500. El cupón exige comprar el
+   mismo monto o más. $2,500–4,999 = 15% + agua 3 mL + envío gratis · $5,000+ = 15% + agua
+   10 mL · $10,000+ = 20% + **una agua de 10 mL por cada $10,000**.
+
+### 🐛 BUGS SERIOS ENCONTRADOS Y ARREGLADOS (2026-07-26)
+
+- **Google no indexaba NADA del sitio.** GitHub Pages devolvía **404** en toda ruta que no
+  fuera la portada. El visitante veía la página bien (por eso nadie lo notó) pero el servidor
+  respondía 404 y Google lo tomaba al pie de la letra: catálogo, 99 fichas de producto y
+  /aprende eran **invisibles en las búsquedas**. Arreglado con
+  `scripts/prerender-routes.js` (corre en el `build`): 114 rutas reales + sitemap + robots.
+  ⚠️ **Al agregar una ruta nueva hay que darla de alta en `STATIC_ROUTES` o volverá a dar 404.**
+- **Se podía vender sin inventario.** Un pedido de 99,999 piezas de algo con 34 en existencia
+  pasaba sin chistar y dejaba el stock en −99,968. Y **cancelar no devolvía las piezas**.
+  Las dos cosas arregladas (`restore_order_stock`, idempotente).
+- **Los mexicanos leían las instrucciones de pago SPEI EN PORTUGUÉS.** Las tres versiones de
+  `spei.*` estaban dentro del bloque de español; JavaScript se queda con la última.
+  Salía en la pantalla de "Pedido recibido". Arreglado + 36 etiquetas del Admin traducidas.
+- **El agua bacteriostática se colaba con descuento.** El modal la agregaba con un id
+  inventado (`fallback-agua-bacteriostatica::10 mL`) que el backend no reconocía. **El Asesor
+  tenía el mismo bug con TODOS los productos que agrega.**
+- **4 de 8 categorías del menú abrían vacías.** El menú usaba los slugs del API
+  (`recuperacion-tejidos`, `metabolicos`, `bienestar`, `accesorios`) y el catálogo filtra con
+  los del sitio. Ahora hay **una sola lista**: `VISIBLE_CATEGORIES` en `fallbackCatalog.js`.
+
+### 📱 MÓVIL Y TABLETA
+
+- La barra superior se salía **84 px** de la pantalla y cortaba "Comenzar". El menú de idioma
+  y tema se fue **dentro** del menú de 3 líneas.
+- El menú de 3 líneas trae los mismos accesos que escritorio: Catálogo · Asesor · Recursos ·
+  Ayuda · Carrito · Mi cuenta. **Sin "Inicio"** (el logo ya lleva a la portada).
+- Cero scroll horizontal en las tres resoluciones.
+
+### 🧪 AUDITORÍAS — corren solas, úsalas
+
+```
+cd novapeptidos-UI  && npm run auditoria              # 37 revisiones del sitio, solo lectura
+                       npm run auditoria:completa     # + Admin y compras REALES que se borran solas
+cd pricing-system   && python3 auditar_catalogo.py    # 10 revisiones de precios y márgenes
+                       python3 check_competitors.py   # Exoma y Certified EN VIVO
+```
+Backend: `.venv/bin/python -m pytest test_core.py -q` — **134 pruebas**.
+(`.venv/bin/pytest` a secas está ROTO: usa `.venv/bin/python -m pytest`.)
+
+### 🟡 LO QUE SIGUE (pedido por Christian, SIN EMPEZAR)
+
+1. **PENDIENTE 00** — fusionar las dos rutinas vigía (arriba).
+2. **Dashboard de Anuncios: gráficas de tráfico y ventas** por día / semana / mes. Christian
+   lo pidió dos veces y NO está hecho. El panel de Meta ya existe (Admin → "Ads") pero solo
+   muestra totales, sin series de tiempo.
+3. **Imágenes de los 84 productos sin foto propia.** Christian subió el vial en blanco a
+   `Media/Viales individuales sin fondo para hero/Vial sin fondo, nombre ni gramaje.PNG`
+   (2048×2048, fondo transparente). Ya hizo a mano: NAD+, Retatrutida, Tirzepatida,
+   Semaglutida, KLOW y agua bacteriostática.
+   **Análisis ya hecho del vial en blanco:** la etiqueta trae fijos el logo (y 134-176),
+   "Lyophlized Peptide Powder for Injection" (y 1326-1376) y "FOR RESEARCH USE ONLY / NOT FOR
+   HUMAN CONSUMPTION" (y 1552-1656). Hay que insertar DOS textos: el **nombre** (~y 872-1006,
+   negrita grande) y el **gramaje** (~y 1326 arriba de "Lyophlized"). Comparar contra
+   `NAD+ 500mg.PNG` para calcar tipografía y tamaños.
+   ⚠️ **Christian pidió VER UNA MUESTRA antes de generar las 190+.**
+4. **Los COA no existen.** Cada ficha promete *"al comprar, el PDF del lote aparece en Mi
+   cuenta"* y `/api/coa/public` devuelve `{}`. Christian dijo que él los sube.
+
+### 📌 PENDIENTES DE CHRISTIAN (no son código)
+
+- **Meta:** sigue bloqueado para crear la cuenta de desarrollador ("dispositivo que no usas
+  habitualmente") — le pasa igual en iPhone. Salida sin pelear: Administrador de Anuncios →
+  Informes → programar envío diario por correo, y subir ese CSV al panel.
+- **MercadoPago:** faltan sus 2 llaves de producción.
+- **NOWPayments:** prender las monedas (Settings > Coins) + KYB.
+- **Gemini:** activar facturación (el chat se cae a los 20 mensajes/día).
+- **2FA del admin**, domicilio del responsable en el aviso de privacidad, INAI.
+- **Skydropx:** clasificación por escrito de los productos (SDS/MSDS) + Carta Porte.
+- **Dominios:** redirigir (301) los `nova*` y los nuevos a exygenlabs.com.
+- **Decidir:** ¿WooCommerce? Christian lo pidió al ver que Certified lo usa. **Se le explicó
+  que sería tirar meses de trabajo** (pirámide, topes, carritos abandonados, panel de Meta)
+  para terminar con menos. Está esperando su decisión.
 
 ---
 
