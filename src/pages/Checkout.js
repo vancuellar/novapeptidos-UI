@@ -48,7 +48,7 @@ const expiryOk = (exp) => {
 };
 
 const Checkout = () => {
-  const { items, subtotal, discount, discountRate, discountSource, distCode, clearCart } = useCart();
+  const { items, subtotal, discount, discountRate, discountSource, cappedItems, shipping, faltaParaEnvioGratis, distCode, clearCart } = useCart();
   const { user } = useAuth();
   const { t } = useLanguage();
   const navigate = useNavigate();
@@ -85,10 +85,31 @@ const Checkout = () => {
       .catch(() => {});
   }, [user]);
 
+  // Registra el intento de compra mientras llena sus datos: si no cierra, queda
+  // como 'pendiente' y la IA le da seguimiento (Christian, 2026-07-25). Se manda
+  // con retraso para no pegarle al servidor en cada tecla.
+  useEffect(() => {
+    if (!items.length) return;
+    const email = (form.email || '').trim();
+    if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) return;
+    const t = setTimeout(() => {
+      api.post('/checkout/intento', {
+        email,
+        name: form.full_name || '',
+        phone: form.phone || '',
+        items: items.map((i) => ({ name: i.name, quantity: i.quantity, price: i.price, sku: i.sku || '' })),
+        subtotal,
+        total: subtotal - discount,
+        session_id: localStorage.getItem('np_track_session') || '',
+      }).catch(() => {});
+    }, 2500);
+    return () => clearTimeout(t);
+  }, [form.email, form.full_name, form.phone, items, subtotal, discount]);
+
   const afterDiscount = subtotal - discount;
   const pointsApplied = usePoints && loyalty.eligible
     ? Math.min(loyalty.balance, Math.floor(afterDiscount)) : 0;
-  const total = afterDiscount - pointsApplied; // el envío se cotiza y cobra por separado
+  const total = afterDiscount - pointsApplied + shipping;
   const set = (k, v) => setForm((f) => ({ ...f, [k]: v }));
   const setC = (k, v) => setCard((c) => ({ ...c, [k]: v }));
 
@@ -119,7 +140,7 @@ const Checkout = () => {
         items: items.map((i) => ({ product_id: i.sku || i.product_id, name: i.name, price: i.price, quantity: i.quantity, presentation: i.presentation, image_url: i.image_url })),
         customer: { ...form, phone: composePhone(phoneCountry, form.phone) },
         payment_method: payment,
-        shipping: 0,
+        shipping,
         discount,
         distributor_code: distCode || null,
         points_to_use: pointsApplied,
@@ -290,9 +311,31 @@ const Checkout = () => {
             )}
             <div className="space-y-1.5 text-sm">
               <div className="flex justify-between"><span className="text-muted-foreground">{t('common.subtotal')}</span><span>{formatMXN(subtotal)}</span></div>
-              {discount > 0 && <div className="flex justify-between text-[hsl(var(--success))]"><span>{discountSource === 'code' ? t('discount.lineCode', { code: distCode, rate: Math.round(discountRate * 100) }) : t('discount.line', { rate: Math.round(discountRate * 100) })}</span><span>− {formatMXN(discount)}</span></div>}
+              {discount > 0 && <div className="flex justify-between text-[hsl(var(--success))]"><span>{discountSource === 'self' ? t('discount.lineSelf', { rate: Math.round(discountRate * 100) }) : discountSource === 'code' ? t('discount.lineCode', { code: distCode, rate: Math.round(discountRate * 100) }) : t('discount.line', { rate: Math.round(discountRate * 100) })}</span><span>− {formatMXN(discount)}</span></div>}
+              {cappedItems.length > 0 && (
+                <div className="rounded-lg border border-border bg-[hsl(var(--secondary))] px-3 py-2 text-[11px] leading-relaxed text-muted-foreground" data-testid="checkout-capped-notice">
+                  <span className="font-medium text-foreground">{t('discount.cappedTitle')}</span>{' '}
+                  {t('discount.cappedBody')}
+                  <ul className="mt-1.5 space-y-0.5">
+                    {cappedItems.map((i) => (
+                      <li key={i.product_id} className="flex justify-between gap-2">
+                        <span className="truncate">{i.name}</span>
+                        <span className="shrink-0 font-mono-tech">{i.applied > 0 ? `−${Math.round(i.applied * 100)}%` : t('discount.cappedNone')}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
               {pointsApplied > 0 && <div className="flex justify-between text-[hsl(var(--success))]"><span>{t('loyalty.line')}</span><span>− {formatMXN(pointsApplied)}</span></div>}
-              <div className="flex justify-between"><span className="text-muted-foreground">{t('common.shipping')}</span><span className="text-muted-foreground">{t('cart.shippingTBD')}</span></div>
+              <div className="flex justify-between">
+                <span className="text-muted-foreground">{t('common.shipping')}</span>
+                {shipping > 0
+                  ? <span>{formatMXN(shipping)}</span>
+                  : <span className="text-[hsl(var(--success))]">{t('cart.shippingFree')}</span>}
+              </div>
+              {faltaParaEnvioGratis > 0 && (
+                <p className="text-xs text-[hsl(var(--primary))]">{t('cart.freeShippingAt', { amount: formatMXN(faltaParaEnvioGratis) })}</p>
+              )}
             </div>
             {loyalty.eligible && loyalty.balance > 0 && (
               <label className="mt-4 flex items-start gap-2.5 rounded-lg border border-border bg-secondary/40 p-3 cursor-pointer" data-testid="checkout-use-points">

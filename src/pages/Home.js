@@ -15,7 +15,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { toast } from 'sonner';
 import ProductCard from '@/components/ProductCard';
 import api from '@/lib/api';
-import { fallbackCategories } from '@/data/fallbackCatalog';
+import { VISIBLE_CATEGORIES } from '@/data/fallbackCatalog';
 import { getFeaturedProducts } from '@/data/featured';
 import { useLanguage } from '@/context/LanguageContext';
 import { localizeCategories, localizeProducts } from '@/i18n/catalog';
@@ -26,13 +26,35 @@ const ICONS = { HeartPulse, Activity, Flame, Hourglass, Brain, Sparkles, Layers,
 // al pasar el cursor y lleva al catálogo. Alturas escalonadas para la silueta.
 // Orden de Christian: Reta al centro y al frente; NAD y KLOW a sus lados como
 // principales; Tirze y Sema en las esquinas.
+// Son DIEZ y se ven CINCO a la vez: el carrusel va rotando (Christian, 2026-07-26).
+// Los cinco primeros son los de siempre y conservan su orden — Reta al centro y
+// al frente, NAD y KLOW a los lados, Tirze y Sema en las esquinas.
 const HERO_VIALS = [
-  { slug: 'vial-tirzepatide', name: 'Tirzepatida 20mg', product: 'tirzepatida', w: 13 },
-  { slug: 'vial-nad', name: 'NAD+ 500mg', product: 'nad-plus', w: 14.5 },
-  { slug: 'vial-retatrutide', name: 'Retatrutida 40mg', product: 'retatrutida', w: 16 },
-  { slug: 'vial-klow', name: 'KLOW 80mg', product: 'klow-bpc-ghk-cu-tb-500-kpv', w: 14.5 },
-  { slug: 'vial-semaglutide', name: 'Semaglutida 10mg', product: 'semaglutida', w: 13 },
+  { slug: 'vial-tirzepatide', name: 'Tirzepatida 20mg', product: 'tirzepatida' },
+  { slug: 'vial-nad', name: 'NAD+ 500mg', product: 'nad-plus' },
+  { slug: 'vial-retatrutide', name: 'Retatrutida 40mg', product: 'retatrutida' },
+  { slug: 'vial-klow', name: 'KLOW 80mg', product: 'klow-bpc-ghk-cu-tb-500-kpv' },
+  { slug: 'vial-semaglutide', name: 'Semaglutida 10mg', product: 'semaglutida' },
+  // Los diez de abajo son los que dan variedad: entran conforme el carrusel gira.
+  // Son de familias distintas a propósito (reparación, hormona de crecimiento,
+  // estética, nootrópicos, sueño, salud sexual, metabólicos).
+  { slug: 'vial-bpc157', name: 'BPC-157 10mg', product: 'bpc-157' },
+  { slug: 'vial-tb500', name: 'TB-500 10mg', product: 'tb-500' },
+  { slug: 'vial-ipamorelin', name: 'Ipamorelin 5mg', product: 'ipamorelin' },
+  { slug: 'vial-cjc1295', name: 'CJC-1295 5mg', product: 'cjc-1295-sin-dac' },
+  { slug: 'vial-tesamorelina', name: 'Tesamorelina 10mg', product: 'tesamorelina' },
+  { slug: 'vial-ghkcu', name: 'GHK-Cu 50mg', product: 'ghk-cu' },
+  { slug: 'vial-semax', name: 'Semax 10mg', product: 'semax' },
+  { slug: 'vial-dsip', name: 'DSIP 5mg', product: 'dsip' },
+  { slug: 'vial-pt141', name: 'PT-141 10mg', product: 'pt-141' },
+  { slug: 'vial-cagrilintida', name: 'Cagrilintida 5mg', product: 'cagrilintida' },
 ].map((v) => ({ ...v, src: `${process.env.PUBLIC_URL}/images/hero/${v.slug}.webp` }));
+
+// Cuántos se ven a la vez y qué ancho tiene cada POSICIÓN (no cada vial): así la
+// silueta de la fila no cambia al rotar — el de en medio siempre es el más grande.
+const HERO_VISIBLES = 5;
+const HERO_ANCHOS = [13, 14.5, 16, 14.5, 13];
+const HERO_SEGUNDOS = 5;
 
 // Compounds shown in the scrolling ticker under the hero
 const TICKER_ITEMS = [
@@ -56,6 +78,7 @@ const Home = () => {
   const [featured, setFeatured] = useState([]);
   const [categories, setCategories] = useState([]);
   const [hoveredVial, setHoveredVial] = useState(null);
+  const [vialOffset, setVialOffset] = useState(0);
   const carouselRef = useRef(null);
   const { language, t } = useLanguage();
   // Solicitud "Quiero ser distribuidor" (sección Mayoreo). Christian aprueba en su Admin.
@@ -84,12 +107,32 @@ const Home = () => {
     // que diga el backend: el campo `featured` del catálogo lo regenera el
     // script de precios y se perdería el orden que eligió Christian.
     setFeatured(getFeaturedProducts());
-    api.get('/categories')
-      .then((r) => setCategories(Array.isArray(r.data) ? r.data : fallbackCategories))
-      .catch(() => setCategories(fallbackCategories));
+    // Las categorias salen del catalogo del sitio, NO del API: el API devuelve
+    // slugs viejos que ningun producto usa y esas tarjetas abrian vacias.
+    setCategories(VISIBLE_CATEGORIES);
   }, []);
 
   // Italic-serif accent = la frase después de la coma (o las últimas 2 palabras si no hay coma).
+  // El carrusel avanza solo, pero se DETIENE mientras el cursor está encima (si no,
+  // el vial que estás mirando se te va) y no avanza si el sistema pide menos
+  // animación.
+  useEffect(() => {
+    if (hoveredVial !== null) return undefined;
+    if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      return undefined;
+    }
+    const id = setInterval(
+      () => setVialOffset((o) => (o + 1) % HERO_VIALS.length),
+      HERO_SEGUNDOS * 1000,
+    );
+    return () => clearInterval(id);
+  }, [hoveredVial]);
+
+  const vialesVisibles = Array.from({ length: HERO_VISIBLES }, (_, i) => ({
+    ...HERO_VIALS[(vialOffset + i) % HERO_VIALS.length],
+    w: HERO_ANCHOS[i],
+  }));
+
   const heroTitleRaw = t('home.heroTitle');
   const commaIdx = heroTitleRaw.indexOf(',');
   const heroLead = commaIdx >= 0 ? heroTitleRaw.slice(0, commaIdx + 1) : heroTitleRaw.split(' ').slice(0, -2).join(' ');
@@ -112,11 +155,17 @@ const Home = () => {
           la barra se funda con el hero, como en Resend. */}
       <section className="bg-background relative overflow-hidden -mt-[60px] pt-[60px]">
         <div className="hero-beams" />
-        <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 pt-20 lg:pt-28 pb-16 relative">
-          <div className="grid lg:grid-cols-[1.1fr_0.9fr] gap-12 lg:gap-16 items-center">
+        {/* El aire de arriba ya incluye los 60px de la barra (la sección los repone
+            con pt-[60px]). Era pt-20/pt-28 = 80px en móvil y 112 en escritorio entre
+            la barra y "RESEARCH GRADE PEPTIDES". Christian los pidió a la mitad:
+            40 y 56 (2026-07-26). */}
+        <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 pt-10 lg:pt-14 pb-16 relative">
+          {/* El titulo va ARRIBA de los viales tambien en telefono
+              (Christian, 2026-07-26). */}
+          <div className="grid lg:grid-cols-[1.1fr_0.9fr] gap-8 lg:gap-16 items-center">
             <div>
               <div className="kicker">{t('home.kicker')}</div>
-              <h1 className="font-heading text-5xl sm:text-6xl lg:text-[3.6rem] font-bold tracking-tight leading-[1.04] mt-6">
+              <h1 className="font-heading text-[2.1rem] sm:text-5xl lg:text-[3.6rem] font-bold tracking-tight leading-[1.08] mt-6 break-words">
                 {heroLead}
                 {/* "lote por lote" va en su propio renglon, debajo. */}
                 <span className="hero-title-accent block">{heroAccent}</span>
@@ -142,7 +191,7 @@ const Home = () => {
                     fila completa, como el dock de macOS. */}
                 <div className="relative flex items-end justify-center gap-0.5 sm:gap-1"
                   onMouseLeave={() => setHoveredVial(null)}>
-                  {HERO_VIALS.map((v, i) => {
+                  {vialesVisibles.map((v, i) => {
                     const state = hoveredVial === null ? 'idle'
                       : hoveredVial === i ? 'active'
                       : Math.abs(hoveredVial - i) === 1 ? 'near' : 'far';
@@ -183,20 +232,20 @@ const Home = () => {
           </div>
         </div>
         <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 pb-24 relative">
-          <div className="mt-4 flex flex-wrap gap-x-12 gap-y-6 pt-4">
+          <div className="mt-4 grid grid-cols-2 gap-x-6 gap-y-6 pt-4 sm:flex sm:flex-wrap sm:gap-x-12">
             <div>
               <div className="font-heading text-3xl font-bold">≥99%</div>
               <div className="font-mono-tech text-[10.5px] uppercase tracking-[0.16em] text-muted-foreground mt-1.5">{t('home.typicalPurity')} · HPLC</div>
             </div>
-            <div className="border-l border-border pl-12">
+            <div className="sm:border-l border-border sm:pl-12">
               <div className="font-heading text-3xl font-bold">22+</div>
               <div className="font-mono-tech text-[10.5px] uppercase tracking-[0.16em] text-muted-foreground mt-1.5">{t('home.products')}</div>
             </div>
-            <div className="border-l border-border pl-12">
+            <div className="sm:border-l border-border sm:pl-12">
               <div className="font-heading text-3xl font-bold">{t('home.shippingValue')}</div>
               <div className="font-mono-tech text-[10.5px] uppercase tracking-[0.16em] text-muted-foreground mt-1.5">{t('home.nationalShipping')}</div>
             </div>
-            <div className="border-l border-border pl-12">
+            <div className="sm:border-l border-border sm:pl-12">
               <div className="font-heading text-3xl font-bold text-[hsl(var(--primary))]">COA</div>
               <div className="font-mono-tech text-[10.5px] uppercase tracking-[0.16em] text-muted-foreground mt-1.5">{t('home.coa.batch')} NP-BPC5-2401 · 99.4%</div>
             </div>

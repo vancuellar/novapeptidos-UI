@@ -50,18 +50,37 @@ export const fallbackCategories = [
     "description": "Bioreguladores peptídicos cortos, de investigación."
   },
   {
-    "name": "Suministros",
-    "slug": "suministros",
-    "icon": "FlaskConical",
-    "description": "Insumos para reconstitución y manejo en laboratorio."
+    "name": "Stacks / Combos",
+    "slug": "stacks",
+    "icon": "Layers",
+    "description": "Combinaciones de péptidos para protocolos de investigación."
   },
   {
     "name": "Otros / Especialidad",
     "slug": "otros",
     "icon": "Package",
     "description": "Compuestos de investigación de especialidad."
+  },
+  {
+    "name": "Suministros",
+    "slug": "suministros",
+    "icon": "FlaskConical",
+    "description": "Insumos para reconstitución y manejo en laboratorio."
   }
 ];
+
+// Categorias que NO se le ensenan al cliente. Los productos siguen a la venta y se
+// pueden buscar; solo no aparece el boton de la categoria. Hoy no hay ninguna
+// escondida: 'suministros' se volvio a mostrar porque si no, el agua bacteriostatica,
+// la B12, la Vitamina B12 y el acido acetico se quedaban sin categoria y no habia
+// forma de llegar a ellos navegando. Christian, 2026-07-25.
+export const HIDDEN_CATEGORIES = [];
+
+// LA lista de categorias que ve el cliente, en el header, la portada y el catalogo.
+// Se calcula al final del archivo (necesita fallbackProducts) y sale de AQUI, nunca
+// del API: el API todavia devuelve slugs viejos (recuperacion-tejidos, metabolicos,
+// bienestar, accesorios) que ningun producto usa, y esas categorias abrian vacias.
+// Ademas se descarta cualquiera que se quede sin productos. Christian, 2026-07-25.
 
 export const fallbackProducts = [
   {
@@ -77,7 +96,7 @@ export const fallbackProducts = [
     "presentation": "10 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
-    "price": 2559,
+    "price": 1279,
     "variants": [
       {
         "presentation": "10 mg",
@@ -85,7 +104,9 @@ export const fallbackProducts = [
         "stock": 40,
         "batch_number": "NP-BRON10-2601",
         "id": "d6a0a69f-7fa5-43b1-a884-d482ae9aa168",
-        "sku": "BRONCHOGEN-10MG"
+        "sku": "BRONCHOGEN-10MG",
+        "commission_cap": 0.35,
+        "distributor_eligible": true
       }
     ],
     "tiers": [],
@@ -119,7 +140,7 @@ export const fallbackProducts = [
     "presentation": "20 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
-    "price": 1749,
+    "price": 2399,
     "variants": [
       {
         "presentation": "20 mg",
@@ -127,7 +148,9 @@ export const fallbackProducts = [
         "stock": 40,
         "batch_number": "NP-CARD20-2601",
         "id": "7cf529d3-4fb6-4445-86f5-49afea7a1955",
-        "sku": "CARDIOGEN-20MG"
+        "sku": "CARDIOGEN-20MG",
+        "commission_cap": 0.4,
+        "distributor_eligible": true
       }
     ],
     "tiers": [],
@@ -161,7 +184,7 @@ export const fallbackProducts = [
     "presentation": "20 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
-    "price": 1749,
+    "price": 2399,
     "variants": [
       {
         "presentation": "20 mg",
@@ -169,7 +192,9 @@ export const fallbackProducts = [
         "stock": 40,
         "batch_number": "NP-CART20-2601",
         "id": "274b9816-9406-4e3a-99e3-a1fecba8c628",
-        "sku": "CARTALAX-20MG"
+        "sku": "CARTALAX-20MG",
+        "commission_cap": 0.4,
+        "distributor_eligible": true
       }
     ],
     "tiers": [],
@@ -203,7 +228,7 @@ export const fallbackProducts = [
     "presentation": "20 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
-    "price": 1749,
+    "price": 2399,
     "variants": [
       {
         "presentation": "20 mg",
@@ -211,7 +236,9 @@ export const fallbackProducts = [
         "stock": 40,
         "batch_number": "NP-CORT20-2601",
         "id": "7db29b51-7709-40c6-a3b1-aef2e5dd271c",
-        "sku": "CORTAGEN-20MG"
+        "sku": "CORTAGEN-20MG",
+        "commission_cap": 0.4,
+        "distributor_eligible": true
       }
     ],
     "tiers": [],
@@ -245,7 +272,7 @@ export const fallbackProducts = [
     "presentation": "20 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
-    "price": 1749,
+    "price": 2399,
     "variants": [
       {
         "presentation": "20 mg",
@@ -253,7 +280,9 @@ export const fallbackProducts = [
         "stock": 40,
         "batch_number": "NP-CRYS20-2601",
         "id": "f41b3962-f2ab-4a10-a74d-4818bc80f0bf",
-        "sku": "CRYSTAGEN-20MG"
+        "sku": "CRYSTAGEN-20MG",
+        "commission_cap": 0.4,
+        "distributor_eligible": true
       }
     ],
     "tiers": [],
@@ -287,7 +316,7 @@ export const fallbackProducts = [
     "presentation": "5 mg – 10 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
-    "price": 699,
+    "price": 1019,
     "variants": [
       {
         "presentation": "5 mg",
@@ -295,7 +324,9 @@ export const fallbackProducts = [
         "stock": 40,
         "batch_number": "NP-PINE5-2601",
         "id": "def5ccc9-137d-4c5e-b793-155faf15f180",
-        "sku": "PINEALON-5MG"
+        "sku": "PINEALON-5MG",
+        "commission_cap": 0.4,
+        "distributor_eligible": true
       },
       {
         "presentation": "10 mg",
@@ -303,7 +334,9 @@ export const fallbackProducts = [
         "stock": 40,
         "batch_number": "NP-PINE10-2601",
         "id": "91bf6c38-503a-414c-affc-4f86e96ccac7",
-        "sku": "PINEALON-10MG"
+        "sku": "PINEALON-10MG",
+        "commission_cap": 0.4,
+        "distributor_eligible": true
       }
     ],
     "tiers": [],
@@ -337,7 +370,7 @@ export const fallbackProducts = [
     "presentation": "10 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
-    "price": 1759,
+    "price": 1439,
     "variants": [
       {
         "presentation": "10 mg",
@@ -345,7 +378,9 @@ export const fallbackProducts = [
         "stock": 40,
         "batch_number": "NP-THYM10-2601",
         "id": "861adbea-4210-4aa0-8100-67638aa223f0",
-        "sku": "THYMALIN-10MG"
+        "sku": "THYMALIN-10MG",
+        "commission_cap": 0.4,
+        "distributor_eligible": true
       }
     ],
     "tiers": [],
@@ -379,15 +414,17 @@ export const fallbackProducts = [
     "presentation": "5 mg – 10 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
-    "price": 1309,
+    "price": 1399,
     "variants": [
       {
         "presentation": "5 mg",
-        "price": 1619,
+        "price": 1399,
         "stock": 40,
         "batch_number": "NP-THYM5-2601",
         "id": "473b201b-96e4-45c1-b35b-b096b39a1d2d",
-        "sku": "THYMOSINALPHA1-5MG"
+        "sku": "THYMOSINALPHA1-5MG",
+        "commission_cap": 0.4,
+        "distributor_eligible": true
       },
       {
         "presentation": "10 mg",
@@ -395,7 +432,9 @@ export const fallbackProducts = [
         "stock": 40,
         "batch_number": "NP-THYM10-2601",
         "id": "17c3f0ff-a6d0-45a1-b35c-d5e620780829",
-        "sku": "THYMOSINALPHA1-10MG"
+        "sku": "THYMOSINALPHA1-10MG",
+        "commission_cap": 0.25,
+        "distributor_eligible": false
       }
     ],
     "tiers": [],
@@ -429,7 +468,7 @@ export const fallbackProducts = [
     "presentation": "50 mg – 100 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
-    "price": 1129,
+    "price": 889,
     "variants": [
       {
         "presentation": "50 mg",
@@ -437,7 +476,9 @@ export const fallbackProducts = [
         "stock": 40,
         "batch_number": "NP-AHKC50-2601",
         "id": "3e2d78c8-408f-4298-b3c8-02ade1ac012a",
-        "sku": "AHKCU-50MG"
+        "sku": "AHKCU-50MG",
+        "commission_cap": 0.3,
+        "distributor_eligible": true
       },
       {
         "presentation": "100 mg",
@@ -445,7 +486,9 @@ export const fallbackProducts = [
         "stock": 40,
         "batch_number": "NP-AHKC100-2601",
         "id": "e315152d-e416-444a-b3f8-52b3d7163fbe",
-        "sku": "AHKCU-100MG"
+        "sku": "AHKCU-100MG",
+        "commission_cap": 0.35,
+        "distributor_eligible": true
       }
     ],
     "tiers": [],
@@ -473,7 +516,7 @@ export const fallbackProducts = [
     "presentation": "100 IU",
     "form": "Liofilizado",
     "purity": "99.0%",
-    "price": 3049,
+    "price": 1519,
     "variants": [
       {
         "presentation": "100 IU",
@@ -481,7 +524,9 @@ export const fallbackProducts = [
         "stock": 40,
         "batch_number": "NP-BOTU100-2601",
         "id": "89080fe9-e7c2-471b-b61a-87f6f4f43642",
-        "sku": "BOTULINUMTOXIN-100IU"
+        "sku": "BOTULINUMTOXIN-100IU",
+        "commission_cap": 0.3,
+        "distributor_eligible": true
       }
     ],
     "tiers": [],
@@ -510,7 +555,7 @@ export const fallbackProducts = [
     "presentation": "50 mg – 100 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
-    "price": 519,
+    "price": 659,
     "variants": [
       {
         "presentation": "50 mg",
@@ -518,7 +563,9 @@ export const fallbackProducts = [
         "stock": 40,
         "batch_number": "NP-GHK50-2601",
         "id": "ebe30e7e-1493-4658-85ad-27e5611c3285",
-        "sku": "GHKCU-50MG"
+        "sku": "GHKCU-50MG",
+        "commission_cap": 0.4,
+        "distributor_eligible": true
       },
       {
         "presentation": "100 mg",
@@ -526,7 +573,9 @@ export const fallbackProducts = [
         "stock": 40,
         "batch_number": "NP-GHK100-2601",
         "id": "b12e549d-4262-4bd8-91e6-e64a6e0a6f8a",
-        "sku": "GHKCU-100MG"
+        "sku": "GHKCU-100MG",
+        "commission_cap": 0.4,
+        "distributor_eligible": true
       }
     ],
     "tiers": [],
@@ -560,7 +609,7 @@ export const fallbackProducts = [
     "presentation": "10 mL",
     "form": "Liofilizado",
     "purity": "99.0%",
-    "price": 1059,
+    "price": 519,
     "variants": [
       {
         "presentation": "10 mL",
@@ -568,7 +617,9 @@ export const fallbackProducts = [
         "stock": 40,
         "batch_number": "NP-LEMO10-2601",
         "id": "43db6450-664f-434c-b0a8-03f7dd766fdf",
-        "sku": "LEMONBOTTLE-10ML"
+        "sku": "LEMONBOTTLE-10ML",
+        "commission_cap": 0.3,
+        "distributor_eligible": true
       }
     ],
     "tiers": [],
@@ -596,7 +647,7 @@ export const fallbackProducts = [
     "presentation": "10 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
-    "price": 609,
+    "price": 899,
     "variants": [
       {
         "presentation": "10 mg",
@@ -604,7 +655,9 @@ export const fallbackProducts = [
         "stock": 40,
         "batch_number": "NP-MATR10-2601",
         "id": "b9829cd6-ebe5-40ed-8646-ec895db6d434",
-        "sku": "MATRIXYL-10MG"
+        "sku": "MATRIXYL-10MG",
+        "commission_cap": 0.4,
+        "distributor_eligible": true
       }
     ],
     "tiers": [],
@@ -632,7 +685,7 @@ export const fallbackProducts = [
     "presentation": "10 mg – 100 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
-    "price": 689,
+    "price": 839,
     "variants": [
       {
         "presentation": "10 mg",
@@ -640,7 +693,9 @@ export const fallbackProducts = [
         "stock": 40,
         "batch_number": "NP-SNAP10-2601",
         "id": "09b829c3-1104-4e87-a5a9-fc04d50a087d",
-        "sku": "SNAP8-10MG"
+        "sku": "SNAP8-10MG",
+        "commission_cap": 0.4,
+        "distributor_eligible": true
       },
       {
         "presentation": "100 mg",
@@ -648,7 +703,9 @@ export const fallbackProducts = [
         "stock": 40,
         "batch_number": "NP-SNAP100-2601",
         "id": "ad15b37a-da23-4135-b754-593de64b2582",
-        "sku": "SNAP8-100MG"
+        "sku": "SNAP8-100MG",
+        "commission_cap": 0.3,
+        "distributor_eligible": true
       }
     ],
     "tiers": [],
@@ -677,7 +734,7 @@ export const fallbackProducts = [
     "presentation": "10 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
-    "price": 1699,
+    "price": 1919,
     "variants": [
       {
         "presentation": "10 mg",
@@ -685,7 +742,9 @@ export const fallbackProducts = [
         "stock": 40,
         "batch_number": "NP-CJC110-2601",
         "id": "801c9ec0-6131-4b13-94d0-5e2a26c19a08",
-        "sku": "CJC1295NODAC5M-10MG"
+        "sku": "CJC1295NODAC5M-10MG",
+        "commission_cap": 0.4,
+        "distributor_eligible": true
       }
     ],
     "tiers": [],
@@ -719,15 +778,17 @@ export const fallbackProducts = [
     "presentation": "10 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
-    "price": 2039,
+    "price": 1009,
     "variants": [
       {
         "presentation": "10 mg",
-        "price": 1019,
+        "price": 1009,
         "stock": 40,
         "batch_number": "NP-FRAG10-2601",
         "id": "bb5c1ca9-4443-4acc-8b33-44fed9f66f06",
-        "sku": "FRAGMENT1723-10MG"
+        "sku": "FRAGMENT1723-10MG",
+        "commission_cap": 0.35,
+        "distributor_eligible": true
       }
     ],
     "tiers": [],
@@ -755,7 +816,7 @@ export const fallbackProducts = [
     "presentation": "5 mg – 15 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
-    "price": 519,
+    "price": 719,
     "variants": [
       {
         "presentation": "5 mg",
@@ -763,7 +824,9 @@ export const fallbackProducts = [
         "stock": 40,
         "batch_number": "NP-GHRP5-2601",
         "id": "6f52dc4b-be86-47f0-8672-f98326894443",
-        "sku": "GHRP2ACETATE-5MG"
+        "sku": "GHRP2ACETATE-5MG",
+        "commission_cap": 0.4,
+        "distributor_eligible": true
       },
       {
         "presentation": "10 mg",
@@ -771,7 +834,9 @@ export const fallbackProducts = [
         "stock": 40,
         "batch_number": "NP-GHRP10-2601",
         "id": "8574b6e3-d5dd-4651-a6a1-8f251f3cd832",
-        "sku": "GHRP2ACETATE-10MG"
+        "sku": "GHRP2ACETATE-10MG",
+        "commission_cap": 0.35,
+        "distributor_eligible": true
       },
       {
         "presentation": "15 mg",
@@ -779,7 +844,9 @@ export const fallbackProducts = [
         "stock": 40,
         "batch_number": "NP-GHRP15-2601",
         "id": "4541d16f-945b-4cf5-84e8-c3314c0415dc",
-        "sku": "GHRP2ACETATE-15MG"
+        "sku": "GHRP2ACETATE-15MG",
+        "commission_cap": 0.35,
+        "distributor_eligible": true
       }
     ],
     "tiers": [],
@@ -813,7 +880,7 @@ export const fallbackProducts = [
     "presentation": "5 mg – 10 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
-    "price": 519,
+    "price": 719,
     "variants": [
       {
         "presentation": "5 mg",
@@ -821,7 +888,9 @@ export const fallbackProducts = [
         "stock": 40,
         "batch_number": "NP-GHRP5-2601",
         "id": "50bd5ba7-950f-4072-94e0-11436dad33fa",
-        "sku": "GHRP6ACETATE-5MG"
+        "sku": "GHRP6ACETATE-5MG",
+        "commission_cap": 0.4,
+        "distributor_eligible": true
       },
       {
         "presentation": "10 mg",
@@ -829,7 +898,9 @@ export const fallbackProducts = [
         "stock": 40,
         "batch_number": "NP-GHRP10-2601",
         "id": "50ce374a-42c5-4f02-bb9d-a2a83c757567",
-        "sku": "GHRP6ACETATE-10MG"
+        "sku": "GHRP6ACETATE-10MG",
+        "commission_cap": 0.35,
+        "distributor_eligible": true
       }
     ],
     "tiers": [],
@@ -863,7 +934,7 @@ export const fallbackProducts = [
     "presentation": "2 mg – 5 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
-    "price": 1719,
+    "price": 779,
     "variants": [
       {
         "presentation": "2 mg",
@@ -871,7 +942,9 @@ export const fallbackProducts = [
         "stock": 40,
         "batch_number": "NP-HEXA2-2601",
         "id": "099ad50d-fe25-4b3f-babf-c1711ebfc03f",
-        "sku": "HEXARELINACETA-2MG"
+        "sku": "HEXARELINACETA-2MG",
+        "commission_cap": 0.3,
+        "distributor_eligible": true
       },
       {
         "presentation": "5 mg",
@@ -879,7 +952,9 @@ export const fallbackProducts = [
         "stock": 40,
         "batch_number": "NP-HEXA5-2601",
         "id": "57b96b3d-d265-48e5-b52d-f2893b2e9e3d",
-        "sku": "HEXARELINACETA-5MG"
+        "sku": "HEXARELINACETA-5MG",
+        "commission_cap": 0.35,
+        "distributor_eligible": true
       }
     ],
     "tiers": [],
@@ -913,7 +988,7 @@ export const fallbackProducts = [
     "presentation": "24 IU – 40 IU",
     "form": "Liofilizado",
     "purity": "99.0%",
-    "price": 4209,
+    "price": 1139,
     "variants": [
       {
         "presentation": "24 IU",
@@ -921,7 +996,9 @@ export const fallbackProducts = [
         "stock": 40,
         "batch_number": "NP-HGH24-2601",
         "id": "a45bb2f4-1410-4f5b-912b-1d52f6b9e90c",
-        "sku": "HGH-24IU"
+        "sku": "HGH-24IU",
+        "commission_cap": 0.2,
+        "distributor_eligible": false
       },
       {
         "presentation": "36 IU",
@@ -929,15 +1006,19 @@ export const fallbackProducts = [
         "stock": 40,
         "batch_number": "NP-HGH36-2601",
         "id": "98e2710e-365c-4c00-9fd2-4bc4b1903784",
-        "sku": "HGH-36IU"
+        "sku": "HGH-36IU",
+        "commission_cap": 0.2,
+        "distributor_eligible": false
       },
       {
         "presentation": "40 IU",
-        "price": 1949,
+        "price": 3869,
         "stock": 40,
         "batch_number": "NP-HGH40-2601",
         "id": "24dd69be-8468-40a2-9030-36ca5bdda515",
-        "sku": "HGH-40IU"
+        "sku": "HGH-40IU",
+        "commission_cap": 0.2,
+        "distributor_eligible": false
       }
     ],
     "tiers": [],
@@ -970,7 +1051,7 @@ export const fallbackProducts = [
     "presentation": "1 mg – 15 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
-    "price": 779,
+    "price": 509,
     "variants": [
       {
         "presentation": "1 mg",
@@ -978,7 +1059,9 @@ export const fallbackProducts = [
         "stock": 40,
         "batch_number": "NP-HGHF1-2601",
         "id": "56adf073-14e0-41c2-bd43-d5d4d63a28d6",
-        "sku": "HGHFRAGMENT176-1MG"
+        "sku": "HGHFRAGMENT176-1MG",
+        "commission_cap": 0.35,
+        "distributor_eligible": true
       },
       {
         "presentation": "2 mg",
@@ -986,7 +1069,9 @@ export const fallbackProducts = [
         "stock": 40,
         "batch_number": "NP-HGHF2-2601",
         "id": "dc3eab59-665a-4991-ad71-154537f4c3a0",
-        "sku": "HGHFRAGMENT176-2MG"
+        "sku": "HGHFRAGMENT176-2MG",
+        "commission_cap": 0.4,
+        "distributor_eligible": true
       },
       {
         "presentation": "5 mg",
@@ -994,7 +1079,9 @@ export const fallbackProducts = [
         "stock": 40,
         "batch_number": "NP-HGHF5-2601",
         "id": "fdb66b4f-afd5-4964-ba3f-cf95036c33b2",
-        "sku": "HGHFRAGMENT176-5MG"
+        "sku": "HGHFRAGMENT176-5MG",
+        "commission_cap": 0.35,
+        "distributor_eligible": true
       },
       {
         "presentation": "10 mg",
@@ -1002,7 +1089,9 @@ export const fallbackProducts = [
         "stock": 40,
         "batch_number": "NP-HGHF10-2601",
         "id": "681da265-e826-49f7-87b6-37da77343e0a",
-        "sku": "HGHFRAGMENT176-10MG"
+        "sku": "HGHFRAGMENT176-10MG",
+        "commission_cap": 0.3,
+        "distributor_eligible": true
       },
       {
         "presentation": "12 mg",
@@ -1010,7 +1099,9 @@ export const fallbackProducts = [
         "stock": 40,
         "batch_number": "NP-HGHF10-2601",
         "id": "a5df0b96-095e-4efa-a6db-144331024c6a",
-        "sku": "HGHFRAGMENT176-12MG"
+        "sku": "HGHFRAGMENT176-12MG",
+        "commission_cap": 0.3,
+        "distributor_eligible": true
       },
       {
         "presentation": "15 mg",
@@ -1018,7 +1109,9 @@ export const fallbackProducts = [
         "stock": 40,
         "batch_number": "NP-HGHF15-2601",
         "id": "27ef0698-42b0-4ba3-8b6e-6e2bb7217713",
-        "sku": "HGHFRAGMENT176-15MG"
+        "sku": "HGHFRAGMENT176-15MG",
+        "commission_cap": 0.3,
+        "distributor_eligible": true
       }
     ],
     "tiers": [],
@@ -1052,7 +1145,7 @@ export const fallbackProducts = [
     "presentation": "0.1 mg – 1 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
-    "price": 489,
+    "price": 419,
     "variants": [
       {
         "presentation": "0.1 mg",
@@ -1060,7 +1153,9 @@ export const fallbackProducts = [
         "stock": 40,
         "batch_number": "NP-IGF101-2601",
         "id": "adc6f9d6-6c27-4485-a728-f1f758f362a1",
-        "sku": "IGF1LR3-01MG"
+        "sku": "IGF1LR3-01MG",
+        "commission_cap": 0.25,
+        "distributor_eligible": false
       },
       {
         "presentation": "1 mg",
@@ -1068,7 +1163,9 @@ export const fallbackProducts = [
         "stock": 40,
         "batch_number": "NP-IGF11-2601",
         "id": "1932037e-9657-4f4f-b832-4ed7a469ed04",
-        "sku": "IGF1LR3-1MG"
+        "sku": "IGF1LR3-1MG",
+        "commission_cap": 0.2,
+        "distributor_eligible": false
       }
     ],
     "tiers": [],
@@ -1102,7 +1199,7 @@ export const fallbackProducts = [
     "presentation": "2 mg – 10 mg",
     "form": "Liofilizado",
     "purity": "99.3%",
-    "price": 519,
+    "price": 959,
     "variants": [
       {
         "presentation": "2 mg",
@@ -1110,15 +1207,19 @@ export const fallbackProducts = [
         "stock": 40,
         "batch_number": "NP-IPA2-2601",
         "id": "b2bf9962-2eab-47cb-a1d2-d5e1bb243ef1",
-        "sku": "IPAMORELIN-2MG"
+        "sku": "IPAMORELIN-2MG",
+        "commission_cap": 0.4,
+        "distributor_eligible": true
       },
       {
         "presentation": "5 mg",
-        "price": 1199,
+        "price": 1069,
         "stock": 40,
         "batch_number": "NP-IPA5-2601",
         "id": "8b8e6aef-74ce-4cd0-addd-ea31b00c481d",
-        "sku": "IPAMORELIN-5MG"
+        "sku": "IPAMORELIN-5MG",
+        "commission_cap": 0.4,
+        "distributor_eligible": true
       },
       {
         "presentation": "10 mg",
@@ -1126,7 +1227,9 @@ export const fallbackProducts = [
         "stock": 40,
         "batch_number": "NP-IPA10-2601",
         "id": "f88df19e-5dd5-4bd3-8e1e-348a1297b91d",
-        "sku": "IPAMORELIN-10MG"
+        "sku": "IPAMORELIN-10MG",
+        "commission_cap": 0.35,
+        "distributor_eligible": true
       }
     ],
     "tiers": [],
@@ -1160,7 +1263,7 @@ export const fallbackProducts = [
     "presentation": "2 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
-    "price": 779,
+    "price": 1619,
     "variants": [
       {
         "presentation": "2 mg",
@@ -1168,7 +1271,9 @@ export const fallbackProducts = [
         "stock": 40,
         "batch_number": "NP-MGF2-2601",
         "id": "16d70b17-db13-4ed9-9ae1-631df819dc97",
-        "sku": "MGF-2MG"
+        "sku": "MGF-2MG",
+        "commission_cap": 0.4,
+        "distributor_eligible": true
       }
     ],
     "tiers": [],
@@ -1202,7 +1307,7 @@ export const fallbackProducts = [
     "presentation": "2 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
-    "price": 1309,
+    "price": 1619,
     "variants": [
       {
         "presentation": "2 mg",
@@ -1210,7 +1315,9 @@ export const fallbackProducts = [
         "stock": 40,
         "batch_number": "NP-PEGM2-2601",
         "id": "96191c72-e753-404f-b33c-ca69c838903c",
-        "sku": "PEGMGF-2MG"
+        "sku": "PEGMGF-2MG",
+        "commission_cap": 0.4,
+        "distributor_eligible": true
       }
     ],
     "tiers": [],
@@ -1244,7 +1351,7 @@ export const fallbackProducts = [
     "presentation": "2 mg – 10 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
-    "price": 1099,
+    "price": 609,
     "variants": [
       {
         "presentation": "2 mg",
@@ -1252,7 +1359,9 @@ export const fallbackProducts = [
         "stock": 40,
         "batch_number": "NP-SERM2-2601",
         "id": "706d7fd6-ca0f-47df-96be-3b1da80d32ec",
-        "sku": "SERMORELINA-2MG"
+        "sku": "SERMORELINA-2MG",
+        "commission_cap": 0.3,
+        "distributor_eligible": true
       },
       {
         "presentation": "5 mg",
@@ -1260,7 +1369,9 @@ export const fallbackProducts = [
         "stock": 40,
         "batch_number": "NP-SERM5-2601",
         "id": "6bdf313c-912e-4ac7-9d6e-93fdc674f250",
-        "sku": "SERMORELINA-5MG"
+        "sku": "SERMORELINA-5MG",
+        "commission_cap": 0.35,
+        "distributor_eligible": true
       },
       {
         "presentation": "10 mg",
@@ -1268,7 +1379,9 @@ export const fallbackProducts = [
         "stock": 40,
         "batch_number": "NP-SERM10-2601",
         "id": "eed66e42-37a5-48bf-b227-e65c551050df",
-        "sku": "SERMORELINA-10MG"
+        "sku": "SERMORELINA-10MG",
+        "commission_cap": 0.4,
+        "distributor_eligible": true
       }
     ],
     "tiers": [],
@@ -1303,7 +1416,7 @@ export const fallbackProducts = [
     "presentation": "15 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
-    "price": 8999,
+    "price": 4499,
     "variants": [
       {
         "presentation": "15 mg",
@@ -1311,7 +1424,9 @@ export const fallbackProducts = [
         "stock": 40,
         "batch_number": "NP-TESA15-2601",
         "id": "0cfaa9cb-6015-492a-99b4-8f336287b0ed",
-        "sku": "TESAMORELIN10I-15MG"
+        "sku": "TESAMORELIN10I-15MG",
+        "commission_cap": 0.35,
+        "distributor_eligible": true
       }
     ],
     "tiers": [],
@@ -1353,7 +1468,9 @@ export const fallbackProducts = [
         "stock": 40,
         "batch_number": "NP-EPI10-2601",
         "id": "cc5d841a-54a7-4d8e-8f8a-269033c7ef05",
-        "sku": "EPITHALON-10MG"
+        "sku": "EPITHALON-10MG",
+        "commission_cap": 0.4,
+        "distributor_eligible": true
       },
       {
         "presentation": "50 mg",
@@ -1361,7 +1478,9 @@ export const fallbackProducts = [
         "stock": 40,
         "batch_number": "NP-EPI50-2601",
         "id": "e4f485e9-5bf2-425f-8890-5d1cce61f04a",
-        "sku": "EPITHALON-50MG"
+        "sku": "EPITHALON-50MG",
+        "commission_cap": 0.4,
+        "distributor_eligible": true
       }
     ],
     "tiers": [],
@@ -1395,7 +1514,7 @@ export const fallbackProducts = [
     "presentation": "2 mg – 10 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
-    "price": 2879,
+    "price": 1439,
     "variants": [
       {
         "presentation": "2 mg",
@@ -1403,7 +1522,9 @@ export const fallbackProducts = [
         "stock": 40,
         "batch_number": "NP-FOXO2-2601",
         "id": "3b6fceed-222a-42da-ab79-33e948a211c0",
-        "sku": "FOXO4-2MG"
+        "sku": "FOXO4-2MG",
+        "commission_cap": 0.35,
+        "distributor_eligible": true
       },
       {
         "presentation": "10 mg",
@@ -1411,7 +1532,9 @@ export const fallbackProducts = [
         "stock": 40,
         "batch_number": "NP-FOXO10-2601",
         "id": "39be60d1-8886-4c73-b1b4-d9c093390e9b",
-        "sku": "FOXO4-10MG"
+        "sku": "FOXO4-10MG",
+        "commission_cap": 0.3,
+        "distributor_eligible": true
       }
     ],
     "tiers": [],
@@ -1445,7 +1568,7 @@ export const fallbackProducts = [
     "presentation": "600 mg – 1500 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
-    "price": 1159,
+    "price": 579,
     "variants": [
       {
         "presentation": "600 mg",
@@ -1453,15 +1576,19 @@ export const fallbackProducts = [
         "stock": 40,
         "batch_number": "NP-GLUT600-2601",
         "id": "696c2182-2d39-4dde-9544-a34b50b64009",
-        "sku": "GLUTATION-600MG"
+        "sku": "GLUTATION-600MG",
+        "commission_cap": 0.35,
+        "distributor_eligible": true
       },
       {
         "presentation": "1500 mg",
-        "price": 1579,
+        "price": 1499,
         "stock": 40,
         "batch_number": "NP-GLUT1500-2601",
         "id": "94c30fa2-5eff-4885-a799-8e8ebf9cd946",
-        "sku": "GLUTATION-1500MG"
+        "sku": "GLUTATION-1500MG",
+        "commission_cap": 0.4,
+        "distributor_eligible": true
       }
     ],
     "tiers": [],
@@ -1495,15 +1622,17 @@ export const fallbackProducts = [
     "presentation": "10 mg – 20 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
-    "price": 3149,
+    "price": 3959,
     "variants": [
       {
         "presentation": "10 mg",
-        "price": 4559,
+        "price": 3959,
         "stock": 40,
         "batch_number": "NP-HUMA10-2601",
         "id": "e54657a8-f41e-407e-a1c6-df56fbb25ca4",
-        "sku": "HUMANIN-10MG"
+        "sku": "HUMANIN-10MG",
+        "commission_cap": 0.35,
+        "distributor_eligible": true
       },
       {
         "presentation": "20 mg",
@@ -1511,7 +1640,9 @@ export const fallbackProducts = [
         "stock": 40,
         "batch_number": "NP-HUMA20-2601",
         "id": "48ef8513-9c4e-4201-a6e2-4f87b3b3eb21",
-        "sku": "HUMANIN-20MG"
+        "sku": "HUMANIN-20MG",
+        "commission_cap": 0.35,
+        "distributor_eligible": true
       }
     ],
     "tiers": [],
@@ -1545,7 +1676,7 @@ export const fallbackProducts = [
     "presentation": "100 mg – 1000 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
-    "price": 609,
+    "price": 839,
     "variants": [
       {
         "presentation": "100 mg",
@@ -1553,7 +1684,9 @@ export const fallbackProducts = [
         "stock": 40,
         "batch_number": "NP-NAD100-2601",
         "id": "17253e95-6318-4827-bed2-1dbc536a51c1",
-        "sku": "NAD-100MG"
+        "sku": "NAD-100MG",
+        "commission_cap": 0.35,
+        "distributor_eligible": true
       },
       {
         "presentation": "500 mg",
@@ -1561,7 +1694,9 @@ export const fallbackProducts = [
         "stock": 40,
         "batch_number": "NP-NAD500-2601",
         "id": "58c98a1f-e090-49f4-8067-0a75904d9ca7",
-        "sku": "NAD-500MG"
+        "sku": "NAD-500MG",
+        "commission_cap": 0.35,
+        "distributor_eligible": true
       },
       {
         "presentation": "1000 mg",
@@ -1569,7 +1704,9 @@ export const fallbackProducts = [
         "stock": 40,
         "batch_number": "NP-NAD1000-2601",
         "id": "4a028b3f-73d4-4f83-bebb-4543f0562039",
-        "sku": "NAD-1000MG"
+        "sku": "NAD-1000MG",
+        "commission_cap": 0.4,
+        "distributor_eligible": true
       }
     ],
     "tiers": [],
@@ -1603,7 +1740,7 @@ export const fallbackProducts = [
     "presentation": "10 mg – 50 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
-    "price": 1099,
+    "price": 1319,
     "variants": [
       {
         "presentation": "10 mg",
@@ -1611,7 +1748,9 @@ export const fallbackProducts = [
         "stock": 40,
         "batch_number": "NP-SS3110-2601",
         "id": "1e910b14-c23a-48b5-87e6-4658ba7d4548",
-        "sku": "SS31-10MG"
+        "sku": "SS31-10MG",
+        "commission_cap": 0.4,
+        "distributor_eligible": true
       },
       {
         "presentation": "50 mg",
@@ -1619,7 +1758,9 @@ export const fallbackProducts = [
         "stock": 40,
         "batch_number": "NP-SS3150-2601",
         "id": "6e0c7e19-f32d-474b-be5c-fb897273182f",
-        "sku": "SS31-50MG"
+        "sku": "SS31-50MG",
+        "commission_cap": 0.35,
+        "distributor_eligible": true
       }
     ],
     "tiers": [],
@@ -1653,7 +1794,7 @@ export const fallbackProducts = [
     "presentation": "60 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
-    "price": 1449,
+    "price": 1799,
     "variants": [
       {
         "presentation": "60 mg",
@@ -1661,7 +1802,9 @@ export const fallbackProducts = [
         "stock": 40,
         "batch_number": "NP-CERE60-2601",
         "id": "b3a51c80-bf4a-4817-aff8-b2549970489d",
-        "sku": "CEREBROLYSIN-60MG"
+        "sku": "CEREBROLYSIN-60MG",
+        "commission_cap": 0.4,
+        "distributor_eligible": true
       }
     ],
     "tiers": [],
@@ -1695,7 +1838,7 @@ export const fallbackProducts = [
     "presentation": "2 mg – 10 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
-    "price": 959,
+    "price": 519,
     "variants": [
       {
         "presentation": "2 mg",
@@ -1703,7 +1846,9 @@ export const fallbackProducts = [
         "stock": 40,
         "batch_number": "NP-DSIP2-2601",
         "id": "2f65fb25-e630-4b39-88cb-ae6e8cc71117",
-        "sku": "DSIP-2MG"
+        "sku": "DSIP-2MG",
+        "commission_cap": 0.3,
+        "distributor_eligible": true
       },
       {
         "presentation": "5 mg",
@@ -1711,7 +1856,9 @@ export const fallbackProducts = [
         "stock": 40,
         "batch_number": "NP-DSIP5-2601",
         "id": "bb8e9ee3-501c-4345-9fba-fe3e11b2f7d5",
-        "sku": "DSIP-5MG"
+        "sku": "DSIP-5MG",
+        "commission_cap": 0.4,
+        "distributor_eligible": true
       },
       {
         "presentation": "10 mg",
@@ -1719,7 +1866,9 @@ export const fallbackProducts = [
         "stock": 40,
         "batch_number": "NP-DSIP10-2601",
         "id": "949505ed-8adb-440a-aa46-d6a3f12dbf55",
-        "sku": "DSIP-10MG"
+        "sku": "DSIP-10MG",
+        "commission_cap": 0.35,
+        "distributor_eligible": true
       }
     ],
     "tiers": [],
@@ -1753,7 +1902,7 @@ export const fallbackProducts = [
     "presentation": "10 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
-    "price": 2319,
+    "price": 1159,
     "variants": [
       {
         "presentation": "10 mg",
@@ -1761,7 +1910,9 @@ export const fallbackProducts = [
         "stock": 40,
         "batch_number": "NP-MELA10-2601",
         "id": "58c6b561-1b7b-47c8-8663-e14f0c08be17",
-        "sku": "MELATONINA-10MG"
+        "sku": "MELATONINA-10MG",
+        "commission_cap": 0.35,
+        "distributor_eligible": true
       }
     ],
     "tiers": [],
@@ -1795,7 +1946,7 @@ export const fallbackProducts = [
     "presentation": "10 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
-    "price": 18729,
+    "price": 9359,
     "variants": [
       {
         "presentation": "10 mg",
@@ -1803,7 +1954,9 @@ export const fallbackProducts = [
         "stock": 40,
         "batch_number": "NP-OREX10-2601",
         "id": "662781a5-c3e9-4791-95e9-7f65594458f8",
-        "sku": "OREXINA-10MG"
+        "sku": "OREXINA-10MG",
+        "commission_cap": 0.3,
+        "distributor_eligible": true
       }
     ],
     "tiers": [],
@@ -1837,7 +1990,7 @@ export const fallbackProducts = [
     "presentation": "5 mg – 10 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
-    "price": 3679,
+    "price": 1839,
     "variants": [
       {
         "presentation": "5 mg",
@@ -1845,7 +1998,9 @@ export const fallbackProducts = [
         "stock": 40,
         "batch_number": "NP-OREX5-2601",
         "id": "01fd87d3-af2d-475c-8378-a5e3bf72a4d2",
-        "sku": "OREXINB-5MG"
+        "sku": "OREXINB-5MG",
+        "commission_cap": 0.35,
+        "distributor_eligible": true
       },
       {
         "presentation": "10 mg",
@@ -1853,7 +2008,9 @@ export const fallbackProducts = [
         "stock": 40,
         "batch_number": "NP-OREX10-2601",
         "id": "5c16ed8b-0dca-4b7e-ba62-1478724aeca3",
-        "sku": "OREXINB-10MG"
+        "sku": "OREXINB-10MG",
+        "commission_cap": 0.3,
+        "distributor_eligible": true
       }
     ],
     "tiers": [],
@@ -1881,7 +2038,7 @@ export const fallbackProducts = [
     "presentation": "10 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
-    "price": 959,
+    "price": 1199,
     "variants": [
       {
         "presentation": "10 mg",
@@ -1889,7 +2046,9 @@ export const fallbackProducts = [
         "stock": 40,
         "batch_number": "NP-PE2210-2601",
         "id": "09745c57-4a6c-4749-813e-cfbe6be283af",
-        "sku": "PE2228-10MG"
+        "sku": "PE2228-10MG",
+        "commission_cap": 0.35,
+        "distributor_eligible": true
       }
     ],
     "tiers": [],
@@ -1923,7 +2082,7 @@ export const fallbackProducts = [
     "presentation": "5 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
-    "price": 1479,
+    "price": 2159,
     "variants": [
       {
         "presentation": "5 mg",
@@ -1931,7 +2090,9 @@ export const fallbackProducts = [
         "stock": 40,
         "batch_number": "NP-PNC25-2601",
         "id": "d6939bd6-544e-4b5b-b5b9-1eba6395a8f3",
-        "sku": "PNC27-5MG"
+        "sku": "PNC27-5MG",
+        "commission_cap": 0.4,
+        "distributor_eligible": true
       }
     ],
     "tiers": [],
@@ -1965,7 +2126,7 @@ export const fallbackProducts = [
     "presentation": "5 mg – 10 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
-    "price": 589,
+    "price": 719,
     "variants": [
       {
         "presentation": "5 mg",
@@ -1973,7 +2134,9 @@ export const fallbackProducts = [
         "stock": 40,
         "batch_number": "NP-SLK5-2601",
         "id": "211469df-0397-4498-892d-6360dfc87788",
-        "sku": "SELANK-5MG"
+        "sku": "SELANK-5MG",
+        "commission_cap": 0.35,
+        "distributor_eligible": true
       },
       {
         "presentation": "10 mg",
@@ -1981,7 +2144,9 @@ export const fallbackProducts = [
         "stock": 40,
         "batch_number": "NP-SLK10-2601",
         "id": "767a631b-3c6c-4f25-9a75-915860bef1ca",
-        "sku": "SELANK-10MG"
+        "sku": "SELANK-10MG",
+        "commission_cap": 0.3,
+        "distributor_eligible": false
       }
     ],
     "tiers": [],
@@ -2015,7 +2180,7 @@ export const fallbackProducts = [
     "presentation": "5 mg – 10 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
-    "price": 539,
+    "price": 659,
     "variants": [
       {
         "presentation": "5 mg",
@@ -2023,7 +2188,9 @@ export const fallbackProducts = [
         "stock": 40,
         "batch_number": "NP-SMX5-2601",
         "id": "87f77e62-1545-4bc3-9e43-41bd95d340a2",
-        "sku": "SEMAX-5MG"
+        "sku": "SEMAX-5MG",
+        "commission_cap": 0.3,
+        "distributor_eligible": true
       },
       {
         "presentation": "10 mg",
@@ -2031,7 +2198,9 @@ export const fallbackProducts = [
         "stock": 40,
         "batch_number": "NP-SMX10-2601",
         "id": "95ce366e-56b3-4c8f-862f-9fc7176f3240",
-        "sku": "SEMAX-10MG"
+        "sku": "SEMAX-10MG",
+        "commission_cap": 0.35,
+        "distributor_eligible": true
       }
     ],
     "tiers": [],
@@ -2065,15 +2234,17 @@ export const fallbackProducts = [
     "presentation": "5 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
-    "price": 1759,
+    "price": 869,
     "variants": [
       {
         "presentation": "5 mg",
-        "price": 879,
+        "price": 869,
         "stock": 40,
         "batch_number": "NP-ACTH5-2601",
         "id": "f9b7b446-9009-41c8-a73d-2ebed37ba522",
-        "sku": "ACTH139-5MG"
+        "sku": "ACTH139-5MG",
+        "commission_cap": 0.35,
+        "distributor_eligible": true
       }
     ],
     "tiers": [],
@@ -2101,15 +2272,17 @@ export const fallbackProducts = [
     "presentation": "5 mg – 10 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
-    "price": 2459,
+    "price": 1229,
     "variants": [
       {
         "presentation": "5 mg",
-        "price": 1219,
+        "price": 1229,
         "stock": 40,
         "batch_number": "NP-ADMA5-2601",
         "id": "31b78f27-4ca4-4c73-ba18-9065f0c59f85",
-        "sku": "ADMAX-5MG"
+        "sku": "ADMAX-5MG",
+        "commission_cap": 0.3,
+        "distributor_eligible": true
       },
       {
         "presentation": "10 mg",
@@ -2117,7 +2290,9 @@ export const fallbackProducts = [
         "stock": 40,
         "batch_number": "NP-ADMA10-2601",
         "id": "00e3f5ac-c399-4bac-930d-85dec63a4fa7",
-        "sku": "ADMAX-10MG"
+        "sku": "ADMAX-10MG",
+        "commission_cap": 0.3,
+        "distributor_eligible": true
       }
     ],
     "tiers": [],
@@ -2145,7 +2320,7 @@ export const fallbackProducts = [
     "presentation": "2 mg – 10 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
-    "price": 1899,
+    "price": 939,
     "variants": [
       {
         "presentation": "2 mg",
@@ -2153,7 +2328,9 @@ export const fallbackProducts = [
         "stock": 40,
         "batch_number": "NP-B7332-2601",
         "id": "22716315-e599-4b50-aa8e-4ee383b8f056",
-        "sku": "B733-2MG"
+        "sku": "B733-2MG",
+        "commission_cap": 0.3,
+        "distributor_eligible": true
       },
       {
         "presentation": "10 mg",
@@ -2161,7 +2338,9 @@ export const fallbackProducts = [
         "stock": 40,
         "batch_number": "NP-B73310-2601",
         "id": "d28d8894-884a-45b1-8d4a-d67970068f5d",
-        "sku": "B733-10MG"
+        "sku": "B733-10MG",
+        "commission_cap": 0.35,
+        "distributor_eligible": true
       }
     ],
     "tiers": [],
@@ -2203,7 +2382,9 @@ export const fallbackProducts = [
         "stock": 40,
         "batch_number": "NP-CJCD2-2601",
         "id": "fcea43c2-0c8f-446e-9b5a-395bf7ab0944",
-        "sku": "CJC1295CONDAC-2MG"
+        "sku": "CJC1295CONDAC-2MG",
+        "commission_cap": 0.25,
+        "distributor_eligible": false
       },
       {
         "presentation": "5 mg",
@@ -2211,7 +2392,9 @@ export const fallbackProducts = [
         "stock": 40,
         "batch_number": "NP-CJCD5-2601",
         "id": "da9906d3-487d-49d3-b2ee-017e427c2f54",
-        "sku": "CJC1295CONDAC-5MG"
+        "sku": "CJC1295CONDAC-5MG",
+        "commission_cap": 0.2,
+        "distributor_eligible": false
       }
     ],
     "tiers": [],
@@ -2245,7 +2428,7 @@ export const fallbackProducts = [
     "presentation": "2 mg – 10 mg",
     "form": "Liofilizado",
     "purity": "99.1%",
-    "price": 1089,
+    "price": 609,
     "variants": [
       {
         "presentation": "2 mg",
@@ -2253,7 +2436,9 @@ export const fallbackProducts = [
         "stock": 40,
         "batch_number": "NP-CJCN2-2601",
         "id": "2c72debf-df0d-4769-ade0-0c974ad0dee7",
-        "sku": "CJC1295SINDAC-2MG"
+        "sku": "CJC1295SINDAC-2MG",
+        "commission_cap": 0.3,
+        "distributor_eligible": true
       },
       {
         "presentation": "5 mg",
@@ -2261,7 +2446,9 @@ export const fallbackProducts = [
         "stock": 40,
         "batch_number": "NP-CJCN5-2601",
         "id": "5ab62375-3a75-4e76-9296-722a63ad9eec",
-        "sku": "CJC1295SINDAC-5MG"
+        "sku": "CJC1295SINDAC-5MG",
+        "commission_cap": 0.35,
+        "distributor_eligible": true
       },
       {
         "presentation": "10 mg",
@@ -2269,7 +2456,9 @@ export const fallbackProducts = [
         "stock": 40,
         "batch_number": "NP-CJCN10-2601",
         "id": "1d795150-41ef-4f8f-a099-5a456f56f1b4",
-        "sku": "CJC1295SINDAC-10MG"
+        "sku": "CJC1295SINDAC-10MG",
+        "commission_cap": 0.25,
+        "distributor_eligible": false
       }
     ],
     "tiers": [],
@@ -2303,7 +2492,7 @@ export const fallbackProducts = [
     "presentation": "500 u",
     "form": "Liofilizado",
     "purity": "99.0%",
-    "price": 1579,
+    "price": 789,
     "variants": [
       {
         "presentation": "500 u",
@@ -2311,7 +2500,9 @@ export const fallbackProducts = [
         "stock": 40,
         "batch_number": "NP-DYSP500-2601",
         "id": "3f95cdb9-612b-4dea-96d0-299bc01a2974",
-        "sku": "DYSPORT-500U"
+        "sku": "DYSPORT-500U",
+        "commission_cap": 0.35,
+        "distributor_eligible": true
       }
     ],
     "tiers": [],
@@ -2339,7 +2530,7 @@ export const fallbackProducts = [
     "presentation": "3000 IU",
     "form": "Liofilizado",
     "purity": "99.0%",
-    "price": 2069,
+    "price": 1029,
     "variants": [
       {
         "presentation": "3000 IU",
@@ -2347,7 +2538,9 @@ export const fallbackProducts = [
         "stock": 40,
         "batch_number": "NP-EPO3000-2601",
         "id": "a913a3ba-6d22-4276-acb3-61be1b703e70",
-        "sku": "EPO-3000IU"
+        "sku": "EPO-3000IU",
+        "commission_cap": 0.3,
+        "distributor_eligible": true
       }
     ],
     "tiers": [],
@@ -2375,7 +2568,7 @@ export const fallbackProducts = [
     "presentation": "100 mil",
     "form": "Liofilizado",
     "purity": "99.0%",
-    "price": 28009,
+    "price": 13999,
     "variants": [
       {
         "presentation": "100 mil",
@@ -2383,7 +2576,9 @@ export const fallbackProducts = [
         "stock": 40,
         "batch_number": "NP-HUMS100-2601",
         "id": "737fe975-da2a-4a0d-ab2e-87766e118e28",
-        "sku": "HUMSCCELULASMA-100MIL"
+        "sku": "HUMSCCELULASMA-100MIL",
+        "commission_cap": 0.3,
+        "distributor_eligible": true
       }
     ],
     "tiers": [],
@@ -2419,7 +2614,9 @@ export const fallbackProducts = [
         "stock": 40,
         "batch_number": "NP-KISS5-2601",
         "id": "73cce571-2ac1-4026-9dc3-7a185b3cc7ea",
-        "sku": "KISSPEPTINA10-5MG"
+        "sku": "KISSPEPTINA10-5MG",
+        "commission_cap": 0.3,
+        "distributor_eligible": true
       },
       {
         "presentation": "10 mg",
@@ -2427,7 +2624,9 @@ export const fallbackProducts = [
         "stock": 40,
         "batch_number": "NP-KISS10-2601",
         "id": "655ba833-56e1-4ef5-9c9f-8e7c166b65b7",
-        "sku": "KISSPEPTINA10-10MG"
+        "sku": "KISSPEPTINA10-10MG",
+        "commission_cap": 0.3,
+        "distributor_eligible": true
       }
     ],
     "tiers": [],
@@ -2461,7 +2660,7 @@ export const fallbackProducts = [
     "presentation": "5 mg – 10 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
-    "price": 3159,
+    "price": 2039,
     "variants": [
       {
         "presentation": "5 mg",
@@ -2469,7 +2668,9 @@ export const fallbackProducts = [
         "stock": 40,
         "batch_number": "NP-MAZD5-2601",
         "id": "3a23bdc4-c55d-4940-827c-01cb3b0dd1b1",
-        "sku": "MAZDUTIDA-5MG"
+        "sku": "MAZDUTIDA-5MG",
+        "commission_cap": 0.4,
+        "distributor_eligible": true
       },
       {
         "presentation": "10 mg",
@@ -2477,7 +2678,9 @@ export const fallbackProducts = [
         "stock": 40,
         "batch_number": "NP-MAZD10-2601",
         "id": "8aba4b0a-4097-4484-a92a-97ded13b8e45",
-        "sku": "MAZDUTIDA-10MG"
+        "sku": "MAZDUTIDA-10MG",
+        "commission_cap": 0.3,
+        "distributor_eligible": true
       }
     ],
     "tiers": [],
@@ -2512,7 +2715,7 @@ export const fallbackProducts = [
     "presentation": "10 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
-    "price": 1199,
+    "price": 599,
     "variants": [
       {
         "presentation": "10 mg",
@@ -2520,7 +2723,9 @@ export const fallbackProducts = [
         "stock": 40,
         "batch_number": "NP-MELA10-2601",
         "id": "95db77c5-be8e-4dc8-8a72-4ab8d2161f90",
-        "sku": "MELANOTANI-10MG"
+        "sku": "MELANOTANI-10MG",
+        "commission_cap": 0.35,
+        "distributor_eligible": true
       }
     ],
     "tiers": [],
@@ -2555,7 +2760,7 @@ export const fallbackProducts = [
     "presentation": "10 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
-    "price": 1199,
+    "price": 959,
     "variants": [
       {
         "presentation": "10 mg",
@@ -2563,7 +2768,9 @@ export const fallbackProducts = [
         "stock": 40,
         "batch_number": "NP-MT210-2601",
         "id": "3a2d63d3-e84a-4892-be29-2f776fdd8491",
-        "sku": "MELANOTANII-10MG"
+        "sku": "MELANOTANII-10MG",
+        "commission_cap": 0.4,
+        "distributor_eligible": true
       }
     ],
     "tiers": [],
@@ -2598,7 +2805,7 @@ export const fallbackProducts = [
     "presentation": "10 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
-    "price": 3159,
+    "price": 1579,
     "variants": [
       {
         "presentation": "10 mg",
@@ -2606,7 +2813,9 @@ export const fallbackProducts = [
         "stock": 40,
         "batch_number": "NP-MICL10-2601",
         "id": "391fa2fe-a5cf-413b-b16a-a14660de474a",
-        "sku": "MICLIPOCB12-10MG"
+        "sku": "MICLIPOCB12-10MG",
+        "commission_cap": 0.35,
+        "distributor_eligible": true
       }
     ],
     "tiers": [],
@@ -2634,7 +2843,7 @@ export const fallbackProducts = [
     "presentation": "2 mg – 10 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
-    "price": 809,
+    "price": 779,
     "variants": [
       {
         "presentation": "2 mg",
@@ -2642,7 +2851,9 @@ export const fallbackProducts = [
         "stock": 40,
         "batch_number": "NP-OXY2-2601",
         "id": "9f3357cc-0898-4cd8-a49e-5ff30b86369b",
-        "sku": "OXITOCINA-2MG"
+        "sku": "OXITOCINA-2MG",
+        "commission_cap": 0.4,
+        "distributor_eligible": true
       },
       {
         "presentation": "5 mg",
@@ -2650,7 +2861,9 @@ export const fallbackProducts = [
         "stock": 40,
         "batch_number": "NP-OXY5-2601",
         "id": "17bc65bf-139d-40c8-86a5-acdce12edd60",
-        "sku": "OXITOCINA-5MG"
+        "sku": "OXITOCINA-5MG",
+        "commission_cap": 0.4,
+        "distributor_eligible": true
       },
       {
         "presentation": "10 mg",
@@ -2658,7 +2871,9 @@ export const fallbackProducts = [
         "stock": 40,
         "batch_number": "NP-OXY10-2601",
         "id": "6f7eaffb-8997-4272-8178-04bc4efe13af",
-        "sku": "OXITOCINA-10MG"
+        "sku": "OXITOCINA-10MG",
+        "commission_cap": 0.4,
+        "distributor_eligible": true
       }
     ],
     "tiers": [],
@@ -2692,7 +2907,7 @@ export const fallbackProducts = [
     "presentation": "5 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
-    "price": 9809,
+    "price": 4899,
     "variants": [
       {
         "presentation": "5 mg",
@@ -2700,7 +2915,9 @@ export const fallbackProducts = [
         "stock": 40,
         "batch_number": "NP-P215-2601",
         "id": "68d58d21-b0de-4389-810c-fb3881990691",
-        "sku": "P21-5MG"
+        "sku": "P21-5MG",
+        "commission_cap": 0.3,
+        "distributor_eligible": true
       }
     ],
     "tiers": [],
@@ -2728,7 +2945,7 @@ export const fallbackProducts = [
     "presentation": "10 IU – 15 IU",
     "form": "Liofilizado",
     "purity": "99.0%",
-    "price": 1369,
+    "price": 539,
     "variants": [
       {
         "presentation": "10 IU",
@@ -2736,7 +2953,9 @@ export const fallbackProducts = [
         "stock": 40,
         "batch_number": "NP-SOMA10-2601",
         "id": "508ca071-1eee-4b2a-a69e-7632160a2f18",
-        "sku": "SOMATROPINAHGH-10IU"
+        "sku": "SOMATROPINAHGH-10IU",
+        "commission_cap": 0.5,
+        "distributor_eligible": true
       },
       {
         "presentation": "12 IU",
@@ -2744,7 +2963,9 @@ export const fallbackProducts = [
         "stock": 40,
         "batch_number": "NP-SOMA12-2601",
         "id": "22d43665-3610-490a-bb73-6832b431619c",
-        "sku": "SOMATROPINAHGH-12IU"
+        "sku": "SOMATROPINAHGH-12IU",
+        "commission_cap": 0.5,
+        "distributor_eligible": true
       },
       {
         "presentation": "15 IU",
@@ -2752,7 +2973,9 @@ export const fallbackProducts = [
         "stock": 40,
         "batch_number": "NP-SOMA15-2601",
         "id": "ee8711a9-06a2-4a85-be1e-a5294b8729d5",
-        "sku": "SOMATROPINAHGH-15IU"
+        "sku": "SOMATROPINAHGH-15IU",
+        "commission_cap": 0.5,
+        "distributor_eligible": true
       }
     ],
     "tiers": [],
@@ -2785,7 +3008,7 @@ export const fallbackProducts = [
     "presentation": "2 mg – 20 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
-    "price": 619,
+    "price": 439,
     "variants": [
       {
         "presentation": "2 mg",
@@ -2793,7 +3016,9 @@ export const fallbackProducts = [
         "stock": 40,
         "batch_number": "NP-TESA2-2601",
         "id": "e4e46c55-b8da-4058-96e3-db76f99905d9",
-        "sku": "TESAMORELINA-2MG"
+        "sku": "TESAMORELINA-2MG",
+        "commission_cap": 0.2,
+        "distributor_eligible": false
       },
       {
         "presentation": "5 mg",
@@ -2801,7 +3026,9 @@ export const fallbackProducts = [
         "stock": 40,
         "batch_number": "NP-TESA5-2601",
         "id": "517d579b-7afc-427e-ac06-53c88855fb90",
-        "sku": "TESAMORELINA-5MG"
+        "sku": "TESAMORELINA-5MG",
+        "commission_cap": 0.25,
+        "distributor_eligible": false
       },
       {
         "presentation": "10 mg",
@@ -2809,7 +3036,9 @@ export const fallbackProducts = [
         "stock": 40,
         "batch_number": "NP-TESA10-2601",
         "id": "864667b7-3027-48f6-a393-d28f163e4fd6",
-        "sku": "TESAMORELINA-10MG"
+        "sku": "TESAMORELINA-10MG",
+        "commission_cap": 0.25,
+        "distributor_eligible": false
       },
       {
         "presentation": "20 mg",
@@ -2817,7 +3046,9 @@ export const fallbackProducts = [
         "stock": 40,
         "batch_number": "NP-TESA20-2601",
         "id": "76a349e9-5e95-428d-8fd5-8fea9ee8cf01",
-        "sku": "TESAMORELINA-20MG"
+        "sku": "TESAMORELINA-20MG",
+        "commission_cap": 0.35,
+        "distributor_eligible": true
       }
     ],
     "tiers": [],
@@ -2851,7 +3082,7 @@ export const fallbackProducts = [
     "presentation": "5 mg – 10 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
-    "price": 1239,
+    "price": 1499,
     "variants": [
       {
         "presentation": "5 mg",
@@ -2859,7 +3090,9 @@ export const fallbackProducts = [
         "stock": 40,
         "batch_number": "NP-VIP5-2601",
         "id": "83a1728a-d9f9-45b9-a94a-fb2132a72db4",
-        "sku": "VIP-5MG"
+        "sku": "VIP-5MG",
+        "commission_cap": 0.4,
+        "distributor_eligible": true
       },
       {
         "presentation": "10 mg",
@@ -2867,7 +3100,9 @@ export const fallbackProducts = [
         "stock": 40,
         "batch_number": "NP-VIP10-2601",
         "id": "982833c9-b7e9-4504-b2cb-5be84ae9e3e8",
-        "sku": "VIP-10MG"
+        "sku": "VIP-10MG",
+        "commission_cap": 0.4,
+        "distributor_eligible": true
       }
     ],
     "tiers": [],
@@ -2901,7 +3136,7 @@ export const fallbackProducts = [
     "presentation": "10 mg – 50 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
-    "price": 959,
+    "price": 519,
     "variants": [
       {
         "presentation": "10 mg",
@@ -2909,15 +3144,19 @@ export const fallbackProducts = [
         "stock": 40,
         "batch_number": "NP-10AM10-2601",
         "id": "4f6e26cf-a4e3-4cde-be7b-0a031514b7aa",
-        "sku": "10AMINO1MQ-10MG"
+        "sku": "10AMINO1MQ-10MG",
+        "commission_cap": 0.3,
+        "distributor_eligible": true
       },
       {
         "presentation": "50 mg",
-        "price": 1579,
+        "price": 1569,
         "stock": 40,
         "batch_number": "NP-10AM50-2601",
         "id": "0b8dd26f-4148-4eb3-a90f-67bfee083209",
-        "sku": "10AMINO1MQ-50MG"
+        "sku": "10AMINO1MQ-50MG",
+        "commission_cap": 0.35,
+        "distributor_eligible": true
       }
     ],
     "tiers": [],
@@ -2945,7 +3184,7 @@ export const fallbackProducts = [
     "presentation": "5 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
-    "price": 609,
+    "price": 839,
     "variants": [
       {
         "presentation": "5 mg",
@@ -2953,7 +3192,9 @@ export const fallbackProducts = [
         "stock": 40,
         "batch_number": "NP-5AMI5-2601",
         "id": "bd1ca7a4-03e0-4891-bbba-e60424162662",
-        "sku": "5AMINO1MQ-5MG"
+        "sku": "5AMINO1MQ-5MG",
+        "commission_cap": 0.35,
+        "distributor_eligible": true
       }
     ],
     "tiers": [],
@@ -2987,7 +3228,7 @@ export const fallbackProducts = [
     "presentation": "50 mg – 100 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
-    "price": 1129,
+    "price": 1379,
     "variants": [
       {
         "presentation": "50 mg",
@@ -2995,7 +3236,9 @@ export const fallbackProducts = [
         "stock": 40,
         "batch_number": "NP-AICA50-2601",
         "id": "2c286d5f-d9c6-4bf3-9a69-3dadada51d40",
-        "sku": "AICAR-50MG"
+        "sku": "AICAR-50MG",
+        "commission_cap": 0.4,
+        "distributor_eligible": true
       },
       {
         "presentation": "100 mg",
@@ -3003,7 +3246,9 @@ export const fallbackProducts = [
         "stock": 40,
         "batch_number": "NP-AICA100-2601",
         "id": "392e8fbc-cb08-4a63-bed4-b3b59711de9d",
-        "sku": "AICAR-100MG"
+        "sku": "AICAR-100MG",
+        "commission_cap": 0.35,
+        "distributor_eligible": true
       }
     ],
     "tiers": [],
@@ -3037,15 +3282,17 @@ export const fallbackProducts = [
     "presentation": "2 mg – 10 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
-    "price": 779,
+    "price": 929,
     "variants": [
       {
         "presentation": "2 mg",
-        "price": 959,
+        "price": 929,
         "stock": 40,
         "batch_number": "NP-AOD92-2601",
         "id": "1ad4788e-50c0-409e-b3d7-ab16895edc40",
-        "sku": "AOD9604-2MG"
+        "sku": "AOD9604-2MG",
+        "commission_cap": 0.4,
+        "distributor_eligible": true
       },
       {
         "presentation": "5 mg",
@@ -3053,15 +3300,19 @@ export const fallbackProducts = [
         "stock": 40,
         "batch_number": "NP-AOD95-2601",
         "id": "9b73c607-b922-45fe-bc94-c7e9c5979048",
-        "sku": "AOD9604-5MG"
+        "sku": "AOD9604-5MG",
+        "commission_cap": 0.25,
+        "distributor_eligible": false
       },
       {
         "presentation": "10 mg",
-        "price": 2039,
+        "price": 1919,
         "stock": 40,
         "batch_number": "NP-AOD910-2601",
         "id": "ea123747-3255-47ab-8c5b-4e764d080dd4",
-        "sku": "AOD9604-10MG"
+        "sku": "AOD9604-10MG",
+        "commission_cap": 0.25,
+        "distributor_eligible": false
       }
     ],
     "tiers": [],
@@ -3096,15 +3347,17 @@ export const fallbackProducts = [
     "presentation": "5 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
-    "price": 1759,
+    "price": 869,
     "variants": [
       {
         "presentation": "5 mg",
-        "price": 879,
+        "price": 869,
         "stock": 40,
         "batch_number": "NP-CAGR5-2601",
         "id": "b49a28cd-4785-477f-a90b-1ede5ce790dc",
-        "sku": "CAGRISEMA25MG2-5MG"
+        "sku": "CAGRISEMA25MG2-5MG",
+        "commission_cap": 0.35,
+        "distributor_eligible": true
       }
     ],
     "tiers": [],
@@ -3138,15 +3391,17 @@ export const fallbackProducts = [
     "presentation": "2 mg – 10 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
-    "price": 1189,
+    "price": 869,
     "variants": [
       {
         "presentation": "2 mg",
-        "price": 879,
+        "price": 869,
         "stock": 40,
         "batch_number": "NP-CAGR2-2601",
         "id": "877331cf-3284-4117-973a-7440936badd9",
-        "sku": "CAGRILINTIDA-2MG"
+        "sku": "CAGRILINTIDA-2MG",
+        "commission_cap": 0.35,
+        "distributor_eligible": true
       },
       {
         "presentation": "5 mg",
@@ -3154,7 +3409,9 @@ export const fallbackProducts = [
         "stock": 40,
         "batch_number": "NP-CAGR5-2601",
         "id": "1e9b01d9-04f6-4a9d-9abd-41cd6e2da48a",
-        "sku": "CAGRILINTIDA-5MG"
+        "sku": "CAGRILINTIDA-5MG",
+        "commission_cap": 0.3,
+        "distributor_eligible": false
       },
       {
         "presentation": "10 mg",
@@ -3162,7 +3419,9 @@ export const fallbackProducts = [
         "stock": 40,
         "batch_number": "NP-CAGR10-2601",
         "id": "0a87407d-f81b-44d8-b5f1-c5a13fe06b87",
-        "sku": "CAGRILINTIDA-10MG"
+        "sku": "CAGRILINTIDA-10MG",
+        "commission_cap": 0.25,
+        "distributor_eligible": false
       }
     ],
     "tiers": [],
@@ -3196,7 +3455,7 @@ export const fallbackProducts = [
     "presentation": "10 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
-    "price": 8339,
+    "price": 4159,
     "variants": [
       {
         "presentation": "10 mg",
@@ -3204,7 +3463,9 @@ export const fallbackProducts = [
         "stock": 40,
         "batch_number": "NP-DULA10-2601",
         "id": "11daa5fa-ed8b-4393-9650-7eee681e952e",
-        "sku": "DULAGLUTIDA-10MG"
+        "sku": "DULAGLUTIDA-10MG",
+        "commission_cap": 0.3,
+        "distributor_eligible": true
       }
     ],
     "tiers": [],
@@ -3238,7 +3499,7 @@ export const fallbackProducts = [
     "presentation": "2 mg – 1200 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
-    "price": 1059,
+    "price": 519,
     "variants": [
       {
         "presentation": "2 mg",
@@ -3246,15 +3507,19 @@ export const fallbackProducts = [
         "stock": 40,
         "batch_number": "NP-LCAR2-2601",
         "id": "1b1fc934-0126-414b-abff-43996874076a",
-        "sku": "LCARNITINE-2MG"
+        "sku": "LCARNITINE-2MG",
+        "commission_cap": 0.3,
+        "distributor_eligible": true
       },
       {
         "presentation": "400 mg",
-        "price": 879,
+        "price": 869,
         "stock": 40,
         "batch_number": "NP-LCAR400-2601",
         "id": "83b887a0-7bdd-4fbd-96bc-cd920e268a18",
-        "sku": "LCARNITINE-400MG"
+        "sku": "LCARNITINE-400MG",
+        "commission_cap": 0.35,
+        "distributor_eligible": true
       },
       {
         "presentation": "600 mg",
@@ -3262,7 +3527,9 @@ export const fallbackProducts = [
         "stock": 40,
         "batch_number": "NP-LCAR600-2601",
         "id": "79ad3e2c-ff01-42ba-ab42-0b6d4c9444d9",
-        "sku": "LCARNITINE-600MG"
+        "sku": "LCARNITINE-600MG",
+        "commission_cap": 0.3,
+        "distributor_eligible": true
       },
       {
         "presentation": "1200 mg",
@@ -3270,7 +3537,9 @@ export const fallbackProducts = [
         "stock": 40,
         "batch_number": "NP-LCAR1200-2601",
         "id": "e15cb83b-ccf8-4065-ae95-451375f2074b",
-        "sku": "LCARNITINE-1200MG"
+        "sku": "LCARNITINE-1200MG",
+        "commission_cap": 0.3,
+        "distributor_eligible": true
       }
     ],
     "tiers": [],
@@ -3304,7 +3573,7 @@ export const fallbackProducts = [
     "presentation": "10 mL",
     "form": "Liofilizado",
     "purity": "99.0%",
-    "price": 1999,
+    "price": 999,
     "variants": [
       {
         "presentation": "10 mL",
@@ -3312,7 +3581,9 @@ export const fallbackProducts = [
         "stock": 40,
         "batch_number": "NP-LIPO10-2601",
         "id": "7f531a25-6823-4f09-a240-f9a93ffe42b3",
-        "sku": "LIPOC-10ML"
+        "sku": "LIPOC-10ML",
+        "commission_cap": 0.35,
+        "distributor_eligible": true
       }
     ],
     "tiers": [],
@@ -3340,7 +3611,7 @@ export const fallbackProducts = [
     "presentation": "5 mg – 30 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
-    "price": 1399,
+    "price": 1859,
     "variants": [
       {
         "presentation": "5 mg",
@@ -3348,7 +3619,9 @@ export const fallbackProducts = [
         "stock": 40,
         "batch_number": "NP-LIRA5-2601",
         "id": "17627817-0556-4a5c-8eb0-c5aa090d512a",
-        "sku": "LIRAGLUTIDA-5MG"
+        "sku": "LIRAGLUTIDA-5MG",
+        "commission_cap": 0.4,
+        "distributor_eligible": true
       },
       {
         "presentation": "10 mg",
@@ -3356,7 +3629,9 @@ export const fallbackProducts = [
         "stock": 40,
         "batch_number": "NP-LIRA10-2601",
         "id": "23b7dd6b-35ca-4490-a0ad-031bf35eeb08",
-        "sku": "LIRAGLUTIDA-10MG"
+        "sku": "LIRAGLUTIDA-10MG",
+        "commission_cap": 0.35,
+        "distributor_eligible": true
       },
       {
         "presentation": "30 mg",
@@ -3364,7 +3639,9 @@ export const fallbackProducts = [
         "stock": 40,
         "batch_number": "NP-LIRA30-2601",
         "id": "2587dfe1-7cc1-4939-9edd-a3f6e83231e7",
-        "sku": "LIRAGLUTIDA-30MG"
+        "sku": "LIRAGLUTIDA-30MG",
+        "commission_cap": 0.25,
+        "distributor_eligible": false
       }
     ],
     "tiers": [],
@@ -3406,7 +3683,9 @@ export const fallbackProducts = [
         "stock": 40,
         "batch_number": "NP-MOTS10-2601",
         "id": "de77919d-830a-4e45-abc2-0977f46b7d30",
-        "sku": "MOTSC-10MG"
+        "sku": "MOTSC-10MG",
+        "commission_cap": 0.3,
+        "distributor_eligible": false
       },
       {
         "presentation": "15 mg",
@@ -3414,7 +3693,9 @@ export const fallbackProducts = [
         "stock": 40,
         "batch_number": "NP-MOTS15-2601",
         "id": "9e336d64-8af3-4991-ac30-fafb9f736bf2",
-        "sku": "MOTSC-15MG"
+        "sku": "MOTSC-15MG",
+        "commission_cap": 0.35,
+        "distributor_eligible": true
       },
       {
         "presentation": "20 mg",
@@ -3422,15 +3703,19 @@ export const fallbackProducts = [
         "stock": 40,
         "batch_number": "NP-MOTS20-2601",
         "id": "f878af32-45f7-4b6b-82da-52b985ac90ed",
-        "sku": "MOTSC-20MG"
+        "sku": "MOTSC-20MG",
+        "commission_cap": 0.2,
+        "distributor_eligible": false
       },
       {
         "presentation": "40 mg",
-        "price": 3359,
+        "price": 2198,
         "stock": 40,
         "batch_number": "NP-MOTS40-2601",
         "id": "befcc9bf-0e3d-4a19-a5ca-9ec4512d1a16",
-        "sku": "MOTSC-40MG"
+        "sku": "MOTSC-40MG",
+        "commission_cap": 0.35,
+        "distributor_eligible": true
       }
     ],
     "tiers": [],
@@ -3464,7 +3749,7 @@ export const fallbackProducts = [
     "presentation": "5 mg – 100 mg",
     "form": "Liofilizado",
     "purity": "99.1%",
-    "price": 959,
+    "price": 1189,
     "variants": [
       {
         "presentation": "5 mg",
@@ -3472,15 +3757,19 @@ export const fallbackProducts = [
         "stock": 40,
         "batch_number": "NP-RETA5-2601",
         "id": "a01642f8-e679-4f22-a8d9-f182542f1df2",
-        "sku": "RETATRUTIDA-5MG"
+        "sku": "RETATRUTIDA-5MG",
+        "commission_cap": 0.4,
+        "distributor_eligible": true
       },
       {
         "presentation": "10 mg",
-        "price": 2499,
+        "price": 2379,
         "stock": 40,
         "batch_number": "NP-RETA10-2601",
         "id": "3562d760-400f-43a3-aab3-7244a0e7c9e3",
-        "sku": "RETATRUTIDA-10MG"
+        "sku": "RETATRUTIDA-10MG",
+        "commission_cap": 0.4,
+        "distributor_eligible": true
       },
       {
         "presentation": "15 mg",
@@ -3488,7 +3777,9 @@ export const fallbackProducts = [
         "stock": 40,
         "batch_number": "NP-RETA15-2601",
         "id": "e08dbda4-8c2a-43ba-a5c7-d800bee95cb1",
-        "sku": "RETATRUTIDA-15MG"
+        "sku": "RETATRUTIDA-15MG",
+        "commission_cap": 0.4,
+        "distributor_eligible": true
       },
       {
         "presentation": "20 mg",
@@ -3496,7 +3787,9 @@ export const fallbackProducts = [
         "stock": 40,
         "batch_number": "NP-RETA20-2601",
         "id": "f4bedb15-ffc1-456d-9650-73cffcffdcd9",
-        "sku": "RETATRUTIDA-20MG"
+        "sku": "RETATRUTIDA-20MG",
+        "commission_cap": 0.4,
+        "distributor_eligible": true
       },
       {
         "presentation": "30 mg",
@@ -3504,7 +3797,9 @@ export const fallbackProducts = [
         "stock": 40,
         "batch_number": "NP-RETA30-2601",
         "id": "bd812705-201e-4aef-ade6-af23d6116b36",
-        "sku": "RETATRUTIDA-30MG"
+        "sku": "RETATRUTIDA-30MG",
+        "commission_cap": 0.4,
+        "distributor_eligible": true
       },
       {
         "presentation": "40 mg",
@@ -3512,7 +3807,9 @@ export const fallbackProducts = [
         "stock": 40,
         "batch_number": "NP-RETA40-2601",
         "id": "cc984cce-c589-4e80-861a-ba6b98e7ad3e",
-        "sku": "RETATRUTIDA-40MG"
+        "sku": "RETATRUTIDA-40MG",
+        "commission_cap": 0.35,
+        "distributor_eligible": true
       },
       {
         "presentation": "60 mg",
@@ -3520,7 +3817,9 @@ export const fallbackProducts = [
         "stock": 40,
         "batch_number": "NP-RETA60-2601",
         "id": "954a6dc4-dce9-4fdd-8581-e283ad37e6b5",
-        "sku": "RETATRUTIDA-60MG"
+        "sku": "RETATRUTIDA-60MG",
+        "commission_cap": 0.3,
+        "distributor_eligible": true
       },
       {
         "presentation": "100 mg",
@@ -3528,7 +3827,9 @@ export const fallbackProducts = [
         "stock": 40,
         "batch_number": "NP-RETA100-2601",
         "id": "ee5729da-dadf-4ff2-aa0b-7e8abdb072b4",
-        "sku": "RETATRUTIDA-100MG"
+        "sku": "RETATRUTIDA-100MG",
+        "commission_cap": 0.3,
+        "distributor_eligible": true
       }
     ],
     "tiers": [],
@@ -3563,7 +3864,7 @@ export const fallbackProducts = [
     "presentation": "60 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
-    "price": 7359,
+    "price": 3679,
     "variants": [
       {
         "presentation": "60 mg",
@@ -3571,7 +3872,9 @@ export const fallbackProducts = [
         "stock": 40,
         "batch_number": "NP-RETA60-2601",
         "id": "7efbf57b-7f8d-43c7-a058-8e07b0c64de1",
-        "sku": "RETATRUTIDE20M-60MG"
+        "sku": "RETATRUTIDE20M-60MG",
+        "commission_cap": 0.35,
+        "distributor_eligible": true
       }
     ],
     "tiers": [],
@@ -3605,7 +3908,7 @@ export const fallbackProducts = [
     "presentation": "2 mg – 50 mg",
     "form": "Liofilizado",
     "purity": "99.1%",
-    "price": 429,
+    "price": 1079,
     "variants": [
       {
         "presentation": "2 mg",
@@ -3613,7 +3916,9 @@ export const fallbackProducts = [
         "stock": 40,
         "batch_number": "NP-SEMA2-2601",
         "id": "3d44f41f-e3d1-422f-a6a6-ee6984bfa635",
-        "sku": "SEMAGLUTIDA-2MG"
+        "sku": "SEMAGLUTIDA-2MG",
+        "commission_cap": 0.4,
+        "distributor_eligible": true
       },
       {
         "presentation": "5 mg",
@@ -3621,15 +3926,19 @@ export const fallbackProducts = [
         "stock": 40,
         "batch_number": "NP-SEMA5-2601",
         "id": "3bc388e8-4498-4aeb-a3da-40fc915dcef3",
-        "sku": "SEMAGLUTIDA-5MG"
+        "sku": "SEMAGLUTIDA-5MG",
+        "commission_cap": 0.4,
+        "distributor_eligible": true
       },
       {
         "presentation": "10 mg",
-        "price": 2299,
+        "price": 1799,
         "stock": 40,
         "batch_number": "NP-SEMA10-2601",
         "id": "fa9def3b-7709-4b56-98f4-ffe83b0a58a9",
-        "sku": "SEMAGLUTIDA-10MG"
+        "sku": "SEMAGLUTIDA-10MG",
+        "commission_cap": 0.4,
+        "distributor_eligible": true
       },
       {
         "presentation": "15 mg",
@@ -3637,7 +3946,9 @@ export const fallbackProducts = [
         "stock": 40,
         "batch_number": "NP-SEMA15-2601",
         "id": "16deb2af-234b-4de8-a968-44aef1fdb929",
-        "sku": "SEMAGLUTIDA-15MG"
+        "sku": "SEMAGLUTIDA-15MG",
+        "commission_cap": 0.4,
+        "distributor_eligible": true
       },
       {
         "presentation": "20 mg",
@@ -3645,15 +3956,19 @@ export const fallbackProducts = [
         "stock": 40,
         "batch_number": "NP-SEMA20-2601",
         "id": "7fdfe542-f6f6-46c6-97f4-1bec48fdbdac",
-        "sku": "SEMAGLUTIDA-20MG"
+        "sku": "SEMAGLUTIDA-20MG",
+        "commission_cap": 0.4,
+        "distributor_eligible": true
       },
       {
         "presentation": "30 mg",
-        "price": 2399,
+        "price": 2119,
         "stock": 40,
         "batch_number": "NP-SEMA30-2601",
         "id": "641f267f-9618-418f-90cc-2b2aa9932d2f",
-        "sku": "SEMAGLUTIDA-30MG"
+        "sku": "SEMAGLUTIDA-30MG",
+        "commission_cap": 0.4,
+        "distributor_eligible": true
       },
       {
         "presentation": "50 mg",
@@ -3661,7 +3976,9 @@ export const fallbackProducts = [
         "stock": 40,
         "batch_number": "NP-SEMA50-2601",
         "id": "40e13576-9c1c-44bf-85bb-e6b9926bbbaf",
-        "sku": "SEMAGLUTIDA-50MG"
+        "sku": "SEMAGLUTIDA-50MG",
+        "commission_cap": 0.35,
+        "distributor_eligible": true
       }
     ],
     "tiers": [],
@@ -3695,7 +4012,7 @@ export const fallbackProducts = [
     "presentation": "5 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
-    "price": 2279,
+    "price": 1139,
     "variants": [
       {
         "presentation": "5 mg",
@@ -3703,7 +4020,9 @@ export const fallbackProducts = [
         "stock": 40,
         "batch_number": "NP-SLUP5-2601",
         "id": "0d0c6a06-f74b-4c09-8aa2-5f06c0257343",
-        "sku": "SLUPP332-5MG"
+        "sku": "SLUPP332-5MG",
+        "commission_cap": 0.35,
+        "distributor_eligible": true
       }
     ],
     "tiers": [],
@@ -3731,7 +4050,7 @@ export const fallbackProducts = [
     "presentation": "10 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
-    "price": 8229,
+    "price": 4799,
     "variants": [
       {
         "presentation": "10 mg",
@@ -3739,7 +4058,9 @@ export const fallbackProducts = [
         "stock": 40,
         "batch_number": "NP-SURV10-2601",
         "id": "25142e73-bfa6-4e85-bf86-da5251bc8d06",
-        "sku": "SURVODUTIDE-10MG"
+        "sku": "SURVODUTIDE-10MG",
+        "commission_cap": 0.35,
+        "distributor_eligible": true
       }
     ],
     "tiers": [],
@@ -3773,15 +4094,17 @@ export const fallbackProducts = [
     "presentation": "10 mg – 120 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
-    "price": 1219,
+    "price": 1749,
     "variants": [
       {
         "presentation": "10 mg",
-        "price": 2139,
+        "price": 1749,
         "stock": 40,
         "batch_number": "NP-TIRZ10-2601",
         "id": "289d914f-67f2-472d-83c1-3809dc0ee225",
-        "sku": "TIRZEPATIDA-10MG"
+        "sku": "TIRZEPATIDA-10MG",
+        "commission_cap": 0.4,
+        "distributor_eligible": true
       },
       {
         "presentation": "20 mg",
@@ -3789,15 +4112,19 @@ export const fallbackProducts = [
         "stock": 40,
         "batch_number": "NP-TIRZ20-2601",
         "id": "e7856e6b-dcee-4a94-8126-2528113cf4d5",
-        "sku": "TIRZEPATIDA-20MG"
+        "sku": "TIRZEPATIDA-20MG",
+        "commission_cap": 0.4,
+        "distributor_eligible": true
       },
       {
         "presentation": "30 mg",
-        "price": 3099,
+        "price": 2559,
         "stock": 40,
         "batch_number": "NP-TIRZ30-2601",
         "id": "e5c68138-7652-4036-91c9-8c51f8c379f6",
-        "sku": "TIRZEPATIDA-30MG"
+        "sku": "TIRZEPATIDA-30MG",
+        "commission_cap": 0.4,
+        "distributor_eligible": true
       },
       {
         "presentation": "40 mg",
@@ -3805,7 +4132,9 @@ export const fallbackProducts = [
         "stock": 40,
         "batch_number": "NP-TIRZ40-2601",
         "id": "c5e91908-e427-4af6-b631-b33ae4846c61",
-        "sku": "TIRZEPATIDA-40MG"
+        "sku": "TIRZEPATIDA-40MG",
+        "commission_cap": 0.4,
+        "distributor_eligible": true
       },
       {
         "presentation": "50 mg",
@@ -3813,15 +4142,19 @@ export const fallbackProducts = [
         "stock": 40,
         "batch_number": "NP-TIRZ50-2601",
         "id": "e94e4156-f26e-40b8-aecc-a5cd1583a3a1",
-        "sku": "TIRZEPATIDA-50MG"
+        "sku": "TIRZEPATIDA-50MG",
+        "commission_cap": 0.35,
+        "distributor_eligible": true
       },
       {
         "presentation": "60 mg",
-        "price": 4579,
+        "price": 3449,
         "stock": 40,
         "batch_number": "NP-TIRZ60-2601",
         "id": "0169ea33-313d-49c8-9681-866f55f854f7",
-        "sku": "TIRZEPATIDA-60MG"
+        "sku": "TIRZEPATIDA-60MG",
+        "commission_cap": 0.4,
+        "distributor_eligible": true
       },
       {
         "presentation": "100 mg",
@@ -3829,15 +4162,19 @@ export const fallbackProducts = [
         "stock": 40,
         "batch_number": "NP-TIRZ100-2601",
         "id": "fcd44c95-cc87-439f-aa1c-daa14c7202cd",
-        "sku": "TIRZEPATIDA-100MG"
+        "sku": "TIRZEPATIDA-100MG",
+        "commission_cap": 0.35,
+        "distributor_eligible": true
       },
       {
         "presentation": "120 mg",
-        "price": 4899,
+        "price": 4889,
         "stock": 40,
         "batch_number": "NP-TIRZ120-2601",
         "id": "0f8e3f1e-8bc1-413e-aeca-07b16352410a",
-        "sku": "TIRZEPATIDA-120MG"
+        "sku": "TIRZEPATIDA-120MG",
+        "commission_cap": 0.3,
+        "distributor_eligible": true
       }
     ],
     "tiers": [],
@@ -3871,7 +4208,7 @@ export const fallbackProducts = [
     "presentation": "10 mg – 16 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
-    "price": 959,
+    "price": 1579,
     "variants": [
       {
         "presentation": "10 mg",
@@ -3879,7 +4216,9 @@ export const fallbackProducts = [
         "stock": 40,
         "batch_number": "NP-ARA210-2601",
         "id": "17e9db60-aea1-43d4-b37e-7e0a78389f6c",
-        "sku": "ARA290-10MG"
+        "sku": "ARA290-10MG",
+        "commission_cap": 0.4,
+        "distributor_eligible": true
       },
       {
         "presentation": "16 mg",
@@ -3887,7 +4226,9 @@ export const fallbackProducts = [
         "stock": 40,
         "batch_number": "NP-ARA216-2601",
         "id": "582df66d-c396-44e1-994a-adf34e693203",
-        "sku": "ARA290-16MG"
+        "sku": "ARA290-16MG",
+        "commission_cap": 0.35,
+        "distributor_eligible": true
       }
     ],
     "tiers": [],
@@ -3921,7 +4262,7 @@ export const fallbackProducts = [
     "presentation": "2 mg – 20 mg",
     "form": "Liofilizado",
     "purity": "99.4%",
-    "price": 609,
+    "price": 519,
     "variants": [
       {
         "presentation": "2 mg",
@@ -3929,7 +4270,9 @@ export const fallbackProducts = [
         "stock": 40,
         "batch_number": "NP-BPC2-2601",
         "id": "9ba48165-7a02-473c-a089-6a9a09af5da1",
-        "sku": "BPC157-2MG"
+        "sku": "BPC157-2MG",
+        "commission_cap": 0.3,
+        "distributor_eligible": true
       },
       {
         "presentation": "5 mg",
@@ -3937,7 +4280,9 @@ export const fallbackProducts = [
         "stock": 40,
         "batch_number": "NP-BPC5-2601",
         "id": "db5309f7-6dde-4c26-9384-016fb7e43792",
-        "sku": "BPC157-5MG"
+        "sku": "BPC157-5MG",
+        "commission_cap": 0.4,
+        "distributor_eligible": true
       },
       {
         "presentation": "10 mg",
@@ -3945,7 +4290,9 @@ export const fallbackProducts = [
         "stock": 40,
         "batch_number": "NP-BPC10-2601",
         "id": "97721d83-199c-4fa6-84c4-b25ada733ca3",
-        "sku": "BPC157-10MG"
+        "sku": "BPC157-10MG",
+        "commission_cap": 0.4,
+        "distributor_eligible": true
       },
       {
         "presentation": "20 mg",
@@ -3953,7 +4300,9 @@ export const fallbackProducts = [
         "stock": 40,
         "batch_number": "NP-BPC20-2601",
         "id": "d390e21b-2ac7-45e9-9520-ae0d8e807527",
-        "sku": "BPC157-20MG"
+        "sku": "BPC157-20MG",
+        "commission_cap": 0.25,
+        "distributor_eligible": false
       }
     ],
     "tiers": [],
@@ -3988,7 +4337,7 @@ export const fallbackProducts = [
     "presentation": "20 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
-    "price": 1759,
+    "price": 2399,
     "variants": [
       {
         "presentation": "20 mg",
@@ -3996,7 +4345,9 @@ export const fallbackProducts = [
         "stock": 40,
         "batch_number": "NP-BPC120-2601",
         "id": "457f70ba-93dc-4290-982d-0ed4e679fb41",
-        "sku": "BPC15710MGTB50-20MG"
+        "sku": "BPC15710MGTB50-20MG",
+        "commission_cap": 0.35,
+        "distributor_eligible": true
       }
     ],
     "tiers": [],
@@ -4031,15 +4382,17 @@ export const fallbackProducts = [
     "presentation": "10 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
-    "price": 1389,
+    "price": 1399,
     "variants": [
       {
         "presentation": "10 mg",
-        "price": 1759,
+        "price": 1399,
         "stock": 40,
         "batch_number": "NP-BPC110-2601",
         "id": "504f28a3-aad1-45eb-8c5b-5606f8ab0a58",
-        "sku": "BPC1575MGTB500-10MG"
+        "sku": "BPC1575MGTB500-10MG",
+        "commission_cap": 0.4,
+        "distributor_eligible": true
       }
     ],
     "tiers": [],
@@ -4073,7 +4426,7 @@ export const fallbackProducts = [
     "presentation": "1 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
-    "price": 8059,
+    "price": 4019,
     "variants": [
       {
         "presentation": "1 mg",
@@ -4081,7 +4434,9 @@ export const fallbackProducts = [
         "stock": 40,
         "batch_number": "NP-FOLL1-2601",
         "id": "8361b994-45e4-488a-8ff3-110b5e24a031",
-        "sku": "FOLLISTATIN-1MG"
+        "sku": "FOLLISTATIN-1MG",
+        "commission_cap": 0.3,
+        "distributor_eligible": true
       }
     ],
     "tiers": [],
@@ -4115,7 +4470,7 @@ export const fallbackProducts = [
     "presentation": "1 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
-    "price": 5779,
+    "price": 2889,
     "variants": [
       {
         "presentation": "1 mg",
@@ -4123,7 +4478,9 @@ export const fallbackProducts = [
         "stock": 40,
         "batch_number": "NP-GDF81-2601",
         "id": "a1fb6f1e-cd1f-4807-a4ab-72b9dfaa7615",
-        "sku": "GDF8-1MG"
+        "sku": "GDF8-1MG",
+        "commission_cap": 0.35,
+        "distributor_eligible": true
       }
     ],
     "tiers": [],
@@ -4160,7 +4517,9 @@ export const fallbackProducts = [
         "stock": 40,
         "batch_number": "NP-GLOW70-2601",
         "id": "e1059e7b-e38e-4fd2-89f9-c0a5e6b7a0f1",
-        "sku": "GLOWBPC15710MG-70MG"
+        "sku": "GLOWBPC15710MG-70MG",
+        "commission_cap": 0.3,
+        "distributor_eligible": true
       }
     ],
     "tiers": [],
@@ -4203,7 +4562,9 @@ export const fallbackProducts = [
         "stock": 40,
         "batch_number": "NP-KLOW80-2601",
         "id": "b09d7657-085a-4777-9271-dc440496fce9",
-        "sku": "KLOWBPCGHKCUTB-80MG"
+        "sku": "KLOWBPCGHKCUTB-80MG",
+        "commission_cap": 0.3,
+        "distributor_eligible": true
       }
     ],
     "tiers": [],
@@ -4237,7 +4598,7 @@ export const fallbackProducts = [
     "presentation": "5 mg – 10 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
-    "price": 699,
+    "price": 1319,
     "variants": [
       {
         "presentation": "5 mg",
@@ -4245,15 +4606,19 @@ export const fallbackProducts = [
         "stock": 40,
         "batch_number": "NP-KPV5-2601",
         "id": "91b44b60-1d92-46fe-bf55-2998498f9df6",
-        "sku": "KPV-5MG"
+        "sku": "KPV-5MG",
+        "commission_cap": 0.4,
+        "distributor_eligible": true
       },
       {
         "presentation": "10 mg",
-        "price": 1799,
+        "price": 1399,
         "stock": 40,
         "batch_number": "NP-KPV10-2601",
         "id": "a8512d3a-97fa-4100-913d-ea253780eff7",
-        "sku": "KPV-10MG"
+        "sku": "KPV-10MG",
+        "commission_cap": 0.4,
+        "distributor_eligible": true
       }
     ],
     "tiers": [],
@@ -4287,7 +4652,7 @@ export const fallbackProducts = [
     "presentation": "5 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
-    "price": 1639,
+    "price": 1799,
     "variants": [
       {
         "presentation": "5 mg",
@@ -4295,7 +4660,9 @@ export const fallbackProducts = [
         "stock": 40,
         "batch_number": "NP-LL375-2601",
         "id": "36e337ce-8b7a-497b-aa01-7c5bc853e277",
-        "sku": "LL37-5MG"
+        "sku": "LL37-5MG",
+        "commission_cap": 0.4,
+        "distributor_eligible": true
       }
     ],
     "tiers": [],
@@ -4329,7 +4696,7 @@ export const fallbackProducts = [
     "presentation": "5 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
-    "price": 1929,
+    "price": 959,
     "variants": [
       {
         "presentation": "5 mg",
@@ -4337,7 +4704,9 @@ export const fallbackProducts = [
         "stock": 40,
         "batch_number": "NP-PTD15-2601",
         "id": "d8253c6d-928d-4845-9dd1-c11f9f82ea87",
-        "sku": "PTD1-5MG"
+        "sku": "PTD1-5MG",
+        "commission_cap": 0.3,
+        "distributor_eligible": true
       }
     ],
     "tiers": [],
@@ -4365,7 +4734,7 @@ export const fallbackProducts = [
     "presentation": "1 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
-    "price": 4519,
+    "price": 2259,
     "variants": [
       {
         "presentation": "1 mg",
@@ -4373,7 +4742,9 @@ export const fallbackProducts = [
         "stock": 40,
         "batch_number": "NP-PTDD1-2601",
         "id": "81cc0bc4-a2f9-4a41-99f4-86ec46b7ed4a",
-        "sku": "PTDDBM-1MG"
+        "sku": "PTDDBM-1MG",
+        "commission_cap": 0.35,
+        "distributor_eligible": true
       }
     ],
     "tiers": [],
@@ -4401,7 +4772,7 @@ export const fallbackProducts = [
     "presentation": "2 mg – 10 mg",
     "form": "Liofilizado",
     "purity": "99.1%",
-    "price": 1089,
+    "price": 699,
     "variants": [
       {
         "presentation": "2 mg",
@@ -4409,7 +4780,9 @@ export const fallbackProducts = [
         "stock": 40,
         "batch_number": "NP-TB2-2601",
         "id": "a8c10f43-ab4d-4c85-9f2a-7eeae9fb9fe6",
-        "sku": "TB500-2MG"
+        "sku": "TB500-2MG",
+        "commission_cap": 0.3,
+        "distributor_eligible": true
       },
       {
         "presentation": "5 mg",
@@ -4417,7 +4790,9 @@ export const fallbackProducts = [
         "stock": 40,
         "batch_number": "NP-TB5-2601",
         "id": "0dd5eec2-2a0e-4384-b7d3-1c32f1d490cb",
-        "sku": "TB500-5MG"
+        "sku": "TB500-5MG",
+        "commission_cap": 0.4,
+        "distributor_eligible": true
       },
       {
         "presentation": "10 mg",
@@ -4425,7 +4800,9 @@ export const fallbackProducts = [
         "stock": 40,
         "batch_number": "NP-TB10-2601",
         "id": "7ca299ad-2828-439e-92b7-0b77e280b6d4",
-        "sku": "TB500-10MG"
+        "sku": "TB500-10MG",
+        "commission_cap": 0.25,
+        "distributor_eligible": false
       }
     ],
     "tiers": [],
@@ -4459,7 +4836,7 @@ export const fallbackProducts = [
     "presentation": "2 mg – 5 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
-    "price": 1199,
+    "price": 659,
     "variants": [
       {
         "presentation": "2 mg",
@@ -4467,7 +4844,9 @@ export const fallbackProducts = [
         "stock": 40,
         "batch_number": "NP-GONA2-2601",
         "id": "3731505f-b8e0-4105-bf2c-c30b9bf73c78",
-        "sku": "GONADORELINACE-2MG"
+        "sku": "GONADORELINACE-2MG",
+        "commission_cap": 0.35,
+        "distributor_eligible": true
       },
       {
         "presentation": "5 mg",
@@ -4475,7 +4854,9 @@ export const fallbackProducts = [
         "stock": 40,
         "batch_number": "NP-GONA5-2601",
         "id": "23040e1b-4339-4b30-b62b-f4d50db9805f",
-        "sku": "GONADORELINACE-5MG"
+        "sku": "GONADORELINACE-5MG",
+        "commission_cap": 0.3,
+        "distributor_eligible": true
       }
     ],
     "tiers": [],
@@ -4509,7 +4890,7 @@ export const fallbackProducts = [
     "presentation": "2,000IU – 10,000IU",
     "form": "Liofilizado",
     "purity": "99.0%",
-    "price": 1479,
+    "price": 469,
     "variants": [
       {
         "presentation": "1,000 IU",
@@ -4517,7 +4898,9 @@ export const fallbackProducts = [
         "stock": 40,
         "batch_number": "NP-HCG2000-2601",
         "id": "2681f24c-6203-4813-80ad-9c7b88871311",
-        "sku": "HCG-1000IU"
+        "sku": "HCG-1000IU",
+        "commission_cap": 0.3,
+        "distributor_eligible": true
       },
       {
         "presentation": "2,000IU",
@@ -4525,7 +4908,9 @@ export const fallbackProducts = [
         "stock": 40,
         "batch_number": "NP-HCG2000-2601",
         "id": "799774c2-d701-4db3-98e9-1a9a4b250296",
-        "sku": "HCG-2000IU"
+        "sku": "HCG-2000IU",
+        "commission_cap": 0.25,
+        "distributor_eligible": false
       },
       {
         "presentation": "5,000IU",
@@ -4533,7 +4918,9 @@ export const fallbackProducts = [
         "stock": 40,
         "batch_number": "NP-HCG5000-2601",
         "id": "5ad5ffaa-9242-49c5-b869-88baceae9785",
-        "sku": "HCG-5000IU"
+        "sku": "HCG-5000IU",
+        "commission_cap": 0.4,
+        "distributor_eligible": true
       },
       {
         "presentation": "10,000IU",
@@ -4541,7 +4928,9 @@ export const fallbackProducts = [
         "stock": 40,
         "batch_number": "NP-HCG10000-2601",
         "id": "9477d32e-5227-4d2d-b5e5-6bc688adee92",
-        "sku": "HCG-10000IU"
+        "sku": "HCG-10000IU",
+        "commission_cap": 0.25,
+        "distributor_eligible": false
       }
     ],
     "tiers": [],
@@ -4574,7 +4963,7 @@ export const fallbackProducts = [
     "presentation": "75 IU",
     "form": "Liofilizado",
     "purity": "99.0%",
-    "price": 2109,
+    "price": 1139,
     "variants": [
       {
         "presentation": "75 IU",
@@ -4582,7 +4971,9 @@ export const fallbackProducts = [
         "stock": 40,
         "batch_number": "NP-HMG75-2601",
         "id": "aa391e71-680a-4ced-9103-c4c199b26111",
-        "sku": "HMG-75IU"
+        "sku": "HMG-75IU",
+        "commission_cap": 0.35,
+        "distributor_eligible": true
       }
     ],
     "tiers": [],
@@ -4618,7 +5009,9 @@ export const fallbackProducts = [
         "stock": 40,
         "batch_number": "NP-PT10-2601",
         "id": "c2dfec75-f313-4f8b-aa37-8786a6259315",
-        "sku": "PT141-10MG"
+        "sku": "PT141-10MG",
+        "commission_cap": 0.3,
+        "distributor_eligible": true
       }
     ],
     "tiers": [],
@@ -4652,7 +5045,7 @@ export const fallbackProducts = [
     "presentation": "2 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
-    "price": 1409,
+    "price": 699,
     "variants": [
       {
         "presentation": "2 mg",
@@ -4660,7 +5053,9 @@ export const fallbackProducts = [
         "stock": 40,
         "batch_number": "NP-TRIP2-2601",
         "id": "50b8ec4d-9ed9-4bd8-98bb-d9920a7fa57c",
-        "sku": "TRIPTORELINACE-2MG"
+        "sku": "TRIPTORELINACE-2MG",
+        "commission_cap": 0.3,
+        "distributor_eligible": true
       }
     ],
     "tiers": [],
@@ -4692,25 +5087,29 @@ export const fallbackProducts = [
     "short_description": "Diluyente estéril de laboratorio con conservador.",
     "description": "Insumo de laboratorio: agua estéril con alcohol bencílico como conservador, utilizada para reconstituir compuestos liofilizados en trabajo experimental. No es un péptido. Solo para uso en investigación (RUO).",
     "presentation": "3 mL – 10 mL",
-    "form": "Liofilizado",
+    "form": "Solución",
     "purity": "99.0%",
-    "price": 199,
+    "price": 179,
     "variants": [
       {
         "presentation": "3 mL",
-        "price": 199,
+        "price": 179,
         "stock": 40,
         "batch_number": "NP-AGUA3-2601",
         "id": "7f2299c4-4d43-4f6c-a0c8-3e3ebb85c01e",
-        "sku": "AGUABACTERIOST-3ML"
+        "sku": "AGUABACTERIOST-3ML",
+        "commission_cap": 0.4,
+        "distributor_eligible": true
       },
       {
         "presentation": "10 mL",
-        "price": 349,
+        "price": 239,
         "stock": 40,
         "batch_number": "NP-AGUA10-2601",
         "id": "38e8b549-c62f-474d-8810-ad8e6de08c12",
-        "sku": "AGUABACTERIOST-10ML"
+        "sku": "AGUABACTERIOST-10ML",
+        "commission_cap": 0.4,
+        "distributor_eligible": true
       }
     ],
     "tiers": [],
@@ -4736,9 +5135,9 @@ export const fallbackProducts = [
     "short_description": "Solución de cianocobalamina para uso en laboratorio.",
     "description": "Solución de vitamina B12 (cianocobalamina) a 1 mg/mL, utilizada como reactivo y control en estudios de metabolismo de un carbono y en ensayos bioquímicos. Solo para uso en investigación (RUO).",
     "presentation": "1 mg",
-    "form": "Liofilizado",
+    "form": "Solución",
     "purity": "99.0%",
-    "price": 2319,
+    "price": 1159,
     "variants": [
       {
         "presentation": "1 mg/mL (10 mL)",
@@ -4746,7 +5145,9 @@ export const fallbackProducts = [
         "stock": 40,
         "batch_number": "NP-B121-2601",
         "id": "bad4695a-96ca-4ed6-8215-c04f01f8df17",
-        "sku": "B121MGML-1MGML10ML"
+        "sku": "B121MGML-1MGML10ML",
+        "commission_cap": 0.35,
+        "distributor_eligible": true
       }
     ],
     "tiers": [],
@@ -4780,7 +5181,7 @@ export const fallbackProducts = [
     "presentation": "10 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
-    "price": 1409,
+    "price": 699,
     "variants": [
       {
         "presentation": "10 mg",
@@ -4788,7 +5189,9 @@ export const fallbackProducts = [
         "stock": 40,
         "batch_number": "NP-VITA10-2601",
         "id": "63699f2e-cd73-427e-93e0-3c5e9c4bd00d",
-        "sku": "VITAMINAB12-10MG"
+        "sku": "VITAMINAB12-10MG",
+        "commission_cap": 0.3,
+        "distributor_eligible": true
       }
     ],
     "tiers": [],
@@ -4820,17 +5223,19 @@ export const fallbackProducts = [
     "short_description": "Disolvente de laboratorio para péptidos poco solubles.",
     "description": "Insumo de laboratorio: solución diluida de ácido acético utilizada como disolvente para reconstituir péptidos de baja solubilidad en agua. No es un péptido. Solo para uso en investigación (RUO).",
     "presentation": "3 mL – 10 mL",
-    "form": "Liofilizado",
+    "form": "Solución",
     "purity": "99.0%",
-    "price": 199,
+    "price": 169,
     "variants": [
       {
         "presentation": "3 mL",
-        "price": 179,
+        "price": 169,
         "stock": 40,
         "batch_number": "NP-CIDO3-2601",
         "id": "10072460-3496-4cac-9fb7-d98a2460699a",
-        "sku": "ACIDOACETICO-3ML"
+        "sku": "ACIDOACETICO-3ML",
+        "commission_cap": 0.35,
+        "distributor_eligible": true
       },
       {
         "presentation": "5 mL",
@@ -4838,7 +5243,9 @@ export const fallbackProducts = [
         "stock": 40,
         "batch_number": "NP-CIDO5-2601",
         "id": "66f91f7f-5c40-4da9-98f2-3a5a49af7103",
-        "sku": "ACIDOACETICO-5ML"
+        "sku": "ACIDOACETICO-5ML",
+        "commission_cap": 0.3,
+        "distributor_eligible": true
       },
       {
         "presentation": "10 mL",
@@ -4846,7 +5253,9 @@ export const fallbackProducts = [
         "stock": 40,
         "batch_number": "NP-CIDO10-2601",
         "id": "7aea7b2e-3d27-49f4-9d6a-54d4326e5496",
-        "sku": "ACIDOACETICO-10ML"
+        "sku": "ACIDOACETICO-10ML",
+        "commission_cap": 0.35,
+        "distributor_eligible": true
       }
     ],
     "tiers": [],
@@ -4886,3 +5295,16 @@ export const getFallbackProductBySlug = (slug) => {
   return candidatos[0];
 };
 export const getFallbackProductsByCategory = (category) => fallbackProducts.filter((product) => (product.categories || [product.category]).includes(category));
+
+export const CATEGORY_COUNTS = (() => {
+  const n = {};
+  for (const p of fallbackProducts) {
+    for (const c of (p.categories || [p.category])) {
+      if (c) n[c] = (n[c] || 0) + 1;
+    }
+  }
+  return n;
+})();
+
+export const VISIBLE_CATEGORIES = fallbackCategories.filter(
+  (c) => (CATEGORY_COUNTS[c.slug] || 0) > 0 && !HIDDEN_CATEGORIES.includes(c.slug));

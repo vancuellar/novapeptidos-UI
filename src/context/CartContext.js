@@ -2,11 +2,47 @@ import React, { createContext, useContext, useState, useEffect } from 'react';
 import { toast } from 'sonner';
 import { track } from '@/lib/track';
 import api from '@/lib/api';
+import { useAuth } from '@/context/AuthContext';
 import { productImage } from '@/data/productImages';
+import { fallbackProducts } from '@/data/fallbackCatalog';
 
 const CartContext = createContext(null);
 
 export const useCart = () => useContext(CartContext);
+
+// Insumos (agua bacteriostática, viales, jeringas): NUNCA entran a ningún
+// descuento. Se venden casi al costo (Christian, 2026-07-25). Misma lista que
+// NO_DISCOUNT_CATEGORIES en el backend.
+const NO_DISCOUNT_CATEGORIES = ['suministros', 'accesorios'];
+
+// Tope de comisión POR PRODUCTO: cuánto descuento aguanta sin comerse el ROI.
+// Se busca por id/SKU en el catálogo, no en lo que quedó guardado en el carrito,
+// para que un carrito viejo del navegador también calcule bien.
+const CAPS = (() => {
+  const map = {};
+  for (const p of fallbackProducts) {
+    const cats = p.categories || [p.category];
+    const blocked = cats.some((c) => NO_DISCOUNT_CATEGORIES.includes(c));
+    for (const v of p.variants || []) {
+      const info = {
+        cap: v.commission_cap == null ? 0.5 : v.commission_cap,
+        eligible: v.distributor_eligible !== false && !blocked,
+      };
+      if (v.id) map[v.id] = info;
+      if (v.sku) map[v.sku] = info;
+    }
+  }
+  return map;
+})();
+
+/** Descuento REAL de un renglón: el menor entre el pedido y el tope del producto.
+ *  0 si el producto no participa (insumos, HGH neto, no elegibles). */
+export const itemDiscountRate = (item, rate) => {
+  if (isNetPriceItem(item)) return 0;
+  const info = CAPS[item.product_id] || CAPS[item.sku] || { cap: 0.5, eligible: true };
+  if (!info.eligible) return 0;
+  return Math.min(rate || 0, info.cap);
+};
 
 // Productos a PRECIO NETO (sin descuento alguno, regla de Christian 2026-07-22):
 // la familia HGH — no así el HGH Fragment, que sí tiene margen.
@@ -75,14 +111,33 @@ export const CartProvider = ({ children }) => {
   // Familia HGH (no el Fragment): precio neto SIEMPRE — su margen no aguanta
   // ningún descuento (Christian, 2026-07-22). El servidor aplica la misma regla.
   const discountableSubtotal = items
-    .filter((i) => !isNetPriceItem(i))
+    .filter((i) => itemDiscountRate(i, 1) > 0)
     .reduce((sum, i) => sum + i.price * i.quantity, 0);
   const tier = DISCOUNT_TIERS.find((d) => discountableSubtotal >= d.min) || DISCOUNT_TIERS[DISCOUNT_TIERS.length - 1];
   const autoRate = items.length ? tier.rate : 0;
 
+  // COMPRA PROPIA de un distribuidor: compra para sí mismo con SU comisión máxima
+  // como descuento (Christian, 2026-07-25). Ese descuento ES su comisión, cobrada
+  // por adelantado — no gana comisión encima. Sigue acotado al tope de cada producto.
+  const { user } = useAuth();
+  const [selfRate, setSelfRate] = useState(0);
+  useEffect(() => {
+    if (!user || user.role !== 'distributor') { setSelfRate(0); return; }
+    if (typeof user.self_discount_rate === 'number') { setSelfRate(user.self_discount_rate); return; }
+    // El login devuelve un usuario mínimo; pedimos su tasa a /auth/me.
+    api.get('/auth/me').then((r) => setSelfRate(r.data.self_discount_rate || 0)).catch(() => {});
+  }, [user]);
+
   const [distCode, setDistCode] = useState(() => localStorage.getItem('np_dist_code') || '');
   const [distRate, setDistRate] = useState(() => Number(localStorage.getItem('np_dist_rate')) || 0);
-  useEffect(() => { localStorage.setItem('np_dist_code', distCode); localStorage.setItem('np_dist_rate', String(distRate)); }, [distCode, distRate]);
+  // Monto mínimo del cupón (los de recuperación de carrito exigen comprar lo mismo
+  // o más). Se guarda para que el carrito no muestre un descuento que no se va a cobrar.
+  const [codeMin, setCodeMin] = useState(() => Number(localStorage.getItem('np_dist_min')) || 0);
+  useEffect(() => {
+    localStorage.setItem('np_dist_code', distCode);
+    localStorage.setItem('np_dist_rate', String(distRate));
+    localStorage.setItem('np_dist_min', String(codeMin));
+  }, [distCode, distRate, codeMin]);
 
   const applyDistCode = async (code) => {
     const c = (code || '').trim().toUpperCase();
@@ -91,23 +146,52 @@ export const CartProvider = ({ children }) => {
       const r = await api.get(`/discount-code/${encodeURIComponent(c)}`);
       setDistCode(r.data.code);
       setDistRate(r.data.discount_rate || 0);
-      toast.success(`Código ${r.data.code} aplicado`, { description: `${Math.round((r.data.discount_rate || 0) * 100)}% de descuento` });
+      setCodeMin(Number(r.data.min_order) || 0);
+      const min = Number(r.data.min_order) || 0;
+      toast.success(`Código ${r.data.code} aplicado`, {
+        description: min > 0
+          ? `${Math.round((r.data.discount_rate || 0) * 100)}% en compras desde $${min.toLocaleString('es-MX')}`
+          : `${Math.round((r.data.discount_rate || 0) * 100)}% de descuento`,
+      });
       return true;
     } catch {
       toast.error('Código no válido');
       return false;
     }
   };
-  const clearDistCode = () => { setDistCode(''); setDistRate(0); };
+  const clearDistCode = () => { setDistCode(''); setDistRate(0); setCodeMin(0); };
 
-  const codeRate = items.length && distCode ? distRate : 0;
-  const discountRate = Math.max(autoRate, codeRate);
-  const discountSource = codeRate > autoRate ? 'code' : 'auto';
-  const discount = Math.round(discountableSubtotal * discountRate);
+  // Si el cupón exige un mínimo y el carrito no llega, NO se aplica — igual que
+  // en el servidor, para que el total en pantalla sea el que se cobra.
+  const codeMinMet = !codeMin || discountableSubtotal >= codeMin;
+  const codeRate = items.length && distCode && codeMinMet ? distRate : 0;
+  const ownRate = items.length ? selfRate : 0;
+  const discountRate = Math.max(autoRate, codeRate, ownRate);
+  const discountSource = ownRate >= discountRate && ownRate > 0 ? 'self'
+    : (codeRate > autoRate ? 'code' : 'auto');
+  // Renglón por renglón: cada producto recibe lo que su tope aguanta, ni más.
+  const discount = items.reduce(
+    (sum, i) => sum + Math.round(i.price * i.quantity * itemDiscountRate(i, discountRate)), 0);
+  // Los que recibieron MENOS de lo pedido, para avisarle al cliente.
+  const cappedItems = items
+    .map((i) => ({ ...i, applied: itemDiscountRate(i, discountRate) }))
+    .filter((i) => i.applied < discountRate - 1e-9);
   const nextTier = discountableSubtotal < 35000 ? { min: 35000, rate: 0.15 } : null;
 
+  // ENVÍO: gratis a partir de cierto monto, cobrado abajo de eso. Los números los
+  // manda el servidor para que la pantalla enseñe lo mismo que se cobra.
+  const [envio, setEnvio] = useState({ shipping_flat: 250, free_shipping_from: 2500 });
+  useEffect(() => {
+    api.get('/payments/config')
+      .then((r) => { if (r.data?.free_shipping_from) setEnvio(r.data); })
+      .catch(() => {});
+  }, []);
+  const pagaMercancia = subtotal - discount;
+  const shipping = items.length && pagaMercancia < envio.free_shipping_from ? envio.shipping_flat : 0;
+  const faltaParaEnvioGratis = shipping > 0 ? envio.free_shipping_from - pagaMercancia : 0;
+
   return (
-    <CartContext.Provider value={{ items, addItem, updateQty, removeItem, clearCart, subtotal, count, discount, discountRate, discountSource, nextTier, distCode, distRate, applyDistCode, clearDistCode }}>
+    <CartContext.Provider value={{ items, addItem, updateQty, removeItem, clearCart, subtotal, count, discount, discountRate, discountSource, cappedItems, nextTier, shipping, faltaParaEnvioGratis, envioGratisDesde: envio.free_shipping_from, distCode, distRate, codeMin, codeMinMet, applyDistCode, clearDistCode }}>
       {children}
     </CartContext.Provider>
   );

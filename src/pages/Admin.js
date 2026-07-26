@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import { Filter, Eye, LayoutDashboard, Package, ShoppingBag, Plus, Pencil, Trash2, DollarSign, Users, Clock, TrendingUp, MapPin, Phone, Receipt, Store, Copy, Boxes, Truck, RefreshCw, MailCheck, Ban, Megaphone } from 'lucide-react';
+import { Filter, Eye, LayoutDashboard, Package, ShoppingBag, Plus, Pencil, Trash2, DollarSign, Users, Clock, TrendingUp, MapPin, Phone, Receipt, Store, Copy, Boxes, Truck, RefreshCw, MailCheck, Ban, Megaphone, BarChart3, Upload, ShoppingCart } from 'lucide-react';
 import { fallbackProducts } from '@/data/fallbackCatalog';
 import { ResponsiveContainer, AreaChart, Area, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip } from 'recharts';
 import { Button } from '@/components/ui/button';
@@ -81,12 +81,18 @@ const Admin = () => {
   const [customers, setCustomers] = useState([]);
   const [analytics, setAnalytics] = useState(null);
   const [funnel, setFunnel] = useState(null);
+  const [orderOpen, setOrderOpen] = useState(null);   // pedido abierto para prepararlo
+  const [orderKill, setOrderKill] = useState(null);   // pedido que se va a BORRAR
+  const [intentos, setIntentos] = useState(null);    // carritos que no se cerraron
+  const [meta, setMeta] = useState(null);
+  const [metaBusy, setMetaBusy] = useState(false);
   const [funnelDays, setFunnelDays] = useState(30);
   const [customerOpen, setCustomerOpen] = useState(null);
   const [params, setParams] = useSearchParams();
   const [customerDetail, setCustomerDetail] = useState(null);   // ficha extendida del cliente abierto
   const [couponForm, setCouponForm] = useState({ pct: 10, days: 30, note: '' });
   const [giftForm, setGiftForm] = useState({ points: 100, note: '' });
+  const [personalPct, setPersonalPct] = useState(0);
   const [distOpen, setDistOpen] = useState(null);               // ficha del distribuidor {detalle}
   const [shippingOpen, setShippingOpen] = useState(null);
   const [repurchase, setRepurchase] = useState([]);
@@ -127,6 +133,8 @@ const Admin = () => {
     api.get('/admin/customers').then((r) => setCustomers(r.data)).catch(() => {});
     api.get('/admin/analytics').then((r) => setAnalytics(r.data)).catch(() => {});
     api.get('/admin/funnel?days=30').then((r) => setFunnel(r.data)).catch(() => {});
+    api.get('/admin/meta/dashboard').then((r) => setMeta(r.data)).catch(() => {});
+    api.get('/admin/intentos').then((r) => setIntentos(r.data)).catch(() => {});
     api.get('/admin/distributors').then((r) => setDistributors(r.data)).catch(() => {});
     api.get('/admin/distributor-applications').then((r) => setApplications(r.data)).catch(() => {});
     api.get('/stock').then((r) => setStockMap(r.data || {})).catch(() => {});
@@ -235,7 +243,11 @@ const Admin = () => {
   const openCustomerProfile = async (c) => {
     setCustomerOpen(c); setCustomerDetail(null);
     setCouponForm({ pct: 10, days: 30, note: '' }); setGiftForm({ points: 100, note: '' });
-    try { const r = await api.get(`/admin/customers/${c.id}/detail`); setCustomerDetail(r.data); } catch {}
+    try {
+      const r = await api.get(`/admin/customers/${c.id}/detail`);
+      setCustomerDetail(r.data);
+      setPersonalPct(Math.round((r.data.customer?.personal_discount_rate || 0) * 100));
+    } catch {}
   };
   const sendCoupon = async () => {
     try {
@@ -252,6 +264,51 @@ const Admin = () => {
       toast.success(t('admin.ficha.pointsSent', { balance: r.data.points_balance }));
       const d = await api.get(`/admin/customers/${customerOpen.id}/detail`); setCustomerDetail(d.data);
     } catch (e) { toast.error(e.response?.data?.detail || 'Error'); }
+  };
+  const savePersonalDiscount = async () => {
+    try {
+      const r = await api.put(`/admin/customers/${customerOpen.id}/personal-discount`,
+        { rate: (Number(personalPct) || 0) / 100 });
+      toast.success(r.data.personal_discount_rate > 0
+        ? `${customerOpen.name}: ${Math.round(r.data.personal_discount_rate * 100)}% permanente`
+        : `${customerOpen.name}: trato especial quitado`);
+      const d = await api.get(`/admin/customers/${customerOpen.id}/detail`); setCustomerDetail(d.data);
+    } catch (e) { toast.error(e.response?.data?.detail || 'Error'); }
+  };
+  // Sube el CSV del Administrador de Anuncios. Cuando Christian consiga el token
+  // de Meta, el panel cambia solo de fuente y esto queda como respaldo.
+  const subirMetaCsv = async (file) => {
+    if (!file) return;
+    setMetaBusy(true);
+    try {
+      const csv = await file.text();
+      const r = await api.post('/admin/meta/import', { csv });
+      toast.success(t('admin.meta.imported', { n: r.data.imported }));
+      const d = await api.get('/admin/meta/dashboard'); setMeta(d.data);
+    } catch (e) { toast.error(e.response?.data?.detail || 'Error'); }
+    finally { setMetaBusy(false); }
+  };
+  // Borrar es para siempre y no hay deshacer: por eso pasa por confirmacion.
+  const deleteOrder = async () => {
+    const o = orderKill;
+    try {
+      await api.delete(`/admin/orders/${o.id}`);
+      toast.success(t('admin.order.deleted', { n: o.order_number }));
+      setOrderKill(null); setOrderOpen(null);
+      load();
+    } catch (e) { toast.error(e.response?.data?.detail || 'Error'); }
+  };
+  const recargarIntentos = () => api.get('/admin/intentos').then((r) => setIntentos(r.data)).catch(() => {});
+  const mandarOferta = async (it) => {
+    try {
+      const r = await api.post(`/admin/intentos/${it.id}/oferta`);
+      toast.success(r.data.codigo ? t('admin.try.sentCode', { code: r.data.codigo }) : t('admin.try.sentNote'));
+      recargarIntentos();
+    } catch (e) { toast.error(e.response?.data?.detail || 'Error'); }
+  };
+  const borrarIntento = async (it) => {
+    try { await api.delete(`/admin/intentos/${it.id}`); recargarIntentos(); }
+    catch (e) { toast.error(e.response?.data?.detail || 'Error'); }
   };
   const openRates = (d) => {
     setRatesForm({
@@ -358,6 +415,8 @@ const Admin = () => {
         <DashboardSidebar items={[
           { value: 'sales', icon: TrendingUp, label: t('admin.salesTab') },
           { value: 'funnel', icon: Filter, label: t('admin.funnelTab') },
+          { value: 'meta', icon: BarChart3, label: t('admin.metaTab') },
+          { value: 'intentos', icon: ShoppingCart, label: t('admin.tryTab') },
           { value: 'customers', icon: Users, label: t('admin.customersTab') },
           { value: 'distributors', icon: Store, label: t('admin.distributorsTab') },
           { value: 'orders', icon: ShoppingBag, label: t('admin.ordersTab') },
@@ -425,6 +484,182 @@ const Admin = () => {
               </TableBody>
             </Table>
           </Card>
+        </TabsContent>
+
+        <TabsContent value="intentos" className="mt-5 space-y-4">
+          <div>
+            <h3 className="font-heading font-semibold">{t('admin.try.title')}</h3>
+            <p className="text-xs text-muted-foreground max-w-2xl">{t('admin.try.sub', { min: formatMXN(intentos?.minimo_para_cupon || 2500) })}</p>
+          </div>
+
+          {!intentos || intentos.intentos.length === 0 ? (
+            <Card className="p-6" data-testid="admin-try-empty"><p className="text-sm">{t('admin.try.empty')}</p></Card>
+          ) : (
+            <>
+              <div className="grid grid-cols-3 gap-3">
+                <Card className="p-4"><div className="text-xs text-muted-foreground">{t('admin.try.pending')}</div>
+                  <div className="font-heading text-xl font-bold mt-1">{intentos.pendientes}</div></Card>
+                <Card className="p-4"><div className="text-xs text-muted-foreground">{t('admin.try.atStake')}</div>
+                  <div className="font-heading text-xl font-bold mt-1 text-[hsl(var(--primary))]">{formatMXN(intentos.valor_pendiente)}</div></Card>
+                <Card className="p-4"><div className="text-xs text-muted-foreground">{t('admin.try.recovered')}</div>
+                  <div className="font-heading text-xl font-bold mt-1 text-[hsl(var(--success))]">{intentos.recuperados}</div></Card>
+              </div>
+
+              <Card className="overflow-x-auto">
+                <Table data-testid="admin-try-table">
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead>{t('admin.table.customer')}</TableHead>
+                      <TableHead>{t('admin.try.cart')}</TableHead>
+                      <TableHead>{t('common.total')}</TableHead>
+                      <TableHead>{t('admin.table.status')}</TableHead>
+                      <TableHead>{t('admin.try.offer')}</TableHead>
+                      <TableHead className="w-12"></TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    {intentos.intentos.map((it) => (
+                      <TableRow key={it.id}>
+                        <TableCell>
+                          <div className="text-sm">{it.name || '—'}</div>
+                          <div className="text-xs text-muted-foreground break-all">{it.email}</div>
+                          {it.phone && <div className="text-xs text-muted-foreground">{it.phone}</div>}
+                        </TableCell>
+                        <TableCell className="text-xs text-muted-foreground max-w-xs">
+                          {(it.items || []).map((i) => `${i.quantity}× ${i.name}`).join(', ')}
+                        </TableCell>
+                        <TableCell className="font-medium">{formatMXN(it.total)}</TableCell>
+                        <TableCell>
+                          <Badge variant="outline" className={`text-[10px] uppercase ${it.status === 'convertido' ? 'text-[hsl(var(--success))]' : ''}`}>
+                            {t(`admin.try.status.${it.status}`)}
+                          </Badge>
+                        </TableCell>
+                        <TableCell className="text-xs">
+                          {it.offer_code ? (
+                            <div>
+                              <div className="font-mono-tech">{it.offer_code}</div>
+                              <div className="text-muted-foreground">{Math.round((it.offer_rate || 0) * 100)}% · min {formatMXN(it.offer_min_order || 0)}</div>
+                              {it.offer_perk_text && <div className="text-muted-foreground">+ {it.offer_perk_text}</div>}
+                            </div>
+                          ) : it.contacted ? (
+                            <span className="text-muted-foreground">{t('admin.try.followedUp')}</span>
+                          ) : it.status === 'pendiente' ? (
+                            <Button variant="outline" size="sm" className="h-7 text-xs" onClick={() => mandarOferta(it)} data-testid="admin-try-send">
+                              {t('admin.try.sendNow')}
+                            </Button>
+                          ) : <span className="text-muted-foreground">—</span>}
+                        </TableCell>
+                        <TableCell>
+                          <Button variant="ghost" size="icon" className="h-8 w-8 text-destructive hover:bg-destructive hover:text-white"
+                            onClick={() => borrarIntento(it)} data-testid="admin-try-delete">
+                            <Trash2 className="h-4 w-4" />
+                          </Button>
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </Card>
+            </>
+          )}
+        </TabsContent>
+
+        <TabsContent value="meta" className="mt-5 space-y-4">
+          <div className="flex items-start justify-between gap-3 flex-wrap">
+            <div>
+              <h3 className="font-heading font-semibold">{t('admin.meta.title')}</h3>
+              <p className="text-xs text-muted-foreground max-w-2xl">{t('admin.meta.sub')}</p>
+            </div>
+            <label className="inline-flex items-center gap-2 text-xs rounded-lg border border-border px-3 py-2 cursor-pointer hover:bg-[hsl(var(--muted))]/40" data-testid="admin-meta-upload">
+              <Upload className="h-4 w-4" />
+              {metaBusy ? t('admin.meta.uploading') : t('admin.meta.upload')}
+              <input type="file" accept=".csv,text/csv" className="hidden"
+                onChange={(e) => subirMetaCsv(e.target.files?.[0])} />
+            </label>
+          </div>
+
+          {(!meta || meta.fuente === 'sin_datos') ? (
+            <Card className="p-6" data-testid="admin-meta-empty">
+              <p className="text-sm">{t('admin.meta.empty')}</p>
+            </Card>
+          ) : (
+            <>
+              <div className="flex items-center gap-2 text-[11px] text-muted-foreground">
+                <span className={`rounded-full px-2 py-0.5 ${meta.fuente === 'meta_en_vivo' ? 'bg-[hsl(var(--success))]/15 text-[hsl(var(--success))]' : 'bg-[hsl(var(--muted))]'}`}>
+                  {meta.fuente === 'meta_en_vivo' ? t('admin.meta.live') : t('admin.meta.fromCsv')}
+                </span>
+                {meta.resumen.date_start && <span>{meta.resumen.date_start} → {meta.resumen.date_end}</span>}
+              </div>
+
+              <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3" data-testid="admin-meta-kpis">
+                <Card className="p-4"><div className="text-xs text-muted-foreground">{t('admin.meta.spend')}</div>
+                  <div className="font-heading text-xl font-bold mt-1">${meta.resumen.spend.toLocaleString()} <span className="text-xs font-normal text-muted-foreground">{meta.resumen.currency}</span></div></Card>
+                <Card className="p-4"><div className="text-xs text-muted-foreground">{t('admin.meta.reach')}</div>
+                  <div className="font-heading text-xl font-bold mt-1">{meta.resumen.reach.toLocaleString()}</div></Card>
+                <Card className="p-4"><div className="text-xs text-muted-foreground">{t('admin.meta.clicks')}</div>
+                  <div className="font-heading text-xl font-bold mt-1">{meta.resumen.clicks.toLocaleString()}</div></Card>
+                <Card className="p-4"><div className="text-xs text-muted-foreground">{t('admin.meta.cpc')}</div>
+                  <div className="font-heading text-xl font-bold mt-1">${meta.resumen.cpc.toFixed(3)}</div></Card>
+                <Card className="p-4"><div className="text-xs text-muted-foreground">{t('admin.meta.purchases')}</div>
+                  <div className="font-heading text-xl font-bold mt-1">{meta.resumen.purchases}</div></Card>
+                <Card className="p-4"><div className="text-xs text-muted-foreground">{t('admin.meta.siteRevenue')}</div>
+                  <div className="font-heading text-xl font-bold mt-1 text-[hsl(var(--primary))]">{formatMXN(meta.sitio.ingreso)}</div></Card>
+              </div>
+
+              {meta.recomendaciones?.length > 0 && (
+                <div className="space-y-2" data-testid="admin-meta-advice">
+                  {meta.recomendaciones.map((r, i) => (
+                    <Card key={i} className={`p-4 border-l-4 ${r.level === 'alto' ? 'border-l-destructive' : r.level === 'medio' ? 'border-l-[hsl(var(--warning-border))]' : 'border-l-[hsl(var(--success))]'}`}>
+                      <div className="font-medium text-sm">{r.title}</div>
+                      <p className="text-xs text-muted-foreground mt-1 leading-relaxed">{r.body}</p>
+                    </Card>
+                  ))}
+                </div>
+              )}
+
+              {meta.apagar?.length > 0 && (
+                <Card className="p-4 border-destructive/40" data-testid="admin-meta-kill">
+                  <div className="text-sm font-medium mb-2">{t('admin.meta.killTitle')}</div>
+                  {meta.apagar.map((k, i) => (
+                    <div key={i} className="text-xs text-muted-foreground flex justify-between gap-3 py-0.5">
+                      <span className="truncate">{k.campaign}</span>
+                      <span className="shrink-0">${k.spend} — {k.razon}</span>
+                    </div>
+                  ))}
+                </Card>
+              )}
+
+              <Card className="overflow-x-auto">
+                <Table data-testid="admin-meta-table">
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead>{t('admin.meta.campaign')}</TableHead>
+                      <TableHead>{t('admin.meta.spend')}</TableHead>
+                      <TableHead>{t('admin.meta.impressions')}</TableHead>
+                      <TableHead>{t('admin.meta.clicks')}</TableHead>
+                      <TableHead>{t('admin.meta.cpc')}</TableHead>
+                      <TableHead>{t('admin.meta.purchases')}</TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    {meta.campanas.map((c, i) => (
+                      <TableRow key={i}>
+                        <TableCell className="text-sm max-w-xs truncate" title={c.campaign}>
+                          {c.status === 'active' && <span className="inline-block h-2 w-2 rounded-full bg-[hsl(var(--success))] mr-2" />}
+                          {c.campaign}
+                        </TableCell>
+                        <TableCell className="font-mono-tech text-xs">${c.spend}</TableCell>
+                        <TableCell className="font-mono-tech text-xs">{c.impressions.toLocaleString()}</TableCell>
+                        <TableCell className="font-mono-tech text-xs">{c.clicks.toLocaleString()}</TableCell>
+                        <TableCell className="font-mono-tech text-xs">{c.cpc ? '$' + c.cpc.toFixed(3) : '—'}</TableCell>
+                        <TableCell className="font-mono-tech text-xs">{c.purchases || '—'}</TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </Card>
+            </>
+          )}
         </TabsContent>
 
         <TabsContent value="funnel" className="mt-5 space-y-4">
@@ -730,14 +965,20 @@ const Admin = () => {
                   <TableHead>{t('admin.table.payment')}</TableHead><TableHead>{t('admin.table.date')}</TableHead><TableHead>{t('admin.table.status')}</TableHead>
                   <TableHead>{t('admin.table.receipt')}</TableHead>
                   <TableHead>{t('admin.table.tracking')}</TableHead>
+                  <TableHead className="w-12"></TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
                 {orders.length === 0 ? (
-                  <TableRow><TableCell colSpan={8} className="text-center text-muted-foreground py-8">{t('admin.noOrders')}</TableCell></TableRow>
+                  <TableRow><TableCell colSpan={9} className="text-center text-muted-foreground py-8">{t('admin.noOrders')}</TableCell></TableRow>
                 ) : orders.map((o) => (
                   <TableRow key={o.id}>
-                    <TableCell className="font-mono-tech text-xs">{o.order_number}</TableCell>
+                    <TableCell>
+                      <button type="button" onClick={() => setOrderOpen(o)} data-testid="admin-open-order"
+                        className="font-mono-tech text-xs underline decoration-dotted underline-offset-4 hover:text-[hsl(var(--primary))] transition">
+                        {o.order_number}
+                      </button>
+                    </TableCell>
                     <TableCell><div className="text-sm">{o.customer.full_name}</div><div className="text-xs text-muted-foreground">{o.customer.email}</div></TableCell>
                     <TableCell className="font-medium">{formatMXN(o.total)}</TableCell>
                     <TableCell className="text-xs">{t(`payment.${o.payment_method}.label`) || o.payment_method}</TableCell>
@@ -756,6 +997,12 @@ const Admin = () => {
                         <SelectTrigger className="w-36 h-8" data-testid="admin-update-order-status-select"><SelectValue /></SelectTrigger>
                         <SelectContent>{STATUSES.map((s) => <SelectItem key={s} value={s}>{t(`status.${s}`)}</SelectItem>)}</SelectContent>
                       </Select>
+                    </TableCell>
+                    <TableCell>
+                      <Button variant="ghost" size="icon" className="h-8 w-8 text-destructive hover:bg-destructive hover:text-white"
+                        onClick={() => setOrderKill(o)} title={t('admin.order.delete')} data-testid="admin-delete-order">
+                        <Trash2 className="h-4 w-4" />
+                      </Button>
                     </TableCell>
                     <TableCell>
                       {o.tracking_number ? (
@@ -962,6 +1209,15 @@ const Admin = () => {
                       <Input className="h-8" placeholder={t('admin.ficha.noteOptional')} value={couponForm.note} onChange={(e) => setCouponForm((f) => ({ ...f, note: e.target.value }))} data-testid="admin-coupon-note" />
                       <Button size="sm" onClick={sendCoupon} data-testid="admin-coupon-send">{t('admin.ficha.sendCouponBtn')}</Button>
                     </div>
+                    <div className="rounded-xl border border-border p-3 space-y-2" data-testid="admin-personal-discount-box">
+                      <div className="text-xs font-semibold">{t('admin.ficha.personalDiscount')}</div>
+                      <p className="text-[11px] text-muted-foreground">{t('admin.ficha.personalDiscountHint')}</p>
+                      <div className="flex items-center gap-2">
+                        <Input type="number" min="0" max="50" className="h-8 w-20" value={personalPct} onChange={(e) => setPersonalPct(e.target.value)} data-testid="admin-personal-discount-pct" />
+                        <span className="text-xs text-muted-foreground">%</span>
+                        <Button size="sm" onClick={savePersonalDiscount} data-testid="admin-personal-discount-save">{t('admin.ficha.personalDiscountBtn')}</Button>
+                      </div>
+                    </div>
                     <div className="rounded-xl border border-border p-3 space-y-2" data-testid="admin-gift-points-box">
                       <div className="text-xs font-semibold">{t('admin.ficha.giftPoints')}</div>
                       <div className="flex items-center gap-2">
@@ -972,6 +1228,127 @@ const Admin = () => {
                     </div>
                   </>
                 )}
+              </div>
+            </>
+          )}
+        </DialogContent>
+      </Dialog>
+
+      <Dialog open={!!orderKill} onOpenChange={(v) => !v && setOrderKill(null)}>
+        <DialogContent className="max-w-md" data-testid="admin-delete-order-dialog">
+          {orderKill && (
+            <>
+              <DialogHeader><DialogTitle>{t('admin.order.deleteTitle')}</DialogTitle></DialogHeader>
+              <p className="text-sm text-muted-foreground">
+                {t('admin.order.deleteBody', {
+                  n: orderKill.order_number,
+                  name: orderKill.customer?.full_name || '',
+                  total: formatMXN(orderKill.total),
+                })}
+              </p>
+              <p className="text-xs text-muted-foreground">{t('admin.order.deleteHint')}</p>
+              <div className="flex justify-end gap-2 mt-2">
+                <Button variant="outline" size="sm" onClick={() => setOrderKill(null)}>{t('common.cancel')}</Button>
+                <Button variant="destructive" size="sm" onClick={deleteOrder} data-testid="admin-delete-order-confirm">
+                  <Trash2 className="h-4 w-4 mr-1.5" /> {t('admin.order.deleteConfirm')}
+                </Button>
+              </div>
+            </>
+          )}
+        </DialogContent>
+      </Dialog>
+
+      {/* Hoja de empaque: qué meter en la caja y a dónde mandarla. */}
+      <Dialog open={!!orderOpen} onOpenChange={(v) => !v && setOrderOpen(null)}>
+        <DialogContent className="max-w-2xl max-h-[85vh] overflow-y-auto" data-testid="admin-order-detail-dialog">
+          {orderOpen && (
+            <>
+              <DialogHeader>
+                <DialogTitle className="flex items-center gap-2 flex-wrap">
+                  <span className="font-mono-tech text-base">{orderOpen.order_number}</span>
+                  <Badge variant="outline" className="text-[10px] uppercase">{t(`status.${orderOpen.status}`)}</Badge>
+                </DialogTitle>
+              </DialogHeader>
+              <div className="space-y-4 text-sm">
+                <div>
+                  <div className="text-xs font-semibold mb-2">{t('admin.order.pack')}</div>
+                  <Card className="divide-y divide-border" data-testid="admin-order-items">
+                    {(orderOpen.items || []).map((it, i) => (
+                      <div key={i} className="flex items-center justify-between gap-3 p-3">
+                        <div className="min-w-0">
+                          <div className="font-medium truncate">{it.name}</div>
+                          <div className="text-xs text-muted-foreground font-mono-tech">{it.presentation}</div>
+                        </div>
+                        <div className="shrink-0 text-right">
+                          <div className="font-heading text-lg font-bold">×{it.quantity}</div>
+                          <div className="text-xs text-muted-foreground">{formatMXN(it.price * it.quantity)}</div>
+                        </div>
+                      </div>
+                    ))}
+                  </Card>
+                </div>
+
+                <div className="grid sm:grid-cols-2 gap-3">
+                  <Card className="p-3 space-y-1" data-testid="admin-order-address">
+                    <div className="text-xs font-semibold mb-1">{t('admin.order.shipTo')}</div>
+                    <div className="font-medium">{orderOpen.customer?.full_name}</div>
+                    <div className="text-xs text-muted-foreground">{orderOpen.customer?.address}</div>
+                    <div className="text-xs text-muted-foreground">
+                      {[orderOpen.customer?.city, orderOpen.customer?.state, orderOpen.customer?.postal_code].filter(Boolean).join(', ')}
+                    </div>
+                    <div className="text-xs text-muted-foreground">{orderOpen.customer?.country}</div>
+                    <div className="pt-1 text-xs"><Phone className="h-3 w-3 inline mr-1" />{orderOpen.customer?.phone}</div>
+                    <div className="text-xs break-all">{orderOpen.customer?.email}</div>
+                    <Button variant="outline" size="sm" className="h-7 text-xs mt-2"
+                      onClick={() => { navigator.clipboard?.writeText(
+                        [orderOpen.customer?.full_name, orderOpen.customer?.address,
+                         [orderOpen.customer?.city, orderOpen.customer?.state, orderOpen.customer?.postal_code].filter(Boolean).join(', '),
+                         orderOpen.customer?.country, orderOpen.customer?.phone].filter(Boolean).join('\n'));
+                        toast.success(t('admin.order.copied')); }}
+                      data-testid="admin-order-copy-address">
+                      <Copy className="h-3 w-3 mr-1.5" /> {t('admin.order.copyAddress')}
+                    </Button>
+                  </Card>
+
+                  <Card className="p-3 space-y-1.5" data-testid="admin-order-money">
+                    <div className="text-xs font-semibold mb-1">{t('admin.order.payment')}</div>
+                    <div className="flex justify-between text-xs"><span className="text-muted-foreground">{t('common.subtotal')}</span><span>{formatMXN(orderOpen.subtotal)}</span></div>
+                    {orderOpen.discount > 0 && (
+                      <div className="flex justify-between text-xs text-[hsl(var(--success))]">
+                        <span>{t('admin.order.discount')} ({Math.round((orderOpen.discount_rate || 0) * 100)}%)</span>
+                        <span>− {formatMXN(orderOpen.discount)}</span>
+                      </div>
+                    )}
+                    {orderOpen.points_used > 0 && (
+                      <div className="flex justify-between text-xs text-[hsl(var(--success))]"><span>{t('loyalty.line')}</span><span>− {formatMXN(orderOpen.points_used)}</span></div>
+                    )}
+                    <Separator className="my-1" />
+                    <div className="flex justify-between font-heading font-bold"><span>{t('common.total')}</span><span>{formatMXN(orderOpen.total)}</span></div>
+                    <div className="text-xs text-muted-foreground pt-1">{t(`payment.${orderOpen.payment_method}.label`) || orderOpen.payment_method}</div>
+                    <div className="text-xs text-muted-foreground">{new Date(orderOpen.created_at).toLocaleString(language)}</div>
+                  </Card>
+                </div>
+
+                {orderOpen.customer?.notes && (
+                  <Card className="p-3" data-testid="admin-order-notes">
+                    <div className="text-xs font-semibold mb-1">{t('admin.order.notes')}</div>
+                    <p className="text-xs text-muted-foreground whitespace-pre-wrap">{orderOpen.customer.notes}</p>
+                  </Card>
+                )}
+
+                <div className="flex flex-wrap gap-2">
+                  <Button size="sm" onClick={() => { const o = orderOpen; setOrderOpen(null); openShipping(o); }} data-testid="admin-order-ship">
+                    <Truck className="h-4 w-4 mr-1.5" /> {orderOpen.tracking_number ? t('admin.shipping.edit') : t('admin.shipping.add')}
+                  </Button>
+                  {orderOpen.spei_receipt_at && (
+                    <Button variant="outline" size="sm" onClick={() => openReceipt(orderOpen.id)}>
+                      <Receipt className="h-4 w-4 mr-1.5" /> {t('admin.receipt.view')}
+                    </Button>
+                  )}
+                  <Button variant="destructive" size="sm" className="ml-auto" onClick={() => setOrderKill(orderOpen)} data-testid="admin-order-delete">
+                    <Trash2 className="h-4 w-4 mr-1.5" /> {t('admin.order.delete')}
+                  </Button>
+                </div>
               </div>
             </>
           )}

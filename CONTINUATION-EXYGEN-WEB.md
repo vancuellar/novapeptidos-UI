@@ -1,8 +1,234 @@
 # Exygen Labs — Website Continuation File
 
-> **Propósito:** fuente única de verdad del SITIO WEB (frontend, backend, IA, marca, despliegue). Pega este archivo en un chat nuevo para retomar con todo el contexto. Complementa a `../NOVA-PRICING-SYSTEM-CONTINUATION.md` (el sistema de precios). **Última actualización: 2026-07-25.** Empieza por la sección 🤝 HANDOFF — ESTADO AL 2026-07-25.
+> **Propósito:** fuente única de verdad del SITIO WEB (frontend, backend, IA, marca, despliegue). Pega este archivo en un chat nuevo para retomar con todo el contexto. Complementa a `../NOVA-PRICING-SYSTEM-CONTINUATION.md` (el sistema de precios). **Última actualización: 2026-07-26.** Empieza por la sección 🤝 HANDOFF — ESTADO AL 2026-07-26.
 
 > **Estilo con Christian:** abogado, no dev ("abogado de 95 años haciendo vibe coding"). Respuestas **ultra cortas, español claro, sin jerga**. Corre TÚ los comandos (nunca le pidas abrir terminal). Términos de git en inglés (commit, push, merge — no "commitear").
+
+---
+
+## 🤝 HANDOFF — ESTADO AL 2026-07-26
+
+### ✅ PENDIENTE 00 — RUTINAS VIGÍA: HECHO (2026-07-26)
+
+- **`vigia-precios-nova` borrada.** Era del negocio anterior y ni siquiera estaba dada de
+  alta en el programador (solo quedaba el archivo). Copia de respaldo en el scratchpad de
+  la sesión por si algún día se quiere ver.
+- **`vigia-precios-exygen` reescrita.** Sigue diaria a las 8:12 am. Ahora:
+  - **No trae ninguna regla de precio en su texto** — lo primero que hace es leer
+    `pricing-system/FUENTE-DE-VERDAD.md`. Así nunca vuelve a quedar desfasada.
+  - Corre **los dos** scripts: `check_competitors.py` (competencia en vivo) y
+    `auditar_catalogo.py` (las 10 revisiones internas), con la advertencia explícita de
+    por qué no basta uno solo.
+  - Rutas corregidas a `/Users/christian/Documents/Exygen Peptides/`.
+  - Sabe que el **Glutatión 1500 mg** es ruido conocido y no una alarma.
+  - **No cambia precios, no sincroniza, no publica.** Solo reporta en 5 líneas.
+- **`FUENTE-DE-VERDAD.md` actualizada** — traía las reglas del 07-23 y, peor, mandaba usar
+  `gen_catalog.py` para sincronizar (el que borra los `id`/`sku` y deja colar el descuento).
+  Ahora trae las reglas del 07-26, las 13 excepciones, el costo por caja de 10, la escalera,
+  la trampa de la auditoría ciega y el camino correcto de sincronización.
+
+Los dos scripts se corrieron para verificar: Exoma 183 variantes · Certified 47 · nosotros
+192 · nadie arriba de la competencia · 9 de 10 revisiones OK (la 10ª es el Glutatión ya
+decidido).
+
+### 💰 PRECIOS — reparados y en vivo (2026-07-26)
+
+**El problema:** la regla vieja ("mezcla 75% hacia Certified") se aplicaba presentación por
+presentación sin mirar a las hermanas del mismo producto. Donde Certified competía el precio
+salía ALTO; donde solo estaba Exoma salía BAJO. Resultado: **escalera en zigzag**.
+Semaglutida 10 mg a $2,299 con el de 15 mg en $1,859 — nadie compraba el de 10.
+
+**Arreglado:** 26 precios corregidos + KPV + MOTS-c. Hoy el catálogo pasa las 10 revisiones:
+
+| Revisión | Estado |
+|---|---|
+| Nunca arriba de Certified | ✅ 192 presentaciones |
+| Nunca abajo de Exoma (fuera de excepción) | ✅ |
+| Piso de 5× el costo | ✅ el más flaco es 5.0× |
+| El vial grande nunca cuesta menos | ✅ 90 productos |
+| Sitio = backend | ✅ 195 SKUs |
+| Sin agotados ni stock negativo | ✅ |
+
+**183 notas escritas en la maestra** (`anotar_excepciones.py`) explicando por qué cada precio
+es como es — para que en tres meses nadie "corrija" una decisión intencional.
+
+🪤 **DOS TRAMPAS QUE COSTARON EL PRIMER INTENTO:**
+1. **El costo de la maestra viene por CAJA DE 10 VIALES, no por pieza.** Sin dividir entre 10,
+   el piso de 5× sale 10 veces más alto y Retatrutida 40 mg se iba a **$20,699**.
+2. **`gen_catalog.py` NO SE DEBE USAR para sincronizar precios.** Regenera
+   `fallbackCatalog.js` de cero y BORRA el `id` y el `sku` reales de cada presentación (sin
+   ellos el backend no reconoce el producto al cobrar y **se le cuela el descuento**), el
+   `commission_cap`, el `distributor_eligible` y los exports de categorías. Usa
+   `aplicar_precios_al_sitio.js`, que solo toca el campo `price`.
+
+**Pendiente de decisión:** Glutatión 1500 mg sale 3.5% más caro por mg que el de 600 mg. Es
+ruido; está pegado al piso de Exoma. Christian dijo que se queda.
+
+### 🛒 REGLAS DE DINERO — todas en vivo y probadas con compras reales
+
+1. **El ROI primero:** el descuento se **recorta al tope de cada producto** (`commission_cap`).
+   Ya no se da cero: se da lo que el producto aguanta, y al cliente se le avisa.
+2. **Los insumos NUNCA llevan descuento** (categorías `suministros`/`accesorios`).
+3. **Descuento propio sin código:** un distribuidor comprando para sí mismo usa su comisión
+   máxima (ese descuento ES su comisión, cobrada por adelantado — no gana comisión encima).
+   Un cliente puede tener `personal_discount_rate` puesto por el admin (Paz Cambray al 40%).
+4. Es **piso, no techo**: si trae un código mejor, gana el mayor.
+5. **ENVÍO: gratis desde $2,500**, abajo se cobran $250 (lo que de verdad cuesta). Se mide
+   sobre lo que el cliente PAGA, no sobre lista. Lo decide el SERVIDOR.
+6. **Carritos abandonados:** UNA sola oferta. Nada abajo de $2,500. El cupón exige comprar el
+   mismo monto o más. $2,500–4,999 = 15% + agua 3 mL + envío gratis · $5,000+ = 15% + agua
+   10 mL · $10,000+ = 20% + **una agua de 10 mL por cada $10,000**.
+
+### 🐛 BUGS SERIOS ENCONTRADOS Y ARREGLADOS (2026-07-26)
+
+- **Google no indexaba NADA del sitio.** GitHub Pages devolvía **404** en toda ruta que no
+  fuera la portada. El visitante veía la página bien (por eso nadie lo notó) pero el servidor
+  respondía 404 y Google lo tomaba al pie de la letra: catálogo, 99 fichas de producto y
+  /aprende eran **invisibles en las búsquedas**. Arreglado con
+  `scripts/prerender-routes.js` (corre en el `build`): 114 rutas reales + sitemap + robots.
+  ⚠️ **Al agregar una ruta nueva hay que darla de alta en `STATIC_ROUTES` o volverá a dar 404.**
+- **Se podía vender sin inventario.** Un pedido de 99,999 piezas de algo con 34 en existencia
+  pasaba sin chistar y dejaba el stock en −99,968. Y **cancelar no devolvía las piezas**.
+  Las dos cosas arregladas (`restore_order_stock`, idempotente).
+- **Los mexicanos leían las instrucciones de pago SPEI EN PORTUGUÉS.** Las tres versiones de
+  `spei.*` estaban dentro del bloque de español; JavaScript se queda con la última.
+  Salía en la pantalla de "Pedido recibido". Arreglado + 36 etiquetas del Admin traducidas.
+- **El agua bacteriostática se colaba con descuento.** El modal la agregaba con un id
+  inventado (`fallback-agua-bacteriostatica::10 mL`) que el backend no reconocía. **El Asesor
+  tenía el mismo bug con TODOS los productos que agrega.**
+- **4 de 8 categorías del menú abrían vacías.** El menú usaba los slugs del API
+  (`recuperacion-tejidos`, `metabolicos`, `bienestar`, `accesorios`) y el catálogo filtra con
+  los del sitio. Ahora hay **una sola lista**: `VISIBLE_CATEGORIES` en `fallbackCatalog.js`.
+
+### 📱 MÓVIL Y TABLETA
+
+- La barra superior se salía **84 px** de la pantalla y cortaba "Comenzar". El menú de idioma
+  y tema se fue **dentro** del menú de 3 líneas.
+- El menú de 3 líneas trae los mismos accesos que escritorio: Catálogo · Asesor · Recursos ·
+  Ayuda · Carrito · Mi cuenta. **Sin "Inicio"** (el logo ya lleva a la portada).
+- Cero scroll horizontal en las tres resoluciones.
+
+### 🧪 AUDITORÍAS — corren solas, úsalas
+
+```
+cd novapeptidos-UI  && npm run auditoria              # 37 revisiones del sitio, solo lectura
+                       npm run auditoria:completa     # + Admin y compras REALES que se borran solas
+cd pricing-system   && python3 auditar_catalogo.py    # 10 revisiones de precios y márgenes
+                       python3 check_competitors.py   # Exoma y Certified EN VIVO
+```
+Backend: `.venv/bin/python -m pytest test_core.py -q` — **134 pruebas**.
+(`.venv/bin/pytest` a secas está ROTO: usa `.venv/bin/python -m pytest`.)
+
+### 🟡 LO QUE SIGUE (pedido por Christian, SIN EMPEZAR)
+
+1. ~~**PENDIENTE 00** — fusionar las dos rutinas vigía~~ ✅ hecho 2026-07-26.
+2. **Dashboard de Anuncios: gráficas de tráfico y ventas** por día / semana / mes. Christian
+   lo pidió dos veces y NO está hecho. El panel de Meta ya existe (Admin → "Ads") pero solo
+   muestra totales, sin series de tiempo.
+3. **Imágenes de los 84 productos sin foto propia.** Christian subió el vial en blanco a
+   `Media/Viales individuales sin fondo para hero/Vial sin fondo, nombre ni gramaje.PNG`
+   (2048×2048, fondo transparente). Ya hizo a mano: NAD+, Retatrutida, Tirzepatida,
+   Semaglutida, KLOW y agua bacteriostática.
+   **Análisis ya hecho del vial en blanco:** la etiqueta trae fijos el logo (y 134-176),
+   "Lyophlized Peptide Powder for Injection" (y 1326-1376) y "FOR RESEARCH USE ONLY / NOT FOR
+   HUMAN CONSUMPTION" (y 1552-1656). Hay que insertar DOS textos: el **nombre** (~y 872-1006,
+   negrita grande) y el **gramaje** (~y 1326 arriba de "Lyophlized"). Comparar contra
+   `NAD+ 500mg.PNG` para calcar tipografía y tamaños.
+   ✅ **HECHO el generador + MUESTRA entregada (2026-07-26):** `pricing-system/generar_viales.py`.
+   ⚠️ **Las coordenadas de arriba estaban MAL.** Lo medido de verdad: y 872-1006 es la banda del
+   LOGO, no el nombre. El vial en blanco (2048²) y el NAD+ a mano (1024²) son la MISMA imagen a
+   distinta escala — las bandas de texto fijo calzan exactas al ×2.
+   Lo correcto: **nombre** base y 1262, alto 146 · **gramaje** base y 1514, alto 98 · centro x 1017.
+   Tipografía: **Arial Bold con estirado vertical de 1.12** (a ancho igualado la altura salía
+   12% corta en los dos textos por igual, así que es un estirado real, no otra fuente).
+   Los nombres largos encogen solos para no pasar de 800 px.
+   Sombra: blur 4, opacidad 0.40, offset (2,3) — **hay que rellenar la máscara antes de
+   difuminarla o sale un rectángulo gris en vez de un halo**.
+   Control de calidad: el script regenera el NAD+ 500mg de Christian y calza con el suyo.
+   ✅ **GENERADOS LOS 188** (`python3 generar_viales.py --todos`, lee el catálogo EN VIVO).
+   Quedan en `Media/Viales generados/<SKU>.png`, 2048², fondo transparente, 418 MB en total.
+   · **Se saltan 7 a propósito:** agua bacteriostática, ácido acético y B12. Son líquidos y
+     el vial dice "Lyophlized Peptide Powder" con polvo blanco adentro — sería etiqueta falsa.
+   · Las mezclas van a **dos renglones** partiendo por el "+", y las que tienen marca se
+     quedan con la marca (GLOW, KLOW, HUMSC), como hizo Christian a mano.
+   · "100 mil" (HUMSC) conserva el espacio: "mil" no es unidad.
+   🔤 **SE CORRIGIÓ UNA FALTA DE ORTOGRAFÍA DE LA MARCA.** El vial base decía **"RESEARCH
+   PEPLIDES"** (con L). El KLOW que hizo Christian a mano dice PEPTIDES, y él confirmó.
+   `arreglar_peplides.py` construye la T con pedazos de las mismas letras de esa línea
+   (el palo de la "I" y la barra de la "E") para que el trazo pegue exacto — con una fuente
+   parecida nunca calza. Deja `Vial ... (PEPTIDES).PNG`; **el original no se toca**.
+   ✅ **YA ESTÁN EN EL SITIO** — PR #93 a `dev` (falta que Christian haga merge).
+   · **Una foto POR SKU, no por producto** (decisión de Christian, 2026-07-26): la etiqueta
+     lleva el gramaje impreso, así que la imagen cambia con el selector de presentación.
+     `productImages.js` resuelve por SKU y `vialImages.js` lista los 195 (se autogenera).
+   · `publicar_viales_web.py` recorta el fondo, achica y exporta WebP a
+     `public/images/products/<SKU>.webp` — **195 imágenes en 5.4 MB**.
+   · ⚠️ **El vial base NO era transparente** pese a llamarse "sin fondo": traía blanco
+     sólido, que en tema oscuro se ve como un recuadro. El recorte entra POR LOS BORDES,
+     no por color, para no comerse los brillos casi blancos del propio vial.
+   · ⚠️ **WebP `method=6` tarda 3 s por imagen y solo ahorra 1 KB frente a `method=4`**
+     (0.05 s). Con 195 imágenes eso son 10 minutos contra 1.
+   · Las tarjetas pasaron a `object-contain`: con `object-cover` el vial salía cortado.
+   · **Los LÍQUIDOS llevan otra etiqueta y el vial va SIN polvo** — el agua es transparente.
+     Texto que dictó Christian: "Bacteriostatic Water / Multiple Dose Vial · 0.9% Benzyl
+     Alcohol / 3 mL". Para el ácido acético el catálogo dice "solución diluida" sin dar
+     el porcentaje: **no se inventó un número en la etiqueta**.
+   · **HERO: de 5 viales a 10**, rotando de a 5 (`publicar_viales_hero.py`). Se detiene al
+     pasar el cursor y no rota con `prefers-reduced-motion`. Los 5 viejos se regeneraron:
+     traían el PEPLIDES y habrían quedado junto a los nuevos bien escritos.
+   ⚠️ **Dato mal en el catálogo, no es de las fotos:** el agua bacteriostática y el ácido
+   acético dicen `Forma: Liofilizado` en la ficha. Son líquidos. Hay que corregirlo en la
+   maestra/backend.
+4. **Los COA no existen.** Cada ficha promete *"al comprar, el PDF del lote aparece en Mi
+   cuenta"* y `/api/coa/public` devuelve `{}`. Christian dijo que él los sube.
+
+### ❌ DECIDIDO: NO se migra a WooCommerce (Christian, 2026-07-26)
+
+Christian lo planteó al ver que los precios de Certified se leen por su API de WooCommerce.
+**Decisión tomada: nos quedamos con lo que tenemos** (React + FastAPI + MongoDB). No se
+vuelve a abrir salvo que él lo pida.
+
+**Las razones:**
+
+1. **Lo que se perdería no tiene equivalente en WooCommerce.** La pirámide de 6 niveles con
+   override diferencial, los topes de comisión POR PRODUCTO que recortan el descuento, los
+   códigos que se generan y rotan solos por nivel, el candado de monto en los cupones de
+   recuperación, el descuento propio del distribuidor, el panel de Meta, el "ver como". Hay
+   plugins de afiliados, pero **las reglas de Christian son suyas** y habría que programarlas
+   igual, ahora como plugins de WordPress y con menos control.
+2. **El costo es de meses, y justo ahora empieza a llegar tráfico.** Migrar significa parar
+   de mejorar el negocio para reconstruir lo que ya funciona.
+3. **Que Certified use WooCommerce no es una ventaja de Certified.** Es su herramienta. Que
+   sus precios se puedan leer por API no es virtud ni defecto: **el catálogo de Exygen también
+   es público** en `api.exygenlabs.com/api/products`, como en cualquier tienda del mundo.
+4. **Ya hay 134 pruebas + 3 auditorías** que encierran las reglas del negocio. Eso se tira.
+
+**EL ARGUMENTO EN CONTRA — que es real y hay que tenerlo presente:**
+
+WooCommerce trae resueltas con plugins varias cosas que hoy están pendientes: MercadoPago,
+NOWPayments, Skydropx y la facturación CFDI. Y sobre todo: **un sitio a la medida necesita a
+alguien que sepa mantenerlo**; de WooCommerce hay miles de freelancers en México. Si esas
+cuatro integraciones se atoran mucho, o si Christian quiere no depender de nadie en
+particular, la decisión merece revisarse. **Hoy no, pero no es una puerta cerrada para
+siempre.**
+
+### 📌 PENDIENTES DE CHRISTIAN (no son código)
+
+
+- **Meta:** sigue bloqueado para crear la cuenta de desarrollador ("dispositivo que no usas
+  habitualmente") — le pasa igual en iPhone. Salida sin pelear: Administrador de Anuncios →
+  Informes → programar envío diario por correo, y subir ese CSV al panel.
+- **MercadoPago:** faltan sus 2 llaves de producción.
+- ~~**NOWPayments:** prender las monedas + KYB.~~ ✅ **YA ESTÁ.** Probado el 2026-07-26 contra
+  el sitio en vivo: 27 monedas prendidas (BTC, ETH, 9 USDT, USDC…), factura real con dirección
+  de depósito, webhook confirma el pedido y rechaza firmas falsas. **19 de 19 revisiones en
+  verde** con `npm run e2e:cripto` (compra real que se borra sola).
+  **Lo único que falta:** que llegue cripto de verdad. Christian tiene que mandar ~$50 en
+  USDT-TRC20 a la dirección de un pedido de prueba — Claude no puede mover dinero.
+- **Gemini:** activar facturación (el chat se cae a los 20 mensajes/día).
+- **2FA del admin**, domicilio del responsable en el aviso de privacidad, INAI.
+- **Skydropx:** clasificación por escrito de los productos (SDS/MSDS) + Carta Porte.
+- **Dominios:** redirigir (301) los `nova*` y los nuevos a exygenlabs.com.
 
 ---
 
@@ -105,13 +331,57 @@ instalado), eso explica cero ventas por publicidad.
   triplica las ventas con el mismo dinero. Usar el panel **Admin → Embudo** para ver dónde se
   cae la gente (ahora que los datos están limpios, cada número es real).
 
-### 🟡 LO SIGUIENTE (pedido explícito de Christian, SIN EMPEZAR)
+### 🟡 LO SIGUIENTE (pedido explícito de Christian)
 
-1. **Códigos automáticos al subir comisión.** A Alanís se le subió a 40% → automáticamente
-   debería tener códigos para otorgar hasta **35%** de descuento a sus clientes. Hoy hay un
-   solo código por distribuidor. (Relacionado con el pendiente #1 del handoff del 07-23.)
-2. **Descuentos por encima de la tarifa publicada, otorgados por el admin.** Christian quiere
-   poder darle a un cliente un % mayor al que marca el esquema.
+1. ~~**Códigos automáticos al subir comisión.**~~ ✅ **HECHO 2026-07-25.** Ver abajo.
+2. ~~**Descuentos por encima de la tarifa publicada, otorgados por el admin.**~~ ✅ **YA
+   EXISTÍA:** Admin → Clientes → ficha del cliente → "Enviar cupón de descuento", de **5% a
+   50%**, un solo uso, con caducidad y nota. Genera un código `GIFT-XXXXXX`, le manda
+   notificación al cliente y **no le cuesta comisión a nadie** (no es de distribuidor). La
+   tarifa publicada de la página es 10%/15%; esto la brinca sin tocarla.
+3. **Falta decidir:** fusionar **"Stacks/Combos"** con **"Especialidad"**.
+
+### ✅ LA COMISIÓN QUE EL ADMIN PONE A MANO AHORA MANDA (2026-07-25, en vivo)
+
+**El bug:** Christian le subió la comisión a Alanís a 40%, pero su `tier` seguía siendo
+`junior` (20%). El sistema le generaba los 5 códigos (15/20/25/30/**35%**) a partir del 40%…
+pero al **usarlos**, `_resolve_code` y el reparto de comisiones recortaban todo a la tasa del
+NIVEL (20%). O sea: código que decía 35% cobraba 20%, y ella ganaba 20% en vez de 40%.
+
+**El arreglo** (`novapeptidos-RBAC`, commit `2314bf0`):
+- **`pyramid.effective_rate(dist)`** — la tasa real es la **MAYOR** entre la del nivel y la
+  que el admin puso a mano (`commission_rate`), tope `MANUAL_CAP = 0.50`. Se usa en TODO: el
+  descuento máximo, el cobro del código en el checkout, y el reparto (vendedor y uplines).
+- **`pyramid.normalize_tier()`** — el nivel viejo `'junior'` guardado en la base se lee como
+  `junior0` (antes caía en un `else` silencioso).
+- **Al cambiar la comisión O el nivel, los códigos se rehacen EN EL ACTO** (antes había que
+  esperar a que el distribuidor abriera su panel) y le llega notificación: *"Tu comisión ahora
+  es 40%. Ya tienes códigos para dar hasta 35%."*
+- Admin → Distribuidores ahora devuelve `effective_rate` y `max_discount`.
+- **104 pruebas de backend en verde** (eran 99).
+
+**VERIFICADO CON UNA COMPRA REAL** en exygenlabs.com (pedido `EX-20260725-1965`, después
+cancelado): NAD+ 100 mg $839 → código `ALANIS-35-K020` → **−$294 (35%) → total $545**. Antes
+del arreglo hubiera dado 20%.
+
+### ⚠️ EL DATO QUE SALIÓ DE ESA COMPRA REAL (decisión pendiente de Christian)
+
+Cada producto tiene un **tope de comisión** (`commission_cap`) que protege el margen 5x de la
+casa: **descuento + comisiones nunca lo rebasan**. Con 195 productos el reparto es:
+
+| Tope | Productos | Qué pasa con un código de 35% |
+|---|---|---|
+| 20% | 7 | el 35% **ni se aplica** |
+| 25% | 14 | el 35% **ni se aplica** |
+| 30% | 47 | el 35% **ni se aplica** |
+| 35% | 58 | se aplica, pero el distribuidor gana **$0** |
+| 40% | 66 | se aplica y gana 5% |
+| 50% | 3 | se aplica y gana 5% |
+
+En la compra de prueba el NAD+ (tope 35%) quedó con `amount: 0, capped: true` — **correcto
+según la regla, pero conviene que Alanís lo sepa**: el código de 35% le sirve de verdad solo
+en **69 de 195 productos**, y ahí gana 5%. Si Christian quiere que el 35% sea usable en todo
+el catálogo, hay que **subir el `commission_cap` de los productos**, no la comisión de ella.
 
 ### 📌 Otros pendientes que siguen abiertos
 
@@ -120,6 +390,8 @@ instalado), eso explica cero ventas por publicidad.
   producción**.
 - **Categorías:** quedó la pregunta abierta de si fusionar **"Stacks/Combos"** con
   **"Especialidad"**.
+- **Topes de comisión por producto:** decidir si subirlos (ver tabla arriba) para que los
+  códigos de 35% sirvan en todo el catálogo y no solo en 69 de 195 productos.
 - Lo de Christian: KYB de pagos, billing de Gemini, 2FA del admin, legal/INAI, envíos
   Skydropx, redirecciones 301 del dominio.
 

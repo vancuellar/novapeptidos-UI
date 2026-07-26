@@ -13,6 +13,11 @@ import { useLanguage } from '@/context/LanguageContext';
 
 const BAC = fallbackProducts.find((p) => p.slug === 'agua-bacteriostatica');
 
+// ¿Este renglón del carrito es agua bacteriostática? Por slug/SKU — el id ya es
+// un uuid real y el regex viejo sobre product_id dejó de reconocerla.
+const isBac = (item) => /agua-bacteriostatica|AGUABACTERIOST/i.test(
+  `${item.slug || ''} ${item.sku || ''} ${item.product_id || ''}`);
+
 // Cuánta agua pide un vial según su tamaño (mg). Regla práctica de
 // reconstitución: chico ~2 mL, mediano ~3 mL, grande (60-100 mg, blends) ~4 mL.
 const waterPerVial = (mg) => (mg <= 15 ? 2 : mg <= 40 ? 3 : 4);
@@ -24,7 +29,7 @@ const buildBacPlan = (items) => {
   let vials = 0;
   let ml = 0;
   for (const item of items) {
-    if (/agua-bacteriostatica/.test(item.product_id)) continue;
+    if (isBac(item)) continue;   // el agua no se reconstituye a sí misma
     const match = /([\d.]+)\s*mg/i.exec(item.presentation || '');
     if (!match) continue;   // cápsulas, mL, etc.: no se reconstituyen
     vials += item.quantity;
@@ -39,14 +44,15 @@ const buildBacPlan = (items) => {
 };
 
 const Cart = () => {
-  const { items, addItem, updateQty, removeItem, subtotal, discount, discountRate, discountSource, nextTier, distCode, distRate, applyDistCode, clearDistCode } = useCart();
+  const { items, addItem, updateQty, removeItem, subtotal, discount, discountRate, discountSource, cappedItems, nextTier, shipping, faltaParaEnvioGratis, envioGratisDesde, distCode, distRate, codeMin, codeMinMet, applyDistCode, clearDistCode } = useCart();
   const { t } = useLanguage();
   const navigate = useNavigate();
   const [code, setCode] = useState('');
   const [bacOpen, setBacOpen] = useState(false);
-  const afterDiscount = subtotal - discount; // el envío se cotiza por separado
+  const afterDiscount = subtotal - discount;
+  const totalConEnvio = afterDiscount + shipping;
 
-  const hasBac = items.some((i) => /agua-bacteriostatica/.test(i.product_id));
+  const hasBac = items.some(isBac);
   const bacPlan = buildBacPlan(items);
 
   const goCheckout = () => navigate('/checkout');
@@ -57,7 +63,10 @@ const Cart = () => {
   };
   const addBacAndCheckout = () => {
     const v = bacPlan.variant;
-    addItem({ ...BAC, id: `${BAC.id}::${v.presentation}`, name: `${BAC.name} ${v.presentation}`, price: v.price, presentation: v.presentation, stock: v.stock }, bacPlan.qty);
+    // El id DEBE existir en el catálogo real (id o SKU de la presentación). Antes se
+    // inventaba "id::10 mL": el backend no lo encontraba, el agua se saltaba la regla
+    // de "los insumos no llevan descuento" y sí se descontaba (bug, 2026-07-25).
+    addItem({ ...BAC, id: v.id || v.sku || BAC.id, sku: v.sku, name: `${BAC.name} ${v.presentation}`, price: v.price, presentation: v.presentation, stock: v.stock }, bacPlan.qty);
     setBacOpen(false);
     goCheckout();
   };
@@ -121,18 +130,45 @@ const Cart = () => {
                   <Button type="submit" variant="outline" className="h-9" data-testid="cart-distcode-apply">{t('discount.apply')}</Button>
                 </form>
               )}
+              {distCode && !codeMinMet && (
+                <p className="text-[11px] text-destructive mt-1.5" data-testid="cart-code-min">
+                  {t('discount.codeMin', { amount: formatMXN(codeMin) })}
+                </p>
+              )}
               <p className="text-[11px] text-muted-foreground mt-1.5">{t('discount.noStack')}</p>
             </div>
             <div className="space-y-2 text-sm">
               <div className="flex justify-between"><span className="text-muted-foreground">{t('common.subtotal')}</span><span data-testid="cart-subtotal">{formatMXN(subtotal)}</span></div>
-              {discount > 0 && <div className="flex justify-between text-[hsl(var(--success))]"><span>{discountSource === 'code' ? t('discount.lineCode', { code: distCode, rate: Math.round(discountRate * 100) }) : t('discount.line', { rate: Math.round(discountRate * 100) })}</span><span data-testid="cart-discount">− {formatMXN(discount)}</span></div>}
+              {discount > 0 && <div className="flex justify-between text-[hsl(var(--success))]"><span>{discountSource === 'self' ? t('discount.lineSelf', { rate: Math.round(discountRate * 100) }) : discountSource === 'code' ? t('discount.lineCode', { code: distCode, rate: Math.round(discountRate * 100) }) : t('discount.line', { rate: Math.round(discountRate * 100) })}</span><span data-testid="cart-discount">− {formatMXN(discount)}</span></div>}
               {discountSource === 'auto' && nextTier && <p className="text-xs text-muted-foreground">{t('discount.nextTier', { amount: formatMXN(nextTier.min - subtotal), rate: Math.round(nextTier.rate * 100) })}</p>}
-              <div className="flex justify-between"><span className="text-muted-foreground">{t('common.shipping')}</span><span className="text-muted-foreground">{t('cart.shippingTBD')}</span></div>
-              <p className="text-xs text-muted-foreground">{t('cart.freeShippingLine')}</p>
+              {cappedItems.length > 0 && (
+                <div className="rounded-lg border border-border bg-[hsl(var(--secondary))] px-3 py-2 text-[11px] leading-relaxed text-muted-foreground" data-testid="cart-capped-notice">
+                  <span className="font-medium text-foreground">{t('discount.cappedTitle')}</span>{' '}
+                  {t('discount.cappedBody')}
+                  <ul className="mt-1.5 space-y-0.5">
+                    {cappedItems.map((i) => (
+                      <li key={i.product_id} className="flex justify-between gap-2">
+                        <span className="truncate">{i.name}</span>
+                        <span className="shrink-0 font-mono-tech">{i.applied > 0 ? `−${Math.round(i.applied * 100)}%` : t('discount.cappedNone')}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+              <div className="flex justify-between">
+                <span className="text-muted-foreground">{t('common.shipping')}</span>
+                {shipping > 0
+                  ? <span data-testid="cart-shipping">{formatMXN(shipping)}</span>
+                  : <span className="text-[hsl(var(--success))]" data-testid="cart-shipping">{t('cart.shippingFree')}</span>}
+              </div>
+              {faltaParaEnvioGratis > 0 && (
+                <p className="text-xs text-[hsl(var(--primary))]" data-testid="cart-free-shipping-hint">
+                  {t('cart.freeShippingAt', { amount: formatMXN(faltaParaEnvioGratis) })}
+                </p>
+              )}
             </div>
             <Separator className="my-4" />
-            <div className="flex justify-between font-heading font-bold text-lg"><span>{t('common.total')}</span><span data-testid="cart-total">{formatMXN(afterDiscount)}</span></div>
-            <p className="text-xs text-muted-foreground mt-1 text-right">{t('cart.plusShipping')}</p>
+            <div className="flex justify-between font-heading font-bold text-lg"><span>{t('common.total')}</span><span data-testid="cart-total">{formatMXN(totalConEnvio)}</span></div>
             <Button className="w-full mt-5" size="lg" onClick={onCheckoutClick} data-testid="cart-go-to-checkout-button">{t('cart.checkout')} <ArrowRight className="h-4 w-4 ml-1.5" /></Button>
             <Button asChild variant="ghost" className="w-full mt-2"><Link to="/catalogo">{t('cart.keepShopping')}</Link></Button>
           </Card>

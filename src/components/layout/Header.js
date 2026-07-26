@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { User, Menu, LogOut, Bell, LayoutDashboard, ChevronDown, Search, ShoppingCart, Moon, Sun, SlidersHorizontal, Home, LayoutGrid, BadgeCheck, GraduationCap, MessageCircle, Calculator, Sparkles, FlaskConical, Flame, Activity, HeartPulse, Hourglass, HeartHandshake, Brain, ShieldPlus, Package } from 'lucide-react';
+import { User, Menu, LogOut, Bell, LayoutDashboard, ChevronDown, Search, ShoppingCart, Moon, Sun, SlidersHorizontal, Home, LayoutGrid, BadgeCheck, GraduationCap, MessageCircle, Calculator, Sparkles, FlaskConical, Flame, Activity, HeartPulse, Hourglass, HeartHandshake, Brain, ShieldPlus, Package, Layers } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Sheet, SheetContent, SheetTrigger, SheetHeader, SheetTitle } from '@/components/ui/sheet';
@@ -15,7 +15,7 @@ import { useTheme } from '@/context/ThemeContext';
 import BrandLogo from '@/components/BrandLogo';
 import HomeLogoLink from '@/components/HomeLogoLink';
 import api from '@/lib/api';
-import { fallbackCategories } from '@/data/fallbackCatalog';
+import { VISIBLE_CATEGORIES } from '@/data/fallbackCatalog';
 import { localizeCategories } from '@/i18n/catalog';
 
 // Pestañas con el tratamiento de jadalegal.com: IBM Plex Mono, ~11 px,
@@ -26,13 +26,15 @@ const navLinkClass = 'font-mono-tech inline-flex items-center gap-1 text-[11px] 
 const CAT_ICONS = {
   'perdida-peso': Flame, 'hormona-crecimiento': Activity, 'recuperacion': HeartPulse,
   'longevidad': Hourglass, 'sexual-hormonal': HeartHandshake, 'nootropicos': Brain,
-  'estetica': Sparkles, 'bioreguladores': ShieldPlus, 'suministros': FlaskConical, 'otros': Package,
+  'estetica': Sparkles, 'bioreguladores': ShieldPlus, 'stacks': Layers,
+  'suministros': FlaskConical, 'otros': Package,
 };
 const CAT_EXAMPLES = {
   'perdida-peso': 'Retatrutida, Tirzepatida, Semaglutida', 'recuperacion': 'BPC-157, TB-500, GHK-Cu',
   'hormona-crecimiento': 'CJC-1295, Ipamorelin, Tesamorelina', 'longevidad': 'Epithalon, NAD+, Glutatión',
   'sexual-hormonal': 'PT-141, Kisspeptina, Melanotan II', 'nootropicos': 'Semax, Selank, DSIP',
   'estetica': 'GHK-Cu, Melanotan II', 'bioreguladores': 'Timosina α-1, LL-37',
+  'stacks': 'GLOW, KLOW, BPC + TB-500',
   'suministros': 'Agua bacteriostática', 'otros': 'Especialidad',
 };
 const CAT_TOP = new Set(['perdida-peso', 'recuperacion']);
@@ -103,8 +105,13 @@ const Header = () => {
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
+  // Las categorias salen del MISMO catalogo con el que el buscador filtra
+  // (fallbackCatalog), no del API. El API todavia devuelve los slugs viejos
+  // (recuperacion-tejidos, metabolicos, bienestar, accesorios) que NINGUN producto
+  // usa: el menu los mostraba y al abrirlos no habia nada. Ademas solo se listan
+  // las que de verdad tienen productos, para que no vuelva a pasar.
   useEffect(() => {
-    api.get('/categories').then((r) => setCategories(Array.isArray(r.data) && r.data.length ? r.data : fallbackCategories)).catch(() => setCategories(fallbackCategories));
+    setCategories(VISIBLE_CATEGORIES);
   }, []);
 
   const submitSearch = (e) => {
@@ -121,9 +128,9 @@ const Header = () => {
   return (
     <header className="sticky top-0 z-40">
       <div className={`transition-colors duration-200 ${scrolled ? 'bg-background/70 supports-[backdrop-filter]:backdrop-blur-xl' : 'bg-transparent'}`}>
-        <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 h-[60px] flex items-center gap-4 relative">
+        <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 h-[60px] flex items-center gap-2 sm:gap-4 relative">
           {/* Izquierda: logo y el menú móvil. La navegación va aparte, centrada. */}
-          <div className="flex items-center gap-3 min-w-0 shrink-0">
+          <div className="flex items-center gap-1.5 sm:gap-3 min-w-0 shrink-0">
           {/* Logo pegado a la izquierda */}
           <HomeLogoLink className="shrink-0 order-first origin-left transition-transform duration-200 hover:scale-110" data-testid="header-logo">
             <BrandLogo compact nameOnly />
@@ -149,19 +156,40 @@ const Header = () => {
                   <Input className="pl-9 h-11 rounded-xl" placeholder={t('header.searchShort')} value={search} onChange={(e) => setSearch(e.target.value)} data-testid="site-search-input-mobile" />
                 </form>
 
-                {/* Cuadrícula de accesos con iconos */}
-                <div className="mt-4 grid grid-cols-4 gap-2">
+                {/* Los MISMOS accesos que la barra de escritorio (Catálogo, Recursos,
+                    Ayuda) más el Asesor, el carrito y Mi cuenta. Recursos y Ayuda son
+                    menús en escritorio: aquí bajan a su sección de esta misma hoja.
+                    Se quitó "Inicio": el logo de arriba ya lleva a la portada. */}
+                <div className="mt-4 grid grid-cols-3 gap-2">
                   {[
-                    { to: '/', icon: Home, label: t('nav.home') },
                     { to: '/catalogo', icon: LayoutGrid, label: t('nav.catalog') },
+                    { to: '/asesor', icon: Sparkles, label: t('nav.advisor') },
+                    { seccion: 'mob-recursos', icon: FlaskConical, label: t('nav.tools') },
+                    { seccion: 'mob-ayuda', icon: MessageCircle, label: t('nav.help') },
+                    { to: '/carrito', icon: ShoppingCart, label: t('nav.cart'), badge: count },
                     { to: user ? '/cuenta' : '/login', icon: User, label: t('header.account') },
-                    { to: '/educacion', icon: GraduationCap, label: t('nav.education') },
-                  ].map((it) => (
-                    <Link key={it.label} to={it.to} onClick={() => setMobileOpen(false)} className="flex flex-col items-center gap-1.5 rounded-xl border border-border bg-[hsl(var(--secondary))]/50 py-3 hover:border-[hsl(var(--primary))]/40 transition-colors">
-                      <it.icon className="h-5 w-5 text-[hsl(var(--primary))]" />
-                      <span className="text-[10px] font-semibold uppercase tracking-wide text-center leading-tight">{it.label}</span>
-                    </Link>
-                  ))}
+                  ].map((it) => {
+                    const clase = 'relative flex flex-col items-center gap-1.5 rounded-xl border border-border bg-[hsl(var(--secondary))]/50 py-3 hover:border-[hsl(var(--primary))]/40 transition-colors';
+                    const dentro = (
+                      <>
+                        <it.icon className="h-5 w-5 text-[hsl(var(--primary))]" />
+                        {it.badge > 0 && (
+                          <span className="absolute top-1.5 right-1.5 h-4 min-w-4 px-1 rounded-full bg-[hsl(var(--primary))] text-[hsl(var(--primary-foreground))] text-[9px] font-bold flex items-center justify-center">{it.badge}</span>
+                        )}
+                        <span className="text-[10px] font-semibold uppercase tracking-wide text-center leading-tight">{it.label}</span>
+                      </>
+                    );
+                    return it.seccion ? (
+                      <button key={it.label} type="button" className={clase}
+                        onClick={() => document.getElementById(it.seccion)?.scrollIntoView({ behavior: 'smooth', block: 'start' })}>
+                        {dentro}
+                      </button>
+                    ) : (
+                      <Link key={it.label} to={it.to} onClick={() => setMobileOpen(false)} className={clase}>
+                        {dentro}
+                      </Link>
+                    );
+                  })}
                 </div>
 
                 <Link to="/info/calidad" onClick={() => setMobileOpen(false)} className="mt-3 flex items-center gap-3 rounded-xl border border-border bg-[hsl(var(--secondary))]/50 px-4 py-3 hover:border-[hsl(var(--primary))]/40 transition-colors">
@@ -172,7 +200,7 @@ const Header = () => {
                 {/* Péptidos por categoría */}
                 <div className="mt-6 mb-2 text-[11px] font-semibold uppercase tracking-[0.14em] text-muted-foreground">{t('nav.byCategory')}</div>
                 <div className="grid grid-cols-2 gap-2">
-                  {localizeCategories(categories, language).filter((c) => c.slug !== 'suministros' && c.slug !== 'otros').map((c) => {
+                  {localizeCategories(categories, language).map((c) => {
                     const Icon = CAT_ICONS[c.slug] || Package;
                     return (
                       <Link key={c.slug} to={`/catalogo?category=${c.slug}`} onClick={() => setMobileOpen(false)} className="relative rounded-xl border border-border p-3 hover:border-[hsl(var(--primary))]/40 hover:bg-[hsl(var(--secondary))]/40 transition-colors">
@@ -186,7 +214,7 @@ const Header = () => {
                 </div>
 
                 {/* Recursos y herramientas */}
-                <div className="mt-6 mb-2 text-[11px] font-semibold uppercase tracking-[0.14em] text-muted-foreground">{t('nav.resources')}</div>
+                <div id="mob-recursos" className="mt-6 mb-2 scroll-mt-2 text-[11px] font-semibold uppercase tracking-[0.14em] text-muted-foreground">{t('nav.resources')}</div>
                 <div className="flex flex-col gap-1">
                   {[
                     { to: '/asesor', icon: MessageCircle, label: t('nav.advisor') },
@@ -197,6 +225,17 @@ const Header = () => {
                   ].map((it) => (
                     <Link key={it.label} to={it.to} onClick={() => setMobileOpen(false)} className="flex items-center gap-3 rounded-lg px-2 py-2.5 text-sm hover:bg-[hsl(var(--secondary))]/60 transition-colors">
                       <it.icon className="h-4 w-4 text-muted-foreground" /> {it.label}
+                    </Link>
+                  ))}
+                </div>
+
+                {/* Ayuda: los mismos enlaces que el menú de escritorio. */}
+                <div id="mob-ayuda" className="mt-6 mb-2 scroll-mt-2 text-[11px] font-semibold uppercase tracking-[0.14em] text-muted-foreground">{t('nav.help')}</div>
+                <div className="flex flex-col gap-1">
+                  {HELP_ITEMS.map((it) => (
+                    <Link key={it.labelKey} to={it.to} onClick={() => setMobileOpen(false)} className="rounded-lg px-2 py-2 hover:bg-[hsl(var(--secondary))]/60 transition-colors">
+                      <div className="text-sm font-medium">{t(it.labelKey)}</div>
+                      <div className="text-[11px] text-muted-foreground">{t(it.descKey)}</div>
                     </Link>
                   ))}
                 </div>
@@ -288,7 +327,7 @@ const Header = () => {
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button variant="ghost" data-testid="preferences-menu" aria-label={t('controls.preferences')}
-                  className="h-9 px-2.5 gap-1.5 border border-border font-mono-tech text-xs uppercase tracking-[0.1em]">
+                  className="hidden lg:inline-flex h-9 px-2.5 gap-1.5 border border-border font-mono-tech text-xs uppercase tracking-[0.1em]">
                   <SlidersHorizontal className="h-[15px] w-[15px]" />
                   {currentLang ? currentLang.shortLabel : 'ES'}
                 </Button>

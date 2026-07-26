@@ -12,7 +12,7 @@ import { Sheet, SheetContent, SheetTrigger, SheetHeader, SheetTitle } from '@/co
 import { Skeleton } from '@/components/ui/skeleton';
 import ProductCard from '@/components/ProductCard';
 import { formatMXN } from '@/lib/api';
-import { fallbackCategories, fallbackProducts } from '@/data/fallbackCatalog';
+import { VISIBLE_CATEGORIES, fallbackProducts } from '@/data/fallbackCatalog';
 import { useLanguage } from '@/context/LanguageContext';
 import { localizeCategories, localizeProducts } from '@/i18n/catalog';
 
@@ -84,7 +84,7 @@ const Catalog = () => {
 
   useEffect(() => {
     // El catálogo curado (generado desde la maestra) es la fuente de verdad.
-    setCategories(fallbackCategories);
+    setCategories(VISIBLE_CATEGORIES);
   }, []);
 
   useEffect(() => {

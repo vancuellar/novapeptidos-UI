@@ -369,6 +369,18 @@ body {
 /* ===== Viales del hero — uno por archivo, hover individual =====
    Cada vial es su propia imagen (Christian mandó las botellas sueltas), así
    que ahora sí: solo el vial bajo el cursor se levanta. */
+/* NUNCA scroll horizontal, sobre todo en telefono: si un elemento se pasa de
+   ancho, se recorta — no empuja la pagina entera de lado. (Christian, movil.) */
+html, body {
+    overflow-x: hidden;
+    max-width: 100%;
+    /* En el telefono, al llegar al final la pagina rebotaba y dejaba ver una
+       franja negra DEBAJO del aviso de derechos reservados: parecia que
+       sobraba pagina. No sobraba — era el rebote del scroll. Con esto la
+       pagina se detiene justo donde termina. (Christian, movil.) */
+    overscroll-behavior-y: none;
+}
+
 .hero-vials { position: relative; }
 
 .hero-vial {
