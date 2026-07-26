@@ -122,9 +122,20 @@ Backend: `.venv/bin/python -m pytest test_core.py -q` — **134 pruebas**.
 ### 🟡 LO QUE SIGUE (pedido por Christian, SIN EMPEZAR)
 
 1. ~~**PENDIENTE 00** — fusionar las dos rutinas vigía~~ ✅ hecho 2026-07-26.
-2. **Dashboard de Anuncios: gráficas de tráfico y ventas** por día / semana / mes. Christian
-   lo pidió dos veces y NO está hecho. El panel de Meta ya existe (Admin → "Ads") pero solo
-   muestra totales, sin series de tiempo.
+2. ~~**Dashboard: gráficas de tráfico y ventas** por día / semana / mes.~~ ✅ **HECHO 2026-07-26.**
+   Admin → Ventas, arriba de la gráfica de meses. Endpoint `/admin/series?bucket=day|week|month`.
+   Sesiones y pedidos en barras, ingreso en línea con SU PROPIO eje (con eje compartido, 16
+   sesiones contra $3,347 dejaban las barras invisibles). Arriba: sesiones, pedidos, ingreso
+   y conversión.
+   ⚠️ **Los periodos vacíos también salen** — si no, una semana sin ventas desaparece y la
+   línea salta como si nunca hubiera existido. La **semana se nombra por su LUNES**.
+   ⚠️ **La conversión se calcula sobre sesiones únicas del RANGO**, no sumando las de cada
+   cajón: una sesión que cruza la medianoche cae en dos días, y el mismo mes daba 5% visto
+   por día y 6.25% por semana.
+3. **La publicidad no cuadra con el tráfico.** Meta reporta **683 clics** al sitio en 30 días
+   y el sitio solo registró **16 sesiones**. O la gente da clic y no llega, o `/api/events`
+   no los está contando. Hay que mirarlo: es la diferencia entre saber si la publicidad
+   sirve o no.
 3. **Imágenes de los 84 productos sin foto propia.** Christian subió el vial en blanco a
    `Media/Viales individuales sin fondo para hero/Vial sin fondo, nombre ni gramaje.PNG`
    (2048×2048, fondo transparente). Ya hizo a mano: NAD+, Retatrutida, Tirzepatida,
