@@ -507,6 +507,51 @@ const ReconstitutionCalculator = ({ variant = 'full', purchased = [], onTrack, s
                 })}
               </div>
             )}
+            {/* Todo junto y masticado, que es como lo pidió Christian: el agua
+                que va en ESTE vial y, sobre esa agua, cuántas rayitas toca en
+                cada nivel. El agua NO cambia por nivel: el vial se reconstituye
+                una sola vez, así que es una sola cifra arriba y tres renglones
+                abajo. */}
+            {levels && (
+              <div className="mt-3 rounded-lg border border-[hsl(var(--border))] overflow-hidden" data-testid="calc-tabla-niveles">
+                <div className="bg-[hsl(var(--secondary))] px-3 py-2 text-xs">
+                  Tu vial de <strong>{vialMg} mg</strong> con <strong>{res ? res.water : waterMl} mL</strong> de agua bacteriostática
+                  {' '}queda en <strong>{(vialMg / (Number(res ? res.water : waterMl) || 1)).toFixed(1)} mg/mL</strong>
+                </div>
+                <table className="w-full text-xs">
+                  <thead className="text-muted-foreground">
+                    <tr className="border-b border-[hsl(var(--border))]">
+                      <th className="text-left px-3 py-1.5 font-normal">Nivel</th>
+                      <th className="text-right px-3 font-normal">Dosis</th>
+                      <th className="text-right px-3 font-normal">Rayitas</th>
+                      <th className="text-right px-3 font-normal">Cada cuándo</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {[['inicial', t('calc.lvlBasic')], ['tipica', t('calc.lvlTypical')], ['avanzada', t('calc.lvlAdvanced')]].map(([k, label]) => {
+                      const agua = Number(res ? res.water : waterMl) || 1;
+                      const conc = vialMg / agua;                       // mg/mL
+                      const mg = levels.unit === 'mg' ? levels[k] : levels[k] / 1000;
+                      const rayitas = Math.round((mg / conc) * syringe.perMl);
+                      const cabe = rayitas <= syringe.perMl * syringe.maxMl;
+                      return (
+                        <tr key={k} className="border-b border-[hsl(var(--border))]/50 last:border-0"
+                            data-testid={`calc-fila-${k}`}>
+                          <td className="px-3 py-1.5">{label}</td>
+                          <td className="text-right px-3">{levels[k]} {levels.unit}</td>
+                          <td className={`text-right px-3 font-semibold ${cabe ? '' : 'text-red-600'}`}>
+                            {rayitas}{cabe ? '' : ' ⚠️'}
+                          </td>
+                          <td className="text-right px-3 text-muted-foreground">
+                            {freqPhrase(currentProduct?.startFreq, language) || '—'}
+                          </td>
+                        </tr>
+                      );
+                    })}
+                  </tbody>
+                </table>
+              </div>
+            )}
             {levels?.orientativa && (
               <p className="text-[11px] text-[hsl(var(--warning-foreground))] mt-1.5" data-testid="calc-orientative-note">
                 {t('calc.orientativeNote')}
