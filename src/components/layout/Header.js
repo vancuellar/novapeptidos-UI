@@ -142,12 +142,53 @@ const Header = () => {
               <Button variant="ghost" size="icon" data-testid="header-mobile-menu-button"><Menu className="h-5 w-5" /></Button>
             </SheetTrigger>
             <SheetContent side="left" className="w-[22rem] max-w-[92vw] p-0 flex flex-col">
+              {/* Arriba de todo: el logo (más chico, para que quepa la fila) y a su
+                  derecha un mini menú de 3 líneas con el tema y el idioma
+                  (Christian, 2026-07-26). "Mi cuenta" NO va aquí: vive en la
+                  cuadrícula de abajo, en el primer lugar, para no duplicarlo. */}
               <SheetHeader className="px-5 pt-5 pb-3">
-                <SheetTitle asChild>
-                  <Link to="/" onClick={() => setMobileOpen(false)} className="flex items-center">
-                    <BrandLogo compact />
-                  </Link>
-                </SheetTitle>
+                <div className="flex items-center justify-between gap-3 pr-8">
+                  <SheetTitle asChild>
+                    <Link to="/" onClick={() => setMobileOpen(false)}
+                      className="flex items-center scale-[0.78] origin-left">
+                      <BrandLogo compact />
+                    </Link>
+                  </SheetTitle>
+
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                      <Button variant="ghost" size="icon" data-testid="mobile-preferences"
+                        aria-label={t('controls.preferences')}
+                        className="h-9 w-9 shrink-0 border border-border rounded-lg">
+                        <SlidersHorizontal className="h-[17px] w-[17px]" />
+                      </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent align="end" className="w-48">
+                      <DropdownMenuLabel className="text-[10px] font-semibold uppercase tracking-[0.16em] text-muted-foreground">
+                        {t('controls.appearance')}
+                      </DropdownMenuLabel>
+                      <DropdownMenuRadioGroup value={isDark ? 'dark' : 'light'} onValueChange={setTheme}>
+                        <DropdownMenuRadioItem value="dark" data-testid="mobile-theme-dark">
+                          <span className="inline-flex items-center gap-2"><Moon className="h-3.5 w-3.5" /> {t('controls.dark')}</span>
+                        </DropdownMenuRadioItem>
+                        <DropdownMenuRadioItem value="light" data-testid="mobile-theme-light">
+                          <span className="inline-flex items-center gap-2"><Sun className="h-3.5 w-3.5" /> {t('controls.light')}</span>
+                        </DropdownMenuRadioItem>
+                      </DropdownMenuRadioGroup>
+                      <DropdownMenuSeparator />
+                      <DropdownMenuLabel className="text-[10px] font-semibold uppercase tracking-[0.16em] text-muted-foreground">
+                        {t('controls.language')}
+                      </DropdownMenuLabel>
+                      <DropdownMenuRadioGroup value={language} onValueChange={setLanguage}>
+                        {languages.map((item) => (
+                          <DropdownMenuRadioItem key={item.code} value={item.code} data-testid={`mobile-language-${item.code}`}>
+                            <span className="inline-flex items-center gap-2"><span aria-hidden="true">{item.flag}</span> {item.label}</span>
+                          </DropdownMenuRadioItem>
+                        ))}
+                      </DropdownMenuRadioGroup>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
+                </div>
               </SheetHeader>
 
               <div className="flex-1 overflow-y-auto px-5 pb-4">
@@ -162,12 +203,12 @@ const Header = () => {
                     Se quitó "Inicio": el logo de arriba ya lleva a la portada. */}
                 <div className="mt-4 grid grid-cols-3 gap-2">
                   {[
+                    { to: user ? '/cuenta' : '/login', icon: User, label: t('header.account') },
                     { to: '/catalogo', icon: LayoutGrid, label: t('nav.catalog') },
                     { to: '/asesor', icon: Sparkles, label: t('nav.advisor') },
                     { seccion: 'mob-recursos', icon: FlaskConical, label: t('nav.tools') },
                     { seccion: 'mob-ayuda', icon: MessageCircle, label: t('nav.help') },
                     { to: '/carrito', icon: ShoppingCart, label: t('nav.cart'), badge: count },
-                    { to: user ? '/cuenta' : '/login', icon: User, label: t('header.account') },
                   ].map((it) => {
                     const clase = 'relative flex flex-col items-center gap-1.5 rounded-xl border border-border bg-[hsl(var(--secondary))]/50 py-3 hover:border-[hsl(var(--primary))]/40 transition-colors';
                     const dentro = (
@@ -237,36 +278,6 @@ const Header = () => {
                       <div className="text-sm font-medium">{t(it.labelKey)}</div>
                       <div className="text-[11px] text-muted-foreground">{t(it.descKey)}</div>
                     </Link>
-                  ))}
-                </div>
-
-                {/* Tema e idioma. En el teléfono viven AQUÍ, dentro del menú de las
-                    3 líneas (Christian): el botón de preferencias de la barra es
-                    `hidden lg:inline-flex`, así que en móvil no existe. Antes no
-                    estaban en ningún lado y no se podía cambiar de idioma. */}
-                <div className="mt-6 mb-2 text-[11px] font-semibold uppercase tracking-[0.14em] text-muted-foreground">
-                  {t('controls.appearance')}
-                </div>
-                <div className="grid grid-cols-2 gap-2" data-testid="mobile-theme">
-                  {[{ v: 'light', I: Sun, k: 'controls.light' }, { v: 'dark', I: Moon, k: 'controls.dark' }].map(({ v, I, k }) => (
-                    <button key={v} type="button" onClick={() => setTheme(v)}
-                      data-testid={`mobile-theme-${v}`}
-                      className={`flex items-center justify-center gap-2 rounded-xl border px-3 py-2.5 text-sm transition-colors ${(v === 'dark') === isDark ? 'border-[hsl(var(--primary))] bg-[hsl(var(--primary))]/10 text-[hsl(var(--primary))] font-medium' : 'border-border hover:bg-[hsl(var(--secondary))]/60'}`}>
-                      <I className="h-4 w-4" /> {t(k)}
-                    </button>
-                  ))}
-                </div>
-
-                <div className="mt-5 mb-2 text-[11px] font-semibold uppercase tracking-[0.14em] text-muted-foreground">
-                  {t('controls.language')}
-                </div>
-                <div className="flex flex-col gap-1" data-testid="mobile-language">
-                  {languages.map((item) => (
-                    <button key={item.code} type="button" onClick={() => setLanguage(item.code)}
-                      data-testid={`mobile-language-${item.code}`}
-                      className={`flex items-center gap-2.5 rounded-lg px-2 py-2.5 text-sm transition-colors ${language === item.code ? 'bg-[hsl(var(--primary))]/10 text-[hsl(var(--primary))] font-medium' : 'hover:bg-[hsl(var(--secondary))]/60'}`}>
-                      <span aria-hidden="true">{item.flag}</span> {item.label}
-                    </button>
                   ))}
                 </div>
               </div>
