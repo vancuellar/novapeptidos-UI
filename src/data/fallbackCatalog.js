@@ -4612,7 +4612,7 @@ export const fallbackProducts = [
       },
       {
         "presentation": "10 mg",
-        "price": 1799,
+        "price": 1399,
         "stock": 40,
         "batch_number": "NP-KPV10-2601",
         "id": "a8512d3a-97fa-4100-913d-ea253780eff7",
