@@ -145,6 +145,19 @@ const SyringeSVG = ({ units, maxUnits, onChange }) => {
 const ReconstitutionCalculator = ({ variant = 'full', purchased = [], onTrack, syncUrl = true }) => {
   const { t, language } = useLanguage();
   const full = variant === 'full';
+
+  // ⚠️ El cliente solo debe ver SUS péptidos (orden de Christian, 2026-07-26).
+  // `purchased` existía pero solo pintaba unos atajos: el selector seguía
+  // listando los 195 productos del catálogo, así que a una clienta que compró
+  // NAD+ y Retatrutida se le sugerían dosis de compuestos que nunca compró.
+  // En el área privada la lista se acota a lo suyo; la calculadora pública
+  // (variant !== 'full') sigue mostrando el catálogo, que para eso es pública.
+  const listaProductos = useMemo(() => {
+    if (!full || !purchased.length) return mgProducts;
+    const mios = new Set(purchased.map((p) => (p.name || p).toString().toLowerCase()));
+    const solo = mgProducts.filter((p) => mios.has(p.name.toLowerCase()));
+    return solo.length ? solo : mgProducts;
+  }, [full, purchased]);
   const [mode, setMode] = useState('suggest');          // 'suggest' | 'known'
   const [product, setProduct] = useState('');
   const [vialMg, setVialMg] = useState(10);
@@ -154,7 +167,7 @@ const ReconstitutionCalculator = ({ variant = 'full', purchased = [], onTrack, s
   const [syringe, setSyringe] = useState(SYRINGES[0]);
   const [pickerOpen, setPickerOpen] = useState(false);
 
-  const currentProduct = mgProducts.find((x) => x.name === product);
+  const currentProduct = listaProductos.find((x) => x.name === product);
   const currentVariants = (currentProduct?.variants || []).slice().sort((a, b) => a - b);
   const hasRef = currentProduct?.startDose != null;
   const levels = full ? currentProduct?.startLevels || null : null;
@@ -208,7 +221,7 @@ const ReconstitutionCalculator = ({ variant = 'full', purchased = [], onTrack, s
   const pickProduct = (name, presetMg) => {
     setProduct(name);
     setPickerOpen(false);
-    const p = mgProducts.find((x) => x.name === name);
+    const p = listaProductos.find((x) => x.name === name);
     const vial = presetMg || (p && p.variants.length ? Math.min(...p.variants) : null);
     if (vial) setVialMg(vial);
     // Dosis de referencia (RUO) si existe; si no, unidad automática + valor
@@ -248,7 +261,7 @@ const ReconstitutionCalculator = ({ variant = 'full', purchased = [], onTrack, s
   useEffect(() => {
     if (!syncUrl) return;
     const p = params.get('p');
-    if (p && mgProducts.some((x) => x.name === p)) {
+    if (p && listaProductos.some((x) => x.name === p)) {
       setProduct(p);
       const g = (k, f) => { const v = params.get(k); if (v != null) f(v); };
       g('v', (v) => setVialMg(Number(v)));
@@ -340,7 +353,7 @@ const ReconstitutionCalculator = ({ variant = 'full', purchased = [], onTrack, s
               <CommandInput placeholder={t('calc.searchPlaceholder')} data-testid="calc-search" />
               <CommandList>
                 <CommandEmpty>{t('calc.noResults')}</CommandEmpty>
-                {mgProducts.map((p) => (
+                {listaProductos.map((p) => (
                   <CommandItem key={p.name} value={p.name} onSelect={() => pickProduct(p.name)}>
                     <Check className={`mr-2 h-4 w-4 ${product === p.name ? 'opacity-100' : 'opacity-0'}`} />
                     {p.name}
