@@ -19,6 +19,22 @@ const SYRINGES = [
   { id: 'u100-03', label: 'U-100 · 0.3 mL', perMl: 100, maxMl: 0.3 },
 ];
 
+// ⛔ INTERRUPTOR: sugerencias de DOSIS y FRECUENCIA apagadas.
+//
+// Christian, 2026-07-26, con una clienta leyendo la pantalla: las cifras que
+// mostrábamos (50/75/100 mg, "3 veces por semana") no tienen una sola fuente
+// coherente detrás — la dosis salía de un protocolo y la frecuencia de otro, y
+// las fuentes se contradicen entre diaria y 2-3 por semana. Hasta no tener una
+// investigación con fuentes citables, el sitio NO sugiere cuánto ni cada cuándo.
+//
+// Lo que SÍ sigue funcionando es la aritmética: el cliente pone su vial, su
+// agua y la dosis que él decida, y la calculadora le dice cuántas rayitas jalar.
+// Eso es una conversión de unidades, no una recomendación.
+//
+// Para reactivarlo: poner en true, y solo cuando cada `start_freq` y cada
+// `start_levels` del catálogo tenga su fuente anotada.
+const SUGERIR_DOSIS = false;
+
 // Productos del catálogo que se venden por mg (para pre-cargar el vial).
 export const mgProducts = fallbackProducts
   .filter((p) => (p.variants || []).some((v) => /mg/i.test(v.presentation)))
@@ -26,10 +42,12 @@ export const mgProducts = fallbackProducts
     name: p.name,
     slug: p.slug,
     variants: p.variants.filter((v) => /mg/i.test(v.presentation)).map((v) => parseFloat(v.presentation)),
-    startDose: p.start_dose,      // dosis de referencia RUO (o null)
+    // Con el interruptor apagado el producto viaja SIN dosis ni frecuencia, así
+    // que todo lo que las pinta río abajo se apaga solo. Un solo lugar que tocar.
+    startDose: SUGERIR_DOSIS ? p.start_dose : null,
     startUnit: p.start_unit,
-    startLevels: p.start_levels,  // {inicial, tipica, avanzada, unit} o null
-    startFreq: p.start_freq,      // código de frecuencia RUO (o null)
+    startLevels: SUGERIR_DOSIS ? p.start_levels : null,
+    startFreq: SUGERIR_DOSIS ? p.start_freq : null,
   }));
 
 // Cada cuándo se aplica, en lenguaje llano. Referencia RUO por clase de péptido;
