@@ -6,6 +6,42 @@
 
 ---
 
+## ⛔ LA BARRA SUPERIOR SIEMPRE VISIBLE — regla de oro (2026-07-26)
+
+**Orden de Christian, prioridad 00.** El top bar es `sticky top-0 z-40` y **no se despega
+nunca**, en ninguna página ni tamaño de pantalla.
+
+**Se había roto y no fue por el arreglo del pie** — `src/index.css` decía:
+
+```css
+html, body { overflow-x: hidden; }   /* ⛔ esto mataba la barra */
+```
+
+En CSS, poner `overflow` en **un** eje obliga al otro a volverse `auto`. Eso convierte al
+**body en contenedor de scroll**. Un elemento `sticky` se pega a su contenedor de scroll
+más cercano — pasaba a ser el body, y **el body nunca scrollea** (quien scrollea es el
+`html`). Resultado: la barra se iba hacia arriba y desaparecía.
+
+**Lo correcto, ya aplicado:**
+
+```css
+html { overflow-x: hidden; max-width: 100%; }  /* html SÍ scrollea: ahí sticky funciona */
+body { overflow-x: clip;   max-width: 100%; }  /* clip recorta SIN crear scroll container */
+```
+
+**NUNCA** pongas `overflow`, `overflow-x` ni `overflow-y` con valor `hidden`, `auto` o
+`scroll` en el **body**. (Pariente de la otra trampa: **no volver a poner
+`overscroll-behavior-y: none`**, que rompió el scroll de todo el sitio.)
+
+**Por qué se coló:** arriba del todo la barra SIEMPRE se ve bien. El bug solo aparece al
+bajar, y nadie lo revisaba. Ahora `npm run auditoria` trae dos comprobaciones nuevas —
+que el Header siga siendo `sticky top-0`, y que **ningún bloque de CSS del body** tenga un
+`overflow` que rompa el sticky. Probado en los dos sentidos: pasa con el arreglo y falla
+si se vuelve a poner. Verificado en escritorio (1280) y móvil (375), en 5 páginas: la
+barra queda en `top=0` a cualquier altura, y sin scroll horizontal.
+
+---
+
 ## 🔗 LINKS DEL PIE DE PÁGINA — arreglados (2026-07-26, rama `links-del-footer`)
 
 Era el pendiente #6 del handoff. **Los 23 enlaces del pie llevaban a la página correcta**

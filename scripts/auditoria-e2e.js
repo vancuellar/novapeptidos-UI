@@ -61,6 +61,28 @@ function enlacesDelPie() {
   return [...new Set(rutas)];
 }
 
+// ------------------------------------------------- barra superior siempre visible
+// REGLA DE ORO de Christian: el top bar NUNCA se despega. Es `sticky top-0`, y lo
+// unico que lo mata es poner `overflow` en el BODY: al ponerlo, el body se vuelve
+// contenedor de scroll, el sticky se pega a EL en vez de al html — y como el body
+// no scrollea, la barra se va hacia arriba y desaparece. Paso el 2026-07-26 con
+// `html, body { overflow-x: hidden }`. Se revisa aqui porque en la portada arriba
+// del todo la barra SIEMPRE se ve bien: el bug solo aparece al bajar.
+function barraSuperior() {
+  const header = fs.readFileSync(path.join(RAIZ, 'src/components/layout/Header.js'), 'utf8');
+  revisar(/className="sticky top-0/.test(header), 'barra superior pegada (sticky top-0)');
+
+  // Sin comentarios: si no, el propio comentario que explica el bug se cuenta como bug.
+  const css = fs.readFileSync(path.join(RAIZ, 'src/index.css'), 'utf8').replace(/\/\*[\s\S]*?\*\//g, '');
+  // Bloques cuyo selector menciona al body, con overflow que crea scroll container.
+  const culpables = [...css.matchAll(/([^{}]*)\{([^{}]*)\}/g)]
+    .map(([, sel, cuerpo]) => [sel.trim().split(/[\n}]/).pop().trim(), cuerpo])
+    .filter(([sel, cuerpo]) => /(^|[\s,>+~])body\b/.test(` ${sel}`)
+      && /overflow(-x|-y)?\s*:\s*[^;]*\b(hidden|auto|scroll)\b/.test(cuerpo))
+    .map(([sel]) => sel);
+  revisar(culpables.length === 0, 'body sin overflow que rompa el sticky', culpables.join(' | '));
+}
+
 // ---------------------------------------------------------------- páginas
 async function paginas() {
   // Con diagonal final: GitHub Pages redirige /catalogo -> /catalogo/ (301, normal).
@@ -319,6 +341,7 @@ async function reglasDeDinero(porSku, h) {
 // ------------------------------------------------------------------ correr
 async function main() {
   console.log(`Auditoría de ${SITE}${CON_COMPRAS ? '  (con compras reales)' : '  (solo lectura)'}\n`);
+  barraSuperior();
   await paginas();
   const cat = categorias();
   idioma();

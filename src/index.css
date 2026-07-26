@@ -371,8 +371,27 @@ body {
    que ahora sí: solo el vial bajo el cursor se levanta. */
 /* NUNCA scroll horizontal, sobre todo en telefono: si un elemento se pasa de
    ancho, se recorta — no empuja la pagina entera de lado. (Christian, movil.) */
-html, body {
+
+/* ⛔ REGLA DE ORO — LA BARRA SUPERIOR SIEMPRE VISIBLE, SIEMPRE. (Christian, 2026-07-26)
+   El menu de arriba es `sticky top-0` y NO se debe despegar nunca, en ninguna
+   pagina, en ningun tamano de pantalla.
+
+   Lo que lo rompio: esta regla decia `html, body { overflow-x: hidden }`. En CSS,
+   poner `overflow` en UN eje obliga al otro a volverse `auto`, y eso convierte al
+   BODY en contenedor de scroll. Un elemento `sticky` se pega a su contenedor de
+   scroll mas cercano — que pasaba a ser el body, y el body NUNCA scrollea (quien
+   scrollea es el html). Resultado: la barra se iba hacia arriba y desaparecia.
+
+   Por eso: `hidden` SOLO en html (que si es el que scrollea, ahi sticky funciona)
+   y en body `clip`, que recorta igual pero NO crea contenedor de scroll.
+   NUNCA pongas `overflow`, `overflow-x` ni `overflow-y` con valor `hidden`,
+   `auto` o `scroll` en el BODY. */
+html {
     overflow-x: hidden;
+    max-width: 100%;
+}
+body {
+    overflow-x: clip;
     max-width: 100%;
 }
 /* NO poner `overscroll-behavior` aqui. Se probo el 2026-07-26 para quitar la
