@@ -19,21 +19,26 @@ const SYRINGES = [
   { id: 'u100-03', label: 'U-100 · 0.3 mL', perMl: 100, maxMl: 0.3 },
 ];
 
-// ⛔ INTERRUPTOR: sugerencias de DOSIS y FRECUENCIA apagadas.
+// ⛔ LAS SUGERENCIAS DE DOSIS SE ENCIENDEN POR PRODUCTO, NO EN BLOQUE.
 //
-// Christian, 2026-07-26, con una clienta leyendo la pantalla: las cifras que
-// mostrábamos (50/75/100 mg, "3 veces por semana") no tienen una sola fuente
-// coherente detrás — la dosis salía de un protocolo y la frecuencia de otro, y
-// las fuentes se contradicen entre diaria y 2-3 por semana. Hasta no tener una
-// investigación con fuentes citables, el sitio NO sugiere cuánto ni cada cuándo.
+// Historia (Christian, 2026-07-26, con una clienta leyendo la pantalla): las
+// cifras que mostrábamos no tenían una sola fuente coherente detrás. Se auditó y
+// el commit que las metió decía que la frecuencia se asignó "por CLASE de
+// péptido" — se agrupó por familia y se le puso una frecuencia a cada familia,
+// sin investigar producto por producto. 63 de 110 productos, cero fuentes.
 //
-// Lo que SÍ sigue funcionando es la aritmética: el cliente pone su vial, su
-// agua y la dosis que él decida, y la calculadora le dice cuántas rayitas jalar.
-// Eso es una conversión de unidades, no una recomendación.
+// Se apagaron todas. Encenderlas de vuelta en bloque repetiría el error, así que
+// ahora cada producto se enciende SOLO si trae `start_levels.fuente` anotada.
+// Eso hace imposible que una cifra sin respaldo llegue a la pantalla: si nadie
+// la investigó, no aparece. Y la fuente se muestra al cliente.
 //
-// Para reactivarlo: poner en true, y solo cuando cada `start_freq` y cada
-// `start_levels` del catálogo tenga su fuente anotada.
-const SUGERIR_DOSIS = false;
+// Para encender un producto: investígalo, escribe sus `start_levels` (con `freq`
+// por nivel si aplica) y agrega `fuente` con las URLs. Nada más.
+//
+// Lo que NUNCA se apagó es la aritmética: el cliente pone su vial, su agua y SU
+// dosis, y la calculadora le dice cuántas rayitas. Eso es conversión de
+// unidades, no una recomendación.
+const tieneFuente = (p) => Boolean(p && p.start_levels && p.start_levels.fuente);
 
 // Productos del catálogo que se venden por mg (para pre-cargar el vial).
 export const mgProducts = fallbackProducts
@@ -44,10 +49,10 @@ export const mgProducts = fallbackProducts
     variants: p.variants.filter((v) => /mg/i.test(v.presentation)).map((v) => parseFloat(v.presentation)),
     // Con el interruptor apagado el producto viaja SIN dosis ni frecuencia, así
     // que todo lo que las pinta río abajo se apaga solo. Un solo lugar que tocar.
-    startDose: SUGERIR_DOSIS ? p.start_dose : null,
+    startDose: tieneFuente(p) ? p.start_dose : null,
     startUnit: p.start_unit,
-    startLevels: SUGERIR_DOSIS ? p.start_levels : null,
-    startFreq: SUGERIR_DOSIS ? p.start_freq : null,
+    startLevels: tieneFuente(p) ? p.start_levels : null,  // puede traer .freq, .agua_ml y .fuente
+    startFreq: tieneFuente(p) ? p.start_freq : null,
   }));
 
 // Cada cuándo se aplica, en lenguaje llano. Referencia RUO por clase de péptido;
@@ -64,6 +69,18 @@ const FREQ_PHRASES = {
   mt:          { es: '1 vez al día para empezar; al lograr el tono, 1–2 por semana', en: 'once a day to start; then 1–2 times a week', pt: '1 vez ao dia para começar; depois 1–2 vezes por semana' },
 };
 const freqPhrase = (code, lang) => (FREQ_PHRASES[code] ? (FREQ_PHRASES[code][lang] || FREQ_PHRASES[code].es) : '');
+
+// La frecuencia puede ser POR NIVEL, no por producto. Salió de NAD+ (2026-07-26):
+// las fuentes parecían contradecirse —unas decían diaria y otras 2-3 por semana—
+// pero describen FASES distintas. Al empezar se usa dosis baja y diaria; en
+// mantenimiento, dosis más alta y espaciada. Guardar una sola frecuencia por
+// producto no puede representar eso, y por eso el dato se veía contradictorio.
+// Misma estructura en TB-500 (carga y mantenimiento).
+//
+// `start_levels.freq` = {inicial, tipica, avanzada}. Si no está, se usa la
+// frecuencia del producto para los tres, como antes.
+const freqDeNivel = (levels, nivel, freqProducto) =>
+  (levels && levels.freq && levels.freq[nivel]) || freqProducto || '';
 // Frase "para empezar" en lenguaje simple (para que la entienda cualquiera).
 const START_LEAD = { es: 'Para empezar', en: 'To start', pt: 'Para começar' };
 const START_APPLY = { es: 'aplica', en: 'apply', pt: 'aplique' };
@@ -116,10 +133,20 @@ const AGUA_MAX_ML = 5;
 const DRAW_OBJETIVO_ML = 0.3;
 
 const aguaSugerida = (vialMg, p) => {
+  // 1) Si la fuente dice cuánta agua lleva ESTE vial, esa manda. La fórmula de
+  //    abajo es una aproximación razonable; una cifra investigada no se pisa con
+  //    una aproximación. (NAD+ 500 mg: la fuente dice 3 mL. La fórmula pediría 5,
+  //    y con 5 el nivel avanzado se come la jeringa entera — 100 rayitas.)
+  const dicha = p?.startLevels?.agua_ml?.[String(vialMg)];
+  if (dicha) return dicha;
+
+  // 2) Sin fuente: se elige el agua para que la dosis TÍPICA caiga cerca de
+  //    0.3 mL (30 rayitas). Se ancla en la típica y no en la inicial porque es
+  //    el centro del rango: anclar en la más baja deja la más alta fuera de la
+  //    jeringa.
   const unidad = p?.startUnit || unitFor(p?.name);
-  const dosis = p?.startLevels?.inicial ?? p?.startDose;
+  const dosis = p?.startLevels?.tipica ?? p?.startLevels?.inicial ?? p?.startDose;
   if (!vialMg || !dosis || unidad !== 'mg') return 2;   // viales chicos de mcg: 2 mL
-  // agua = vial * (mL que queremos jalar) / dosis
   const ml = (vialMg * DRAW_OBJETIVO_ML) / dosis;
   return Math.min(AGUA_MAX_ML, Math.max(1, Math.round(ml * 2) / 2));   // a medios mL
 };
@@ -543,13 +570,24 @@ const ReconstitutionCalculator = ({ variant = 'full', purchased = [], onTrack, s
                             {rayitas}{cabe ? '' : ' ⚠️'}
                           </td>
                           <td className="text-right px-3 text-muted-foreground">
-                            {freqPhrase(currentProduct?.startFreq, language) || '—'}
+                            {freqPhrase(freqDeNivel(levels, k, currentProduct?.startFreq), language) || '—'}
                           </td>
                         </tr>
                       );
                     })}
                   </tbody>
                 </table>
+                {/* De dónde salió cada cifra. Va a la vista a propósito: la razón
+                    por la que estas sugerencias estuvieron apagadas es que nadie
+                    podía saber en qué se basaban. Si un producto no trae fuente
+                    anotada, se dice — es preferible el hueco a la falsa confianza. */}
+                <div className="px-3 py-2 text-[11px] text-muted-foreground border-t border-[hsl(var(--border))]">
+                  {levels.fuente
+                    ? <>Fuente: {levels.fuente}</>
+                    : <span className="text-[hsl(var(--warning-foreground))]">Sin fuente anotada para este producto.</span>}
+                  {' · '}Referencia de investigación (RUO), no es una pauta médica.
+                  Consulta a un médico y hazte análisis antes de decidir cualquier dosis.
+                </div>
               </div>
             )}
             {levels?.orientativa && (
@@ -596,7 +634,7 @@ const ReconstitutionCalculator = ({ variant = 'full', purchased = [], onTrack, s
               <div className="text-lg leading-snug">
                 {START_APPLY[language] || START_APPLY.es}{' '}
                 <span className="font-bold text-[hsl(var(--primary))]">{dose} {effUnit}</span>,{' '}
-                <span className="font-bold text-[hsl(var(--primary))]">{freqPhrase(currentProduct.startFreq, language)}</span>.
+                <span className="font-bold text-[hsl(var(--primary))]">{freqPhrase(freqDeNivel(levels, activeLevel, currentProduct.startFreq), language)}</span>.
               </div>
             </div>
           )}
