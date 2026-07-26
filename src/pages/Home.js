@@ -28,14 +28,18 @@ const ICONS = { HeartPulse, Activity, Flame, Hourglass, Brain, Sparkles, Layers,
 // principales; Tirze y Sema en las esquinas.
 // Son DIEZ y se ven CINCO a la vez: el carrusel va rotando (Christian, 2026-07-26).
 // Los cinco primeros son los de siempre y conservan su orden — Reta al centro y
-// al frente, NAD y KLOW a los lados, Tirze y Sema en las esquinas.
+// al frente, NAD y KLOW a los lados, Tirze y GHK-Cu en las esquinas.
 const HERO_VIALS = [
   { slug: 'vial-tirzepatide', name: 'Tirzepatida 20mg', product: 'tirzepatida' },
   { slug: 'vial-nad', name: 'NAD+ 500mg', product: 'nad-plus' },
   { slug: 'vial-retatrutide', name: 'Retatrutida 40mg', product: 'retatrutida' },
   { slug: 'vial-klow', name: 'KLOW 80mg', product: 'klow-bpc-ghk-cu-tb-500-kpv' },
-  { slug: 'vial-semaglutide', name: 'Semaglutida 10mg', product: 'semaglutida' },
-  // Los diez de abajo son los que dan variedad: entran conforme el carrusel gira.
+  // GHK-Cu sube a los cinco de arriba y Semaglutida baja al grupo que rota
+  // (Christian, 2026-07-26): la competencia empuja mucho GHK-Cu y nosotros ya lo
+  // vendemos tres veces sin darle protagonismo — suelto, dentro de GLOW y dentro
+  // de KLOW. Semaglutida sigue en el carrusel, solo que ya no fija.
+  { slug: 'vial-ghkcu', name: 'GHK-Cu 50mg', product: 'ghk-cu' },
+  // Los de abajo son los que dan variedad: entran conforme el carrusel gira.
   // Son de familias distintas a propósito (reparación, hormona de crecimiento,
   // estética, nootrópicos, sueño, salud sexual, metabólicos).
   { slug: 'vial-bpc157', name: 'BPC-157 10mg', product: 'bpc-157' },
@@ -43,7 +47,7 @@ const HERO_VIALS = [
   { slug: 'vial-ipamorelin', name: 'Ipamorelin 5mg', product: 'ipamorelin' },
   { slug: 'vial-cjc1295', name: 'CJC-1295 5mg', product: 'cjc-1295-sin-dac' },
   { slug: 'vial-tesamorelina', name: 'Tesamorelina 10mg', product: 'tesamorelina' },
-  { slug: 'vial-ghkcu', name: 'GHK-Cu 50mg', product: 'ghk-cu' },
+  { slug: 'vial-semaglutide', name: 'Semaglutida 10mg', product: 'semaglutida' },
   { slug: 'vial-semax', name: 'Semax 10mg', product: 'semax' },
   { slug: 'vial-dsip', name: 'DSIP 5mg', product: 'dsip' },
   { slug: 'vial-pt141', name: 'PT-141 10mg', product: 'pt-141' },

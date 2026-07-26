@@ -293,10 +293,21 @@ const monographs = {
         ],
       },
       {
+        title: 'Qué dice la evidencia',
+        paragraphs: [
+          'GHK-Cu es de los pocos péptidos de esta categoría con literatura anterior a la moda: se describió en los años setenta, a partir del trabajo sobre factores del plasma humano que cambiaban con la edad. Eso significa que buena parte de lo publicado son estudios in vitro y en modelos animales acumulados durante décadas, no material reciente generado alrededor de un producto comercial.',
+          'La observación que más se repite es la caída de su concentración plasmática con la edad —de niveles altos en la juventud a una fracción de eso pasadas las décadas—, y es el punto de partida de casi toda la investigación posterior sobre remodelado tisular. Conviene leerla como lo que es: una correlación descrita, no una relación causa-efecto demostrada.',
+          'En cosmética tópica su uso está mucho más documentado que por otras vías, y es importante no trasladar conclusiones de una a otra: la ruta de exposición cambia por completo lo que se puede concluir de un experimento. Gran parte del trabajo transcriptómico se hizo en cultivos celulares, donde la concentración se controla y no depende de absorción ni distribución.',
+          'Como en todo este catálogo: material de investigación, sin uso aprobado en humanos ni en animales.',
+        ],
+      },
+      {
         title: 'Manejo en laboratorio',
         paragraphs: [
           'Liofilizado en vial sellado, de color azulado. Conservar en frío y protegido de la luz: los complejos de cobre son fotosensibles.',
           'Reconstituir con diluyente estéril de forma muy suave; el complejo cobre-péptido es sensible al estrés mecánico y a los cambios bruscos de pH. La solución se guarda refrigerada y al abrigo de la luz.',
+          'Dos señales visuales que conviene conocer: el azul-verdoso al reconstituir es normal y esperado, porque es el color del propio complejo. En cambio, una solución que se enturbia, precipita o vira a un tono distinto indica que el complejo se alteró, y ese vial ya no sirve para un experimento del que se quiera concluir algo.',
+          'Evitar el contacto con agentes quelantes y con soluciones que contengan EDTA: compiten por el cobre y pueden desarmar el complejo, que es justamente lo que le da su actividad.',
         ],
       },
     ],
