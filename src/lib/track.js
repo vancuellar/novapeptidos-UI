@@ -4,14 +4,44 @@
 import { API } from '@/lib/api';
 
 const SESSION_KEY = 'np_track_session';
+const SESSION_SEEN = 'np_track_session_visto';
+const VISITOR_KEY = 'np_track_visitor';
 const ORIGIN_KEY = 'np_track_origin';
+
+// Una SESIÓN termina a los 30 minutos sin actividad — es el estándar de la
+// industria y lo que entiende cualquiera por "una visita".
+//
+// ⚠️ Antes el id se guardaba para siempre: quien volvía un mes después seguía
+// contando como la MISMA sesión. O sea que "sesiones" no eran sesiones, eran
+// dispositivos que alguna vez entraron — y la conversión del panel salía
+// inflada, porque se dividía entre un número artificialmente chico
+// (170 visitas repartidas en solo 16 "sesiones"). Christian, 2026-07-26.
+const SESSION_MINUTOS = 30;
+
+const nuevoId = (p) => p + Math.random().toString(36).slice(2) + Date.now().toString(36);
 
 const sessionId = () => {
   try {
+    const ahora = Date.now();
+    const visto = Number(localStorage.getItem(SESSION_SEEN) || 0);
     let id = localStorage.getItem(SESSION_KEY);
-    if (!id) {
-      id = 's-' + Math.random().toString(36).slice(2) + Date.now().toString(36);
+    if (!id || !visto || ahora - visto > SESSION_MINUTOS * 60 * 1000) {
+      id = nuevoId('s-');
       localStorage.setItem(SESSION_KEY, id);
+    }
+    localStorage.setItem(SESSION_SEEN, String(ahora));
+    return id;
+  } catch { return 'anon'; }
+};
+
+// El VISITANTE sí es para siempre: sirve para saber si alguien vuelve, y para
+// que una compra se le siga atribuyendo al anuncio que lo trajo semanas antes.
+const visitorId = () => {
+  try {
+    let id = localStorage.getItem(VISITOR_KEY);
+    if (!id) {
+      id = nuevoId('v-');
+      localStorage.setItem(VISITOR_KEY, id);
     }
     return id;
   } catch { return 'anon'; }
@@ -67,7 +97,7 @@ const avisarAMeta = (type, extra) => {
 export const track = (type, extra = {}) => {
   avisarAMeta(type, extra);
   try {
-    const body = JSON.stringify({ type, session_id: sessionId(), path: window.location.pathname, ...origin(), ...extra });
+    const body = JSON.stringify({ type, session_id: sessionId(), visitor_id: visitorId(), path: window.location.pathname, ...origin(), ...extra });
     // sendBeacon sobrevive al cambio de página (clave para medir la compra).
     if (navigator.sendBeacon) {
       navigator.sendBeacon(`${API}/events`, new Blob([body], { type: 'application/json' }));
