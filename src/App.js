@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import '@/App.css';
-import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, useLocation, useNavigationType } from 'react-router-dom';
 import { Toaster } from '@/components/ui/sonner';
 import { AuthProvider } from '@/context/AuthContext';
 import { CartProvider } from '@/context/CartContext';
@@ -48,6 +48,28 @@ const TrackPageViews = () => {
   return null;
 };
 
+// Al abrir cualquier página, empezar ARRIBA (Christian, 2026-07-26).
+//
+// Es una app de una sola página: al cambiar de ruta el navegador NO reposiciona
+// nada, así que si venías a media pantalla del catálogo, la ficha del producto
+// abría a media pantalla. Se veía como si la página estuviera rota.
+//
+// `pathname` a secas, sin `search`: filtrar u ordenar el catálogo cambia la
+// query pero no es una página nueva — ahí NO hay que brincar al inicio.
+//
+// Salto seco, no suave: al abrir algo nuevo no se anima un recorrido que el
+// visitante nunca hizo. Y se respeta la vuelta con el botón "atrás", que trae su
+// propia posición guardada.
+const ScrollToTop = () => {
+  const { pathname } = useLocation();
+  const navType = useNavigationType();
+  useEffect(() => {
+    if (navType === 'POP') return;      // "atrás"/"adelante": el navegador manda
+    window.scrollTo(0, 0);
+  }, [pathname, navType]);
+  return null;
+};
+
 const SiteChrome = ({ children }) => {
   const { pathname } = useLocation();
   if (STANDALONE_ROUTES.includes(pathname)) return null;
@@ -69,6 +91,7 @@ function App() {
           <AuthProvider>
             <CartProvider>
               <BrowserRouter basename={process.env.PUBLIC_URL || '/'}>
+                <ScrollToTop />
                 <TrackPageViews />
                 <SiteChrome><ViewAsBanner /><Header /></SiteChrome>
                 <main className="min-h-[70vh]">
