@@ -113,10 +113,12 @@ const Home = () => {
       <section className="bg-background relative overflow-hidden -mt-[60px] pt-[60px]">
         <div className="hero-beams" />
         <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 pt-20 lg:pt-28 pb-16 relative">
-          <div className="grid lg:grid-cols-[1.1fr_0.9fr] gap-12 lg:gap-16 items-center">
-            <div>
+          {/* En telefono manda el PRODUCTO: los viales van primero y el texto
+              debajo. En escritorio vuelve el orden normal (texto | viales). */}
+          <div className="grid lg:grid-cols-[1.1fr_0.9fr] gap-8 lg:gap-16 items-center">
+            <div className="order-2 lg:order-1">
               <div className="kicker">{t('home.kicker')}</div>
-              <h1 className="font-heading text-5xl sm:text-6xl lg:text-[3.6rem] font-bold tracking-tight leading-[1.04] mt-6">
+              <h1 className="font-heading text-[2.1rem] sm:text-5xl lg:text-[3.6rem] font-bold tracking-tight leading-[1.08] mt-6 break-words">
                 {heroLead}
                 {/* "lote por lote" va en su propio renglon, debajo. */}
                 <span className="hero-title-accent block">{heroAccent}</span>
@@ -132,7 +134,7 @@ const Home = () => {
                 <Link to="/aprende/empieza-aqui" className="btn-resend-ghost">{t('home.startHere')}</Link>
               </div>
             </div>
-            <div className="flex items-center justify-center">
+            <div className="order-1 lg:order-2 flex items-center justify-center">
               <div className="hero-vials w-full max-w-[540px]">
                 <div className="hero-vials-glow" />
                 {/* Anchos en % del contenedor (max 540px): la fila ocupa el mismo
@@ -183,20 +185,20 @@ const Home = () => {
           </div>
         </div>
         <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 pb-24 relative">
-          <div className="mt-4 flex flex-wrap gap-x-12 gap-y-6 pt-4">
+          <div className="mt-4 grid grid-cols-2 gap-x-6 gap-y-6 pt-4 sm:flex sm:flex-wrap sm:gap-x-12">
             <div>
               <div className="font-heading text-3xl font-bold">≥99%</div>
               <div className="font-mono-tech text-[10.5px] uppercase tracking-[0.16em] text-muted-foreground mt-1.5">{t('home.typicalPurity')} · HPLC</div>
             </div>
-            <div className="border-l border-border pl-12">
+            <div className="sm:border-l border-border sm:pl-12">
               <div className="font-heading text-3xl font-bold">22+</div>
               <div className="font-mono-tech text-[10.5px] uppercase tracking-[0.16em] text-muted-foreground mt-1.5">{t('home.products')}</div>
             </div>
-            <div className="border-l border-border pl-12">
+            <div className="sm:border-l border-border sm:pl-12">
               <div className="font-heading text-3xl font-bold">{t('home.shippingValue')}</div>
               <div className="font-mono-tech text-[10.5px] uppercase tracking-[0.16em] text-muted-foreground mt-1.5">{t('home.nationalShipping')}</div>
             </div>
-            <div className="border-l border-border pl-12">
+            <div className="sm:border-l border-border sm:pl-12">
               <div className="font-heading text-3xl font-bold text-[hsl(var(--primary))]">COA</div>
               <div className="font-mono-tech text-[10.5px] uppercase tracking-[0.16em] text-muted-foreground mt-1.5">{t('home.coa.batch')} NP-BPC5-2401 · 99.4%</div>
             </div>

@@ -22,7 +22,7 @@ const Footer = () => {
         <p className="text-xs leading-relaxed rounded-lg border border-[hsl(var(--warning-border))] bg-[hsl(var(--warning))] text-[hsl(var(--warning-foreground))] p-3.5 mb-10">
           <strong>{t('footer.legalTitle')}</strong> {t('footer.legalBody')}
         </p>
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-8">
           <div>
             {/* El logo del pie SOLO sube al tope de la página actual (orden de
                 Christian): no navega al home como el de la barra. */}
@@ -54,17 +54,28 @@ const Footer = () => {
               <li><Link to="/catalogo" className="hover:text-foreground transition-colors">{t('header.allCatalog')}</Link></li>
               <li><Link to="/catalogo?category=recuperacion-tejidos" className="hover:text-foreground transition-colors">{t('footer.recovery')}</Link></li>
               <li><Link to="/catalogo?category=hormona-crecimiento" className="hover:text-foreground transition-colors">{t('footer.growth')}</Link></li>
-              <li><Link to="/catalogo?category=stacks" className="hover:text-foreground transition-colors">Stacks / Combos</Link></li>
+              <li><Link to="/catalogo?category=stacks" className="hover:text-foreground transition-colors">{t('footer.stacks')}</Link></li>
             </ul>
           </div>
           <div>
             <h4 className="kicker mb-4">{t('nav.learn')}</h4>
             <ul className="space-y-2.5 text-sm text-muted-foreground">
-              <li><Link to="/aprende/empieza-aqui" className="hover:text-foreground transition-colors">Empieza aquí</Link></li>
-              <li><Link to="/aprende/reconstitucion-paso-a-paso" className="hover:text-foreground transition-colors">Cómo reconstituir</Link></li>
-              <li><Link to="/compuestos" className="hover:text-foreground transition-colors">Fichas de compuestos</Link></li>
-              <li><Link to="/aprende/preguntas-frecuentes" className="hover:text-foreground transition-colors">Preguntas frecuentes</Link></li>
-              <li><Link to="/aprende" className="hover:text-foreground transition-colors">Todas las guías</Link></li>
+              <li><Link to="/aprende/empieza-aqui" className="hover:text-foreground transition-colors">{t('footer.startHere')}</Link></li>
+              <li><Link to="/aprende/reconstitucion-paso-a-paso" className="hover:text-foreground transition-colors">{t('footer.howToReconstitute')}</Link></li>
+              <li><Link to="/compuestos" className="hover:text-foreground transition-colors">{t('footer.compendium')}</Link></li>
+              <li><Link to="/aprende/preguntas-frecuentes" className="hover:text-foreground transition-colors">{t('nav.faq')}</Link></li>
+              <li><Link to="/aprende" className="hover:text-foreground transition-colors">{t('footer.allGuides')}</Link></li>
+            </ul>
+          </div>
+          <div>
+            <h4 className="kicker mb-4">{t('nav.tools')}</h4>
+            <ul className="space-y-2.5 text-sm text-muted-foreground">
+              <li><Link to="/asesor" className="hover:text-foreground transition-colors">{t('nav.advisor')}</Link></li>
+              <li><Link to="/calculadora" className="hover:text-foreground transition-colors">{t('nav.calculator')}</Link></li>
+              <li><Link to="/tutoriales" className="hover:text-foreground transition-colors">{t('nav.tutorials')}</Link></li>
+              <li><Link to="/educacion" className="hover:text-foreground transition-colors">{t('nav.education')}</Link></li>
+              <li><Link to="/cuenta" className="hover:text-foreground transition-colors">{t('header.account')}</Link></li>
+              <li><Link to="/carrito" className="hover:text-foreground transition-colors">{t('nav.cart')}</Link></li>
             </ul>
           </div>
           <div>
