@@ -146,34 +146,10 @@ const Home = () => {
     tocoRef.current = null;
   };
 
-  // Con el mouse encima, la fila sigue al cursor: se mueve a la derecha y los
-  // viales corren a la derecha (Christian, 2026-07-26). No hay que hacer clic.
-  // Se acumula el recorrido y se avanza UN vial cada tanto; pixel por pixel
-  // temblaría. Convive con el efecto de acercar el cursor: el vial apuntado
-  // sigue creciendo mientras la fila se mueve.
-  //
-  // 140 px por vial: la fila mide 540, así que cruzarla de lado a lado mueve
-  // unos cuatro viales. Se siente que uno lo lleva y no que se le va. Es EL
-  // número para calibrar la velocidad — más alto, más lento.
-  const HERO_PIXELES_POR_VIAL = 140;
-  const mouseRef = useRef({ x: null, acumulado: 0 });
-  const alMoverMouse = (e) => {
-    const m = mouseRef.current;
-    if (m.x === null) { m.x = e.clientX; return; }
-    m.acumulado += e.clientX - m.x;
-    m.x = e.clientX;
-    while (Math.abs(m.acumulado) >= HERO_PIXELES_POR_VIAL) {
-      const dir = m.acumulado > 0 ? 1 : -1;
-      // Mouse a la DERECHA = los viales corren a la derecha, o sea que entra
-      // el de atrás por la izquierda: el índice va hacia atrás.
-      girarViales(-dir);
-      m.acumulado -= dir * HERO_PIXELES_POR_VIAL;
-    }
-  };
-  const alSalirDeLaFila = () => {
-    mouseRef.current = { x: null, acumulado: 0 };
-    setHoveredVial(null);
-  };
+  // El mouse NO mueve el carrusel. Se probo el 2026-07-26 (avanzaba un vial cada
+  // 140 px de recorrido) y a Christian no le gusto como se sentia: se mueve solo
+  // con las flechas, o deslizando el dedo en el telefono.
+  const alSalirDeLaFila = () => setHoveredVial(null);
 
   const vialesVisibles = Array.from({ length: HERO_VISIBLES }, (_, i) => ({
     ...HERO_VIALS[(vialOffset + i) % HERO_VIALS.length],
@@ -256,7 +232,6 @@ const Home = () => {
                 </button>
                 <div className="relative flex items-end justify-center gap-0.5 sm:gap-1"
                   onMouseLeave={alSalirDeLaFila}
-                  onMouseMove={alMoverMouse}
                   onTouchStart={alTocar}
                   onTouchEnd={alSoltar}>
                   {vialesVisibles.map((v, i) => {

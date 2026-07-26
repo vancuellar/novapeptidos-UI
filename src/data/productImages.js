@@ -36,11 +36,18 @@ const skuDe = (product, variant) => {
 /**
  * @param product   el producto del catálogo
  * @param variant   la presentación seleccionada (opcional); si no viene, la primera
+ * @param tarjeta   true para la versión chica (catálogo)
+ *
+ * ⚠️ El catálogo DEBE pedir la chica. Son 99 tarjetas en una página, se ven a
+ * ~284 px, y con la de 760 el navegador descomprimía 2.3 MB por tarjeta — 218 MB
+ * en total — mientras el cliente bajaba, y el scroll se atrancaba.
  */
-export const productImage = (product, variant) => {
+export const productImage = (product, variant, tarjeta = false) => {
   if (!product) return undefined;
   const sku = skuDe(product, variant);
-  if (sku && VIAL_SKUS.has(sku)) return `${BASE}/images/products/${sku}.webp`;
+  if (sku && VIAL_SKUS.has(sku)) {
+    return `${BASE}/images/products/${sku}${tarjeta ? '-sm' : ''}.webp`;
+  }
   if (WITH_PHOTO.has(product.slug)) return `${BASE}/images/products/${product.slug}.jpg`;
   return BRAND_VIAL_IMAGE;
 };
