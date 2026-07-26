@@ -50,11 +50,27 @@ const HERO_VIALS = [
   { slug: 'vial-cagrilintida', name: 'Cagrilintida 5mg', product: 'cagrilintida' },
 ].map((v) => ({ ...v, src: `${process.env.PUBLIC_URL}/images/hero/${v.slug}.webp` }));
 
-// Cuántos se ven a la vez y qué ancho tiene cada POSICIÓN (no cada vial): así la
-// silueta de la fila no cambia al rotar — el de en medio siempre es el más grande.
+// Cuántos se ven a la vez y qué altura tiene cada POSICIÓN — no cada vial.
+// Como el carrusel de apps de Apple (Christian, 2026-07-26): el del centro es el
+// más grande, sus vecinos algo menos y los de las orillas los más chicos. Al girar,
+// la botella que va llegando al centro es la que crece. El escalón es de la FILA,
+// no de la botella: por eso las alturas van por índice de posición.
+//
+// ⚠️ Se iguala por ALTURA, nunca por ancho. Los cinco viales originales de Christian
+// son más angostos (aspecto 0.45) que los generados (0.66): cuando la medida era el
+// ancho, los nuevos salían aplastados y flacos.
+//
+// Dos alturas porque el vial generado es ~50% más ancho a la misma altura, y cinco
+// de esos no caben en un teléfono. La chica se calculó para que los cinco anchos
+// entren en los 343 px que mide la fila en un iPhone.
 const HERO_VISIBLES = 5;
-const HERO_ANCHOS = [13, 14.5, 16, 14.5, 13];
-const HERO_SEGUNDOS = 5;
+const HERO_ALTURAS = [
+  { movil: 90, grande: 155 },
+  { movil: 100, grande: 173 },
+  { movil: 111, grande: 191 },
+  { movil: 100, grande: 173 },
+  { movil: 90, grande: 155 },
+];
 
 // Compounds shown in the scrolling ticker under the hero
 const TICKER_ITEMS = [
@@ -112,25 +128,27 @@ const Home = () => {
     setCategories(VISIBLE_CATEGORIES);
   }, []);
 
-  // Italic-serif accent = la frase después de la coma (o las últimas 2 palabras si no hay coma).
-  // El carrusel avanza solo, pero se DETIENE mientras el cursor está encima (si no,
-  // el vial que estás mirando se te va) y no avanza si el sistema pide menos
-  // animación.
-  useEffect(() => {
-    if (hoveredVial !== null) return undefined;
-    if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-      return undefined;
-    }
-    const id = setInterval(
-      () => setVialOffset((o) => (o + 1) % HERO_VIALS.length),
-      HERO_SEGUNDOS * 1000,
-    );
-    return () => clearInterval(id);
-  }, [hoveredVial]);
+  // El carrusel NO gira solo: lo mueve el cliente con las flechas o deslizando
+  // (Christian, 2026-07-26). Así puede detenerse en el vial que le interese sin
+  // que se le vaya.
+  const girarViales = (dir) => setVialOffset(
+    (o) => (o + dir + HERO_VIALS.length) % HERO_VIALS.length,
+  );
+
+  // Deslizar con el dedo en el teléfono. 40 px para no confundir un toque con
+  // un arrastre.
+  const tocoRef = useRef(null);
+  const alTocar = (e) => { tocoRef.current = e.touches[0].clientX; };
+  const alSoltar = (e) => {
+    if (tocoRef.current === null) return;
+    const corrido = e.changedTouches[0].clientX - tocoRef.current;
+    if (Math.abs(corrido) > 40) girarViales(corrido < 0 ? 1 : -1);
+    tocoRef.current = null;
+  };
 
   const vialesVisibles = Array.from({ length: HERO_VISIBLES }, (_, i) => ({
     ...HERO_VIALS[(vialOffset + i) % HERO_VIALS.length],
-    w: HERO_ANCHOS[i],
+    alto: HERO_ALTURAS[i],
   }));
 
   const heroTitleRaw = t('home.heroTitle');
@@ -182,15 +200,35 @@ const Home = () => {
               </div>
             </div>
             <div className="flex items-center justify-center">
-              <div className="hero-vials w-full max-w-[540px]">
+              <div className="hero-vials w-full max-w-[600px]">
                 <div className="hero-vials-glow" />
-                {/* Anchos en % del contenedor (max 540px): la fila ocupa el mismo
-                    espacio que la foto grupal anterior, sin desbordarse.
+                {/* Quince viales, cinco a la vista. Las flechas (o el dedo) los van
+                    corriendo: entran los de atrás y se ocultan los de adelante.
                     El hover se maneja en estado, no solo en CSS, porque el vial
                     apuntado crece y los vecinos se encogen: es un efecto de la
                     fila completa, como el dock de macOS. */}
+                <button
+                  type="button"
+                  aria-label={t('common.previous')}
+                  onClick={() => girarViales(-1)}
+                  className="hero-vial-flecha hero-vial-flecha-izq"
+                  data-testid="hero-vial-prev"
+                >
+                  <ChevronLeft className="h-5 w-5" />
+                </button>
+                <button
+                  type="button"
+                  aria-label={t('common.next')}
+                  onClick={() => girarViales(1)}
+                  className="hero-vial-flecha hero-vial-flecha-der"
+                  data-testid="hero-vial-next"
+                >
+                  <ChevronRight className="h-5 w-5" />
+                </button>
                 <div className="relative flex items-end justify-center gap-0.5 sm:gap-1"
-                  onMouseLeave={() => setHoveredVial(null)}>
+                  onMouseLeave={() => setHoveredVial(null)}
+                  onTouchStart={alTocar}
+                  onTouchEnd={alSoltar}>
                   {vialesVisibles.map((v, i) => {
                     const state = hoveredVial === null ? 'idle'
                       : hoveredVial === i ? 'active'
@@ -199,8 +237,8 @@ const Home = () => {
                       <Link
                         key={v.slug}
                         to={`/producto/${v.product}`}
-                        className={`hero-vial-link hero-vial-${state} block`}
-                        style={{ width: `${v.w}%` }}
+                        className={`hero-vial-link hero-vial-${state} block shrink-0`}
+                        style={{ '--vial-h-movil': `${v.alto.movil}px`, '--vial-h-grande': `${v.alto.grande}px` }}
                         title={v.name}
                         onMouseEnter={() => setHoveredVial(i)}
                         onFocus={() => setHoveredVial(i)}
