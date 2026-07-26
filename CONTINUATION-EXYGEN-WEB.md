@@ -6,6 +6,49 @@
 
 ---
 
+## 🔗 LINKS DEL PIE DE PÁGINA — arreglados (2026-07-26, rama `links-del-footer`)
+
+Era el pendiente #6 del handoff. **Los 23 enlaces del pie llevaban a la página correcta**
+(se probaron uno por uno y todos pintan su contenido real), pero **14 de los 23 le
+contestaban 404 al servidor**. Un visitante no lo notaba —GitHub Pages entrega la
+aplicación desde `404.html` y React pinta la página bien—, pero **Google sí lo nota y no
+indexa nada de eso**: las 13 guías de `/aprende`, las 8 páginas de `/info` (envíos,
+devoluciones, calidad, contacto, soporte, rastreo, términos, privacidad), `/compuestos`,
+`/asesor` y `/educacion`.
+
+**Por qué.** `scripts/prerender-routes.js` traía una lista escrita a mano con **siete
+direcciones que no existen en `App.js`**: `/contacto`, `/terminos`, `/privacidad`,
+`/envios`, `/devoluciones`, `/compendio` y `/distribuidores`. Generaba una página con
+código 200, buen título y buena descripción para cada una… y al abrirla la aplicación
+mostraba *"404, esta página se nos evaporó"*. Peor que un 404 normal: para Google es un
+*soft 404* y esas siete estaban en el mapa del sitio. Las direcciones **reales** (`/info/*`,
+`/aprende/<guía>`, `/compuestos`, `/asesor`, `/educacion`) no se generaban.
+
+**Por qué la auditoría decía 37/37.** Revisaba justamente esas siete direcciones
+inventadas, que sí daban 200. El punto ciego estaba en la propia prueba.
+
+**Lo que se hizo:**
+1. `prerender-routes.js` — fuera las siete inventadas; las rutas de `/aprende` y `/info`
+   ahora **se leen solas** de `src/data/learn/` y `src/data/info/` (título y descripción
+   salen del contenido de cada página, no se escriben a mano), así que agregar una guía
+   nueva ya no requiere tocar el script.
+2. **`verificarRutas()`** — compara cada ruta contra los `<Route path=...>` de `App.js` y
+   **revienta la compilación** si alguien vuelve a inventar una dirección. El bug no puede
+   repetirse en silencio.
+3. `robots.txt` y el mapa del sitio salen ahora de **una sola lista** (`NO_INDEXAR`), así
+   que ya no pueden contradecirse. Carrito, checkout y todo lo de la cuenta quedan fuera
+   del mapa.
+4. `auditoria-e2e.js` — los enlaces a revisar **se leen del propio `Footer.js`**, y además
+   de pedir 200 comprueba que la página traiga su propio `<title>` (así se caza el
+   *soft 404*: 200 con cara de página buena).
+
+**Resultado de la compilación:** 137 rutas escritas (antes 127, y 7 de ellas falsas) +
+mapa del sitio con 131 URLs. Auditoría corrida contra el sitio en vivo **antes** del
+arreglo: 45 bien / **30 fallas** — todas las que este cambio corrige. **Hay que volver a
+correr `npm run auditoria` después del merge y confirmar 0 fallas.**
+
+---
+
 ## 🤝 HANDOFF — CIERRE DEL 2026-07-26
 
 > Sesión larga. Esto es lo que cambió y, sobre todo, **lo que se descubrió que estaba mal**.

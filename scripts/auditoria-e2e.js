@@ -50,16 +50,34 @@ function leerDelCatalogo(nombreExport) {
   return m ? eval(m[1]) : [];
 }
 
+// Saca los enlaces internos del pie de página tal como están escritos en el
+// código. Antes esta auditoría traía una lista a mano que resultó ser de
+// direcciones inventadas (/contacto, /terminos, /devoluciones): contestaban 200
+// y por eso la auditoría daba 37/37... mientras 14 de los 23 enlaces reales del
+// pie contestaban 404 a Google. Leyéndolos del Footer eso ya no puede pasar.
+function enlacesDelPie() {
+  const src = fs.readFileSync(path.join(RAIZ, 'src/components/layout/Footer.js'), 'utf8');
+  const rutas = [...src.matchAll(/<Link to="([^"]+)"/g)].map((m) => m[1].split('?')[0]);
+  return [...new Set(rutas)];
+}
+
 // ---------------------------------------------------------------- páginas
 async function paginas() {
   // Con diagonal final: GitHub Pages redirige /catalogo -> /catalogo/ (301, normal).
-  const rutas = ['/', '/catalogo/', '/carrito/', '/checkout/', '/aprende/', '/tutoriales/',
-                 '/login/', '/registro/', '/contacto/', '/producto/nad-plus/',
-                 '/producto/bpc-157/', '/terminos/', '/privacidad/', '/devoluciones/',
-                 '/sitemap.xml', '/robots.txt'];
-  for (const r of rutas) {
+  const rutas = ['/', '/checkout/', '/login/', '/registro/', '/producto/nad-plus/',
+                 '/producto/bpc-157/', '/sitemap.xml', '/robots.txt',
+                 ...enlacesDelPie().map((r) => (r.endsWith('/') ? r : `${r}/`))];
+  for (const r of [...new Set(rutas)]) {
     const res = await fetch(SITE + r);
     revisar(res.status === 200, `página ${r}`, String(res.status));
+  }
+  // Un 200 no basta: la aplicación puede pintar su propio "404" con código 200.
+  // Eso es lo que pasaba en /terminos y /contacto. Aquí se cazan esos casos.
+  for (const r of [...new Set(rutas)].filter((x) => !x.endsWith('.xml') && !x.endsWith('.txt'))) {
+    const html = await (await fetch(SITE + r)).text();
+    const titulo = (html.match(/<title>([^<]*)<\/title>/) || [])[1] || '';
+    // La portada y las páginas sin prerender comparten el título genérico.
+    revisar(r === '/' || !/^Exygen Labs Mexico$/.test(titulo), `sin prerender ${r}`, titulo);
   }
   // Cada página con SU título: si todas comparten uno, Google no las distingue.
   const titulos = new Set();
