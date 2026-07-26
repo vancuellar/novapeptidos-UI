@@ -5087,7 +5087,7 @@ export const fallbackProducts = [
     "short_description": "Diluyente estéril de laboratorio con conservador.",
     "description": "Insumo de laboratorio: agua estéril con alcohol bencílico como conservador, utilizada para reconstituir compuestos liofilizados en trabajo experimental. No es un péptido. Solo para uso en investigación (RUO).",
     "presentation": "3 mL – 10 mL",
-    "form": "Liofilizado",
+    "form": "Solución",
     "purity": "99.0%",
     "price": 179,
     "variants": [
@@ -5135,7 +5135,7 @@ export const fallbackProducts = [
     "short_description": "Solución de cianocobalamina para uso en laboratorio.",
     "description": "Solución de vitamina B12 (cianocobalamina) a 1 mg/mL, utilizada como reactivo y control en estudios de metabolismo de un carbono y en ensayos bioquímicos. Solo para uso en investigación (RUO).",
     "presentation": "1 mg",
-    "form": "Liofilizado",
+    "form": "Solución",
     "purity": "99.0%",
     "price": 1159,
     "variants": [
@@ -5223,7 +5223,7 @@ export const fallbackProducts = [
     "short_description": "Disolvente de laboratorio para péptidos poco solubles.",
     "description": "Insumo de laboratorio: solución diluida de ácido acético utilizada como disolvente para reconstituir péptidos de baja solubilidad en agua. No es un péptido. Solo para uso en investigación (RUO).",
     "presentation": "3 mL – 10 mL",
-    "form": "Liofilizado",
+    "form": "Solución",
     "purity": "99.0%",
     "price": 169,
     "variants": [

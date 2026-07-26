@@ -46,7 +46,7 @@ const ProductCard = ({ product }) => {
       <Link to={`/producto/${product.slug}`} className="block relative">
         <div className="bg-[hsl(var(--secondary))] overflow-hidden">
           <AspectRatio ratio={4 / 3}>
-            <img src={productImage(product, active)} alt={product.name} className="h-full w-full object-contain p-2 group-hover:scale-[1.03] transition-transform duration-300" loading="lazy" />
+            <img src={productImage(product, active)} alt={product.name} className="h-full w-full object-cover group-hover:scale-[1.03] transition-transform duration-300" loading="lazy" />
           </AspectRatio>
         </div>
         {product.purity && (

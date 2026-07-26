@@ -35,11 +35,19 @@ const HERO_VIALS = [
   { slug: 'vial-retatrutide', name: 'Retatrutida 40mg', product: 'retatrutida' },
   { slug: 'vial-klow', name: 'KLOW 80mg', product: 'klow-bpc-ghk-cu-tb-500-kpv' },
   { slug: 'vial-semaglutide', name: 'Semaglutida 10mg', product: 'semaglutida' },
+  // Los diez de abajo son los que dan variedad: entran conforme el carrusel gira.
+  // Son de familias distintas a propósito (reparación, hormona de crecimiento,
+  // estética, nootrópicos, sueño, salud sexual, metabólicos).
   { slug: 'vial-bpc157', name: 'BPC-157 10mg', product: 'bpc-157' },
   { slug: 'vial-tb500', name: 'TB-500 10mg', product: 'tb-500' },
   { slug: 'vial-ipamorelin', name: 'Ipamorelin 5mg', product: 'ipamorelin' },
-  { slug: 'vial-ghkcu', name: 'GHK-Cu 50mg', product: 'ghk-cu' },
+  { slug: 'vial-cjc1295', name: 'CJC-1295 5mg', product: 'cjc-1295-sin-dac' },
   { slug: 'vial-tesamorelina', name: 'Tesamorelina 10mg', product: 'tesamorelina' },
+  { slug: 'vial-ghkcu', name: 'GHK-Cu 50mg', product: 'ghk-cu' },
+  { slug: 'vial-semax', name: 'Semax 10mg', product: 'semax' },
+  { slug: 'vial-dsip', name: 'DSIP 5mg', product: 'dsip' },
+  { slug: 'vial-pt141', name: 'PT-141 10mg', product: 'pt-141' },
+  { slug: 'vial-cagrilintida', name: 'Cagrilintida 5mg', product: 'cagrilintida' },
 ].map((v) => ({ ...v, src: `${process.env.PUBLIC_URL}/images/hero/${v.slug}.webp` }));
 
 // Cuántos se ven a la vez y qué ancho tiene cada POSICIÓN (no cada vial): así la
@@ -147,7 +155,11 @@ const Home = () => {
           la barra se funda con el hero, como en Resend. */}
       <section className="bg-background relative overflow-hidden -mt-[60px] pt-[60px]">
         <div className="hero-beams" />
-        <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 pt-20 lg:pt-28 pb-16 relative">
+        {/* El aire de arriba ya incluye los 60px de la barra (la sección los repone
+            con pt-[60px]). Era pt-20/pt-28 = 80px en móvil y 112 en escritorio entre
+            la barra y "RESEARCH GRADE PEPTIDES". Christian los pidió a la mitad:
+            40 y 56 (2026-07-26). */}
+        <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 pt-10 lg:pt-14 pb-16 relative">
           {/* El titulo va ARRIBA de los viales tambien en telefono
               (Christian, 2026-07-26). */}
           <div className="grid lg:grid-cols-[1.1fr_0.9fr] gap-8 lg:gap-16 items-center">

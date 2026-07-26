@@ -96,7 +96,7 @@ const ProductDetail = () => {
       <div className="grid lg:grid-cols-2 gap-8">
         <div>
           <div className="rounded-2xl border border-border bg-[hsl(var(--secondary))] overflow-hidden">
-            <img src={productImage(localizedProduct, active)} alt={`${localizedProduct.name} ${active.presentation || ''}`.trim()} className="w-full object-contain aspect-square" />
+            <img src={productImage(localizedProduct, active)} alt={`${localizedProduct.name} ${active.presentation || ''}`.trim()} className="w-full object-cover aspect-square" />
           </div>
           {isBrandImage(localizedProduct, active) && (
             <p className="mt-2 text-[11px] leading-relaxed text-muted-foreground text-center">{t('product.brandPhotoNote')}</p>
