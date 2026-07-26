@@ -70,6 +70,42 @@ const measurableDefault = (unit, vialMg) => {
   return Math.ceil(minMcg / 50) * 50;                              // a 50 mcg
 };
 
+// Cuánta agua sugerir para ESTE vial. Es aritmética de medición, no criterio
+// clínico: se busca dejar el vial en una concentración donde la dosis caiga en
+// rayitas fáciles de leer.
+//
+// El caso que lo motivó (Christian, 2026-07-26): Paz compró NAD+ **500 mg** y la
+// calculadora sugería 2 mL para todo. Eso deja 250 mg/mL, así que una dosis de
+// 100 mg son 40 rayitas y cada rayita vale 2.5 mg — cualquier temblor de pulso
+// pesa. Con 5 mL queda en 100 mg/mL: **los miligramos son las rayitas directo**
+// (100 mg = 100 unidades) y cada rayita vale 1 mg. Las fuentes de NAD+ también
+// reconstituyen con 3–5 mL, no con 2.
+//
+// Tope de 5 mL: es lo que caben los viales normales de 10 mL sin llenarlos.
+const AGUA_MAX_ML = 5;
+
+// ⚠️ Se apunta al VOLUMEN DE LA INYECCIÓN, no a la concentración.
+// Primer intento (y error): se buscó dejar todo en 100 mg/mL para que los mg
+// fueran las rayitas directo. Suena cómodo, pero en el vial de 500 mg eso daba
+// 5 mL de agua y una dosis de 50 mg salía en **0.5 mL** — media jeringa por
+// aplicación. Christian lo cachó de inmediato. Medir fácil no sirve de nada si
+// la inyección se vuelve enorme.
+//
+// La regla buena: elegir el agua para que la dosis de referencia caiga cerca de
+// **0.3 mL (30 rayitas)** — cómodo de inyectar y fácil de leer. Para NAD+ 500 mg
+// con dosis de 50 mg eso da exactamente **3 mL**, que es lo que publica la
+// literatura de ese vial (166.7 mg/mL, 50 mg = 30 unidades).
+const DRAW_OBJETIVO_ML = 0.3;
+
+const aguaSugerida = (vialMg, p) => {
+  const unidad = p?.startUnit || unitFor(p?.name);
+  const dosis = p?.startLevels?.inicial ?? p?.startDose;
+  if (!vialMg || !dosis || unidad !== 'mg') return 2;   // viales chicos de mcg: 2 mL
+  // agua = vial * (mL que queremos jalar) / dosis
+  const ml = (vialMg * DRAW_OBJETIVO_ML) / dosis;
+  return Math.min(AGUA_MAX_ML, Math.max(1, Math.round(ml * 2) / 2));   // a medios mL
+};
+
 const Stat = ({ icon: Icon, label, value, unit }) => (
   <div className="rounded-xl border border-[hsl(var(--border))] bg-[hsl(var(--muted))]/30 p-4">
     <div className="flex items-center gap-1.5 text-xs text-muted-foreground mb-1"><Icon className="h-3.5 w-3.5" /> {label}</div>
@@ -223,7 +259,10 @@ const ReconstitutionCalculator = ({ variant = 'full', purchased = [], onTrack, s
     setPickerOpen(false);
     const p = listaProductos.find((x) => x.name === name);
     const vial = presetMg || (p && p.variants.length ? Math.min(...p.variants) : null);
-    if (vial) setVialMg(vial);
+    if (vial) {
+      setVialMg(vial);
+      setWaterMl(aguaSugerida(vial, p));
+    }
     // Dosis de referencia (RUO) si existe; si no, unidad automática + valor
     // genérico ajustado para que se pueda medir en la jeringa con este vial.
     if (full && p && p.startDose != null) {
