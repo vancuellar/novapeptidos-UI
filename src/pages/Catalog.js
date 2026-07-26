@@ -84,7 +84,7 @@ const Catalog = () => {
 
   useEffect(() => {
     // El catálogo curado (generado desde la maestra) es la fuente de verdad.
-    setCategories(fallbackCategories);
+    setCategories(fallbackCategories.filter((c) => !HIDDEN_CATEGORIES.includes(c.slug)));
   }, []);
 
   useEffect(() => {

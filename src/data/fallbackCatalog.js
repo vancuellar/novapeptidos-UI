@@ -69,6 +69,11 @@ export const fallbackCategories = [
   }
 ];
 
+// Categorias que NO se le ensenan al cliente por ahora. Los productos siguen a la
+// venta y se pueden buscar; solo no aparece el boton de la categoria.
+// 'suministros' (accesorios): Christian aun no tiene surtido. 2026-07-25.
+export const HIDDEN_CATEGORIES = ['suministros'];
+
 export const fallbackProducts = [
   {
     "id": "fallback-bronchogen",

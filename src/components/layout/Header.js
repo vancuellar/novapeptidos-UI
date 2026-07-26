@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { User, Menu, LogOut, Bell, LayoutDashboard, ChevronDown, Search, ShoppingCart, Moon, Sun, SlidersHorizontal, Home, LayoutGrid, BadgeCheck, GraduationCap, MessageCircle, Calculator, Sparkles, FlaskConical, Flame, Activity, HeartPulse, Hourglass, HeartHandshake, Brain, ShieldPlus, Package } from 'lucide-react';
+import { User, Menu, LogOut, Bell, LayoutDashboard, ChevronDown, Search, ShoppingCart, Moon, Sun, SlidersHorizontal, Home, LayoutGrid, BadgeCheck, GraduationCap, MessageCircle, Calculator, Sparkles, FlaskConical, Flame, Activity, HeartPulse, Hourglass, HeartHandshake, Brain, ShieldPlus, Package, Layers } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Sheet, SheetContent, SheetTrigger, SheetHeader, SheetTitle } from '@/components/ui/sheet';
@@ -15,7 +15,7 @@ import { useTheme } from '@/context/ThemeContext';
 import BrandLogo from '@/components/BrandLogo';
 import HomeLogoLink from '@/components/HomeLogoLink';
 import api from '@/lib/api';
-import { fallbackCategories } from '@/data/fallbackCatalog';
+import { fallbackCategories, fallbackProducts, HIDDEN_CATEGORIES } from '@/data/fallbackCatalog';
 import { localizeCategories } from '@/i18n/catalog';
 
 // Pestañas con el tratamiento de jadalegal.com: IBM Plex Mono, ~11 px,
@@ -26,13 +26,15 @@ const navLinkClass = 'font-mono-tech inline-flex items-center gap-1 text-[11px] 
 const CAT_ICONS = {
   'perdida-peso': Flame, 'hormona-crecimiento': Activity, 'recuperacion': HeartPulse,
   'longevidad': Hourglass, 'sexual-hormonal': HeartHandshake, 'nootropicos': Brain,
-  'estetica': Sparkles, 'bioreguladores': ShieldPlus, 'suministros': FlaskConical, 'otros': Package,
+  'estetica': Sparkles, 'bioreguladores': ShieldPlus, 'stacks': Layers,
+  'suministros': FlaskConical, 'otros': Package,
 };
 const CAT_EXAMPLES = {
   'perdida-peso': 'Retatrutida, Tirzepatida, Semaglutida', 'recuperacion': 'BPC-157, TB-500, GHK-Cu',
   'hormona-crecimiento': 'CJC-1295, Ipamorelin, Tesamorelina', 'longevidad': 'Epithalon, NAD+, Glutatión',
   'sexual-hormonal': 'PT-141, Kisspeptina, Melanotan II', 'nootropicos': 'Semax, Selank, DSIP',
   'estetica': 'GHK-Cu, Melanotan II', 'bioreguladores': 'Timosina α-1, LL-37',
+  'stacks': 'GLOW, KLOW, BPC + TB-500',
   'suministros': 'Agua bacteriostática', 'otros': 'Especialidad',
 };
 const CAT_TOP = new Set(['perdida-peso', 'recuperacion']);
@@ -61,6 +63,21 @@ const TOOL_GROUPS = [
 
 // Menú "Ayuda": contacto, soporte, seguimiento y políticas. Cada entrada es una
 // página completa en /info/*, no un enlace suelto a WhatsApp.
+// Cuantos productos tiene cada categoria, contados del catalogo real.
+const CONTEO_POR_CATEGORIA = (() => {
+  const n = {};
+  for (const p of fallbackProducts) {
+    for (const c of (p.categories || [p.category])) {
+      if (c) n[c] = (n[c] || 0) + 1;
+    }
+  }
+  return n;
+})();
+
+// Solo las categorias que de verdad tienen algo que ensenar.
+const CATEGORIAS_CON_PRODUCTOS = fallbackCategories.filter(
+  (c) => (CONTEO_POR_CATEGORIA[c.slug] || 0) > 0 && !HIDDEN_CATEGORIES.includes(c.slug));
+
 const HELP_ITEMS = [
   { to: '/info/contacto', labelKey: 'nav.contact', descKey: 'nav.contact.desc' },
   { to: '/info/soporte', labelKey: 'nav.support', descKey: 'nav.support.desc' },
@@ -103,8 +120,13 @@ const Header = () => {
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
+  // Las categorias salen del MISMO catalogo con el que el buscador filtra
+  // (fallbackCatalog), no del API. El API todavia devuelve los slugs viejos
+  // (recuperacion-tejidos, metabolicos, bienestar, accesorios) que NINGUN producto
+  // usa: el menu los mostraba y al abrirlos no habia nada. Ademas solo se listan
+  // las que de verdad tienen productos, para que no vuelva a pasar.
   useEffect(() => {
-    api.get('/categories').then((r) => setCategories(Array.isArray(r.data) && r.data.length ? r.data : fallbackCategories)).catch(() => setCategories(fallbackCategories));
+    setCategories(CATEGORIAS_CON_PRODUCTOS);
   }, []);
 
   const submitSearch = (e) => {
@@ -193,7 +215,7 @@ const Header = () => {
                 {/* Péptidos por categoría */}
                 <div className="mt-6 mb-2 text-[11px] font-semibold uppercase tracking-[0.14em] text-muted-foreground">{t('nav.byCategory')}</div>
                 <div className="grid grid-cols-2 gap-2">
-                  {localizeCategories(categories, language).filter((c) => c.slug !== 'suministros' && c.slug !== 'otros').map((c) => {
+                  {localizeCategories(categories, language).map((c) => {
                     const Icon = CAT_ICONS[c.slug] || Package;
                     return (
                       <Link key={c.slug} to={`/catalogo?category=${c.slug}`} onClick={() => setMobileOpen(false)} className="relative rounded-xl border border-border p-3 hover:border-[hsl(var(--primary))]/40 hover:bg-[hsl(var(--secondary))]/40 transition-colors">
