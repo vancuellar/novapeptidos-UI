@@ -49,21 +49,52 @@ const visitorId = () => {
 
 // El origen (utm / referrer) se guarda en la PRIMERA visita y se conserva:
 // si alguien llega por un anuncio y compra tres páginas después, la venta
-// sigue contando para ese anuncio.
+// sigue contando para ese anuncio. Esto es "primer toque" a propósito: el
+// anuncio que TRAJO al cliente es el que merece el crédito, no la última
+// pestaña que tenía abierta.
+//
+// ⚠️ `fbclid` es la pieza que salva la medición cuando el anuncio NO trae utm.
+// Meta se lo pega SIEMPRE a los enlaces de sus anuncios, aunque nadie lo haya
+// etiquetado. Sin él, todo lo que venga de una publicación impulsada cae en
+// "facebook (sin utm)" y es imposible saber de QUÉ campaña salió.
+const VACIO = {
+  utm_source: '', utm_medium: '', utm_campaign: '', utm_content: '', utm_term: '',
+  fbclid: '', referrer: '', landing_path: '', first_seen: '',
+};
+
 const origin = () => {
   try {
     const guardado = localStorage.getItem(ORIGIN_KEY);
-    if (guardado) return JSON.parse(guardado);
+    if (guardado) {
+      // Los visitantes viejos traen el formato corto: se completa sin perder su origen.
+      const o = JSON.parse(guardado);
+      return { ...VACIO, ...o };
+    }
     const q = new URLSearchParams(window.location.search);
     const o = {
+      ...VACIO,
       utm_source: q.get('utm_source') || '',
       utm_medium: q.get('utm_medium') || '',
       utm_campaign: q.get('utm_campaign') || '',
+      utm_content: q.get('utm_content') || '',   // el ANUNCIO concreto dentro de la campaña
+      utm_term: q.get('utm_term') || '',
+      fbclid: q.get('fbclid') || '',
       referrer: document.referrer || '',
+      landing_path: window.location.pathname || '',
+      first_seen: new Date().toISOString(),
     };
     localStorage.setItem(ORIGIN_KEY, JSON.stringify(o));
     return o;
-  } catch { return { utm_source: '', utm_medium: '', utm_campaign: '', referrer: '' }; }
+  } catch { return { ...VACIO }; }
+};
+
+// Lo que necesita el checkout para dejar escrito en el PEDIDO de dónde salió el
+// cliente. Sin esto, el gasto de Meta y las ventas viven en dos mundos que no se
+// tocan, y el "costo por cliente" no se puede calcular: solo adivinar.
+export const attribution = () => {
+  try {
+    return { ...origin(), visitor_id: visitorId(), session_id: sessionId() };
+  } catch { return { ...VACIO, visitor_id: '', session_id: '' }; }
 };
 
 // El mismo evento se le avisa a Meta (Facebook/Instagram) para que su
