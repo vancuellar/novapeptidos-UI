@@ -108,7 +108,8 @@ const Footer = () => {
             </div>
           </div>
         </div>
-        <div className="flex items-center justify-center h-5">
+        {/* El copyright quedaba pegado a los pagos y al correo en telefono. */}
+        <div className="flex items-center justify-center pt-8 sm:pt-6 pb-1">
           <p className="text-xs text-muted-foreground text-center font-mono-tech leading-none">© {new Date().getFullYear()} {t('footer.rights')}</p>
         </div>
       </div>

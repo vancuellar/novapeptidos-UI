@@ -128,9 +128,9 @@ const Header = () => {
   return (
     <header className="sticky top-0 z-40">
       <div className={`transition-colors duration-200 ${scrolled ? 'bg-background/70 supports-[backdrop-filter]:backdrop-blur-xl' : 'bg-transparent'}`}>
-        <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 h-[60px] flex items-center gap-4 relative">
+        <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 h-[60px] flex items-center gap-2 sm:gap-4 relative">
           {/* Izquierda: logo y el menú móvil. La navegación va aparte, centrada. */}
-          <div className="flex items-center gap-3 min-w-0 shrink-0">
+          <div className="flex items-center gap-1.5 sm:gap-3 min-w-0 shrink-0">
           {/* Logo pegado a la izquierda */}
           <HomeLogoLink className="shrink-0 order-first origin-left transition-transform duration-200 hover:scale-110" data-testid="header-logo">
             <BrandLogo compact nameOnly />
@@ -327,7 +327,7 @@ const Header = () => {
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button variant="ghost" data-testid="preferences-menu" aria-label={t('controls.preferences')}
-                  className="h-9 px-2.5 gap-1.5 border border-border font-mono-tech text-xs uppercase tracking-[0.1em]">
+                  className="hidden lg:inline-flex h-9 px-2.5 gap-1.5 border border-border font-mono-tech text-xs uppercase tracking-[0.1em]">
                   <SlidersHorizontal className="h-[15px] w-[15px]" />
                   {currentLang ? currentLang.shortLabel : 'ES'}
                 </Button>

@@ -113,10 +113,10 @@ const Home = () => {
       <section className="bg-background relative overflow-hidden -mt-[60px] pt-[60px]">
         <div className="hero-beams" />
         <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 pt-20 lg:pt-28 pb-16 relative">
-          {/* En telefono manda el PRODUCTO: los viales van primero y el texto
-              debajo. En escritorio vuelve el orden normal (texto | viales). */}
+          {/* El titulo va ARRIBA de los viales tambien en telefono
+              (Christian, 2026-07-26). */}
           <div className="grid lg:grid-cols-[1.1fr_0.9fr] gap-8 lg:gap-16 items-center">
-            <div className="order-2 lg:order-1">
+            <div>
               <div className="kicker">{t('home.kicker')}</div>
               <h1 className="font-heading text-[2.1rem] sm:text-5xl lg:text-[3.6rem] font-bold tracking-tight leading-[1.08] mt-6 break-words">
                 {heroLead}
@@ -134,7 +134,7 @@ const Home = () => {
                 <Link to="/aprende/empieza-aqui" className="btn-resend-ghost">{t('home.startHere')}</Link>
               </div>
             </div>
-            <div className="order-1 lg:order-2 flex items-center justify-center">
+            <div className="flex items-center justify-center">
               <div className="hero-vials w-full max-w-[540px]">
                 <div className="hero-vials-glow" />
                 {/* Anchos en % del contenedor (max 540px): la fila ocupa el mismo
