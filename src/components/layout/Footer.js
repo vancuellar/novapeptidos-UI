@@ -52,7 +52,7 @@ const Footer = () => {
             <h4 className="kicker mb-4">{t('footer.catalogTitle')}</h4>
             <ul className="space-y-2.5 text-sm text-muted-foreground">
               <li><Link to="/catalogo" className="hover:text-foreground transition-colors">{t('header.allCatalog')}</Link></li>
-              <li><Link to="/catalogo?category=recuperacion-tejidos" className="hover:text-foreground transition-colors">{t('footer.recovery')}</Link></li>
+              <li><Link to="/catalogo?category=recuperacion" className="hover:text-foreground transition-colors">{t('footer.recovery')}</Link></li>
               <li><Link to="/catalogo?category=hormona-crecimiento" className="hover:text-foreground transition-colors">{t('footer.growth')}</Link></li>
               <li><Link to="/catalogo?category=stacks" className="hover:text-foreground transition-colors">{t('footer.stacks')}</Link></li>
             </ul>
