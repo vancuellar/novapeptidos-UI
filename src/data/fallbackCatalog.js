@@ -1671,7 +1671,7 @@ export const fallbackProducts = [
     "categories": [
       "longevidad"
     ],
-    "short_description": "Coenzima estudiada en metabolismo celular y longevidad.",
+    "short_description": "Coenzima estudiada en metabolismo celular y longevidad. El vial de 500 mg rinde 5 semanas en esquema de mantenimiento.",
     "description": "NAD+ es una coenzima investigada en modelos de metabolismo energético y envejecimiento celular. Solo para uso en investigación (RUO).",
     "presentation": "100 mg – 1000 mg",
     "form": "Liofilizado",
