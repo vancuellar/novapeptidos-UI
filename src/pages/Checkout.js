@@ -48,7 +48,7 @@ const expiryOk = (exp) => {
 };
 
 const Checkout = () => {
-  const { items, subtotal, discount, discountRate, discountSource, cappedItems, distCode, clearCart } = useCart();
+  const { items, subtotal, discount, discountRate, discountSource, cappedItems, shipping, faltaParaEnvioGratis, distCode, clearCart } = useCart();
   const { user } = useAuth();
   const { t } = useLanguage();
   const navigate = useNavigate();
@@ -109,7 +109,7 @@ const Checkout = () => {
   const afterDiscount = subtotal - discount;
   const pointsApplied = usePoints && loyalty.eligible
     ? Math.min(loyalty.balance, Math.floor(afterDiscount)) : 0;
-  const total = afterDiscount - pointsApplied; // el envío se cotiza y cobra por separado
+  const total = afterDiscount - pointsApplied + shipping;
   const set = (k, v) => setForm((f) => ({ ...f, [k]: v }));
   const setC = (k, v) => setCard((c) => ({ ...c, [k]: v }));
 
@@ -140,7 +140,7 @@ const Checkout = () => {
         items: items.map((i) => ({ product_id: i.sku || i.product_id, name: i.name, price: i.price, quantity: i.quantity, presentation: i.presentation, image_url: i.image_url })),
         customer: { ...form, phone: composePhone(phoneCountry, form.phone) },
         payment_method: payment,
-        shipping: 0,
+        shipping,
         discount,
         distributor_code: distCode || null,
         points_to_use: pointsApplied,
@@ -327,7 +327,15 @@ const Checkout = () => {
                 </div>
               )}
               {pointsApplied > 0 && <div className="flex justify-between text-[hsl(var(--success))]"><span>{t('loyalty.line')}</span><span>− {formatMXN(pointsApplied)}</span></div>}
-              <div className="flex justify-between"><span className="text-muted-foreground">{t('common.shipping')}</span><span className="text-muted-foreground">{t('cart.shippingTBD')}</span></div>
+              <div className="flex justify-between">
+                <span className="text-muted-foreground">{t('common.shipping')}</span>
+                {shipping > 0
+                  ? <span>{formatMXN(shipping)}</span>
+                  : <span className="text-[hsl(var(--success))]">{t('cart.shippingFree')}</span>}
+              </div>
+              {faltaParaEnvioGratis > 0 && (
+                <p className="text-xs text-[hsl(var(--primary))]">{t('cart.freeShippingAt', { amount: formatMXN(faltaParaEnvioGratis) })}</p>
+              )}
             </div>
             {loyalty.eligible && loyalty.balance > 0 && (
               <label className="mt-4 flex items-start gap-2.5 rounded-lg border border-border bg-secondary/40 p-3 cursor-pointer" data-testid="checkout-use-points">

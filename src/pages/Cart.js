@@ -44,12 +44,13 @@ const buildBacPlan = (items) => {
 };
 
 const Cart = () => {
-  const { items, addItem, updateQty, removeItem, subtotal, discount, discountRate, discountSource, cappedItems, nextTier, distCode, distRate, codeMin, codeMinMet, applyDistCode, clearDistCode } = useCart();
+  const { items, addItem, updateQty, removeItem, subtotal, discount, discountRate, discountSource, cappedItems, nextTier, shipping, faltaParaEnvioGratis, envioGratisDesde, distCode, distRate, codeMin, codeMinMet, applyDistCode, clearDistCode } = useCart();
   const { t } = useLanguage();
   const navigate = useNavigate();
   const [code, setCode] = useState('');
   const [bacOpen, setBacOpen] = useState(false);
-  const afterDiscount = subtotal - discount; // el envío se cotiza por separado
+  const afterDiscount = subtotal - discount;
+  const totalConEnvio = afterDiscount + shipping;
 
   const hasBac = items.some(isBac);
   const bacPlan = buildBacPlan(items);
@@ -154,12 +155,20 @@ const Cart = () => {
                   </ul>
                 </div>
               )}
-              <div className="flex justify-between"><span className="text-muted-foreground">{t('common.shipping')}</span><span className="text-muted-foreground">{t('cart.shippingTBD')}</span></div>
-              <p className="text-xs text-muted-foreground">{t('cart.freeShippingLine')}</p>
+              <div className="flex justify-between">
+                <span className="text-muted-foreground">{t('common.shipping')}</span>
+                {shipping > 0
+                  ? <span data-testid="cart-shipping">{formatMXN(shipping)}</span>
+                  : <span className="text-[hsl(var(--success))]" data-testid="cart-shipping">{t('cart.shippingFree')}</span>}
+              </div>
+              {faltaParaEnvioGratis > 0 && (
+                <p className="text-xs text-[hsl(var(--primary))]" data-testid="cart-free-shipping-hint">
+                  {t('cart.freeShippingAt', { amount: formatMXN(faltaParaEnvioGratis) })}
+                </p>
+              )}
             </div>
             <Separator className="my-4" />
-            <div className="flex justify-between font-heading font-bold text-lg"><span>{t('common.total')}</span><span data-testid="cart-total">{formatMXN(afterDiscount)}</span></div>
-            <p className="text-xs text-muted-foreground mt-1 text-right">{t('cart.plusShipping')}</p>
+            <div className="flex justify-between font-heading font-bold text-lg"><span>{t('common.total')}</span><span data-testid="cart-total">{formatMXN(totalConEnvio)}</span></div>
             <Button className="w-full mt-5" size="lg" onClick={onCheckoutClick} data-testid="cart-go-to-checkout-button">{t('cart.checkout')} <ArrowRight className="h-4 w-4 ml-1.5" /></Button>
             <Button asChild variant="ghost" className="w-full mt-2"><Link to="/catalogo">{t('cart.keepShopping')}</Link></Button>
           </Card>
