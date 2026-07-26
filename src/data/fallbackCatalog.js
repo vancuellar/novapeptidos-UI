@@ -74,6 +74,12 @@ export const fallbackCategories = [
 // 'suministros' (accesorios): Christian aun no tiene surtido. 2026-07-25.
 export const HIDDEN_CATEGORIES = ['suministros'];
 
+// LA lista de categorias que ve el cliente, en el header, la portada y el catalogo.
+// Se calcula al final del archivo (necesita fallbackProducts) y sale de AQUI, nunca
+// del API: el API todavia devuelve slugs viejos (recuperacion-tejidos, metabolicos,
+// bienestar, accesorios) que ningun producto usa, y esas categorias abrian vacias.
+// Ademas se descarta cualquiera que se quede sin productos. Christian, 2026-07-25.
+
 export const fallbackProducts = [
   {
     "id": "fallback-bronchogen",
@@ -5287,3 +5293,16 @@ export const getFallbackProductBySlug = (slug) => {
   return candidatos[0];
 };
 export const getFallbackProductsByCategory = (category) => fallbackProducts.filter((product) => (product.categories || [product.category]).includes(category));
+
+export const CATEGORY_COUNTS = (() => {
+  const n = {};
+  for (const p of fallbackProducts) {
+    for (const c of (p.categories || [p.category])) {
+      if (c) n[c] = (n[c] || 0) + 1;
+    }
+  }
+  return n;
+})();
+
+export const VISIBLE_CATEGORIES = fallbackCategories.filter(
+  (c) => (CATEGORY_COUNTS[c.slug] || 0) > 0 && !HIDDEN_CATEGORIES.includes(c.slug));

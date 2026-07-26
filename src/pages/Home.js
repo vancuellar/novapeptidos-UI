@@ -15,7 +15,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { toast } from 'sonner';
 import ProductCard from '@/components/ProductCard';
 import api from '@/lib/api';
-import { fallbackCategories } from '@/data/fallbackCatalog';
+import { VISIBLE_CATEGORIES } from '@/data/fallbackCatalog';
 import { getFeaturedProducts } from '@/data/featured';
 import { useLanguage } from '@/context/LanguageContext';
 import { localizeCategories, localizeProducts } from '@/i18n/catalog';
@@ -84,9 +84,9 @@ const Home = () => {
     // que diga el backend: el campo `featured` del catálogo lo regenera el
     // script de precios y se perdería el orden que eligió Christian.
     setFeatured(getFeaturedProducts());
-    api.get('/categories')
-      .then((r) => setCategories(Array.isArray(r.data) ? r.data : fallbackCategories))
-      .catch(() => setCategories(fallbackCategories));
+    // Las categorias salen del catalogo del sitio, NO del API: el API devuelve
+    // slugs viejos que ningun producto usa y esas tarjetas abrian vacias.
+    setCategories(VISIBLE_CATEGORIES);
   }, []);
 
   // Italic-serif accent = la frase después de la coma (o las últimas 2 palabras si no hay coma).

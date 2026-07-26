@@ -15,7 +15,7 @@ import { useTheme } from '@/context/ThemeContext';
 import BrandLogo from '@/components/BrandLogo';
 import HomeLogoLink from '@/components/HomeLogoLink';
 import api from '@/lib/api';
-import { fallbackCategories, fallbackProducts, HIDDEN_CATEGORIES } from '@/data/fallbackCatalog';
+import { VISIBLE_CATEGORIES } from '@/data/fallbackCatalog';
 import { localizeCategories } from '@/i18n/catalog';
 
 // Pestañas con el tratamiento de jadalegal.com: IBM Plex Mono, ~11 px,
@@ -63,21 +63,6 @@ const TOOL_GROUPS = [
 
 // Menú "Ayuda": contacto, soporte, seguimiento y políticas. Cada entrada es una
 // página completa en /info/*, no un enlace suelto a WhatsApp.
-// Cuantos productos tiene cada categoria, contados del catalogo real.
-const CONTEO_POR_CATEGORIA = (() => {
-  const n = {};
-  for (const p of fallbackProducts) {
-    for (const c of (p.categories || [p.category])) {
-      if (c) n[c] = (n[c] || 0) + 1;
-    }
-  }
-  return n;
-})();
-
-// Solo las categorias que de verdad tienen algo que ensenar.
-const CATEGORIAS_CON_PRODUCTOS = fallbackCategories.filter(
-  (c) => (CONTEO_POR_CATEGORIA[c.slug] || 0) > 0 && !HIDDEN_CATEGORIES.includes(c.slug));
-
 const HELP_ITEMS = [
   { to: '/info/contacto', labelKey: 'nav.contact', descKey: 'nav.contact.desc' },
   { to: '/info/soporte', labelKey: 'nav.support', descKey: 'nav.support.desc' },
@@ -126,7 +111,7 @@ const Header = () => {
   // usa: el menu los mostraba y al abrirlos no habia nada. Ademas solo se listan
   // las que de verdad tienen productos, para que no vuelva a pasar.
   useEffect(() => {
-    setCategories(CATEGORIAS_CON_PRODUCTOS);
+    setCategories(VISIBLE_CATEGORIES);
   }, []);
 
   const submitSearch = (e) => {
