@@ -605,13 +605,24 @@ const Admin = () => {
                 {meta.resumen.date_start && <span>{meta.resumen.date_start} → {meta.resumen.date_end}</span>}
               </div>
 
-              <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3" data-testid="admin-meta-kpis">
+              <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-7 gap-3" data-testid="admin-meta-kpis">
                 <Card className="p-4"><div className="text-xs text-muted-foreground">{t('admin.meta.spend')}</div>
                   <div className="font-heading text-xl font-bold mt-1">${meta.resumen.spend.toLocaleString()} <span className="text-xs font-normal text-muted-foreground">{meta.resumen.currency}</span></div></Card>
                 <Card className="p-4"><div className="text-xs text-muted-foreground">{t('admin.meta.reach')}</div>
                   <div className="font-heading text-xl font-bold mt-1">{meta.resumen.reach.toLocaleString()}</div></Card>
-                <Card className="p-4"><div className="text-xs text-muted-foreground">{t('admin.meta.clicks')}</div>
-                  <div className="font-heading text-xl font-bold mt-1">{meta.resumen.clicks.toLocaleString()}</div></Card>
+                {/* ⚠️ "Clics" de Meta son TODOS: reacciones, comentarios, abrir la foto,
+                    entrar al perfil. En una publicación impulsada la mayoría NO son
+                    visitas. Por eso aquí se muestran los clics AL ENLACE y, aparte,
+                    cuántos ALCANZARON a cargar la página — que es lo que de verdad
+                    llegó al sitio. Entre uno y otro se cae mucha gente. */}
+                <Card className="p-4"><div className="text-xs text-muted-foreground">{t('admin.meta.linkClicks')}</div>
+                  <div className="font-heading text-xl font-bold mt-1">{(meta.resumen.link_clicks ?? meta.resumen.clicks).toLocaleString()}</div>
+                  <div className="text-[11px] text-muted-foreground mt-0.5">{t('admin.meta.allClicks', { n: meta.resumen.clicks.toLocaleString() })}</div></Card>
+                <Card className="p-4"><div className="text-xs text-muted-foreground">{t('admin.meta.landings')}</div>
+                  <div className="font-heading text-xl font-bold mt-1">{(meta.resumen.landing_page_views ?? 0).toLocaleString()}</div>
+                  {meta.resumen.landing_rate > 0 && (
+                    <div className="text-[11px] text-muted-foreground mt-0.5">{meta.resumen.landing_rate}% {t('admin.meta.ofClicks')}</div>
+                  )}</Card>
                 <Card className="p-4"><div className="text-xs text-muted-foreground">{t('admin.meta.cpc')}</div>
                   <div className="font-heading text-xl font-bold mt-1">${meta.resumen.cpc.toFixed(3)}</div></Card>
                 <Card className="p-4"><div className="text-xs text-muted-foreground">{t('admin.meta.purchases')}</div>
