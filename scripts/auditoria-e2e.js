@@ -39,6 +39,8 @@ const mal = (nombre, detalle = '') => resultados.push({ bien: false, nombre, det
 const revisar = (cond, nombre, detalle) => (cond ? ok : mal)(nombre, detalle);
 const j = (r) => r.json();
 
+const leer = (f) => fs.readFileSync(path.join(RAIZ, f), 'utf8');
+
 // Lee un arreglo exportado de fallbackCatalog.js sin tener que importar React.
 function leerDelCatalogo(nombreExport) {
   const src = fs.readFileSync(path.join(RAIZ, 'src/data/fallbackCatalog.js'), 'utf8');
@@ -118,6 +120,51 @@ function idioma() {
   const faltan = esperados.filter((k) => !bloque.includes(k));
   revisar(faltan.length === 0 && !bloque.includes('nav.home'), 'accesos del menú móvil',
           faltan.length ? 'faltan ' + faltan.join(',') : (bloque.includes('nav.home') ? 'sigue el enlace de Inicio' : '6 accesos, sin Inicio'));
+}
+
+// ------------------------------------------------------------ traducciones
+function traducciones() {
+  const tr = leer('src/i18n/translations.js');
+  const bloque = (n) => {
+    const i = tr.indexOf(`const ${n} = {`);
+    return tr.slice(i, tr.indexOf('\n};', i));
+  };
+  const claves = (txt) => [...txt.matchAll(/^\s*'([^']+)':/gm)].map((m) => m[1]);
+
+  const es = bloque('esMX'), en = bloque('enUS'), pt = bloque('ptBR');
+  const kEs = new Set(claves(es));
+
+  for (const [nombre, txt] of [['inglés', en], ['portugués', pt]]) {
+    const faltan = [...kEs].filter((k) => !claves(txt).includes(k));
+    revisar(faltan.length === 0, `traducción al ${nombre} completa`,
+            faltan.length ? `${faltan.length} sin traducir: ${faltan.slice(0, 5).join(', ')}` : '');
+  }
+
+  // Clave repetida DENTRO de un idioma: JavaScript se queda con la ultima y el
+  // texto sale en otro idioma sin que nadie se de cuenta. Ya paso con las
+  // instrucciones de pago SPEI: los mexicanos las leian en portugues.
+  for (const [nombre, txt] of [['español', es], ['inglés', en], ['portugués', pt]]) {
+    const ks = claves(txt);
+    const rep = [...new Set(ks.filter((k, i) => ks.indexOf(k) !== i))];
+    revisar(rep.length === 0, `sin claves repetidas en ${nombre}`, rep.slice(0, 6).join(', '));
+  }
+
+  // Un texto que se pide y no existe sale como 'nav.loQueSea' en pantalla.
+  const usadas = new Set();
+  for (const f of ['src/pages', 'src/components']) {
+    const walk = (d) => {
+      for (const x of fs.readdirSync(path.join(RAIZ, d))) {
+        const rel = `${d}/${x}`;
+        if (fs.statSync(path.join(RAIZ, rel)).isDirectory()) walk(rel);
+        else if (/\.jsx?$/.test(x)) {
+          for (const m of leer(rel).matchAll(/\bt\('([^']+)'/g)) usadas.add(m[1]);
+        }
+      }
+    };
+    walk(f);
+  }
+  const inventadas = [...usadas].filter((k) => !kEs.has(k));
+  revisar(inventadas.length === 0, 'ningún texto sale como clave cruda', inventadas.slice(0, 8).join(', '));
 }
 
 // -------------------------------------------------- catálogo: sitio vs API
@@ -257,6 +304,7 @@ async function main() {
   await paginas();
   const cat = categorias();
   idioma();
+  traducciones();
   const porSku = await catalogo(cat);
   await admin(porSku);
 
