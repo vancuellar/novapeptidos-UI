@@ -16,7 +16,7 @@ import { toast } from 'sonner';
 import ProductCard from '@/components/ProductCard';
 import api from '@/lib/api';
 import { VISIBLE_CATEGORIES } from '@/data/fallbackCatalog';
-import { getFeaturedProducts } from '@/data/featured';
+import { FEATURED_TABS, getTabProducts } from '@/data/featured';
 import { useLanguage } from '@/context/LanguageContext';
 import { localizeCategories, localizeProducts } from '@/i18n/catalog';
 
@@ -92,6 +92,7 @@ const CATEGORY_CHIPS = {
 
 const Home = () => {
   const [featured, setFeatured] = useState([]);
+  const [featuredTab, setFeaturedTab] = useState(FEATURED_TABS[0].key);
   const [categories, setCategories] = useState([]);
   const [hoveredVial, setHoveredVial] = useState(null);
   const [vialOffset, setVialOffset] = useState(0);
@@ -122,11 +123,11 @@ const Home = () => {
     // Los destacados son una lista curada nuestra (src/data/featured.js), no lo
     // que diga el backend: el campo `featured` del catálogo lo regenera el
     // script de precios y se perdería el orden que eligió Christian.
-    setFeatured(getFeaturedProducts());
+    setFeatured(getTabProducts(featuredTab));
     // Las categorias salen del catalogo del sitio, NO del API: el API devuelve
     // slugs viejos que ningun producto usa y esas tarjetas abrian vacias.
     setCategories(VISIBLE_CATEGORIES);
-  }, []);
+  }, [featuredTab]);
 
   // El carrusel NO gira solo: lo mueve el cliente con las flechas o deslizando
   // (Christian, 2026-07-26). Así puede detenerse en el vial que le interese sin
@@ -310,7 +311,7 @@ const Home = () => {
 
       {/* ===== Featured products ===== */}
       <section className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 py-24">
-        <div className="flex items-end justify-between mb-12">
+        <div className="flex items-end justify-between mb-6">
           <div>
             <div className="kicker">{t('home.featuredKicker')}</div>
             <h2 className="font-heading text-2xl sm:text-3xl font-bold tracking-tight mt-2">{t('home.featuredTitle')}</h2>
@@ -326,6 +327,30 @@ const Home = () => {
             <Button asChild variant="ghost"><Link to="/catalogo">{t('home.viewAll')} <ArrowRight className="h-4 w-4 ml-1.5" /></Link></Button>
           </div>
         </div>
+        {/* Pestañas: cambian QUÉ se muestra, no cómo (Christian, 2026-07-26).
+            Para ordenar y filtrar está el catálogo; aquí la idea es dar razón
+            para quedarse. Se deslizan a lo ancho en el teléfono. */}
+        <div className="mb-8 -mx-4 px-4 sm:mx-0 sm:px-0 flex gap-2 overflow-x-auto [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+          role="tablist" data-testid="featured-tabs">
+          {FEATURED_TABS.map((tab) => (
+            <button
+              key={tab.key}
+              type="button"
+              role="tab"
+              aria-selected={featuredTab === tab.key}
+              onClick={() => setFeaturedTab(tab.key)}
+              data-testid={`featured-tab-${tab.key}`}
+              className={`shrink-0 rounded-full border px-4 py-2 text-sm transition-colors ${
+                featuredTab === tab.key
+                  ? 'border-[hsl(var(--primary))] bg-[hsl(var(--primary))]/10 text-[hsl(var(--primary))] font-semibold'
+                  : 'border-border text-muted-foreground hover:text-foreground hover:border-[hsl(var(--primary))]/40'
+              }`}
+            >
+              {t(tab.labelKey)}
+            </button>
+          ))}
+        </div>
+
         <div ref={carouselRef} className="flex gap-4 sm:gap-6 overflow-x-auto snap-x snap-mandatory pb-2 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
           {localizeProducts(featured, language).map((p) => (
             <div key={p.id} className="snap-start shrink-0 w-[65vw] xs:w-[240px] sm:w-[260px] max-w-[260px]">
