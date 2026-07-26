@@ -1,8 +1,162 @@
 # Exygen Labs — Website Continuation File
 
-> **Propósito:** fuente única de verdad del SITIO WEB (frontend, backend, IA, marca, despliegue). Pega este archivo en un chat nuevo para retomar con todo el contexto. Complementa a `../NOVA-PRICING-SYSTEM-CONTINUATION.md` (el sistema de precios). **Última actualización: 2026-07-26 (noche).** Empieza por 🤝 HANDOFF — CIERRE DEL 2026-07-26.
+> **Propósito:** fuente única de verdad del SITIO WEB (frontend, backend, IA, marca, despliegue). Pega este archivo en un chat nuevo para retomar con todo el contexto. Complementa a `../NOVA-PRICING-SYSTEM-CONTINUATION.md` (el sistema de precios). **Última actualización: 2026-07-26 (cierre).** Empieza por 🤝 HANDOFF — SESIÓN DEL 2026-07-26 (tarde/noche).
 
 > **Estilo con Christian:** abogado, no dev ("abogado de 95 años haciendo vibe coding"). Respuestas **ultra cortas, español claro, sin jerga**. Corre TÚ los comandos (nunca le pidas abrir terminal). Términos de git en inglés (commit, push, merge — no "commitear").
+
+---
+
+## 🤝 HANDOFF — SESIÓN DEL 2026-07-26 (tarde/noche)
+
+> Sesión muy larga. Casi todo quedó **desplegado y verificado en vivo**. Lo que sigue es
+> lo que se hizo, lo que se descubrió, y lo que queda esperando decisión.
+
+### ⛔ LO MÁS GRAVE QUE SE ENCONTRÓ: las dosis del sitio no tenían fuente
+
+Una clienta real (Paz, compró NAD+ 500 mg y Retatrutida 40 mg) estaba leyendo la
+calculadora. Al auditar de dónde salían esas cifras, el commit que las introdujo dice
+textualmente que la frecuencia se asignó **"por CLASE de péptido"** — se agrupó por familia
+y se le puso una frecuencia a cada familia, **sin investigar producto por producto**.
+63 de 110 productos, cero fuentes citadas.
+
+**Se apagaron todas.** Y al reactivarlas NO se prendió el interruptor global —eso repetiría
+el error—: ahora **cada producto se enciende solo si trae `start_levels.fuente`**. Si nadie
+lo investigó, no aparece. Hoy están encendidos **2 de 63**: NAD+ y Retatrutida, justo los
+dos de Paz. La fuente se le muestra al cliente debajo de la tabla.
+
+Lo que NUNCA se apagó es la aritmética: el cliente pone su vial, su agua y SU dosis, y la
+calculadora le dice las rayitas. Eso es conversión de unidades, no una recomendación.
+
+**NAD+ resuelto.** Las fuentes parecían contradecirse (diaria vs 2-3 por semana) pero
+describen **fases distintas**: inicio con dosis baja y diaria, mantenimiento con dosis alta
+y espaciada. Por eso `start_levels.freq` ahora guarda **una frecuencia por nivel**.
+Misma estructura en TB-500 (carga y mantenimiento).
+
+**Retatrutida estaba bien** (2/4/8 mg semanales, dentro del ensayo Fase 2). En una primera
+lectura se reportó como error grave — **era falso**, una búsqueda agarró el bloque del
+producto vecino. Queda anotado para que nadie lo repita.
+
+**Dato comercial que salió de ahí:** el vial de 500 mg de NAD+ rinde **5 semanas** en
+mantenimiento (~$252/semana) contra 2.4 semanas en carga (~$525/semana). Ya está en la ficha.
+
+### 📣 Área de marketing — construida y EN VIVO
+Ver la sección de abajo. Todo en **dólares con el TC fijo 17.5 de la maestra**: Meta cobra
+en USD y los costos de proveedor están en USD, así que **solo se convierten las ventas**.
+Se evaluó y descartó un TC diario (Banxico/BBVA): si el panel se mueve solo y la maestra no,
+los dos cuentan historias distintas del mismo producto. El TC vive en **un solo lugar**
+(`marketing.TC_MAESTRA` o `EXYGEN_TC`) y **no se actualiza solo** — Christian decide cuándo,
+porque ese día hay que recalibrar precios.
+
+**Bug de precios corregido de paso:** `pricing-system/auditar_catalogo.py` y `reprecio.py`
+usaban **18.0** en vez de 17.5. Inflaban el costo 2.9%, o sea bajaban el ROI, y el auditor
+podía marcar como "abajo del piso" un producto que sí cumplía.
+
+### 🐛 Otros arreglos desplegados
+- **Los links del pie daban 404 a Google.** 14 de 23. Ver sección propia más abajo.
+- **La barra superior se despegaba.** `overflow` en el body. Ver la regla de oro más abajo.
+- **El scroll ahora SÍ abre arriba siempre.** La versión anterior usaba `useEffect`, que
+  corre DESPUÉS de pintar, y `scrollRestoration` estaba en `auto` peleando con nosotros.
+  Ahora `useLayoutEffect` + `manual`. Probado desde 17,103 px abajo: abre en 0.
+- **GHK-Cu con más peso:** entra al hero (5º puesto, salió Semaglutida), a `FLAGSHIP_ORDER`,
+  y su monografía sube de 280 a ~500 palabras con sección de evidencia.
+- **221 fotos duplicadas borradas** (`... 2.webp`, copias de Finder). ⚠️ Algo las recrea:
+  son conflictos de iCloud. La carpeta pasó de 636 a 415 archivos.
+
+### 📢 Meta — la app ya está publicada
+Christian publicó "Exygen Panel" y asignó permisos de página al usuario del sistema. Eso
+destrabó la creación de anuncios por API.
+
+**Creados y PAUSADOS** (no pueden gastar): 2 campañas + 2 conjuntos + 2 anuncios que van al
+**sitio web con URL etiquetada**. Verificado que `slug(nombre en Meta) == utm_campaign`, así
+que al prenderlos SÍ aparecerán con costo por cliente en el panel. Ids en
+`META-ANUNCIOS-NUEVOS.md`.
+
+⚠️ **El anuncio #2 se contradice:** su texto y su imagen dicen "Contáctanos por WhatsApp"
+pero el botón ahora lleva al sitio. Hay que rehacerle copy e imagen antes de prenderlo.
+
+⚠️ **El 75% de la pauta va a mensajería.** Esas ventas son estructuralmente invisibles: no
+hay URL donde poner un utm. Por eso el director ahora genera **cada anuncio en dos
+versiones** (web + WhatsApp) y la de WhatsApp **siempre lleva su propio cupón**
+(`WA-<PRODUCTO>-<MES>`), que es la única forma de atribuirla.
+
+### 🎨 El vial genérico ya está corregido
+La etiqueta base tenía DOS erratas. La primera (*PEPLIDES* → *PEPTIDES*) ya estaba resuelta;
+la segunda (*Lyophlized* → **Lyophilized**) se descubrió ahora.
+
+**Se intentó cinco veces con cirugía de píxeles y NINGUNA quedó limpia** — las letras traen
+halo blanco sobre un degradado plateado, y al mover cualquier pedazo el fondo no empata.
+Se resolvió con **Nano Banana 2** (Higgsfield) pasándole el vial como referencia: quedó
+limpio, sin parches, conservando molécula, polvo, tapa y aviso RUO.
+→ `Media/Viales individuales sin fondo para hero/Vial generico corregido (publicidad).png`
+
+⚠️ Los 195 viales del sitio **siguen con "Lyophlized"**. Christian decidió no regenerarlos
+por ahora. En un anuncio a 1080 px esa línea queda en ~15 px: ilegible. En la ficha de
+producto con zoom, sí se nota.
+
+### 📊 Estrategia de anuncios — lo que dicen los datos
+Christian propuso 10 anuncios, matar 9, escalar 1. **La idea es correcta, la aritmética no:**
+con $25-30/día, 10 anuncios son $2.50-3 cada uno y Meta necesita ~50 conversiones semanales
+para salir de aprendizaje. Se matarían ganadores por ruido.
+
+**Lo que sí funciona con ese presupuesto:** los 5 creativos en **UN mismo conjunto**. Meta
+reparte solo y concentra el gasto en el que jala, mejor que repartir parejo a mano. Y **no
+tocar nada 4 días** — cada cambio reinicia el aprendizaje.
+
+Sobre A/B web-vs-WhatsApp: **no multiplicar** creativo × destino. Primero los creativos a
+web (el único destino medible); al ganador se le hace su gemelo de WhatsApp. Una variable
+a la vez.
+
+### 🔍 Estudio de la competencia — corrige el rumbo
+`ESTUDIO-COMPETENCIA-ANUNCIOS.md`. Christian observó que los ángulos propuestos (rinde,
+certificado, envío, "cuál elegir") eran de proveedor y que la competencia vende deseo.
+**Tenía razón, con un giro:**
+
+- Los que venden deseo son **clínicas y médicos con cédula**, no las tiendas de péptidos.
+- Las tiendas (PepMex, Exoma, iSharkbio) venden **puro HPLC y COA**.
+- **Verificado a mano en la biblioteca de Meta:** Certified-pepmex tiene 5 anuncios activos,
+  todos arrancados el 7 y 13 de julio de 2026, y los cinco con el MISMO texto de control
+  analítico (HPLC, espectrometría, ISO 17025, cGMP, "7,000 investigadores"). Cero peso,
+  cero músculo. ⚠️ Ojo: la biblioteca solo conserva anuncios ACTIVOS de marcas comerciales,
+  así que campañas viejas apagadas no se ven. Y lo que Christian ve a diario podría ser
+  **publicación orgánica**, no anuncio pagado — son cosas distintas.
+- **El ganador del mercado lleva 10 meses:** Dra. Celia Jaramillo, video casero vertical,
+  antes/después sin decir que lo es.
+- **LA LÍNEA DE META, y esto importa más que el ángulo:** no te tumban por decir "bajar de
+  peso" — te tumban por decirlo **sin bata**. Con cédula y COFEPRIS visibles dura meses.
+  **A Singular Biotech le borraron la página entera. A Zelara Voss le tumbaron 6 anuncios
+  en horas.** Christian es abogado, no médico: copiar ese ángulo es riesgo existencial.
+- **Dos huecos que nadie usa:** unir ciencia verificable con deseo humano, y hablarle al
+  hombre de 35-55 en español mexicano.
+
+### 📁 Archivos de investigación generados
+| Archivo | Qué trae |
+|---|---|
+| `INVESTIGACION-DOSIS-PEPTIDOS.md` (70 KB) | Investigación de Codex, con URL por cifra |
+| `INVESTIGACION-DOSIS-CLAUDE.md` | La de Claude, para contrastar |
+| `REVISION-MONOGRAFIAS.md` (39 KB) | Codex revisó las 102 monografías |
+| `ESTUDIO-COMPETENCIA-ANUNCIOS.md` | Los anuncios reales del mercado |
+| `META-ANUNCIOS-NUEVOS.md` / `META-ENLACES.md` | Ids, URLs y antes/después de los anuncios |
+
+⚠️ **REVISION-MONOGRAFIAS.md tiene hallazgos serios sin aplicar todavía**, entre ellos:
+**10-Amino-1MQ** — la identidad química no se pudo verificar; el inhibidor publicado es
+**5-amino-1MQ**. Si el vial es ese, hay que corregir el nombre del producto.
+También: PT-141 omite MC1R, "CJC-1295 sin DAC" es nombre comercial y no identidad formal,
+y TB-500 traslada propiedades de la proteína completa al fragmento.
+
+### 🟡 LO QUE QUEDA
+**De Christian:**
+1. Rehacer copy e imagen del anuncio #2 antes de prenderlo (hoy se contradice)
+2. Decidir si prende los 2 anuncios nuevos
+3. Higgsfield: **0 créditos**. Se necesitan más para generar los ángulos que faltan
+
+**De Claude:**
+1. Aplicar `REVISION-MONOGRAFIAS.md` (empezando por 10-Amino-1MQ)
+2. Investigar los 61 productos que siguen sin fuente
+3. Rehacer los ángulos publicitarios con lo que dice el estudio de competencia
+4. Seguimiento personalizado: el backend ya tiene `PerfilSalud` con candado médico
+   (`consulto_medico` + `tiene_analisis`) y endpoints `/me/perfil-salud`, **falta la UI**
+5. Sello de "respaldo: ensayo clínico" vs "práctica de farmacia" (Christian lo aprobó)
+6. ⚠️ **Cerrar 2 reglas SSH viejas** en el EC2: `129.222.201.144/32` y `66.9.186.74/32`
 
 ---
 
