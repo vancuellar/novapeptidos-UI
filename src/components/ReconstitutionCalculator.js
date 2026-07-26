@@ -19,6 +19,22 @@ const SYRINGES = [
   { id: 'u100-03', label: 'U-100 · 0.3 mL', perMl: 100, maxMl: 0.3 },
 ];
 
+// ⛔ INTERRUPTOR: sugerencias de DOSIS y FRECUENCIA apagadas.
+//
+// Christian, 2026-07-26, con una clienta leyendo la pantalla: las cifras que
+// mostrábamos (50/75/100 mg, "3 veces por semana") no tienen una sola fuente
+// coherente detrás — la dosis salía de un protocolo y la frecuencia de otro, y
+// las fuentes se contradicen entre diaria y 2-3 por semana. Hasta no tener una
+// investigación con fuentes citables, el sitio NO sugiere cuánto ni cada cuándo.
+//
+// Lo que SÍ sigue funcionando es la aritmética: el cliente pone su vial, su
+// agua y la dosis que él decida, y la calculadora le dice cuántas rayitas jalar.
+// Eso es una conversión de unidades, no una recomendación.
+//
+// Para reactivarlo: poner en true, y solo cuando cada `start_freq` y cada
+// `start_levels` del catálogo tenga su fuente anotada.
+const SUGERIR_DOSIS = false;
+
 // Productos del catálogo que se venden por mg (para pre-cargar el vial).
 export const mgProducts = fallbackProducts
   .filter((p) => (p.variants || []).some((v) => /mg/i.test(v.presentation)))
@@ -26,10 +42,12 @@ export const mgProducts = fallbackProducts
     name: p.name,
     slug: p.slug,
     variants: p.variants.filter((v) => /mg/i.test(v.presentation)).map((v) => parseFloat(v.presentation)),
-    startDose: p.start_dose,      // dosis de referencia RUO (o null)
+    // Con el interruptor apagado el producto viaja SIN dosis ni frecuencia, así
+    // que todo lo que las pinta río abajo se apaga solo. Un solo lugar que tocar.
+    startDose: SUGERIR_DOSIS ? p.start_dose : null,
     startUnit: p.start_unit,
-    startLevels: p.start_levels,  // {inicial, tipica, avanzada, unit} o null
-    startFreq: p.start_freq,      // código de frecuencia RUO (o null)
+    startLevels: SUGERIR_DOSIS ? p.start_levels : null,
+    startFreq: SUGERIR_DOSIS ? p.start_freq : null,
   }));
 
 // Cada cuándo se aplica, en lenguaje llano. Referencia RUO por clase de péptido;
@@ -68,6 +86,42 @@ const measurableDefault = (unit, vialMg) => {
   if (!vialMg || baseMcg >= minMcg) return base;
   if (unit === 'mg') return Math.ceil((minMcg / 1000) * 2) / 2;   // a 0.5 mg
   return Math.ceil(minMcg / 50) * 50;                              // a 50 mcg
+};
+
+// Cuánta agua sugerir para ESTE vial. Es aritmética de medición, no criterio
+// clínico: se busca dejar el vial en una concentración donde la dosis caiga en
+// rayitas fáciles de leer.
+//
+// El caso que lo motivó (Christian, 2026-07-26): Paz compró NAD+ **500 mg** y la
+// calculadora sugería 2 mL para todo. Eso deja 250 mg/mL, así que una dosis de
+// 100 mg son 40 rayitas y cada rayita vale 2.5 mg — cualquier temblor de pulso
+// pesa. Con 5 mL queda en 100 mg/mL: **los miligramos son las rayitas directo**
+// (100 mg = 100 unidades) y cada rayita vale 1 mg. Las fuentes de NAD+ también
+// reconstituyen con 3–5 mL, no con 2.
+//
+// Tope de 5 mL: es lo que caben los viales normales de 10 mL sin llenarlos.
+const AGUA_MAX_ML = 5;
+
+// ⚠️ Se apunta al VOLUMEN DE LA INYECCIÓN, no a la concentración.
+// Primer intento (y error): se buscó dejar todo en 100 mg/mL para que los mg
+// fueran las rayitas directo. Suena cómodo, pero en el vial de 500 mg eso daba
+// 5 mL de agua y una dosis de 50 mg salía en **0.5 mL** — media jeringa por
+// aplicación. Christian lo cachó de inmediato. Medir fácil no sirve de nada si
+// la inyección se vuelve enorme.
+//
+// La regla buena: elegir el agua para que la dosis de referencia caiga cerca de
+// **0.3 mL (30 rayitas)** — cómodo de inyectar y fácil de leer. Para NAD+ 500 mg
+// con dosis de 50 mg eso da exactamente **3 mL**, que es lo que publica la
+// literatura de ese vial (166.7 mg/mL, 50 mg = 30 unidades).
+const DRAW_OBJETIVO_ML = 0.3;
+
+const aguaSugerida = (vialMg, p) => {
+  const unidad = p?.startUnit || unitFor(p?.name);
+  const dosis = p?.startLevels?.inicial ?? p?.startDose;
+  if (!vialMg || !dosis || unidad !== 'mg') return 2;   // viales chicos de mcg: 2 mL
+  // agua = vial * (mL que queremos jalar) / dosis
+  const ml = (vialMg * DRAW_OBJETIVO_ML) / dosis;
+  return Math.min(AGUA_MAX_ML, Math.max(1, Math.round(ml * 2) / 2));   // a medios mL
 };
 
 const Stat = ({ icon: Icon, label, value, unit }) => (
@@ -145,6 +199,19 @@ const SyringeSVG = ({ units, maxUnits, onChange }) => {
 const ReconstitutionCalculator = ({ variant = 'full', purchased = [], onTrack, syncUrl = true }) => {
   const { t, language } = useLanguage();
   const full = variant === 'full';
+
+  // ⚠️ El cliente solo debe ver SUS péptidos (orden de Christian, 2026-07-26).
+  // `purchased` existía pero solo pintaba unos atajos: el selector seguía
+  // listando los 195 productos del catálogo, así que a una clienta que compró
+  // NAD+ y Retatrutida se le sugerían dosis de compuestos que nunca compró.
+  // En el área privada la lista se acota a lo suyo; la calculadora pública
+  // (variant !== 'full') sigue mostrando el catálogo, que para eso es pública.
+  const listaProductos = useMemo(() => {
+    if (!full || !purchased.length) return mgProducts;
+    const mios = new Set(purchased.map((p) => (p.name || p).toString().toLowerCase()));
+    const solo = mgProducts.filter((p) => mios.has(p.name.toLowerCase()));
+    return solo.length ? solo : mgProducts;
+  }, [full, purchased]);
   const [mode, setMode] = useState('suggest');          // 'suggest' | 'known'
   const [product, setProduct] = useState('');
   const [vialMg, setVialMg] = useState(10);
@@ -154,7 +221,7 @@ const ReconstitutionCalculator = ({ variant = 'full', purchased = [], onTrack, s
   const [syringe, setSyringe] = useState(SYRINGES[0]);
   const [pickerOpen, setPickerOpen] = useState(false);
 
-  const currentProduct = mgProducts.find((x) => x.name === product);
+  const currentProduct = listaProductos.find((x) => x.name === product);
   const currentVariants = (currentProduct?.variants || []).slice().sort((a, b) => a - b);
   const hasRef = currentProduct?.startDose != null;
   const levels = full ? currentProduct?.startLevels || null : null;
@@ -208,9 +275,12 @@ const ReconstitutionCalculator = ({ variant = 'full', purchased = [], onTrack, s
   const pickProduct = (name, presetMg) => {
     setProduct(name);
     setPickerOpen(false);
-    const p = mgProducts.find((x) => x.name === name);
+    const p = listaProductos.find((x) => x.name === name);
     const vial = presetMg || (p && p.variants.length ? Math.min(...p.variants) : null);
-    if (vial) setVialMg(vial);
+    if (vial) {
+      setVialMg(vial);
+      setWaterMl(aguaSugerida(vial, p));
+    }
     // Dosis de referencia (RUO) si existe; si no, unidad automática + valor
     // genérico ajustado para que se pueda medir en la jeringa con este vial.
     if (full && p && p.startDose != null) {
@@ -248,7 +318,7 @@ const ReconstitutionCalculator = ({ variant = 'full', purchased = [], onTrack, s
   useEffect(() => {
     if (!syncUrl) return;
     const p = params.get('p');
-    if (p && mgProducts.some((x) => x.name === p)) {
+    if (p && listaProductos.some((x) => x.name === p)) {
       setProduct(p);
       const g = (k, f) => { const v = params.get(k); if (v != null) f(v); };
       g('v', (v) => setVialMg(Number(v)));
@@ -340,7 +410,7 @@ const ReconstitutionCalculator = ({ variant = 'full', purchased = [], onTrack, s
               <CommandInput placeholder={t('calc.searchPlaceholder')} data-testid="calc-search" />
               <CommandList>
                 <CommandEmpty>{t('calc.noResults')}</CommandEmpty>
-                {mgProducts.map((p) => (
+                {listaProductos.map((p) => (
                   <CommandItem key={p.name} value={p.name} onSelect={() => pickProduct(p.name)}>
                     <Check className={`mr-2 h-4 w-4 ${product === p.name ? 'opacity-100' : 'opacity-0'}`} />
                     {p.name}
@@ -435,6 +505,51 @@ const ReconstitutionCalculator = ({ variant = 'full', purchased = [], onTrack, s
                     </button>
                   );
                 })}
+              </div>
+            )}
+            {/* Todo junto y masticado, que es como lo pidió Christian: el agua
+                que va en ESTE vial y, sobre esa agua, cuántas rayitas toca en
+                cada nivel. El agua NO cambia por nivel: el vial se reconstituye
+                una sola vez, así que es una sola cifra arriba y tres renglones
+                abajo. */}
+            {levels && (
+              <div className="mt-3 rounded-lg border border-[hsl(var(--border))] overflow-hidden" data-testid="calc-tabla-niveles">
+                <div className="bg-[hsl(var(--secondary))] px-3 py-2 text-xs">
+                  Tu vial de <strong>{vialMg} mg</strong> con <strong>{res ? res.water : waterMl} mL</strong> de agua bacteriostática
+                  {' '}queda en <strong>{(vialMg / (Number(res ? res.water : waterMl) || 1)).toFixed(1)} mg/mL</strong>
+                </div>
+                <table className="w-full text-xs">
+                  <thead className="text-muted-foreground">
+                    <tr className="border-b border-[hsl(var(--border))]">
+                      <th className="text-left px-3 py-1.5 font-normal">Nivel</th>
+                      <th className="text-right px-3 font-normal">Dosis</th>
+                      <th className="text-right px-3 font-normal">Rayitas</th>
+                      <th className="text-right px-3 font-normal">Cada cuándo</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {[['inicial', t('calc.lvlBasic')], ['tipica', t('calc.lvlTypical')], ['avanzada', t('calc.lvlAdvanced')]].map(([k, label]) => {
+                      const agua = Number(res ? res.water : waterMl) || 1;
+                      const conc = vialMg / agua;                       // mg/mL
+                      const mg = levels.unit === 'mg' ? levels[k] : levels[k] / 1000;
+                      const rayitas = Math.round((mg / conc) * syringe.perMl);
+                      const cabe = rayitas <= syringe.perMl * syringe.maxMl;
+                      return (
+                        <tr key={k} className="border-b border-[hsl(var(--border))]/50 last:border-0"
+                            data-testid={`calc-fila-${k}`}>
+                          <td className="px-3 py-1.5">{label}</td>
+                          <td className="text-right px-3">{levels[k]} {levels.unit}</td>
+                          <td className={`text-right px-3 font-semibold ${cabe ? '' : 'text-red-600'}`}>
+                            {rayitas}{cabe ? '' : ' ⚠️'}
+                          </td>
+                          <td className="text-right px-3 text-muted-foreground">
+                            {freqPhrase(currentProduct?.startFreq, language) || '—'}
+                          </td>
+                        </tr>
+                      );
+                    })}
+                  </tbody>
+                </table>
               </div>
             )}
             {levels?.orientativa && (
