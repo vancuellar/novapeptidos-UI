@@ -3709,7 +3709,7 @@ export const fallbackProducts = [
       },
       {
         "presentation": "40 mg",
-        "price": 2799,
+        "price": 2198,
         "stock": 40,
         "batch_number": "NP-MOTS40-2601",
         "id": "befcc9bf-0e3d-4a19-a5ca-9ec4512d1a16",
