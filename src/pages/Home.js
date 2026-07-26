@@ -60,16 +60,16 @@ const HERO_VIALS = [
 // son más angostos (aspecto 0.45) que los generados (0.66): cuando la medida era el
 // ancho, los nuevos salían aplastados y flacos.
 //
-// Dos alturas porque el vial generado es ~50% más ancho a la misma altura, y cinco
-// de esos no caben en un teléfono. La chica se calculó para que los cinco anchos
-// entren en los 343 px que mide la fila en un iPhone.
+// Las alturas salen de los anchos del diseño original (13% / 14.5% / 16% del
+// contenedor) divididos entre el aspecto del vial: 540 px de contenedor en pantalla
+// grande, 343 en teléfono.
 const HERO_VISIBLES = 5;
 const HERO_ALTURAS = [
-  { movil: 90, grande: 155 },
-  { movil: 100, grande: 173 },
-  { movil: 111, grande: 191 },
-  { movil: 100, grande: 173 },
-  { movil: 90, grande: 155 },
+  { movil: 99, grande: 155 },
+  { movil: 110, grande: 173 },
+  { movil: 121, grande: 191 },
+  { movil: 110, grande: 173 },
+  { movil: 99, grande: 155 },
 ];
 
 // Compounds shown in the scrolling ticker under the hero
@@ -146,6 +146,31 @@ const Home = () => {
     tocoRef.current = null;
   };
 
+  // Con el mouse encima, la fila sigue al cursor: se mueve a la derecha y los
+  // viales corren a la derecha (Christian, 2026-07-26). No hay que hacer clic.
+  // Se acumula el recorrido y se avanza UN vial cada 60 px; pixel por pixel
+  // temblaría. Convive con el efecto de acercar el cursor: el vial apuntado
+  // sigue creciendo mientras la fila se mueve.
+  const HERO_PIXELES_POR_VIAL = 60;
+  const mouseRef = useRef({ x: null, acumulado: 0 });
+  const alMoverMouse = (e) => {
+    const m = mouseRef.current;
+    if (m.x === null) { m.x = e.clientX; return; }
+    m.acumulado += e.clientX - m.x;
+    m.x = e.clientX;
+    while (Math.abs(m.acumulado) >= HERO_PIXELES_POR_VIAL) {
+      const dir = m.acumulado > 0 ? 1 : -1;
+      // Mouse a la DERECHA = los viales corren a la derecha, o sea que entra
+      // el de atrás por la izquierda: el índice va hacia atrás.
+      girarViales(-dir);
+      m.acumulado -= dir * HERO_PIXELES_POR_VIAL;
+    }
+  };
+  const alSalirDeLaFila = () => {
+    mouseRef.current = { x: null, acumulado: 0 };
+    setHoveredVial(null);
+  };
+
   const vialesVisibles = Array.from({ length: HERO_VISIBLES }, (_, i) => ({
     ...HERO_VIALS[(vialOffset + i) % HERO_VIALS.length],
     alto: HERO_ALTURAS[i],
@@ -200,7 +225,7 @@ const Home = () => {
               </div>
             </div>
             <div className="flex items-center justify-center">
-              <div className="hero-vials w-full max-w-[600px]">
+              <div className="hero-vials w-full max-w-[540px]">
                 <div className="hero-vials-glow" />
                 {/* Quince viales, cinco a la vista. Las flechas (o el dedo) los van
                     corriendo: entran los de atrás y se ocultan los de adelante.
@@ -226,7 +251,8 @@ const Home = () => {
                   <ChevronRight className="h-5 w-5" />
                 </button>
                 <div className="relative flex items-end justify-center gap-0.5 sm:gap-1"
-                  onMouseLeave={() => setHoveredVial(null)}
+                  onMouseLeave={alSalirDeLaFila}
+                  onMouseMove={alMoverMouse}
                   onTouchStart={alTocar}
                   onTouchEnd={alSoltar}>
                   {vialesVisibles.map((v, i) => {
