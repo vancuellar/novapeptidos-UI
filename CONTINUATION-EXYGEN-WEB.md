@@ -132,10 +132,24 @@ Backend: `.venv/bin/python -m pytest test_core.py -q` — **134 pruebas**.
    ⚠️ **La conversión se calcula sobre sesiones únicas del RANGO**, no sumando las de cada
    cajón: una sesión que cruza la medianoche cae en dos días, y el mismo mes daba 5% visto
    por día y 6.25% por semana.
-3. **La publicidad no cuadra con el tráfico.** Meta reporta **683 clics** al sitio en 30 días
-   y el sitio solo registró **16 sesiones**. O la gente da clic y no llega, o `/api/events`
-   no los está contando. Hay que mirarlo: es la diferencia entre saber si la publicidad
-   sirve o no.
+3. ~~**La publicidad no cuadra con el tráfico.**~~ ✅ **INVESTIGADO Y ARREGLADO 2026-07-26.**
+   Eran **DOS problemas distintos** y ninguno era lo que parecía:
+   · ⚠️ **`clicks` de Meta NO son visitas.** Incluye reacciones, comentarios, abrir la foto y
+     entrar al perfil. En una publicación impulsada la mayoría no son visitas. Lo real:
+     **683 clics totales → 584 al ENLACE → 256 que CARGARON la página (43.8%)**. O sea que
+     **328 le dieron clic y nunca llegaron**. El panel mostraba 683 como si fueran visitas.
+     Ahora muestra los tres y el CPC va sobre los clics al enlace (`inline_link_clicks` y
+     la acción `landing_page_view`).
+   · ⚠️ **Lo que el sitio llamaba "sesión" NUNCA CADUCABA.** El id vivía en localStorage para
+     siempre: quien volvía un mes después seguía siendo la MISMA sesión. Eran *dispositivos*,
+     no sesiones — por eso 170 visitas salían en solo 16, y la conversión salía inflada.
+     Ahora caduca a los **30 minutos** sin actividad, y hay un **`visitor_id` permanente**
+     aparte (los eventos viejos no lo traen, así que "visitantes" sale 0 hasta que se
+     acumulen datos nuevos).
+   📉 **Lo que queda por explicar:** Meta dice 256 páginas cargadas desde anuncios en 30 días
+   y el sitio registró 170 visitas EN TOTAL (de todas las fuentes). Falta capturar cerca de
+   la mitad. Lo más probable son bloqueadores de anuncios contra `/api/events`. No se
+   persiguió: `sendBeacon` ya está bien puesto y lo demás sería cacería.
 3. **Imágenes de los 84 productos sin foto propia.** Christian subió el vial en blanco a
    `Media/Viales individuales sin fondo para hero/Vial sin fondo, nombre ni gramaje.PNG`
    (2048×2048, fondo transparente). Ya hizo a mano: NAD+, Retatrutida, Tirzepatida,
