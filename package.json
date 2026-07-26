@@ -64,7 +64,9 @@
   "scripts": {
     "start": "craco start",
     "build": "craco build && node scripts/prerender-routes.js",
-    "test": "craco test"
+    "test": "craco test",
+    "auditoria": "node scripts/auditoria-e2e.js",
+    "auditoria:completa": "node scripts/auditoria-e2e.js --compras"
   },
   "browserslist": {
     "production": [
