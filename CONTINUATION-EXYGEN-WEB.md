@@ -215,10 +215,20 @@ siempre.**
 ### 📌 PENDIENTES DE CHRISTIAN (no son código)
 
 
-- **Meta:** sigue bloqueado para crear la cuenta de desarrollador ("dispositivo que no usas
-  habitualmente") — le pasa igual en iPhone. Salida sin pelear: Administrador de Anuncios →
-  Informes → programar envío diario por correo, y subir ese CSV al panel.
-- **MercadoPago:** faltan sus 2 llaves de producción.
+- ~~**Meta:** bloqueado para crear la cuenta de desarrollador.~~ ✅ **RESUELTO 2026-07-26.**
+  El panel ya lee la **API en vivo** (`fuente: meta_en_vivo`), no el CSV. Lo que destrabó el
+  bloqueo: había que confirmar el correo **como medio de contacto del perfil personal** de
+  Facebook. Cuenta: **`act_1357297706382259`** (⚠️ en el Administrador de Anuncios aparece
+  también `27680722504930078` bajo el mismo portafolio — **esa NO es**). App "Exygen Panel",
+  sin publicar. Llaves en `~/.config/exygen/meta.env` y en el `.env` del EC2.
+- **MercadoPago:** faltan sus **2 llaves de producción**. La integración YA ESTÁ HECHA y
+  desplegada (2026-07-26): `mercadopago.py` + webhook + checkout. Con las llaves se enciende
+  sola. Van a `~/.config/exygen/meta.env`… no: a **`~/.config/exygen/mercadopago.env`**:
+  `MERCADOPAGO_ACCESS_TOKEN` (empieza con `APP_USR-`) y `MERCADOPAGO_WEBHOOK_SECRET`.
+  ⚠️ **Mientras no estén, el checkout NO ofrece tarjeta** — solo SPEI y cripto. Es a
+  propósito: antes ofrecía tarjeta y no cobraba nada.
+- **Video de reconstitución:** rehacerlo con **Hyperframes** (Christian, 2026-07-26).
+  El pipeline viejo es Playwright+edge-tts+ffmpeg; este va con la herramienta nueva.
 - ~~**NOWPayments:** prender las monedas + KYB.~~ ✅ **YA ESTÁ.** Probado el 2026-07-26 contra
   el sitio en vivo: 27 monedas prendidas (BTC, ETH, 9 USDT, USDC…), factura real con dirección
   de depósito, webhook confirma el pedido y rechaza firmas falsas. **19 de 19 revisiones en
@@ -226,6 +236,8 @@ siempre.**
   **Lo único que falta:** que llegue cripto de verdad. Christian tiene que mandar ~$50 en
   USDT-TRC20 a la dirección de un pedido de prueba — Claude no puede mover dinero.
 - **Gemini:** activar facturación (el chat se cae a los 20 mensajes/día).
+- **Rotar el token de Meta:** se pegó en el chat, así que quedó en el historial.
+  Usuarios del sistema → Revocar tokens → generar otro.
 - **2FA del admin**, domicilio del responsable en el aviso de privacidad, INAI.
 - **Skydropx:** clasificación por escrito de los productos (SDS/MSDS) + Carta Porte.
 - **Dominios:** redirigir (301) los `nova*` y los nuevos a exygenlabs.com.
