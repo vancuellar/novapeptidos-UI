@@ -148,10 +148,14 @@ const Home = () => {
 
   // Con el mouse encima, la fila sigue al cursor: se mueve a la derecha y los
   // viales corren a la derecha (Christian, 2026-07-26). No hay que hacer clic.
-  // Se acumula el recorrido y se avanza UN vial cada 60 px; pixel por pixel
+  // Se acumula el recorrido y se avanza UN vial cada tanto; pixel por pixel
   // temblaría. Convive con el efecto de acercar el cursor: el vial apuntado
   // sigue creciendo mientras la fila se mueve.
-  const HERO_PIXELES_POR_VIAL = 60;
+  //
+  // 140 px por vial: la fila mide 540, así que cruzarla de lado a lado mueve
+  // unos cuatro viales. Se siente que uno lo lleva y no que se le va. Es EL
+  // número para calibrar la velocidad — más alto, más lento.
+  const HERO_PIXELES_POR_VIAL = 140;
   const mouseRef = useRef({ x: null, acumulado: 0 });
   const alMoverMouse = (e) => {
     const m = mouseRef.current;
