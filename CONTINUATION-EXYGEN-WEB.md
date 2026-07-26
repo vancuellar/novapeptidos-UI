@@ -156,7 +156,38 @@ Backend: `.venv/bin/python -m pytest test_core.py -q` — **134 pruebas**.
 4. **Los COA no existen.** Cada ficha promete *"al comprar, el PDF del lote aparece en Mi
    cuenta"* y `/api/coa/public` devuelve `{}`. Christian dijo que él los sube.
 
+### ❌ DECIDIDO: NO se migra a WooCommerce (Christian, 2026-07-26)
+
+Christian lo planteó al ver que los precios de Certified se leen por su API de WooCommerce.
+**Decisión tomada: nos quedamos con lo que tenemos** (React + FastAPI + MongoDB). No se
+vuelve a abrir salvo que él lo pida.
+
+**Las razones:**
+
+1. **Lo que se perdería no tiene equivalente en WooCommerce.** La pirámide de 6 niveles con
+   override diferencial, los topes de comisión POR PRODUCTO que recortan el descuento, los
+   códigos que se generan y rotan solos por nivel, el candado de monto en los cupones de
+   recuperación, el descuento propio del distribuidor, el panel de Meta, el "ver como". Hay
+   plugins de afiliados, pero **las reglas de Christian son suyas** y habría que programarlas
+   igual, ahora como plugins de WordPress y con menos control.
+2. **El costo es de meses, y justo ahora empieza a llegar tráfico.** Migrar significa parar
+   de mejorar el negocio para reconstruir lo que ya funciona.
+3. **Que Certified use WooCommerce no es una ventaja de Certified.** Es su herramienta. Que
+   sus precios se puedan leer por API no es virtud ni defecto: **el catálogo de Exygen también
+   es público** en `api.exygenlabs.com/api/products`, como en cualquier tienda del mundo.
+4. **Ya hay 134 pruebas + 3 auditorías** que encierran las reglas del negocio. Eso se tira.
+
+**EL ARGUMENTO EN CONTRA — que es real y hay que tenerlo presente:**
+
+WooCommerce trae resueltas con plugins varias cosas que hoy están pendientes: MercadoPago,
+NOWPayments, Skydropx y la facturación CFDI. Y sobre todo: **un sitio a la medida necesita a
+alguien que sepa mantenerlo**; de WooCommerce hay miles de freelancers en México. Si esas
+cuatro integraciones se atoran mucho, o si Christian quiere no depender de nadie en
+particular, la decisión merece revisarse. **Hoy no, pero no es una puerta cerrada para
+siempre.**
+
 ### 📌 PENDIENTES DE CHRISTIAN (no son código)
+
 
 - **Meta:** sigue bloqueado para crear la cuenta de desarrollador ("dispositivo que no usas
   habitualmente") — le pasa igual en iPhone. Salida sin pelear: Administrador de Anuncios →
@@ -167,9 +198,6 @@ Backend: `.venv/bin/python -m pytest test_core.py -q` — **134 pruebas**.
 - **2FA del admin**, domicilio del responsable en el aviso de privacidad, INAI.
 - **Skydropx:** clasificación por escrito de los productos (SDS/MSDS) + Carta Porte.
 - **Dominios:** redirigir (301) los `nova*` y los nuevos a exygenlabs.com.
-- **Decidir:** ¿WooCommerce? Christian lo pidió al ver que Certified lo usa. **Se le explicó
-  que sería tirar meses de trabajo** (pirámide, topes, carritos abandonados, panel de Meta)
-  para terminar con menos. Está esperando su decisión.
 
 ---
 
