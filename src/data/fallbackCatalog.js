@@ -266,7 +266,9 @@ export const fallbackProducts = [
       "inicial": 1,
       "tipica": 1.5,
       "avanzada": 2,
-      "unit": "mg"
+      "unit": "mg",
+      "fuente": "⚠️ DOSIS DERIVADA, no publicada. Para este compuesto no existe una pauta humana publicada: ni ensayo, ni ficha de farmacia, ni manual de dosificación. Lo que ves es una derivación a partir de los otros bioreguladores de Khavinson que sí tienen protocolo publicado, hecha por nosotros. Trátala como un punto de partida para conversar con un médico, no como un dato respaldado.",
+      "derivada": true
     },
     "featured": false,
     "is_new": false
@@ -527,11 +529,19 @@ export const fallbackProducts = [
     "coa_url": "https://exygenlabs.com/coa/ahk-cu.pdf",
     "batch_number": "NP-AHKC50-2601",
     "storage": "Conservar a -20 °C, protegido de la luz. Reconstituido: 2–8 °C.",
-    "start_dose": null,
-    "start_unit": null,
-    "start_levels": null,
+    "start_dose": 1,
+    "start_unit": "mg",
+    "start_levels": {
+      "inicial": 1,
+      "tipica": 1.5,
+      "avanzada": 2,
+      "unit": "mg",
+      "fuente": "⚠️ DOSIS DERIVADA, no publicada. Para este compuesto no existe una pauta humana publicada: ni ensayo, ni ficha de farmacia, ni manual de dosificación. Lo que ves es una derivación a partir de GHK-Cu, el otro péptido de cobre del catálogo, hecha por nosotros. Trátala como un punto de partida para conversar con un médico, no como un dato respaldado.",
+      "derivada": true
+    },
     "featured": false,
-    "is_new": false
+    "is_new": false,
+    "start_freq": "daily"
   },
   {
     "id": "fallback-botulinum-toxin",
@@ -836,11 +846,19 @@ export const fallbackProducts = [
     "coa_url": "https://exygenlabs.com/coa/fragment-17-23.pdf",
     "batch_number": "NP-FRAG10-2601",
     "storage": "Conservar a -20 °C, protegido de la luz. Reconstituido: 2–8 °C.",
-    "start_dose": null,
-    "start_unit": null,
-    "start_levels": null,
+    "start_dose": 250,
+    "start_unit": "mcg",
+    "start_levels": {
+      "inicial": 250,
+      "tipica": 500,
+      "avanzada": 1000,
+      "unit": "mcg",
+      "fuente": "⚠️ DOSIS DERIVADA, no publicada. Para este compuesto no existe una pauta humana publicada: ni ensayo, ni ficha de farmacia, ni manual de dosificación. Lo que ves es una derivación a partir de HGH Fragment 176-191, del mismo origen, hecha por nosotros. Trátala como un punto de partida para conversar con un médico, no como un dato respaldado.",
+      "derivada": true
+    },
     "featured": false,
-    "is_new": false
+    "is_new": false,
+    "start_freq": "daily"
   },
   {
     "id": "fallback-ghrp-2-acetate",
@@ -1360,12 +1378,14 @@ export const fallbackProducts = [
     "storage": "Conservar a -20 °C, protegido de la luz. Reconstituido: 2–8 °C.",
     "start_dose": 200,
     "start_unit": "mcg",
-    "start_freq": "eod",
+    "start_freq": "daily",
     "start_levels": {
       "inicial": 200,
       "tipica": 300,
       "avanzada": 400,
-      "unit": "mcg"
+      "unit": "mcg",
+      "fuente": "⚠️ DOSIS DERIVADA, no publicada. Para este compuesto no existe una pauta humana publicada: ni ensayo, ni ficha de farmacia, ni manual de dosificación. Lo que ves es una derivación a partir de IGF-1 LR3, del que MGF es una variante de corte del mismo gen, hecha por nosotros. Trátala como un punto de partida para conversar con un médico, no como un dato respaldado.",
+      "derivada": true
     },
     "featured": false,
     "is_new": false
@@ -1409,7 +1429,9 @@ export const fallbackProducts = [
       "inicial": 200,
       "tipica": 300,
       "avanzada": 400,
-      "unit": "mcg"
+      "unit": "mcg",
+      "fuente": "⚠️ DOSIS DERIVADA, no publicada. Para este compuesto no existe una pauta humana publicada: ni ensayo, ni ficha de farmacia, ni manual de dosificación. Lo que ves es una derivación a partir de MGF, con la frecuencia espaciada que justifica su pegilación, hecha por nosotros. Trátala como un punto de partida para conversar con un médico, no como un dato respaldado.",
+      "derivada": true
     },
     "featured": false,
     "is_new": false
@@ -1750,12 +1772,14 @@ export const fallbackProducts = [
     "storage": "Conservar a -20 °C, protegido de la luz. Reconstituido: 2–8 °C.",
     "start_dose": 1,
     "start_unit": "mg",
-    "start_freq": "eod",
+    "start_freq": "daily",
     "start_levels": {
       "inicial": 1,
       "tipica": 2,
       "avanzada": 4,
-      "unit": "mg"
+      "unit": "mg",
+      "fuente": "⚠️ DOSIS DERIVADA, no publicada. Para este compuesto no existe una pauta humana publicada: ni ensayo, ni ficha de farmacia, ni manual de dosificación. Lo que ves es una derivación a partir de MOTS-c, el otro péptido mitocondrial del catálogo, hecha por nosotros. Trátala como un punto de partida para conversar con un médico, no como un dato respaldado.",
+      "derivada": true
     },
     "featured": false,
     "is_new": false
@@ -2047,17 +2071,19 @@ export const fallbackProducts = [
     "coa_url": "https://exygenlabs.com/coa/melatonina.pdf",
     "batch_number": "NP-MELA10-2601",
     "storage": "Conservar a -20 °C, protegido de la luz. Reconstituido: 2–8 °C.",
-    "start_dose": null,
-    "start_unit": null,
+    "start_dose": 3,
+    "start_unit": "mg",
     "start_levels": {
-      "inicial": 1,
-      "tipica": 3,
-      "avanzada": 5,
+      "inicial": 3,
+      "tipica": 5,
+      "avanzada": 10,
       "unit": "mg",
-      "orientativa": true
+      "fuente": "⚠️ DOSIS DERIVADA, no publicada. Para este compuesto no existe una pauta humana publicada: ni ensayo, ni ficha de farmacia, ni manual de dosificación. Lo que ves es una derivación a partir de la dosis oral de melatonina, que sí está documentada, hecha por nosotros. Trátala como un punto de partida para conversar con un médico, no como un dato respaldado.",
+      "derivada": true
     },
     "featured": false,
-    "is_new": false
+    "is_new": false,
+    "start_freq": "daily"
   },
   {
     "id": "fallback-orexin-a",
@@ -2091,17 +2117,19 @@ export const fallbackProducts = [
     "coa_url": "https://exygenlabs.com/coa/orexin-a.pdf",
     "batch_number": "NP-OREX10-2601",
     "storage": "Conservar a -20 °C, protegido de la luz. Reconstituido: 2–8 °C.",
-    "start_dose": null,
-    "start_unit": null,
+    "start_dose": 100,
+    "start_unit": "mcg",
     "start_levels": {
-      "inicial": 750,
-      "tipica": 1500,
-      "avanzada": 1800,
+      "inicial": 100,
+      "tipica": 200,
+      "avanzada": 300,
       "unit": "mcg",
-      "orientativa": true
+      "fuente": "⚠️ DOSIS DERIVADA, no publicada. Para este compuesto no existe una pauta humana publicada: ni ensayo, ni ficha de farmacia, ni manual de dosificación. Lo que ves es una derivación a partir de la práctica de mercado; sin equivalente publicado, hecha por nosotros. Trátala como un punto de partida para conversar con un médico, no como un dato respaldado.",
+      "derivada": true
     },
     "featured": false,
-    "is_new": false
+    "is_new": false,
+    "start_freq": "daily"
   },
   {
     "id": "fallback-orexin-b",
@@ -2145,11 +2173,19 @@ export const fallbackProducts = [
     "coa_url": "https://exygenlabs.com/coa/orexin-b.pdf",
     "batch_number": "NP-OREX5-2601",
     "storage": "Conservar a -20 °C, protegido de la luz. Reconstituido: 2–8 °C.",
-    "start_dose": null,
-    "start_unit": null,
-    "start_levels": null,
+    "start_dose": 100,
+    "start_unit": "mcg",
+    "start_levels": {
+      "inicial": 100,
+      "tipica": 200,
+      "avanzada": 300,
+      "unit": "mcg",
+      "fuente": "⚠️ DOSIS DERIVADA, no publicada. Para este compuesto no existe una pauta humana publicada: ni ensayo, ni ficha de farmacia, ni manual de dosificación. Lo que ves es una derivación a partir de la práctica de mercado; sin equivalente publicado, hecha por nosotros. Trátala como un punto de partida para conversar con un médico, no como un dato respaldado.",
+      "derivada": true
+    },
     "featured": false,
-    "is_new": false
+    "is_new": false,
+    "start_freq": "daily"
   },
   {
     "id": "fallback-pe-22-28",
@@ -2183,17 +2219,19 @@ export const fallbackProducts = [
     "coa_url": "https://exygenlabs.com/coa/pe-22-28.pdf",
     "batch_number": "NP-PE2210-2601",
     "storage": "Conservar a -20 °C, protegido de la luz. Reconstituido: 2–8 °C.",
-    "start_dose": null,
-    "start_unit": null,
+    "start_dose": 300,
+    "start_unit": "mcg",
     "start_levels": {
-      "inicial": 10,
-      "tipica": 20,
-      "avanzada": 25,
+      "inicial": 300,
+      "tipica": 500,
+      "avanzada": 1000,
       "unit": "mcg",
-      "orientativa": true
+      "fuente": "⚠️ DOSIS DERIVADA, no publicada. Para este compuesto no existe una pauta humana publicada: ni ensayo, ni ficha de farmacia, ni manual de dosificación. Lo que ves es una derivación a partir de Semax y Selank, del mismo grupo neuro, hecha por nosotros. Trátala como un punto de partida para conversar con un médico, no como un dato respaldado.",
+      "derivada": true
     },
     "featured": false,
-    "is_new": false
+    "is_new": false,
+    "start_freq": "daily"
   },
   {
     "id": "fallback-pnc-27",
@@ -2227,17 +2265,19 @@ export const fallbackProducts = [
     "coa_url": "https://exygenlabs.com/coa/pnc-27.pdf",
     "batch_number": "NP-PNC25-2601",
     "storage": "Conservar a -20 °C, protegido de la luz. Reconstituido: 2–8 °C.",
-    "start_dose": null,
-    "start_unit": null,
+    "start_dose": 500,
+    "start_unit": "mcg",
     "start_levels": {
-      "inicial": 3,
-      "tipica": 6,
-      "avanzada": 10,
-      "unit": "mg",
-      "orientativa": true
+      "inicial": 500,
+      "tipica": 1000,
+      "avanzada": 2000,
+      "unit": "mcg",
+      "fuente": "⚠️ DOSIS DERIVADA, no publicada. Para este compuesto no existe una pauta humana publicada: ni ensayo, ni ficha de farmacia, ni manual de dosificación. Lo que ves es una derivación a partir de la práctica de mercado; no hay nada más cercano, hecha por nosotros. Trátala como un punto de partida para conversar con un médico, no como un dato respaldado.",
+      "derivada": true
     },
     "featured": false,
-    "is_new": false
+    "is_new": false,
+    "start_freq": "daily"
   },
   {
     "id": "fallback-selank",
@@ -2387,11 +2427,19 @@ export const fallbackProducts = [
     "coa_url": "https://exygenlabs.com/coa/acth-1-39.pdf",
     "batch_number": "NP-ACTH5-2601",
     "storage": "Conservar a -20 °C, protegido de la luz. Reconstituido: 2–8 °C.",
-    "start_dose": null,
-    "start_unit": null,
-    "start_levels": null,
+    "start_dose": 250,
+    "start_unit": "mcg",
+    "start_levels": {
+      "inicial": 250,
+      "tipica": 250,
+      "avanzada": 250,
+      "unit": "mcg",
+      "fuente": "⚠️ DOSIS DERIVADA, no publicada. Para este compuesto no existe una pauta humana publicada: ni ensayo, ni ficha de farmacia, ni manual de dosificación. Lo que ves es una derivación a partir de la cosintropina (ACTH 1-24), que sí tiene dosis clínica de 250 mcg, hecha por nosotros. Trátala como un punto de partida para conversar con un médico, no como un dato respaldado.",
+      "derivada": true
+    },
     "featured": false,
-    "is_new": false
+    "is_new": false,
+    "start_freq": "as_needed"
   },
   {
     "id": "fallback-admax",
@@ -2493,17 +2541,19 @@ export const fallbackProducts = [
     "coa_url": "https://exygenlabs.com/coa/b7-33.pdf",
     "batch_number": "NP-B7332-2601",
     "storage": "Conservar a -20 °C, protegido de la luz. Reconstituido: 2–8 °C.",
-    "start_dose": null,
-    "start_unit": null,
+    "start_dose": 100,
+    "start_unit": "mcg",
     "start_levels": {
-      "inicial": 500,
-      "tipica": 1000,
-      "avanzada": 1400,
+      "inicial": 100,
+      "tipica": 200,
+      "avanzada": 300,
       "unit": "mcg",
-      "orientativa": true
+      "fuente": "⚠️ DOSIS DERIVADA, no publicada. Para este compuesto no existe una pauta humana publicada: ni ensayo, ni ficha de farmacia, ni manual de dosificación. Lo que ves es una derivación a partir de la práctica de mercado para análogos de relaxina, hecha por nosotros. Trátala como un punto de partida para conversar con un médico, no como un dato respaldado.",
+      "derivada": true
     },
     "featured": false,
-    "is_new": false
+    "is_new": false,
+    "start_freq": "daily"
   },
   {
     "id": "fallback-cjc-1295-con-dac",
@@ -2899,12 +2949,14 @@ export const fallbackProducts = [
     "storage": "Conservar a -20 °C, protegido de la luz. Reconstituido: 2–8 °C.",
     "start_dose": 250,
     "start_unit": "mcg",
-    "start_freq": "mt",
+    "start_freq": "daily",
     "start_levels": {
       "inicial": 250,
       "tipica": 500,
       "avanzada": 1000,
-      "unit": "mcg"
+      "unit": "mcg",
+      "fuente": "⚠️ DOSIS DERIVADA, no publicada. Para este compuesto no existe una pauta humana publicada: ni ensayo, ni ficha de farmacia, ni manual de dosificación. Lo que ves es una derivación a partir de Melanotan II, que sí tiene protocolo publicado, hecha por nosotros. Trátala como un punto de partida para conversar con un médico, no como un dato respaldado.",
+      "derivada": true
     },
     "featured": false,
     "is_new": false
@@ -3104,11 +3156,19 @@ export const fallbackProducts = [
     "coa_url": "https://exygenlabs.com/coa/p21.pdf",
     "batch_number": "NP-P215-2601",
     "storage": "Conservar a -20 °C, protegido de la luz. Reconstituido: 2–8 °C.",
-    "start_dose": null,
-    "start_unit": null,
-    "start_levels": null,
+    "start_dose": 300,
+    "start_unit": "mcg",
+    "start_levels": {
+      "inicial": 300,
+      "tipica": 500,
+      "avanzada": 1000,
+      "unit": "mcg",
+      "fuente": "⚠️ DOSIS DERIVADA, no publicada. Para este compuesto no existe una pauta humana publicada: ni ensayo, ni ficha de farmacia, ni manual de dosificación. Lo que ves es una derivación a partir de Semax, el otro neuropéptido de la misma familia de uso, hecha por nosotros. Trátala como un punto de partida para conversar con un médico, no como un dato respaldado.",
+      "derivada": true
+    },
     "featured": false,
-    "is_new": false
+    "is_new": false,
+    "start_freq": "daily"
   },
   {
     "id": "fallback-somatropina-hgh-191aa",
@@ -3423,17 +3483,19 @@ export const fallbackProducts = [
     "coa_url": "https://exygenlabs.com/coa/aicar.pdf",
     "batch_number": "NP-AICA50-2601",
     "storage": "Conservar a -20 °C, protegido de la luz. Reconstituido: 2–8 °C.",
-    "start_dose": null,
-    "start_unit": null,
+    "start_dose": 10,
+    "start_unit": "mg",
     "start_levels": {
-      "inicial": 350,
-      "tipica": 1400,
-      "avanzada": 2940,
+      "inicial": 10,
+      "tipica": 25,
+      "avanzada": 50,
       "unit": "mg",
-      "orientativa": true
+      "fuente": "⚠️ DOSIS DERIVADA, no publicada. Para este compuesto no existe una pauta humana publicada: ni ensayo, ni ficha de farmacia, ni manual de dosificación. Lo que ves es una derivación a partir de la práctica de mercado; su identidad tampoco es única, hecha por nosotros. Trátala como un punto de partida para conversar con un médico, no como un dato respaldado.",
+      "derivada": true
     },
     "featured": false,
-    "is_new": false
+    "is_new": false,
+    "start_freq": "daily"
   },
   {
     "id": "fallback-aod-9604",
@@ -4723,7 +4785,9 @@ export const fallbackProducts = [
       "inicial": 100,
       "tipica": 200,
       "avanzada": 300,
-      "unit": "mcg"
+      "unit": "mcg",
+      "fuente": "⚠️ DOSIS DERIVADA, no publicada. Para este compuesto no existe una pauta humana publicada: ni ensayo, ni ficha de farmacia, ni manual de dosificación. Lo que ves es una derivación a partir de la práctica de mercado para inhibidores de miostatina, hecha por nosotros. Trátala como un punto de partida para conversar con un médico, no como un dato respaldado.",
+      "derivada": true
     },
     "featured": false,
     "is_new": false
@@ -4760,11 +4824,19 @@ export const fallbackProducts = [
     "coa_url": "https://exygenlabs.com/coa/gdf-8.pdf",
     "batch_number": "NP-GDF81-2601",
     "storage": "Conservar a -20 °C, protegido de la luz. Reconstituido: 2–8 °C.",
-    "start_dose": null,
-    "start_unit": null,
-    "start_levels": null,
+    "start_dose": 100,
+    "start_unit": "mcg",
+    "start_levels": {
+      "inicial": 100,
+      "tipica": 200,
+      "avanzada": 300,
+      "unit": "mcg",
+      "fuente": "⚠️ DOSIS DERIVADA, no publicada. Para este compuesto no existe una pauta humana publicada: ni ensayo, ni ficha de farmacia, ni manual de dosificación. Lo que ves es una derivación a partir de Follistatin, con la que comparte la vía de la miostatina, hecha por nosotros. Trátala como un punto de partida para conversar con un médico, no como un dato respaldado.",
+      "derivada": true
+    },
     "featured": false,
-    "is_new": false
+    "is_new": false,
+    "start_freq": "daily"
   },
   {
     "id": "fallback-glow-bpc-157-10mg-ghk-cu-50mg-tb-500-10mg",
@@ -5002,11 +5074,19 @@ export const fallbackProducts = [
     "coa_url": "https://exygenlabs.com/coa/ptd-1.pdf",
     "batch_number": "NP-PTD15-2601",
     "storage": "Conservar a -20 °C, protegido de la luz. Reconstituido: 2–8 °C.",
-    "start_dose": null,
-    "start_unit": null,
-    "start_levels": null,
+    "start_dose": 100,
+    "start_unit": "mcg",
+    "start_levels": {
+      "inicial": 100,
+      "tipica": 200,
+      "avanzada": 300,
+      "unit": "mcg",
+      "fuente": "⚠️ DOSIS DERIVADA, no publicada. Para este compuesto no existe una pauta humana publicada: ni ensayo, ni ficha de farmacia, ni manual de dosificación. Lo que ves es una derivación a partir de la práctica de mercado; su identidad química tampoco está resuelta, hecha por nosotros. Trátala como un punto de partida para conversar con un médico, no como un dato respaldado.",
+      "derivada": true
+    },
     "featured": false,
-    "is_new": false
+    "is_new": false,
+    "start_freq": "daily"
   },
   {
     "id": "fallback-ptd-dbm",
@@ -5040,11 +5120,19 @@ export const fallbackProducts = [
     "coa_url": "https://exygenlabs.com/coa/ptd-dbm.pdf",
     "batch_number": "NP-PTDD1-2601",
     "storage": "Conservar a -20 °C, protegido de la luz. Reconstituido: 2–8 °C.",
-    "start_dose": null,
-    "start_unit": null,
-    "start_levels": null,
+    "start_dose": 100,
+    "start_unit": "mcg",
+    "start_levels": {
+      "inicial": 100,
+      "tipica": 200,
+      "avanzada": 300,
+      "unit": "mcg",
+      "fuente": "⚠️ DOSIS DERIVADA, no publicada. Para este compuesto no existe una pauta humana publicada: ni ensayo, ni ficha de farmacia, ni manual de dosificación. Lo que ves es una derivación a partir de la práctica de mercado; se usa en protocolos de folículo capilar, hecha por nosotros. Trátala como un punto de partida para conversar con un médico, no como un dato respaldado.",
+      "derivada": true
+    },
     "featured": false,
-    "is_new": false
+    "is_new": false,
+    "start_freq": "daily"
   },
   {
     "id": "fallback-tb-500",
