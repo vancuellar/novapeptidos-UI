@@ -6,60 +6,94 @@
 
 ---
 
-## 🔴 PRIORIDAD 00 — NUESTRAS DOSIS DIFIEREN MUCHO DE researchdosing.com
+## 🔴 PRIORIDAD 00 — ESTUDIO DE researchdosing.com (HECHO 2026-07-27)
 
-> Christian lo detectó el 2026-07-27 y lo marcó **por encima de todo lo demás**.
-> **NO se investigó todavía. Esta es la primera tarea de la siguiente sesión.**
+> Estudiado por Claude **y** por Codex en paralelo. Informe completo:
+> **`fichas-tecnicas/ESTUDIO-RESEARCHDOSING.md`** (20 KB).
 
-### Qué pasó
+### Qué es esa página
 
-Christian comparó nuestra calculadora contra **researchdosing.com** —la página que usa
-Certified-PepMex para dosificación— con **Retatrutida de 40 mg**, y los números difieren
-mucho. Metió a mano en nuestra calculadora los valores de esa página para verlos lado a lado.
+WordPress con **82 compuestos**, casi el mismo catálogo que el nuestro (mismos bioreguladores
+raros, mismos blends, mismo LIPO-C). Tiene una **puerta de acceso privada** que pregunta *"which
+site are you coming from"*: es un **manual de dosificación compartido entre vendedores** del
+mismo mercado, y Certified-PepMex manda ahí a sus clientes. **No vende nada.**
 
-### Los dos juegos de números
+No tiene calculadora interactiva: son **tablas fijas** de mg → unidades por vial.
 
-| | Nuestra calculadora | researchdosing.com |
-|---|---|---|
-| Agua para vial de 40 mg | **4 mL** | **2.5 mL** |
-| Concentración | 10 mg/mL | 16 mg/mL |
-| Dosis | inicial 2 · típica 4 · avanzada 8 mg | **4.8 mg** |
-| Rayitas (U-100) | 40 para 4 mg | 30 para 4.8 mg |
-| Dosis por vial | 10 (a 4 mg) | 8 |
+### 🚨 EL HALLAZGO PRINCIPAL: los 4.8 mg NO son de researchdosing
 
-Nuestra fuente actual: *"Ensayo Fase 2 (1, 4, 8 y 12 mg semanales) vía
-thepeptidecatalog.com/articles/retatrutide-dosing-guide + peptidedosingprotocols.com"*.
+Su ficha pública de Retatrutida publica **2, 4, 6, 8, 10 y 12 mg**. **El 4.8 no aparece.**
+Queda sin resolver de dónde salió la cifra que vio Christian — hay que preguntarle en qué
+pantalla exactamente la leyó, porque no es de esa página (al menos no de la parte pública).
 
-### Lo que ya se sabe y NO hay que volver a discutir
+La hipótesis de "4.8 × 8 = 8 dosis por vial" es aritméticamente correcta pero **no se pudo
+probar**: researchdosing ni siquiera publica cuántas dosis rinde un vial.
 
-**El agua no es una decisión clínica, es aritmética.** No cambia cuánto péptido recibe el
-cliente; cambia cuántas rayitas jala. 4 mL da matemática redonda (10 mg/mL); 2.5 mL da una
-inyección más chica. Las dos circulan en la literatura de proveedores: 2–3 mL es común y
-4 mL lo prefieren muchos justo por lo redondo. **Esa diferencia sola no es un problema.**
+### 🚨 SUS TABLAS TIENEN ERRORES DE ARITMÉTICA
 
-### Lo que SÍ hay que investigar
+Comprobado dos veces, de forma independiente. En el vial de **30 mg con 2.5 mL** (12 mg/mL):
 
-**Los 4.8 mg.** Ese número **no aparece en el ensayo Fase 2** que citamos (1, 4, 8, 12 mg
-semanales). Es una cifra clínica, no aritmética, y es exactamente el tipo de número que se
-borró de 47 monografías en la revisión de Codex por no tener respaldo.
+| Dosis | Unidades reales | Ellos publican | Lo que de verdad se aplica |
+|---|---|---|---|
+| 2 mg | 16.7 u | 16 u | **1.92 mg** |
+| 4 mg | 33.3 u | 32 u | **3.84 mg** |
+| 8 mg | 66.7 u | 66 u | **7.92 mg** |
+| 10 mg | 83.3 u | 84 u | **10.08 mg** |
 
-**Hipótesis a verificar (no confirmada):** 4.8 mg × 8 = 38.4 mg, o sea que un vial de 40 mg
-rinde justo **8 dosis**. Puede que researchdosing derive la dosis de **cuántas aplicaciones
-quiere sacarle al vial**, no del ensayo. Si es así, es un número inventado con apariencia
-de protocolo — y estaríamos a un paso de copiarlo.
+Cuatro renglones fuera de un redondeo normal. Quien siga esa tabla creyendo que se aplica
+4 mg, se aplica 3.84. Además redondean de forma inconsistente: 12.5 → 12, pero 37.5 → 38.
+**Sus tablas están hechas a mano, no calculadas.**
 
-### Preguntas concretas para la siguiente sesión
+### El agua NO es el problema
 
-1. ¿researchdosing.com **cita fuente** para sus dosis, o solo las afirma?
-2. ¿Sus dosis coinciden con el Fase 2, o vienen de otro lado?
-3. ¿El vial de 40 mg de ellos es el mismo producto que el nuestro?
-4. ¿De dónde sale el 4.8? ¿Del ensayo, o de repartir el vial en 8 dosis?
-5. Si resulta que **ellos** tienen mejor respaldo que nosotros, corregir nuestros
-   `start_levels` de Retatrutida y anotar la fuente nueva. Si no, dejarlo y documentar por qué.
+2.5 mL (16 mg/mL) contra nuestros 4 mL (10 mg/mL) es una **elección de concentración**, no de
+dosis. Para 8 mg: ellos 50 unidades, nosotros 80. **Se aplican los mismos 8 mg.** No hay que
+volver a discutir esto.
 
-**Regla que no se rompe:** no se copia una cifra solo porque Certified use esa página. Su
-laboratorio sí resultó real (Vanguard, acreditado), pero eso no le da respaldo a una tabla
-de dosificación de terceros.
+Dato útil: con 4 mL una dosis de 12 mg **no cabe** en una U-100; con 2.5 mL sí (75 u).
+
+### Lo que ellos publican sin fuente
+
+- Dosis de **6 y 10 mg** — no están en el ensayo Fase 2 (que usó 1, 4, 8 y 12).
+- **Calendario de titulación**: mínimo 4 semanas por dosis, subir de 2 en 2 mg.
+- **Ciclos de 16 semanas con 8 de lavado** — y en la misma página dicen que ciclar "no es
+  necesario" pero lo recomiendan. Se contradicen.
+- Contraindicaciones, interacciones y efectos adversos redactados como etiqueta de
+  medicamento, sin bibliografía.
+
+### ✅ Qué adoptar (sin romper la regla dura)
+
+1. **Guía breve de preparación y jeringas**, separada de las dosis: diferencia entre 0.3, 0.5
+   y 1 mL, graduaciones, almacenamiento.
+2. **Explicar el criterio del agua**: más agua = menos concentración = más rayitas.
+3. **Mostrar el límite de cada opción**: con 4 mL, 12 mg no cabe en una jeringa.
+4. **Reforzar nuestra fuente de Retatrutida**: enlazar NEJM y ClinicalTrials.gov directo
+   (PMID 37366315, NCT04881760), no sitios secundarios.
+5. **Partir el campo `fuente`** en `fuente_dosis`, `fuente_frecuencia` y `criterio_agua`. Hoy
+   una sola frase parece respaldar las tres cosas y no es cierto.
+6. **Decimales cuando el redondeo cambie la cantidad real** — justo lo que ellos hacen mal.
+
+### ❌ Qué NO adoptar
+
+- El 4.8 mg mientras no se sepa de dónde sale.
+- El 6 y el 10 mg solo porque completan la secuencia visual de 2 en 2.
+- Calendarios de titulación ni cuándo aumentar.
+- Ciclos, lavados ni combinaciones sin evidencia.
+- Presentar un volumen de agua como si fuera parte del protocolo clínico.
+
+### Lo nuestro que hay que corregir
+
+Nuestra regla es mejor que la de ellos, pero la ejecución en Retatrutida todavía no es
+trazabilidad perfecta: el campo `fuente` cita "Ensayo Fase 2" y dos sitios secundarios, sin
+DOI ni enlace directo. Y los niveles 2/4/8 simplifican la literatura — el 2 mg fue dosis
+inicial de ciertos grupos, no un nivel objetivo.
+
+### Compuestos que ellos listan y nosotros no vendemos (19)
+
+Los cuatro con mercado real: **MK-677, Orforglipron, Tesofensine y Methylene Blue.**
+El resto son mezclas propias de ellos (GLOW Tropic, Mito Blend, Super Tropic, LIPO-B,
+LIPO-Mino-Mix, LIPO Shredder, Illumi-neuro, FLGR242) y bioreguladores (Vilon, Pancragen,
+Prostamax), más Dihexa, BAM-15 y Adipotide.
 
 ---
 
