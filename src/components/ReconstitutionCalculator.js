@@ -534,6 +534,20 @@ const ReconstitutionCalculator = ({ variant = 'full', purchased = [], onTrack, s
             </div>
           </div>
 
+          {/* La jeringa manda sobre las RAYITAS de toda la cuadrícula, así que
+              se elige aquí arriba y no al final. Estaba hasta abajo, después de
+              la dosis: el cliente leía rayitas calculadas con una jeringa que
+              quizá no era la suya. (Christian, 2026-07-26) */}
+          <div>
+            <Label className="text-sm mb-1.5 block">{t('calc.syringe')}</Label>
+            <Select value={syringe.id} onValueChange={(id) => setSyringe(SYRINGES.find((s) => s.id === id))}>
+              <SelectTrigger data-testid="calc-syringe"><SelectValue /></SelectTrigger>
+              <SelectContent>
+                {SYRINGES.map((s) => <SelectItem key={s.id} value={s.id}>{s.label}</SelectItem>)}
+              </SelectContent>
+            </Select>
+          </div>
+
           {/* Agua: solo en modo "ya sé mi agua" */}
           {mode === 'known' && (
             <div>
@@ -590,16 +604,6 @@ const ReconstitutionCalculator = ({ variant = 'full', purchased = [], onTrack, s
               </p>
             )}
             {full && hasRef && <p className="text-[11px] text-muted-foreground mt-1.5">{t('calc.refNote')}</p>}
-          </div>
-
-          <div>
-            <Label className="text-sm mb-1.5 block">{t('calc.syringe')}</Label>
-            <Select value={syringe.id} onValueChange={(id) => setSyringe(SYRINGES.find((s) => s.id === id))}>
-              <SelectTrigger data-testid="calc-syringe"><SelectValue /></SelectTrigger>
-              <SelectContent>
-                {SYRINGES.map((s) => <SelectItem key={s.id} value={s.id}>{s.label}</SelectItem>)}
-              </SelectContent>
-            </Select>
           </div>
 
           {/* Registrar seguimiento de consumo (solo área de clientes) */}
