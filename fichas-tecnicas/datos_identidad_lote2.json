@@ -1,0 +1,1858 @@
+{
+  "thymosin-alpha-1": {
+    "nombre": "Thymosin Alpha-1",
+    "nombre_quimico": "(4S)-4-[[(2S)-2-[[(2S)-2-[[(2S)-2-[[(2S)-2-[[(2S)-2-[[(2S)-2-[[(2S)-2-[[(2S)-2-[[(2S)-2-[[(2S)-2-[[(2S)-2-[[(2S)-2-[[(2S)-2-[[(2S,3R)-2-[[(2S,3R)-2-[[(2S,3S)-2-[[(2S)-2-[[(2S)-2-[[(2S)-2-[[(2S,3R)-2-[[(2S)-2-[[(2S)-2-[[(2S)-2-[[(2S)-2-[[(2S)-2-[[(2S)-2-acetamido-3-hydroxypropanoyl]amino]-3-carboxypropanoyl]amino]propanoyl]amino]propanoyl]amino]-3-methylbutanoyl]amino]-3-carboxypropanoyl]amino]-3-hydroxybutanoyl]amino]-3-hydroxypropanoyl]amino]-3-hydroxypropanoyl]amino]-4-carboxybutanoyl]amino]-3-methylpentanoyl]amino]-3-hydroxybutanoyl]amino]-3-hydroxybutanoyl]amino]-6-aminohexanoyl]amino]-3-carboxypropanoyl]amino]-4-methylpentanoyl]amino]-6-aminohexanoyl]amino]-4-carboxybutanoyl]amino]-6-aminohexanoyl]amino]-6-aminohexanoyl]amino]-4-carboxybutanoyl]amino]-3-methylbutanoyl]amino]-3-methylbutanoyl]amino]-4-carboxybutanoyl]amino]-4-carboxybutanoyl]amino]propanoyl]amino]-5-[[(1S)-3-amino-1-carboxy-3-oxopropyl]amino]-5-oxopentanoic acid",
+    "sinonimos": [
+      "thymalfasin"
+    ],
+    "cas_complejo": "62304-98-7",
+    "cas_peptido_libre": null,
+    "formula": "C129H215N33O55",
+    "peso_molecular": "3108.3 g/mol",
+    "formula_peptido_libre": null,
+    "peso_peptido_libre": null,
+    "secuencia": "Ac-SDAAVDTSSEITTKDLKEKKEVVEEAEN",
+    "residuos": 28,
+    "apariencia": null,
+    "solubilidad": null,
+    "categoria": "Péptido o peptidomimético",
+    "etiqueta_forma_libre": null,
+    "nota_nomenclatura": null,
+    "fuentes": {
+      "nombre_quimico": "PubChem CID 16130571",
+      "cas_complejo": "PubChem CID 16130571",
+      "formula": "PubChem CID 16130571",
+      "peso_molecular": "PubChem CID 16130571",
+      "secuencia": "PubChem CID 16130571; timosina alfa-1 (thymalfasin)"
+    }
+  },
+  "ahk-cu": {
+    "nombre": "AHK-Cu",
+    "nombre_quimico": "copper;(2S)-6-amino-2-[[(2S)-2-[(2S)-2-azanidylpropanoyl]azanidyl-3-(1H-imidazol-4-yl)propanoyl]amino]hexanoate;hydrochloride",
+    "sinonimos": [
+      "AHK-Cu"
+    ],
+    "cas_complejo": "682809-81-0",
+    "cas_peptido_libre": null,
+    "formula": "C15H24ClCuN6O4-",
+    "peso_molecular": "451.39 g/mol",
+    "formula_peptido_libre": null,
+    "peso_peptido_libre": null,
+    "secuencia": "Ala-His-Lys (AHK), complejo de cobre(II)",
+    "residuos": 3,
+    "apariencia": null,
+    "solubilidad": null,
+    "categoria": "Péptido o peptidomimético",
+    "etiqueta_forma_libre": null,
+    "nota_nomenclatura": null,
+    "fuentes": {
+      "nombre_quimico": "PubChem CID 168431292",
+      "cas_complejo": "PubChem CID 168431292",
+      "formula": "PubChem CID 168431292",
+      "peso_molecular": "PubChem CID 168431292",
+      "secuencia": "PubChem CID 168431292"
+    }
+  },
+  "matrixyl": {
+    "nombre": "Matrixyl",
+    "nombre_quimico": "(2S)-2-[[(2S)-6-amino-2-[[(2S,3R)-2-[[(2S,3R)-2-[[(2S)-6-amino-2-(hexadecanoylamino)hexanoyl]amino]-3-hydroxybutanoyl]amino]-3-hydroxybutanoyl]amino]hexanoyl]amino]-3-hydroxypropanoic acid",
+    "sinonimos": [
+      "palmitoyl pentapeptide-4"
+    ],
+    "cas_complejo": "214047-00-4",
+    "cas_peptido_libre": null,
+    "formula": "C39H75N7O10",
+    "peso_molecular": "802.1 g/mol",
+    "formula_peptido_libre": null,
+    "peso_peptido_libre": null,
+    "secuencia": "Pal-Lys-Thr-Thr-Lys-Ser-OH (Pal-KTTKS)",
+    "residuos": 5,
+    "apariencia": null,
+    "solubilidad": null,
+    "categoria": "Péptido o peptidomimético",
+    "etiqueta_forma_libre": null,
+    "nota_nomenclatura": null,
+    "fuentes": {
+      "nombre_quimico": "PubChem CID 9897237",
+      "cas_complejo": "PubChem CID 9897237",
+      "formula": "PubChem CID 9897237",
+      "peso_molecular": "PubChem CID 9897237",
+      "secuencia": "PubChem CID 9897237"
+    }
+  },
+  "snap-8": {
+    "nombre": "SNAP-8",
+    "nombre_quimico": "(4S)-4-acetamido-5-[[(2S)-1-[[(2S)-1-[[(2S)-5-amino-1-[[(2S)-1-[[(2S)-1-[[(2S)-1-[[(2S)-1-amino-3-carboxy-1-oxopropan-2-yl]amino]-1-oxopropan-2-yl]amino]-5-(diaminomethylideneamino)-1-oxopentan-2-yl]amino]-5-(diaminomethylideneamino)-1-oxopentan-2-yl]amino]-1,5-dioxopentan-2-yl]amino]-4-methylsulfanyl-1-oxobutan-2-yl]amino]-4-carboxy-1-oxobutan-2-yl]amino]-5-oxopentanoic acid",
+    "sinonimos": [
+      "acetyl octapeptide-3"
+    ],
+    "cas_complejo": "868844-74-0",
+    "cas_peptido_libre": null,
+    "formula": "C41H70N16O16S",
+    "peso_molecular": "1075.2 g/mol",
+    "formula_peptido_libre": null,
+    "peso_peptido_libre": null,
+    "secuencia": "Ac-Glu-Glu-Met-Gln-Arg-Arg-Ala-Asp-NH2",
+    "residuos": 8,
+    "apariencia": null,
+    "solubilidad": null,
+    "categoria": "Péptido o peptidomimético",
+    "etiqueta_forma_libre": null,
+    "nota_nomenclatura": null,
+    "fuentes": {
+      "nombre_quimico": "PubChem CID 76283482",
+      "cas_complejo": "PubChem CID 76283482",
+      "formula": "PubChem CID 76283482",
+      "peso_molecular": "PubChem CID 76283482",
+      "secuencia": "PubChem CID 76283482"
+    }
+  },
+  "ghrp-2-acetate": {
+    "nombre": "GHRP-2 Acetate",
+    "nombre_quimico": "(2S)-6-amino-2-[[(2R)-2-[[(2S)-2-[[(2S)-2-[[(2R)-2-[[(2R)-2-aminopropanoyl]amino]-3-naphthalen-2-ylpropanoyl]amino]propanoyl]amino]-3-(1H-indol-3-yl)propanoyl]amino]-3-phenylpropanoyl]amino]hexanamide",
+    "sinonimos": [
+      "GHRP-2"
+    ],
+    "cas_complejo": "158861-67-7",
+    "cas_peptido_libre": null,
+    "formula": "C45H55N9O6",
+    "peso_molecular": "818.0 g/mol",
+    "formula_peptido_libre": null,
+    "peso_peptido_libre": null,
+    "secuencia": "D-Ala-D-2-Nal-Ala-Trp-D-Phe-Lys-NH2",
+    "residuos": 6,
+    "apariencia": null,
+    "solubilidad": null,
+    "categoria": "Péptido o peptidomimético",
+    "etiqueta_forma_libre": null,
+    "nota_nomenclatura": null,
+    "fuentes": {
+      "nombre_quimico": "PubChem CID 6918245",
+      "cas_complejo": "PubChem CID 6918245",
+      "formula": "PubChem CID 6918245",
+      "peso_molecular": "PubChem CID 6918245",
+      "secuencia": "PubChem CID 6918245"
+    }
+  },
+  "ghrp-6-acetate": {
+    "nombre": "GHRP-6 Acetate",
+    "nombre_quimico": "6-amino-2-[[2-[[2-[2-[[2-[[2-amino-3-(1H-imidazol-5-yl)propanoyl]amino]-3-(1H-indol-3-yl)propanoyl]amino]propanoylamino]-3-(1H-indol-3-yl)propanoyl]amino]-3-phenylpropanoyl]amino]hexanamide",
+    "sinonimos": [
+      "GHRP-6"
+    ],
+    "cas_complejo": "87616-84-0",
+    "cas_peptido_libre": "87616-84-0",
+    "formula": "C46H56N12O6",
+    "peso_molecular": "873.0 g/mol",
+    "formula_peptido_libre": null,
+    "peso_peptido_libre": null,
+    "secuencia": "His-D-Trp-Ala-Trp-D-Phe-Lys-NH2",
+    "residuos": 6,
+    "apariencia": null,
+    "solubilidad": null,
+    "categoria": "Péptido o peptidomimético",
+    "etiqueta_forma_libre": null,
+    "nota_nomenclatura": "PubChem representa el péptido libre aunque el nombre comercial diga acetato; no se asignó fórmula de una sal de acetato no especificada.",
+    "fuentes": {
+      "nombre_quimico": "PubChem CID 4345065",
+      "formula": "PubChem CID 4345065",
+      "peso_molecular": "PubChem CID 4345065",
+      "secuencia": "PubChem CID 4345065",
+      "cas_complejo": "PubChem CID 4345065, depositor CAS Common Chemistry"
+    }
+  },
+  "hexarelin-acetate": {
+    "nombre": "Hexarelin Acetate",
+    "nombre_quimico": "(2S)-6-amino-2-[[(2R)-2-[[(2S)-2-[[(2S)-2-[[(2R)-2-[[(2S)-2-amino-3-(1H-imidazol-5-yl)propanoyl]amino]-3-(2-methyl-1H-indol-3-yl)propanoyl]amino]propanoyl]amino]-3-(1H-indol-3-yl)propanoyl]amino]-3-phenylpropanoyl]amino]hexanamide",
+    "sinonimos": [
+      "hexarelin"
+    ],
+    "cas_complejo": "140703-51-1",
+    "cas_peptido_libre": null,
+    "formula": "C47H58N12O6",
+    "peso_molecular": "887.0 g/mol",
+    "formula_peptido_libre": null,
+    "peso_peptido_libre": null,
+    "secuencia": "His-D-2-MeTrp-Ala-Trp-D-Phe-Lys-NH2",
+    "residuos": 6,
+    "apariencia": null,
+    "solubilidad": null,
+    "categoria": "Péptido o peptidomimético",
+    "etiqueta_forma_libre": null,
+    "nota_nomenclatura": null,
+    "fuentes": {
+      "nombre_quimico": "PubChem CID 6918297",
+      "cas_complejo": "PubChem CID 6918297",
+      "formula": "PubChem CID 6918297",
+      "peso_molecular": "PubChem CID 6918297",
+      "secuencia": "PubChem CID 6918297"
+    }
+  },
+  "hgh-fragment-176-191": {
+    "nombre": "HGH Fragment 176-191",
+    "nombre_quimico": "acetic acid;(2S)-2-[[2-[[(4R,7S,13S,16S,19S,22S,25R)-25-[[(2S)-5-amino-2-[[(2S)-2-[[(2S,3S)-2-[[(2S)-2-[[(2S)-2-[[(2S)-2-amino-3-phenylpropanoyl]amino]-4-methylpentanoyl]amino]-5-carbamimidamidopentanoyl]amino]-3-methylpentanoyl]amino]-3-methylbutanoyl]amino]-5-oxopentanoyl]amino]-22-(3-carbamimidamidopropyl)-13-(2-carboxyethyl)-7,19-bis(hydroxymethyl)-6,9,12,15,18,21,24-heptaoxo-16-propan-2-yl-1,2-dithia-5,8,11,14,17,20,23-heptazacyclohexacosane-4-carbonyl]amino]acetyl]amino]-3-phenylpropanoic acid",
+    "sinonimos": [
+      "HGH fragment 176-191"
+    ],
+    "cas_complejo": null,
+    "cas_peptido_libre": "66004-57-7",
+    "formula": "C80H127N23O24S2",
+    "peso_molecular": "1859.1 g/mol",
+    "formula_peptido_libre": "C78H123N23O22S2",
+    "peso_peptido_libre": "1799.1 g/mol",
+    "secuencia": "Phe-Leu-Arg-Ile-Val-Gln-Cys-Arg-Ser-Val-Glu-Gly-Ser-Cys-Gly-Phe; Cys7-Cys14 disulfuro",
+    "residuos": 16,
+    "apariencia": null,
+    "solubilidad": null,
+    "categoria": "Péptido o peptidomimético",
+    "etiqueta_forma_libre": null,
+    "nota_nomenclatura": "1859.1 g/mol es el complejo con ácido acético de PubChem CID 172966176. El fragmento nativo libre comienza con Phe y pesa 1799.1 g/mol. El valor ~1817 corresponde a otra variante, AOD-9604, que comienza con Tyr (CID 71300630; 1815.1 g/mol con disulfuro), y no al fragmento nativo.",
+    "fuentes": {
+      "nombre_quimico": "PubChem CID 172966176",
+      "formula": "PubChem CID 172966176",
+      "peso_molecular": "PubChem CID 172966176",
+      "secuencia": "PubChem CID 172966176 y CID 16131230; secuencia de somatotropina humana UniProt P01241",
+      "cas_peptido_libre": "PubChem CID 16131230",
+      "formula_peptido_libre": "PubChem CID 16131230",
+      "peso_peptido_libre": "PubChem CID 16131230"
+    }
+  },
+  "ipamorelin": {
+    "nombre": "Ipamorelin",
+    "nombre_quimico": "(2S)-6-amino-2-[[(2R)-2-[[(2R)-2-[[(2S)-2-[(2-amino-2-methylpropanoyl)amino]-3-(1H-imidazol-5-yl)propanoyl]amino]-3-naphthalen-2-ylpropanoyl]amino]-3-phenylpropanoyl]amino]hexanamide",
+    "sinonimos": [
+      "Ipamorelin"
+    ],
+    "cas_complejo": "170851-70-4",
+    "cas_peptido_libre": null,
+    "formula": "C38H49N9O5",
+    "peso_molecular": "711.9 g/mol",
+    "formula_peptido_libre": null,
+    "peso_peptido_libre": null,
+    "secuencia": "Aib-His-D-2-Nal-D-Phe-Lys-NH2",
+    "residuos": 5,
+    "apariencia": null,
+    "solubilidad": null,
+    "categoria": "Péptido o peptidomimético",
+    "etiqueta_forma_libre": null,
+    "nota_nomenclatura": null,
+    "fuentes": {
+      "nombre_quimico": "PubChem CID 9831659",
+      "cas_complejo": "PubChem CID 9831659",
+      "formula": "PubChem CID 9831659",
+      "peso_molecular": "PubChem CID 9831659",
+      "secuencia": "PubChem CID 9831659"
+    }
+  },
+  "sermorelina": {
+    "nombre": "Sermorelina",
+    "nombre_quimico": "(3S)-4-[[(2S)-1-[[(2S,3S)-1-[[(2S)-1-[[(2S,3R)-1-[[(2S)-4-amino-1-[[(2S)-1-[[(2S)-1-[[(2S)-1-[[(2S)-6-amino-1-[[(2S)-1-[[(2S)-1-[[2-[[(2S)-5-amino-1-[[(2S)-1-[[(2S)-1-[[(2S)-1-[[(2S)-1-[[(2S)-6-amino-1-[[(2S)-1-[[(2S)-1-[[(2S)-5-amino-1-[[(2S)-1-[[(2S,3S)-1-[[(2S)-1-[[(2S)-1-[[(2S)-1-amino-5-carbamimidamido-1-oxopentan-2-yl]amino]-3-hydroxy-1-oxopropan-2-yl]amino]-4-methylsulfanyl-1-oxobutan-2-yl]amino]-3-methyl-1-oxopentan-2-yl]amino]-3-carboxy-1-oxopropan-2-yl]amino]-1,5-dioxopentan-2-yl]amino]-4-methyl-1-oxopentan-2-yl]amino]-4-methyl-1-oxopentan-2-yl]amino]-1-oxohexan-2-yl]amino]-5-carbamimidamido-1-oxopentan-2-yl]amino]-1-oxopropan-2-yl]amino]-3-hydroxy-1-oxopropan-2-yl]amino]-4-methyl-1-oxopentan-2-yl]amino]-1,5-dioxopentan-2-yl]amino]-2-oxoethyl]amino]-4-methyl-1-oxopentan-2-yl]amino]-3-methyl-1-oxobutan-2-yl]amino]-1-oxohexan-2-yl]amino]-5-carbamimidamido-1-oxopentan-2-yl]amino]-3-(4-hydroxyphenyl)-1-oxopropan-2-yl]amino]-3-hydroxy-1-oxopropan-2-yl]amino]-1,4-dioxobutan-2-yl]amino]-3-hydroxy-1-oxobutan-2-yl]amino]-1-oxo-3-phenylpropan-2-yl]amino]-3-methyl-1-oxopentan-2-yl]amino]-1-oxopropan-2-yl]amino]-3-[[(2S)-2-[[(2S)-2-amino-3-(4-hydroxyphenyl)propanoyl]amino]propanoyl]amino]-4-oxobutanoic acid",
+    "sinonimos": [
+      "sermorelin"
+    ],
+    "cas_complejo": "86168-78-7",
+    "cas_peptido_libre": null,
+    "formula": "C149H246N44O42S",
+    "peso_molecular": "3357.9 g/mol",
+    "formula_peptido_libre": null,
+    "peso_peptido_libre": null,
+    "secuencia": "YADAIFTNSYRKVLGQLSARKLLQDIMSR-NH2",
+    "residuos": 29,
+    "apariencia": null,
+    "solubilidad": null,
+    "categoria": "Péptido o peptidomimético",
+    "etiqueta_forma_libre": null,
+    "nota_nomenclatura": null,
+    "fuentes": {
+      "nombre_quimico": "PubChem CID 16132413",
+      "cas_complejo": "PubChem CID 16132413",
+      "formula": "PubChem CID 16132413",
+      "peso_molecular": "PubChem CID 16132413",
+      "secuencia": "PubChem CID 16132413"
+    }
+  },
+  "epithalon": {
+    "nombre": "Epithalon",
+    "nombre_quimico": "(4S)-4-[[(2S)-2-aminopropanoyl]amino]-5-[[(2S)-3-carboxy-1-(carboxymethylamino)-1-oxopropan-2-yl]amino]-5-oxopentanoic acid",
+    "sinonimos": [
+      "epithalon"
+    ],
+    "cas_complejo": "307297-39-8",
+    "cas_peptido_libre": null,
+    "formula": "C14H22N4O9",
+    "peso_molecular": "390.35 g/mol",
+    "formula_peptido_libre": null,
+    "peso_peptido_libre": null,
+    "secuencia": "Ala-Glu-Asp-Gly (AEDG)",
+    "residuos": 4,
+    "apariencia": null,
+    "solubilidad": null,
+    "categoria": "Péptido o peptidomimético",
+    "etiqueta_forma_libre": null,
+    "nota_nomenclatura": null,
+    "fuentes": {
+      "nombre_quimico": "PubChem CID 219042",
+      "cas_complejo": "PubChem CID 219042",
+      "formula": "PubChem CID 219042",
+      "peso_molecular": "PubChem CID 219042",
+      "secuencia": "PubChem CID 219042"
+    }
+  },
+  "foxo4": {
+    "nombre": "FOXO4",
+    "nombre_quimico": "(4R)-5-[[(2R)-1-[[(2R)-1-[[(2R)-1-[[(2R)-5-amino-1-[[(2R)-4-amino-1-[[2-[[(2R)-1-[[(2R)-1-[[(2R)-4-amino-1-[[(2R)-1-[[(2R)-1-[[(2R)-1-[[2-[[2-[[(2R)-6-amino-1-[[(2R)-1-[(2R)-2-[(2R)-2-[(2R)-2-[[(2R)-1-[[(2R)-1-[[(2R)-1-[[(2R)-5-amino-1-[[(2R)-1-[[(2R)-1-[[(2R)-6-amino-1-[[(2R)-6-amino-1-[[(2R)-5-carbamimidamido-1-(carboxymethylamino)-1-oxopentan-2-yl]amino]-1-oxohexan-2-yl]amino]-1-oxohexan-2-yl]amino]-5-carbamimidamido-1-oxopentan-2-yl]amino]-5-carbamimidamido-1-oxopentan-2-yl]amino]-1,5-dioxopentan-2-yl]amino]-5-carbamimidamido-1-oxopentan-2-yl]amino]-5-carbamimidamido-1-oxopentan-2-yl]amino]-5-carbamimidamido-1-oxopentan-2-yl]carbamoyl]pyrrolidine-1-carbonyl]pyrrolidine-1-carbonyl]pyrrolidin-1-yl]-5-carbamimidamido-1-oxopentan-2-yl]amino]-1-oxohexan-2-yl]amino]-2-oxoethyl]amino]-2-oxoethyl]amino]-3-hydroxy-1-oxopropan-2-yl]amino]-5-carbamimidamido-1-oxopentan-2-yl]amino]-5-carbamimidamido-1-oxopentan-2-yl]amino]-1,4-dioxobutan-2-yl]amino]-1-oxopropan-2-yl]amino]-3-(1H-indol-3-yl)-1-oxopropan-2-yl]amino]-2-oxoethyl]amino]-1,4-dioxobutan-2-yl]amino]-1,5-dioxopentan-2-yl]amino]-3-hydroxy-1-oxopropan-2-yl]amino]-3-(4-hydroxyphenyl)-1-oxopropan-2-yl]amino]-1-oxopropan-2-yl]amino]-4-[[(2R)-2-[[(2R,3R)-2-[[(2R)-2-[[(2R)-5-amino-2-[[(2R)-2-[[(2R,3R)-2-[[(2R)-2-[[(2R)-2-[[(2R)-2-[[(2R)-1-[(2R)-2-[[(2R)-6-amino-2-[[(2R)-2-[[(2R)-2-[[(2R,3S)-2-[[(2R)-2-amino-4-methylpentanoyl]amino]-3-hydroxybutanoyl]amino]-4-methylpentanoyl]amino]-5-carbamimidamidopentanoyl]amino]hexanoyl]amino]-4-carboxybutanoyl]pyrrolidine-2-carbonyl]amino]propanoyl]amino]-3-hydroxypropanoyl]amino]-4-carboxybutanoyl]amino]-3-methylpentanoyl]amino]propanoyl]amino]-5-oxopentanoyl]amino]-3-hydroxypropanoyl]amino]-3-methylpentanoyl]amino]-4-methylpentanoyl]amino]-5-oxopentanoic acid",
+    "sinonimos": [
+      "FOXO4-DRI"
+    ],
+    "cas_complejo": "2460055-10-9",
+    "cas_peptido_libre": null,
+    "formula": "C228H388N86O64",
+    "peso_molecular": "5358 g/mol",
+    "formula_peptido_libre": null,
+    "peso_peptido_libre": null,
+    "secuencia": null,
+    "residuos": null,
+    "apariencia": null,
+    "solubilidad": null,
+    "categoria": "Péptido o peptidomimético",
+    "etiqueta_forma_libre": null,
+    "nota_nomenclatura": "La identidad molecular está verificada, pero la secuencia se deja en null porque no se pudo transcribir con seguridad desde una fuente permitida.",
+    "fuentes": {
+      "nombre_quimico": "PubChem CID 167312269",
+      "cas_complejo": "PubChem CID 167312269",
+      "formula": "PubChem CID 167312269",
+      "peso_molecular": "PubChem CID 167312269",
+      "secuencia": "PubChem confirma la sustancia, pero la secuencia estereoquímica completa no se transcribió sin una fuente primaria inequívoca"
+    }
+  },
+  "glutation": {
+    "nombre": "Glutatión",
+    "nombre_quimico": "(2S)-2-amino-5-[[(2R)-1-(carboxymethylamino)-1-oxo-3-sulfanylpropan-2-yl]amino]-5-oxopentanoic acid",
+    "sinonimos": [
+      "glutathione"
+    ],
+    "cas_complejo": "70-18-8",
+    "cas_peptido_libre": null,
+    "formula": "C10H17N3O6S",
+    "peso_molecular": "307.33 g/mol",
+    "formula_peptido_libre": null,
+    "peso_peptido_libre": null,
+    "secuencia": null,
+    "residuos": null,
+    "apariencia": null,
+    "solubilidad": null,
+    "categoria": "Molécula pequeña; no tiene secuencia peptídica",
+    "etiqueta_forma_libre": null,
+    "nota_nomenclatura": "Por regla del proyecto se trata como molécula pequeña; es γ-L-glutamil-L-cisteinilglicina y no una cadena peptídica alfa convencional.",
+    "fuentes": {
+      "nombre_quimico": "PubChem CID 124886",
+      "cas_complejo": "PubChem CID 124886",
+      "formula": "PubChem CID 124886",
+      "peso_molecular": "PubChem CID 124886"
+    }
+  },
+  "humanin": {
+    "nombre": "Humanin",
+    "nombre_quimico": "(4S)-5-[[(2S,3S)-1-[[(2S)-1-[[(2S)-1-[(2S)-2-[[(2S)-1-[[(2S)-6-amino-1-[[(2S)-5-carbamimidamido-1-[[(2S)-5-carbamimidamido-1-[[(1S)-1-carboxyethyl]amino]-1-oxopentan-2-yl]amino]-1-oxopentan-2-yl]amino]-1-oxohexan-2-yl]amino]-3-methyl-1-oxobutan-2-yl]carbamoyl]pyrrolidin-1-yl]-4-methyl-1-oxopentan-2-yl]amino]-3-carboxy-1-oxopropan-2-yl]amino]-3-methyl-1-oxopentan-2-yl]amino]-4-[[(2S)-2-[[(2S,3R)-2-[[(2S)-2-[[(2S)-2-[[(2S)-2-[[(2S)-2-[[(2R)-2-[[(2S)-2-[[(2S)-2-[[2-[[(2S)-2-[[(2S)-1-[(2S)-2-[[(2S)-2-amino-4-methylsulfanylbutanoyl]amino]propanoyl]pyrrolidine-2-carbonyl]amino]-5-carbamimidamidopentanoyl]amino]acetyl]amino]-3-phenylpropanoyl]amino]-3-hydroxypropanoyl]amino]-3-sulfanylpropanoyl]amino]-4-methylpentanoyl]amino]-4-methylpentanoyl]amino]-4-methylpentanoyl]amino]-4-methylpentanoyl]amino]-3-hydroxybutanoyl]amino]-3-hydroxypropanoyl]amino]-5-oxopentanoic acid",
+    "sinonimos": [
+      "humanin"
+    ],
+    "cas_complejo": "330936-69-1",
+    "cas_peptido_libre": null,
+    "formula": "C119H204N34O32S2",
+    "peso_molecular": "2687.2 g/mol",
+    "formula_peptido_libre": null,
+    "peso_peptido_libre": null,
+    "secuencia": "MAPRGFSCLLLLTSEIDLPVKRRA",
+    "residuos": 24,
+    "apariencia": null,
+    "solubilidad": null,
+    "categoria": "Péptido o peptidomimético",
+    "etiqueta_forma_libre": null,
+    "nota_nomenclatura": null,
+    "fuentes": {
+      "nombre_quimico": "PubChem CID 16131438",
+      "cas_complejo": "PubChem CID 16131438",
+      "formula": "PubChem CID 16131438",
+      "peso_molecular": "PubChem CID 16131438",
+      "secuencia": "PubChem CID 16131438; artículo primario de descubrimiento de Humanin"
+    }
+  },
+  "nad-plus": {
+    "nombre": "NAD+",
+    "nombre_quimico": "[[(2R,3S,4R,5R)-5-(6-aminopurin-9-yl)-3,4-dihydroxyoxolan-2-yl]methoxy-hydroxyphosphoryl] [(2R,3S,4R,5R)-5-(3-carbamoylpyridin-1-ium-1-yl)-3,4-dihydroxyoxolan-2-yl]methyl phosphate",
+    "sinonimos": [
+      "NAD+"
+    ],
+    "cas_complejo": "53-84-9",
+    "cas_peptido_libre": null,
+    "formula": "C21H27N7O14P2",
+    "peso_molecular": "663.4 g/mol",
+    "formula_peptido_libre": null,
+    "peso_peptido_libre": null,
+    "secuencia": null,
+    "residuos": null,
+    "apariencia": null,
+    "solubilidad": null,
+    "categoria": "Molécula pequeña; no tiene secuencia peptídica",
+    "etiqueta_forma_libre": null,
+    "nota_nomenclatura": null,
+    "fuentes": {
+      "nombre_quimico": "PubChem CID 5892",
+      "cas_complejo": "PubChem CID 5892",
+      "formula": "PubChem CID 5892",
+      "peso_molecular": "PubChem CID 5892"
+    }
+  },
+  "ss-31": {
+    "nombre": "SS-31",
+    "nombre_quimico": "(2S)-6-amino-2-[[(2S)-2-[[(2R)-2-amino-5-(diaminomethylideneamino)pentanoyl]amino]-3-(4-hydroxy-2,6-dimethylphenyl)propanoyl]amino]-N-[(2S)-1-amino-1-oxo-3-phenylpropan-2-yl]hexanamide",
+    "sinonimos": [
+      "elamipretide"
+    ],
+    "cas_complejo": "736992-21-5",
+    "cas_peptido_libre": null,
+    "formula": "C32H49N9O5",
+    "peso_molecular": "639.8 g/mol",
+    "formula_peptido_libre": null,
+    "peso_peptido_libre": null,
+    "secuencia": "D-Arg-2,6-dimetil-Tyr-Lys-Phe-NH2",
+    "residuos": 4,
+    "apariencia": null,
+    "solubilidad": null,
+    "categoria": "Péptido o peptidomimético",
+    "etiqueta_forma_libre": null,
+    "nota_nomenclatura": null,
+    "fuentes": {
+      "nombre_quimico": "PubChem CID 11764719",
+      "cas_complejo": "PubChem CID 11764719",
+      "formula": "PubChem CID 11764719",
+      "peso_molecular": "PubChem CID 11764719",
+      "secuencia": "PubChem CID 11764719"
+    }
+  },
+  "dsip": {
+    "nombre": "DSIP",
+    "nombre_quimico": "(2S)-2-[[2-[[(2S)-2-[[(2S)-2-[[(2S)-2-[[2-[[2-[[(2S)-2-[[(2S)-2-amino-3-(1H-indol-3-yl)propanoyl]amino]propanoyl]amino]acetyl]amino]acetyl]amino]-3-carboxypropanoyl]amino]propanoyl]amino]-3-hydroxypropanoyl]amino]acetyl]amino]pentanedioic acid",
+    "sinonimos": [
+      "delta sleep-inducing peptide"
+    ],
+    "cas_complejo": "62568-57-4",
+    "cas_peptido_libre": null,
+    "formula": "C35H48N10O15",
+    "peso_molecular": "848.8 g/mol",
+    "formula_peptido_libre": null,
+    "peso_peptido_libre": null,
+    "secuencia": "Trp-Ala-Gly-Gly-Asp-Ala-Ser-Gly-Glu",
+    "residuos": 9,
+    "apariencia": null,
+    "solubilidad": null,
+    "categoria": "Péptido o peptidomimético",
+    "etiqueta_forma_libre": null,
+    "nota_nomenclatura": null,
+    "fuentes": {
+      "nombre_quimico": "PubChem CID 68816",
+      "cas_complejo": "PubChem CID 68816",
+      "formula": "PubChem CID 68816",
+      "peso_molecular": "PubChem CID 68816",
+      "secuencia": "PubChem CID 68816"
+    }
+  },
+  "melatonina": {
+    "nombre": "Melatonina",
+    "nombre_quimico": "N-[2-(5-methoxy-1H-indol-3-yl)ethyl]acetamide",
+    "sinonimos": [
+      "melatonin"
+    ],
+    "cas_complejo": "73-31-4",
+    "cas_peptido_libre": null,
+    "formula": "C13H16N2O2",
+    "peso_molecular": "232.28 g/mol",
+    "formula_peptido_libre": null,
+    "peso_peptido_libre": null,
+    "secuencia": null,
+    "residuos": null,
+    "apariencia": null,
+    "solubilidad": null,
+    "categoria": "Molécula pequeña; no tiene secuencia peptídica",
+    "etiqueta_forma_libre": null,
+    "nota_nomenclatura": null,
+    "fuentes": {
+      "nombre_quimico": "PubChem CID 896",
+      "cas_complejo": "PubChem CID 896",
+      "formula": "PubChem CID 896",
+      "peso_molecular": "PubChem CID 896"
+    }
+  },
+  "orexin-a": {
+    "nombre": "Orexin A",
+    "nombre_quimico": "(4S)-5-[[(2S)-1-[[(2S)-1-[[(2S)-1-[[2-[[(2S)-1-[[2-[[(2S)-4-amino-1-[[(2S)-1-[[(2S)-1-[[(2S)-1-[[2-[[(2S,3S)-1-[[(2S)-1-[[(2S,3R)-1-[[(2S)-1-amino-4-methyl-1-oxopentan-2-yl]amino]-3-hydroxy-1-oxobutan-2-yl]amino]-4-methyl-1-oxopentan-2-yl]amino]-3-methyl-1-oxopentan-2-yl]amino]-2-oxoethyl]amino]-1-oxopropan-2-yl]amino]-1-oxopropan-2-yl]amino]-3-(1H-imidazol-5-yl)-1-oxopropan-2-yl]amino]-1,4-dioxobutan-2-yl]amino]-2-oxoethyl]amino]-1-oxopropan-2-yl]amino]-2-oxoethyl]amino]-3-(1H-imidazol-5-yl)-1-oxopropan-2-yl]amino]-4-methyl-1-oxopentan-2-yl]amino]-4-methyl-1-oxopentan-2-yl]amino]-4-[[(2S)-2-[[(2S)-2-[[(2S)-2-[[(1R,4S,7S,10S,13S,16R,21R,24S,31R)-7-(4-aminobutyl)-10-(3-amino-3-oxopropyl)-13-(3-carbamimidamidopropyl)-31-[[(2S)-3-carboxy-2-[[(2S)-1-[(2S)-4-methyl-2-[[(2S)-1-[(2S)-5-oxopyrrolidine-2-carbonyl]pyrrolidine-2-carbonyl]amino]pentanoyl]pyrrolidine-2-carbonyl]amino]propanoyl]amino]-4-[(1R)-1-hydroxyethyl]-24-(hydroxymethyl)-3,6,9,12,15,23,26,32-octaoxo-18,19,28,29-tetrathia-2,5,8,11,14,22,25,33-octazabicyclo[14.10.7]tritriacontane-21-carbonyl]amino]-5-carbamimidamidopentanoyl]amino]-4-methylpentanoyl]amino]-3-(4-hydroxyphenyl)propanoyl]amino]-5-oxopentanoic acid",
+    "sinonimos": [
+      "orexin A"
+    ],
+    "cas_complejo": "205599-75-3",
+    "cas_peptido_libre": null,
+    "formula": "C152H243N47O44S4",
+    "peso_molecular": "3561.1 g/mol",
+    "formula_peptido_libre": null,
+    "peso_peptido_libre": null,
+    "secuencia": "QPLPDCCRQKTCSCRLYELLHGAGNHAAGILTL-NH2; puentes Cys6-Cys12 y Cys7-Cys14; pGlu N-terminal",
+    "residuos": 33,
+    "apariencia": null,
+    "solubilidad": null,
+    "categoria": "Péptido o peptidomimético",
+    "etiqueta_forma_libre": null,
+    "nota_nomenclatura": null,
+    "fuentes": {
+      "nombre_quimico": "PubChem CID 56842143",
+      "cas_complejo": "PubChem CID 56842143",
+      "formula": "PubChem CID 56842143",
+      "peso_molecular": "PubChem CID 56842143",
+      "secuencia": "UniProt O43612 (orexina-A madura)"
+    }
+  },
+  "orexin-b": {
+    "nombre": "Orexin B",
+    "nombre_quimico": "(2S)-2-[[2-[[(2S)-2-[[(2S)-2-[[(2S)-5-amino-2-[[(2S)-2-[[(2S)-2-[[(2S)-2-[[(2S)-5-amino-2-[[(2S)-2-[[(2S)-2-[[2-[[(2S)-4-amino-2-[[(2S)-2-[[(2S)-2-[[(2S)-2-[[2-[[(2S,3S)-2-[[(2S)-2-[[(2S,3R)-2-[[(2S)-2-amino-4-methylsulfanylbutanoyl]amino]-3-hydroxybutanoyl]amino]-4-methylpentanoyl]amino]-3-methylpentanoyl]amino]acetyl]amino]propanoyl]amino]propanoyl]amino]-3-(1H-imidazol-4-yl)propanoyl]amino]-4-oxobutanoyl]amino]acetyl]amino]-3-hydroxypropanoyl]amino]propanoyl]amino]-5-oxopentanoyl]amino]-4-methylpentanoyl]amino]-4-methylpentanoyl]amino]-5-(diaminomethylideneamino)pentanoyl]amino]-5-oxopentanoyl]amino]-4-methylpentanoyl]amino]-5-(diaminomethylideneamino)pentanoyl]amino]acetyl]amino]-N-[(2S)-1-[[2-[(2S)-2-[(2S)-2-[[2-[[(2S)-1-[[(2S)-1-amino-5-(diaminomethylideneamino)-1-oxopentan-2-yl]amino]-3-hydroxy-1-oxopropan-2-yl]amino]-2-oxoethyl]carbamoyl]pyrrolidine-1-carbonyl]pyrrolidin-1-yl]-2-oxoethyl]amino]-4-methyl-1-oxopentan-2-yl]pentanediamide",
+    "sinonimos": [
+      "orexin B"
+    ],
+    "cas_complejo": "205599-76-4",
+    "cas_peptido_libre": null,
+    "formula": "C123H212N44O35S",
+    "peso_molecular": "2899.3 g/mol",
+    "formula_peptido_libre": null,
+    "peso_peptido_libre": null,
+    "secuencia": "RSGPPGLQGRLQRLLQASGNHAAGILTM-NH2",
+    "residuos": 28,
+    "apariencia": null,
+    "solubilidad": null,
+    "categoria": "Péptido o peptidomimético",
+    "etiqueta_forma_libre": null,
+    "nota_nomenclatura": null,
+    "fuentes": {
+      "nombre_quimico": "PubChem CID 44404987",
+      "cas_complejo": "PubChem CID 44404987",
+      "formula": "PubChem CID 44404987",
+      "peso_molecular": "PubChem CID 44404987",
+      "secuencia": "UniProt O43612 (orexina-B madura)"
+    }
+  },
+  "pe-22-28": {
+    "nombre": "PE-22-28",
+    "nombre_quimico": "(2S)-2-[[(2S)-2-[[2-[[(2S)-2-[[(2S)-2-[[(2S)-2-[(2-aminoacetyl)amino]-3-methylbutanoyl]amino]-3-hydroxypropanoyl]amino]-3-(1H-indol-3-yl)propanoyl]amino]acetyl]amino]-4-methylpentanoyl]amino]-5-(diaminomethylideneamino)pentanoic acid",
+    "sinonimos": [
+      "PE 22-28"
+    ],
+    "cas_complejo": "1801959-12-5",
+    "cas_peptido_libre": null,
+    "formula": "C35H55N11O9",
+    "peso_molecular": "773.9 g/mol",
+    "formula_peptido_libre": null,
+    "peso_peptido_libre": null,
+    "secuencia": null,
+    "residuos": null,
+    "apariencia": null,
+    "solubilidad": null,
+    "categoria": "Péptido o peptidomimético",
+    "etiqueta_forma_libre": null,
+    "nota_nomenclatura": "La identidad molecular está verificada, pero la secuencia se deja en null porque no se pudo transcribir con seguridad desde una fuente permitida.",
+    "fuentes": {
+      "nombre_quimico": "PubChem CID 165437303",
+      "cas_complejo": "PubChem CID 165437303",
+      "formula": "PubChem CID 165437303",
+      "peso_molecular": "PubChem CID 165437303",
+      "secuencia": "PubChem CID 165437303 confirma identidad, pero no se localizó en las fuentes permitidas una secuencia textual inequívoca"
+    }
+  },
+  "pnc-27": {
+    "nombre": "PNC-27",
+    "nombre_quimico": "(4S)-5-[[(2S,3R)-1-[[(2S)-1-[[(2S)-1-[[(2S)-1-[[(2S)-1-[[(2S)-1-[[(2S)-6-amino-1-[[(2S)-1-[[(2S)-1-[[(2S)-6-amino-1-[[(2S)-6-amino-1-[[(2S)-1-[[(2S)-6-amino-1-[[(2S)-1-[[(2S)-1-[[(2S)-1-[[(2S)-4-amino-1-[[(2S)-5-amino-1-[[(2S)-1-[[(2S)-1-[[(2S)-1-[[(2S)-6-amino-1-[[(2S)-1-[[(2S)-5-amino-1-[[(2S)-5-carbamimidamido-1-(carboxymethylamino)-1-oxopentan-2-yl]amino]-1,5-dioxopentan-2-yl]amino]-3-methyl-1-oxobutan-2-yl]amino]-1-oxohexan-2-yl]amino]-3-methyl-1-oxobutan-2-yl]amino]-3-(1H-indol-3-yl)-1-oxopropan-2-yl]amino]-1-oxo-3-phenylpropan-2-yl]amino]-1,5-dioxopentan-2-yl]amino]-1,4-dioxobutan-2-yl]amino]-5-carbamimidamido-1-oxopentan-2-yl]amino]-5-carbamimidamido-1-oxopentan-2-yl]amino]-4-methylsulfanyl-1-oxobutan-2-yl]amino]-1-oxohexan-2-yl]amino]-3-(1H-indol-3-yl)-1-oxopropan-2-yl]amino]-1-oxohexan-2-yl]amino]-1-oxohexan-2-yl]amino]-4-methyl-1-oxopentan-2-yl]amino]-4-methyl-1-oxopentan-2-yl]amino]-1-oxohexan-2-yl]amino]-3-(1H-indol-3-yl)-1-oxopropan-2-yl]amino]-4-methyl-1-oxopentan-2-yl]amino]-3-carboxy-1-oxopropan-2-yl]amino]-3-hydroxy-1-oxopropan-2-yl]amino]-1-oxo-3-phenylpropan-2-yl]amino]-3-hydroxy-1-oxobutan-2-yl]amino]-4-[[(2S)-5-amino-2-[[(2S)-3-hydroxy-2-[[(2S)-4-methyl-2-[[(2S)-1-[(2S)-pyrrolidine-2-carbonyl]pyrrolidine-2-carbonyl]amino]pentanoyl]amino]propanoyl]amino]-5-oxopentanoyl]amino]-5-oxopentanoic acid",
+    "sinonimos": [
+      "PNC-27"
+    ],
+    "cas_complejo": "1159861-00-3",
+    "cas_peptido_libre": null,
+    "formula": "C188H293N53O44S",
+    "peso_molecular": "4032 g/mol",
+    "formula_peptido_libre": null,
+    "peso_peptido_libre": null,
+    "secuencia": "PPLSQETFSDLWKLLPENNVLSPLPSQAMDD",
+    "residuos": 32,
+    "apariencia": null,
+    "solubilidad": null,
+    "categoria": "Péptido o peptidomimético",
+    "etiqueta_forma_libre": null,
+    "nota_nomenclatura": null,
+    "fuentes": {
+      "nombre_quimico": "PubChem CID 16201774",
+      "cas_complejo": "PubChem CID 16201774",
+      "formula": "PubChem CID 16201774",
+      "peso_molecular": "PubChem CID 16201774",
+      "secuencia": "Artículo primario de PNC-27; 12 residuos de p53 unidos al dominio penetrante MRP"
+    }
+  },
+  "selank": {
+    "nombre": "Selank",
+    "nombre_quimico": "(2S)-1-[2-[[(2S)-1-[(2S)-2-[[(2S)-1-[(2S)-6-amino-2-[[(2S,3R)-2-amino-3-hydroxybutanoyl]amino]hexanoyl]pyrrolidine-2-carbonyl]amino]-5-(diaminomethylideneamino)pentanoyl]pyrrolidine-2-carbonyl]amino]acetyl]pyrrolidine-2-carboxylic acid",
+    "sinonimos": [
+      "selank"
+    ],
+    "cas_complejo": "129954-34-3",
+    "cas_peptido_libre": null,
+    "formula": "C33H57N11O9",
+    "peso_molecular": "751.9 g/mol",
+    "formula_peptido_libre": null,
+    "peso_peptido_libre": null,
+    "secuencia": "Thr-Lys-Pro-Arg-Pro-Gly-Pro",
+    "residuos": 7,
+    "apariencia": null,
+    "solubilidad": null,
+    "categoria": "Péptido o peptidomimético",
+    "etiqueta_forma_libre": null,
+    "nota_nomenclatura": null,
+    "fuentes": {
+      "nombre_quimico": "PubChem CID 11765600",
+      "cas_complejo": "PubChem CID 11765600",
+      "formula": "PubChem CID 11765600",
+      "peso_molecular": "PubChem CID 11765600",
+      "secuencia": "PubChem CID 11765600"
+    }
+  },
+  "semax": {
+    "nombre": "Semax",
+    "nombre_quimico": "(2S)-1-[2-[[(2S)-1-[(2S)-2-[[(2S)-2-[[(2S)-2-[[(2S)-2-amino-4-methylsulfanylbutanoyl]amino]-4-carboxybutanoyl]amino]-3-(1H-imidazol-5-yl)propanoyl]amino]-3-phenylpropanoyl]pyrrolidine-2-carbonyl]amino]acetyl]pyrrolidine-2-carboxylic acid",
+    "sinonimos": [
+      "semax"
+    ],
+    "cas_complejo": "80714-61-0",
+    "cas_peptido_libre": null,
+    "formula": "C37H51N9O10S",
+    "peso_molecular": "813.9 g/mol",
+    "formula_peptido_libre": null,
+    "peso_peptido_libre": null,
+    "secuencia": "Met-Glu-His-Phe-Pro-Gly-Pro",
+    "residuos": 7,
+    "apariencia": null,
+    "solubilidad": null,
+    "categoria": "Péptido o peptidomimético",
+    "etiqueta_forma_libre": null,
+    "nota_nomenclatura": null,
+    "fuentes": {
+      "nombre_quimico": "PubChem CID 9811102",
+      "cas_complejo": "PubChem CID 9811102",
+      "formula": "PubChem CID 9811102",
+      "peso_molecular": "PubChem CID 9811102",
+      "secuencia": "PubChem CID 9811102"
+    }
+  },
+  "acth-1-39": {
+    "nombre": "ACTH 1-39",
+    "nombre_quimico": "(4S)-4-[[(2S)-2-[[(2S)-2-[[(2S)-2-[[(2S)-2-[[(2S)-2-[[(2S)-2-[[2-[[(2S)-4-amino-2-[[(2S)-1-[(2S)-2-[[(2S)-2-[[(2S)-6-amino-2-[[(2S)-2-[[(2S)-1-[(2S)-2-[[(2S)-2-[[(2S)-6-amino-2-[[(2S)-6-amino-2-[[2-[[(2S)-2-[[(2S)-1-[(2S)-6-amino-2-[[2-[[(2S)-2-[[(2S)-2-[[(2S)-2-[[(2S)-2-[[(2S)-2-[[(2S)-2-[[(2S)-2-[[(2S)-2-[[(2S)-2-amino-3-hydroxypropanoyl]amino]-3-(4-hydroxyphenyl)propanoyl]amino]-3-hydroxypropanoyl]amino]-4-methylsulfanylbutanoyl]amino]-4-carboxybutanoyl]amino]-3-(1H-imidazol-5-yl)propanoyl]amino]-3-phenylpropanoyl]amino]-5-carbamimidamidopentanoyl]amino]-3-(1H-indol-3-yl)propanoyl]amino]acetyl]amino]hexanoyl]pyrrolidine-2-carbonyl]amino]-3-methylbutanoyl]amino]acetyl]amino]hexanoyl]amino]hexanoyl]amino]-5-carbamimidamidopentanoyl]amino]-5-carbamimidamidopentanoyl]pyrrolidine-2-carbonyl]amino]-3-methylbutanoyl]amino]hexanoyl]amino]-3-methylbutanoyl]amino]-3-(4-hydroxyphenyl)propanoyl]pyrrolidine-2-carbonyl]amino]-4-oxobutanoyl]amino]acetyl]amino]propanoyl]amino]-4-carboxybutanoyl]amino]-3-carboxypropanoyl]amino]-4-carboxybutanoyl]amino]-3-hydroxypropanoyl]amino]propanoyl]amino]-5-[[(2S)-1-[[(2S)-1-[(2S)-2-[[(2S)-1-[[(2S)-4-carboxy-1-[[(1S)-1-carboxy-2-phenylethyl]amino]-1-oxobutan-2-yl]amino]-4-methyl-1-oxopentan-2-yl]carbamoyl]pyrrolidin-1-yl]-1-oxo-3-phenylpropan-2-yl]amino]-1-oxopropan-2-yl]amino]-5-oxopentanoic acid",
+    "sinonimos": [
+      "corticotropin"
+    ],
+    "cas_complejo": "9002-60-2",
+    "cas_peptido_libre": null,
+    "formula": "C207H308N56O58S",
+    "peso_molecular": "4541 g/mol",
+    "formula_peptido_libre": null,
+    "peso_peptido_libre": null,
+    "secuencia": "SYSMEHFRWGKPVGKKRRPVKVYPNGAEDESAEAFPLEF",
+    "residuos": 39,
+    "apariencia": null,
+    "solubilidad": null,
+    "categoria": "Péptido o peptidomimético",
+    "etiqueta_forma_libre": null,
+    "nota_nomenclatura": null,
+    "fuentes": {
+      "nombre_quimico": "PubChem CID 16132265",
+      "cas_complejo": "PubChem CID 16132265",
+      "formula": "PubChem CID 16132265",
+      "peso_molecular": "PubChem CID 16132265",
+      "secuencia": "UniProt P01189; PubChem CID 16132265"
+    }
+  },
+  "kisspeptina-10": {
+    "nombre": "Kisspeptina-10",
+    "nombre_quimico": "(2S)-N-[(2S)-1-[[(2S)-4-amino-1-[[(2S)-1-[[(2S)-1-[[2-[[(2S)-1-[[(2S)-1-[[(2S)-1-amino-1-oxo-3-phenylpropan-2-yl]amino]-5-(diaminomethylideneamino)-1-oxopentan-2-yl]amino]-4-methyl-1-oxopentan-2-yl]amino]-2-oxoethyl]amino]-1-oxo-3-phenylpropan-2-yl]amino]-3-hydroxy-1-oxopropan-2-yl]amino]-1,4-dioxobutan-2-yl]amino]-3-(1H-indol-3-yl)-1-oxopropan-2-yl]-2-[[(2S)-2-amino-3-(4-hydroxyphenyl)propanoyl]amino]butanediamide",
+    "sinonimos": [
+      "kisspeptin-10"
+    ],
+    "cas_complejo": "374675-21-5",
+    "cas_peptido_libre": null,
+    "formula": "C63H83N17O14",
+    "peso_molecular": "1302.4 g/mol",
+    "formula_peptido_libre": null,
+    "peso_peptido_libre": null,
+    "secuencia": "Tyr-Asn-Trp-Asn-Ser-Phe-Gly-Leu-Arg-Phe-NH2",
+    "residuos": 10,
+    "apariencia": null,
+    "solubilidad": null,
+    "categoria": "Péptido o peptidomimético",
+    "etiqueta_forma_libre": null,
+    "nota_nomenclatura": null,
+    "fuentes": {
+      "nombre_quimico": "PubChem CID 25240297",
+      "cas_complejo": "PubChem CID 25240297",
+      "formula": "PubChem CID 25240297",
+      "peso_molecular": "PubChem CID 25240297",
+      "secuencia": "PubChem CID 25240297; UniProt Q15726"
+    }
+  },
+  "mazdutida": {
+    "nombre": "Mazdutida",
+    "nombre_quimico": "20-[[(1S)-4-[2-[2-[2-[2-[2-[2-[[(5S)-5-[[(2S)-2-[[(2S)-6-amino-2-[[(2S)-6-amino-2-[[(2S)-2-[[(2S)-2-[[(2S)-2-[[(2S)-2-[[(2S)-6-amino-2-[[(2S)-2-[[(2S)-2-[[(2S)-2-[[(2S)-2-[[(2S,3R)-2-[[(2S)-2-[[(2S,3R)-2-[[2-[[(2S)-5-amino-2-[[2-[[(2S)-2-amino-3-(1H-imidazol-4-yl)propanoyl]amino]-2-methylpropanoyl]amino]-5-oxopentanoyl]amino]acetyl]amino]-3-hydroxybutanoyl]amino]-3-phenylpropanoyl]amino]-3-hydroxybutanoyl]amino]-3-hydroxypropanoyl]amino]-3-carboxypropanoyl]amino]-3-(4-hydroxyphenyl)propanoyl]amino]-3-hydroxypropanoyl]amino]hexanoyl]amino]-3-(4-hydroxyphenyl)propanoyl]amino]-4-methylpentanoyl]amino]-3-carboxypropanoyl]amino]-4-carboxybutanoyl]amino]hexanoyl]amino]hexanoyl]amino]propanoyl]amino]-6-[[(2S)-1-[[(2S)-1-[[(2S)-1-[[(2S)-1-[[(2S)-1-[[(2S)-1-[[(2S)-1-[[(2S)-1-[[2-[[2-[(2S)-2-[[(2S)-1-[(2-amino-2-oxoethyl)amino]-3-hydroxy-1-oxopropan-2-yl]carbamoyl]pyrrolidin-1-yl]-2-oxoethyl]amino]-2-oxoethyl]amino]-4-carboxy-1-oxobutan-2-yl]amino]-4-methyl-1-oxopentan-2-yl]amino]-4-methyl-1-oxopentan-2-yl]amino]-3-(1H-indol-3-yl)-1-oxopropan-2-yl]amino]-4-carboxy-1-oxobutan-2-yl]amino]-3-methyl-1-oxobutan-2-yl]amino]-1-oxo-3-phenylpropan-2-yl]amino]-4-carboxy-1-oxobutan-2-yl]amino]-6-oxohexyl]amino]-2-oxoethoxy]ethoxy]ethylamino]-2-oxoethoxy]ethoxy]ethylamino]-1-carboxy-4-oxobutyl]amino]-20-oxoicosanoic acid",
+    "sinonimos": [
+      "mazdutide"
+    ],
+    "cas_complejo": "2259884-03-0",
+    "cas_peptido_libre": null,
+    "formula": "C207H317N45O65",
+    "peso_molecular": "4476 g/mol",
+    "formula_peptido_libre": null,
+    "peso_peptido_libre": null,
+    "secuencia": null,
+    "residuos": null,
+    "apariencia": null,
+    "solubilidad": null,
+    "categoria": "Péptido o peptidomimético",
+    "etiqueta_forma_libre": null,
+    "nota_nomenclatura": "La identidad molecular está verificada, pero la secuencia se deja en null porque no se pudo transcribir con seguridad desde una fuente permitida.",
+    "fuentes": {
+      "nombre_quimico": "PubChem CID 167312357",
+      "cas_complejo": "PubChem CID 167312357",
+      "formula": "PubChem CID 167312357",
+      "peso_molecular": "PubChem CID 167312357",
+      "secuencia": "PubChem CID 167312357 confirma fórmula y masa; la secuencia completa con su acilación no se verificó en texto primario accesible"
+    }
+  },
+  "melanotan-i": {
+    "nombre": "Melanotan I",
+    "nombre_quimico": "(4S)-4-[[(2S)-2-[[(2S)-2-[[(2S)-2-[[(2S)-2-acetamido-3-hydroxypropanoyl]amino]-3-(4-hydroxyphenyl)propanoyl]amino]-3-hydroxypropanoyl]amino]hexanoyl]amino]-5-[[(2S)-1-[[(2R)-1-[[(2S)-1-[[(2S)-1-[[2-[[(2S)-6-amino-1-[(2S)-2-[[(2S)-1-amino-3-methyl-1-oxobutan-2-yl]carbamoyl]pyrrolidin-1-yl]-1-oxohexan-2-yl]amino]-2-oxoethyl]amino]-3-(1H-indol-3-yl)-1-oxopropan-2-yl]amino]-5-carbamimidamido-1-oxopentan-2-yl]amino]-1-oxo-3-phenylpropan-2-yl]amino]-3-(1H-imidazol-5-yl)-1-oxopropan-2-yl]amino]-5-oxopentanoic acid",
+    "sinonimos": [
+      "afamelanotide"
+    ],
+    "cas_complejo": "75921-69-6",
+    "cas_peptido_libre": null,
+    "formula": "C78H111N21O19",
+    "peso_molecular": "1646.8 g/mol",
+    "formula_peptido_libre": null,
+    "peso_peptido_libre": null,
+    "secuencia": "Ac-Ser-Tyr-Ser-Nle-Glu-His-D-Phe-Arg-Trp-Gly-Lys-Pro-Val-NH2",
+    "residuos": 13,
+    "apariencia": null,
+    "solubilidad": null,
+    "categoria": "Péptido o peptidomimético",
+    "etiqueta_forma_libre": null,
+    "nota_nomenclatura": null,
+    "fuentes": {
+      "nombre_quimico": "PubChem CID 16197727",
+      "cas_complejo": "PubChem CID 16197727",
+      "formula": "PubChem CID 16197727",
+      "peso_molecular": "PubChem CID 16197727",
+      "secuencia": "PubChem CID 16197727"
+    }
+  },
+  "melanotan-2": {
+    "nombre": "Melanotan II",
+    "nombre_quimico": "(3S,6S,9R,12S,15S,23S)-15-[[(2S)-2-acetamidohexanoyl]amino]-9-benzyl-6-[3-(diaminomethylideneamino)propyl]-12-(1H-imidazol-5-ylmethyl)-3-(1H-indol-3-ylmethyl)-2,5,8,11,14,17-hexaoxo-1,4,7,10,13,18-hexazacyclotricosane-23-carboxamide",
+    "sinonimos": [
+      "melanotan II"
+    ],
+    "cas_complejo": "121062-08-6",
+    "cas_peptido_libre": null,
+    "formula": "C50H69N15O9",
+    "peso_molecular": "1024.2 g/mol",
+    "formula_peptido_libre": null,
+    "peso_peptido_libre": null,
+    "secuencia": "Ac-Nle-c[Asp-His-D-Phe-Arg-Trp-Lys]-NH2",
+    "residuos": 7,
+    "apariencia": null,
+    "solubilidad": null,
+    "categoria": "Péptido o peptidomimético",
+    "etiqueta_forma_libre": null,
+    "nota_nomenclatura": null,
+    "fuentes": {
+      "nombre_quimico": "PubChem CID 92432",
+      "cas_complejo": "PubChem CID 92432",
+      "formula": "PubChem CID 92432",
+      "peso_molecular": "PubChem CID 92432",
+      "secuencia": "PubChem CID 92432"
+    }
+  },
+  "oxitocina": {
+    "nombre": "Oxitocina",
+    "nombre_quimico": "(2S)-1-[(4R,7S,10S,13S,16S,19R)-19-amino-7-(2-amino-2-oxoethyl)-10-(3-amino-3-oxopropyl)-13-[(2S)-butan-2-yl]-16-[(4-hydroxyphenyl)methyl]-6,9,12,15,18-pentaoxo-1,2-dithia-5,8,11,14,17-pentazacycloicosane-4-carbonyl]-N-[(2S)-1-[(2-amino-2-oxoethyl)amino]-4-methyl-1-oxopentan-2-yl]pyrrolidine-2-carboxamide",
+    "sinonimos": [
+      "oxytocin"
+    ],
+    "cas_complejo": "50-56-6",
+    "cas_peptido_libre": null,
+    "formula": "C43H66N12O12S2",
+    "peso_molecular": "1007.2 g/mol",
+    "formula_peptido_libre": null,
+    "peso_peptido_libre": null,
+    "secuencia": "Cys-Tyr-Ile-Gln-Asn-Cys-Pro-Leu-Gly-NH2; puente Cys1-Cys6",
+    "residuos": 9,
+    "apariencia": null,
+    "solubilidad": null,
+    "categoria": "Péptido o peptidomimético",
+    "etiqueta_forma_libre": null,
+    "nota_nomenclatura": null,
+    "fuentes": {
+      "nombre_quimico": "PubChem CID 439302",
+      "cas_complejo": "PubChem CID 439302",
+      "formula": "PubChem CID 439302",
+      "peso_molecular": "PubChem CID 439302",
+      "secuencia": "PubChem CID 439302; UniProt P01178"
+    }
+  },
+  "p21": {
+    "nombre": "P21",
+    "nombre_quimico": "(3S)-3-acetamido-4-[[2-[[2-[[(2S)-1-[(3-carbamoyl-1-adamantyl)amino]-4-methyl-1-oxopentan-2-yl]amino]-2-oxoethyl]amino]-2-oxoethyl]amino]-4-oxobutanoic acid",
+    "sinonimos": [
+      "P021"
+    ],
+    "cas_complejo": "1246751-68-7",
+    "cas_peptido_libre": null,
+    "formula": "C27H42N6O8",
+    "peso_molecular": "578.7 g/mol",
+    "formula_peptido_libre": null,
+    "peso_peptido_libre": null,
+    "secuencia": null,
+    "residuos": null,
+    "apariencia": null,
+    "solubilidad": null,
+    "categoria": "Péptido o peptidomimético",
+    "etiqueta_forma_libre": null,
+    "nota_nomenclatura": "La identidad molecular está verificada, pero la secuencia se deja en null porque no se pudo transcribir con seguridad desde una fuente permitida.",
+    "fuentes": {
+      "nombre_quimico": "PubChem CID 56599151",
+      "cas_complejo": "PubChem CID 56599151",
+      "formula": "PubChem CID 56599151",
+      "peso_molecular": "PubChem CID 56599151",
+      "secuencia": "PubChem CID 56599151 confirma la estructura, pero no se localizó una secuencia textual primaria inequívoca"
+    }
+  },
+  "tesamorelina": {
+    "nombre": "Tesamorelina",
+    "nombre_quimico": "(4S)-4-[[2-[[(2S)-5-amino-2-[[(2S)-5-amino-2-[[(2S)-2-[[(2S)-2-[[(2S)-2-[[(2S,3S)-2-[[(2S)-2-[[(2S)-5-amino-2-[[(2S)-2-[[(2S)-2-[[(2S)-6-amino-2-[[(2S)-2-[[(2S)-2-[[(2S)-2-[[(2S)-2-[[(2S)-5-amino-2-[[2-[[(2S)-2-[[(2S)-2-[[(2S)-6-amino-2-[[(2S)-2-[[(2S)-2-[[(2S)-2-[[(2S)-4-amino-2-[[(2S,3R)-2-[[(2S)-2-[[(2S,3S)-2-[[(2S)-2-[[(2S)-3-carboxy-2-[[(2S)-2-[[(2S)-2-[[(E)-hex-3-enoyl]amino]-3-(4-hydroxyphenyl)propanoyl]amino]propanoyl]amino]propanoyl]amino]propanoyl]amino]-3-methylpentanoyl]amino]-3-phenylpropanoyl]amino]-3-hydroxybutanoyl]amino]-4-oxobutanoyl]amino]-3-hydroxypropanoyl]amino]-3-(4-hydroxyphenyl)propanoyl]amino]-5-carbamimidamidopentanoyl]amino]hexanoyl]amino]-3-methylbutanoyl]amino]-4-methylpentanoyl]amino]acetyl]amino]-5-oxopentanoyl]amino]-4-methylpentanoyl]amino]-3-hydroxypropanoyl]amino]propanoyl]amino]-5-carbamimidamidopentanoyl]amino]hexanoyl]amino]-4-methylpentanoyl]amino]-4-methylpentanoyl]amino]-5-oxopentanoyl]amino]-3-carboxypropanoyl]amino]-3-methylpentanoyl]amino]-4-methylsulfanylbutanoyl]amino]-3-hydroxypropanoyl]amino]-5-carbamimidamidopentanoyl]amino]-5-oxopentanoyl]amino]-5-oxopentanoyl]amino]acetyl]amino]-5-[[(2S)-1-[[(2S)-4-amino-1-[[(2S)-5-amino-1-[[(2S)-1-[[(2S)-1-[[2-[[(2S)-1-[[(2S)-1-[[(2S)-1-[[(2S)-1-[[(2S)-1-amino-4-methyl-1-oxopentan-2-yl]amino]-5-carbamimidamido-1-oxopentan-2-yl]amino]-1-oxopropan-2-yl]amino]-5-carbamimidamido-1-oxopentan-2-yl]amino]-1-oxopropan-2-yl]amino]-2-oxoethyl]amino]-5-carbamimidamido-1-oxopentan-2-yl]amino]-4-carboxy-1-oxobutan-2-yl]amino]-1,5-dioxopentan-2-yl]amino]-1,4-dioxobutan-2-yl]amino]-3-hydroxy-1-oxopropan-2-yl]amino]-5-oxopentanoic acid",
+    "sinonimos": [
+      "tesamorelin"
+    ],
+    "cas_complejo": "218949-48-5",
+    "cas_peptido_libre": null,
+    "formula": "C221H366N72O67S",
+    "peso_molecular": "5136 g/mol",
+    "formula_peptido_libre": null,
+    "peso_peptido_libre": null,
+    "secuencia": "trans-3-hexenoil-YADAIFTNSYRKVLGQLSARKLLQDIMSRQQGESNQERGARARL-NH2",
+    "residuos": 44,
+    "apariencia": null,
+    "solubilidad": null,
+    "categoria": "Péptido o peptidomimético",
+    "etiqueta_forma_libre": null,
+    "nota_nomenclatura": null,
+    "fuentes": {
+      "nombre_quimico": "PubChem CID 16137828",
+      "cas_complejo": "PubChem CID 16137828",
+      "formula": "PubChem CID 16137828",
+      "peso_molecular": "PubChem CID 16137828",
+      "secuencia": "PubChem CID 16137828; etiqueta regulatoria de EGRIFTA"
+    }
+  },
+  "vip": {
+    "nombre": "VIP",
+    "nombre_quimico": "(2S)-4-amino-2-[[(2S)-2-[[(2S,3S)-2-[[(2S)-2-[[(2S)-4-amino-2-[[(2S)-2-[[(2S)-2-[[(2S)-6-amino-2-[[(2S)-6-amino-2-[[(2S)-2-[[(2S)-2-[[(2S)-2-[[(2S)-5-amino-2-[[(2S)-6-amino-2-[[(2S)-2-[[(2S)-2-[[(2S)-2-[[(2S,3R)-2-[[(2S)-2-[[(2S)-4-amino-2-[[(2S)-2-[[(2S,3R)-2-[[(2S)-2-[[(2S)-2-[[(2S)-2-[[(2S)-2-[[(2S)-2-[[(2S)-2-amino-3-(1H-imidazol-4-yl)propanoyl]amino]-3-hydroxypropanoyl]amino]-3-carboxypropanoyl]amino]propanoyl]amino]-3-methylbutanoyl]amino]-3-phenylpropanoyl]amino]-3-hydroxybutanoyl]amino]-3-carboxypropanoyl]amino]-4-oxobutanoyl]amino]-3-(4-hydroxyphenyl)propanoyl]amino]-3-hydroxybutanoyl]amino]-5-carbamimidamidopentanoyl]amino]-4-methylpentanoyl]amino]-5-carbamimidamidopentanoyl]amino]hexanoyl]amino]-5-oxopentanoyl]amino]-4-methylsulfanylbutanoyl]amino]propanoyl]amino]-3-methylbutanoyl]amino]hexanoyl]amino]hexanoyl]amino]-3-(4-hydroxyphenyl)propanoyl]amino]-4-methylpentanoyl]amino]-4-oxobutanoyl]amino]-3-hydroxypropanoyl]amino]-3-methylpentanoyl]amino]-4-methylpentanoyl]amino]-4-oxobutanoic acid",
+    "sinonimos": [
+      "vasoactive intestinal peptide"
+    ],
+    "cas_complejo": "37221-79-7",
+    "cas_peptido_libre": null,
+    "formula": "C147H237N43O43S",
+    "peso_molecular": "3326.8 g/mol",
+    "formula_peptido_libre": null,
+    "peso_peptido_libre": null,
+    "secuencia": "HSDAVFTDNYTRLRKQMAVKKYLNSILN-NH2",
+    "residuos": 28,
+    "apariencia": null,
+    "solubilidad": null,
+    "categoria": "Péptido o peptidomimético",
+    "etiqueta_forma_libre": null,
+    "nota_nomenclatura": null,
+    "fuentes": {
+      "nombre_quimico": "PubChem CID 53314964",
+      "cas_complejo": "PubChem CID 53314964",
+      "formula": "PubChem CID 53314964",
+      "peso_molecular": "PubChem CID 53314964",
+      "secuencia": "UniProt P01282; PubChem CID 53314964"
+    }
+  },
+  "aicar": {
+    "nombre": "AICAR",
+    "nombre_quimico": "[(2R,3S,4R,5R)-5-(5-amino-4-carbamoylimidazol-1-yl)-3,4-dihydroxyoxolan-2-yl]methyl dihydrogen phosphate",
+    "sinonimos": [
+      "AICAR"
+    ],
+    "cas_complejo": "3031-94-5",
+    "cas_peptido_libre": null,
+    "formula": "C9H15N4O8P",
+    "peso_molecular": "338.21 g/mol",
+    "formula_peptido_libre": null,
+    "peso_peptido_libre": null,
+    "secuencia": null,
+    "residuos": null,
+    "apariencia": null,
+    "solubilidad": null,
+    "categoria": "Molécula pequeña; no tiene secuencia peptídica",
+    "etiqueta_forma_libre": null,
+    "nota_nomenclatura": null,
+    "fuentes": {
+      "nombre_quimico": "PubChem CID 65110",
+      "cas_complejo": "PubChem CID 65110",
+      "formula": "PubChem CID 65110",
+      "peso_molecular": "PubChem CID 65110"
+    }
+  },
+  "aod-9604": {
+    "nombre": "AOD-9604",
+    "nombre_quimico": "(2S)-2-[[2-[[(4R,7S,13S,16S,19S,22S,25R)-25-[[(2S)-5-amino-2-[[(2S)-2-[[(2S,3S)-2-[[(2S)-2-[[(2S)-2-[[(2S)-2-amino-3-(4-hydroxyphenyl)propanoyl]amino]-4-methylpentanoyl]amino]-5-carbamimidamidopentanoyl]amino]-3-methylpentanoyl]amino]-3-methylbutanoyl]amino]-5-oxopentanoyl]amino]-22-(3-carbamimidamidopropyl)-13-(2-carboxyethyl)-7,19-bis(hydroxymethyl)-6,9,12,15,18,21,24-heptaoxo-16-propan-2-yl-1,2-dithia-5,8,11,14,17,20,23-heptazacyclohexacosane-4-carbonyl]amino]acetyl]amino]-3-phenylpropanoic acid",
+    "sinonimos": [
+      "AOD9604"
+    ],
+    "cas_complejo": "221231-10-3",
+    "cas_peptido_libre": null,
+    "formula": "C78H123N23O23S2",
+    "peso_molecular": "1815.1 g/mol",
+    "formula_peptido_libre": null,
+    "peso_peptido_libre": null,
+    "secuencia": "Tyr-Leu-Arg-Ile-Val-Gln-Cys-Arg-Ser-Val-Glu-Gly-Ser-Cys-Gly-Phe; Cys7-Cys14 disulfuro y Tyr N-terminal adicional respecto de hGH 177-191",
+    "residuos": 16,
+    "apariencia": null,
+    "solubilidad": null,
+    "categoria": "Péptido o peptidomimético",
+    "etiqueta_forma_libre": null,
+    "nota_nomenclatura": null,
+    "fuentes": {
+      "nombre_quimico": "PubChem CID 71300630",
+      "cas_complejo": "PubChem CID 71300630",
+      "formula": "PubChem CID 71300630",
+      "peso_molecular": "PubChem CID 71300630",
+      "secuencia": "PubChem CID 71300630; artículo primario de AOD9604"
+    }
+  },
+  "cagrilintida": {
+    "nombre": "Cagrilintida",
+    "nombre_quimico": "20-[[(1S)-4-[[(2S)-6-amino-1-[[(4R,7S,10S,13S,16S,19R)-4-[[(2S)-1-[[(2S,3R)-1-[[(2S)-5-amino-1-[[(2S)-1-[[(2R)-1-[[(2R)-1-[[(2S)-1-[[(2S)-1-[[(2S)-1-[[(2S)-1-[[(2S)-1-[[(2S)-1-[[(2S)-1-[[(2S)-4-amino-1-[[(2S)-4-amino-1-[[(2S)-1-[[2-[(2S)-2-[[(2S,3S)-1-[[(2R)-1-[(2R)-2-[(2R)-2-[[(2R,3S)-1-[[(2R)-4-amino-1-[[(2R)-1-[[2-[[(2R)-1-[[(2R)-4-amino-1-[[(2R,3S)-1-[(2R)-2-carbamoylpyrrolidin-1-yl]-3-hydroxy-1-oxobutan-2-yl]amino]-1,4-dioxobutan-2-yl]amino]-3-hydroxy-1-oxopropan-2-yl]amino]-2-oxoethyl]amino]-3-methyl-1-oxobutan-2-yl]amino]-1,4-dioxobutan-2-yl]amino]-3-hydroxy-1-oxobutan-2-yl]carbamoyl]pyrrolidine-1-carbonyl]pyrrolidin-1-yl]-4-methyl-1-oxopentan-2-yl]amino]-3-methyl-1-oxopentan-2-yl]carbamoyl]pyrrolidin-1-yl]-2-oxoethyl]amino]-1-oxo-3-phenylpropan-2-yl]amino]-1,4-dioxobutan-2-yl]amino]-1,4-dioxobutan-2-yl]amino]-3-hydroxy-1-oxopropan-2-yl]amino]-3-hydroxy-1-oxopropan-2-yl]amino]-3-(1H-imidazol-4-yl)-1-oxopropan-2-yl]amino]-5-carbamimidamido-1-oxopentan-2-yl]amino]-4-methyl-1-oxopentan-2-yl]amino]-1-oxo-3-phenylpropan-2-yl]amino]-4-carboxy-1-oxobutan-2-yl]amino]-1-oxopropan-2-yl]amino]-4-methyl-1-oxopentan-2-yl]amino]-5-carbamimidamido-1-oxopentan-2-yl]amino]-1,5-dioxopentan-2-yl]amino]-3-hydroxy-1-oxobutan-2-yl]amino]-1-oxopropan-2-yl]carbamoyl]-16-(2-amino-2-oxoethyl)-7,13-bis[(1R)-1-hydroxyethyl]-10-methyl-6,9,12,15,18-pentaoxo-1,2-dithia-5,8,11,14,17-pentazacycloicos-19-yl]amino]-1-oxohexan-2-yl]amino]-1-carboxy-4-oxobutyl]amino]-20-oxoicosanoic acid",
+    "sinonimos": [
+      "cagrilintide"
+    ],
+    "cas_complejo": "1415456-99-3",
+    "cas_peptido_libre": null,
+    "formula": "C194H312N54O59S2",
+    "peso_molecular": "4409 g/mol",
+    "formula_peptido_libre": null,
+    "peso_peptido_libre": null,
+    "secuencia": "KCNTATCATQRLAEFLRHSSNNFGPILPPTNVGSNTP-NH2; puente Cys2-Cys7; Lys1 acilada con diácido C20 mediante γGlu",
+    "residuos": 37,
+    "apariencia": null,
+    "solubilidad": null,
+    "categoria": "Péptido o peptidomimético",
+    "etiqueta_forma_libre": null,
+    "nota_nomenclatura": null,
+    "fuentes": {
+      "nombre_quimico": "PubChem CID 171397054",
+      "cas_complejo": "PubChem CID 171397054",
+      "formula": "PubChem CID 171397054",
+      "peso_molecular": "PubChem CID 171397054",
+      "secuencia": "Lau et al., J Med Chem 2021; artículo primario NN1213"
+    }
+  },
+  "l-carnitine": {
+    "nombre": "L-Carnitine",
+    "nombre_quimico": "(3R)-3-hydroxy-4-(trimethylazaniumyl)butanoate",
+    "sinonimos": [
+      "L-carnitine"
+    ],
+    "cas_complejo": "541-15-1",
+    "cas_peptido_libre": null,
+    "formula": "C7H15NO3",
+    "peso_molecular": "161.20 g/mol",
+    "formula_peptido_libre": null,
+    "peso_peptido_libre": null,
+    "secuencia": null,
+    "residuos": null,
+    "apariencia": null,
+    "solubilidad": null,
+    "categoria": "Molécula pequeña; no tiene secuencia peptídica",
+    "etiqueta_forma_libre": null,
+    "nota_nomenclatura": null,
+    "fuentes": {
+      "nombre_quimico": "PubChem CID 10917",
+      "cas_complejo": "PubChem CID 10917",
+      "formula": "PubChem CID 10917",
+      "peso_molecular": "PubChem CID 10917"
+    }
+  },
+  "liraglutida": {
+    "nombre": "Liraglutida",
+    "nombre_quimico": "(2S)-5-[[(5S)-5-[[(2S)-2-[[(2S)-2-[[(2S)-5-amino-2-[[2-[[(2S)-2-[[(2S)-2-[[(2S)-2-[[(2S)-2-[[(2S)-2-[[(2S)-2-[[(2S)-2-[[(2S)-2-[[(2S,3R)-2-[[(2S)-2-[[(2S,3R)-2-[[2-[[(2S)-2-[[(2S)-2-[[(2S)-2-amino-3-(1H-imidazol-5-yl)propanoyl]amino]propanoyl]amino]-4-carboxybutanoyl]amino]acetyl]amino]-3-hydroxybutanoyl]amino]-3-phenylpropanoyl]amino]-3-hydroxybutanoyl]amino]-3-hydroxypropanoyl]amino]-3-carboxypropanoyl]amino]-3-methylbutanoyl]amino]-3-hydroxypropanoyl]amino]-3-hydroxypropanoyl]amino]-3-(4-hydroxyphenyl)propanoyl]amino]-4-methylpentanoyl]amino]-4-carboxybutanoyl]amino]acetyl]amino]-5-oxopentanoyl]amino]propanoyl]amino]propanoyl]amino]-6-[[(2S)-1-[[(2S)-1-[[(2S,3S)-1-[[(2S)-1-[[(2S)-1-[[(2S)-1-[[(2S)-1-[[(2S)-5-carbamimidamido-1-[[2-[[(2S)-5-carbamimidamido-1-(carboxymethylamino)-1-oxopentan-2-yl]amino]-2-oxoethyl]amino]-1-oxopentan-2-yl]amino]-3-methyl-1-oxobutan-2-yl]amino]-4-methyl-1-oxopentan-2-yl]amino]-3-(1H-indol-3-yl)-1-oxopropan-2-yl]amino]-1-oxopropan-2-yl]amino]-3-methyl-1-oxopentan-2-yl]amino]-1-oxo-3-phenylpropan-2-yl]amino]-4-carboxy-1-oxobutan-2-yl]amino]-6-oxohexyl]amino]-2-(hexadecanoylamino)-5-oxopentanoic acid",
+    "sinonimos": [
+      "liraglutide"
+    ],
+    "cas_complejo": "204656-20-2",
+    "cas_peptido_libre": null,
+    "formula": "C172H265N43O51",
+    "peso_molecular": "3751 g/mol",
+    "formula_peptido_libre": null,
+    "peso_peptido_libre": null,
+    "secuencia": "HAEGTFTSDVSSYLEGQAAKEFIAWLVRGRG; Lys26 acilada con palmitoil-γGlu",
+    "residuos": 31,
+    "apariencia": null,
+    "solubilidad": null,
+    "categoria": "Péptido o peptidomimético",
+    "etiqueta_forma_libre": null,
+    "nota_nomenclatura": null,
+    "fuentes": {
+      "nombre_quimico": "PubChem CID 16134956",
+      "cas_complejo": "PubChem CID 16134956",
+      "formula": "PubChem CID 16134956",
+      "peso_molecular": "PubChem CID 16134956",
+      "secuencia": "Etiqueta regulatoria de Victoza; PubChem CID 16134956"
+    }
+  },
+  "mots-c": {
+    "nombre": "MOTS-c",
+    "nombre_quimico": "(4S)-4-[[(2S)-5-amino-2-[[(2S)-2-[[(2S)-2-[[(2S)-2-amino-4-methylsulfanylbutanoyl]amino]-5-carbamimidamidopentanoyl]amino]-3-(1H-indol-3-yl)propanoyl]amino]-5-oxopentanoyl]amino]-5-[[(2S)-1-[[2-[[(2S)-1-[[(2S,3S)-1-[[(2S)-1-[[(2S)-1-[(2S)-2-[[(2S)-1-[[(2S)-6-amino-1-[[(2S)-1-[[(1S)-4-carbamimidamido-1-carboxybutyl]amino]-4-methyl-1-oxopentan-2-yl]amino]-1-oxohexan-2-yl]amino]-5-carbamimidamido-1-oxopentan-2-yl]carbamoyl]pyrrolidin-1-yl]-3-(4-hydroxyphenyl)-1-oxopropan-2-yl]amino]-1-oxo-3-phenylpropan-2-yl]amino]-3-methyl-1-oxopentan-2-yl]amino]-3-(4-hydroxyphenyl)-1-oxopropan-2-yl]amino]-2-oxoethyl]amino]-4-methylsulfanyl-1-oxobutan-2-yl]amino]-5-oxopentanoic acid",
+    "sinonimos": [
+      "MOTS-c"
+    ],
+    "cas_complejo": "1627580-64-6",
+    "cas_peptido_libre": null,
+    "formula": "C101H152N28O22S2",
+    "peso_molecular": "2174.6 g/mol",
+    "formula_peptido_libre": null,
+    "peso_peptido_libre": null,
+    "secuencia": "MRWQEMGYIFYPRKLR",
+    "residuos": 16,
+    "apariencia": null,
+    "solubilidad": null,
+    "categoria": "Péptido o peptidomimético",
+    "etiqueta_forma_libre": null,
+    "nota_nomenclatura": null,
+    "fuentes": {
+      "nombre_quimico": "PubChem CID 146675088",
+      "cas_complejo": "PubChem CID 146675088",
+      "formula": "PubChem CID 146675088",
+      "peso_molecular": "PubChem CID 146675088",
+      "secuencia": "Artículo primario de descubrimiento de MOTS-c; PubChem CID 146675088"
+    }
+  },
+  "semaglutida": {
+    "nombre": "Semaglutida",
+    "nombre_quimico": "18-[[(1R)-4-[2-[2-[2-[2-[2-[2-[[(5S)-5-[[(2S)-2-[[(2S)-2-[[(2S)-5-amino-2-[[2-[[(2S)-2-[[(2S)-2-[[(2S)-2-[[(2S)-2-[[(2S)-2-[[(2S)-2-[[(2S)-2-[[(2S)-2-[[(2S,3R)-2-[[(2S)-2-[[(2S,3R)-2-[[2-[[(2S)-2-[[2-[[(2S)-2-amino-3-(1H-imidazol-5-yl)propanoyl]amino]-2-methylpropanoyl]amino]-4-carboxybutanoyl]amino]acetyl]amino]-3-hydroxybutanoyl]amino]-3-phenylpropanoyl]amino]-3-hydroxybutanoyl]amino]-3-hydroxypropanoyl]amino]-3-carboxypropanoyl]amino]-3-methylbutanoyl]amino]-3-hydroxypropanoyl]amino]-3-hydroxypropanoyl]amino]-3-(4-hydroxyphenyl)propanoyl]amino]-4-methylpentanoyl]amino]-4-carboxybutanoyl]amino]acetyl]amino]-5-oxopentanoyl]amino]propanoyl]amino]propanoyl]amino]-6-[[(2S)-1-[[(2S)-1-[[(2S,3S)-1-[[(2S)-1-[[(2S)-1-[[(2S)-1-[[(2S)-1-[[(2S)-5-carbamimidamido-1-[[2-[[(2S)-5-carbamimidamido-1-(carboxymethylamino)-1-oxopentan-2-yl]amino]-2-oxoethyl]amino]-1-oxopentan-2-yl]amino]-3-methyl-1-oxobutan-2-yl]amino]-4-methyl-1-oxopentan-2-yl]amino]-3-(1H-indol-3-yl)-1-oxopropan-2-yl]amino]-1-oxopropan-2-yl]amino]-3-methyl-1-oxopentan-2-yl]amino]-1-oxo-3-phenylpropan-2-yl]amino]-4-carboxy-1-oxobutan-2-yl]amino]-6-oxohexyl]amino]-2-oxoethoxy]ethoxy]ethylamino]-2-oxoethoxy]ethoxy]ethylamino]-1-carboxy-4-oxobutyl]amino]-18-oxooctadecanoic acid",
+    "sinonimos": [
+      "semaglutide"
+    ],
+    "cas_complejo": "910463-68-2",
+    "cas_peptido_libre": null,
+    "formula": "C187H291N45O59",
+    "peso_molecular": "4114 g/mol",
+    "formula_peptido_libre": null,
+    "peso_peptido_libre": null,
+    "secuencia": "HAibEGTFTSDVSSYLEGQAAKEFIAWLVRGRG; Aib2; Lys26 acilada con diácido C18 mediante γGlu y dos unidades OEG",
+    "residuos": 31,
+    "apariencia": null,
+    "solubilidad": null,
+    "categoria": "Péptido o peptidomimético",
+    "etiqueta_forma_libre": null,
+    "nota_nomenclatura": null,
+    "fuentes": {
+      "nombre_quimico": "PubChem CID 56843331",
+      "cas_complejo": "PubChem CID 56843331",
+      "formula": "PubChem CID 56843331",
+      "peso_molecular": "PubChem CID 56843331",
+      "secuencia": "Etiqueta regulatoria de Ozempic/Wegovy; PubChem CID 56843331"
+    }
+  },
+  "slu-pp-332": {
+    "nombre": "SLU-PP-332",
+    "nombre_quimico": "4-hydroxy-N-[(E)-naphthalen-2-ylmethylideneamino]benzamide",
+    "sinonimos": [
+      "SLU-PP-332"
+    ],
+    "cas_complejo": "303760-60-3",
+    "cas_peptido_libre": null,
+    "formula": "C18H14N2O2",
+    "peso_molecular": "290.3 g/mol",
+    "formula_peptido_libre": null,
+    "peso_peptido_libre": null,
+    "secuencia": null,
+    "residuos": null,
+    "apariencia": null,
+    "solubilidad": null,
+    "categoria": "Molécula pequeña; no tiene secuencia peptídica",
+    "etiqueta_forma_libre": null,
+    "nota_nomenclatura": null,
+    "fuentes": {
+      "nombre_quimico": "PubChem CID 5338394",
+      "cas_complejo": "PubChem CID 5338394",
+      "formula": "PubChem CID 5338394",
+      "peso_molecular": "PubChem CID 5338394"
+    }
+  },
+  "survodutide": {
+    "nombre": "Survodutide",
+    "nombre_quimico": "18-[[(1S)-4-[[2-[[(2S)-1-[[2-[[(2S)-1-[[2-[[2-[[(5S)-5-[[(2S,3S)-2-[[(2S)-2-[[(2S)-2-[[(2S)-6-amino-2-[[(2S)-2-[[(2S)-2-[[(2S)-2-[[(2S)-2-[[(2S)-2-[[(2S)-2-[[(2S)-2-[[(2S)-6-amino-2-[[(2S)-2-[[(2S)-2-[[(2S)-2-[[(2S)-2-[[(2S,3R)-2-[[(2S)-2-[[(2S,3R)-2-[[2-[[(2S)-5-amino-2-[[1-[[(2S)-2-amino-3-(1H-imidazol-4-yl)propanoyl]amino]cyclobutanecarbonyl]amino]-5-oxopentanoyl]amino]acetyl]amino]-3-hydroxybutanoyl]amino]-3-phenylpropanoyl]amino]-3-hydroxybutanoyl]amino]-3-hydroxypropanoyl]amino]-3-carboxypropanoyl]amino]-3-(4-hydroxyphenyl)propanoyl]amino]-3-hydroxypropanoyl]amino]hexanoyl]amino]-3-(4-hydroxyphenyl)propanoyl]amino]-4-methylpentanoyl]amino]-3-carboxypropanoyl]amino]-4-carboxybutanoyl]amino]-5-carbamimidamidopentanoyl]amino]propanoyl]amino]propanoyl]amino]hexanoyl]amino]-3-carboxypropanoyl]amino]-3-phenylpropanoyl]amino]-3-methylpentanoyl]amino]-6-[[(2S)-1-[[(2S)-1-[[(2S)-1-[[(2S)-1-[[(2S)-1-amino-1-oxopropan-2-yl]amino]-3-hydroxy-1-oxopropan-2-yl]amino]-4-carboxy-1-oxobutan-2-yl]amino]-4-methyl-1-oxopentan-2-yl]amino]-3-(1H-indol-3-yl)-1-oxopropan-2-yl]amino]-6-oxohexyl]amino]-2-oxoethyl]amino]-2-oxoethyl]amino]-3-hydroxy-1-oxopropan-2-yl]amino]-2-oxoethyl]amino]-3-hydroxy-1-oxopropan-2-yl]amino]-2-oxoethyl]amino]-1-carboxy-4-oxobutyl]amino]-18-oxooctadecanoic acid",
+    "sinonimos": [
+      "survodutide"
+    ],
+    "cas_complejo": "2805997-46-8",
+    "cas_peptido_libre": null,
+    "formula": "C192H289N47O61",
+    "peso_molecular": "4232 g/mol",
+    "formula_peptido_libre": null,
+    "peso_peptido_libre": null,
+    "secuencia": null,
+    "residuos": null,
+    "apariencia": null,
+    "solubilidad": null,
+    "categoria": "Péptido o peptidomimético",
+    "etiqueta_forma_libre": null,
+    "nota_nomenclatura": "La identidad molecular está verificada, pero la secuencia se deja en null porque no se pudo transcribir con seguridad desde una fuente permitida.",
+    "fuentes": {
+      "nombre_quimico": "PubChem CID 171378821",
+      "cas_complejo": "PubChem CID 171378821",
+      "formula": "PubChem CID 171378821",
+      "peso_molecular": "PubChem CID 171378821",
+      "secuencia": "PubChem CID 171378821 confirma fórmula y masa; la secuencia completa modificada no se verificó en texto primario accesible"
+    }
+  },
+  "tirzepatida": {
+    "nombre": "Tirzepatida",
+    "nombre_quimico": "20-[[(1S)-4-[2-[2-[2-[2-[2-[2-[[(5S)-5-[[(2S)-5-amino-2-[[(2S)-2-[[(2S,3S)-2-[[(2S)-6-amino-2-[[(2S)-2-[[(2S)-2-[[2-[[(2S,3S)-2-[[(2S)-2-[[(2S)-2-[[(2S)-2-[[(2S)-2-[[(2S,3R)-2-[[(2S)-2-[[(2S,3R)-2-[[2-[[(2S)-2-[[2-[[(2S)-2-amino-3-(4-hydroxyphenyl)propanoyl]amino]-2-methylpropanoyl]amino]-4-carboxybutanoyl]amino]acetyl]amino]-3-hydroxybutanoyl]amino]-3-phenylpropanoyl]amino]-3-hydroxybutanoyl]amino]-3-hydroxypropanoyl]amino]-3-carboxypropanoyl]amino]-3-(4-hydroxyphenyl)propanoyl]amino]-3-hydroxypropanoyl]amino]-3-methylpentanoyl]amino]-2-methylpropanoyl]amino]-4-methylpentanoyl]amino]-3-carboxypropanoyl]amino]hexanoyl]amino]-3-methylpentanoyl]amino]propanoyl]amino]-5-oxopentanoyl]amino]-6-[[(2S)-1-[[(2S)-1-[[(2S)-1-[[(2S)-5-amino-1-[[(2S)-1-[[(2S)-1-[[(2S,3S)-1-[[(2S)-1-[[2-[[2-[(2S)-2-[[(2S)-1-[[(2S)-1-[[2-[[(2S)-1-[(2S)-2-[(2S)-2-[(2S)-2-[[(2S)-1-amino-3-hydroxy-1-oxopropan-2-yl]carbamoyl]pyrrolidine-1-carbonyl]pyrrolidine-1-carbonyl]pyrrolidin-1-yl]-1-oxopropan-2-yl]amino]-2-oxoethyl]amino]-3-hydroxy-1-oxopropan-2-yl]amino]-3-hydroxy-1-oxopropan-2-yl]carbamoyl]pyrrolidin-1-yl]-2-oxoethyl]amino]-2-oxoethyl]amino]-1-oxopropan-2-yl]amino]-3-methyl-1-oxopentan-2-yl]amino]-4-methyl-1-oxopentan-2-yl]amino]-3-(1H-indol-3-yl)-1-oxopropan-2-yl]amino]-1,5-dioxopentan-2-yl]amino]-3-methyl-1-oxobutan-2-yl]amino]-1-oxo-3-phenylpropan-2-yl]amino]-1-oxopropan-2-yl]amino]-6-oxohexyl]amino]-2-oxoethoxy]ethoxy]ethylamino]-2-oxoethoxy]ethoxy]ethylamino]-1-carboxy-4-oxobutyl]amino]-20-oxoicosanoic acid",
+    "sinonimos": [
+      "tirzepatide"
+    ],
+    "cas_complejo": "2023788-19-2",
+    "cas_peptido_libre": null,
+    "formula": "C225H348N48O68",
+    "peso_molecular": "4813 g/mol",
+    "formula_peptido_libre": null,
+    "peso_peptido_libre": null,
+    "secuencia": "YXEGTFTSDYSIYLDKIAQKAFVQWLIAGGPSSGAPPPS-NH2; X=Aib; Lys20 acilada con diácido C20 mediante γGlu-(AEEA)2",
+    "residuos": 39,
+    "apariencia": null,
+    "solubilidad": null,
+    "categoria": "Péptido o peptidomimético",
+    "etiqueta_forma_libre": null,
+    "nota_nomenclatura": null,
+    "fuentes": {
+      "nombre_quimico": "PubChem CID 166567236",
+      "cas_complejo": "PubChem CID 166567236",
+      "formula": "PubChem CID 166567236",
+      "peso_molecular": "PubChem CID 166567236",
+      "secuencia": "Etiqueta regulatoria de Mounjaro/Zepbound; PubChem CID 166567236"
+    }
+  },
+  "ara-290": {
+    "nombre": "ARA-290",
+    "nombre_quimico": "(4S)-5-[[(2S)-5-amino-1-[[(2S)-1-[[(2S)-1-[[(2S)-1-[[(2S)-1-[[(2S)-1-[[(2S)-4-amino-1-[[(2S)-1-[[(1S)-1-carboxy-2-hydroxyethyl]amino]-3-hydroxy-1-oxopropan-2-yl]amino]-1,4-dioxobutan-2-yl]amino]-4-methyl-1-oxopentan-2-yl]amino]-1-oxopropan-2-yl]amino]-5-(diaminomethylideneamino)-1-oxopentan-2-yl]amino]-4-carboxy-1-oxobutan-2-yl]amino]-4-methyl-1-oxopentan-2-yl]amino]-1,5-dioxopentan-2-yl]amino]-5-oxo-4-[[(2S)-5-oxopyrrolidine-2-carbonyl]amino]pentanoic acid",
+    "sinonimos": [
+      "cibinetide"
+    ],
+    "cas_complejo": "1208243-50-8",
+    "cas_peptido_libre": null,
+    "formula": "C51H84N16O21",
+    "peso_molecular": "1257.3 g/mol",
+    "formula_peptido_libre": null,
+    "peso_peptido_libre": null,
+    "secuencia": "Gln-Glu-Gln-Leu-Glu-Arg-Ala-Leu-Asn-Ser-Ser",
+    "residuos": 11,
+    "apariencia": null,
+    "solubilidad": null,
+    "categoria": "Péptido o peptidomimético",
+    "etiqueta_forma_libre": null,
+    "nota_nomenclatura": null,
+    "fuentes": {
+      "nombre_quimico": "PubChem CID 91810664",
+      "cas_complejo": "PubChem CID 91810664",
+      "formula": "PubChem CID 91810664",
+      "peso_molecular": "PubChem CID 91810664",
+      "secuencia": "PubChem CID 91810664; artículo primario de ARA 290"
+    }
+  },
+  "bpc-157": {
+    "nombre": "BPC-157",
+    "nombre_quimico": "(4S)-4-[(2-aminoacetyl)amino]-5-[(2S)-2-[(2S)-2-[(2S)-2-[[2-[[(2S)-6-amino-1-[(2S)-2-[[(2S)-1-[[(2S)-3-carboxy-1-[[(2S)-3-carboxy-1-[[(2S)-1-[[2-[[(2S)-1-[[(1S)-1-carboxy-2-methylpropyl]amino]-4-methyl-1-oxopentan-2-yl]amino]-2-oxoethyl]amino]-1-oxopropan-2-yl]amino]-1-oxopropan-2-yl]amino]-1-oxopropan-2-yl]amino]-1-oxopropan-2-yl]carbamoyl]pyrrolidin-1-yl]-1-oxohexan-2-yl]amino]-2-oxoethyl]carbamoyl]pyrrolidine-1-carbonyl]pyrrolidine-1-carbonyl]pyrrolidin-1-yl]-5-oxopentanoic acid",
+    "sinonimos": [
+      "BPC-157"
+    ],
+    "cas_complejo": "137525-51-0",
+    "cas_peptido_libre": null,
+    "formula": "C62H98N16O22",
+    "peso_molecular": "1419.5 g/mol",
+    "formula_peptido_libre": null,
+    "peso_peptido_libre": null,
+    "secuencia": "Gly-Glu-Pro-Pro-Pro-Gly-Lys-Pro-Ala-Asp-Asp-Ala-Gly-Leu-Val",
+    "residuos": 15,
+    "apariencia": null,
+    "solubilidad": null,
+    "categoria": "Péptido o peptidomimético",
+    "etiqueta_forma_libre": null,
+    "nota_nomenclatura": null,
+    "fuentes": {
+      "nombre_quimico": "PubChem CID 9941957",
+      "cas_complejo": "PubChem CID 9941957",
+      "formula": "PubChem CID 9941957",
+      "peso_molecular": "PubChem CID 9941957",
+      "secuencia": "PubChem CID 9941957"
+    }
+  },
+  "kpv": {
+    "nombre": "KPV",
+    "nombre_quimico": "(2S)-2-[[(2S)-1-[(2S)-2,6-diaminohexanoyl]pyrrolidine-2-carbonyl]amino]-3-methylbutanoic acid",
+    "sinonimos": [
+      "Lys-Pro-Val"
+    ],
+    "cas_complejo": "67727-97-3",
+    "cas_peptido_libre": null,
+    "formula": "C16H30N4O4",
+    "peso_molecular": "342.43 g/mol",
+    "formula_peptido_libre": null,
+    "peso_peptido_libre": null,
+    "secuencia": "Lys-Pro-Val",
+    "residuos": 3,
+    "apariencia": null,
+    "solubilidad": null,
+    "categoria": "Péptido o peptidomimético",
+    "etiqueta_forma_libre": null,
+    "nota_nomenclatura": null,
+    "fuentes": {
+      "nombre_quimico": "PubChem CID 125672",
+      "cas_complejo": "PubChem CID 125672",
+      "formula": "PubChem CID 125672",
+      "peso_molecular": "PubChem CID 125672",
+      "secuencia": "PubChem CID 125672"
+    }
+  },
+  "ll-37": {
+    "nombre": "LL-37",
+    "nombre_quimico": "(4S)-5-[[(2S)-6-amino-1-[[(2S,3S)-1-[[2-[[(2S)-6-amino-1-[[(2S)-1-[[(2S)-1-[[(2S)-6-amino-1-[[(2S)-1-[[(2S,3S)-1-[[(2S)-1-[[(2S)-5-amino-1-[[(2S)-1-[[(2S,3S)-1-[[(2S)-6-amino-1-[[(2S)-1-[[(2S)-1-[[(2S)-1-[[(2S)-1-[[(2S)-4-amino-1-[[(2S)-1-[[(2S)-1-[(2S)-2-[[(2S)-5-carbamimidamido-1-[[(2S,3R)-1-[[(2S)-4-carboxy-1-[[(1S)-1-carboxy-2-hydroxyethyl]amino]-1-oxobutan-2-yl]amino]-3-hydroxy-1-oxobutan-2-yl]amino]-1-oxopentan-2-yl]carbamoyl]pyrrolidin-1-yl]-3-methyl-1-oxobutan-2-yl]amino]-4-methyl-1-oxopentan-2-yl]amino]-1,4-dioxobutan-2-yl]amino]-5-carbamimidamido-1-oxopentan-2-yl]amino]-4-methyl-1-oxopentan-2-yl]amino]-1-oxo-3-phenylpropan-2-yl]amino]-3-carboxy-1-oxopropan-2-yl]amino]-1-oxohexan-2-yl]amino]-3-methyl-1-oxopentan-2-yl]amino]-5-carbamimidamido-1-oxopentan-2-yl]amino]-1,5-dioxopentan-2-yl]amino]-3-methyl-1-oxobutan-2-yl]amino]-3-methyl-1-oxopentan-2-yl]amino]-5-carbamimidamido-1-oxopentan-2-yl]amino]-1-oxohexan-2-yl]amino]-1-oxo-3-phenylpropan-2-yl]amino]-4-carboxy-1-oxobutan-2-yl]amino]-1-oxohexan-2-yl]amino]-2-oxoethyl]amino]-3-methyl-1-oxopentan-2-yl]amino]-1-oxohexan-2-yl]amino]-4-[[(2S)-6-amino-2-[[(2S)-2-[[(2S)-6-amino-2-[[(2S)-2-[[(2S)-2-[[(2S)-2-[[(2S)-2-[[2-[[(2S)-2-[[(2S)-2-amino-4-methylpentanoyl]amino]-4-methylpentanoyl]amino]acetyl]amino]-3-carboxypropanoyl]amino]-3-phenylpropanoyl]amino]-3-phenylpropanoyl]amino]-5-carbamimidamidopentanoyl]amino]hexanoyl]amino]-3-hydroxypropanoyl]amino]hexanoyl]amino]-5-oxopentanoic acid",
+    "sinonimos": [
+      "LL-37"
+    ],
+    "cas_complejo": "154947-66-7",
+    "cas_peptido_libre": null,
+    "formula": "C205H340N60O53",
+    "peso_molecular": "4493 g/mol",
+    "formula_peptido_libre": null,
+    "peso_peptido_libre": null,
+    "secuencia": "LLGDFFRKSKEKIGKEFKRIVQRIKDFLRNLVPRTES",
+    "residuos": 37,
+    "apariencia": null,
+    "solubilidad": null,
+    "categoria": "Péptido o peptidomimético",
+    "etiqueta_forma_libre": null,
+    "nota_nomenclatura": null,
+    "fuentes": {
+      "nombre_quimico": "PubChem CID 16198951",
+      "cas_complejo": "PubChem CID 16198951",
+      "formula": "PubChem CID 16198951",
+      "peso_molecular": "PubChem CID 16198951",
+      "secuencia": "UniProt P49913; PubChem CID 16198951"
+    }
+  },
+  "ptd-dbm": {
+    "nombre": "PTD-DBM",
+    "nombre_quimico": "(2R)-2-[[(2S)-6-amino-2-[[(2S)-2-[[(2S)-2-[[(2S)-6-amino-2-[[(2R)-2-[[(2S,3S)-2-[[(2S)-5-amino-2-[[(2S)-2-[[2-[[(2S,3R)-2-[[(2S)-6-amino-2-[[(2S)-2-[[2-[[2-[[2-[[2-[[(2S)-2-[[(2S)-2-[[(2S)-2-[[(2S)-2-[[(2S)-2-[[(2S)-2-[[(2S)-2-[[(2S)-2-amino-5-carbamimidamidopentanoyl]amino]-5-carbamimidamidopentanoyl]amino]-5-carbamimidamidopentanoyl]amino]-5-carbamimidamidopentanoyl]amino]-5-carbamimidamidopentanoyl]amino]-5-carbamimidamidopentanoyl]amino]-5-carbamimidamidopentanoyl]amino]-5-carbamimidamidopentanoyl]amino]acetyl]amino]acetyl]amino]acetyl]amino]acetyl]amino]-5-carbamimidamidopentanoyl]amino]hexanoyl]amino]-3-hydroxybutanoyl]amino]acetyl]amino]-3-(1H-imidazol-5-yl)propanoyl]amino]-5-oxopentanoyl]amino]-3-methylpentanoyl]amino]-3-sulfanylpropanoyl]amino]hexanoyl]amino]-3-phenylpropanoyl]amino]-5-carbamimidamidopentanoyl]amino]hexanoyl]amino]-3-sulfanylpropanoic acid",
+    "sinonimos": [
+      "PTD-DBM"
+    ],
+    "cas_complejo": "1609454-11-6",
+    "cas_peptido_libre": null,
+    "formula": "C124H225N61O28S2",
+    "peso_molecular": "3082.6 g/mol",
+    "formula_peptido_libre": null,
+    "peso_peptido_libre": null,
+    "secuencia": null,
+    "residuos": null,
+    "apariencia": null,
+    "solubilidad": null,
+    "categoria": "Péptido o peptidomimético",
+    "etiqueta_forma_libre": null,
+    "nota_nomenclatura": "La identidad molecular está verificada, pero la secuencia se deja en null porque no se pudo transcribir con seguridad desde una fuente permitida.",
+    "fuentes": {
+      "nombre_quimico": "PubChem CID 176453931",
+      "cas_complejo": "PubChem CID 176453931",
+      "formula": "PubChem CID 176453931",
+      "peso_molecular": "PubChem CID 176453931",
+      "secuencia": "PubChem CID 176453931 confirma identidad, pero la secuencia textual y límites de los módulos no se verificaron en el artículo primario"
+    }
+  },
+  "tb-500": {
+    "nombre": "TB-500",
+    "nombre_quimico": "(2S)-2-[[(2S,3R)-2-[[(2S)-2-[[(2S,3R)-2-[[(2S)-2-[[(2S)-2-[[(2S)-2-acetamido-4-methylpentanoyl]amino]-6-aminohexanoyl]amino]-6-aminohexanoyl]amino]-3-hydroxybutanoyl]amino]-4-carboxybutanoyl]amino]-3-hydroxybutanoyl]amino]-5-amino-5-oxopentanoic acid",
+    "sinonimos": [
+      "TB-500"
+    ],
+    "cas_complejo": "885340-08-9",
+    "cas_peptido_libre": null,
+    "formula": "C38H68N10O14",
+    "peso_molecular": "889.0 g/mol",
+    "formula_peptido_libre": null,
+    "peso_peptido_libre": null,
+    "secuencia": "Ac-Leu-Lys-Lys-Thr-Glu-Thr-Gln (Ac-LKKTETQ)",
+    "residuos": 7,
+    "apariencia": null,
+    "solubilidad": null,
+    "categoria": "Péptido o peptidomimético",
+    "etiqueta_forma_libre": null,
+    "nota_nomenclatura": null,
+    "fuentes": {
+      "nombre_quimico": "PubChem CID 62707662",
+      "cas_complejo": "PubChem CID 62707662",
+      "formula": "PubChem CID 62707662",
+      "peso_molecular": "PubChem CID 62707662",
+      "secuencia": "PubChem CID 62707662"
+    }
+  },
+  "gonadorelin-acetate": {
+    "nombre": "Gonadorelin Acetate",
+    "nombre_quimico": "(2S)-N-[(2S)-1-[[(2S)-1-[[(2S)-1-[[(2S)-1-[[2-[[(2S)-1-[[(2S)-1-[(2S)-2-[(2-amino-2-oxoethyl)carbamoyl]pyrrolidin-1-yl]-5-(diaminomethylideneamino)-1-oxopentan-2-yl]amino]-4-methyl-1-oxopentan-2-yl]amino]-2-oxoethyl]amino]-3-(4-hydroxyphenyl)-1-oxopropan-2-yl]amino]-3-hydroxy-1-oxopropan-2-yl]amino]-3-(1H-indol-3-yl)-1-oxopropan-2-yl]amino]-3-(1H-imidazol-5-yl)-1-oxopropan-2-yl]-5-oxopyrrolidine-2-carboxamide",
+    "sinonimos": [
+      "gonadorelin"
+    ],
+    "cas_complejo": "33515-09-2",
+    "cas_peptido_libre": null,
+    "formula": "C55H75N17O13",
+    "peso_molecular": "1182.3 g/mol",
+    "formula_peptido_libre": null,
+    "peso_peptido_libre": null,
+    "secuencia": "pGlu-His-Trp-Ser-Tyr-Gly-Leu-Arg-Pro-Gly-NH2",
+    "residuos": 10,
+    "apariencia": null,
+    "solubilidad": null,
+    "categoria": "Péptido o peptidomimético",
+    "etiqueta_forma_libre": null,
+    "nota_nomenclatura": null,
+    "fuentes": {
+      "nombre_quimico": "PubChem CID 638793",
+      "cas_complejo": "PubChem CID 638793",
+      "formula": "PubChem CID 638793",
+      "peso_molecular": "PubChem CID 638793",
+      "secuencia": "PubChem CID 638793"
+    }
+  },
+  "pt-141": {
+    "nombre": "PT-141",
+    "nombre_quimico": "(3S,6S,9R,12S,15S,23S)-15-[[(2S)-2-acetamidohexanoyl]amino]-9-benzyl-6-[3-(diaminomethylideneamino)propyl]-12-(1H-imidazol-5-ylmethyl)-3-(1H-indol-3-ylmethyl)-2,5,8,11,14,17-hexaoxo-1,4,7,10,13,18-hexazacyclotricosane-23-carboxylic acid",
+    "sinonimos": [
+      "bremelanotide"
+    ],
+    "cas_complejo": "189691-06-3",
+    "cas_peptido_libre": null,
+    "formula": "C50H68N14O10",
+    "peso_molecular": "1025.2 g/mol",
+    "formula_peptido_libre": null,
+    "peso_peptido_libre": null,
+    "secuencia": "Ac-Nle-c[Asp-His-D-Phe-Arg-Trp-Lys]-OH",
+    "residuos": 7,
+    "apariencia": null,
+    "solubilidad": null,
+    "categoria": "Péptido o peptidomimético",
+    "etiqueta_forma_libre": null,
+    "nota_nomenclatura": null,
+    "fuentes": {
+      "nombre_quimico": "PubChem CID 9941379",
+      "cas_complejo": "PubChem CID 9941379",
+      "formula": "PubChem CID 9941379",
+      "peso_molecular": "PubChem CID 9941379",
+      "secuencia": "PubChem CID 9941379; etiqueta regulatoria de Vyleesi"
+    }
+  },
+  "triptorelin-acetate": {
+    "nombre": "Triptorelin Acetate",
+    "nombre_quimico": "(2S)-N-[(2S)-1-[[(2S)-1-[[(2S)-1-[[(2S)-1-[[(2R)-1-[[(2S)-1-[[(2S)-1-[(2S)-2-[(2-amino-2-oxoethyl)carbamoyl]pyrrolidin-1-yl]-5-(diaminomethylideneamino)-1-oxopentan-2-yl]amino]-4-methyl-1-oxopentan-2-yl]amino]-3-(1H-indol-3-yl)-1-oxopropan-2-yl]amino]-3-(4-hydroxyphenyl)-1-oxopropan-2-yl]amino]-3-hydroxy-1-oxopropan-2-yl]amino]-3-(1H-indol-3-yl)-1-oxopropan-2-yl]amino]-3-(1H-imidazol-5-yl)-1-oxopropan-2-yl]-5-oxopyrrolidine-2-carboxamide",
+    "sinonimos": [
+      "triptorelin"
+    ],
+    "cas_complejo": "57773-63-4",
+    "cas_peptido_libre": null,
+    "formula": "C64H82N18O13",
+    "peso_molecular": "1311.4 g/mol",
+    "formula_peptido_libre": null,
+    "peso_peptido_libre": null,
+    "secuencia": "pGlu-His-Trp-Ser-Tyr-D-Trp-Leu-Arg-Pro-Gly-NH2",
+    "residuos": 10,
+    "apariencia": null,
+    "solubilidad": null,
+    "categoria": "Péptido o peptidomimético",
+    "etiqueta_forma_libre": null,
+    "nota_nomenclatura": null,
+    "fuentes": {
+      "nombre_quimico": "PubChem CID 25074470",
+      "cas_complejo": "PubChem CID 25074470",
+      "formula": "PubChem CID 25074470",
+      "peso_molecular": "PubChem CID 25074470",
+      "secuencia": "PubChem CID 25074470"
+    }
+  },
+  "b12": {
+    "nombre": "B12",
+    "nombre_quimico": "Cianocobalamina",
+    "sinonimos": [
+      "Vitamina B12",
+      "Cyanocobalamin"
+    ],
+    "cas_complejo": "68-19-9",
+    "cas_peptido_libre": null,
+    "formula": "C63H88CoN14O14P",
+    "peso_molecular": "1355.4 g/mol",
+    "formula_peptido_libre": null,
+    "peso_peptido_libre": null,
+    "secuencia": null,
+    "residuos": null,
+    "apariencia": null,
+    "solubilidad": null,
+    "categoria": "Molécula pequeña; no tiene secuencia peptídica",
+    "etiqueta_forma_libre": null,
+    "nota_nomenclatura": "La monografía del catálogo debe especificar cianocobalamina; 'cobalamina' por sí sola abarca formas químicas distintas.",
+    "fuentes": {
+      "nombre_quimico": "PubChem CID 166596686",
+      "formula": "PubChem CID 166596686",
+      "peso_molecular": "PubChem CID 166596686",
+      "cas_complejo": "PubChem CID 166596686; etiqueta regulatoria de cyanocobalamin"
+    }
+  },
+  "vitamina-b12": {
+    "nombre": "Vitamina B12",
+    "nombre_quimico": "Cianocobalamina",
+    "sinonimos": [
+      "Vitamina B12",
+      "Cyanocobalamin"
+    ],
+    "cas_complejo": "68-19-9",
+    "cas_peptido_libre": null,
+    "formula": "C63H88CoN14O14P",
+    "peso_molecular": "1355.4 g/mol",
+    "formula_peptido_libre": null,
+    "peso_peptido_libre": null,
+    "secuencia": null,
+    "residuos": null,
+    "apariencia": null,
+    "solubilidad": null,
+    "categoria": "Molécula pequeña; no tiene secuencia peptídica",
+    "etiqueta_forma_libre": null,
+    "nota_nomenclatura": "La monografía del catálogo debe especificar cianocobalamina; 'cobalamina' por sí sola abarca formas químicas distintas.",
+    "fuentes": {
+      "nombre_quimico": "PubChem CID 166596686",
+      "formula": "PubChem CID 166596686",
+      "peso_molecular": "PubChem CID 166596686",
+      "cas_complejo": "PubChem CID 166596686; etiqueta regulatoria de cyanocobalamin"
+    }
+  },
+  "acido-acetico": {
+    "nombre": "Ácido acético",
+    "nombre_quimico": "acetic acid",
+    "sinonimos": [
+      "acetic acid"
+    ],
+    "cas_complejo": "64-19-7",
+    "cas_peptido_libre": null,
+    "formula": "C2H4O2",
+    "peso_molecular": "60.05 g/mol",
+    "formula_peptido_libre": null,
+    "peso_peptido_libre": null,
+    "secuencia": null,
+    "residuos": null,
+    "apariencia": null,
+    "solubilidad": null,
+    "categoria": "Molécula pequeña; no tiene secuencia peptídica",
+    "etiqueta_forma_libre": null,
+    "nota_nomenclatura": null,
+    "fuentes": {
+      "nombre_quimico": "PubChem CID 176",
+      "cas_complejo": "PubChem CID 176",
+      "formula": "PubChem CID 176",
+      "peso_molecular": "PubChem CID 176"
+    }
+  },
+  "botulinum-toxin": {
+    "nombre": "Botulinum toxin",
+    "nombre_quimico": "Neurotoxina botulínica; serotipo no especificado",
+    "sinonimos": [
+      "Botulinum neurotoxin",
+      "BoNT"
+    ],
+    "cas_complejo": null,
+    "cas_peptido_libre": null,
+    "formula": null,
+    "peso_molecular": "aprox. 150 kDa para la neurotoxina activa",
+    "formula_peptido_libre": null,
+    "peso_peptido_libre": null,
+    "secuencia": null,
+    "residuos": null,
+    "apariencia": null,
+    "solubilidad": null,
+    "categoria": "Proteína bacteriana de serotipo no especificado",
+    "etiqueta_forma_libre": null,
+    "nota_nomenclatura": "El nombre abarca serotipos y complejos proteicos distintos. Sin serotipo y cepa no pueden asignarse CAS, fórmula, secuencia ni residuos únicos.",
+    "fuentes": {
+      "peso_molecular": "Revisión primaria/regulatoria de neurotoxinas botulínicas; proteína activa 150 kDa"
+    }
+  },
+  "fragment-17-23": {
+    "nombre": "Fragment 17-23",
+    "nombre_quimico": "N-acetil-L-leucil-L-lisil-L-lisil-L-treonil-L-glutamil-L-treonil-L-glutamina",
+    "sinonimos": [
+      "Ac-LKKTETQ",
+      "TB-500"
+    ],
+    "cas_complejo": "885340-08-9",
+    "cas_peptido_libre": null,
+    "formula": "C38H68N10O14",
+    "peso_molecular": "889.0 g/mol",
+    "formula_peptido_libre": null,
+    "peso_peptido_libre": null,
+    "secuencia": "Ac-Leu-Lys-Lys-Thr-Glu-Thr-Gln",
+    "residuos": 7,
+    "apariencia": null,
+    "solubilidad": null,
+    "categoria": "Heptapéptido N-acetilado",
+    "etiqueta_forma_libre": null,
+    "nota_nomenclatura": "Es el mismo material molecular que la entrada TB-500 de PubChem, no un registro químico distinto.",
+    "fuentes": {
+      "cas_complejo": "PubChem CID 62707662",
+      "formula": "PubChem CID 62707662",
+      "peso_molecular": "PubChem CID 62707662",
+      "secuencia": "PubChem CID 62707662"
+    }
+  },
+  "igf-1-lr3": {
+    "nombre": "IGF-1 LR3",
+    "nombre_quimico": "Long R3 insulin-like growth factor I",
+    "sinonimos": [
+      "Long R3 IGF-I",
+      "LR3-IGF-1"
+    ],
+    "cas_complejo": "946870-92-4",
+    "cas_peptido_libre": null,
+    "formula": null,
+    "peso_molecular": "aprox. 9.1 kDa",
+    "formula_peptido_libre": null,
+    "peso_peptido_libre": null,
+    "secuencia": null,
+    "residuos": 83,
+    "apariencia": null,
+    "solubilidad": null,
+    "categoria": "Proteína recombinante análoga de IGF-1",
+    "etiqueta_forma_libre": null,
+    "nota_nomenclatura": "Tiene una extensión N-terminal de 13 residuos y Arg en la posición 3 de IGF-1. La secuencia completa se deja en null porque no se obtuvo una transcripción primaria inequívoca.",
+    "fuentes": {
+      "cas_complejo": "Artículo primario de Francis et al. sobre Long R3 IGF-I",
+      "peso_molecular": "Artículo primario de Francis et al.",
+      "residuos": "Artículo primario de Francis et al."
+    }
+  },
+  "peg-mgf": {
+    "nombre": "PEG-MGF",
+    "nombre_quimico": "Conjugado pegilado del péptido E de mechano growth factor",
+    "sinonimos": [
+      "PEGylated MGF",
+      "PEG-MGF"
+    ],
+    "cas_complejo": null,
+    "cas_peptido_libre": null,
+    "formula": null,
+    "peso_molecular": null,
+    "formula_peptido_libre": null,
+    "peso_peptido_libre": null,
+    "secuencia": null,
+    "residuos": null,
+    "apariencia": null,
+    "solubilidad": null,
+    "categoria": "Conjugado PEG-péptido de construcción no especificada",
+    "etiqueta_forma_libre": null,
+    "nota_nomenclatura": "El sitio de pegilación, la masa del PEG y la composición exacta del vial no son públicos en una fuente permitida. Sin esa información no existe una identidad molecular única; CAS, fórmula, masa, secuencia y residuos quedan null.",
+    "fuentes": {
+      "nota_nomenclatura": "Revisión de literatura primaria de MGF; no se encontró una construcción PEG-MGF definida"
+    }
+  },
+  "b7-33": {
+    "nombre": "B7-33",
+    "nombre_quimico": "Análogo lineal de cadena B de relaxina-2 humana, residuos B7-B29 extendidos con KRSL",
+    "sinonimos": [
+      "Relaxin B-chain peptide B7-33"
+    ],
+    "cas_complejo": null,
+    "cas_peptido_libre": null,
+    "formula": null,
+    "peso_molecular": null,
+    "formula_peptido_libre": null,
+    "peso_peptido_libre": null,
+    "secuencia": "VIKLSGRELVRAQIAISGMSTWSKRSL",
+    "residuos": 27,
+    "apariencia": null,
+    "solubilidad": null,
+    "categoria": "Péptido lineal análogo de relaxina",
+    "etiqueta_forma_libre": null,
+    "nota_nomenclatura": "No se asignan CAS, fórmula ni masa porque no se localizaron en una fuente permitida con registro inequívoco; algunos resúmenes lo llaman 26 aa, pero la secuencia primaria publicada contiene 27 residuos.",
+    "fuentes": {
+      "secuencia": "Hossain et al., Chem Sci 2016, artículo primario; revisión PubMed 27922185"
+    }
+  },
+  "cjc-1295-con-dac": {
+    "nombre": "CJC-1295 (con DAC)",
+    "nombre_quimico": "CJC-1295; Nε-maleimidopropionil-Lys30-[D-Ala2,Gln8,Ala15,Leu27]-GHRH(1-29)-NH2",
+    "sinonimos": [
+      "CJC-1295 DAC",
+      "DAC:GRF"
+    ],
+    "cas_complejo": "446262-90-4",
+    "cas_peptido_libre": null,
+    "formula": "C165H269N47O46",
+    "peso_molecular": "3647.2 g/mol",
+    "formula_peptido_libre": null,
+    "peso_peptido_libre": null,
+    "secuencia": "Y-(D-Ala)-DAIFTQSYRKVLAQLSARKLLQDILSR-K(Nε-maleimidopropionil)-NH2",
+    "residuos": 30,
+    "apariencia": null,
+    "solubilidad": null,
+    "categoria": "Análogo de GHRH con grupo reactivo de afinidad por albúmina",
+    "etiqueta_forma_libre": null,
+    "nota_nomenclatura": "La Lys30 porta el grupo maleimidopropionilo que reacciona con albúmina; es distinta de Modified GRF(1-29). PubChem marca 863288-34-0 como CAS antiguo/deprecado para esta estructura.",
+    "fuentes": {
+      "cas_complejo": "PubChem CID 91971820",
+      "formula": "PubChem CID 91971820",
+      "peso_molecular": "PubChem CID 91971820",
+      "secuencia": "Artículo primario de Jette et al., Endocrinology 2005"
+    }
+  },
+  "cjc-1295-sin-dac": {
+    "nombre": "CJC-1295 (sin DAC)",
+    "nombre_quimico": "Modified GRF(1-29), [D-Ala2,Gln8,Ala15,Leu27]-GHRH(1-29)-NH2",
+    "sinonimos": [
+      "Modified GRF(1-29)",
+      "Tetrasubstituted GRF(1-29)"
+    ],
+    "cas_complejo": null,
+    "cas_peptido_libre": null,
+    "formula": "C152H252N44O42",
+    "peso_molecular": "3367.9 g/mol",
+    "formula_peptido_libre": null,
+    "peso_peptido_libre": null,
+    "secuencia": "Y-(D-Ala)-DAIFTQSYRKVLAQLSARKLLQDILSR-NH2",
+    "residuos": 29,
+    "apariencia": null,
+    "solubilidad": null,
+    "categoria": "Análogo de GHRH amidado",
+    "etiqueta_forma_libre": null,
+    "nota_nomenclatura": "No contiene DAC ni grupo de conjugación a albúmina; no es químicamente CJC-1295 con DAC. No se asigna 863288-34-0: PubChem lo marca como CAS deprecado de la estructura con DAC y no se halló una fuente permitida que lo reasigne formalmente a Modified GRF(1-29).",
+    "fuentes": {
+      "formula": "PubChem CID 56841945",
+      "peso_molecular": "PubChem CID 56841945",
+      "secuencia": "Artículo primario de Jette et al. sobre CJC-1295",
+      "nota_nomenclatura": "PubChem CID 91971820 y CID 56841945"
+    }
+  },
+  "dysport": {
+    "nombre": "Dysport",
+    "nombre_quimico": "AbobotulinumtoxinA",
+    "sinonimos": [
+      "Dysport",
+      "Botulinum toxin type A complex"
+    ],
+    "cas_complejo": null,
+    "cas_peptido_libre": null,
+    "formula": null,
+    "peso_molecular": "aprox. 150 kDa para la neurotoxina activa",
+    "formula_peptido_libre": null,
+    "peso_peptido_libre": null,
+    "secuencia": null,
+    "residuos": null,
+    "apariencia": null,
+    "solubilidad": null,
+    "categoria": "Preparado biológico de toxina botulínica tipo A",
+    "etiqueta_forma_libre": null,
+    "nota_nomenclatura": "Dysport es una formulación comercial con complejo proteico, albúmina y lactosa; no es una molécula pura con fórmula única. Las unidades de potencia no son intercambiables. Secuencia y residuos quedan null porque la etiqueta no define una única especie molecular aislada.",
+    "fuentes": {
+      "nombre_quimico": "Etiqueta regulatoria FDA de Dysport",
+      "peso_molecular": "Etiqueta regulatoria y PubMed 30551641"
+    }
+  },
+  "humsc-celulas-madre": {
+    "nombre": "HUMSC (células madre)",
+    "nombre_quimico": null,
+    "sinonimos": [],
+    "cas_complejo": null,
+    "cas_peptido_libre": null,
+    "formula": null,
+    "peso_molecular": null,
+    "formula_peptido_libre": null,
+    "peso_peptido_libre": null,
+    "secuencia": null,
+    "residuos": null,
+    "apariencia": null,
+    "solubilidad": null,
+    "categoria": "Material celular humano",
+    "etiqueta_forma_libre": null,
+    "nota_nomenclatura": "Células estromales/mesenquimales derivadas de cordón umbilical humano. No son una molécula y no tienen CAS, fórmula, masa molecular, secuencia ni número de residuos.",
+    "fuentes": {
+      "nota_nomenclatura": "Criterios ISCT para células estromales mesenquimales; monografía del catálogo Exygen"
+    }
+  },
+  "dulaglutida": {
+    "nombre": "Dulaglutida",
+    "nombre_quimico": "Dulaglutide, proteína de fusión GLP-1 análogo–Fc de IgG4",
+    "sinonimos": [
+      "LY2189265",
+      "Trulicity"
+    ],
+    "cas_complejo": "923950-08-7",
+    "cas_peptido_libre": null,
+    "formula": null,
+    "peso_molecular": "aprox. 63 kDa",
+    "formula_peptido_libre": null,
+    "peso_peptido_libre": null,
+    "secuencia": null,
+    "residuos": 596,
+    "apariencia": null,
+    "solubilidad": null,
+    "categoria": "Glicoproteína de fusión dimérica",
+    "etiqueta_forma_libre": null,
+    "nota_nomenclatura": "Dos cadenas idénticas de 298 residuos, producidas en células CHO. La glicosilación impide asignar una fórmula molecular única; la secuencia completa se deja en null porque la etiqueta describe la arquitectura pero no la imprime.",
+    "fuentes": {
+      "cas_complejo": "Etiqueta regulatoria de Trulicity",
+      "peso_molecular": "Etiqueta FDA de Trulicity, sección Description",
+      "residuos": "Etiqueta regulatoria de Trulicity; 298 residuos por cadena"
+    }
+  },
+  "follistatin": {
+    "nombre": "Follistatin",
+    "nombre_quimico": "Folistatina humana",
+    "sinonimos": [
+      "FST",
+      "Activin-binding protein"
+    ],
+    "cas_complejo": null,
+    "cas_peptido_libre": null,
+    "formula": null,
+    "peso_molecular": null,
+    "formula_peptido_libre": null,
+    "peso_peptido_libre": null,
+    "secuencia": null,
+    "residuos": null,
+    "apariencia": null,
+    "solubilidad": null,
+    "categoria": "Glicoproteína humana; isoforma del producto no especificada",
+    "etiqueta_forma_libre": null,
+    "nota_nomenclatura": "El catálogo no especifica FST288, FST303 o FST315/FS344 ni el sistema de expresión. Por ello CAS, fórmula, masa, secuencia y residuos quedan null: asignar una isoforma sería inventar.",
+    "fuentes": {
+      "nota_nomenclatura": "UniProt P19883; monografía del catálogo Exygen no identifica isoforma"
+    }
+  },
+  "gdf-8": {
+    "nombre": "GDF-8",
+    "nombre_quimico": "Miostatina humana (growth/differentiation factor 8)",
+    "sinonimos": [
+      "Myostatin",
+      "MSTN"
+    ],
+    "cas_complejo": null,
+    "cas_peptido_libre": null,
+    "formula": null,
+    "peso_molecular": "aprox. 25 kDa para el dímero maduro",
+    "formula_peptido_libre": null,
+    "peso_peptido_libre": null,
+    "secuencia": null,
+    "residuos": 218,
+    "apariencia": null,
+    "solubilidad": null,
+    "categoria": "Proteína dimérica de la familia TGF-β",
+    "etiqueta_forma_libre": null,
+    "nota_nomenclatura": "El precursor humano tiene 375 aa; el producto maduro corresponde a dos cadenas de 109 residuos unidas por disulfuro. La fórmula es null porque el nombre del catálogo no define forma, procesamiento ni glicosilación.",
+    "fuentes": {
+      "peso_molecular": "UniProt O14793; artículo primario de McPherron et al.",
+      "residuos": "UniProt O14793 (109 aa por monómero maduro)"
+    }
+  },
+  "hcg": {
+    "nombre": "hCG",
+    "nombre_quimico": "Gonadotropina coriónica humana",
+    "sinonimos": [
+      "Choriogonadotropin",
+      "Human chorionic gonadotropin"
+    ],
+    "cas_complejo": "9002-61-3",
+    "cas_peptido_libre": null,
+    "formula": null,
+    "peso_molecular": "aprox. 36.7 kDa",
+    "formula_peptido_libre": null,
+    "peso_peptido_libre": null,
+    "secuencia": null,
+    "residuos": 237,
+    "apariencia": null,
+    "solubilidad": null,
+    "categoria": "Glicoproteína heterodimérica",
+    "etiqueta_forma_libre": null,
+    "nota_nomenclatura": "Subunidad alfa madura de 92 aa y beta madura de 145 aa. La glicosilación y las variantes de fabricación impiden una fórmula molecular única.",
+    "fuentes": {
+      "cas_complejo": "Etiqueta regulatoria de chorionic gonadotropin",
+      "peso_molecular": "Literatura primaria estructural de hCG",
+      "residuos": "UniProt P01215 y P0DN86"
+    }
+  },
+  "mgf": {
+    "nombre": "MGF",
+    "nombre_quimico": "Péptido E de la isoforma Ec de IGF-1 (mechano growth factor)",
+    "sinonimos": [
+      "Mechano growth factor",
+      "IGF-1Ec E-peptide"
+    ],
+    "cas_complejo": null,
+    "cas_peptido_libre": null,
+    "formula": null,
+    "peso_molecular": null,
+    "formula_peptido_libre": null,
+    "peso_peptido_libre": null,
+    "secuencia": "YQPPSTNKNTKSQRRKGSTFEEHK",
+    "residuos": 24,
+    "apariencia": null,
+    "solubilidad": null,
+    "categoria": "Péptido E derivado del empalme alternativo de IGF-1",
+    "etiqueta_forma_libre": null,
+    "nota_nomenclatura": "MGF se usa de forma ambigua para la isoforma IGF-1Ec completa y para su péptido E C-terminal. El catálogo describe el péptido E; CAS, fórmula y masa quedan null sin una sustancia de referencia inequívoca.",
+    "fuentes": {
+      "secuencia": "Goldspink et al., artículos primarios sobre IGF-1Ec/MGF"
+    }
+  },
+  "epo": {
+    "nombre": "EPO",
+    "nombre_quimico": "Eritropoyetina humana / epoetina recombinante",
+    "sinonimos": [
+      "Erythropoietin",
+      "Epoetin"
+    ],
+    "cas_complejo": "11096-26-7",
+    "cas_peptido_libre": null,
+    "formula": null,
+    "peso_molecular": "aprox. 30–34 kDa glicosilada",
+    "formula_peptido_libre": null,
+    "peso_peptido_libre": null,
+    "secuencia": "APPRLICDSRVLERYLLEAKEAENITTGCAEHCSLNENITVPDTKVNFYAWKRMEVGQQAVEVWQGLALLSEAVLRGQALLVNSSQPWEPLQLHVDKAVSGLRSLTTLLRALGAQKEAISPPDAASAAPLRTITADTFRKLFRVYSNFLRGKLKLYTGEACRTGDR",
+    "residuos": 165,
+    "apariencia": null,
+    "solubilidad": null,
+    "categoria": "Glicoproteína humana recombinante",
+    "etiqueta_forma_libre": null,
+    "nota_nomenclatura": "Tres N-glicanos y un O-glicano aportan heterogeneidad; por ello no existe una fórmula molecular única para EPO glicosilada.",
+    "fuentes": {
+      "cas_complejo": "USP monograph Epoetin",
+      "peso_molecular": "Etiqueta regulatoria de epoetin; literatura primaria",
+      "secuencia": "UniProt P01588, cadena madura 29-193",
+      "residuos": "UniProt P01588"
+    }
+  }
+}

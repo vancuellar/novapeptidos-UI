@@ -67,7 +67,9 @@
     "test": "craco test",
     "auditoria": "node scripts/auditoria-e2e.js",
     "auditoria:completa": "node scripts/auditoria-e2e.js --compras",
-    "e2e:cripto": "node scripts/e2e-nowpayments.js"
+    "e2e:cripto": "node scripts/e2e-nowpayments.js",
+    "e2e:tarjeta": "node scripts/e2e-mercadopago.js",
+    "verificar": "npm run auditoria && npm run e2e:cripto && npm run e2e:tarjeta"
   },
   "browserslist": {
     "production": [
