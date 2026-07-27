@@ -127,11 +127,30 @@ const Account = () => {
 
   // Péptidos que este cliente ya compró, para pre-cargar la calculadora.
   // Solo los que el catálogo maneja en mg (los únicos que se reconstituyen).
+  //
+  // ⚠️ El nombre NO se compara por igualdad. El pedido guarda el nombre PLANO del
+  // backend, que trae la presentación pegada ("NAD+ 500 mg"), mientras el catálogo
+  // se llama "NAD+". Con igualdad exacta nunca coincidía: Paz Cambray tenía dos
+  // péptidos comprados y la calculadora le mostraba el catálogo entero, sin sus
+  // atajos (encontrado el 2026-07-26 viendo su cuenta con "Ver como").
+  //
+  // Se compara por prefijo y gana el nombre MÁS LARGO, porque si no un combo
+  // ("BPC-157 5mg + TB-500 5mg") se confundiría con "BPC-157".
+  const matchCatalogo = (nombreItem) => {
+    const n = (nombreItem || '').toLowerCase().trim();
+    if (!n) return null;
+    const exacto = mgProducts.find((p) => p.name.toLowerCase() === n);
+    if (exacto) return exacto;
+    return mgProducts
+      .filter((p) => n.startsWith(p.name.toLowerCase()))
+      .sort((a, b) => b.name.length - a.name.length)[0] || null;
+  };
+
   const purchased = (() => {
     const seen = new Map();
     for (const o of paidOrders) {
       for (const it of o.items || []) {
-        const match = mgProducts.find((p) => p.name.toLowerCase() === (it.name || '').toLowerCase());
+        const match = matchCatalogo(it.name);
         if (!match) continue;
         const mg = parseFloat(it.presentation) || (match.variants.length ? Math.min(...match.variants) : 0);
         const key = `${match.name}::${mg}`;
