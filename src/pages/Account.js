@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import { useNavigate, useSearchParams, Link } from 'react-router-dom';
-import { Package, User, LogOut, ShoppingBag, DollarSign, MapPin, CreditCard, LockKeyhole, Eye, EyeOff, Syringe, Truck, ExternalLink, Lock, FlaskConical, FileText, Coins, Bell } from 'lucide-react';
+import { Package, User, LogOut, ShoppingBag, DollarSign, MapPin, CreditCard, LockKeyhole, Eye, EyeOff, Syringe, Truck, ExternalLink, Lock, FlaskConical, FileText, BookOpen, Coins, Bell } from 'lucide-react';
 import ReconstitutionCalculator, { mgProducts } from '@/components/ReconstitutionCalculator';
 import ProtocolTracker from '@/components/ProtocolTracker';
 import LabReports from '@/components/LabReports';
@@ -12,6 +12,7 @@ import { Label } from '@/components/ui/label';
 import { Tabs, TabsContent } from '@/components/ui/tabs';
 import DashboardSidebar from '@/components/layout/DashboardSidebar';
 import CoaLibrary from '@/components/CoaLibrary';
+import FichaLibrary from '@/components/FichaLibrary';
 import NotificationsFeed from '@/components/NotificationsFeed';
 import SecurityKeys from '@/components/SecurityKeys';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
@@ -200,6 +201,7 @@ const Account = () => {
           { value: 'tools', icon: Syringe, label: t('account.toolsTab') },
           { value: 'labs', icon: FlaskConical, label: t('account.labsTab') },
           { value: 'coas', icon: FileText, label: t('account.coasTab') },
+          { value: 'fichas', icon: BookOpen, label: t('account.fichasTab') },
           { value: 'profile', icon: User, label: t('account.profileTab') },
         ] : [
           { value: 'orders', icon: Package, label: t('account.ordersTab') },
@@ -360,6 +362,10 @@ const Account = () => {
 
         <TabsContent value="coas" className="mt-5">
           <CoaLibrary locked={!toolsUnlocked} />
+        </TabsContent>
+
+        <TabsContent value="fichas" className="mt-5">
+          <FichaLibrary locked={!toolsUnlocked} />
         </TabsContent>
 
         <TabsContent value="labs" className="mt-5">

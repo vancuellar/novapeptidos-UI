@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import { Filter, Eye, LayoutDashboard, Package, ShoppingBag, Plus, Pencil, Trash2, DollarSign, Users, Clock, TrendingUp, MapPin, Phone, Receipt, Store, Copy, Boxes, Truck, RefreshCw, MailCheck, Ban, Megaphone, BarChart3, Upload, ShoppingCart, Target } from 'lucide-react';
+import { Filter, Eye, LayoutDashboard, Package, ShoppingBag, Plus, Pencil, Trash2, DollarSign, Users, Clock, TrendingUp, MapPin, Phone, Receipt, Store, Copy, Boxes, Truck, RefreshCw, MailCheck, Ban, Megaphone, BarChart3, Upload, ShoppingCart, Target, KeyRound } from 'lucide-react';
 import Marketing from '@/components/admin/Marketing';
 import { fallbackProducts } from '@/data/fallbackCatalog';
 import { ResponsiveContainer, AreaChart, Area, BarChart, Bar, ComposedChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts';
@@ -12,6 +12,7 @@ import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent } from '@/components/ui/tabs';
 import DashboardSidebar from '@/components/layout/DashboardSidebar';
+import GatewayCredentials from '@/components/GatewayCredentials';
 import AdminAnnouncements from '@/components/AdminAnnouncements';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog';
@@ -440,6 +441,7 @@ const Admin = () => {
           { value: 'stock', icon: Boxes, label: t('admin.stockTab') },
           { value: 'repurchase', icon: RefreshCw, label: t('admin.repurchaseTab') },
           { value: 'news', icon: Megaphone, label: t('adminNews.tab') },
+          { value: 'pagos', icon: KeyRound, label: 'Cobros' },
         ]} />
         <div className="min-w-0 flex-1">
 
@@ -454,6 +456,10 @@ const Admin = () => {
 
         <TabsContent value="news" className="mt-5">
           <AdminAnnouncements />
+        </TabsContent>
+
+        <TabsContent value="pagos" className="mt-5">
+          <GatewayCredentials />
         </TabsContent>
 
         <TabsContent value="stock" className="mt-5">
