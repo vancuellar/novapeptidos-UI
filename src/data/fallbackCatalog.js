@@ -410,14 +410,18 @@ export const fallbackProducts = [
     "coa_url": "https://exygenlabs.com/coa/thymalin.pdf",
     "batch_number": "NP-THYM10-2601",
     "storage": "Conservar a -20 °C, protegido de la luz. Reconstituido: 2–8 °C.",
-    "start_dose": 1,
+    "start_dose": 10,
     "start_unit": "mg",
     "start_freq": "daily_cycle",
     "start_levels": {
-      "inicial": 1,
-      "tipica": 1.5,
-      "avanzada": 2,
-      "unit": "mg"
+      "inicial": 10,
+      "tipica": 10,
+      "avanzada": 10,
+      "unit": "mg",
+      "fuente": "Protocolo clínico de Khavinson (Instituto de Bioregulación y Gerontología, San Petersburgo): 10 mg al día durante 5 a 10 días seguidos, y el curso se repite cada 6 a 12 meses. ⚠️ CORRECCIÓN: antes lo habíamos bajado a 1-2 mg por analogía con los otros bioreguladores. Para Thymalin esa analogía era falsa — su protocolo publicado sí es de 10 mg.",
+      "agua_ml": {
+        "10": 2
+      }
     },
     "featured": false,
     "is_new": false
@@ -1016,7 +1020,12 @@ export const fallbackProducts = [
       "inicial": 100,
       "tipica": 150,
       "avanzada": 200,
-      "unit": "mcg"
+      "unit": "mcg",
+      "fuente": "Estudio de dosis-respuesta en humanos: 1 a 2 mcg/kg subcutáneos; por arriba de 2 mcg/kg la hormona de crecimiento ya no sube y sí suben cortisol y prolactina. ⚠️ Dosificado POR PESO; aquí va la conversión para ~70-100 kg.",
+      "agua_ml": {
+        "2": 1,
+        "5": 2.5
+      }
     },
     "featured": false,
     "is_new": false
@@ -1073,16 +1082,18 @@ export const fallbackProducts = [
     "coa_url": "https://exygenlabs.com/coa/hgh.pdf",
     "batch_number": "NP-HGH24-2601",
     "storage": "Conservar a -20 °C, protegido de la luz. Reconstituido: 2–8 °C.",
-    "start_dose": 2,
+    "start_dose": 0.3,
     "start_unit": "iu",
     "start_levels": {
-      "inicial": 2,
-      "tipica": 3,
-      "avanzada": 4,
-      "unit": "iu"
+      "inicial": 0.3,
+      "tipica": 0.6,
+      "avanzada": 0.9,
+      "unit": "iu",
+      "fuente": "Etiqueta aprobada de somatropina (Norditropin/FDA) para deficiencia de GH en adultos: 0.2 mg al día entre 23 y 60 años, 0.1 mg arriba de 60 y 0.3 mg en mujeres con estrógeno oral. Conversión usada: 1 mg = 3 UI. https://www.accessdata.fda.gov/drugsatfda_docs/label/2017/021148s049lbl.pdf"
     },
     "featured": false,
-    "is_new": false
+    "is_new": false,
+    "start_freq": "daily"
   },
   {
     "id": "fallback-hgh-fragment-176-191",
@@ -1171,9 +1182,18 @@ export const fallbackProducts = [
     "start_freq": "daily",
     "start_levels": {
       "inicial": 250,
-      "tipica": 375,
-      "avanzada": 500,
-      "unit": "mcg"
+      "tipica": 500,
+      "avanzada": 1000,
+      "unit": "mcg",
+      "fuente": "Ensayo Fase IIa en sobrepeso y obesidad, 250 a 1,000 mcg al día por vía subcutánea durante 12 semanas. ⚠️ Los ensayos humanos se hicieron sobre AOD-9604, el análogo modificado; el fragmento sin modificar no tiene ensayo propio. La cifra se hereda de ahí.",
+      "agua_ml": {
+        "1": 1,
+        "2": 1,
+        "5": 2.5,
+        "10": 2.5,
+        "12": 3,
+        "15": 3
+      }
     },
     "featured": false,
     "is_new": false
@@ -2527,14 +2547,19 @@ export const fallbackProducts = [
     "coa_url": "https://exygenlabs.com/coa/cjc-1295-con-dac.pdf",
     "batch_number": "NP-CJCD2-2601",
     "storage": "Conservar a -20 °C, protegido de la luz. Reconstituido: 2–8 °C.",
-    "start_dose": 1,
+    "start_dose": 2,
     "start_unit": "mg",
-    "start_freq": "2x_week",
+    "start_freq": "weekly",
     "start_levels": {
-      "inicial": 1,
-      "tipica": 1.5,
-      "avanzada": 2,
-      "unit": "mg"
+      "inicial": 2,
+      "tipica": 3,
+      "avanzada": 4,
+      "unit": "mg",
+      "fuente": "Teichman SL et al., J Clin Endocrinol Metab 2006;91(3):799-805 (PMID 16352683): 30 a 60 mcg/kg subcutáneos, semanal o cada dos semanas. ⚠️ El ensayo dosificó POR PESO; los niveles de aquí son la conversión para ~70 kg.",
+      "agua_ml": {
+        "5": 1.25,
+        "10": 2.5
+      }
     },
     "featured": false,
     "is_new": false
@@ -2966,11 +2991,18 @@ export const fallbackProducts = [
     "coa_url": "https://exygenlabs.com/coa/mic-lipo-c-b12.pdf",
     "batch_number": "NP-MICL10-2601",
     "storage": "Conservar a -20 °C, protegido de la luz. Reconstituido: 2–8 °C.",
-    "start_dose": null,
-    "start_unit": null,
-    "start_levels": null,
+    "start_dose": 500,
+    "start_unit": "mcg",
+    "start_levels": {
+      "inicial": 500,
+      "tipica": 1000,
+      "avanzada": 1500,
+      "unit": "mcg",
+      "fuente": "researchdosing.com — manual de dosificación del mercado (fuente de vendedor, sin bibliografía). Las rayitas las recalculamos nosotros."
+    },
     "featured": false,
-    "is_new": false
+    "is_new": false,
+    "start_freq": "3x_week"
   },
   {
     "id": "fallback-oxitocina",
@@ -3130,16 +3162,18 @@ export const fallbackProducts = [
     "coa_url": "https://exygenlabs.com/coa/somatropina-hgh-191aa.pdf",
     "batch_number": "NP-SOMA10-2601",
     "storage": "Conservar a -20 °C, protegido de la luz. Reconstituido: 2–8 °C.",
-    "start_dose": 2,
+    "start_dose": 0.3,
     "start_unit": "iu",
     "start_levels": {
-      "inicial": 2,
-      "tipica": 3,
-      "avanzada": 4,
-      "unit": "iu"
+      "inicial": 0.3,
+      "tipica": 0.6,
+      "avanzada": 0.9,
+      "unit": "iu",
+      "fuente": "Etiqueta aprobada de somatropina (Norditropin/FDA) para deficiencia de GH en adultos: 0.2 mg al día entre 23 y 60 años, 0.1 mg arriba de 60 y 0.3 mg en mujeres con estrógeno oral. Conversión usada: 1 mg = 3 UI. https://www.accessdata.fda.gov/drugsatfda_docs/label/2017/021148s049lbl.pdf"
     },
     "featured": false,
-    "is_new": false
+    "is_new": false,
+    "start_freq": "daily"
   },
   {
     "id": "fallback-tesamorelina",
@@ -3502,14 +3536,18 @@ export const fallbackProducts = [
     "coa_url": "https://exygenlabs.com/coa/cagri-sema-2-5mg-2-5mg.pdf",
     "batch_number": "NP-CAGR5-2601",
     "storage": "Conservar a -20 °C, protegido de la luz. Reconstituido: 2–8 °C.",
-    "start_dose": 0.5,
+    "start_dose": 0.25,
     "start_unit": "mg",
     "start_freq": "weekly",
     "start_levels": {
-      "inicial": 0.5,
-      "tipica": 1,
-      "avanzada": 2,
-      "unit": "mg"
+      "inicial": 0.25,
+      "tipica": 0.5,
+      "avanzada": 1,
+      "unit": "mg",
+      "fuente": "Derivado de sus componentes, que sí tienen fuente propia en este mismo catálogo. No hay un ensayo de ESTA combinación exacta: se toma la dosis de cada compuesto por separado.",
+      "agua_ml": {
+        "5": 1
+      }
     },
     "featured": false,
     "is_new": false
@@ -3614,14 +3652,19 @@ export const fallbackProducts = [
     "coa_url": "https://exygenlabs.com/coa/dulaglutida.pdf",
     "batch_number": "NP-DULA10-2601",
     "storage": "Conservar a -20 °C, protegido de la luz. Reconstituido: 2–8 °C.",
-    "start_dose": 1.5,
+    "start_dose": 0.75,
     "start_unit": "mg",
     "start_freq": "weekly",
     "start_levels": {
-      "inicial": 1.5,
-      "tipica": 3,
+      "inicial": 0.75,
+      "tipica": 1.5,
       "avanzada": 4.5,
-      "unit": "mg"
+      "unit": "mg",
+      "fuente": "Etiqueta aprobada de Trulicity (dulaglutida) — FDA: 0.75 mg por semana; se sube a 1.5 mg tras 4 semanas y de 1.5 en 1.5 hasta un máximo de 4.5 mg. https://www.accessdata.fda.gov/drugsatfda_docs/label/2022/125469s051lbl.pdf",
+      "agua_ml": {
+        "5": 1,
+        "10": 2
+      }
     },
     "featured": false,
     "is_new": false
@@ -3806,9 +3849,14 @@ export const fallbackProducts = [
     "start_freq": "daily",
     "start_levels": {
       "inicial": 0.6,
-      "tipica": 1.2,
-      "avanzada": 1.8,
-      "unit": "mg"
+      "tipica": 1.8,
+      "avanzada": 3.0,
+      "unit": "mg",
+      "fuente": "Etiqueta aprobada de Saxenda (liraglutida) — DailyMed/FDA: 0.6 mg al día la primera semana y se sube 0.6 mg cada semana hasta 3 mg. https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=3946d389-0926-4f77-a708-0acb8153b143",
+      "agua_ml": {
+        "5": 1,
+        "10": 2
+      }
     },
     "featured": false,
     "is_new": false
@@ -4065,9 +4113,13 @@ export const fallbackProducts = [
     "start_freq": "weekly",
     "start_levels": {
       "inicial": 2,
-      "tipica": 5,
-      "avanzada": 10,
-      "unit": "mg"
+      "tipica": 4,
+      "avanzada": 8,
+      "unit": "mg",
+      "fuente": "Derivado de sus componentes, que sí tienen fuente propia en este mismo catálogo. No hay un ensayo de ESTA combinación exacta: se toma la dosis de cada compuesto por separado.",
+      "agua_ml": {
+        "60": 3
+      }
     },
     "featured": false,
     "is_new": false
@@ -5104,14 +5156,19 @@ export const fallbackProducts = [
     "coa_url": "https://exygenlabs.com/coa/gonadorelin-acetate.pdf",
     "batch_number": "NP-GONA2-2601",
     "storage": "Conservar a -20 °C, protegido de la luz. Reconstituido: 2–8 °C.",
-    "start_dose": 100,
+    "start_dose": 50,
     "start_unit": "mcg",
-    "start_freq": "eod",
+    "start_freq": "3x_week",
     "start_levels": {
-      "inicial": 100,
-      "tipica": 150,
-      "avanzada": 200,
-      "unit": "mcg"
+      "inicial": 50,
+      "tipica": 100,
+      "avanzada": 250,
+      "unit": "mcg",
+      "fuente": "Protocolo de investigación publicado: 50 a 100 mcg subcutáneos, 2 a 3 veces por semana; hasta 100-250 mcg en hipogonadismo hipogonadotrópico. Fuente secundaria, no etiqueta.",
+      "agua_ml": {
+        "2": 2,
+        "10": 2
+      }
     },
     "featured": false,
     "is_new": false
@@ -5459,7 +5516,8 @@ export const fallbackProducts = [
       "inicial": 1000,
       "tipica": 2500,
       "avanzada": 5000,
-      "unit": "mcg"
+      "unit": "mcg",
+      "fuente": "researchdosing.com — manual de dosificación del mercado (fuente de vendedor, sin bibliografía). Las rayitas las recalculamos nosotros."
     },
     "featured": false,
     "is_new": false
