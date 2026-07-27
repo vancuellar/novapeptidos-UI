@@ -115,13 +115,13 @@ export const fallbackProducts = [
     "coa_url": "https://exygenlabs.com/coa/bronchogen.pdf",
     "batch_number": "NP-BRON10-2601",
     "storage": "Conservar a -20 °C, protegido de la luz. Reconstituido: 2–8 °C.",
-    "start_dose": 5,
+    "start_dose": 0.5,
     "start_unit": "mg",
     "start_freq": "daily_cycle",
     "start_levels": {
-      "inicial": 5,
-      "tipica": 7.5,
-      "avanzada": 10,
+      "inicial": 0.5,
+      "tipica": 1,
+      "avanzada": 2,
       "unit": "mg"
     },
     "featured": false,
@@ -159,13 +159,13 @@ export const fallbackProducts = [
     "coa_url": "https://exygenlabs.com/coa/cardiogen.pdf",
     "batch_number": "NP-CARD20-2601",
     "storage": "Conservar a -20 °C, protegido de la luz. Reconstituido: 2–8 °C.",
-    "start_dose": 5,
+    "start_dose": 1,
     "start_unit": "mg",
     "start_freq": "daily_cycle",
     "start_levels": {
-      "inicial": 5,
-      "tipica": 7.5,
-      "avanzada": 10,
+      "inicial": 1,
+      "tipica": 2,
+      "avanzada": 2,
       "unit": "mg"
     },
     "featured": false,
@@ -203,13 +203,13 @@ export const fallbackProducts = [
     "coa_url": "https://exygenlabs.com/coa/cartalax.pdf",
     "batch_number": "NP-CART20-2601",
     "storage": "Conservar a -20 °C, protegido de la luz. Reconstituido: 2–8 °C.",
-    "start_dose": 5,
+    "start_dose": 1,
     "start_unit": "mg",
     "start_freq": "daily_cycle",
     "start_levels": {
-      "inicial": 5,
-      "tipica": 7.5,
-      "avanzada": 10,
+      "inicial": 1,
+      "tipica": 1.5,
+      "avanzada": 2,
       "unit": "mg"
     },
     "featured": false,
@@ -247,13 +247,13 @@ export const fallbackProducts = [
     "coa_url": "https://exygenlabs.com/coa/cortagen.pdf",
     "batch_number": "NP-CORT20-2601",
     "storage": "Conservar a -20 °C, protegido de la luz. Reconstituido: 2–8 °C.",
-    "start_dose": 5,
+    "start_dose": 1,
     "start_unit": "mg",
     "start_freq": "daily_cycle",
     "start_levels": {
-      "inicial": 5,
-      "tipica": 7.5,
-      "avanzada": 10,
+      "inicial": 1,
+      "tipica": 1.5,
+      "avanzada": 2,
       "unit": "mg"
     },
     "featured": false,
@@ -291,13 +291,13 @@ export const fallbackProducts = [
     "coa_url": "https://exygenlabs.com/coa/crystagen.pdf",
     "batch_number": "NP-CRYS20-2601",
     "storage": "Conservar a -20 °C, protegido de la luz. Reconstituido: 2–8 °C.",
-    "start_dose": 5,
+    "start_dose": 1,
     "start_unit": "mg",
     "start_freq": "daily_cycle",
     "start_levels": {
-      "inicial": 5,
-      "tipica": 7.5,
-      "avanzada": 10,
+      "inicial": 1,
+      "tipica": 1,
+      "avanzada": 1,
       "unit": "mg"
     },
     "featured": false,
@@ -345,13 +345,13 @@ export const fallbackProducts = [
     "coa_url": "https://exygenlabs.com/coa/pinealon.pdf",
     "batch_number": "NP-PINE5-2601",
     "storage": "Conservar a -20 °C, protegido de la luz. Reconstituido: 2–8 °C.",
-    "start_dose": 5,
+    "start_dose": 2,
     "start_unit": "mg",
     "start_freq": "daily_cycle",
     "start_levels": {
-      "inicial": 5,
-      "tipica": 7.5,
-      "avanzada": 10,
+      "inicial": 2,
+      "tipica": 3,
+      "avanzada": 5,
       "unit": "mg"
     },
     "featured": false,
@@ -389,13 +389,13 @@ export const fallbackProducts = [
     "coa_url": "https://exygenlabs.com/coa/thymalin.pdf",
     "batch_number": "NP-THYM10-2601",
     "storage": "Conservar a -20 °C, protegido de la luz. Reconstituido: 2–8 °C.",
-    "start_dose": 5,
+    "start_dose": 1,
     "start_unit": "mg",
     "start_freq": "daily_cycle",
     "start_levels": {
-      "inicial": 5,
-      "tipica": 7.5,
-      "avanzada": 10,
+      "inicial": 1,
+      "tipica": 1.5,
+      "avanzada": 2,
       "unit": "mg"
     },
     "featured": false,
@@ -584,13 +584,13 @@ export const fallbackProducts = [
     "coa_url": "https://exygenlabs.com/coa/ghk-cu.pdf",
     "batch_number": "NP-GHK50-2601",
     "storage": "Conservar a -20 °C, protegido de la luz. Reconstituido: 2–8 °C.",
-    "start_dose": 2,
+    "start_dose": 1,
     "start_unit": "mg",
     "start_freq": "daily",
     "start_levels": {
-      "inicial": 2,
-      "tipica": 3,
-      "avanzada": 5,
+      "inicial": 1,
+      "tipica": 2,
+      "avanzada": 3,
       "unit": "mg"
     },
     "featured": true,
@@ -1174,13 +1174,13 @@ export const fallbackProducts = [
     "coa_url": "https://exygenlabs.com/coa/igf-1-lr3.pdf",
     "batch_number": "NP-IGF101-2601",
     "storage": "Conservar a -20 °C, protegido de la luz. Reconstituido: 2–8 °C.",
-    "start_dose": 20,
+    "start_dose": 33,
     "start_unit": "mcg",
     "start_freq": "daily",
     "start_levels": {
-      "inicial": 20,
-      "tipica": 30,
-      "avanzada": 50,
+      "inicial": 33,
+      "tipica": 50,
+      "avanzada": 75,
       "unit": "mcg"
     },
     "featured": false,
@@ -1238,14 +1238,20 @@ export const fallbackProducts = [
     "coa_url": "https://exygenlabs.com/coa/ipamorelin.pdf",
     "batch_number": "NP-IPA2-2601",
     "storage": "Conservar a -20 °C, protegido de la luz. Reconstituido: 2–8 °C.",
-    "start_dose": 200,
+    "start_dose": 100,
     "start_unit": "mcg",
     "start_freq": "daily",
     "start_levels": {
-      "inicial": 200,
-      "tipica": 250,
+      "inicial": 100,
+      "tipica": 200,
       "avanzada": 300,
-      "unit": "mcg"
+      "unit": "mcg",
+      "agua_ml": {
+        "5": 1.5,
+        "10": 2.5,
+        "15": 3
+      },
+      "fuente": "investigación propia de Codex (INVESTIGACION-DOSIS-PEPTIDOS.md) + researchdosing.com (manual de dosificación del mercado)"
     },
     "featured": true,
     "is_new": false
@@ -1397,7 +1403,11 @@ export const fallbackProducts = [
       "inicial": 200,
       "tipica": 300,
       "avanzada": 500,
-      "unit": "mcg"
+      "unit": "mcg",
+      "agua_ml": {
+        "5": 2.5
+      },
+      "fuente": "investigación propia de Codex (INVESTIGACION-DOSIS-PEPTIDOS.md) + researchdosing.com (manual de dosificación del mercado)"
     },
     "featured": false,
     "is_new": false
@@ -1543,13 +1553,13 @@ export const fallbackProducts = [
     "coa_url": "https://exygenlabs.com/coa/foxo4.pdf",
     "batch_number": "NP-FOXO2-2601",
     "storage": "Conservar a -20 °C, protegido de la luz. Reconstituido: 2–8 °C.",
-    "start_dose": null,
-    "start_unit": null,
+    "start_dose": 250,
+    "start_unit": "mcg",
     "start_levels": {
-      "inicial": 10,
-      "tipica": 20,
-      "avanzada": 28,
-      "unit": "mg",
+      "inicial": 250,
+      "tipica": 375,
+      "avanzada": 500,
+      "unit": "mcg",
       "orientativa": true
     },
     "featured": false,
@@ -1597,13 +1607,13 @@ export const fallbackProducts = [
     "coa_url": "https://exygenlabs.com/coa/glutation.pdf",
     "batch_number": "NP-GLUT600-2601",
     "storage": "Conservar a -20 °C, protegido de la luz. Reconstituido: 2–8 °C.",
-    "start_dose": 200,
+    "start_dose": 100,
     "start_unit": "mg",
     "start_freq": "3x_week",
     "start_levels": {
-      "inicial": 200,
-      "tipica": 400,
-      "avanzada": 600,
+      "inicial": 100,
+      "tipica": 200,
+      "avanzada": 300,
       "unit": "mg"
     },
     "featured": false,
@@ -1728,7 +1738,11 @@ export const fallbackProducts = [
         "tipica": "2x_week",
         "avanzada": "3x_week"
       },
-      "agua_ml": { "100": 1, "500": 3, "1000": 5 },
+      "agua_ml": {
+        "100": 1,
+        "500": 3,
+        "1000": 5
+      },
       "fase": {
         "inicial": "inicio",
         "tipica": "mantenimiento",
@@ -1825,12 +1839,12 @@ export const fallbackProducts = [
     "coa_url": "https://exygenlabs.com/coa/cerebrolysin.pdf",
     "batch_number": "NP-CERE60-2601",
     "storage": "Conservar a -20 °C, protegido de la luz. Reconstituido: 2–8 °C.",
-    "start_dose": null,
-    "start_unit": null,
+    "start_dose": 8,
+    "start_unit": "mg",
     "start_levels": {
-      "inicial": 1075,
-      "tipica": 2150,
-      "avanzada": 6450,
+      "inicial": 8,
+      "tipica": 16,
+      "avanzada": 24,
       "unit": "mg",
       "orientativa": true
     },
@@ -1896,7 +1910,11 @@ export const fallbackProducts = [
       "inicial": 100,
       "tipica": 200,
       "avanzada": 300,
-      "unit": "mcg"
+      "unit": "mcg",
+      "agua_ml": {
+        "5": 2.5
+      },
+      "fuente": "investigación propia de Codex (INVESTIGACION-DOSIS-PEPTIDOS.md) + researchdosing.com (manual de dosificación del mercado)"
     },
     "featured": false,
     "is_new": false
@@ -2167,13 +2185,13 @@ export const fallbackProducts = [
     "coa_url": "https://exygenlabs.com/coa/selank.pdf",
     "batch_number": "NP-SLK5-2601",
     "storage": "Conservar a -20 °C, protegido de la luz. Reconstituido: 2–8 °C.",
-    "start_dose": 300,
+    "start_dose": 250,
     "start_unit": "mcg",
     "start_freq": "daily",
     "start_levels": {
-      "inicial": 300,
-      "tipica": 600,
-      "avanzada": 900,
+      "inicial": 250,
+      "tipica": 500,
+      "avanzada": 750,
       "unit": "mcg"
     },
     "featured": false,
@@ -2701,11 +2719,11 @@ export const fallbackProducts = [
     "coa_url": "https://exygenlabs.com/coa/mazdutida.pdf",
     "batch_number": "NP-MAZD5-2601",
     "storage": "Conservar a -20 °C, protegido de la luz. Reconstituido: 2–8 °C.",
-    "start_dose": 2.5,
+    "start_dose": 2,
     "start_unit": "mg",
     "start_freq": "weekly",
     "start_levels": {
-      "inicial": 2.5,
+      "inicial": 2,
       "tipica": 4,
       "avanzada": 6,
       "unit": "mg"
@@ -2793,12 +2811,16 @@ export const fallbackProducts = [
     "storage": "Conservar a -20 °C, protegido de la luz. Reconstituido: 2–8 °C.",
     "start_dose": 250,
     "start_unit": "mcg",
-    "start_freq": "mt",
+    "start_freq": "daily",
     "start_levels": {
       "inicial": 250,
       "tipica": 500,
       "avanzada": 1000,
-      "unit": "mcg"
+      "unit": "mcg",
+      "agua_ml": {
+        "10": 2.5
+      },
+      "fuente": "investigación propia de Codex (INVESTIGACION-DOSIS-PEPTIDOS.md) + researchdosing.com (manual de dosificación del mercado)"
     },
     "featured": false,
     "is_new": false
@@ -3076,7 +3098,12 @@ export const fallbackProducts = [
       "inicial": 1,
       "tipica": 1.5,
       "avanzada": 2,
-      "unit": "mg"
+      "unit": "mg",
+      "agua_ml": {
+        "10": 3,
+        "20": 3
+      },
+      "fuente": "investigación propia de Codex (INVESTIGACION-DOSIS-PEPTIDOS.md) + researchdosing.com (manual de dosificación del mercado)"
     },
     "featured": false,
     "is_new": false
@@ -3123,13 +3150,13 @@ export const fallbackProducts = [
     "coa_url": "https://exygenlabs.com/coa/vip.pdf",
     "batch_number": "NP-VIP5-2601",
     "storage": "Conservar a -20 °C, protegido de la luz. Reconstituido: 2–8 °C.",
-    "start_dose": 50,
+    "start_dose": 100,
     "start_unit": "mcg",
     "start_freq": "daily_2x",
     "start_levels": {
-      "inicial": 50,
-      "tipica": 75,
-      "avanzada": 100,
+      "inicial": 100,
+      "tipica": 150,
+      "avanzada": 200,
       "unit": "mcg"
     },
     "featured": false,
@@ -3187,12 +3214,12 @@ export const fallbackProducts = [
     "coa_url": "https://exygenlabs.com/coa/5-amino-1mq.pdf",
     "batch_number": "NP-5AMI5-2601",
     "storage": "Conservar a -20 °C, protegido de la luz. Reconstituido: 2–8 °C.",
-    "start_dose": null,
-    "start_unit": null,
+    "start_dose": 1,
+    "start_unit": "mg",
     "start_levels": {
-      "inicial": 50,
-      "tipica": 100,
-      "avanzada": 150,
+      "inicial": 1,
+      "tipica": 2,
+      "avanzada": 3,
       "unit": "mg",
       "orientativa": true
     },
@@ -3312,7 +3339,11 @@ export const fallbackProducts = [
       "inicial": 300,
       "tipica": 400,
       "avanzada": 500,
-      "unit": "mcg"
+      "unit": "mcg",
+      "agua_ml": {
+        "5": 2.5
+      },
+      "fuente": "investigación propia de Codex (INVESTIGACION-DOSIS-PEPTIDOS.md) + researchdosing.com (manual de dosificación del mercado)"
     },
     "featured": false,
     "is_new": false
@@ -3532,13 +3563,13 @@ export const fallbackProducts = [
     "coa_url": "https://exygenlabs.com/coa/l-carnitine.pdf",
     "batch_number": "NP-LCAR2-2601",
     "storage": "Conservar a -20 °C, protegido de la luz. Reconstituido: 2–8 °C.",
-    "start_dose": 500,
+    "start_dose": 50,
     "start_unit": "mg",
     "start_freq": "daily",
     "start_levels": {
-      "inicial": 500,
-      "tipica": 750,
-      "avanzada": 1000,
+      "inicial": 50,
+      "tipica": 100,
+      "avanzada": 200,
       "unit": "mg"
     },
     "featured": false,
@@ -3830,7 +3861,14 @@ export const fallbackProducts = [
       "tipica": 4,
       "avanzada": 8,
       "unit": "mg",
-      "agua_ml": { "5": 0.5, "10": 1, "15": 1.5, "20": 2, "30": 3, "40": 4 },
+      "agua_ml": {
+        "5": 0.5,
+        "10": 1,
+        "15": 1.5,
+        "20": 2,
+        "30": 3,
+        "40": 4
+      },
       "fuente": "Ensayo Fase 2 en obesidad (1, 4, 8 y 12 mg semanales): Jastreboff AM et al., N Engl J Med 2023;389(6):514-526 (PMID 37366315) · registro NCT04881760 en clinicaltrials.gov",
       "titulacion": [
         {
@@ -3991,7 +4029,12 @@ export const fallbackProducts = [
       "inicial": 0.25,
       "tipica": 0.5,
       "avanzada": 1,
-      "unit": "mg"
+      "unit": "mg",
+      "agua_ml": {
+        "5": 1,
+        "10": 2
+      },
+      "fuente": "investigación propia de Codex (INVESTIGACION-DOSIS-PEPTIDOS.md) + researchdosing.com (manual de dosificación del mercado)"
     },
     "featured": true,
     "is_new": false
@@ -4066,14 +4109,18 @@ export const fallbackProducts = [
     "coa_url": "https://exygenlabs.com/coa/survodutide.pdf",
     "batch_number": "NP-SURV10-2601",
     "storage": "Conservar a -20 °C, protegido de la luz. Reconstituido: 2–8 °C.",
-    "start_dose": 0.6,
+    "start_dose": 0.8,
     "start_unit": "mg",
     "start_freq": "weekly",
     "start_levels": {
-      "inicial": 0.6,
-      "tipica": 2.4,
-      "avanzada": 4.8,
-      "unit": "mg"
+      "inicial": 0.8,
+      "tipica": 1.6,
+      "avanzada": 2.4,
+      "unit": "mg",
+      "agua_ml": {
+        "10": 1.5
+      },
+      "fuente": "investigación propia de Codex (INVESTIGACION-DOSIS-PEPTIDOS.md) + researchdosing.com (manual de dosificación del mercado)"
     },
     "featured": false,
     "is_new": false
@@ -4187,7 +4234,13 @@ export const fallbackProducts = [
       "inicial": 2.5,
       "tipica": 5,
       "avanzada": 10,
-      "unit": "mg"
+      "unit": "mg",
+      "agua_ml": {
+        "10": 0.5,
+        "30": 1.5,
+        "60": 3
+      },
+      "fuente": "investigación propia de Codex (INVESTIGACION-DOSIS-PEPTIDOS.md) + researchdosing.com (manual de dosificación del mercado)"
     },
     "featured": true,
     "is_new": true
@@ -4241,7 +4294,11 @@ export const fallbackProducts = [
       "inicial": 2,
       "tipica": 3,
       "avanzada": 4,
-      "unit": "mg"
+      "unit": "mg",
+      "agua_ml": {
+        "10": 1.5
+      },
+      "fuente": "investigación propia de Codex (INVESTIGACION-DOSIS-PEPTIDOS.md) + researchdosing.com (manual de dosificación del mercado)"
     },
     "featured": false,
     "is_new": false
@@ -4313,9 +4370,14 @@ export const fallbackProducts = [
     "start_freq": "daily",
     "start_levels": {
       "inicial": 250,
-      "tipica": 375,
-      "avanzada": 500,
-      "unit": "mcg"
+      "tipica": 500,
+      "avanzada": 750,
+      "unit": "mcg",
+      "agua_ml": {
+        "5": 1.5,
+        "10": 2.5
+      },
+      "fuente": "investigación propia de Codex (INVESTIGACION-DOSIS-PEPTIDOS.md) + researchdosing.com (manual de dosificación del mercado)"
     },
     "featured": true,
     "is_new": false
@@ -4624,13 +4686,13 @@ export const fallbackProducts = [
     "coa_url": "https://exygenlabs.com/coa/kpv.pdf",
     "batch_number": "NP-KPV5-2601",
     "storage": "Conservar a -20 °C, protegido de la luz. Reconstituido: 2–8 °C.",
-    "start_dose": 250,
+    "start_dose": 200,
     "start_unit": "mcg",
     "start_freq": "daily",
     "start_levels": {
-      "inicial": 250,
+      "inicial": 200,
       "tipica": 400,
-      "avanzada": 500,
+      "avanzada": 600,
       "unit": "mcg"
     },
     "featured": false,
@@ -4941,11 +5003,16 @@ export const fallbackProducts = [
     "start_levels": {
       "inicial": 500,
       "tipica": 1000,
-      "avanzada": 2000,
-      "unit": "iu"
+      "avanzada": 1500,
+      "unit": "iu",
+      "agua_ml": {
+        "5000": 2
+      },
+      "fuente": "investigación propia de Codex (INVESTIGACION-DOSIS-PEPTIDOS.md) + researchdosing.com (manual de dosificación del mercado)"
     },
     "featured": false,
-    "is_new": false
+    "is_new": false,
+    "start_freq": "3x_week"
   },
   {
     "id": "fallback-hmg",
@@ -5017,14 +5084,14 @@ export const fallbackProducts = [
     "coa_url": "https://exygenlabs.com/coa/pt-141.pdf",
     "batch_number": "NP-PT10-2601",
     "storage": "Conservar a -20 °C, protegido de la luz. Reconstituido: 2–8 °C.",
-    "start_dose": 1,
-    "start_unit": "mg",
+    "start_dose": 500,
+    "start_unit": "mcg",
     "start_freq": "as_needed",
     "start_levels": {
-      "inicial": 1,
-      "tipica": 1.5,
-      "avanzada": 2,
-      "unit": "mg"
+      "inicial": 500,
+      "tipica": 1000,
+      "avanzada": 2000,
+      "unit": "mcg"
     },
     "featured": false,
     "is_new": false
