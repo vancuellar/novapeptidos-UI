@@ -1,8 +1,65 @@
 # Exygen Labs — Website Continuation File
 
-> **Propósito:** fuente única de verdad del SITIO WEB (frontend, backend, IA, marca, despliegue). Pega este archivo en un chat nuevo para retomar con todo el contexto. Complementa a `../NOVA-PRICING-SYSTEM-CONTINUATION.md` (el sistema de precios). **Última actualización: 2026-07-27 (madrugada).** Empieza por 🚨 PENDIENTES URGENTES.
+> **Propósito:** fuente única de verdad del SITIO WEB (frontend, backend, IA, marca, despliegue). Pega este archivo en un chat nuevo para retomar con todo el contexto. Complementa a `../NOVA-PRICING-SYSTEM-CONTINUATION.md` (el sistema de precios). **Última actualización: 2026-07-27 (madrugada).** Empieza por 🔴 PRIORIDAD 00.
 
 > **Estilo con Christian:** abogado, no dev ("abogado de 95 años haciendo vibe coding"). Respuestas **ultra cortas, español claro, sin jerga**. Corre TÚ los comandos (nunca le pidas abrir terminal). Términos de git en inglés (commit, push, merge — no "commitear").
+
+---
+
+## 🔴 PRIORIDAD 00 — NUESTRAS DOSIS DIFIEREN MUCHO DE researchdosing.com
+
+> Christian lo detectó el 2026-07-27 y lo marcó **por encima de todo lo demás**.
+> **NO se investigó todavía. Esta es la primera tarea de la siguiente sesión.**
+
+### Qué pasó
+
+Christian comparó nuestra calculadora contra **researchdosing.com** —la página que usa
+Certified-PepMex para dosificación— con **Retatrutida de 40 mg**, y los números difieren
+mucho. Metió a mano en nuestra calculadora los valores de esa página para verlos lado a lado.
+
+### Los dos juegos de números
+
+| | Nuestra calculadora | researchdosing.com |
+|---|---|---|
+| Agua para vial de 40 mg | **4 mL** | **2.5 mL** |
+| Concentración | 10 mg/mL | 16 mg/mL |
+| Dosis | inicial 2 · típica 4 · avanzada 8 mg | **4.8 mg** |
+| Rayitas (U-100) | 40 para 4 mg | 30 para 4.8 mg |
+| Dosis por vial | 10 (a 4 mg) | 8 |
+
+Nuestra fuente actual: *"Ensayo Fase 2 (1, 4, 8 y 12 mg semanales) vía
+thepeptidecatalog.com/articles/retatrutide-dosing-guide + peptidedosingprotocols.com"*.
+
+### Lo que ya se sabe y NO hay que volver a discutir
+
+**El agua no es una decisión clínica, es aritmética.** No cambia cuánto péptido recibe el
+cliente; cambia cuántas rayitas jala. 4 mL da matemática redonda (10 mg/mL); 2.5 mL da una
+inyección más chica. Las dos circulan en la literatura de proveedores: 2–3 mL es común y
+4 mL lo prefieren muchos justo por lo redondo. **Esa diferencia sola no es un problema.**
+
+### Lo que SÍ hay que investigar
+
+**Los 4.8 mg.** Ese número **no aparece en el ensayo Fase 2** que citamos (1, 4, 8, 12 mg
+semanales). Es una cifra clínica, no aritmética, y es exactamente el tipo de número que se
+borró de 47 monografías en la revisión de Codex por no tener respaldo.
+
+**Hipótesis a verificar (no confirmada):** 4.8 mg × 8 = 38.4 mg, o sea que un vial de 40 mg
+rinde justo **8 dosis**. Puede que researchdosing derive la dosis de **cuántas aplicaciones
+quiere sacarle al vial**, no del ensayo. Si es así, es un número inventado con apariencia
+de protocolo — y estaríamos a un paso de copiarlo.
+
+### Preguntas concretas para la siguiente sesión
+
+1. ¿researchdosing.com **cita fuente** para sus dosis, o solo las afirma?
+2. ¿Sus dosis coinciden con el Fase 2, o vienen de otro lado?
+3. ¿El vial de 40 mg de ellos es el mismo producto que el nuestro?
+4. ¿De dónde sale el 4.8? ¿Del ensayo, o de repartir el vial en 8 dosis?
+5. Si resulta que **ellos** tienen mejor respaldo que nosotros, corregir nuestros
+   `start_levels` de Retatrutida y anotar la fuente nueva. Si no, dejarlo y documentar por qué.
+
+**Regla que no se rompe:** no se copia una cifra solo porque Certified use esa página. Su
+laboratorio sí resultó real (Vanguard, acreditado), pero eso no le da respaldo a una tabla
+de dosificación de terceros.
 
 ---
 
