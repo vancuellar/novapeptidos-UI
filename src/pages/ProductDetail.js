@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { ShieldCheck, Minus, Plus, ShoppingCart, FileText, Truck, Package, FlaskConical, ChevronRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -46,6 +46,36 @@ const ProductDetail = () => {
     api.get('/stock').then((r) => setStockMap(r.data || null)).catch(() => setStockMap(null));
   }, []);
 
+  // ARRANCA EN LA PRESENTACIÓN QUE MÁS LE CONVIENE AL CLIENTE. (Fable 5, 2026-07-27)
+  //
+  // Antes arrancaba SIEMPRE en la primera del arreglo, que es la más chica. En NAD+
+  // eso significaba abrir en 100 mg a $8.39/mg cuando el de 500 mg cuesta $2.52/mg —
+  // y encima el default salía "en ~1 semana" mientras el de 500 estaba EN MANO. O sea
+  // que le poníamos enfrente el peor precio Y el más lento.
+  //
+  // Ahora abre en la de mejor precio por mg, prefiriendo las que están en mano. El
+  // `ref` es para que esto pase UNA vez por producto: si el cliente elige otra, no se
+  // la volvemos a cambiar cuando llegue la respuesta del inventario.
+  const yaEligio = useRef('');
+  useEffect(() => {
+    const vs = product?.variants || [];
+    if (!product || vs.length < 2 || yaEligio.current === product.slug) return;
+    const porMg = (v) => {
+      const mg = parseFloat(v.presentation);
+      return mg > 0 ? v.price / mg : Infinity;
+    };
+    const enMano = (v) => {
+      const e = stockMap ? stockMap[`${product.id}::${v.presentation}`] : null;
+      return !!(e && e.in_hand && e.qty > 0);
+    };
+    const candidatas = vs.map((v, i) => ({ i, valor: porMg(v), mano: enMano(v) }));
+    const conMano = candidatas.filter((c) => c.mano);
+    const pool = conMano.length ? conMano : candidatas;
+    const mejor = pool.reduce((a, b) => (b.valor < a.valor ? b : a));
+    if (stockMap) yaEligio.current = product.slug;   // ya con inventario: decisión final
+    setVariantIdx(mejor.i);
+  }, [product, stockMap]);
+
   // Medición del embudo. Va con los demás hooks (antes de cualquier return):
   // si se pone después de un return condicional, React truena.
   useEffect(() => { if (product?.slug) track('product_view', { product: product.slug }); }, [product?.slug]);
@@ -58,6 +88,11 @@ const ProductDetail = () => {
   const monograph = monographFor(product.slug);
   const variants = product.variants || [];
   const active = variants[variantIdx] || { price: localizedProduct.price, presentation: localizedProduct.presentation, stock: localizedProduct.stock, batch_number: localizedProduct.batch_number };
+  // Los insumos y la calculadora solo tienen sentido en lo que llega en polvo y se
+  // dosifica por mg. El agua bacteriostática no se ofrece a sí misma.
+  const esLiofilizado = /liofiliz/i.test(localizedProduct.form || '')
+    && /mg/i.test(active.presentation || '')
+    && product.slug !== 'agua-bacteriostatica';
   const stockKey = variants.length ? `${product.id}::${active.presentation}` : product.id;
   const stockEntry = stockMap ? stockMap[stockKey] : null;
   // Siempre se puede comprar: en mano = inmediato; si no, ~1 semana (Christian resurte expres).
@@ -118,16 +153,35 @@ const ProductDetail = () => {
           </div>
           <h1 className="font-heading text-3xl font-bold tracking-tight" data-testid="pdp-title">{localizedProduct.name}</h1>
           <p className="mt-2 text-muted-foreground font-mono-tech text-sm">{active.presentation} · {t('product.purityLine', { purity: localizedProduct.purity })}</p>
+          {/* PRECIO POR MG EN CADA BOTÓN. (Fable 5, 2026-07-27)
+              El cliente veía tres botones que solo cambiaban el precio total, así que
+              elegía el más barato de etiqueta — que casi siempre es el PEOR valor.
+              Caso medido: NAD+ 100 mg sale a $8.39/mg y el de 500 mg a $2.52/mg.
+              Poner la cifra al lado no cambia ni un precio y sube el ticket solo. */}
           {variants.length > 1 && (
             <div className="mt-4">
               <div className="text-xs font-medium text-muted-foreground mb-2">Presentación</div>
               <div className="flex flex-wrap gap-2" data-testid="pdp-variant-selector">
-                {variants.map((v, i) => (
-                  <button key={v.presentation} type="button" onClick={() => setVariantIdx(i)} data-testid="pdp-variant-option"
-                    className={`px-3.5 py-1.5 rounded-lg border text-sm font-medium transition-colors ${i === variantIdx ? 'border-[hsl(var(--primary))] bg-[hsl(var(--primary))]/10 text-[hsl(var(--primary))]' : 'border-border text-foreground hover:border-[hsl(var(--primary))]/50'}`}>
-                    {v.presentation}
-                  </button>
-                ))}
+                {variants.map((v, i) => {
+                  const mg = parseFloat(v.presentation);
+                  const porMg = mg > 0 ? v.price / mg : null;
+                  const mejor = porMg != null && porMg === Math.min(...variants
+                    .map((x) => (parseFloat(x.presentation) > 0 ? x.price / parseFloat(x.presentation) : Infinity)));
+                  return (
+                    <button key={v.presentation} type="button" onClick={() => setVariantIdx(i)} data-testid="pdp-variant-option"
+                      className={`px-3.5 py-2 rounded-lg border text-sm font-medium transition-colors text-left ${i === variantIdx ? 'border-[hsl(var(--primary))] bg-[hsl(var(--primary))]/10 text-[hsl(var(--primary))]' : 'border-border text-foreground hover:border-[hsl(var(--primary))]/50'}`}>
+                      <div className="flex items-center gap-1.5">
+                        {v.presentation}
+                        {mejor && <span className="text-[10px] uppercase tracking-wide font-semibold text-[hsl(var(--success))]">mejor valor</span>}
+                      </div>
+                      {porMg != null && /mg/i.test(v.presentation) && (
+                        <div className="text-[11px] font-normal text-muted-foreground tabular-nums">
+                          {formatMXN(Math.round(porMg * 100) / 100)}/mg
+                        </div>
+                      )}
+                    </button>
+                  );
+                })}
               </div>
             </div>
           )}
@@ -152,6 +206,33 @@ const ProductDetail = () => {
             </div>
             <Button className="flex-1" size="lg" onClick={addToCart} data-testid="pdp-add-to-cart-button"><ShoppingCart className="h-4 w-4 mr-2" /> {t('product.addToCart')}</Button>
           </div>
+
+          {/* LO QUE HACE FALTA PARA USAR ESTE VIAL. (Fable 5, 2026-07-27)
+              Vendemos el agua bacteriostática a $179 y no la ofrecíamos en la ficha del
+              péptido que la necesita: "Productos relacionados" enseñaba otros péptidos
+              caros, no lo que hace falta para usar el que está viendo. Y la calculadora
+              existía sin estar enlazada desde el único momento en que sirve. */}
+          {esLiofilizado && (
+            <div className="mt-5 rounded-xl border border-border bg-[hsl(var(--secondary))]/50 p-4" data-testid="pdp-insumos">
+              <div className="text-sm font-medium mb-1">Para usar este vial vas a necesitar</div>
+              <p className="text-xs text-muted-foreground leading-relaxed">
+                Llega liofilizado (en polvo): hay que reconstituirlo con agua bacteriostática
+                antes de poder medir una dosis.
+              </p>
+              <div className="mt-3 flex flex-wrap gap-2">
+                <Link to="/producto/agua-bacteriostatica">
+                  <Button variant="outline" size="sm" data-testid="pdp-insumo-agua">
+                    <FlaskConical className="h-3.5 w-3.5 mr-1.5" /> Agua bacteriostática
+                  </Button>
+                </Link>
+                <Link to={`/calculadora?p=${encodeURIComponent(product.name)}&v=${parseFloat(active.presentation) || ''}`}>
+                  <Button variant="outline" size="sm" data-testid="pdp-calculadora">
+                    ¿Cuánto te rinde? Calcúlalo →
+                  </Button>
+                </Link>
+              </div>
+            </div>
+          )}
 
           <div className="mt-5 grid grid-cols-2 gap-3">
             {specs.map((s) => (

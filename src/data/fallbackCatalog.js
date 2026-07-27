@@ -117,12 +117,16 @@ export const fallbackProducts = [
     "storage": "Conservar a -20 °C, protegido de la luz. Reconstituido: 2–8 °C.",
     "start_dose": 0.5,
     "start_unit": "mg",
-    "start_freq": "daily_cycle",
+    "start_freq": "daily",
     "start_levels": {
       "inicial": 0.5,
       "tipica": 1,
       "avanzada": 2,
-      "unit": "mg"
+      "unit": "mg",
+      "agua_ml": {
+        "10": 3
+      },
+      "fuente": "researchdosing.com — manual de dosificación del mercado (fuente de vendedor, sin bibliografía; nuestras rayitas se recalculan, no se copian de su tabla)"
     },
     "featured": false,
     "is_new": false
@@ -159,14 +163,18 @@ export const fallbackProducts = [
     "coa_url": "https://exygenlabs.com/coa/cardiogen.pdf",
     "batch_number": "NP-CARD20-2601",
     "storage": "Conservar a -20 °C, protegido de la luz. Reconstituido: 2–8 °C.",
-    "start_dose": 1,
+    "start_dose": 2,
     "start_unit": "mg",
-    "start_freq": "daily_cycle",
+    "start_freq": "daily",
     "start_levels": {
-      "inicial": 1,
+      "inicial": 2,
       "tipica": 2,
       "avanzada": 2,
-      "unit": "mg"
+      "unit": "mg",
+      "agua_ml": {
+        "20": 2
+      },
+      "fuente": "researchdosing.com — manual de dosificación del mercado (fuente de vendedor, sin bibliografía; nuestras rayitas se recalculan, no se copian de su tabla). Esta fuente reporta UNA sola dosis para este compuesto, no tres niveles."
     },
     "featured": false,
     "is_new": false
@@ -205,12 +213,16 @@ export const fallbackProducts = [
     "storage": "Conservar a -20 °C, protegido de la luz. Reconstituido: 2–8 °C.",
     "start_dose": 1,
     "start_unit": "mg",
-    "start_freq": "daily_cycle",
+    "start_freq": "daily",
     "start_levels": {
       "inicial": 1,
       "tipica": 1.5,
       "avanzada": 2,
-      "unit": "mg"
+      "unit": "mg",
+      "agua_ml": {
+        "20": 2
+      },
+      "fuente": "researchdosing.com — manual de dosificación del mercado (fuente de vendedor, sin bibliografía; nuestras rayitas se recalculan, no se copian de su tabla)"
     },
     "featured": false,
     "is_new": false
@@ -293,12 +305,16 @@ export const fallbackProducts = [
     "storage": "Conservar a -20 °C, protegido de la luz. Reconstituido: 2–8 °C.",
     "start_dose": 1,
     "start_unit": "mg",
-    "start_freq": "daily_cycle",
+    "start_freq": "daily",
     "start_levels": {
       "inicial": 1,
       "tipica": 1,
       "avanzada": 1,
-      "unit": "mg"
+      "unit": "mg",
+      "agua_ml": {
+        "20": 2
+      },
+      "fuente": "researchdosing.com — manual de dosificación del mercado (fuente de vendedor, sin bibliografía; nuestras rayitas se recalculan, no se copian de su tabla). Esta fuente reporta UNA sola dosis para este compuesto, no tres niveles."
     },
     "featured": false,
     "is_new": false
@@ -347,12 +363,17 @@ export const fallbackProducts = [
     "storage": "Conservar a -20 °C, protegido de la luz. Reconstituido: 2–8 °C.",
     "start_dose": 2,
     "start_unit": "mg",
-    "start_freq": "daily_cycle",
+    "start_freq": "daily",
     "start_levels": {
       "inicial": 2,
       "tipica": 3,
       "avanzada": 5,
-      "unit": "mg"
+      "unit": "mg",
+      "agua_ml": {
+        "5": 1,
+        "10": 2
+      },
+      "fuente": "researchdosing.com — manual de dosificación del mercado (fuente de vendedor, sin bibliografía; nuestras rayitas se recalculan, no se copian de su tabla)"
     },
     "featured": false,
     "is_new": false
@@ -448,9 +469,14 @@ export const fallbackProducts = [
     "start_freq": "2x_week",
     "start_levels": {
       "inicial": 1.6,
-      "tipica": 3,
-      "avanzada": 4.5,
-      "unit": "mg"
+      "tipica": 1.6,
+      "avanzada": 1.6,
+      "unit": "mg",
+      "agua_ml": {
+        "5": 2,
+        "10": 2
+      },
+      "fuente": "researchdosing.com — manual de dosificación del mercado (fuente de vendedor, sin bibliografía; nuestras rayitas se recalculan, no se copian de su tabla). Esta fuente reporta UNA sola dosis para este compuesto, no tres niveles."
     },
     "featured": false,
     "is_new": false
@@ -589,9 +615,14 @@ export const fallbackProducts = [
     "start_freq": "daily",
     "start_levels": {
       "inicial": 1,
-      "tipica": 2,
-      "avanzada": 3,
-      "unit": "mg"
+      "tipica": 1.5,
+      "avanzada": 2,
+      "unit": "mg",
+      "agua_ml": {
+        "50": 2.5,
+        "100": 5
+      },
+      "fuente": "researchdosing.com — manual de dosificación del mercado (fuente de vendedor, sin bibliografía; nuestras rayitas se recalculan, no se copian de su tabla)"
     },
     "featured": true,
     "is_new": false
@@ -1181,7 +1212,11 @@ export const fallbackProducts = [
       "inicial": 33,
       "tipica": 50,
       "avanzada": 75,
-      "unit": "mcg"
+      "unit": "mcg",
+      "agua_ml": {
+        "1": 1
+      },
+      "fuente": "researchdosing.com — manual de dosificación del mercado (fuente de vendedor, sin bibliografía; nuestras rayitas se recalculan, no se copian de su tabla)"
     },
     "featured": false,
     "is_new": false
@@ -1499,14 +1534,18 @@ export const fallbackProducts = [
     "coa_url": "https://exygenlabs.com/coa/epithalon.pdf",
     "batch_number": "NP-EPI10-2601",
     "storage": "Conservar a -20 °C, protegido de la luz. Reconstituido: 2–8 °C.",
-    "start_dose": 5,
+    "start_dose": 10,
     "start_unit": "mg",
     "start_freq": "daily_cycle",
     "start_levels": {
-      "inicial": 5,
-      "tipica": 7.5,
+      "inicial": 10,
+      "tipica": 10,
       "avanzada": 10,
-      "unit": "mg"
+      "unit": "mg",
+      "agua_ml": {
+        "10": 1
+      },
+      "fuente": "researchdosing.com — manual de dosificación del mercado (fuente de vendedor, sin bibliografía; nuestras rayitas se recalculan, no se copian de su tabla). Esta fuente reporta UNA sola dosis para este compuesto, no tres niveles."
     },
     "featured": false,
     "is_new": false
@@ -1560,10 +1599,14 @@ export const fallbackProducts = [
       "tipica": 375,
       "avanzada": 500,
       "unit": "mcg",
-      "orientativa": true
+      "agua_ml": {
+        "10": 2
+      },
+      "fuente": "researchdosing.com — manual de dosificación del mercado (fuente de vendedor, sin bibliografía; nuestras rayitas se recalculan, no se copian de su tabla)"
     },
     "featured": false,
-    "is_new": false
+    "is_new": false,
+    "start_freq": "daily"
   },
   {
     "id": "fallback-glutation",
@@ -1609,12 +1652,17 @@ export const fallbackProducts = [
     "storage": "Conservar a -20 °C, protegido de la luz. Reconstituido: 2–8 °C.",
     "start_dose": 100,
     "start_unit": "mg",
-    "start_freq": "3x_week",
+    "start_freq": "daily",
     "start_levels": {
       "inicial": 100,
-      "tipica": 200,
-      "avanzada": 300,
-      "unit": "mg"
+      "tipica": 100,
+      "avanzada": 100,
+      "unit": "mg",
+      "agua_ml": {
+        "600": 3,
+        "1500": 7
+      },
+      "fuente": "researchdosing.com — manual de dosificación del mercado (fuente de vendedor, sin bibliografía; nuestras rayitas se recalculan, no se copian de su tabla). Esta fuente reporta UNA sola dosis para este compuesto, no tres niveles."
     },
     "featured": false,
     "is_new": false
@@ -1846,10 +1894,14 @@ export const fallbackProducts = [
       "tipica": 16,
       "avanzada": 24,
       "unit": "mg",
-      "orientativa": true
+      "agua_ml": {
+        "215": 8
+      },
+      "fuente": "researchdosing.com — manual de dosificación del mercado (fuente de vendedor, sin bibliografía; nuestras rayitas se recalculan, no se copian de su tabla)"
     },
     "featured": false,
-    "is_new": false
+    "is_new": false,
+    "start_freq": "daily"
   },
   {
     "id": "fallback-dsip",
@@ -1914,7 +1966,7 @@ export const fallbackProducts = [
       "agua_ml": {
         "5": 2.5
       },
-      "fuente": "investigación propia de Codex (INVESTIGACION-DOSIS-PEPTIDOS.md) + researchdosing.com (manual de dosificación del mercado)"
+      "fuente": "researchdosing.com — manual de dosificación del mercado (fuente de vendedor, sin bibliografía; nuestras rayitas se recalculan, no se copian de su tabla)"
     },
     "featured": false,
     "is_new": false
@@ -2190,9 +2242,13 @@ export const fallbackProducts = [
     "start_freq": "daily",
     "start_levels": {
       "inicial": 250,
-      "tipica": 500,
-      "avanzada": 750,
-      "unit": "mcg"
+      "tipica": 300,
+      "avanzada": 500,
+      "unit": "mcg",
+      "agua_ml": {
+        "10": 2.5
+      },
+      "fuente": "researchdosing.com — manual de dosificación del mercado (fuente de vendedor, sin bibliografía; nuestras rayitas se recalculan, no se copian de su tabla)"
     },
     "featured": false,
     "is_new": false
@@ -2724,9 +2780,13 @@ export const fallbackProducts = [
     "start_freq": "weekly",
     "start_levels": {
       "inicial": 2,
-      "tipica": 4,
+      "tipica": 4.5,
       "avanzada": 6,
-      "unit": "mg"
+      "unit": "mg",
+      "agua_ml": {
+        "10": 1
+      },
+      "fuente": "researchdosing.com — manual de dosificación del mercado (fuente de vendedor, sin bibliografía; nuestras rayitas se recalculan, no se copian de su tabla)"
     },
     "featured": false,
     "is_new": true
@@ -3152,12 +3212,16 @@ export const fallbackProducts = [
     "storage": "Conservar a -20 °C, protegido de la luz. Reconstituido: 2–8 °C.",
     "start_dose": 100,
     "start_unit": "mcg",
-    "start_freq": "daily_2x",
+    "start_freq": "daily",
     "start_levels": {
       "inicial": 100,
       "tipica": 150,
       "avanzada": 200,
-      "unit": "mcg"
+      "unit": "mcg",
+      "agua_ml": {
+        "10": 2.5
+      },
+      "fuente": "researchdosing.com — manual de dosificación del mercado (fuente de vendedor, sin bibliografía; nuestras rayitas se recalculan, no se copian de su tabla)"
     },
     "featured": false,
     "is_new": false
@@ -3445,14 +3509,18 @@ export const fallbackProducts = [
     "coa_url": "https://exygenlabs.com/coa/cagrilintida.pdf",
     "batch_number": "NP-CAGR2-2601",
     "storage": "Conservar a -20 °C, protegido de la luz. Reconstituido: 2–8 °C.",
-    "start_dose": 0.3,
+    "start_dose": 0.2,
     "start_unit": "mg",
     "start_freq": "weekly",
     "start_levels": {
-      "inicial": 0.3,
-      "tipica": 0.6,
-      "avanzada": 1.2,
-      "unit": "mg"
+      "inicial": 0.2,
+      "tipica": 1.2,
+      "avanzada": 2.7,
+      "unit": "mg",
+      "agua_ml": {
+        "10": 2
+      },
+      "fuente": "researchdosing.com — manual de dosificación del mercado (fuente de vendedor, sin bibliografía; nuestras rayitas se recalculan, no se copian de su tabla)"
     },
     "featured": false,
     "is_new": true
@@ -3570,7 +3638,11 @@ export const fallbackProducts = [
       "inicial": 50,
       "tipica": 100,
       "avanzada": 200,
-      "unit": "mg"
+      "unit": "mg",
+      "agua_ml": {
+        "500": 5
+      },
+      "fuente": "researchdosing.com — manual de dosificación del mercado (fuente de vendedor, sin bibliografía; nuestras rayitas se recalculan, no se copian de su tabla)"
     },
     "featured": false,
     "is_new": false
@@ -4692,8 +4764,12 @@ export const fallbackProducts = [
     "start_levels": {
       "inicial": 200,
       "tipica": 400,
-      "avanzada": 600,
-      "unit": "mcg"
+      "avanzada": 1000,
+      "unit": "mcg",
+      "agua_ml": {
+        "10": 2.5
+      },
+      "fuente": "researchdosing.com — manual de dosificación del mercado (fuente de vendedor, sin bibliografía; nuestras rayitas se recalculan, no se copian de su tabla)"
     },
     "featured": false,
     "is_new": false
@@ -4870,14 +4946,18 @@ export const fallbackProducts = [
     "coa_url": "https://exygenlabs.com/coa/tb-500.pdf",
     "batch_number": "NP-TB2-2601",
     "storage": "Conservar a -20 °C, protegido de la luz. Reconstituido: 2–8 °C.",
-    "start_dose": 2,
+    "start_dose": 1,
     "start_unit": "mg",
     "start_freq": "2x_week",
     "start_levels": {
-      "inicial": 2,
-      "tipica": 3,
-      "avanzada": 5,
-      "unit": "mg"
+      "inicial": 1,
+      "tipica": 2,
+      "avanzada": 3,
+      "unit": "mg",
+      "agua_ml": {
+        "10": 2
+      },
+      "fuente": "researchdosing.com — manual de dosificación del mercado (fuente de vendedor, sin bibliografía; nuestras rayitas se recalculan, no se copian de su tabla)"
     },
     "featured": true,
     "is_new": false
@@ -5089,9 +5169,13 @@ export const fallbackProducts = [
     "start_freq": "as_needed",
     "start_levels": {
       "inicial": 500,
-      "tipica": 1000,
-      "avanzada": 2000,
-      "unit": "mcg"
+      "tipica": 2000,
+      "avanzada": 2500,
+      "unit": "mcg",
+      "agua_ml": {
+        "10": 2
+      },
+      "fuente": "researchdosing.com — manual de dosificación del mercado (fuente de vendedor, sin bibliografía; nuestras rayitas se recalculan, no se copian de su tabla)"
     },
     "featured": false,
     "is_new": false
@@ -5227,7 +5311,11 @@ export const fallbackProducts = [
       "inicial": 1000,
       "tipica": 2500,
       "avanzada": 5000,
-      "unit": "mcg"
+      "unit": "mcg",
+      "agua_ml": {
+        "10": 1
+      },
+      "fuente": "researchdosing.com — manual de dosificación del mercado (fuente de vendedor, sin bibliografía; nuestras rayitas se recalculan, no se copian de su tabla)"
     },
     "featured": false,
     "is_new": false

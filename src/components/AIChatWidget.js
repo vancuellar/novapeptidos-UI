@@ -102,7 +102,7 @@ const AIChatWidget = () => {
         <button
           onClick={() => setOpen(true)}
           data-testid="ai-chat-open-button"
-          className="fixed bottom-24 right-5 z-50 h-14 w-14 rounded-full bg-[hsl(var(--primary))] text-[hsl(var(--primary-foreground))] shadow-[var(--shadow-md)] flex items-center justify-center hover:scale-105 transition-transform"
+          className="hidden sm:flex fixed bottom-24 right-5 z-50 h-14 w-14 rounded-full bg-[hsl(var(--primary))] text-[hsl(var(--primary-foreground))] shadow-[var(--shadow-md)] items-center justify-center hover:scale-105 transition-transform"
           aria-label={t('chat.open')}
         >
           <MessageCircle className="h-6 w-6" />
