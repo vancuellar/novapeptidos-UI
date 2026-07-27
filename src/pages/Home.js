@@ -15,7 +15,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { toast } from 'sonner';
 import ProductCard from '@/components/ProductCard';
 import api from '@/lib/api';
-import { VISIBLE_CATEGORIES } from '@/data/fallbackCatalog';
+import { VISIBLE_CATEGORIES, fallbackProducts } from '@/data/fallbackCatalog';
 import { FEATURED_TABS, getTabProducts } from '@/data/featured';
 import { useLanguage } from '@/context/LanguageContext';
 import { localizeCategories, localizeProducts } from '@/i18n/catalog';
@@ -286,7 +286,7 @@ const Home = () => {
               <div className="font-mono-tech text-[10.5px] uppercase tracking-[0.16em] text-muted-foreground mt-1.5">{t('home.typicalPurity')} · HPLC</div>
             </div>
             <div className="sm:border-l border-border sm:pl-12">
-              <div className="font-heading text-3xl font-bold">22+</div>
+              <div className="font-heading text-3xl font-bold">{fallbackProducts.length}</div>
               <div className="font-mono-tech text-[10.5px] uppercase tracking-[0.16em] text-muted-foreground mt-1.5">{t('home.products')}</div>
             </div>
             <div className="sm:border-l border-border sm:pl-12">
