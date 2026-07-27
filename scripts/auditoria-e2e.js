@@ -81,6 +81,15 @@ function barraSuperior() {
       && /overflow(-x|-y)?\s*:\s*[^;]*\b(hidden|auto|scroll)\b/.test(cuerpo))
     .map(([sel]) => sel);
   revisar(culpables.length === 0, 'body sin overflow que rompa el sticky', culpables.join(' | '));
+
+  // La misma regla, pero contra Radix. react-remove-scroll INYECTA en el <head>
+  // un <style> con `body[data-scroll-locked]{overflow:hidden!important}` al abrir
+  // un Select o un Dialog. Nuestro contra-veneno tiene que ganarle, y con el
+  // mismo selector NO le gana: mismo peso, y el suyo se inyecta despues. Por eso
+  // lleva `html` delante. Si alguien lo quita, el bug vuelve en silencio — que es
+  // exactamente lo que paso entre el 26 y el 27 de julio de 2026.
+  revisar(/html\s+body\[data-scroll-locked\]/.test(css),
+    'el candado de Radix se neutraliza con especificidad (html body[data-scroll-locked])');
 }
 
 // ---------------------------------------------------------------- páginas
