@@ -61,7 +61,7 @@ const VIDEOS = [
   {
     file: 'tutorial-9-calculadora.mp4',
     title: 'La calculadora de reconstitución, paso a paso',
-    duration: '0:50',
+    duration: '1:12',
     audience: 'Clientes', role: 'client',
   },
   {
