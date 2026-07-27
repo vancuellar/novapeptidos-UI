@@ -97,15 +97,62 @@ Prostamax), más Dihexa, BAM-15 y Adipotide.
 
 ---
 
-## 🚨 PENDIENTES URGENTES — SIN RESOLVER (2026-07-27)
+## ✅ LOS DOS PENDIENTES URGENTES — RESUELTOS (2026-07-27, tarde)
 
-> Se intentó arreglarlos y **NO quedaron**. Christian los volvió a reportar después de
-> desplegados los intentos. Están aquí arriba a propósito: son lo primero que hay que
-> atacar en la siguiente sesión.
+> Se arreglaron los dos, y esta vez **viéndolos con los ojos** en el navegador a 1440 px,
+> no deduciéndolos del código. Abajo queda el diagnóstico viejo (equivocado) para que no se
+> repita el método.
+
+### 1. ✅ El sidebar que desaparecía — era el overflow, pero nuestra regla nunca se aplicaba
+
+**Reproducido en vivo** en exygenlabs.com a 1440 px, con el header (`sticky top-0`) de
+sonda: al abrir el selector de jeringa el header pasaba de `top: 0` a **`top: -746 px`**.
+El bug era real y era el `overflow: hidden` del body, como decía el diagnóstico.
+
+**Lo que el diagnóstico anterior no vio:** `react-remove-scroll` **no trae sus estilos en un
+archivo `.css`** — los inyecta en un `<style>` del `<head>` al abrir el menú, con el selector
+**idéntico** `body[data-scroll-locked]` y también con `!important`. Misma especificidad, y el
+suyo entra después → gana el suyo. Nuestra regla del PR #119 estaba escrita, compilada,
+desplegada… y **jamás llegó a aplicarse**. Por eso al simular el atributo a mano el body sí
+se quedaba bien (no había menú abierto, no había `<style>` inyectado) y en uso real no.
+
+**El arreglo son cinco letras:** `html body[data-scroll-locked]`. La especificidad sube de
+(0,1,1) a (0,1,2) y el orden deja de importar. Medido después: header en `top: 0` con el
+menú abierto y el candado puesto. `npm run auditoria` trae una comprobación nueva que falla
+si alguien le quita el `html`.
+
+**Lección de método:** la regla existía y el navegador la ignoraba en silencio. Antes de
+concluir "el mecanismo no era ese", hay que comprobar que nuestra regla **gana**, no solo
+que está escrita.
+
+### 2. ✅ Las columnas desproporcionadas — se acabaron las columnas
+
+La cuadrícula de niveles decía en un comentario que iba "a ancho completo" y **era mentira**:
+seguía dentro de la tarjeta de resultados, o sea dentro de la columna de 3/5. De ahí salían
+los 1,174 px contra 391. Ahora la calculadora es **una sola columna**: tarjeta de datos
+(vial · jeringa · dosis repartidos en horizontal), tarjeta de resultado (la cifra grande a la
+izquierda y la jeringa a la derecha) y la cuadrícula de niveles, las tres a lo ancho.
+Medido en local a 1440 px: **1240 px de ancho las tres**, altos 227 / 513 / 349.
+
+**Se probó y se descartó** volver a repartir columnas: los controles son cuatro campos
+cortos y el resultado se lleva todo lo demás. No hay reparto que empate contenido asimétrico.
+
+### 3. ✅ Aviso de "esta dosis no cabe en la jeringa" (mejora #4 del estudio)
+
+Antes solo se insinuaba con un ⚠️ rojo en una columna de la tabla. Ahora sale con letras y
+**con la salida**: *"Con 4 mL de agua salen 120 rayitas y tu U-100 llega a 100. Ponle 3 mL de
+agua y sí cabe."* Probado con el caso exacto del estudio (Retatrutida 12 mg).
+
+---
+
+## 🗂️ DIAGNÓSTICO VIEJO (2026-07-27, madrugada) — conservado como advertencia
+
+> Esto es lo que se creía antes de reproducir el bug. La conclusión "el overflow no era la
+> causa" **era falsa**. Se deja escrito porque el error de método vale más que el resultado.
 
 ### 1. ⛔ El sidebar izquierdo DESAPARECE al abrir el selector de jeringa
 
-**Sigue pasando.** Es la regla de oro de Christian ("la barra NUNCA desaparece"), ahora
+Es la regla de oro de Christian ("la barra NUNCA desaparece"), ahora
 provocada por una librería.
 
 **Diagnóstico hecho:** Radix llama a `react-remove-scroll-bar` al abrir un `Select`,

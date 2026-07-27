@@ -446,6 +446,16 @@ const ReconstitutionCalculator = ({ variant = 'full', purchased = [], onTrack, s
 
   const maxUnits = syringe.perMl * syringe.maxMl;
 
+  // La dosis que el cliente tiene puesta, ¿cabe en la jeringa que eligió?
+  // `aguaQueCabe` es el agua MÁXIMA con la que todavía cabe (menos agua =
+  // más concentrado = menos rayitas), redondeada hacia abajo a medios mL.
+  const noCabe = (() => {
+    if (!res || !(res.units > maxUnits)) return null;
+    const w = (maxUnits * mg * 1000) / (doseMcg * syringe.perMl);
+    const aguaQueCabe = Math.floor(w * 2) / 2;
+    return { agua: res.water, rayitas: Math.round(res.units), aguaQueCabe: aguaQueCabe >= 1 ? aguaQueCabe : null };
+  })();
+
   return (
     <>
       {/* Péptidos que el cliente ya compró — atajo de un clic */}
@@ -525,105 +535,118 @@ const ReconstitutionCalculator = ({ variant = 'full', purchased = [], onTrack, s
         </div>
       )}
 
-      <div className="grid lg:grid-cols-5 gap-5 items-start">
-        {/* Entradas */}
-        {/* La columna de controles quedó mucho más corta que la de resultados
-            (391 px contra 1,174) al mudar la cuadrícula de niveles a ancho
-            completo. En vez de rellenar con aire, se pega: los controles siguen
-            al cliente mientras lee el resultado largo, y el hueco deja de verse
-            como columna abandonada. (Christian, 2026-07-26)
+      {/* ⛔ UNA SOLA COLUMNA. NO VOLVER A LAS DOS. (Christian, 2026-07-27)
 
-            Esto depende de que el BODY no sea contenedor de scroll — ver la
-            regla de oro en index.css. */}
-        <Card className="p-6 space-y-5 lg:col-span-2 lg:sticky lg:top-28 self-start">
+          Estuvo en `grid lg:grid-cols-5`: controles en 2/5 y resultado en 3/5.
+          Medido en produccion, la tarjeta izquierda daba 391 px de alto y la
+          derecha 1,174 — tres veces mas. No era un detalle de estilo: los
+          controles son cuatro campos cortos y el resultado se lleva el resumen,
+          la jeringa, las opciones de agua, las estadisticas y la cuadricula de
+          niveles. Ninguna reparticion de columnas empata eso, porque el
+          contenido no es simetrico. Ya se intento taparlo haciendo la izquierda
+          `sticky` (PR #119) y la queja siguio igual.
 
-          <div>
-            <Label className="text-sm mb-1.5 block">{t('calc.vial')}</Label>
-            <div className="flex flex-wrap gap-2" data-testid="calc-vial">
-              {currentVariants.map((v) => (
-                <button key={v} type="button" onClick={() => setVialMg(v)} data-testid={`calc-vial-${v}`}
-                  className={`px-3.5 py-1.5 rounded-full text-sm border transition ${Number(vialMg) === v ? 'bg-[hsl(var(--primary))] text-[hsl(var(--primary-foreground))] border-transparent' : 'border-[hsl(var(--border))] text-muted-foreground hover:border-[hsl(var(--primary))]'}`}>
-                  {v} mg
-                </button>
-              ))}
-            </div>
-          </div>
+          Ahora el flujo es vertical y TODO va a lo ancho, que es justamente lo
+          que Christian elogio de la cuadricula de niveles. Los campos se
+          reparten en horizontal dentro de su propia tarjeta, asi que el ancho se
+          aprovecha sin dejar una columna a medio llenar. */}
+      <div className="space-y-5">
+        {/* PASO 2 — los datos del vial, en una fila a lo ancho */}
+        <Card className="p-6" data-testid="calc-controles">
+          <div className="flex flex-wrap gap-5">
 
-          {/* La jeringa manda sobre las RAYITAS de toda la cuadrícula, así que
-              se elige aquí arriba y no al final. Estaba hasta abajo, después de
-              la dosis: el cliente leía rayitas calculadas con una jeringa que
-              quizá no era la suya. (Christian, 2026-07-26) */}
-          <div>
-            <Label className="text-sm mb-1.5 block">{t('calc.syringe')}</Label>
-            <Select value={syringe.id} onValueChange={(id) => setSyringe(SYRINGES.find((s) => s.id === id))}>
-              <SelectTrigger data-testid="calc-syringe"><SelectValue /></SelectTrigger>
-              <SelectContent>
-                {SYRINGES.map((s) => <SelectItem key={s.id} value={s.id}>{s.label}</SelectItem>)}
-              </SelectContent>
-            </Select>
-          </div>
-
-          {/* Agua: solo en modo "ya sé mi agua" */}
-          {mode === 'known' && (
-            <div>
-              <Label className="text-sm mb-1.5 block">{t('calc.water')}</Label>
-              <div className="relative">
-                <Input type="number" min="0" step="1" value={waterMl} onChange={(e) => setWaterMl(e.target.value)} data-testid="calc-water" className="pr-10" />
-                <span className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-muted-foreground">mL</span>
-              </div>
-              <div className="flex gap-2 mt-2">
-                {[1, 2, 3, 4, 5].map((w) => (
-                  <button key={w} onClick={() => setWaterMl(w)} data-testid={`calc-water-${w}`}
-                    className={`px-3 py-1 rounded-full text-xs border transition ${Number(waterMl) === w ? 'bg-[hsl(var(--primary))] text-[hsl(var(--primary-foreground))] border-transparent' : 'border-[hsl(var(--border))] text-muted-foreground hover:border-[hsl(var(--primary))]'}`}>
-                    {w} mL
+            <div className="flex-1 min-w-[200px]">
+              <Label className="text-sm mb-1.5 block">{t('calc.vial')}</Label>
+              <div className="flex flex-wrap gap-2" data-testid="calc-vial">
+                {currentVariants.map((v) => (
+                  <button key={v} type="button" onClick={() => setVialMg(v)} data-testid={`calc-vial-${v}`}
+                    className={`px-3.5 py-1.5 rounded-full text-sm border transition ${Number(vialMg) === v ? 'bg-[hsl(var(--primary))] text-[hsl(var(--primary-foreground))] border-transparent' : 'border-[hsl(var(--border))] text-muted-foreground hover:border-[hsl(var(--primary))]'}`}>
+                    {v} mg
                   </button>
                 ))}
               </div>
             </div>
-          )}
 
-          <div>
-            <Label className="text-sm mb-1.5 block">{t('calc.dose')}</Label>
-            <div className="flex gap-2">
-              <div className="relative flex-1">
-                <Input type="number" min="0" value={dose} onChange={(e) => setDose(e.target.value)} data-testid="calc-dose" />
+            {/* La jeringa manda sobre las RAYITAS de toda la cuadrícula, así que
+                se elige aquí arriba y no al final. Estaba hasta abajo, después de
+                la dosis: el cliente leía rayitas calculadas con una jeringa que
+                quizá no era la suya. (Christian, 2026-07-26) */}
+            <div className="flex-1 min-w-[220px]">
+              <Label className="text-sm mb-1.5 block">{t('calc.syringe')}</Label>
+              <Select value={syringe.id} onValueChange={(id) => setSyringe(SYRINGES.find((s) => s.id === id))}>
+                <SelectTrigger data-testid="calc-syringe"><SelectValue /></SelectTrigger>
+                <SelectContent>
+                  {SYRINGES.map((s) => <SelectItem key={s.id} value={s.id}>{s.label}</SelectItem>)}
+                </SelectContent>
+              </Select>
+            </div>
+
+            {/* Agua: solo en modo "ya sé mi agua" */}
+            {mode === 'known' && (
+              <div className="flex-1 min-w-[220px]">
+                <Label className="text-sm mb-1.5 block">{t('calc.water')}</Label>
+                <div className="relative">
+                  <Input type="number" min="0" step="1" value={waterMl} onChange={(e) => setWaterMl(e.target.value)} data-testid="calc-water" className="pr-10" />
+                  <span className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-muted-foreground">mL</span>
+                </div>
+                <div className="flex gap-2 mt-2">
+                  {[1, 2, 3, 4, 5].map((w) => (
+                    <button key={w} onClick={() => setWaterMl(w)} data-testid={`calc-water-${w}`}
+                      className={`px-3 py-1 rounded-full text-xs border transition ${Number(waterMl) === w ? 'bg-[hsl(var(--primary))] text-[hsl(var(--primary-foreground))] border-transparent' : 'border-[hsl(var(--border))] text-muted-foreground hover:border-[hsl(var(--primary))]'}`}>
+                      {w} mL
+                    </button>
+                  ))}
+                </div>
               </div>
-              <div className="inline-flex rounded-md border border-[hsl(var(--border))] overflow-hidden">
-                {['mcg', 'mg'].map((u) => {
-                  const disabled = u === 'mcg' && mcgDisabled;   // los mg-dosados no usan mcg
-                  return (
-                    <button key={u} disabled={disabled} onClick={() => !disabled && setDoseUnit(u)} data-testid={`calc-doseunit-${u}`}
-                      title={disabled ? t('calc.mcgDisabled') : undefined}
-                      className={`px-3 text-sm ${disabled ? 'opacity-30 cursor-not-allowed' : doseUnit === u ? 'bg-[hsl(var(--primary))] text-[hsl(var(--primary-foreground))]' : 'text-muted-foreground'}`}>{u}</button>
-                  );
-                })}
+            )}
+
+            <div className="flex-1 min-w-[220px]">
+              <Label className="text-sm mb-1.5 block">{t('calc.dose')}</Label>
+              <div className="flex gap-2">
+                <div className="relative flex-1">
+                  <Input type="number" min="0" value={dose} onChange={(e) => setDose(e.target.value)} data-testid="calc-dose" />
+                </div>
+                <div className="inline-flex rounded-md border border-[hsl(var(--border))] overflow-hidden">
+                  {['mcg', 'mg'].map((u) => {
+                    const disabled = u === 'mcg' && mcgDisabled;   // los mg-dosados no usan mcg
+                    return (
+                      <button key={u} disabled={disabled} onClick={() => !disabled && setDoseUnit(u)} data-testid={`calc-doseunit-${u}`}
+                        title={disabled ? t('calc.mcgDisabled') : undefined}
+                        className={`px-3 text-sm ${disabled ? 'opacity-30 cursor-not-allowed' : doseUnit === u ? 'bg-[hsl(var(--primary))] text-[hsl(var(--primary-foreground))]' : 'text-muted-foreground'}`}>{u}</button>
+                    );
+                  })}
+                </div>
               </div>
             </div>
-            {levels && (
-              <div className="flex flex-wrap gap-2 mt-2" data-testid="calc-levels">
-                {[['inicial', t('calc.lvlBasic')], ['tipica', t('calc.lvlTypical')], ['avanzada', t('calc.lvlAdvanced')]].map(([k, label]) => {
-                  const active = effUnit === levels.unit && Number(dose) === levels[k];
-                  return (
-                    <button key={k} type="button" onClick={() => { setDoseUnit(levels.unit === 'mg' ? 'mg' : 'mcg'); setDose(levels[k]); }}
-                      data-testid={`calc-lvl-${k}`}
-                      className={`px-3 py-1.5 rounded-full text-xs border transition ${active ? 'bg-[hsl(var(--primary))] text-[hsl(var(--primary-foreground))] border-transparent' : 'border-[hsl(var(--border))] text-muted-foreground hover:border-[hsl(var(--primary))]'}`}>
-                      {label} · {levels[k]} {levels.unit}
-                    </button>
-                  );
-                })}
-              </div>
-            )}
-            {levels?.orientativa && (
-              <p className="text-[11px] text-[hsl(var(--warning-foreground))] mt-1.5" data-testid="calc-orientative-note">
-                {t('calc.orientativeNote')}
-              </p>
-            )}
-            {full && hasRef && <p className="text-[11px] text-muted-foreground mt-1.5">{t('calc.refNote')}</p>}
           </div>
+
+          {/* Los niveles de referencia van en su propio renglón, no apretados
+              dentro de la casilla de la dosis: son botones con texto largo
+              ("Inicial · 2 mg") y ahí abajo se partían en dos líneas. */}
+          {levels && (
+            <div className="flex flex-wrap gap-2 mt-5" data-testid="calc-levels">
+              {[['inicial', t('calc.lvlBasic')], ['tipica', t('calc.lvlTypical')], ['avanzada', t('calc.lvlAdvanced')]].map(([k, label]) => {
+                const active = effUnit === levels.unit && Number(dose) === levels[k];
+                return (
+                  <button key={k} type="button" onClick={() => { setDoseUnit(levels.unit === 'mg' ? 'mg' : 'mcg'); setDose(levels[k]); }}
+                    data-testid={`calc-lvl-${k}`}
+                    className={`px-3 py-1.5 rounded-full text-xs border transition ${active ? 'bg-[hsl(var(--primary))] text-[hsl(var(--primary-foreground))] border-transparent' : 'border-[hsl(var(--border))] text-muted-foreground hover:border-[hsl(var(--primary))]'}`}>
+                    {label} · {levels[k]} {levels.unit}
+                  </button>
+                );
+              })}
+            </div>
+          )}
+          {levels?.orientativa && (
+            <p className="text-[11px] text-[hsl(var(--warning-foreground))] mt-2" data-testid="calc-orientative-note">
+              {t('calc.orientativeNote')}
+            </p>
+          )}
+          {full && hasRef && <p className="text-[11px] text-muted-foreground mt-2">{t('calc.refNote')}</p>}
 
           {/* Registrar seguimiento de consumo (solo área de clientes) */}
           {full && onTrack && res && (
-            <Button variant="outline" className="w-full" data-testid="calc-track"
+            <Button variant="outline" className="mt-5 w-full sm:w-auto" data-testid="calc-track"
               onClick={() => onTrack({
                 product_name: product,
                 product_slug: currentProduct?.slug || '',
@@ -639,7 +662,7 @@ const ReconstitutionCalculator = ({ variant = 'full', purchased = [], onTrack, s
         </Card>
 
         {/* Resultado */}
-        <Card className="p-7 flex flex-col lg:col-span-3">
+        <Card className="p-7 flex flex-col">
           {/* Resumen en una frase: cuánto + cada cuándo (referencia RUO). */}
           {full && currentProduct?.startFreq && (parseFloat(dose) > 0) && (
             <div className="mb-5 rounded-xl border border-[hsl(var(--primary))]/40 bg-[hsl(var(--primary))]/10 p-4" data-testid="calc-plain-summary">
@@ -665,6 +688,22 @@ const ReconstitutionCalculator = ({ variant = 'full', purchased = [], onTrack, s
               </div>
             </div>
           )}
+          {/* ¿CABE LA DOSIS EN LA JERINGA? Salió del estudio de researchdosing:
+              con 4 mL de agua una dosis de 12 mg de Retatrutida NO cabe en una
+              U-100 (120 rayitas), y con 2.5 mL sí (75). Antes eso solo se
+              insinuaba con un ⚠️ rojo en la columna de rayitas de la tabla.
+              Aquí se dice con todas sus letras Y con la salida: cuánta agua
+              ponerle para que quepa. Es aritmética de medición, no dosis. */}
+          {noCabe && (
+            <div className="mb-5 rounded-xl border border-[hsl(var(--warning-foreground))]/40 bg-[hsl(var(--warning-foreground))]/10 p-4 text-sm leading-relaxed"
+                 data-testid="calc-no-cabe">
+              <strong>Esta dosis no cabe en tu jeringa.</strong>{' '}
+              Con {noCabe.agua} mL de agua salen <strong>{noCabe.rayitas} rayitas</strong> y tu {syringe.label} llega a {maxUnits}.
+              {' '}{noCabe.aguaQueCabe
+                ? <>Ponle <strong>{noCabe.aguaQueCabe} mL</strong> de agua y sí cabe</>
+                : <>Ni con 1 mL cabe: se necesita una jeringa más grande o partir la aplicación</>}.
+            </div>
+          )}
           {mode === 'suggest' ? (
             !suggest ? (
               <div className="flex-1 flex items-center justify-center text-sm text-muted-foreground text-center">
@@ -677,115 +716,44 @@ const ReconstitutionCalculator = ({ variant = 'full', purchased = [], onTrack, s
               </div>
             ) : (
               <>
-                <div className="text-xs uppercase tracking-wide text-muted-foreground mb-1">{t('calc.addWater')}</div>
-                <div className="flex items-end gap-2 mb-1">
-                  <span className="text-6xl font-bold tabular-nums text-[hsl(var(--primary))]" data-testid="calc-suggest-water">{suggest.pick.w}</span>
-                  <span className="text-lg text-muted-foreground mb-1">mL {t('calc.ofWater')}</span>
-                </div>
-                <div className="text-sm text-muted-foreground mb-4" data-testid="calc-suggest-units">
-                  {t('calc.thenEachDose')} <span className="font-semibold text-foreground">{suggest.pick.units.toFixed(1)} {t('calc.units')}</span> ({suggest.pick.drawMl.toFixed(3)} mL)
-                </div>
-                <SyringeSVG units={suggest.pick.units} maxUnits={maxUnits} />
-
-                {/* Otras opciones de agua (tradeoff concentración) */}
-                {full && (
-                  <div className="mt-5">
-                    <div className="text-xs text-muted-foreground mb-2">{t('calc.otherWaters')}</div>
-                    <div className="grid grid-cols-5 gap-2" data-testid="calc-options">
-                      {suggest.rows.map((r) => (
-                        <button key={r.w} onClick={() => applyWater(r.w)}
-                          className={`rounded-lg border p-2 text-center transition ${r.w === suggest.pick.w ? 'border-[hsl(var(--primary))] bg-[hsl(var(--primary))]/10' : 'border-[hsl(var(--border))] hover:border-[hsl(var(--primary))]'}`}>
-                          <div className="text-sm font-semibold">{r.w} mL</div>
-                          <div className="text-[11px] text-muted-foreground">{r.units.toFixed(0)} {t('calc.units')}</div>
-                        </button>
-                      ))}
+                {/* A ancho completo la cifra grande y la jeringa se ponen lado a
+                    lado: si se apilan, el numero de 6xl deja media pantalla
+                    vacia a su derecha. */}
+                <div className="grid lg:grid-cols-2 gap-6 items-center">
+                  <div>
+                    <div className="text-xs uppercase tracking-wide text-muted-foreground mb-1">{t('calc.addWater')}</div>
+                    <div className="flex items-end gap-2 mb-1">
+                      <span className="text-6xl font-bold tabular-nums text-[hsl(var(--primary))]" data-testid="calc-suggest-water">{suggest.pick.w}</span>
+                      <span className="text-lg text-muted-foreground mb-1">mL {t('calc.ofWater')}</span>
+                    </div>
+                    <div className="text-sm text-muted-foreground" data-testid="calc-suggest-units">
+                      {t('calc.thenEachDose')} <span className="font-semibold text-foreground">{suggest.pick.units.toFixed(1)} {t('calc.units')}</span> ({suggest.pick.drawMl.toFixed(3)} mL)
                     </div>
                   </div>
-                )}
-                <div className="grid grid-cols-2 gap-3 mt-4">
-                  <Stat icon={FlaskConical} label={t('calc.conc')} value={(suggest.pick.conc / 1000).toFixed(1)} unit="mg/mL" />
-                  <Stat icon={Droplet} label={t('calc.dosesPerVial')} value={Math.floor((mg * 1000) / doseMcg)} unit={t('calc.doses')} />
+                  <SyringeSVG units={suggest.pick.units} maxUnits={maxUnits} />
                 </div>
 
-      {/* LA CUADRÍCULA VA A ANCHO COMPLETO, FUERA DE LA COLUMNA DE 2/5.
-          Vivía dentro de la tarjeta izquierda, o sea en 374 px con cinco
-          columnas encima: se veía apachurrada y "Cada cuándo" se partía en dos
-          renglones. Es la tabla que el cliente de verdad lee, así que se le da
-          la fila entera. (Christian, 2026-07-26) */}
-      {full && levels && (
-        <Card className="mt-5 p-0 overflow-hidden" data-testid="calc-tabla-niveles">
-          <div className="bg-[hsl(var(--secondary))] px-5 py-3 text-sm">
-            Tu vial de <strong>{vialMg} mg</strong> con <strong>{res ? res.water : waterMl} mL</strong> de agua bacteriostática
-            {' '}queda en <strong>{(vialMg / (Number(res ? res.water : waterMl) || 1)).toFixed(1)} mg/mL</strong>
-          </div>
-          <div className="overflow-x-auto">
-            <table className="w-full text-sm">
-              <thead>
-                <tr className="border-b border-[hsl(var(--border))] text-muted-foreground">
-                  <th className="text-left px-5 py-2.5 font-medium text-[11px] uppercase tracking-wider">Nivel</th>
-                  <th className="text-left px-5 font-medium text-[11px] uppercase tracking-wider">Fase</th>
-                  <th className="text-right px-5 font-medium text-[11px] uppercase tracking-wider">Dosis</th>
-                  <th className="text-right px-5 font-medium text-[11px] uppercase tracking-wider">Rayitas</th>
-                  <th className="text-right px-5 font-medium text-[11px] uppercase tracking-wider whitespace-nowrap">Cada cuándo</th>
-                </tr>
-              </thead>
-              <tbody>
-                {[['inicial', t('calc.lvlBasic')], ['tipica', t('calc.lvlTypical')], ['avanzada', t('calc.lvlAdvanced')]].map(([k, label]) => {
-                  const agua = Number(res ? res.water : waterMl) || 1;
-                  const conc = vialMg / agua;                       // mg/mL
-                  const mgNivel = levels.unit === 'mg' ? levels[k] : levels[k] / 1000;
-                  const rayitas = Math.round((mgNivel / conc) * syringe.perMl);
-                  const cabe = rayitas <= syringe.perMl * syringe.maxMl;
-                  // El nivel que el cliente tiene puesto se resalta: si no, hay
-                  // que adivinar cuál de los tres renglones es el suyo.
-                  const activo = k === activeLevel;
-                  return (
-                    <tr key={k}
-                        className={`border-b border-[hsl(var(--border))]/50 last:border-0 ${activo ? 'bg-[hsl(var(--primary))]/10' : ''}`}
-                        data-testid={`calc-fila-${k}`}>
-                      <td className="px-5 py-3">
-                        <span className={activo ? 'font-semibold text-[hsl(var(--primary))]' : ''}>{label}</span>
-                      </td>
-                      <td className="px-5 text-muted-foreground">{faseDeNivel(levels, k, language) || '—'}</td>
-                      <td className="text-right px-5 tabular-nums font-medium whitespace-nowrap">{levels[k]} {levels.unit}</td>
-                      <td className={`text-right px-5 tabular-nums font-semibold ${cabe ? '' : 'text-red-600'}`}>
-                        {rayitas}{cabe ? '' : ' ⚠️'}
-                      </td>
-                      <td className="text-right px-5 text-muted-foreground whitespace-nowrap">
-                        {freqPhrase(freqDeNivel(levels, k, currentProduct?.startFreq), language) || '—'}
-                      </td>
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
-          </div>
-          {/* De dónde salió cada cifra. Va a la vista a propósito: la razón por
-              la que estas sugerencias estuvieron apagadas es que nadie podía
-              saber en qué se basaban. Si un producto no trae fuente anotada, se
-              dice — es preferible el hueco a la falsa confianza. */}
-          <div className="px-5 py-3 text-xs text-muted-foreground leading-relaxed border-t border-[hsl(var(--border))]">
-            {levels.fuente
-              ? <>Fuente: {levels.fuente}</>
-              : <span className="text-[hsl(var(--warning-foreground))]">Sin fuente anotada para este producto.</span>}
-            {' · '}Referencia de investigación (RUO), no es una pauta médica.
-            Consulta a un médico y hazte análisis antes de decidir cualquier dosis.
-          </div>
-          {/* La pregunta que SIEMPRE sigue: "¿y cuándo paso al siguiente nivel?".
-              La respuesta honesta es que no la tenemos y no debemos tenerla:
-              cuánto tiempo permanecer en un nivel es titulación, y eso lo decide
-              un médico con análisis de por medio. Decirlo es mejor que dejar el
-              hueco, porque el hueco lo llena el cliente inventando. */}
-          <div className="px-5 py-3 text-xs leading-relaxed border-t border-[hsl(var(--border))] bg-[hsl(var(--muted))]/40"
-               data-testid="calc-titulacion">
-            <strong>Cuándo pasar de un nivel a otro es una decisión clínica.</strong>{' '}
-            Estos niveles describen lo que reporta la literatura, no un calendario
-            para ti: no indicamos cuántas semanas quedarte en uno ni cuándo subir.
-            Descarga esta ficha y llévasela a tu médico — con tus análisis, él es
-            quien puede decidirlo.
-          </div>
-        </Card>
-      )}
+                <div className="grid lg:grid-cols-2 gap-5 mt-5">
+                  {/* Otras opciones de agua (tradeoff concentración) */}
+                  {full && (
+                    <div>
+                      <div className="text-xs text-muted-foreground mb-2">{t('calc.otherWaters')}</div>
+                      <div className="grid grid-cols-5 gap-2" data-testid="calc-options">
+                        {suggest.rows.map((r) => (
+                          <button key={r.w} onClick={() => applyWater(r.w)}
+                            className={`rounded-lg border p-2 text-center transition ${r.w === suggest.pick.w ? 'border-[hsl(var(--primary))] bg-[hsl(var(--primary))]/10' : 'border-[hsl(var(--border))] hover:border-[hsl(var(--primary))]'}`}>
+                            <div className="text-sm font-semibold">{r.w} mL</div>
+                            <div className="text-[11px] text-muted-foreground">{r.units.toFixed(0)} {t('calc.units')}</div>
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                  <div className="grid grid-cols-2 gap-3 self-end">
+                    <Stat icon={FlaskConical} label={t('calc.conc')} value={(suggest.pick.conc / 1000).toFixed(1)} unit="mg/mL" />
+                    <Stat icon={Droplet} label={t('calc.dosesPerVial')} value={Math.floor((mg * 1000) / doseMcg)} unit={t('calc.doses')} />
+                  </div>
+                </div>
 
               </>
             )
@@ -797,21 +765,27 @@ const ReconstitutionCalculator = ({ variant = 'full', purchased = [], onTrack, s
               </div>
             ) : (
               <>
-                <div className="text-xs uppercase tracking-wide text-muted-foreground mb-1">{t('calc.draw')}</div>
-                <div className="flex items-end gap-2 mb-1">
-                  <span className="text-6xl font-bold tabular-nums text-[hsl(var(--primary))]" data-testid="calc-units">{known.units.toFixed(1)}</span>
-                  <span className="text-lg text-muted-foreground mb-1">{t('calc.units')}</span>
-                </div>
-                <div className="text-sm text-muted-foreground mb-4">= {known.drawMl.toFixed(3)} mL {t('calc.inSyringe')}</div>
-                <SyringeSVG units={known.units} maxUnits={maxUnits} onChange={setDrawUnits} />
-                <div className="flex items-center gap-2 mt-3 text-xs text-muted-foreground">
-                  <span>{t('calc.dragHint')}</span>
-                  <Input type="number" min="0" step="0.5" value={Number(known.units.toFixed(1))} onChange={(e) => setDrawUnits(Number(e.target.value))}
-                    data-testid="calc-units-input" className="h-8 w-20 text-sm" />
-                  <span>{t('calc.units')}</span>
+                <div className="grid lg:grid-cols-2 gap-6 items-center">
+                  <div>
+                    <div className="text-xs uppercase tracking-wide text-muted-foreground mb-1">{t('calc.draw')}</div>
+                    <div className="flex items-end gap-2 mb-1">
+                      <span className="text-6xl font-bold tabular-nums text-[hsl(var(--primary))]" data-testid="calc-units">{known.units.toFixed(1)}</span>
+                      <span className="text-lg text-muted-foreground mb-1">{t('calc.units')}</span>
+                    </div>
+                    <div className="text-sm text-muted-foreground">= {known.drawMl.toFixed(3)} mL {t('calc.inSyringe')}</div>
+                  </div>
+                  <div>
+                    <SyringeSVG units={known.units} maxUnits={maxUnits} onChange={setDrawUnits} />
+                    <div className="flex items-center gap-2 mt-3 text-xs text-muted-foreground">
+                      <span>{t('calc.dragHint')}</span>
+                      <Input type="number" min="0" step="0.5" value={Number(known.units.toFixed(1))} onChange={(e) => setDrawUnits(Number(e.target.value))}
+                        data-testid="calc-units-input" className="h-8 w-20 text-sm" />
+                      <span>{t('calc.units')}</span>
+                    </div>
+                  </div>
                 </div>
                 {known.overfill && <div className="text-xs text-muted-foreground mt-2">{t('calc.overfill')}</div>}
-                <div className="grid grid-cols-2 gap-3 mt-4">
+                <div className="grid grid-cols-2 gap-3 mt-4 lg:max-w-[560px]">
                   <Stat icon={FlaskConical} label={t('calc.conc')} value={(known.conc / 1000).toFixed(1)} unit="mg/mL" />
                   <Stat icon={Droplet} label={t('calc.dosesPerVial')} value={known.dosesPerVial} unit={t('calc.doses')} />
                 </div>
@@ -820,6 +794,87 @@ const ReconstitutionCalculator = ({ variant = 'full', purchased = [], onTrack, s
           )}
           <p className="text-[11px] text-muted-foreground mt-6 leading-relaxed">{t('calc.disclaimer')}</p>
         </Card>
+
+        {/* ⚠️ Esta cuadrícula decía "va a ancho completo" y era mentira: seguía
+            DENTRO de la tarjeta de resultados, o sea dentro de la columna de 3/5.
+            Por eso la tarjeta derecha medía 1,174 px contra 391 de la izquierda —
+            la tabla entera colgaba de ella. Ahora sí es hermana de la tarjeta,
+            fuera de las dos columnas (que además ya no existen). Un comentario no
+            mueve un elemento; hay que medirlo. (2026-07-27) */}
+        {full && levels && (
+          <Card className="p-0 overflow-hidden" data-testid="calc-tabla-niveles">
+            <div className="bg-[hsl(var(--secondary))] px-5 py-3 text-sm">
+              Tu vial de <strong>{vialMg} mg</strong> con <strong>{res ? res.water : waterMl} mL</strong> de agua bacteriostática
+              {' '}queda en <strong>{(vialMg / (Number(res ? res.water : waterMl) || 1)).toFixed(1)} mg/mL</strong>
+            </div>
+            <div className="overflow-x-auto">
+              <table className="w-full text-sm">
+                <thead>
+                  <tr className="border-b border-[hsl(var(--border))] text-muted-foreground">
+                    <th className="text-left px-5 py-2.5 font-medium text-[11px] uppercase tracking-wider">Nivel</th>
+                    <th className="text-left px-5 font-medium text-[11px] uppercase tracking-wider">Fase</th>
+                    <th className="text-right px-5 font-medium text-[11px] uppercase tracking-wider">Dosis</th>
+                    <th className="text-right px-5 font-medium text-[11px] uppercase tracking-wider">Rayitas</th>
+                    <th className="text-right px-5 font-medium text-[11px] uppercase tracking-wider whitespace-nowrap">Cada cuándo</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {[['inicial', t('calc.lvlBasic')], ['tipica', t('calc.lvlTypical')], ['avanzada', t('calc.lvlAdvanced')]].map(([k, label]) => {
+                    const agua = Number(res ? res.water : waterMl) || 1;
+                    const conc = vialMg / agua;                       // mg/mL
+                    const mgNivel = levels.unit === 'mg' ? levels[k] : levels[k] / 1000;
+                    const rayitas = Math.round((mgNivel / conc) * syringe.perMl);
+                    const cabe = rayitas <= syringe.perMl * syringe.maxMl;
+                    // El nivel que el cliente tiene puesto se resalta: si no, hay
+                    // que adivinar cuál de los tres renglones es el suyo.
+                    const activo = k === activeLevel;
+                    return (
+                      <tr key={k}
+                          className={`border-b border-[hsl(var(--border))]/50 last:border-0 ${activo ? 'bg-[hsl(var(--primary))]/10' : ''}`}
+                          data-testid={`calc-fila-${k}`}>
+                        <td className="px-5 py-3">
+                          <span className={activo ? 'font-semibold text-[hsl(var(--primary))]' : ''}>{label}</span>
+                        </td>
+                        <td className="px-5 text-muted-foreground">{faseDeNivel(levels, k, language) || '—'}</td>
+                        <td className="text-right px-5 tabular-nums font-medium whitespace-nowrap">{levels[k]} {levels.unit}</td>
+                        <td className={`text-right px-5 tabular-nums font-semibold ${cabe ? '' : 'text-red-600'}`}>
+                          {rayitas}{cabe ? '' : ' ⚠️'}
+                        </td>
+                        <td className="text-right px-5 text-muted-foreground whitespace-nowrap">
+                          {freqPhrase(freqDeNivel(levels, k, currentProduct?.startFreq), language) || '—'}
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            </div>
+            {/* De dónde salió cada cifra. Va a la vista a propósito: la razón por
+                la que estas sugerencias estuvieron apagadas es que nadie podía
+                saber en qué se basaban. Si un producto no trae fuente anotada, se
+                dice — es preferible el hueco a la falsa confianza. */}
+            <div className="px-5 py-3 text-xs text-muted-foreground leading-relaxed border-t border-[hsl(var(--border))]">
+              {levels.fuente
+                ? <>Fuente: {levels.fuente}</>
+                : <span className="text-[hsl(var(--warning-foreground))]">Sin fuente anotada para este producto.</span>}
+              {' · '}Referencia de investigación (RUO), no es una pauta médica.
+              Consulta a un médico y hazte análisis antes de decidir cualquier dosis.
+            </div>
+            {/* La pregunta que SIEMPRE sigue: "¿y cuándo paso al siguiente nivel?".
+                La respuesta honesta es que no la tenemos y no debemos tenerla:
+                cuánto tiempo permanecer en un nivel es titulación, y eso lo decide
+                un médico con análisis de por medio. Decirlo es mejor que dejar el
+                hueco, porque el hueco lo llena el cliente inventando. */}
+            <div className="px-5 py-3 text-xs leading-relaxed border-t border-[hsl(var(--border))] bg-[hsl(var(--muted))]/40"
+                 data-testid="calc-titulacion">
+              <strong>Cuándo pasar de un nivel a otro es una decisión clínica.</strong>{' '}
+              Estos niveles describen lo que reporta la literatura, no un calendario
+              para ti: no indicamos cuántas semanas quedarte en uno ni cuándo subir.
+              Descarga esta ficha y llévasela a tu médico — con tus análisis, él es
+              quien puede decidirlo.
+            </div>
+          </Card>
+        )}
       </div>
       </>
       )}

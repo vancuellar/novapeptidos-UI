@@ -415,8 +415,22 @@ body {
 
    El `margin-right`/`padding-right` tambien se anulan: la libreria los agrega
    para compensar el ancho de la barra de scroll que acaba de esconder, y si
-   dejamos el scroll vivo ese respiro se ve como un brinco lateral. */
-body[data-scroll-locked] {
+   dejamos el scroll vivo ese respiro se ve como un brinco lateral.
+
+   ⚠️ EL `html` DE ADELANTE NO ES ADORNO — ES TODO EL ARREGLO. (2026-07-27)
+   El primer intento (PR #119) escribio este mismo bloque como
+   `body[data-scroll-locked]` a secas y NO servia: Christian seguia viendo
+   desaparecer la barra. Motivo, comprobado en vivo con el navegador abierto en
+   exygenlabs.com a 1440 px: react-remove-scroll no trae sus estilos en un
+   archivo .css, los INYECTA en un <style> dentro del <head> al abrir el menu,
+   con el selector identico `body[data-scroll-locked]` y tambien `!important`.
+   Misma especificidad + inyectado despues = gana el suyo. El nuestro perdia sin
+   hacer ruido, y por eso el diagnostico anterior concluyo mal que "el overflow
+   no era la causa": si lo era, pero nuestra regla nunca llego a aplicarse.
+   Con `html` delante la especificidad sube (0,1,2 contra 0,1,1) y el orden deja
+   de importar. Medido: el header pasaba a `top: -746 px` con el menu abierto;
+   con esta regla se queda en `top: 0`. */
+html body[data-scroll-locked] {
     overflow: visible !important;
     overflow-x: clip !important;
     margin-right: 0 !important;
