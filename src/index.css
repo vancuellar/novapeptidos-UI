@@ -399,6 +399,30 @@ body {
    en TODO el sitio. La franja es el rebote normal del navegador, no pagina de
    mas: el DOM termina 3 px despues del aviso de derechos reservados. */
 
+/* ⛔ LA MISMA REGLA DE ORO, PERO CONTRA UNA LIBRERIA. (Christian, 2026-07-26)
+   Al abrir un Select, Dialog o Popover, Radix llama a react-remove-scroll-bar,
+   que le pone al BODY el atributo `data-scroll-locked` y `overflow: hidden`
+   para que la pagina de atras no se mueva.
+
+   Eso es exactamente lo que la regla de arriba prohibe: vuelve al body un
+   contenedor de scroll y TODO lo que sea `sticky` se despega. Sintoma real:
+   Christian abria el selector de jeringa en la calculadora y la barra lateral
+   del tablero se esfumaba mientras el menu estaba abierto.
+
+   Aqui se le quita el candado al body. Se pierde el bloqueo de scroll de fondo
+   —la pagina puede moverse con el menu abierto—, y eso es el precio correcto:
+   que la barra lateral y el header no desaparezcan JAMAS pesa mas.
+
+   El `margin-right`/`padding-right` tambien se anulan: la libreria los agrega
+   para compensar el ancho de la barra de scroll que acaba de esconder, y si
+   dejamos el scroll vivo ese respiro se ve como un brinco lateral. */
+body[data-scroll-locked] {
+    overflow: visible !important;
+    overflow-x: clip !important;
+    margin-right: 0 !important;
+    padding-right: 0 !important;
+}
+
 .hero-vials { position: relative; }
 
 .hero-vial {
