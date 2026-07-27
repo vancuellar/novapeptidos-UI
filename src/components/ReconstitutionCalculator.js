@@ -83,7 +83,15 @@ const freqDeNivel = (levels, nivel, freqProducto) =>
   (levels && levels.freq && levels.freq[nivel]) || freqProducto || '';
 // Frase "para empezar" en lenguaje simple (para que la entienda cualquiera).
 const START_LEAD = { es: 'Para empezar', en: 'To start', pt: 'Para começar' };
-const START_APPLY = { es: 'aplica', en: 'apply', pt: 'aplique' };
+const START_APPLY = { es: 'Luego aplica', en: 'Then apply', pt: 'Depois aplique' };
+// Primer paso: cuánta agua lleva el vial. Iba en otro recuadro y se perdía.
+const START_WATER = { es: 'Ponle', en: 'Add', pt: 'Coloque' };
+const START_WATER_TAIL = {
+  es: 'de agua bacteriostática al vial.',
+  en: 'of bacteriostatic water to the vial.',
+  pt: 'de água bacteriostática no frasco.',
+};
+const START_UNITS = { es: 'rayitas', en: 'units', pt: 'risquinhos' };
 
 const MIN_UNITS = 2;                       // menos de esto no se puede medir en la jeringa
 
@@ -657,10 +665,24 @@ const ReconstitutionCalculator = ({ variant = 'full', purchased = [], onTrack, s
           {full && currentProduct?.startFreq && (parseFloat(dose) > 0) && (
             <div className="mb-5 rounded-xl border border-[hsl(var(--primary))]/40 bg-[hsl(var(--primary))]/10 p-4" data-testid="calc-plain-summary">
               <div className="text-[11px] uppercase tracking-wide text-muted-foreground mb-1">{START_LEAD[language] || START_LEAD.es} · RUO</div>
+              {/* El agua va en la MISMA frase. Antes vivía en otro recuadro y
+                  quedaba la duda de cuánta ponerle al vial para empezar
+                  (Christian, 2026-07-26, con NAD+ 500 mg). Es el primer paso
+                  real: sin reconstituir no hay dosis que aplicar. */}
+              {res && res.water > 0 && (
+                <div className="text-lg leading-snug mb-1">
+                  {START_WATER[language] || START_WATER.es}{' '}
+                  <span className="font-bold text-[hsl(var(--primary))]">{res.water} mL</span>{' '}
+                  {START_WATER_TAIL[language] || START_WATER_TAIL.es}
+                </div>
+              )}
               <div className="text-lg leading-snug">
                 {START_APPLY[language] || START_APPLY.es}{' '}
                 <span className="font-bold text-[hsl(var(--primary))]">{dose} {effUnit}</span>,{' '}
-                <span className="font-bold text-[hsl(var(--primary))]">{freqPhrase(freqDeNivel(levels, activeLevel, currentProduct.startFreq), language)}</span>.
+                <span className="font-bold text-[hsl(var(--primary))]">{freqPhrase(freqDeNivel(levels, activeLevel, currentProduct.startFreq), language)}</span>
+                {res && res.units > 0 && (
+                  <> — <span className="font-bold text-[hsl(var(--primary))]">{res.units.toFixed(0)} {START_UNITS[language] || START_UNITS.es}</span></>
+                )}.
               </div>
             </div>
           )}
