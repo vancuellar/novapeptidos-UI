@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { CreditCard, Landmark, ShieldCheck, Package, UserRound, MapPin, ChevronDown, Bitcoin } from 'lucide-react';
+import { CreditCard, Landmark, ShieldCheck, Package, UserRound, MapPin, ChevronDown, Bitcoin, Store } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -17,7 +17,7 @@ import { useCart } from '@/context/CartContext';
 import { useAuth } from '@/context/AuthContext';
 import { useLanguage } from '@/context/LanguageContext';
 
-const ICONS = { CreditCard, Landmark, Bitcoin };
+const ICONS = { CreditCard, Landmark, Bitcoin, Store };
 
 // Ya no hay utilidades de tarjeta: el numero se teclea en la pagina de Mercado
 // Pago, no aqui. Se borraron con el formulario (Christian, 2026-07-26).
@@ -44,19 +44,23 @@ const Checkout = () => {
   const [usePoints, setUsePoints] = useState(false);
   const [cryptoOn, setCryptoOn] = useState(false);
   const [cardOn, setCardOn] = useState(false);
+  const [oxxoOn, setOxxoOn] = useState(false);
 
   // Cripto (BTCPay) solo aparece si el servidor lo tiene encendido.
   useEffect(() => {
     api.get('/payments/config').then((r) => {
       setCryptoOn(!!r.data?.crypto_enabled);
       setCardOn(!!r.data?.card_enabled);
+      setOxxoOn(!!r.data?.oxxo_enabled);
     }).catch(() => {});
   }, []);
   // La TARJETA solo aparece si Mercado Pago esta configurado. Antes salia siempre
   // — y por defecto — con un formulario que pedia el numero, lo validaba y lo
   // TIRABA: nadie cobraba y el cliente se iba creyendo que habia pagado.
+  // OXXO viaja por la misma pasarela: mismo interruptor del servidor.
   const methods = PAYMENT_METHODS.filter(
-    (m) => (m.id !== 'cripto' || cryptoOn) && (m.id !== 'tarjeta' || cardOn),
+    (m) => (m.id !== 'cripto' || cryptoOn) && (m.id !== 'tarjeta' || cardOn)
+      && (m.id !== 'oxxo' || oxxoOn),
   );
   // Si el metodo elegido deja de estar disponible, cae al primero que si este.
   useEffect(() => {
@@ -231,6 +235,14 @@ const Checkout = () => {
             {payment === 'tarjeta' && (
               <div className="mt-4 rounded-xl border border-border bg-[hsl(var(--secondary))]/50 p-4 text-sm text-muted-foreground" data-testid="checkout-card-note">
                 {t('checkout.cardNote')}
+              </div>
+            )}
+
+            {/* OXXO: el voucher lo genera Mercado Pago; el cliente lo paga en la
+                tienda y el pedido se confirma cuando el webhook avisa. */}
+            {payment === 'oxxo' && (
+              <div className="mt-4 rounded-xl border border-border bg-[hsl(var(--secondary))]/50 p-4 text-sm text-muted-foreground" data-testid="checkout-oxxo-note">
+                {t('checkout.oxxoNote')}
               </div>
             )}
 
