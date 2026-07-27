@@ -1,0 +1,80 @@
+{
+  "_comentario": "Identidad quimica verificada por compuesto. Fuente de cada dato en 'fuentes'. Si un campo no se ha podido verificar se pone null y la ficha imprime 'Pendiente de verificar' — NUNCA se inventa.",
+  "ghk-cu": {
+    "nombre": "GHK-Cu",
+    "nombre_quimico": "Complejo de cobre(II) del tripéptido glicil-L-histidil-L-lisina",
+    "sinonimos": [
+      "Copper tripeptide-1",
+      "Cu-GHK",
+      "Tripéptido de cobre-1",
+      "Prezatide cobre (péptido libre: Prezatide)"
+    ],
+    "cas_complejo": "89030-95-5",
+    "cas_peptido_libre": "49557-75-7",
+    "formula": "C14H23CuN6O4+",
+    "peso_molecular": "402.92 g/mol",
+    "formula_peptido_libre": "C14H24N6O4",
+    "peso_peptido_libre": "340.38 g/mol",
+    "secuencia": "H-Gly-His-Lys-OH (GHK)",
+    "residuos": 3,
+    "apariencia": "Polvo o gránulos cristalinos de color azul intenso, con leve olor característico",
+    "solubilidad": "Soluble en agua (≥ 100 mg/mL)",
+    "categoria": "Complejo metal-péptido",
+    "fuentes": {
+      "cas_complejo": "PubChem CID 71587328",
+      "cas_peptido_libre": "PubChem CID 73587",
+      "formula": "PubChem CID 71587328"
+    }
+  },
+  "retatrutida": {
+    "nombre": "Retatrutida",
+    "nombre_quimico": "Retatrutide (clave de desarrollo LY3437943)",
+    "sinonimos": [
+      "LY3437943",
+      "Retatrutide",
+      "Triple agonista GIP/GLP-1/GCG"
+    ],
+    "cas_complejo": "2381089-83-2",
+    "cas_peptido_libre": null,
+    "formula": "C221H342N46O68",
+    "peso_molecular": "4731.33 g/mol (base libre)",
+    "formula_peptido_libre": null,
+    "peso_peptido_libre": null,
+    "secuencia": "Tyr-Aib-Gln-Gly-Thr-Phe-Thr-Ser-Asp-Tyr-Ser-Ile-(α-Me-Leu)-Leu-Asp-Lys-Lys[diácido C20-γGlu-(AEEA)2]-Ala-Gln-Aib-Ala-Phe-Ile-Glu-Tyr-Leu-Leu-Glu-Gly-Gly-Pro-Ser-Ser-Gly-Ala-Pro-Pro-Pro-Ser-NH2",
+    "residuos": 39,
+    "apariencia": "Polvo liofilizado de color blanco a blanco amarillento",
+    "solubilidad": "Soluble en agua; el péptido acilado es propenso a agregarse bajo estrés mecánico",
+    "categoria": "Péptido sintético acilado de cadena única",
+    "fuentes": {
+      "cas_complejo": "CAS Registry 2381089-83-2",
+      "formula": "Ficha técnica de proveedores de referencia analítica (MedChemExpress, InvivoGen)",
+      "secuencia": "Literatura primaria del compuesto"
+    }
+  },
+  "5-amino-1mq": {
+    "nombre": "5-Amino-1MQ",
+    "nombre_quimico": "1-metilquinolin-1-io-5-amina, sal de yoduro",
+    "sinonimos": [
+      "5A1MQ",
+      "5-amino-1-metilquinolinio",
+      "5-amino-1-methylquinolinium iodide"
+    ],
+    "cas_complejo": "42464-96-0",
+    "cas_peptido_libre": null,
+    "formula": "C10H11IN2 (sal de yoduro)",
+    "peso_molecular": "286.11 g/mol",
+    "formula_peptido_libre": "C10H11N2+ (catión)",
+    "peso_peptido_libre": "159.21 g/mol (catión)",
+    "secuencia": null,
+    "residuos": null,
+    "apariencia": "Sólido cristalino de color rosa a anaranjado",
+    "solubilidad": "Soluble en agua y en DMSO; verificar la ficha del lote",
+    "categoria": "Molécula pequeña (derivado de quinolinio)",
+    "nota_nomenclatura": "Algunos proveedores etiquetan este mismo compuesto como \"10-amino-1MQ\". Esa denominación no corresponde a ninguna sustancia documentada: el anillo de quinolinio no admite una posición 10.",
+    "fuentes": {
+      "cas_complejo": "PubChem CID 66522933",
+      "formula": "PubChem CID 66522933 / CID 950107 (catión)"
+    },
+    "etiqueta_forma_libre": "Fórmula del catión activo"
+  }
+}

@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useEffect } from 'react';
+import React, { useState, useMemo, useEffect, useRef } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { toast } from 'sonner';
 import { Card } from '@/components/ui/card';
@@ -299,11 +299,20 @@ const ReconstitutionCalculator = ({ variant = 'full', purchased = [], onTrack, s
     return { pick, rows, tooSmall, tooBig };
   }, [mg, doseMcg, syringe]);
 
+  // La presentación que el cliente compró de ese producto, si la compró. Se usa
+  // como arranque por defecto: no le limita las demás, solo evita que tenga que
+  // corregir el gramaje cada vez que entra.
+  const mgComprado = (name) => {
+    const mio = purchased.find((p) => (p.name || '').toLowerCase() === (name || '').toLowerCase());
+    return mio && mio.mg ? mio.mg : null;
+  };
+
   const pickProduct = (name, presetMg) => {
     setProduct(name);
     setPickerOpen(false);
     const p = listaProductos.find((x) => x.name === name);
-    const vial = presetMg || (p && p.variants.length ? Math.min(...p.variants) : null);
+    const vial = presetMg || mgComprado(name)
+      || (p && p.variants.length ? Math.min(...p.variants) : null);
     if (vial) {
       setVialMg(vial);
       setWaterMl(aguaSugerida(vial, p));
@@ -339,6 +348,18 @@ const ReconstitutionCalculator = ({ variant = 'full', purchased = [], onTrack, s
         ? { water: suggest.pick.w, units: suggest.pick.units, drawMl: suggest.pick.drawMl, conc: suggest.pick.conc } : null)
     : (known ? { water: Number(waterMl), units: known.units, drawMl: known.drawMl, conc: known.conc } : null);
   const dosesPerVial = doseMcg ? Math.floor((mg * 1000) / doseMcg) : 0;
+
+  // Arranque en lo suyo (área privada): si el cliente ya compró, la calculadora
+  // abre con su primer péptido y EN LA PRESENTACIÓN QUE COMPRÓ, en vez de en
+  // blanco. Sigue pudiendo cambiar a cualquier otro gramaje del selector.
+  const yaArranco = useRef(false);
+  useEffect(() => {
+    if (!full || yaArranco.current || product || !purchased.length) return;
+    yaArranco.current = true;
+    const primero = purchased[0];
+    if (primero && primero.name) pickProduct(primero.name, primero.mg);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [full, purchased.length, product]);
 
   // Cargar estado desde el enlace compartido (una vez)
   const [params, setParams] = useSearchParams();

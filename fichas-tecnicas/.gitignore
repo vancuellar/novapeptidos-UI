@@ -1,0 +1,4 @@
+# Los PDF y el HTML intermedio son SALIDA: se regeneran con build_fichas.py y
+# pesan 20 MB. Y no deben andar en un repo publico: las fichas se entregan solo
+# a quien compra o por enlace firmado del chat. Ver novapeptidos-RBAC/ficha_store.py
+pdf/
