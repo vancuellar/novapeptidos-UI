@@ -584,78 +584,6 @@ const ReconstitutionCalculator = ({ variant = 'full', purchased = [], onTrack, s
                 })}
               </div>
             )}
-            {/* Todo junto y masticado, que es como lo pidió Christian: el agua
-                que va en ESTE vial y, sobre esa agua, cuántas rayitas toca en
-                cada nivel. El agua NO cambia por nivel: el vial se reconstituye
-                una sola vez, así que es una sola cifra arriba y tres renglones
-                abajo. */}
-            {levels && (
-              <div className="mt-3 rounded-lg border border-[hsl(var(--border))] overflow-hidden" data-testid="calc-tabla-niveles">
-                <div className="bg-[hsl(var(--secondary))] px-3 py-2 text-xs">
-                  Tu vial de <strong>{vialMg} mg</strong> con <strong>{res ? res.water : waterMl} mL</strong> de agua bacteriostática
-                  {' '}queda en <strong>{(vialMg / (Number(res ? res.water : waterMl) || 1)).toFixed(1)} mg/mL</strong>
-                </div>
-                <table className="w-full text-xs">
-                  <thead className="text-muted-foreground">
-                    <tr className="border-b border-[hsl(var(--border))]">
-                      <th className="text-left px-3 py-1.5 font-normal">Nivel</th>
-                      <th className="text-left px-3 font-normal">Fase</th>
-                      <th className="text-right px-3 font-normal">Dosis</th>
-                      <th className="text-right px-3 font-normal">Rayitas</th>
-                      <th className="text-right px-3 font-normal">Cada cuándo</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {[['inicial', t('calc.lvlBasic')], ['tipica', t('calc.lvlTypical')], ['avanzada', t('calc.lvlAdvanced')]].map(([k, label]) => {
-                      const agua = Number(res ? res.water : waterMl) || 1;
-                      const conc = vialMg / agua;                       // mg/mL
-                      const mg = levels.unit === 'mg' ? levels[k] : levels[k] / 1000;
-                      const rayitas = Math.round((mg / conc) * syringe.perMl);
-                      const cabe = rayitas <= syringe.perMl * syringe.maxMl;
-                      return (
-                        <tr key={k} className="border-b border-[hsl(var(--border))]/50 last:border-0"
-                            data-testid={`calc-fila-${k}`}>
-                          <td className="px-3 py-1.5">{label}</td>
-                          <td className="px-3 text-muted-foreground">{faseDeNivel(levels, k, language) || '—'}</td>
-                          <td className="text-right px-3">{levels[k]} {levels.unit}</td>
-                          <td className={`text-right px-3 font-semibold ${cabe ? '' : 'text-red-600'}`}>
-                            {rayitas}{cabe ? '' : ' ⚠️'}
-                          </td>
-                          <td className="text-right px-3 text-muted-foreground">
-                            {freqPhrase(freqDeNivel(levels, k, currentProduct?.startFreq), language) || '—'}
-                          </td>
-                        </tr>
-                      );
-                    })}
-                  </tbody>
-                </table>
-                {/* De dónde salió cada cifra. Va a la vista a propósito: la razón
-                    por la que estas sugerencias estuvieron apagadas es que nadie
-                    podía saber en qué se basaban. Si un producto no trae fuente
-                    anotada, se dice — es preferible el hueco a la falsa confianza. */}
-                <div className="px-3 py-2 text-[11px] text-muted-foreground border-t border-[hsl(var(--border))]">
-                  {levels.fuente
-                    ? <>Fuente: {levels.fuente}</>
-                    : <span className="text-[hsl(var(--warning-foreground))]">Sin fuente anotada para este producto.</span>}
-                  {' · '}Referencia de investigación (RUO), no es una pauta médica.
-                  Consulta a un médico y hazte análisis antes de decidir cualquier dosis.
-                </div>
-                {/* La pregunta que SIEMPRE sigue: "¿y cuándo paso al siguiente
-                    nivel?". La respuesta honesta es que no la tenemos y no
-                    debemos tenerla: cuánto tiempo permanecer en un nivel es
-                    titulación, y eso lo decide un médico con análisis de por
-                    medio. Decirlo aquí es mejor que dejar el hueco, porque el
-                    hueco lo llena el cliente inventando. (Christian, 2026-07-26) */}
-                <div className="px-3 py-2 text-[11px] leading-relaxed border-t border-[hsl(var(--border))] bg-[hsl(var(--muted))]/40"
-                     data-testid="calc-titulacion">
-                  <strong>Cuándo pasar de un nivel a otro es una decisión clínica.</strong>{' '}
-                  Estos niveles describen lo que reporta la literatura, no un
-                  calendario para ti: no indicamos cuántas semanas quedarte en
-                  uno ni cuándo subir. Descarga esta ficha y llévasela a tu
-                  médico — con tus análisis, él es quien puede decidirlo.
-                </div>
-              </div>
-            )}
             {levels?.orientativa && (
               <p className="text-[11px] text-[hsl(var(--warning-foreground))] mt-1.5" data-testid="calc-orientative-note">
                 {t('calc.orientativeNote')}
@@ -759,6 +687,87 @@ const ReconstitutionCalculator = ({ variant = 'full', purchased = [], onTrack, s
                   <Stat icon={FlaskConical} label={t('calc.conc')} value={(suggest.pick.conc / 1000).toFixed(1)} unit="mg/mL" />
                   <Stat icon={Droplet} label={t('calc.dosesPerVial')} value={Math.floor((mg * 1000) / doseMcg)} unit={t('calc.doses')} />
                 </div>
+
+      {/* LA CUADRÍCULA VA A ANCHO COMPLETO, FUERA DE LA COLUMNA DE 2/5.
+          Vivía dentro de la tarjeta izquierda, o sea en 374 px con cinco
+          columnas encima: se veía apachurrada y "Cada cuándo" se partía en dos
+          renglones. Es la tabla que el cliente de verdad lee, así que se le da
+          la fila entera. (Christian, 2026-07-26) */}
+      {full && levels && (
+        <Card className="mt-5 p-0 overflow-hidden" data-testid="calc-tabla-niveles">
+          <div className="bg-[hsl(var(--secondary))] px-5 py-3 text-sm">
+            Tu vial de <strong>{vialMg} mg</strong> con <strong>{res ? res.water : waterMl} mL</strong> de agua bacteriostática
+            {' '}queda en <strong>{(vialMg / (Number(res ? res.water : waterMl) || 1)).toFixed(1)} mg/mL</strong>
+          </div>
+          <div className="overflow-x-auto">
+            <table className="w-full text-sm">
+              <thead>
+                <tr className="border-b border-[hsl(var(--border))] text-muted-foreground">
+                  <th className="text-left px-5 py-2.5 font-medium text-[11px] uppercase tracking-wider">Nivel</th>
+                  <th className="text-left px-5 font-medium text-[11px] uppercase tracking-wider">Fase</th>
+                  <th className="text-right px-5 font-medium text-[11px] uppercase tracking-wider">Dosis</th>
+                  <th className="text-right px-5 font-medium text-[11px] uppercase tracking-wider">Rayitas</th>
+                  <th className="text-right px-5 font-medium text-[11px] uppercase tracking-wider whitespace-nowrap">Cada cuándo</th>
+                </tr>
+              </thead>
+              <tbody>
+                {[['inicial', t('calc.lvlBasic')], ['tipica', t('calc.lvlTypical')], ['avanzada', t('calc.lvlAdvanced')]].map(([k, label]) => {
+                  const agua = Number(res ? res.water : waterMl) || 1;
+                  const conc = vialMg / agua;                       // mg/mL
+                  const mgNivel = levels.unit === 'mg' ? levels[k] : levels[k] / 1000;
+                  const rayitas = Math.round((mgNivel / conc) * syringe.perMl);
+                  const cabe = rayitas <= syringe.perMl * syringe.maxMl;
+                  // El nivel que el cliente tiene puesto se resalta: si no, hay
+                  // que adivinar cuál de los tres renglones es el suyo.
+                  const activo = k === activeLevel;
+                  return (
+                    <tr key={k}
+                        className={`border-b border-[hsl(var(--border))]/50 last:border-0 ${activo ? 'bg-[hsl(var(--primary))]/10' : ''}`}
+                        data-testid={`calc-fila-${k}`}>
+                      <td className="px-5 py-3">
+                        <span className={activo ? 'font-semibold text-[hsl(var(--primary))]' : ''}>{label}</span>
+                      </td>
+                      <td className="px-5 text-muted-foreground">{faseDeNivel(levels, k, language) || '—'}</td>
+                      <td className="text-right px-5 tabular-nums font-medium whitespace-nowrap">{levels[k]} {levels.unit}</td>
+                      <td className={`text-right px-5 tabular-nums font-semibold ${cabe ? '' : 'text-red-600'}`}>
+                        {rayitas}{cabe ? '' : ' ⚠️'}
+                      </td>
+                      <td className="text-right px-5 text-muted-foreground whitespace-nowrap">
+                        {freqPhrase(freqDeNivel(levels, k, currentProduct?.startFreq), language) || '—'}
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
+          {/* De dónde salió cada cifra. Va a la vista a propósito: la razón por
+              la que estas sugerencias estuvieron apagadas es que nadie podía
+              saber en qué se basaban. Si un producto no trae fuente anotada, se
+              dice — es preferible el hueco a la falsa confianza. */}
+          <div className="px-5 py-3 text-xs text-muted-foreground leading-relaxed border-t border-[hsl(var(--border))]">
+            {levels.fuente
+              ? <>Fuente: {levels.fuente}</>
+              : <span className="text-[hsl(var(--warning-foreground))]">Sin fuente anotada para este producto.</span>}
+            {' · '}Referencia de investigación (RUO), no es una pauta médica.
+            Consulta a un médico y hazte análisis antes de decidir cualquier dosis.
+          </div>
+          {/* La pregunta que SIEMPRE sigue: "¿y cuándo paso al siguiente nivel?".
+              La respuesta honesta es que no la tenemos y no debemos tenerla:
+              cuánto tiempo permanecer en un nivel es titulación, y eso lo decide
+              un médico con análisis de por medio. Decirlo es mejor que dejar el
+              hueco, porque el hueco lo llena el cliente inventando. */}
+          <div className="px-5 py-3 text-xs leading-relaxed border-t border-[hsl(var(--border))] bg-[hsl(var(--muted))]/40"
+               data-testid="calc-titulacion">
+            <strong>Cuándo pasar de un nivel a otro es una decisión clínica.</strong>{' '}
+            Estos niveles describen lo que reporta la literatura, no un calendario
+            para ti: no indicamos cuántas semanas quedarte en uno ni cuándo subir.
+            Descarga esta ficha y llévasela a tu médico — con tus análisis, él es
+            quien puede decidirlo.
+          </div>
+        </Card>
+      )}
+
               </>
             )
           ) : (
