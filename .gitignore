@@ -94,3 +94,7 @@ node_modules 2
 *.xlsx
 *.xls
 *.csv
+# Copias que crea iCloud al sincronizar ("archivo 2.js", "archivo 3.js").
+# Ya se colaron dos veces en commits. No son codigo: nadie las importa.
+src/data/* [0-9].js
+public/images/**/* [0-9].webp
