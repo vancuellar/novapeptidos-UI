@@ -943,6 +943,19 @@ const ReconstitutionCalculator = ({ variant = 'full', purchased = [], onTrack, s
                 la que estas sugerencias estuvieron apagadas es que nadie podía
                 saber en qué se basaban. Si un producto no trae fuente anotada, se
                 dice — es preferible el hueco a la falsa confianza. */}
+            {/* DOSIS DERIVADA: se avisa en su propio renglón y en color, no escondido en
+                la letra chica de la fuente. Es la diferencia entre "esto lo reporta
+                alguien" y "esto lo dedujimos nosotros", y el cliente tiene que poder
+                notarla de un vistazo. (Christian, 2026-07-27) */}
+            {levels.derivada && (
+              <div className="px-5 py-3 text-xs leading-relaxed border-t border-[hsl(var(--warning-foreground))]/40 bg-[hsl(var(--warning-foreground))]/10"
+                   data-testid="calc-dosis-derivada">
+                <strong>Estas cifras son una derivación nuestra, no un dato publicado.</strong>{' '}
+                Para este compuesto no encontramos ninguna pauta humana publicada — ni ensayo,
+                ni ficha de farmacia, ni manual de dosificación. Los demás productos del
+                catálogo citan su fuente; este no puede.
+              </div>
+            )}
             <div className="px-5 py-3 text-xs text-muted-foreground leading-relaxed border-t border-[hsl(var(--border))]">
               {levels.fuente
                 ? <>Fuente: {levels.fuente}</>
