@@ -286,8 +286,13 @@ const ReconstitutionCalculator = ({ variant = 'full', purchased = [], onTrack, s
     const WMIN = 1, WMAX = 5;                       // agua real (bac water hasta 10 mL, vial hasta ~5)
     const tooSmall = unitsAt(WMAX) < MIN_UNITS;     // ni con 5 mL se mide
     const tooBig = unitsAt(WMIN) > maxU;            // ni con 1 mL cabe
+    // Si la FUENTE dice cuánta agua lleva este vial, esa manda — igual que en
+    // aguaSugerida(). Este modo la estaba pisando con su propia aproximación:
+    // NAD+ 500 mg tiene 3 mL investigados y aquí salía 2 mL (2026-07-26).
+    // Una cifra investigada no se sustituye por una fórmula.
+    const dicha = currentProduct?.startLevels?.agua_ml?.[String(vialMg)];
     // agua exacta para que cada dosis ≈ 20 rayitas (cómodo de leer), dentro de [1, 5] mL
-    let w = (20 * mg * 1000) / (doseMcg * syringe.perMl);
+    let w = dicha || (20 * mg * 1000) / (doseMcg * syringe.perMl);
     w = Math.round(Math.min(WMAX, Math.max(WMIN, w)) * 10) / 10;   // precisión 0.1 mL
     const conc = (mg * 1000) / w;
     const drawMl = doseMcg / conc;
@@ -297,7 +302,7 @@ const ReconstitutionCalculator = ({ variant = 'full', purchased = [], onTrack, s
       .map((W) => ({ w: W, units: unitsAt(W), drawMl: (doseMcg * W) / (mg * 1000), conc: (mg * 1000) / W }))
       .filter((r) => r.units >= MIN_UNITS && r.units <= maxU);
     return { pick, rows, tooSmall, tooBig };
-  }, [mg, doseMcg, syringe]);
+  }, [mg, doseMcg, syringe, currentProduct, vialMg]);
 
   // La presentación que el cliente compró de ese producto, si la compró. Se usa
   // como arranque por defecto: no le limita las demás, solo evita que tenga que
