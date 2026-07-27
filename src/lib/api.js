@@ -19,6 +19,7 @@ export const formatMXN = (value) =>
 
 export const PAYMENT_METHODS = [
   { id: 'tarjeta', icon: 'CreditCard' },
+  { id: 'oxxo', icon: 'Store' },       // efectivo en tienda, vía Mercado Pago
   { id: 'spei', icon: 'Landmark' },
   { id: 'cripto', icon: 'Bitcoin' },
 ];
