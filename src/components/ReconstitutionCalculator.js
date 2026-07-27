@@ -182,12 +182,22 @@ const Stat = ({ icon: Icon, label, value, unit }) => (
   </div>
 );
 
-// Jeringa de insulina realista con graduación. units = cuánto se jala; maxUnits = tope de la jeringa.
-// Si `onChange` está presente, se puede arrastrar/tocar para fijar las unidades (modo interactivo).
+// Jeringa de insulina. units = cuánto se jala; maxUnits = tope de la jeringa.
+// Si `onChange` está presente, se puede arrastrar/tocar para fijar las unidades.
+//
+// Rediseñada el 2026-07-27 a petición de Christian ("más estilizada, más
+// sofisticada"). La anterior eran tres rectángulos planos. Lo que cambia:
+//   · proporciones de jeringa de verdad — barril largo y delgado, no un ladrillo
+//   · cristal con degradado y un brillo arriba, en vez de un gris sólido
+//   · el líquido lleva menisco (el borde curvo que hace de verdad un líquido)
+//   · graduación DENTRO del barril, como en una jeringa real, y no colgando
+//   · aletas para los dedos y émbolo con vástago en cruz
+// La aritmética y el arrastre no se tocaron: sigue siendo el mismo cálculo.
 const SyringeSVG = ({ units, maxUnits, onChange }) => {
-  const VB = 380, VBH = 120;                          // viewBox
-  const X0 = 46, X1 = 322, W = X1 - X0;               // barril (más grande)
-  const cy = 54, top = 34, bot = 74;                  // barril alto y claro
+  const uid = React.useId().replace(/:/g, '');        // ids únicos para los degradados
+  const VB = 420, VBH = 132;                          // viewBox
+  const X0 = 74, X1 = 330, W = X1 - X0;               // barril
+  const cy = 58, top = 40, bot = 76;                  // más delgado que antes
   const svgRef = React.useRef(null);
   const interactive = typeof onChange === 'function';
   const unitsFromEvent = (e) => {
@@ -212,29 +222,76 @@ const SyringeSVG = ({ units, maxUnits, onChange }) => {
     <svg ref={svgRef} viewBox={`0 0 ${VB} ${VBH}`} width="100%" role="img" aria-label={`Jeringa: ${units.toFixed(1)} unidades`} data-testid="calc-fill"
       onPointerDown={onDown} onPointerMove={onMove}
       style={{ cursor: interactive ? 'ew-resize' : 'default', touchAction: 'none' }}>
-      {/* aguja */}
-      <line x1="6" y1={cy} x2="30" y2={cy} stroke="hsl(var(--muted-foreground))" strokeWidth="2.5" />
-      <path d={`M30 ${cy - 10} L46 ${top} L46 ${bot} L30 ${cy + 10} Z`} fill="hsl(var(--muted-foreground))" opacity="0.5" />
-      {/* barril */}
-      <rect x={X0} y={top} width={W} height={bot - top} rx="6" fill="hsl(var(--muted))" stroke="hsl(var(--border))" strokeWidth="2" />
-      {/* líquido */}
-      <rect x={X0} y={top + 2} width={Math.max(0, fillW)} height={bot - top - 4} rx="4" fill="hsl(var(--primary))" opacity="0.85" />
-      {/* graduación: mayor (con número), media (10/30/50/70/90) resaltada, menor */}
+      <defs>
+        {/* El cristal. Con `--muted` quedaba MÁS OSCURO que la página y el barril
+            se veía como una losa negra; con el color del texto a muy poca
+            opacidad se lee como vidrio en tema claro y en oscuro. */}
+        <linearGradient id={`vidrio-${uid}`} x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%"   stopColor="hsl(var(--foreground))" stopOpacity="0.10" />
+          <stop offset="50%"  stopColor="hsl(var(--foreground))" stopOpacity="0.04" />
+          <stop offset="100%" stopColor="hsl(var(--foreground))" stopOpacity="0.13" />
+        </linearGradient>
+        <linearGradient id={`liquido-${uid}`} x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%"   stopColor="hsl(var(--primary))" stopOpacity="0.95" />
+          <stop offset="55%"  stopColor="hsl(var(--primary))" stopOpacity="0.80" />
+          <stop offset="100%" stopColor="hsl(var(--primary))" stopOpacity="0.62" />
+        </linearGradient>
+        {/* Recorta el líquido a la forma del barril: así el menisco no se sale
+            por las esquinas redondeadas. */}
+        <clipPath id={`barril-${uid}`}>
+          <rect x={X0} y={top} width={W} height={bot - top} rx="7" />
+        </clipPath>
+      </defs>
+
+      {/* Aguja. ⚠️ Iba con un degradado VERTICAL sobre una línea de 2 px de alto:
+          el degradado la dejaba casi transparente y la aguja desaparecía. Va con
+          color sólido. */}
+      <line x1="12" y1={cy} x2="46" y2={cy} stroke="hsl(var(--muted-foreground))" strokeWidth="1.6"
+            strokeLinecap="round" opacity="0.8" />
+      <path d={`M12 ${cy + 0.8} L21 ${cy - 1.6}`} stroke="hsl(var(--muted-foreground))" strokeWidth="1.6"
+            strokeLinecap="round" opacity="0.55" />
+      {/* cono: de la aguja al barril, en degradado suave y no como un bloque */}
+      <path d={`M46 ${cy - 3} L62 ${cy - 5} L${X0} ${top + 4} L${X0} ${bot - 4} L62 ${cy + 5} L46 ${cy + 3} Z`}
+            fill="hsl(var(--muted-foreground))" opacity="0.22" />
+      <path d={`M62 ${cy - 5} L${X0} ${top + 4} L${X0} ${cy} L62 ${cy}Z`} fill="#fff" opacity="0.06" />
+
+      {/* barril de cristal */}
+      <rect x={X0} y={top} width={W} height={bot - top} rx="7" fill={`url(#vidrio-${uid})`}
+            stroke="hsl(var(--border))" strokeWidth="1.25" />
+
+      <g clipPath={`url(#barril-${uid})`}>
+        {/* líquido + menisco (el borde curvo de un líquido de verdad) */}
+        {fillW > 0 && (
+          <>
+            <rect x={X0} y={top} width={fillW} height={bot - top} fill={`url(#liquido-${uid})`} />
+            <ellipse cx={px} cy={cy} rx="4.5" ry={(bot - top) / 2} fill="hsl(var(--primary))" opacity="0.55" />
+          </>
+        )}
+        {/* brillo del cristal, encima del líquido */}
+        <rect x={X0} y={top + 2.5} width={W} height="4" rx="2" fill="#fff" opacity="0.14" />
+      </g>
+
+      {/* graduación DENTRO del barril, como en una jeringa real */}
       {ticks.map((u) => {
         const major = u % step === 0;
         const medium = !major && u % 10 === 0;
-        const len = major ? 11 : medium ? 9 : 6;
-        const sw = major ? 1.6 : medium ? 1.5 : 1;
-        const op = major ? 0.9 : medium ? 0.8 : 0.4;
-        return <line key={u} x1={tx(u)} y1={bot} x2={tx(u)} y2={bot + len} stroke="hsl(var(--muted-foreground))" strokeWidth={sw} opacity={op} />;
+        const len = major ? 13 : medium ? 9 : 5.5;
+        return <line key={u} x1={tx(u)} y1={top} x2={tx(u)} y2={top + len}
+                     stroke="hsl(var(--foreground))" strokeWidth={major ? 1.3 : 0.9}
+                     opacity={major ? 0.55 : medium ? 0.4 : 0.22} />;
       })}
       {ticks.filter((u) => u % step === 0).map((u) => (
-        <text key={u} x={tx(u)} y={bot + 28} textAnchor="middle" fontSize="13" fill="hsl(var(--muted-foreground))" fontFamily="ui-monospace,monospace">{u}</text>
+        <text key={u} x={tx(u)} y={bot + 17} textAnchor="middle" fontSize="11" letterSpacing="0.4"
+              fill="hsl(var(--muted-foreground))" fontFamily="ui-monospace,SFMono-Regular,monospace">{u}</text>
       ))}
-      {/* émbolo */}
-      <rect x={px - 3} y={top - 6} width="6" height={bot - top + 12} rx="2" fill="hsl(var(--foreground))" opacity="0.78" />
-      <line x1={px} y1={cy} x2={VB - 10} y2={cy} stroke="hsl(var(--foreground))" strokeWidth="3.5" opacity="0.5" />
-      <rect x={VB - 14} y={top - 12} width="8" height={bot - top + 24} rx="3" fill="hsl(var(--foreground))" opacity="0.7" />
+
+      {/* aletas para los dedos, arriba y abajo del final del barril */}
+      <rect x={X1 - 2} y={top - 8} width="6" height="9" rx="2.5" fill="hsl(var(--muted-foreground))" opacity="0.4" />
+      <rect x={X1 - 2} y={bot - 1} width="6" height="9" rx="2.5" fill="hsl(var(--muted-foreground))" opacity="0.4" />
+      {/* émbolo: tapón dentro del barril + vástago + apoyo del pulgar */}
+      <rect x={px - 3} y={top + 1.5} width="6" height={bot - top - 3} rx="2.5" fill="hsl(var(--foreground))" opacity="0.6" />
+      <line x1={px} y1={cy} x2={VB - 16} y2={cy} stroke="hsl(var(--foreground))" strokeWidth="3" opacity="0.3" />
+      <rect x={VB - 18} y={top - 11} width="7" height={bot - top + 22} rx="3.5" fill="hsl(var(--foreground))" opacity="0.45" />
     </svg>
   );
 };
@@ -447,13 +504,21 @@ const ReconstitutionCalculator = ({ variant = 'full', purchased = [], onTrack, s
   const maxUnits = syringe.perMl * syringe.maxMl;
 
   // La dosis que el cliente tiene puesta, ¿cabe en la jeringa que eligió?
-  // `aguaQueCabe` es el agua MÁXIMA con la que todavía cabe (menos agua =
-  // más concentrado = menos rayitas), redondeada hacia abajo a medios mL.
+  //
+  // ⛔ AQUÍ NO SE SUGIERE CAMBIAR EL AGUA. (Christian, 2026-07-27)
+  // La primera versión decía "ponle 3 mL y sí cabe". Christian lo paró: no
+  // quiere que al cliente se le diga que le mueva al agua para que le quepa la
+  // dosis. Técnicamente el agua NO cambia los miligramos que se aplican —solo
+  // la concentración—, pero la salida correcta para el cliente es la que no
+  // toca la preparación: jeringa más grande, o repartir la dosis en dos.
+  // Y si ya trae la de 1 mL, cambiarle el agua no lo salvaría de todos modos.
   const noCabe = (() => {
     if (!res || !(res.units > maxUnits)) return null;
-    const w = (maxUnits * mg * 1000) / (doseMcg * syringe.perMl);
-    const aguaQueCabe = Math.floor(w * 2) / 2;
-    return { agua: res.water, rayitas: Math.round(res.units), aguaQueCabe: aguaQueCabe >= 1 ? aguaQueCabe : null };
+    const total = Math.round(res.units);
+    const mayorDisponible = SYRINGES.some((s) => s.perMl * s.maxMl > maxUnits && (doseMcg / res.conc) * s.perMl <= s.perMl * s.maxMl);
+    // Reparto en dos: mitad y mitad, con el sobrante en la primera.
+    const mitad = Math.ceil(total / 2);
+    return { agua: res.water, rayitas: total, mayorDisponible, mitad, resto: total - mitad };
   })();
 
   return (
@@ -689,19 +754,20 @@ const ReconstitutionCalculator = ({ variant = 'full', purchased = [], onTrack, s
             </div>
           )}
           {/* ¿CABE LA DOSIS EN LA JERINGA? Salió del estudio de researchdosing:
-              con 4 mL de agua una dosis de 12 mg de Retatrutida NO cabe en una
-              U-100 (120 rayitas), y con 2.5 mL sí (75). Antes eso solo se
-              insinuaba con un ⚠️ rojo en la columna de rayitas de la tabla.
-              Aquí se dice con todas sus letras Y con la salida: cuánta agua
-              ponerle para que quepa. Es aritmética de medición, no dosis. */}
+              con 4 mL de agua una dosis de 12 mg de Retatrutida son 120 rayitas
+              y no cabe en una U-100. Antes solo se insinuaba con un ⚠️ rojo en
+              una columna de la tabla; aquí se dice con todas sus letras.
+              La salida NUNCA es cambiarle el agua — ver el comentario de
+              `noCabe` arriba. */}
           {noCabe && (
             <div className="mb-5 rounded-xl border border-[hsl(var(--warning-foreground))]/40 bg-[hsl(var(--warning-foreground))]/10 p-4 text-sm leading-relaxed"
                  data-testid="calc-no-cabe">
-              <strong>Esta dosis no cabe en tu jeringa.</strong>{' '}
-              Con {noCabe.agua} mL de agua salen <strong>{noCabe.rayitas} rayitas</strong> y tu {syringe.label} llega a {maxUnits}.
-              {' '}{noCabe.aguaQueCabe
-                ? <>Ponle <strong>{noCabe.aguaQueCabe} mL</strong> de agua y sí cabe</>
-                : <>Ni con 1 mL cabe: se necesita una jeringa más grande o partir la aplicación</>}.
+              <strong>Esta dosis no cabe en una sola jeringa.</strong>{' '}
+              Son <strong>{noCabe.rayitas} rayitas</strong> y tu {syringe.label} llega a {maxUnits}.
+              {' '}{noCabe.mayorDisponible
+                ? <>Usa una jeringa más grande, o aplica la dosis completa en dos jeringas ({noCabe.mitad} y {noCabe.resto} rayitas).</>
+                : <>Aplica la dosis completa en dos jeringas: <strong>{noCabe.mitad}</strong> y <strong>{noCabe.resto}</strong> rayitas.</>}
+              {' '}No le cambies el agua al vial para que quepa.
             </div>
           )}
           {mode === 'suggest' ? (
@@ -860,18 +926,39 @@ const ReconstitutionCalculator = ({ variant = 'full', purchased = [], onTrack, s
               {' · '}Referencia de investigación (RUO), no es una pauta médica.
               Consulta a un médico y hazte análisis antes de decidir cualquier dosis.
             </div>
-            {/* La pregunta que SIEMPRE sigue: "¿y cuándo paso al siguiente nivel?".
-                La respuesta honesta es que no la tenemos y no debemos tenerla:
-                cuánto tiempo permanecer en un nivel es titulación, y eso lo decide
-                un médico con análisis de por medio. Decirlo es mejor que dejar el
-                hueco, porque el hueco lo llena el cliente inventando. */}
+            {/* "¿Y CUÁNDO PASO AL SIGUIENTE NIVEL?" — la pregunta que siempre sigue.
+                Antes se contestaba solo con "eso lo decide un médico" y ahí se
+                cortaba. Christian lo cambió (2026-07-27): decir que lo IDEAL es el
+                médico, pero no dejar el hueco — el hueco lo llena el cliente
+                inventando, o se va a copiarlo de un foro sin saber quién lo firma.
+
+                Por eso las referencias salen CON NOMBRE Y APELLIDO y con su nivel
+                de respaldo a la vista: un ensayo publicado no vale lo mismo que un
+                manual de vendedores, y el cliente tiene que poder notar cuál es
+                cuál. Si un producto no trae `titulacion` anotada no se inventa: se
+                queda solo el párrafo del médico. Misma regla que `fuente`. */}
             <div className="px-5 py-3 text-xs leading-relaxed border-t border-[hsl(var(--border))] bg-[hsl(var(--muted))]/40"
                  data-testid="calc-titulacion">
-              <strong>Cuándo pasar de un nivel a otro es una decisión clínica.</strong>{' '}
-              Estos niveles describen lo que reporta la literatura, no un calendario
-              para ti: no indicamos cuántas semanas quedarte en uno ni cuándo subir.
-              Descarga esta ficha y llévasela a tu médico — con tus análisis, él es
-              quien puede decidirlo.
+              <strong>Lo ideal es que cuándo subir de nivel lo decida un médico</strong>{' '}
+              con tus análisis en la mano: eso es titulación y depende de ti, no de una
+              tabla. Descarga esta ficha y llévasela.
+              {Array.isArray(levels.titulacion) && levels.titulacion.length > 0 && (
+                <>
+                  {' '}Mientras tanto, como <strong>referencia</strong>, esto es lo que
+                  reporta cada fuente:
+                  <ul className="mt-2 space-y-1.5" data-testid="calc-titulacion-fuentes">
+                    {levels.titulacion.map((r) => (
+                      <li key={r.quien} className="flex gap-2">
+                        <span className="text-[hsl(var(--primary))]">•</span>
+                        <span>
+                          <strong>{r.quien}:</strong> {r.dice}
+                          {r.aviso && <span className="text-[hsl(var(--warning-foreground))]"> ⚠️ {r.aviso}</span>}
+                        </span>
+                      </li>
+                    ))}
+                  </ul>
+                </>
+              )}
             </div>
           </Card>
         )}

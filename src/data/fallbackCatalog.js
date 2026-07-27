@@ -3831,7 +3831,18 @@ export const fallbackProducts = [
       "avanzada": 8,
       "unit": "mg",
       "agua_ml": { "5": 0.5, "10": 1, "15": 1.5, "20": 2, "30": 3, "40": 4 },
-      "fuente": "Ensayo Fase 2 (1, 4, 8 y 12 mg semanales) vía thepeptidecatalog.com/articles/retatrutide-dosing-guide + peptidedosingprotocols.com/protocol/retatrutide"
+      "fuente": "Ensayo Fase 2 en obesidad (1, 4, 8 y 12 mg semanales): Jastreboff AM et al., N Engl J Med 2023;389(6):514-526 (PMID 37366315) · registro NCT04881760 en clinicaltrials.gov",
+      "titulacion": [
+        {
+          "quien": "Ensayo Fase 2 (NEJM 2023 · NCT04881760)",
+          "dice": "Los grupos que llegaron a 8 y 12 mg no empezaron ahí: arrancaron en 2 mg y subieron por escalones 2 → 4 → 8 → 12 mg, una vez por semana. El registro describe los escalones; no publica cuántas semanas se queda uno en cada uno."
+        },
+        {
+          "quien": "researchdosing.com (manual compartido entre vendedores)",
+          "dice": "Mínimo 4 semanas en cada dosis y subir de 2 en 2 mg.",
+          "aviso": "No cita bibliografía, y sus tablas de unidades traen errores de aritmética comprobados. Es la costumbre del mercado, no evidencia."
+        }
+      ]
     },
     "featured": true,
     "is_new": true
