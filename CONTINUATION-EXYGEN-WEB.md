@@ -1,8 +1,171 @@
 # Exygen Labs — Website Continuation File
 
-> **Propósito:** fuente única de verdad del SITIO WEB (frontend, backend, IA, marca, despliegue). Pega este archivo en un chat nuevo para retomar con todo el contexto. Complementa a `../NOVA-PRICING-SYSTEM-CONTINUATION.md` (el sistema de precios). **Última actualización: 2026-07-26 (cierre).** Empieza por 🤝 HANDOFF — SESIÓN DEL 2026-07-26 (tarde/noche).
+> **Propósito:** fuente única de verdad del SITIO WEB (frontend, backend, IA, marca, despliegue). Pega este archivo en un chat nuevo para retomar con todo el contexto. Complementa a `../NOVA-PRICING-SYSTEM-CONTINUATION.md` (el sistema de precios). **Última actualización: 2026-07-27 (madrugada).** Empieza por 🚨 PENDIENTES URGENTES.
 
 > **Estilo con Christian:** abogado, no dev ("abogado de 95 años haciendo vibe coding"). Respuestas **ultra cortas, español claro, sin jerga**. Corre TÚ los comandos (nunca le pidas abrir terminal). Términos de git en inglés (commit, push, merge — no "commitear").
+
+---
+
+## 🚨 PENDIENTES URGENTES — SIN RESOLVER (2026-07-27)
+
+> Se intentó arreglarlos y **NO quedaron**. Christian los volvió a reportar después de
+> desplegados los intentos. Están aquí arriba a propósito: son lo primero que hay que
+> atacar en la siguiente sesión.
+
+### 1. ⛔ El sidebar izquierdo DESAPARECE al abrir el selector de jeringa
+
+**Sigue pasando.** Es la regla de oro de Christian ("la barra NUNCA desaparece"), ahora
+provocada por una librería.
+
+**Diagnóstico hecho:** Radix llama a `react-remove-scroll-bar` al abrir un `Select`,
+`Dialog` o `Popover`. Esa librería le pone al `<body>` el atributo `data-scroll-locked`
+con `overflow: hidden`. Eso convierte al body en contenedor de scroll y despega todo lo
+`sticky` — el sidebar del tablero es `sticky top-28`.
+
+**Lo que se intentó (PR #119, desplegado):** una regla en `src/index.css`:
+
+```css
+body[data-scroll-locked] {
+    overflow: visible !important;
+    overflow-x: clip !important;
+    margin-right: 0 !important;
+    padding-right: 0 !important;
+}
+```
+
+Al simular el atributo en producción, el body **sí** se queda en `clip visible`. Y aun así
+Christian lo sigue viendo desaparecer. **Conclusión: el mecanismo del overflow no era la
+causa real, o no la única.**
+
+**Qué revisar después (sin repetir lo ya descartado):**
+- Radix también pone `pointer-events: none` en el body y `aria-hidden`/`inert` en todo lo
+  que está fuera del portal. Revisar si el sidebar cae dentro de esa rama.
+- El `Select` monta su contenido en un portal; comprobar si el `TabsList`/`TabsTrigger`
+  del sidebar pierde su contexto de `Tabs` mientras el portal está abierto.
+- Reproducirlo con el panel del navegador a **ancho real ≥1024 px**. En esta sesión no se
+  pudo: el panel reportaba `innerWidth: 0` y a ese ancho el sidebar está oculto por
+  diseño (`hidden lg:block`), así que **nunca se vio el bug con los ojos**.
+- Probar `<Select modal={false}>` o reemplazar por un `<select>` nativo en ese campo.
+
+### 2. ⛔ Las columnas de la calculadora siguen desproporcionadas
+
+**Sigue pasando.** El lado izquierdo es muchísimo más corto que el derecho.
+
+**Medición real (producción, cuenta de Paz):** tarjeta izquierda **391 px**, tarjeta
+derecha **1,174 px**. Tres veces.
+
+**Causa:** la cuadrícula de niveles se mudó a ancho completo (PR #117) y con eso la columna
+de controles se quedó casi vacía, mientras la de resultados conserva el resumen, la jeringa
+SVG, el agua, las opciones y las estadísticas.
+
+**Lo que se intentó (PR #119, desplegado):** hacer la tarjeta izquierda `lg:sticky lg:top-28`
+para que siga al cliente. **No resolvió la queja** — sigue viéndose desbalanceado.
+
+**Qué considerar después:**
+- Repartir de otra forma: pasar parte de lo que hoy vive en la derecha (jeringa SVG,
+  opciones de agua) a la izquierda.
+- O abandonar las dos columnas en escritorio y usar un flujo de una sola columna con la
+  cuadrícula a ancho completo, que es lo que Christian ya elogió.
+- Medir con `getBoundingClientRect().height` de las dos tarjetas antes y después; el
+  objetivo es que no difieran más de ~30%.
+
+---
+
+## 📋 TODOS LOS DEMÁS PENDIENTES (2026-07-27)
+
+### Decisión que Christian debe tomar (bloquea Skydropx)
+- **Tope del 10% en envío gratis.** Regla fijada: envío gratis arriba de $2,500 *siempre y
+  cuando el envío no pase del 10% del pedido*. Textual: *"Si una compra por 2,500 genera un
+  costo de envío de $500 ni en pedo lo pago."* **Falta definir:** si un pedido de $3,000
+  genera $400 de envío (13%), ¿el cliente paga los $400 completos o solo los $100 que
+  exceden el 10%?
+
+### Envíos — Skydropx (para la siguiente sesión, Christian lo pidió explícitamente)
+- Integrar **por API**, no por WooCommerce. El sitio es React + FastAPI; no hay WordPress.
+- **Solo Estafeta** por ahora: la API cotiza varias paqueterías, se filtra por `provider` y
+  se ocultan las demás.
+- **El remitente NO es la dirección de Christian** — va la de algún trabajador. Falta que
+  él la proporcione.
+- El cliente ve el **precio real de Estafeta** por peso y código postal.
+- En la parte **pública** se sigue anunciando **$250 como mínimo**, para dar una idea sin
+  comprometer la cotización real.
+- La API key de Skydropx debe agregarse a `secretos.PERMITIDAS` (backend) para que la
+  pegue desde **Admin → Cobros**.
+
+### Fichas técnicas
+- **Faltan 35 secuencias** de 75 fichas. Hay 40. Sacarlas de UniProt y artículos primarios,
+  una por una. Es el único hueco frente a Exoma, que sí publica secuencia.
+- Los identificadores de 3 compuestos siguen sin resolver: **ADMAX, PTD-1 y PEG-MGF**.
+
+### Producto / catálogo
+- **Arte de los viales de 5-Amino-1MQ.** Las etiquetas de 10 y 50 mg todavía dicen
+  "10-Amino-1MQ" impreso, así que esas dos presentaciones caen a la foto genérica. Necesita
+  créditos de Higgsfield (Christian quedó en 0) o Nano Banana.
+- **Investigar los 61 productos sin fuente de dosis.** Hoy solo 2 de 63 tienen las
+  sugerencias encendidas.
+
+### Marketing
+- **Rehacer el anuncio #2 de Meta**: su texto e imagen dicen WhatsApp pero el botón va al
+  sitio.
+- **Prender los 2 anuncios** cuando Christian quiera (están pausados, no gastan).
+- Rehacer los ángulos con el estudio de competencia.
+
+### Infraestructura
+- **Cerrar 2 reglas SSH viejas** en el EC2 (IPs fijas 129.222.201.144 y 66.9.186.74).
+- **BTCPay se queda APAGADO** — decisión tomada. Le faltan `BTCPAY_URL`, `BTCPAY_STORE_ID`
+  y `BTCPAY_API_KEY`, y tenerlas exige montar y mantener un servidor propio. NOWPayments ya
+  cobra 27 monedas sin administrar nada.
+
+### Deuda de verificación
+- **Los COAs siguen sin existir.** El registro `coa-files/registry.json` está vacío y los
+  PDF dan 404, mientras la ficha de producto muestra el sello "COA verificado" y las fichas
+  técnicas prometen que el certificado del lote viaja con la compra. Certified-PepMex SÍ
+  entrega los suyos (están en un modal, cargados por JavaScript — un `curl` al HTML plano no
+  los ve, y por eso en esta sesión se reportó por error que su biblioteca estaba vacía).
+
+---
+
+## ✅ LO QUE SÍ QUEDÓ EN VIVO ESTA SESIÓN (2026-07-26 madrugada → 2026-07-27)
+
+- **Revisión de Codex aplicada a las monografías.** 37 fichas duplicadas eliminadas (eran
+  código muerto: mandaba la última definición). Resultados clínicos retirados de 47 fichas.
+  Afirmaciones de estatus regulatorio de otros países, fuera. 12 errores de hecho corregidos
+  (PT-141 sin MC1R, TB-500 equiparado a la timosina beta-4 completa, "CJC-1295 sin DAC" como
+  identidad formal, SNAP-8, Dysport, Lemon Bottle, HUMSC…). PR #111.
+- **5-Amino-1MQ.** "10-Amino-1MQ" **no existe**: el anillo de quinolinio solo tiene
+  posiciones 1 a 8 y PubChem no devuelve nada. El COA del proveedor para el código "10AM"
+  dice *5-Amino-1-MQ, CAS 42464-96-0*. Se fusionaron en un producto con tres presentaciones
+  y se dieron de baja los slugs viejos en producción (`pricing-system/sync_1mq.py`, hecho a
+  propósito en vez de `sync_backend.py --replace`, que habría **borrado** hCG y B12: el
+  DELETE del backend es un `delete_one` de Mongo, irreversible).
+  El nombre malo además **costaba dinero**: Certified sí vende esa presentación ($960), pero
+  el cruce fallaba y el motor la tasaba con la regla de "nadie más lo vende".
+  Precios finales: **$839 / $1,259 / $2,999** (decisión de Christian; el de 10 mg queda
+  ARRIBA de Certified, lo cual rompe su propia regla — está anotado en la MAESTRA).
+- **75 fichas técnicas** generadas (`fichas-tecnicas/`, ya versionado dentro del repo).
+  55 con CAS, 58 con fórmula, 40 con secuencia, 18 mezclas con nota que lo explica.
+  **Ninguna dice "pendiente" ni "por verificar"** — si un dato no está verificado, la fila
+  no se imprime. PR #112.
+- **Almacén privado de fichas** (backend PR #19). No hay página ni índice: se entregan a
+  quien compró, o por enlace firmado con caducidad de 48 h que emite el chat. 29 pruebas
+  dedicadas a que NO funcione cuando no debe.
+- **Llaves de cobro pegables desde Admin → Cobros**, cifradas con Fernet. El `.env` siempre
+  manda sobre el panel. Mercado Pago quedó **activo y probado**.
+- **E2E de tarjeta** (`npm run e2e:tarjeta`) y compuerta única `npm run verificar`
+  (auditoría + cripto + tarjeta). Al cierre: **77 + 21 + 15, cero fallas**.
+- **Calculadora**: detecta lo que el cliente compró (el nombre del pedido trae la
+  presentación pegada, "NAD+ 500 mg", y se comparaba por igualdad exacta — nunca coincidía,
+  así que Paz veía el catálogo entero); arranca en su producto y su presentación; **siempre
+  abre en el nivel INICIAL**, no en el típico; el agua investigada manda sobre la
+  aproximación; columna de **Fase**; y el renglón de que **cuándo subir de nivel es una
+  decisión clínica**.
+
+### ⚠️ Error de método que conviene no repetir
+Se le contestó a Christian "sí, Paz ve solo sus dos péptidos" **leyendo el código**, y era
+falso: al entrar con "Ver como" resultó que veía el catálogo completo. El bug era invisible
+porque cuando la lista sale vacía el código **cae al catálogo entero** — no se ve como
+error, se ve como si el filtro no existiera. **Mirar la pantalla del cliente antes de
+afirmar.**
 
 ---
 
