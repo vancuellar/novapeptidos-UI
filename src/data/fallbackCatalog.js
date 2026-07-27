@@ -1729,6 +1729,11 @@ export const fallbackProducts = [
         "avanzada": "3x_week"
       },
       "agua_ml": { "100": 1, "500": 3, "1000": 5 },
+      "fase": {
+        "inicial": "inicio",
+        "tipica": "mantenimiento",
+        "avanzada": "mantenimiento"
+      },
       "fuente": "olympiapharmacy.com/blog/nad-dosage-chart-nad-dosage-per-day + peptidedosages.com (vial 500 mg) + extension.health NAD-500mg Patient Information"
     },
     "featured": true,

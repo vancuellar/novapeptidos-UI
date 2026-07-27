@@ -81,6 +81,22 @@ const freqPhrase = (code, lang) => (FREQ_PHRASES[code] ? (FREQ_PHRASES[code][lan
 // frecuencia del producto para los tres, como antes.
 const freqDeNivel = (levels, nivel, freqProducto) =>
   (levels && levels.freq && levels.freq[nivel]) || freqProducto || '';
+
+// La FASE que describe la fuente (inicio / mantenimiento). Es descripción, no
+// instrucción: se dice qué fase describe la literatura para ese nivel, NUNCA
+// cuánto tiempo quedarse en él ni cuándo subir — eso es titulación y la decide
+// un médico. Si la fuente no habla de fases, la columna queda vacía.
+const FASES = {
+  inicio:        { es: 'Inicio',        en: 'Start-up',    pt: 'Início' },
+  mantenimiento: { es: 'Mantenimiento', en: 'Maintenance', pt: 'Manutenção' },
+  carga:         { es: 'Carga',         en: 'Loading',     pt: 'Carga' },
+};
+const faseDeNivel = (levels, nivel, lang) => {
+  const code = levels && levels.fase && levels.fase[nivel];
+  if (!code) return '';
+  const f = FASES[code];
+  return f ? (f[lang] || f.es) : '';
+};
 // Frase "para empezar" en lenguaje simple (para que la entienda cualquiera).
 const START_LEAD = { es: 'Para empezar', en: 'To start', pt: 'Para começar' };
 const START_APPLY = { es: 'Luego aplica', en: 'Then apply', pt: 'Depois aplique' };
@@ -583,6 +599,7 @@ const ReconstitutionCalculator = ({ variant = 'full', purchased = [], onTrack, s
                   <thead className="text-muted-foreground">
                     <tr className="border-b border-[hsl(var(--border))]">
                       <th className="text-left px-3 py-1.5 font-normal">Nivel</th>
+                      <th className="text-left px-3 font-normal">Fase</th>
                       <th className="text-right px-3 font-normal">Dosis</th>
                       <th className="text-right px-3 font-normal">Rayitas</th>
                       <th className="text-right px-3 font-normal">Cada cuándo</th>
@@ -599,6 +616,7 @@ const ReconstitutionCalculator = ({ variant = 'full', purchased = [], onTrack, s
                         <tr key={k} className="border-b border-[hsl(var(--border))]/50 last:border-0"
                             data-testid={`calc-fila-${k}`}>
                           <td className="px-3 py-1.5">{label}</td>
+                          <td className="px-3 text-muted-foreground">{faseDeNivel(levels, k, language) || '—'}</td>
                           <td className="text-right px-3">{levels[k]} {levels.unit}</td>
                           <td className={`text-right px-3 font-semibold ${cabe ? '' : 'text-red-600'}`}>
                             {rayitas}{cabe ? '' : ' ⚠️'}
@@ -621,6 +639,20 @@ const ReconstitutionCalculator = ({ variant = 'full', purchased = [], onTrack, s
                     : <span className="text-[hsl(var(--warning-foreground))]">Sin fuente anotada para este producto.</span>}
                   {' · '}Referencia de investigación (RUO), no es una pauta médica.
                   Consulta a un médico y hazte análisis antes de decidir cualquier dosis.
+                </div>
+                {/* La pregunta que SIEMPRE sigue: "¿y cuándo paso al siguiente
+                    nivel?". La respuesta honesta es que no la tenemos y no
+                    debemos tenerla: cuánto tiempo permanecer en un nivel es
+                    titulación, y eso lo decide un médico con análisis de por
+                    medio. Decirlo aquí es mejor que dejar el hueco, porque el
+                    hueco lo llena el cliente inventando. (Christian, 2026-07-26) */}
+                <div className="px-3 py-2 text-[11px] leading-relaxed border-t border-[hsl(var(--border))] bg-[hsl(var(--muted))]/40"
+                     data-testid="calc-titulacion">
+                  <strong>Cuándo pasar de un nivel a otro es una decisión clínica.</strong>{' '}
+                  Estos niveles describen lo que reporta la literatura, no un
+                  calendario para ti: no indicamos cuántas semanas quedarte en
+                  uno ni cuándo subir. Descarga esta ficha y llévasela a tu
+                  médico — con tus análisis, él es quien puede decidirlo.
                 </div>
               </div>
             )}
