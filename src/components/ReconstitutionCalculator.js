@@ -512,6 +512,20 @@ const ReconstitutionCalculator = ({ variant = 'full', purchased = [], onTrack, s
   // la concentración—, pero la salida correcta para el cliente es la que no
   // toca la preparación: jeringa más grande, o repartir la dosis en dos.
   // Y si ya trae la de 1 mL, cambiarle el agua no lo salvaría de todos modos.
+  // ¿SE PUEDE MEDIR ESA DOSIS EN LA JERINGA QUE ELIGIÓ?
+  //
+  // Sale de la guía de preparación de researchdosing.com y es puro dato físico, no
+  // criterio clínico: en una jeringa de 1 mL cada rayita impresa vale DOS unidades,
+  // así que una dosis de 6 unidades no se puede medir bien ahí. En las de 0.3 y
+  // 0.5 mL cada rayita vale UNA unidad.
+  //
+  // Es un hueco que teníamos: la calculadora decía "3 rayitas" con la U-100 de 1 mL
+  // puesta por defecto y esas 3 rayitas no existen en esa jeringa.
+  const RAYITA_VALE_2 = syringe.maxMl >= 1;
+  const noSeMide = res && res.units > 0 && res.units < 10 && RAYITA_VALE_2
+    ? { units: res.units, sugerida: SYRINGES.find((s) => s.maxMl === 0.3) }
+    : null;
+
   const noCabe = (() => {
     if (!res || !(res.units > maxUnits)) return null;
     const total = Math.round(res.units);
@@ -770,6 +784,16 @@ const ReconstitutionCalculator = ({ variant = 'full', purchased = [], onTrack, s
               {' '}No le cambies el agua al vial para que quepa.
             </div>
           )}
+          {noSeMide && (
+            <div className="mb-5 rounded-xl border border-[hsl(var(--warning-foreground))]/40 bg-[hsl(var(--warning-foreground))]/10 p-4 text-sm leading-relaxed"
+                 data-testid="calc-no-se-mide">
+              <strong>Esta dosis no se puede medir bien en esa jeringa.</strong>{' '}
+              Son <strong>{noSeMide.units.toFixed(1)} rayitas</strong>, y en una jeringa de 1 mL
+              cada rayita impresa vale <strong>dos</strong> unidades: las dosis de menos de 10 no
+              caen en una raya.
+              {noSeMide.sugerida && <> Usa la de <strong>0.3 mL</strong>, donde cada rayita vale una.</>}
+            </div>
+          )}
           {mode === 'suggest' ? (
             !suggest ? (
               <div className="flex-1 flex items-center justify-center text-sm text-muted-foreground text-center">
@@ -939,9 +963,12 @@ const ReconstitutionCalculator = ({ variant = 'full', purchased = [], onTrack, s
                 queda solo el párrafo del médico. Misma regla que `fuente`. */}
             <div className="px-5 py-3 text-xs leading-relaxed border-t border-[hsl(var(--border))] bg-[hsl(var(--muted))]/40"
                  data-testid="calc-titulacion">
-              <strong>Lo ideal es que cuándo subir de nivel lo decida un médico</strong>{' '}
-              con tus análisis en la mano: eso es titulación y depende de ti, no de una
-              tabla. Descarga esta ficha y llévasela.
+              {/* ⛔ NO ESCRIBIR "TITULACIÓN". (Christian, 2026-07-27)
+                  Es el término médico correcto, pero al cliente le suena a química de
+                  laboratorio. Se dice en llano: "cuándo subir la dosis". */}
+              <strong>Cuándo subir la dosis: lo ideal es que lo decida un médico</strong>{' '}
+              con tus análisis en la mano. Depende de ti, no de una tabla. Descarga esta
+              ficha y llévasela.
               {Array.isArray(levels.titulacion) && levels.titulacion.length > 0 && (
                 <>
                   {' '}Mientras tanto, como <strong>referencia</strong>, esto es lo que

@@ -115,7 +115,7 @@ function App() {
                 <ScrollToTop />
                 <TrackPageViews />
                 <SiteChrome><ViewAsBanner /><Header /></SiteChrome>
-                <main className="min-h-[70vh]">
+                <main className="min-h-[70vh] pb-24 sm:pb-0">
                   <Routes>
                     <Route path="/" element={<Home />} />
                     <Route path="/catalogo" element={<Catalog />} />
