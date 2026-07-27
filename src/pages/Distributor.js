@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import { Store, Users, DollarSign, TrendingUp, ShoppingBag, Copy, Percent, Truck, ExternalLink, FileText, Award, Ticket, RefreshCw, Bell } from 'lucide-react';
+import { Store, Users, DollarSign, TrendingUp, ShoppingBag, Copy, Percent, Truck, ExternalLink, FileText, BookOpen, Award, Ticket, RefreshCw, Bell } from 'lucide-react';
 import { ResponsiveContainer, AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip } from 'recharts';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
@@ -8,6 +8,7 @@ import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent } from '@/components/ui/tabs';
 import DashboardSidebar from '@/components/layout/DashboardSidebar';
 import CoaLibrary from '@/components/CoaLibrary';
+import FichaLibrary from '@/components/FichaLibrary';
 import NotificationsFeed from '@/components/NotificationsFeed';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
@@ -152,6 +153,7 @@ const Distributor = () => {
           { value: 'orders', icon: Truck, label: t('distributor.ordersTab') },
           { value: 'sales', icon: ShoppingBag, label: t('distributor.salesTab') },
           { value: 'coas', icon: FileText, label: t('account.coasTab') },
+          { value: 'fichas', icon: BookOpen, label: t('account.fichasTab') },
         ]} />
         <div className="min-w-0 flex-1">
 
@@ -418,6 +420,10 @@ const Distributor = () => {
 
         <TabsContent value="coas" className="mt-5">
           <CoaLibrary />
+        </TabsContent>
+
+        <TabsContent value="fichas" className="mt-5">
+          <FichaLibrary />
         </TabsContent>
 
         <TabsContent value="sales" className="mt-5 space-y-4">

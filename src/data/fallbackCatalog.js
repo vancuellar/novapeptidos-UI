@@ -3131,54 +3131,6 @@ export const fallbackProducts = [
     "is_new": false
   },
   {
-    "id": "fallback-10-amino-1mq",
-    "name": "10-amino-1MQ",
-    "slug": "10-amino-1mq",
-    "category": "perdida-peso",
-    "categories": [
-      "perdida-peso"
-    ],
-    "short_description": "Inhibidor de NNMT estudiado en metabolismo celular.",
-    "description": "10-amino-1MQ es una molécula pequeña investigada como inhibidor de la nicotinamida N-metiltransferasa en modelos de adipocitos, músculo esquelético y metabolismo energético. Solo para uso en investigación (RUO).",
-    "presentation": "10 mg – 50 mg",
-    "form": "Liofilizado",
-    "purity": "99.0%",
-    "price": 519,
-    "variants": [
-      {
-        "presentation": "10 mg",
-        "price": 519,
-        "stock": 40,
-        "batch_number": "NP-10AM10-2601",
-        "id": "4f6e26cf-a4e3-4cde-be7b-0a031514b7aa",
-        "sku": "10AMINO1MQ-10MG",
-        "commission_cap": 0.3,
-        "distributor_eligible": true
-      },
-      {
-        "presentation": "50 mg",
-        "price": 1569,
-        "stock": 40,
-        "batch_number": "NP-10AM50-2601",
-        "id": "0b8dd26f-4148-4eb3-a90f-67bfee083209",
-        "sku": "10AMINO1MQ-50MG",
-        "commission_cap": 0.35,
-        "distributor_eligible": true
-      }
-    ],
-    "tiers": [],
-    "stock": 40,
-    "image_url": "https://images.pexels.com/photos/9259977/pexels-photo-9259977.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
-    "coa_url": "https://exygenlabs.com/coa/10-amino-1mq.pdf",
-    "batch_number": "NP-10AM10-2601",
-    "storage": "Conservar a -20 °C, protegido de la luz. Reconstituido: 2–8 °C.",
-    "start_dose": null,
-    "start_unit": null,
-    "start_levels": null,
-    "featured": false,
-    "is_new": false
-  },
-  {
     "id": "fallback-5-amino-1mq",
     "name": "5-AMINO-1MQ",
     "slug": "5-amino-1mq",
@@ -3188,7 +3140,7 @@ export const fallbackProducts = [
     ],
     "short_description": "Inhibidor de NNMT explorado en adipocitos.",
     "description": "5-amino-1MQ es un inhibidor de la nicotinamida N-metiltransferasa estudiado en líneas de adipocitos y en modelos preclínicos de metabolismo lipídico y regulación de NAD+. Solo para uso en investigación (RUO).",
-    "presentation": "5 mg",
+    "presentation": "5 mg – 50 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
     "price": 839,
@@ -3200,6 +3152,26 @@ export const fallbackProducts = [
         "batch_number": "NP-5AMI5-2601",
         "id": "bd1ca7a4-03e0-4891-bbba-e60424162662",
         "sku": "5AMINO1MQ-5MG",
+        "commission_cap": 0.35,
+        "distributor_eligible": true
+      },
+      {
+        "presentation": "10 mg",
+        "price": 1259,
+        "stock": 40,
+        "batch_number": "NP-5AMI10-2601",
+        "id": "4f6e26cf-a4e3-4cde-be7b-0a031514b7aa",
+        "sku": "5AMINO1MQ-10MG",
+        "commission_cap": 0.3,
+        "distributor_eligible": true
+      },
+      {
+        "presentation": "50 mg",
+        "price": 2999,
+        "stock": 40,
+        "batch_number": "NP-5AMI50-2601",
+        "id": "0b8dd26f-4148-4eb3-a90f-67bfee083209",
+        "sku": "5AMINO1MQ-50MG",
         "commission_cap": 0.35,
         "distributor_eligible": true
       }

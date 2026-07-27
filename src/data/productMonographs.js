@@ -8,33 +8,6 @@
 // investiga con él y cómo se maneja en el laboratorio.
 
 const monographs = {
-  retatrutida: {
-    tagline: 'Triple agonista GIP / GLP-1 / glucagón',
-    sections: [
-      {
-        title: 'Qué es',
-        paragraphs: [
-          'Retatrutida es un péptido sintético de cadena única de la clase de los agonistas multireceptor de incretinas. Su rasgo distintivo es que actúa sobre tres receptores a la vez: el de GLP-1, el de GIP y el de glucagón. Esa arquitectura de tres frentes la separa de los agonistas simples y dobles que la precedieron, y es la razón del interés que ha despertado en investigación metabólica.',
-          'La molécula incorpora modificaciones de acilación pensadas para prolongar su permanencia en circulación mediante unión reversible a albúmina, un recurso de diseño farmacocinético habitual en esta familia de péptidos.',
-        ],
-      },
-      {
-        title: 'Qué se estudia con ella',
-        paragraphs: [
-          'Cada rama receptora modula circuitos distintos, y eso es justo lo que la vuelve útil como herramienta. La vía GLP-1 se estudia en señalización de saciedad a nivel hipotalámico y en secreción de insulina dependiente de glucosa. La vía GIP se investiga por su papel en el manejo de lípidos y la sensibilidad del tejido adiposo. La vía del glucagón aporta una dimensión de gasto energético y metabolismo hepático que los análogos anteriores no tenían.',
-          'Aparece con frecuencia en modelos de homeostasis energética, señalización de receptores acoplados a proteína G, metabolismo hepático de lípidos, adipogénesis y estudios comparativos entre agonistas simples, duales y triples. Para grupos que trabajan en farmacología de incretinas funciona como referencia para separar la contribución de cada receptor.',
-        ],
-      },
-      {
-        title: 'Manejo en laboratorio',
-        paragraphs: [
-          'Se suministra liofilizada, formato que preserva la integridad de la cadena durante el transporte y el almacenamiento. El vial sellado se conserva en frío, seco y al abrigo de la luz.',
-          'La reconstitución se hace con un diluyente estéril adecuado, dejándolo escurrir por la pared interna del vial y permitiendo que el polvo se disuelva solo, sin agitación ni vórtice: los péptidos acilados son propensos a agregarse si se les somete a estrés mecánico. Ya en solución, la ventana de estabilidad se acorta mucho y el material se mantiene refrigerado.',
-        ],
-      },
-    ],
-  },
-
   'nad-plus': {
     tagline: 'Coenzima central del metabolismo energético',
     sections: [
@@ -67,15 +40,15 @@ const monographs = {
       {
         title: 'Qué es',
         paragraphs: [
-          'KLOW es una formulación combinada de cuatro péptidos de investigación bien caracterizados, presentados juntos en un solo vial liofilizado: GHK-Cu, BPC-157, TB-500 y KPV. El acrónimo viene de las iniciales de sus componentes, y el péptido de cobre es el que domina la proporción.',
+          'KLOW es una formulación comercial que reúne cuatro péptidos de investigación en un solo vial liofilizado: GHK-Cu, BPC-157, TB-500 y KPV. El acrónimo viene de las iniciales de sus componentes, y el péptido de cobre es el que domina la proporción.',
         ],
       },
       {
-        title: 'Por qué se combinan',
+        title: 'Qué contiene y qué no está demostrado',
         paragraphs: [
-          'La lógica de la mezcla es que cada componente interviene en una etapa distinta del mismo proceso biológico, lo que la vuelve útil para estudiar interacciones entre vías en lugar de un solo eje aislado.',
-          'GHK-Cu es un tripéptido con afinidad por el cobre que se investiga en remodelado de matriz extracelular, expresión de colágeno y modulación de genes asociados a reparación tisular. BPC-157 es un pentadecapéptido derivado de una secuencia gástrica, estudiado en angiogénesis y señalización de factores de crecimiento. TB-500 corresponde a la región activa de la timosina beta-4 y se investiga por su interacción con la actina, la migración celular y la organización del citoesqueleto. KPV es el tripéptido C-terminal de la α-MSH, estudiado como modulador de vías inflamatorias, incluida la señalización NF-κB.',
-          'En conjunto se emplea en modelos de reparación tisular, dinámica inflamatoria, migración celular y estudios de sinergia peptídica, donde la pregunta es si el efecto combinado difiere de la suma de las partes.',
+          'La combinación es comercial. No existe evidencia publicada que demuestre complementariedad ni sinergia del vial completo, de modo que cada componente debe evaluarse por separado y con sus propios controles antes de atribuir cualquier resultado a la mezcla.',
+          'GHK-Cu es un tripéptido con afinidad por el cobre que se investiga en remodelado de matriz extracelular, expresión de colágeno y modulación de genes asociados a reparación tisular. BPC-157 es un pentadecapéptido descrito como fragmento de un material gástrico, estudiado en angiogénesis y señalización de factores de crecimiento, con evidencia únicamente preclínica. TB-500 es el fragmento N-acetilado 17-23 de la timosina beta-4 (Ac-LKKTETQ), no la proteína completa. KPV es el tripéptido C-terminal de la α-MSH, estudiado como modulador de vías inflamatorias, incluida la señalización NF-κB.',
+          'En conjunto aparece en modelos de reparación tisular, dinámica inflamatoria y migración celular. Cualquier pregunta sobre si el efecto combinado difiere de la suma de las partes exige brazos experimentales separados para cada componente.',
         ],
       },
       {
@@ -83,58 +56,6 @@ const monographs = {
         paragraphs: [
           'La presencia de GHK-Cu le da a la mezcla un color azul-verdoso característico al reconstituirse: es el complejo cobre-péptido y es normal, no es señal de contaminación.',
           'El vial liofilizado se conserva sellado, en frío y al abrigo de la luz. La reconstitución con diluyente estéril debe ser suave y sin agitar: tanto el complejo de cobre como las cadenas peptídicas son sensibles al estrés mecánico. La solución se guarda en refrigeración.',
-        ],
-      },
-    ],
-  },
-
-  tirzepatida: {
-    tagline: 'Agonista dual GIP / GLP-1',
-    sections: [
-      {
-        title: 'Qué es',
-        paragraphs: [
-          'Tirzepatida es un péptido sintético de 39 aminoácidos diseñado como agonista dual: activa el receptor del polipéptido insulinotrópico dependiente de glucosa (GIP) y el del péptido similar al glucagón tipo 1 (GLP-1). Su esqueleto deriva de la secuencia nativa de GIP, modificada para darle actividad cruzada sobre GLP-1, e incorpora una cadena de ácido graso unida por un enlazador que promueve la unión reversible a albúmina y alarga su permanencia en circulación.',
-        ],
-      },
-      {
-        title: 'Qué se estudia con ella',
-        paragraphs: [
-          'El interés se concentra en el agonismo desequilibrado: la molécula no activa ambos receptores con la misma potencia ni recluta los mismos efectores intracelulares. Eso la convierte en una sonda valiosa para estudiar cómo la arquitectura de un ligando determina el reclutamiento diferencial de proteína G frente a β-arrestina, y cómo eso se traduce en internalización y resensibilización del receptor.',
-          'Aparece en modelos de señalización de células beta pancreáticas, captación de glucosa dependiente de insulina, biología del adipocito, metabolismo lipídico hepático y circuitos hipotalámicos del apetito. Para quien compara la clase completa de incretinas, ocupa el peldaño intermedio entre los agonistas simples de GLP-1 y los triples agonistas más recientes.',
-        ],
-      },
-      {
-        title: 'Manejo en laboratorio',
-        paragraphs: [
-          'Polvo liofilizado en vial sellado, el formato que maximiza la estabilidad frente a hidrólisis y agregación. Almacenar en frío, protegido de la luz y de la humedad ambiental.',
-          'Reconstituir con diluyente estéril dejándolo escurrir por la pared interna del vial, sin vórtice: la agitación puede inducir agregación en péptidos acilados. Una vez reconstituido, refrigerar; su ventana de estabilidad es mucho menor que la del liofilizado.',
-        ],
-      },
-    ],
-  },
-
-  semaglutida: {
-    tagline: 'Análogo de GLP-1 de acción prolongada',
-    sections: [
-      {
-        title: 'Qué es',
-        paragraphs: [
-          'Semaglutida es un análogo peptídico del péptido similar al glucagón tipo 1 (GLP-1), la incretina que liberan las células L intestinales tras la ingesta. Parte de la secuencia del GLP-1 humano nativo con tres modificaciones: sustitución del residuo de alanina en posición 8 por ácido α-aminoisobutírico, que la protege de la degradación por DPP-4; intercambio de lisina por arginina en posición 34; y conjugación de una cadena de ácido graso a través de un espaciador, que le da alta afinidad por la albúmina sérica.',
-          'Esas tres modificaciones la vuelven un caso de estudio clásico de ingeniería peptídica: cada cambio responde a un problema concreto de estabilidad o farmacocinética, y juntos convierten un péptido nativo de vida media de minutos en una molécula de acción prolongada.',
-        ],
-      },
-      {
-        title: 'Qué se estudia con ella',
-        paragraphs: [
-          'El receptor de GLP-1 es un GPCR de clase B acoplado a Gs cuya activación eleva el AMP cíclico intracelular. Las áreas de investigación incluyen secreción de insulina dependiente de glucosa en islotes pancreáticos, supervivencia y proliferación de células beta, motilidad gastrointestinal, señalización de saciedad en núcleos hipotalámicos y del tronco encefálico, y más recientemente vías de neuroinflamación y expresión del receptor GLP-1 en tejidos extrapancreáticos.',
-        ],
-      },
-      {
-        title: 'Manejo en laboratorio',
-        paragraphs: [
-          'Se suministra liofilizada; así es estable por periodos prolongados si se mantiene sellada, en frío, seca y sin exposición a la luz.',
-          'Reconstituir con diluyente estéril, incorporándolo con suavidad y sin agitar, para evitar la formación de agregados fibrilares a la que son propensos los análogos de GLP-1 acilados. La solución reconstituida se conserva refrigerada.',
         ],
       },
     ],
@@ -153,7 +74,7 @@ const monographs = {
         title: 'Qué se estudia con él',
         paragraphs: [
           'El interés se concentra en su comportamiento en modelos de reparación tisular. La literatura preclínica lo asocia con la modulación de la vía del óxido nítrico, con la regulación al alza del receptor VEGFR2 y con procesos angiogénicos, es decir, formación de nueva microvasculatura. También se ha estudiado su interacción con la vía FAK-paxilina, relevante para adhesión y migración celular, y su influencia sobre factores de crecimiento locales.',
-          'Un rasgo recurrente en la bibliografía es que sus efectos en modelos animales parecen sistémicos aunque la señal se origine localmente, lo que ha generado hipótesis sobre un eje de señalización entre el tracto gastrointestinal y otros tejidos. Es uno de los péptidos de investigación con mayor volumen de publicaciones preclínicas independientes de la última década.',
+          'Un rasgo recurrente en la bibliografía es que sus efectos en modelos animales parecen sistémicos aunque la señal se origine localmente, lo que ha generado hipótesis sobre un eje de señalización entre el tracto gastrointestinal y otros tejidos. Conviene leer ese cuerpo de literatura con cautela: los mecanismos propuestos proceden casi por completo de estudios preclínicos, buena parte de ellos concentrados en un núcleo reducido de grupos de investigación, y requieren replicación independiente. Faltan además caracterización farmacocinética, datos de seguridad en humanos e identificación estandarizada de impurezas.',
         ],
       },
       {
@@ -172,14 +93,14 @@ const monographs = {
       {
         title: 'Qué es',
         paragraphs: [
-          'TB-500 es un péptido sintético que reproduce la región biológicamente activa de la timosina beta-4, una proteína de 43 aminoácidos ampliamente distribuida en tejidos y fluidos de mamíferos. Concretamente corresponde al dominio de unión a actina, la secuencia mínima responsable de la mayor parte de las actividades observadas con la proteína completa. Al ser un fragmento más corto, ofrece ventajas prácticas de síntesis, costo y difusión en tejido.',
+          'TB-500 es el fragmento sintético N-acetilado 17-23 de la timosina beta-4, con secuencia Ac-LKKTETQ. La timosina beta-4 completa es una proteína de 43 aminoácidos ampliamente distribuida en tejidos y fluidos de mamíferos; el heptapéptido corresponde a una región relacionada con la unión a actina, pero no equivale a la proteína íntegra ni hereda automáticamente su farmacología. Al ser una cadena mucho más corta, ofrece ventajas prácticas de síntesis y costo.',
         ],
       },
       {
         title: 'Qué se estudia con él',
         paragraphs: [
-          'El mecanismo central es su interacción con la G-actina. La timosina beta-4 es el principal secuestrador intracelular de actina monomérica en células de mamífero y, por lo tanto, regula el equilibrio dinámico entre actina libre y actina polimerizada en filamentos. Ese equilibrio gobierna la reorganización del citoesqueleto y, con ella, la motilidad celular, la extensión de lamelipodios, la migración direccional y el remodelado tisular.',
-          'Sobre esa base se ha explorado su papel en angiogénesis, migración de células endoteliales y queratinocitos, modulación de la respuesta inflamatoria y modelos de formación de tejido cicatricial. Se investiga con frecuencia junto a BPC-157, porque ambos actúan en etapas complementarias del mismo proceso: esa es la base de las mezclas tipo KLOW.',
+          'La unión y el secuestro de actina monomérica están bien establecidos para la timosina beta-4 completa, que es el principal secuestrador intracelular de G-actina en células de mamífero y regula el equilibrio entre actina libre y actina polimerizada. Ese equilibrio gobierna la reorganización del citoesqueleto y, con ella, la motilidad celular y el remodelado tisular. Trasladar ese mecanismo al heptapéptido es una hipótesis de trabajo, no un dato demostrado.',
+          'Al leer la literatura es imprescindible identificar si cada estudio usó el fragmento Ac-LKKTETQ o la proteína de 43 residuos: son materiales distintos y los resultados no son intercambiables. Sobre esa base se ha explorado su papel en angiogénesis, migración de células endoteliales y queratinocitos y modelos de formación de tejido cicatricial. Aparece con frecuencia junto a BPC-157 en mezclas comerciales tipo KLOW.',
         ],
       },
       {
@@ -192,70 +113,16 @@ const monographs = {
     ],
   },
 
-  epithalon: {
-    tagline: 'Tetrapéptido bioregulador (AEDG)',
-    sections: [
-      {
-        title: 'Qué es',
-        paragraphs: [
-          'Epithalon es un tetrapéptido sintético de secuencia Ala-Glu-Asp-Gly (AEDG), desarrollado dentro del programa soviético y después ruso de bioreguladores peptídicos dirigido por Vladimir Khavinson. Se concibió como análogo sintético de bajo peso molecular de la epitalamina, un extracto de glándula pineal, y es el más estudiado y difundido de toda la familia de bioreguladores cortos.',
-        ],
-      },
-      {
-        title: 'Qué se estudia con él',
-        paragraphs: [
-          'El eje que ha impulsado su investigación es su relación propuesta con la telomerasa: en trabajos con cultivos de fibroblastos humanos se ha descrito un aumento de actividad de la transcriptasa inversa de telomerasa asociado a la exposición al péptido, con la hipótesis consiguiente sobre mantenimiento de la longitud telomérica y capacidad replicativa celular.',
-          'Un segundo eje, característico de la escuela de Khavinson, es el modelo de regulación epigenética directa: la propuesta de que estos péptidos cortos interactúan con regiones específicas de ADN y modulan la expresión génica. Conviene decirlo con claridad: ese mecanismo sigue siendo objeto de debate y de verificación independiente. Un tercer eje se relaciona con la función pineal y los ritmos circadianos.',
-          'Aparece en estudios de senescencia replicativa en cultivo, biología del telómero, modelos de envejecimiento en roedores, ritmos circadianos y trabajos sobre la familia completa de bioreguladores y su especificidad tisular.',
-        ],
-      },
-      {
-        title: 'Manejo en laboratorio',
-        paragraphs: [
-          'Al ser un tetrapéptido corto y sin modificaciones, es relativamente estable liofilizado, aunque las cadenas cortas son sensibles a la humedad. Vial sellado, en frío, seco y protegido de la luz.',
-          'Reconstituir con diluyente estéril incorporado con suavidad. Refrigerar la solución.',
-        ],
-      },
-    ],
-  },
-
   // ===== Tanda 2 (2026-07-20) =====
 
-  ipamorelin: {
-    tagline: 'Pentapéptido secretagogo, agonista selectivo de GHSR',
-    sections: [
-      {
-        title: 'Qué es',
-        paragraphs: [
-          'Ipamorelin es un pentapéptido sintético de la familia de los secretagogos de hormona de crecimiento. Actúa como agonista del receptor de secretagogo de GH (GHSR-1a), el mismo receptor al que se une la grelina.',
-          'Su rasgo distintivo frente a los secretagogos más antiguos —GHRP-2, GHRP-6, hexarelina— es la selectividad. En los modelos publicados, Ipamorelin estimula la vía de GH sin el efecto cruzado marcado sobre cortisol, prolactina y ACTH que caracteriza a la generación anterior. Esa limpieza de perfil es justamente lo que lo volvió una herramienta de referencia: permite estudiar el eje somatotrópico sin arrastrar variables endocrinas ajenas.',
-        ],
-      },
-      {
-        title: 'Qué se estudia con él',
-        paragraphs: [
-          'Aparece en modelos de pulsatilidad de la hormona de crecimiento, señalización del receptor GHSR-1a, regulación del eje GH/IGF-1 y estudios de motilidad gastrointestinal, donde la señalización de grelina también participa.',
-          'Se investiga con frecuencia junto a un análogo de GHRH como CJC-1295, porque ambos actúan por vías receptoras distintas y complementarias: uno amplifica el pulso y el otro aumenta su amplitud. Esa combinación es la base de los stacks del eje somatotrópico.',
-        ],
-      },
-      {
-        title: 'Manejo en laboratorio',
-        paragraphs: [
-          'Polvo liofilizado en vial sellado. Al ser una cadena corta es razonablemente estable en seco, pero sensible a la humedad. Conservar en frío, seco y protegido de la luz.',
-          'Reconstituir con diluyente estéril vertido por la pared del vial, sin agitar. Refrigerar la solución.',
-        ],
-      },
-    ],
-  },
-
   'cjc-1295-sin-dac': {
-    tagline: 'Análogo de GHRH sin DAC (Modified GRF 1-29)',
+    tagline: 'Modified GRF (1-29), análogo de GHRH sin grupo de unión a albúmina',
     sections: [
       {
         title: 'Qué es',
         paragraphs: [
-          'CJC-1295 sin DAC —también documentado como Modified GRF (1-29)— es un análogo sintético de los primeros 29 aminoácidos de la hormona liberadora de hormona de crecimiento, la fracción que concentra la actividad biológica de la molécula nativa. Incorpora cuatro sustituciones de aminoácidos que la protegen de la degradación por DPP-4 y aumentan su estabilidad frente al fragmento natural.',
-          '"Sin DAC" significa que carece del Drug Affinity Complex, el enlazador que en la versión con DAC se une de forma covalente a la albúmina. Sin ese enlazador, la vida media es corta y la señal se parece mucho más a un pulso fisiológico que a una exposición sostenida.',
+          'La molécula es Modified GRF (1-29), un análogo sintético de los primeros 29 aminoácidos de la hormona liberadora de hormona de crecimiento, la fracción que concentra la actividad biológica de la molécula nativa. Incorpora cuatro sustituciones de aminoácidos que la protegen de la degradación por DPP-4 y aumentan su estabilidad frente al fragmento natural.',
+          '"CJC-1295 sin DAC" es la denominación comercial con la que se distribuye ese análogo, no una identidad formal. El nombre CJC-1295 corresponde propiamente al análogo de acción prolongada descrito en la literatura primaria, que sí incorpora el Drug Affinity Complex, el grupo reactivo que se conjuga de forma covalente con la albúmina. Sin ese grupo la vida media es corta y la señal se parece mucho más a un pulso fisiológico que a una exposición sostenida.',
         ],
       },
       {
@@ -295,10 +162,10 @@ const monographs = {
       {
         title: 'Qué dice la evidencia',
         paragraphs: [
-          'GHK-Cu es de los pocos péptidos de esta categoría con literatura anterior a la moda: se describió en los años setenta, a partir del trabajo sobre factores del plasma humano que cambiaban con la edad. Eso significa que buena parte de lo publicado son estudios in vitro y en modelos animales acumulados durante décadas, no material reciente generado alrededor de un producto comercial.',
-          'La observación que más se repite es la caída de su concentración plasmática con la edad —de niveles altos en la juventud a una fracción de eso pasadas las décadas—, y es el punto de partida de casi toda la investigación posterior sobre remodelado tisular. Conviene leerla como lo que es: una correlación descrita, no una relación causa-efecto demostrada.',
-          'En cosmética tópica su uso está mucho más documentado que por otras vías, y es importante no trasladar conclusiones de una a otra: la ruta de exposición cambia por completo lo que se puede concluir de un experimento. Gran parte del trabajo transcriptómico se hizo en cultivos celulares, donde la concentración se controla y no depende de absorción ni distribución.',
-          'Como en todo este catálogo: material de investigación, sin uso aprobado en humanos ni en animales.',
+          'GHK-Cu es de los pocos compuestos de esta categoría con literatura anterior a la moda: se describió en los años setenta, a partir del trabajo sobre factores del plasma humano que cambiaban con la edad. Buena parte de lo publicado son estudios in vitro y en modelos animales acumulados durante décadas, no material reciente generado alrededor de un producto comercial.',
+          'La observación que más se repite es la caída de su concentración plasmática con la edad, y es el punto de partida de casi toda la investigación posterior sobre remodelado tisular. Conviene leerla como lo que es: una correlación descrita, no una relación causa-efecto demostrada.',
+          'Gran parte del trabajo transcriptómico se hizo en cultivos celulares, donde la concentración se controla y no depende de absorción ni distribución. Trasladar esos resultados a otra vía de exposición cambia por completo lo que puede concluirse de un experimento.',
+          'Producto exclusivo para investigación; esta monografía no emite afirmaciones de aprobación, legalidad, receta, licencia ni autorización sanitaria.',
         ],
       },
       {
@@ -319,14 +186,14 @@ const monographs = {
       {
         title: 'Qué es',
         paragraphs: [
-          'PT-141, también documentado como bremelanotida, es un heptapéptido cíclico derivado de la Melanotan II, que a su vez deriva de la α-MSH. En su desarrollo se eliminó la parte de la estructura responsable de la actividad pigmentaria dominante, y lo que quedó fue una molécula con afinidad principalmente por los receptores de melanocortina MC3R y MC4R.',
+          'PT-141, también documentado como bremelanotida, es un heptapéptido cíclico derivado de la Melanotan II, que a su vez deriva de la α-MSH. Es un agonista no selectivo de receptores de melanocortina: la evaluación farmacológica documentada le describe alta afinidad por MC1R y MC4R, además de actividad sobre otros miembros de la familia.',
         ],
       },
       {
         title: 'Qué se estudia con él',
         paragraphs: [
           'El sistema de melanocortinas es uno de los ejes de señalización más ramificados del sistema nervioso central: participa en la regulación del apetito, el gasto energético, la respuesta inflamatoria, la pigmentación y circuitos de conducta. PT-141 se investiga como herramienta para diseccionar la contribución específica de MC3R y MC4R dentro de ese entramado.',
-          'Aparece en modelos de señalización central de melanocortinas, estudios de receptores acoplados a proteína G, circuitos hipotalámicos y trabajos de farmacología comparada frente a otros agonistas de la familia. A diferencia de Melanotan II, su perfil de unión permite estudiar las vías centrales con menor interferencia del eje pigmentario.',
+          'Aparece en modelos de señalización central de melanocortinas, estudios de receptores acoplados a proteína G, circuitos hipotalámicos y trabajos de farmacología comparada frente a otros agonistas de la familia. Se investiga sobre todo la contribución de MC4R a las respuestas centrales; su afinidad documentada por MC1R impide presentarlo como una herramienta libre del eje pigmentario.',
         ],
       },
       {
@@ -366,112 +233,6 @@ const monographs = {
     ],
   },
 
-  cagrilintida: {
-    tagline: 'Análogo de amilina de acción prolongada',
-    sections: [
-      {
-        title: 'Qué es',
-        paragraphs: [
-          'Cagrilintida es un análogo sintético de la amilina, la hormona de 37 aminoácidos que las células beta pancreáticas cosecretan junto con la insulina. La amilina humana nativa es notoriamente difícil de trabajar porque tiende a formar fibrillas amiloides; el diseño de cagrilintida sustituye residuos clave para eliminar esa propensión y añade una acilación que prolonga su permanencia en circulación.',
-          'El resultado es una molécula estable y de acción larga sobre un eje —el de la amilina— que durante años fue difícil de estudiar precisamente por la inestabilidad del péptido nativo.',
-        ],
-      },
-      {
-        title: 'Qué se estudia con ella',
-        paragraphs: [
-          'La amilina actúa sobre receptores formados por el receptor de calcitonina asociado a proteínas modificadoras de la actividad del receptor (RAMP), y su señalización se estudia en el área postrema y el núcleo del tracto solitario, regiones del tronco encefálico implicadas en saciedad y vaciamiento gástrico.',
-          'Cagrilintida aparece en modelos de señalización de saciedad, vaciado gástrico, biología de la célula beta y, muy señaladamente, en estudios de combinación con agonistas de GLP-1: la pregunta experimental es si dos vías de saciedad distintas producen un efecto aditivo o sinérgico.',
-        ],
-      },
-      {
-        title: 'Manejo en laboratorio',
-        paragraphs: [
-          'Liofilizada en vial sellado. Los análogos de amilina son especialmente sensibles a la agregación, así que la protección frente a la humedad y el manejo suave importan más aquí que en un péptido común.',
-          'Reconstituir con diluyente estéril dejándolo escurrir por la pared, sin vórtice ni agitación. Refrigerar y evitar ciclos de congelado y descongelado.',
-        ],
-      },
-    ],
-  },
-
-  tesamorelina: {
-    tagline: 'Análogo estabilizado de GHRH (1-44)',
-    sections: [
-      {
-        title: 'Qué es',
-        paragraphs: [
-          'Tesamorelina es un análogo sintético de la hormona liberadora de hormona de crecimiento humana en su forma completa de 44 aminoácidos, modificado con la adición de un grupo trans-3-hexenoil en el extremo N-terminal. Esa modificación es la clave: protege la molécula de la degradación por DPP-4 y le da una estabilidad muy superior a la del GHRH nativo, cuya vida media se mide en pocos minutos.',
-          'Frente a los análogos de fragmento 1-29, Tesamorelina conserva la secuencia completa, lo que la vuelve el análogo más cercano a la molécula natural entre los disponibles para investigación.',
-        ],
-      },
-      {
-        title: 'Qué se estudia con ella',
-        paragraphs: [
-          'Se investiga en señalización del receptor de GHRH en la hipófisis anterior, en regulación del eje GH/IGF-1 y, de forma destacada, en modelos de metabolismo del tejido adiposo visceral y de lípidos hepáticos, que es donde se concentra buena parte de su literatura.',
-          'Al respetar la secuencia completa del GHRH, es la referencia obligada cuando se quiere comparar el comportamiento de los análogos de fragmento frente a la molécula íntegra.',
-        ],
-      },
-      {
-        title: 'Manejo en laboratorio',
-        paragraphs: [
-          'Liofilizada en vial sellado. Su cadena es larga para un péptido de investigación, así que es más sensible que un tri o tetrapéptido: frío, seco y sin luz.',
-          'Reconstituir con diluyente estéril de forma suave, sin agitación. Refrigerar la solución y no congelarla una vez reconstituida.',
-        ],
-      },
-    ],
-  },
-
-  semax: {
-    tagline: 'Heptapéptido nootrópico derivado de ACTH (4-10)',
-    sections: [
-      {
-        title: 'Qué es',
-        paragraphs: [
-          'Semax es un heptapéptido sintético desarrollado en Rusia a partir del fragmento 4-10 de la hormona adrenocorticotropa (ACTH), al que se le añadió el tripéptido Pro-Gly-Pro en el extremo C-terminal. Ese añadido es lo que lo distingue: aumenta de forma notable su resistencia a las peptidasas y, al mismo tiempo, elimina la actividad corticotropa del fragmento original. Dicho de otro modo, conserva la parte neuroactiva y deja fuera la hormonal.',
-        ],
-      },
-      {
-        title: 'Qué se estudia con él',
-        paragraphs: [
-          'El eje más documentado es su influencia sobre los factores neurotróficos, en particular BDNF y NGF, y sobre la expresión de sus receptores. A partir de ahí se investiga en modelos de plasticidad sináptica, neuroprotección frente a estrés oxidativo e isquémico, y modulación de sistemas dopaminérgico y serotoninérgico.',
-          'Aparece también en trabajos de expresión génica en tejido nervioso, donde se describen cambios amplios en perfiles transcripcionales, y en estudios de atención y memoria en modelos animales. Es, junto con Selank, el representante más estudiado de la escuela rusa de péptidos reguladores cortos aplicados al sistema nervioso central.',
-        ],
-      },
-      {
-        title: 'Manejo en laboratorio',
-        paragraphs: [
-          'Liofilizado en vial sellado. Es una cadena corta y comparativamente estable en seco, pero higroscópica. Conservar en frío, seco y sin luz.',
-          'Reconstituir con diluyente estéril de forma suave; refrigerar la solución.',
-        ],
-      },
-    ],
-  },
-
-  selank: {
-    tagline: 'Heptapéptido derivado de la tuftsina',
-    sections: [
-      {
-        title: 'Qué es',
-        paragraphs: [
-          'Selank es un heptapéptido sintético construido sobre la tuftsina, un tetrapéptido inmunomodulador de origen natural, al que se le añadió —igual que en Semax— el tripéptido Pro-Gly-Pro para estabilizarlo frente a la degradación enzimática. Pertenece a la misma escuela rusa de péptidos reguladores cortos.',
-        ],
-      },
-      {
-        title: 'Qué se estudia con él',
-        paragraphs: [
-          'Su eje principal de investigación es el sistema GABAérgico: hay literatura que describe modulación de la expresión de subunidades del receptor GABA-A y cambios en la señalización inhibitoria, lo que lo ha situado en modelos de ansiedad experimental y respuesta al estrés.',
-          'Un segundo eje, heredado de la tuftsina, es el inmunológico: se estudia su influencia sobre la expresión de interleucinas y sobre el eje neuroinmune, un terreno donde los límites entre señalización nerviosa e inmunitaria se cruzan. También aparece en trabajos sobre metabolismo de encefalinas y sobre equilibrio de neurotransmisores monoaminérgicos.',
-        ],
-      },
-      {
-        title: 'Manejo en laboratorio',
-        paragraphs: [
-          'Liofilizado en vial sellado. Cadena corta, estable en seco, sensible a la humedad. Frío, seco y sin luz.',
-          'Reconstituir con diluyente estéril de forma suave y refrigerar la solución.',
-        ],
-      },
-    ],
-  },
-
   'agua-bacteriostatica': {
     tagline: 'Diluyente con alcohol bencílico al 0.9%',
     sections: [
@@ -479,128 +240,27 @@ const monographs = {
         title: 'Qué es',
         paragraphs: [
           'El agua bacteriostática es agua estéril a la que se añade alcohol bencílico al 0.9% como conservador. No es un péptido ni un principio activo: es el diluyente con el que se reconstituye el material liofilizado en el banco de trabajo.',
-          'La diferencia frente al agua estéril simple es justamente el conservador. El alcohol bencílico inhibe el crecimiento bacteriano, lo que permite hacer varias extracciones del mismo vial a lo largo de días o semanas sin que la solución se comprometa. El agua estéril sin conservador no ofrece esa protección y, en rigor, es material de un solo uso.',
+          'La diferencia frente al agua estéril simple es justamente el conservador. El alcohol bencílico inhibe el crecimiento bacteriano; el agua estéril sin conservador no ofrece esa protección. La elección entre una y otra corresponde al protocolo institucional del laboratorio, no a esta ficha.',
         ],
       },
       {
         title: 'Cuándo se usa cada una',
         paragraphs: [
-          'El agua bacteriostática es la opción por defecto cuando el protocolo contempla extracciones repetidas del mismo vial, que es el caso más común en trabajo experimental con péptidos liofilizados.',
-          'El agua estéril sin conservador se reserva para trabajo analítico de un solo uso o para ensayos donde el alcohol bencílico podría interferir con la medición. Algunos compuestos tienen preferencias de diluyente propias: conviene revisar la ficha del compuesto antes de decidir.',
-          'La cantidad de diluyente determina la concentración final de la solución, y esa es una decisión del diseño experimental. Nuestra calculadora de reconstitución hace la aritmética a partir de los miligramos del vial y de la concentración que busques.',
+          'El agua estéril sin conservador se reserva para trabajo analítico o para ensayos en los que el alcohol bencílico podría interferir con la medición: es un compuesto con absorbancia propia en el ultravioleta y puede alterar lecturas espectrofotométricas y cromatográficas.',
+          'Algunos compuestos tienen requisitos de diluyente propios por su solubilidad o su punto isoeléctrico. La compatibilidad debe verificarse contra la ficha técnica del compuesto y validarse dentro de un protocolo institucional.',
         ],
       },
       {
         title: 'Manejo en laboratorio',
         paragraphs: [
           'Se suministra en vial sellado, listo para usar. Conservar a temperatura ambiente controlada, protegido de la luz, y no usar si la solución se ve turbia o con partículas.',
-          'El tapón se limpia con alcohol antes de cada punción y se trabaja con jeringa estéril nueva. Un vial de diluyente contaminado compromete todos los péptidos que se reconstituyan con él.',
+          'Un vial de diluyente contaminado compromete todo el material que se reconstituya con él, por lo que la técnica aséptica y el registro de lote forman parte de la trazabilidad del experimento.',
         ],
       },
     ],
   },
 
   // ===== Tanda 3: bioreguladores de Khavinson y péptidos inmunes =====
-
-  bronchogen: {
-    tagline: 'Bioregulador peptídico corto (Ala-Glu-Asp-Leu)',
-    sections: [
-      { title: 'Qué es', paragraphs: [
-        'Bronchogen es un tetrapéptido sintético de secuencia Ala-Glu-Asp-Leu (AEDL), de la familia de bioreguladores peptídicos cortos desarrollada por la escuela de Vladimir Khavinson. Se concibió como análogo sintético de un extracto de tejido bronquial, siguiendo la misma lógica que dio origen a Epithalon a partir de la glándula pineal.',
-        'La premisa de toda esa familia es la especificidad de tejido: cada bioregulador corto se asocia con el órgano del que derivó su extracto de origen. En el caso de Bronchogen, el tejido de referencia es el epitelio respiratorio.' ] },
-      { title: 'Qué se estudia con él', paragraphs: [
-        'La hipótesis central de la escuela de Khavinson es que estos péptidos de dos a cuatro residuos pueden interactuar con regiones específicas del ADN y modular la expresión génica de forma tejido-selectiva. Conviene decirlo con claridad: es un modelo que sigue en discusión y que no ha tenido la misma verificación independiente que otros mecanismos peptídicos.',
-        'Aparece en trabajos sobre epitelio respiratorio en cultivo, expresión génica tejido-específica y estudios comparativos dentro de la familia de bioreguladores cortos, donde el interés es justamente probar si la especificidad de tejido que se les atribuye se sostiene experimentalmente.' ] },
-      { title: 'Manejo en laboratorio', paragraphs: [
-        'Tetrapéptido liofilizado, estable en seco pero higroscópico. Vial sellado, en frío, protegido de la luz.',
-        'Reconstituir con diluyente estéril de forma suave y refrigerar la solución.' ] },
-    ],
-  },
-
-  cardiogen: {
-    tagline: 'Bioregulador peptídico corto (Ala-Glu-Asp-Arg)',
-    sections: [
-      { title: 'Qué es', paragraphs: [
-        'Cardiogen es un tetrapéptido sintético de secuencia Ala-Glu-Asp-Arg (AEDR), perteneciente a la familia de bioreguladores peptídicos cortos de la escuela de Khavinson. Su tejido de referencia es el miocardio: se desarrolló como análogo sintético de un extracto de tejido cardiaco.' ] },
-      { title: 'Qué se estudia con él', paragraphs: [
-        'Se investiga bajo la misma hipótesis que el resto de la familia: interacción con secuencias específicas de ADN y modulación tejido-selectiva de la expresión génica. Como en todos los bioreguladores cortos, ese mecanismo sigue siendo materia de debate en la literatura independiente.',
-        'Los trabajos publicados lo sitúan en modelos de cardiomiocitos en cultivo, senescencia celular en tejido cardiaco y estudios de expresión génica comparativa frente a otros bioreguladores de la serie.' ] },
-      { title: 'Manejo en laboratorio', paragraphs: [
-        'Liofilizado en vial sellado. Cadena corta, estable en seco, sensible a la humedad. Frío, seco y sin luz.',
-        'Reconstituir con diluyente estéril de forma suave; refrigerar.' ] },
-    ],
-  },
-
-  cartalax: {
-    tagline: 'Bioregulador peptídico corto (Ala-Glu-Asp-Gly), tejido cartilaginoso',
-    sections: [
-      { title: 'Qué es', paragraphs: [
-        'Cartalax es un tetrapéptido sintético de la familia de bioreguladores cortos de Khavinson, asociado al tejido cartilaginoso y conectivo. Comparte con Epithalon la secuencia AEDG, y la diferencia práctica entre ambos en la literatura de esta escuela está en el contexto de estudio y el tejido de referencia, no en la cadena.' ] },
-      { title: 'Qué se estudia con él', paragraphs: [
-        'Aparece en modelos de condrocitos en cultivo, síntesis de matriz extracelular cartilaginosa y senescencia de tejido conectivo. La hipótesis de trabajo es la misma de toda la serie: modulación de expresión génica con especificidad de tejido.',
-        'Por compartir secuencia con Epithalon, es una pieza útil en estudios que buscan comprobar si la especificidad tisular que la escuela de Khavinson atribuye a estos péptidos es real o depende del contexto experimental.' ] },
-      { title: 'Manejo en laboratorio', paragraphs: [
-        'Liofilizado en vial sellado; frío, seco y sin luz.',
-        'Reconstituir con diluyente estéril de forma suave y refrigerar la solución.' ] },
-    ],
-  },
-
-  cortagen: {
-    tagline: 'Bioregulador peptídico corto (Ala-Glu-Asp-Pro)',
-    sections: [
-      { title: 'Qué es', paragraphs: [
-        'Cortagen es un tetrapéptido sintético de secuencia Ala-Glu-Asp-Pro (AEDP), de la serie de bioreguladores cortos de Khavinson. Su tejido de referencia es la corteza cerebral, de donde procedía el extracto que le dio origen.' ] },
-      { title: 'Qué se estudia con él', paragraphs: [
-        'Se investiga en modelos de tejido nervioso: regeneración de fibra nerviosa periférica en modelos animales, expresión génica en corteza y comportamiento comparado frente a otros bioreguladores de la misma serie.',
-        'Como con el resto de la familia, el mecanismo propuesto —interacción directa con ADN y modulación tejido-selectiva— es una hipótesis de escuela que conviene tratar como tal.' ] },
-      { title: 'Manejo en laboratorio', paragraphs: [
-        'Liofilizado en vial sellado; frío, seco y protegido de la luz.',
-        'Reconstituir con diluyente estéril de forma suave; refrigerar.' ] },
-    ],
-  },
-
-  crystagen: {
-    tagline: 'Bioregulador peptídico corto, referencia inmunitaria',
-    sections: [
-      { title: 'Qué es', paragraphs: [
-        'Crystagen es un tetrapéptido sintético de la familia de bioreguladores cortos de Khavinson, cuyo tejido de referencia es el sistema inmunitario. Junto con Thymalin, es el representante de la rama inmune dentro de esa serie.' ] },
-      { title: 'Qué se estudia con él', paragraphs: [
-        'Aparece en modelos de proliferación y diferenciación de linfocitos en cultivo, expresión de citocinas y estudios sobre el eje neuroinmune. La pregunta experimental habitual es si un péptido de cuatro residuos puede producir una respuesta inmunológica medible y reproducible.',
-        'Se estudia con frecuencia junto a Thymalin y a Thymosin Alpha-1, que abordan el mismo terreno desde estructuras muy distintas: un tetrapéptido sintético, un extracto peptídico y un péptido de 28 residuos.' ] },
-      { title: 'Manejo en laboratorio', paragraphs: [
-        'Liofilizado en vial sellado; frío, seco y sin luz.',
-        'Reconstituir con diluyente estéril de forma suave y refrigerar.' ] },
-    ],
-  },
-
-  pinealon: {
-    tagline: 'Tripéptido bioregulador (Glu-Asp-Arg), referencia cerebral',
-    sections: [
-      { title: 'Qué es', paragraphs: [
-        'Pinealon es un tripéptido sintético de secuencia Glu-Asp-Arg (EDR), de la familia de bioreguladores cortos de Khavinson. Es uno de los más cortos de la serie —tres residuos— y su tejido de referencia es el cerebral.' ] },
-      { title: 'Qué se estudia con él', paragraphs: [
-        'La literatura publicada lo sitúa en modelos de estrés oxidativo en neuronas, viabilidad celular bajo hipoxia y expresión de genes asociados a respuesta al estrés. También aparece en trabajos sobre ritmos circadianos, terreno que comparte con Epithalon por la referencia pineal.',
-        'Su tamaño mínimo lo vuelve interesante por una razón metodológica: si un tripéptido produce una respuesta reproducible en cultivo, la pregunta de cómo lo hace se vuelve más aguda, no menos.' ] },
-      { title: 'Manejo en laboratorio', paragraphs: [
-        'Liofilizado en vial sellado. Las cadenas muy cortas son estables en seco pero especialmente higroscópicas: frío, seco y sin luz.',
-        'Reconstituir con diluyente estéril de forma suave; refrigerar.' ] },
-    ],
-  },
-
-  thymalin: {
-    tagline: 'Complejo peptídico de origen tímico',
-    sections: [
-      { title: 'Qué es', paragraphs: [
-        'Thymalin no es un péptido único sino un complejo de péptidos de bajo peso molecular obtenido del timo, la glándula donde maduran los linfocitos T. Es uno de los preparados originales de la escuela rusa de bioreguladores, anterior a los tetrapéptidos sintéticos que después la caracterizaron.',
-        'Esa naturaleza de mezcla es importante para el diseño experimental: a diferencia de un péptido sintético de secuencia conocida, aquí se trabaja con una fracción, y la caracterización analítica es correspondientemente más compleja.' ] },
-      { title: 'Qué se estudia con él', paragraphs: [
-        'Se investiga en modelos de maduración y diferenciación de linfocitos T, respuesta inmunitaria en modelos animales y, dentro de la literatura de esta escuela, en trabajos sobre involución tímica asociada a la edad.',
-        'Suele compararse con Thymosin Alpha-1 y con Crystagen, que abordan el mismo eje inmunitario desde una molécula definida en lugar de una fracción.' ] },
-      { title: 'Manejo en laboratorio', paragraphs: [
-        'Liofilizado en vial sellado. Por tratarse de una fracción peptídica compleja, la protección frente a humedad y calor importa especialmente. Frío, seco y sin luz.',
-        'Reconstituir con diluyente estéril de forma suave y refrigerar la solución.' ] },
-    ],
-  },
 
   'thymosin-alpha-1': {
     tagline: 'Péptido tímico de 28 aminoácidos',
@@ -614,21 +274,6 @@ const monographs = {
       { title: 'Manejo en laboratorio', paragraphs: [
         'Liofilizado en vial sellado. Su cadena de 28 residuos lo hace más sensible que un tetrapéptido: frío, seco y protegido de la luz.',
         'Reconstituir con diluyente estéril sin agitación; refrigerar y evitar ciclos de congelado y descongelado.' ] },
-    ],
-  },
-
-  kpv: {
-    tagline: 'Tripéptido C-terminal de la α-MSH (Lys-Pro-Val)',
-    sections: [
-      { title: 'Qué es', paragraphs: [
-        'KPV es el tripéptido formado por lisina, prolina y valina, correspondiente al extremo C-terminal (residuos 11-13) de la hormona estimulante de melanocitos alfa. Es la fracción mínima de la α-MSH que conserva actividad antiinflamatoria en los modelos publicados.',
-        'Su interés metodológico está justamente ahí: conserva la rama antiinflamatoria de la molécula madre sin arrastrar la actividad sobre los receptores de melanocortina responsables de la pigmentación y de los efectos centrales.' ] },
-      { title: 'Qué se estudia con él', paragraphs: [
-        'El eje mejor documentado es la señalización NF-κB: la literatura describe inhibición de su translocación al núcleo y, con ella, reducción de la expresión de citocinas proinflamatorias en cultivo. También se ha estudiado su entrada a la célula por transportadores de péptidos como PepT1, muy expresado en epitelio intestinal.',
-        'Aparece en modelos de inflamación intestinal, integridad de barrera epitelial, dermatología experimental y como componente de mezclas de reparación tisular, donde aporta la rama antiinflamatoria: es la "K" de KLOW.' ] },
-      { title: 'Manejo en laboratorio', paragraphs: [
-        'Liofilizado en vial sellado; tripéptido estable en seco pero higroscópico. Frío, seco y sin luz.',
-        'Reconstituir con diluyente estéril de forma suave y refrigerar.' ] },
     ],
   },
 
@@ -665,12 +310,12 @@ const monographs = {
   },
 
   'ghrp-6-acetate': {
-    tagline: 'Secretagogo de GH con fuerte señal orexigénica',
+    tagline: 'Hexapéptido agonista del receptor GHSR-1a',
     sections: [
       { title: 'Qué es', paragraphs: [
-        'GHRP-6 es un hexapéptido sintético agonista del receptor GHSR-1a, cronológicamente el primero de la familia de secretagogos que se caracterizó a fondo. Comparte mecanismo con GHRP-2 pero difiere en perfil: su señal sobre el apetito es notablemente más marcada.' ] },
+        'GHRP-6 es un hexapéptido sintético agonista del receptor GHSR-1a, el receptor de la grelina, y cronológicamente el primero de la familia de secretagogos que se caracterizó a fondo. Comparte mecanismo con GHRP-2 y difiere de él en el perfil de respuestas asociadas.' ] },
       { title: 'Qué se estudia con él', paragraphs: [
-        'Precisamente por esa señal orexigénica es la herramienta de referencia en modelos de regulación del apetito mediada por grelina, además de en estudios de señalización GHSR-1a y de liberación pulsátil de hormona de crecimiento.',
+        'En modelos experimentales se ha observado señal relacionada con la ingesta; su magnitud y su selectividad dependen del modelo empleado, de modo que no debe presentarse como un efecto de referencia. Aparece además en estudios de señalización de GHSR-1a y de liberación pulsátil de hormona de crecimiento.',
         'La comparación GHRP-6 / GHRP-2 / Ipamorelin es un experimento clásico de la farmacología de secretagogos: mismo receptor, tres perfiles de selectividad distintos.' ] },
       { title: 'Manejo en laboratorio', paragraphs: [
         'Liofilizado en vial sellado; frío, seco y sin luz.',
@@ -679,31 +324,16 @@ const monographs = {
   },
 
   'hexarelin-acetate': {
-    tagline: 'Secretagogo hexapeptídico de alta potencia',
+    tagline: 'Hexapéptido derivado de GHRP-6 con metilación en triptófano',
     sections: [
       { title: 'Qué es', paragraphs: [
-        'Hexarelina es un hexapéptido sintético derivado estructuralmente de GHRP-6, con una metilación en el residuo de triptófano que aumenta de forma importante su potencia y su resistencia a la degradación. Es el más potente de los secretagogos peptídicos clásicos.' ] },
+        'Hexarelina es un hexapéptido sintético derivado estructuralmente de GHRP-6, con una metilación en el residuo de triptófano que aumenta su resistencia a la degradación. Ha mostrado alta potencia en determinados ensayos de liberación de hormona de crecimiento; afirmar una superioridad universal exigiría definir el ensayo y el comparador.' ] },
       { title: 'Qué se estudia con él', paragraphs: [
-        'Además del eje somatotrópico, tiene una línea de investigación propia en tejido cardiaco: se ha descrito su unión al receptor CD36, distinto del GHSR-1a, lo que abrió estudios sobre señalización cardiovascular independientes de la hormona de crecimiento.',
+        'Además del eje somatotrópico, tiene una línea de investigación propia en tejido cardiaco: se ha descrito su unión a CD36, distinto del GHSR-1a, lo que abrió estudios sobre señalización cardiovascular independientes de la hormona de crecimiento. La relevancia funcional de esa unión sigue discutiéndose y conviene tratarla como línea abierta.',
         'Otro tema recurrente en su literatura es la desensibilización del receptor con exposición sostenida, que lo convierte en una herramienta útil para estudiar internalización y resensibilización de GPCRs.' ] },
       { title: 'Manejo en laboratorio', paragraphs: [
         'Liofilizado en vial sellado; frío, seco y protegido de la luz.',
         'Reconstituir con diluyente estéril de forma suave y refrigerar.' ] },
-    ],
-  },
-
-  sermorelina: {
-    tagline: 'Análogo de GHRH (1-29), el fragmento activo',
-    sections: [
-      { title: 'Qué es', paragraphs: [
-        'Sermorelina corresponde a los primeros 29 aminoácidos de la hormona liberadora de hormona de crecimiento humana, el fragmento mínimo que conserva la actividad biológica de la molécula completa de 44 residuos. A diferencia de CJC-1295 sin DAC, no lleva sustituciones que la protejan de la DPP-4, así que su vida media es muy corta.',
-        'Esa fragilidad es su valor experimental: es el análogo que más se parece, en cinética, al GHRH endógeno.' ] },
-      { title: 'Qué se estudia con ella', paragraphs: [
-        'Se investiga en señalización del receptor de GHRH y su acoplamiento a la vía del AMP cíclico en somatotropos, y en el estudio del patrón pulsátil de secreción de GH, donde una molécula de acción larga aplanaría justamente el fenómeno que se quiere observar.',
-        'Es la referencia natural frente a la que se comparan Modified GRF (1-29), CJC-1295 con DAC y Tesamorelina.' ] },
-      { title: 'Manejo en laboratorio', paragraphs: [
-        'Liofilizada en vial sellado. Al no llevar protección frente a peptidasas, es de las más sensibles del grupo: frío, seco y sin luz, y usar la solución pronto.',
-        'Reconstituir con diluyente estéril de forma muy suave; refrigerar.' ] },
     ],
   },
 
@@ -733,21 +363,6 @@ const monographs = {
       { title: 'Manejo en laboratorio', paragraphs: [
         'Liofilizado en vial sellado. Es una proteína pequeña más que un péptido corto: más sensible a la desnaturalización, al calor y a la agitación. Frío, seco y sin luz.',
         'Reconstituir con el diluyente indicado para la ficha, de forma muy suave y sin espuma. Refrigerar y evitar ciclos de congelado y descongelado, que son especialmente dañinos aquí.' ] },
-    ],
-  },
-
-  mgf: {
-    tagline: 'Factor mecano-crecimiento, variante de empalme de IGF-1',
-    sections: [
-      { title: 'Qué es', paragraphs: [
-        'MGF (Mechano Growth Factor) es una variante de empalme alternativo del gen de IGF-1, también documentada como IGF-1Ec. Se expresa en músculo esquelético en respuesta a carga mecánica o daño, de ahí su nombre. El péptido de investigación corresponde a su péptido E, el fragmento C-terminal que distingue esta isoforma.',
-        'Su vida media en solución es muy corta, lo que históricamente ha sido la principal dificultad de trabajar con él y la razón de que exista la versión pegilada.' ] },
-      { title: 'Qué se estudia con él', paragraphs: [
-        'Se investiga en activación y proliferación de células satélite del músculo esquelético, respuesta a daño mecánico, y como pieza para entender cómo un mismo gen produce señales distintas según el contexto: IGF-1 sistémico frente a MGF local.',
-        'Ese es su valor conceptual: ilustra que el empalme alternativo no es un detalle, sino un mecanismo de especialización funcional.' ] },
-      { title: 'Manejo en laboratorio', paragraphs: [
-        'Liofilizado en vial sellado; frío, seco y protegido de la luz.',
-        'Reconstituir con diluyente estéril de forma suave y usar la solución pronto: su estabilidad en medio acuoso es de las más cortas del catálogo.' ] },
     ],
   },
 
@@ -782,13 +397,15 @@ const monographs = {
   },
 
   'fragment-17-23': {
-    tagline: 'Fragmento peptídico corto de investigación',
+    tagline: 'Ac-LKKTETQ, fragmento 17-23 de la timosina beta-4 (el mismo material que TB-500)',
     sections: [
       { title: 'Qué es', paragraphs: [
-        'Fragment 17-23 es un péptido corto correspondiente a la región 17-23 de su secuencia madre. Los fragmentos de este tipo se usan en investigación para acotar qué parte de una molécula grande es responsable de una actividad concreta: se sintetiza el tramo, se ensaya por separado y se compara con la molécula íntegra.' ] },
+        'Fragment 17-23 es el heptapéptido N-acetilado Ac-LKKTETQ, correspondiente a los residuos 17 a 23 de la timosina beta-4. Es el mismo material que se comercializa bajo el nombre TB-500; los trabajos analíticos que han caracterizado ese producto identifican precisamente esta secuencia.',
+        'La timosina beta-4 de la que procede es una proteína de 43 aminoácidos. Este vial contiene siete residuos de esa cadena, no la proteína completa, y la distinción es la clave para leer cualquier literatura sobre él.' ] },
       { title: 'Qué se estudia con él', paragraphs: [
-        'Su uso típico es el mapeo de estructura-función: identificar el epítopo o el motivo mínimo que conserva la unión al receptor o la actividad medida. También se emplea como control negativo o de especificidad en ensayos donde se quiere descartar que la respuesta observada venga de una región distinta.',
-        'Para el diseño experimental conviene verificar la secuencia exacta y el marco de numeración de referencia antes de compararlo con datos de la literatura, porque la numeración de fragmentos varía entre publicaciones.' ] },
+        'Su uso conceptual es el mapeo de estructura-función: acotar qué región de una proteína conserva una actividad medida. La región 17-23 se asocia a la interacción con actina descrita para la timosina beta-4, pero el secuestro de actina monomérica está establecido para la proteína íntegra; atribuirlo sin más al heptapéptido es una hipótesis, no un dato.',
+        'Por eso, al revisar publicaciones es imprescindible verificar si el ensayo usó el fragmento o la proteína completa, y confirmar el marco de numeración: la nomenclatura de fragmentos varía entre trabajos y de ahí salen comparaciones que no proceden.',
+        'También se emplea como control de especificidad en ensayos donde se quiere descartar que una respuesta observada provenga de otra región de la molécula madre.' ] },
       { title: 'Manejo en laboratorio', paragraphs: [
         'Liofilizado en vial sellado. Péptido corto: estable en seco, higroscópico. Frío, seco y sin luz.',
         'Reconstituir con diluyente estéril de forma suave y refrigerar.' ] },
@@ -796,63 +413,6 @@ const monographs = {
   },
 
   // ===== Tanda 5: metabólicos e incretinas =====
-
-  liraglutida: {
-    tagline: 'Análogo de GLP-1 de primera generación acilada',
-    sections: [
-      { title: 'Qué es', paragraphs: [
-        'Liraglutida es un análogo del péptido similar al glucagón tipo 1 con dos modificaciones sobre la secuencia nativa: la sustitución de lisina por arginina en posición 34 y la conjugación de una cadena de ácido palmítico a través de un espaciador de ácido glutámico. Esa acilación le da afinidad por la albúmina y multiplica su permanencia en circulación frente al GLP-1 endógeno, cuya vida media es de minutos.',
-        'Es la generación anterior a Semaglutida: mismo receptor, misma estrategia de diseño, cadena grasa más corta y por tanto exposición menos prolongada.' ] },
-      { title: 'Qué se estudia con ella', paragraphs: [
-        'Aparece en modelos de secreción de insulina dependiente de glucosa, supervivencia de células beta, motilidad gastrointestinal y señalización de saciedad en el sistema nervioso central.',
-        'Su papel más útil hoy es de comparador: la serie Liraglutida → Semaglutida → Tirzepatida → Retatrutida permite estudiar cómo cambia la respuesta al ir alargando la exposición y sumando receptores.' ] },
-      { title: 'Manejo en laboratorio', paragraphs: [
-        'Liofilizada en vial sellado; frío, seco y sin luz.',
-        'Reconstituir con diluyente estéril de forma suave, sin vórtice: los análogos acilados de GLP-1 son propensos a formar agregados fibrilares. Refrigerar la solución.' ] },
-    ],
-  },
-
-  dulaglutida: {
-    tagline: 'Proteína de fusión GLP-1 con fragmento Fc',
-    sections: [
-      { title: 'Qué es', paragraphs: [
-        'Dulaglutida no es un péptido simple sino una proteína de fusión: dos análogos de GLP-1 modificados unidos por un enlazador a un fragmento Fc de inmunoglobulina G4 humana. La estrategia de extensión de vida media aquí no es la acilación sino el reciclaje mediado por el receptor Fc neonatal (FcRn), el mismo mecanismo que mantiene los anticuerpos en circulación durante semanas.' ] },
-      { title: 'Qué se estudia con ella', paragraphs: [
-        'Su interés experimental está en comparar dos estrategias distintas de prolongación: unión a albúmina por acilación frente a fusión con Fc. Producen perfiles de exposición y de distribución tisular diferentes a partir de la misma señal receptora.',
-        'Aparece en modelos de señalización del receptor de GLP-1, farmacocinética de proteínas de fusión y estudios de inmunogenicidad, un tema propio de las moléculas que incorporan dominios de anticuerpo.' ] },
-      { title: 'Manejo en laboratorio', paragraphs: [
-        'Liofilizada en vial sellado. Al ser una proteína de fusión de tamaño considerable, es más frágil que un péptido: sensible al calor, a la agitación y a la formación de espuma. Frío, seco y sin luz.',
-        'Reconstituir con mucha suavidad, sin vórtice ni espuma. Refrigerar y no congelar la solución.' ] },
-    ],
-  },
-
-  mazdutida: {
-    tagline: 'Doble agonista GLP-1 / glucagón',
-    sections: [
-      { title: 'Qué es', paragraphs: [
-        'Mazdutida es un péptido sintético que actúa como agonista dual de los receptores de GLP-1 y de glucagón. Su esqueleto deriva de la oxintomodulina, un péptido intestinal natural que activa de forma nativa ambos receptores, modificado y acilado para darle estabilidad y acción prolongada.' ] },
-      { title: 'Qué se estudia con ella', paragraphs: [
-        'La combinación GLP-1 más glucagón es conceptualmente distinta de la combinación GLP-1 más GIP: la rama de glucagón añade gasto energético y metabolismo hepático, no sensibilidad del adipocito. Mazdutida es la herramienta para estudiar esa pareja concreta de forma aislada.',
-        'Aparece en modelos de homeostasis energética, metabolismo hepático de lípidos y estudios comparativos frente a agonistas duales GLP-1/GIP como Tirzepatida y al triple agonista Retatrutida.' ] },
-      { title: 'Manejo en laboratorio', paragraphs: [
-        'Liofilizada en vial sellado; frío, seco y protegido de la luz.',
-        'Reconstituir con diluyente estéril dejándolo escurrir por la pared, sin agitación. Refrigerar.' ] },
-    ],
-  },
-
-  survodutide: {
-    tagline: 'Doble agonista GLP-1 / glucagón, de acción prolongada',
-    sections: [
-      { title: 'Qué es', paragraphs: [
-        'Survodutide es otro agonista dual de los receptores de GLP-1 y de glucagón, con una arquitectura de acilación diseñada para exposición prolongada. Comparte clase con Mazdutida pero difiere en secuencia y en el balance de potencia entre ambos receptores.' ] },
-      { title: 'Qué se estudia con él', paragraphs: [
-        'El punto interesante de tener dos duales GLP-1/glucagón distintos en el catálogo es que permite estudiar el efecto del sesgo receptor: dos moléculas de la misma clase con proporciones de activación diferentes producen respuestas metabólicas que no son intercambiables.',
-        'Aparece en modelos de metabolismo hepático de lípidos, gasto energético y farmacología comparada de agonistas multireceptor.' ] },
-      { title: 'Manejo en laboratorio', paragraphs: [
-        'Liofilizado en vial sellado; frío, seco y sin luz.',
-        'Reconstituir con diluyente estéril de forma suave, sin vórtice; refrigerar.' ] },
-    ],
-  },
 
   'aod-9604': {
     tagline: 'Fragmento 176-191 modificado de la hormona de crecimiento',
@@ -884,30 +444,19 @@ const monographs = {
   },
 
   '5-amino-1mq': {
-    tagline: 'Inhibidor de molécula pequeña de NNMT',
+    tagline: 'Inhibidor de molécula pequeña de NNMT (CAS 42464-96-0)',
     sections: [
       { title: 'Qué es', paragraphs: [
-        '5-Amino-1MQ no es un péptido sino una molécula pequeña: un derivado de quinolinio que actúa como inhibidor selectivo de la nicotinamida N-metiltransferasa (NNMT), una enzima citosólica muy expresada en tejido adiposo e hígado.' ] },
+        '5-Amino-1MQ no es un péptido sino una molécula pequeña: el catión 1-metilquinolin-1-io-5-amina, un derivado de quinolinio estudiado como inhibidor selectivo de la nicotinamida N-metiltransferasa (NNMT), enzima citosólica muy expresada en tejido adiposo e hígado. Se suministra habitualmente como sal de yoduro, de fórmula C10H11IN2 y número CAS 42464-96-0; el catión libre corresponde a C10H11N2 más.',
+        'La sal exacta importa y debe verificarse en la ficha del lote: el contenido de catión activo por miligramo de material cambia según el contrapión, y con él cualquier cálculo de concentración. El yoduro tiene además color propio, entre rosa y anaranjado, que no debe confundirse con una alteración del material.',
+        'Conviene señalar un punto de nomenclatura, porque en el mercado circula confusión: algunos proveedores etiquetan este mismo compuesto como 10-amino-1MQ. Ese nombre no corresponde a ninguna sustancia documentada, y el anillo de quinolinio no admite una posición 10. Ante una etiqueta así, hay que exigir CAS y certificado antes de asumir de qué se trata.' ] },
       { title: 'Qué se estudia con él', paragraphs: [
-        'La NNMT metila la nicotinamida y la retira de la vía de rescate de NAD+. Inhibirla es, por tanto, una forma indirecta de estudiar la disponibilidad de NAD+ intracelular sin administrarlo: si al bloquear la enzima suben los niveles de NAD+ y cambia el fenotipo celular, la vía de rescate era limitante.',
-        'Aparece en modelos de metabolismo del adipocito, homeostasis de NAD+, biología de sirtuinas y estudios sobre metilación como mecanismo de regulación metabólica. Es una herramienta complementaria a NAD+ y sus precursores, no un sustituto.' ] },
+        'La NNMT metila la nicotinamida y la retira de la vía de rescate de NAD+, consumiendo además S-adenosilmetionina como donante de metilo. Inhibirla es, por tanto, una forma indirecta de estudiar la disponibilidad de NAD+ intracelular sin administrarlo: si al bloquear la enzima suben los niveles de NAD+ y cambia el fenotipo celular, la vía de rescate era limitante.',
+        'Aparece en modelos de metabolismo del adipocito, homeostasis de NAD+, biología de sirtuinas y estudios sobre metilación como mecanismo de regulación metabólica. Es una herramienta complementaria a NAD+ y sus precursores, no un sustituto.',
+        'Dos controles separan lo que a menudo se mezcla. El efecto enzimático se demuestra midiendo la caída de 1-metilnicotinamida y la subida de nicotinamida y SAM en la célula. El fenotipo metabólico es otra cosa, y no queda demostrado por lo anterior: exige su propio ensayo y su propio control, porque a las concentraciones de trabajo la selectividad frente a otras metiltransferasas dependientes de SAM debe verificarse y no presuponerse.' ] },
       { title: 'Manejo en laboratorio', paragraphs: [
         'Se presenta en forma liofilizada o cristalina según el lote. Al ser una molécula pequeña y no un péptido, su comportamiento de solubilidad es distinto: conviene revisar la ficha del lote antes de elegir diluyente.',
         'Conservar sellado, en frío, seco y protegido de la luz.' ] },
-    ],
-  },
-
-  '10-amino-1mq': {
-    tagline: 'Análogo de la serie de inhibidores de NNMT',
-    sections: [
-      { title: 'Qué es', paragraphs: [
-        '10-Amino-1MQ pertenece a la misma serie química de derivados de quinolinio estudiados como inhibidores de la nicotinamida N-metiltransferasa. Frente al 5-amino, la diferencia está en la posición del grupo amino sobre el anillo, lo que altera la geometría de unión al sitio activo de la enzima.' ] },
-      { title: 'Qué se estudia con él', paragraphs: [
-        'Su uso principal es la relación estructura-actividad: comparar análogos que difieren en un solo sustituyente es la forma clásica de mapear qué contactos importan para la inhibición y cuáles no.',
-        'Comparte con el 5-amino el terreno de estudio: metabolismo del adipocito, homeostasis de NAD+ y regulación por metilación.' ] },
-      { title: 'Manejo en laboratorio', paragraphs: [
-        'Molécula pequeña liofilizada o cristalina; revisar la ficha del lote para el diluyente adecuado.',
-        'Conservar sellado, en frío, seco y sin luz.' ] },
     ],
   },
 
@@ -956,64 +505,6 @@ const monographs = {
     ],
   },
 
-  humanin: {
-    tagline: 'Péptido mitocondrial de 24 aminoácidos',
-    sections: [
-      { title: 'Qué es', paragraphs: [
-        'La humanina es un péptido de 24 aminoácidos codificado en el genoma mitocondrial, dentro del gen del ARN ribosómico 16S. Fue el primer péptido derivado de mitocondria que se describió, y su hallazgo abrió la categoría a la que después se sumó MOTS-c.' ] },
-      { title: 'Qué se estudia con él', paragraphs: [
-        'Se investiga como péptido citoprotector: la literatura describe interacción con proteínas de la familia Bax y modulación de vías de apoptosis, además de señalización a través de un receptor trimérico de superficie que incluye la subunidad gp130.',
-        'Aparece en modelos de supervivencia neuronal, estrés oxidativo, sensibilidad a la insulina y biología del envejecimiento. Junto con MOTS-c, es la pieza clave para estudiar la mitocondria como órgano endocrino y no solo como central energética.' ] },
-      { title: 'Manejo en laboratorio', paragraphs: [
-        'Liofilizado en vial sellado; frío, seco y sin luz.',
-        'Reconstituir con diluyente estéril de forma suave y refrigerar.' ] },
-    ],
-  },
-
-  foxo4: {
-    tagline: 'FOXO4-DRI, péptido senolítico de interferencia',
-    sections: [
-      { title: 'Qué es', paragraphs: [
-        'FOXO4-DRI es un péptido diseñado por retroinversión (D-retro-inverso): se sintetiza con aminoácidos D en orden invertido respecto de la secuencia natural, lo que produce una molécula con una disposición espacial de las cadenas laterales muy parecida a la original pero prácticamente inmune a las proteasas.',
-        'Su diana es la interacción entre FOXO4 y p53, un contacto proteína-proteína que en células senescentes retiene a p53 en el núcleo y las mantiene vivas pese al daño acumulado.' ] },
-      { title: 'Qué se estudia con él', paragraphs: [
-        'Es una de las herramientas de referencia en el campo senolítico: la hipótesis es que al interrumpir el contacto FOXO4-p53, la célula senescente pierde su resistencia a la apoptosis y se elimina, mientras la célula sana no se ve afectada.',
-        'Aparece en modelos de senescencia celular, eliminación selectiva de células senescentes en cultivo y estudios de envejecimiento tisular. Metodológicamente es además un buen ejemplo de cómo se diseña un inhibidor de interacción proteína-proteína.' ] },
-      { title: 'Manejo en laboratorio', paragraphs: [
-        'Liofilizado en vial sellado. Los péptidos retroinversos son notablemente estables frente a peptidasas, pero no frente a la humedad. Frío, seco y sin luz.',
-        'Reconstituir con diluyente estéril de forma suave; refrigerar.' ] },
-    ],
-  },
-
-  glutation: {
-    tagline: 'Tripéptido antioxidante (GSH)',
-    sections: [
-      { title: 'Qué es', paragraphs: [
-        'El glutatión es un tripéptido formado por glutamato, cisteína y glicina, con la particularidad de que el enlace entre los dos primeros es un enlace gamma —a través de la cadena lateral del glutamato, no de su carbono alfa—. Esa unión atípica lo protege de las peptidasas comunes y explica que exista en concentraciones milimolares dentro de la célula.',
-        'Es el antioxidante no proteico más abundante del organismo y el eje del sistema redox celular.' ] },
-      { title: 'Qué se estudia con él', paragraphs: [
-        'Su química gira en torno al grupo tiol de la cisteína: dos moléculas reducidas (GSH) se oxidan a un dímero (GSSG), y la proporción GSH/GSSG es la medida estándar del estado redox de una célula.',
-        'Se investiga en estrés oxidativo, detoxificación de fase II mediada por glutatión S-transferasas, glutationilación de proteínas como mecanismo de señalización y modelos de envejecimiento y función mitocondrial.' ] },
-      { title: 'Manejo en laboratorio', paragraphs: [
-        'Liofilizado en vial sellado. Es sensible a la oxidación por aire: una vez en solución, el GSH pasa a GSSG con el tiempo, lo que altera justamente el parámetro que suele querer medirse.',
-        'Conservar sellado, en frío, seco y sin luz. Preparar las soluciones lo más cerca posible del momento de uso.' ] },
-    ],
-  },
-
-  aicar: {
-    tagline: 'Activador de AMPK (ribonucleótido de aminoimidazol carboxamida)',
-    sections: [
-      { title: 'Qué es', paragraphs: [
-        'AICAR no es un péptido sino un análogo de nucleótido. Dentro de la célula se fosforila a ZMP, un compuesto que imita estructuralmente al AMP y que por esa razón activa la proteína cinasa activada por AMP (AMPK), el sensor que la célula usa para detectar caída de energía.' ] },
-      { title: 'Qué se estudia con él', paragraphs: [
-        'Es el activador farmacológico clásico de AMPK y aparece en prácticamente toda la literatura del campo: captación de glucosa independiente de insulina, oxidación de ácidos grasos, biogénesis mitocondrial y regulación de mTOR, que AMPK inhibe.',
-        'Conviene tener presente una limitación metodológica bien documentada: ZMP no solo activa AMPK, también afecta a otras enzimas sensibles a AMP, así que los resultados con AICAR suelen requerir confirmación con un segundo abordaje.' ] },
-      { title: 'Manejo en laboratorio', paragraphs: [
-        'Se presenta liofilizado o en polvo cristalino. Al ser un análogo de nucleótido, su solubilidad y estabilidad difieren de las de un péptido: revisar la ficha del lote.',
-        'Conservar sellado, en frío, seco y protegido de la luz.' ] },
-    ],
-  },
-
   'pnc-27': {
     tagline: 'Péptido dirigido al complejo p53 / HDM-2',
     sections: [
@@ -1026,34 +517,6 @@ const monographs = {
       { title: 'Manejo en laboratorio', paragraphs: [
         'Liofilizado en vial sellado; frío, seco y protegido de la luz.',
         'Reconstituir con diluyente estéril de forma suave; refrigerar y manejar con técnica estéril.' ] },
-    ],
-  },
-
-  dsip: {
-    tagline: 'Péptido delta inductor del sueño (nonapéptido)',
-    sections: [
-      { title: 'Qué es', paragraphs: [
-        'DSIP es un nonapéptido aislado originalmente de sangre de conejo durante experimentos de sueño inducido eléctricamente, de donde viene su nombre (Delta Sleep-Inducing Peptide). Es una de las moléculas más antiguas y a la vez menos comprendidas de la neuropeptidología: décadas después de su aislamiento, no se ha identificado un receptor propio.' ] },
-      { title: 'Qué se estudia con él', paragraphs: [
-        'Se investiga en modelos de arquitectura del sueño —en particular la actividad de ondas delta—, ritmos circadianos, respuesta al estrés y regulación del eje hipotálamo-hipófisis-adrenal.',
-        'Su interés metodológico es doble: por un lado, los efectos descritos en la literatura son variables entre estudios, lo que lo convierte en un buen ejercicio de lectura crítica; por otro, la ausencia de un receptor identificado es un problema abierto y legítimo de investigación.' ] },
-      { title: 'Manejo en laboratorio', paragraphs: [
-        'Liofilizado en vial sellado; frío, seco y sin luz.',
-        'Reconstituir con diluyente estéril de forma suave y refrigerar.' ] },
-    ],
-  },
-
-  melatonina: {
-    tagline: 'Indolamina reguladora del ciclo circadiano',
-    sections: [
-      { title: 'Qué es', paragraphs: [
-        'La melatonina no es un péptido sino una indolamina derivada del triptófano, sintetizada principalmente en la glándula pineal siguiendo un ritmo marcado por el núcleo supraquiasmático. Su producción sube con la oscuridad y cae con la luz, lo que la convierte en la señal química de la noche.' ] },
-      { title: 'Qué se estudia con ella', paragraphs: [
-        'Actúa sobre los receptores MT1 y MT2, ambos acoplados a proteína G, y además tiene actividad antioxidante directa por su capacidad de ceder electrones, un mecanismo independiente de receptor.',
-        'Aparece en modelos de ritmos circadianos, señalización pineal, función mitocondrial y estrés oxidativo. En el catálogo se relaciona conceptualmente con Epithalon y Pinealon, que comparten la referencia pineal desde otra química por completo.' ] },
-      { title: 'Manejo en laboratorio', paragraphs: [
-        'Molécula pequeña, fotosensible: la protección frente a la luz aquí no es una formalidad, es parte del método.',
-        'Conservar sellada, en frío, seca y en oscuridad. Revisar la ficha del lote para el diluyente adecuado; su solubilidad en agua es limitada.' ] },
     ],
   },
 
@@ -1107,10 +570,10 @@ const monographs = {
     tagline: 'Mezcla de tres péptidos: BPC-157, GHK-Cu y TB-500',
     sections: [
       { title: 'Qué es', paragraphs: [
-        'GLOW es una formulación combinada de tres péptidos de investigación en un solo vial liofilizado: BPC-157, GHK-Cu y TB-500, con el péptido de cobre en la proporción dominante. Es la mezcla más difundida del mercado en su categoría y la base de la que deriva KLOW, que añade KPV como cuarto componente.' ] },
-      { title: 'Por qué se combinan', paragraphs: [
-        'Cada componente cubre una etapa distinta del mismo proceso: GHK-Cu se investiga en remodelado de matriz extracelular y expresión de colágeno; BPC-157 en angiogénesis y señalización de factores de crecimiento; TB-500 en dinámica de actina y migración celular.',
-        'Esa complementariedad es lo que la vuelve útil para estudiar interacción entre vías en lugar de un eje aislado. La comparación GLOW frente a KLOW permite además aislar la contribución específica de la rama antiinflamatoria que aporta KPV.' ] },
+        'GLOW es una formulación comercial que reúne tres péptidos de investigación en un solo vial liofilizado: BPC-157, GHK-Cu y TB-500, con el péptido de cobre en la proporción dominante. Es la mezcla más difundida del mercado en su categoría y la base de la que deriva KLOW, que añade KPV como cuarto componente.' ] },
+      { title: 'Qué contiene y qué no está demostrado', paragraphs: [
+        'GHK-Cu se investiga en remodelado de matriz extracelular y expresión de colágeno; BPC-157 en angiogénesis y señalización de factores de crecimiento, con evidencia solo preclínica; TB-500 es el fragmento N-acetilado 17-23 de la timosina beta-4 (Ac-LKKTETQ) y se estudia en dinámica de actina y migración celular.',
+        'No hay evidencia publicada que demuestre complementariedad ni sinergia del vial completo: la agrupación es comercial. Cualquier comparación entre GLOW y KLOW requiere controles de cada componente por separado para poder atribuir una diferencia a KPV.' ] },
       { title: 'Manejo en laboratorio', paragraphs: [
         'La presencia de GHK-Cu da a la mezcla el color azul-verdoso característico del complejo cobre-péptido al reconstituirse. Es normal.',
         'Vial sellado en frío y protegido de la luz. Reconstituir con diluyente estéril de forma muy suave, sin agitar: el complejo de cobre es sensible al estrés mecánico. Refrigerar.' ] },
@@ -1121,10 +584,12 @@ const monographs = {
     tagline: 'Mezcla BPC-157 + TB-500, 10 mg de cada uno',
     sections: [
       { title: 'Qué es', paragraphs: [
-        'Combinación en un solo vial de BPC-157 y TB-500, los dos péptidos con más literatura preclínica en reparación tisular, en proporción 1:1 de 10 mg cada uno.' ] },
-      { title: 'Por qué se combinan', paragraphs: [
-        'Actúan sobre etapas complementarias y no redundantes. BPC-157 se investiga en angiogénesis, regulación de VEGFR2 y señalización de la vía del óxido nítrico; TB-500 en secuestro de actina monomérica, reorganización del citoesqueleto y migración celular direccional.',
-        'Dicho simple: uno se estudia por la irrigación del tejido nuevo, el otro por la capacidad de las células de desplazarse hasta donde hacen falta. Esa es la razón por la que la pareja aparece constantemente en la literatura de reparación y por la que existe como presentación combinada.' ] },
+        'Presentación comercial que reúne BPC-157 y TB-500 en un solo vial liofilizado, en proporción 1:1 de 10 mg cada uno.',
+        'La identidad de cada componente conviene tenerla clara. BPC-157 es un pentadecapéptido sintético descrito como fragmento de un material gástrico. TB-500 es el fragmento N-acetilado 17-23 de la timosina beta-4, de secuencia Ac-LKKTETQ: un heptapéptido, no la proteína completa de 43 residuos.' ] },
+      { title: 'Qué contiene y qué no está demostrado', paragraphs: [
+        'Cada componente tiene su propia línea de investigación preclínica. BPC-157 aparece en modelos de angiogénesis, regulación de VEGFR2 y señalización de la vía del óxido nítrico; TB-500 en trabajos sobre dinámica de actina, reorganización del citoesqueleto y migración celular.',
+        'No existen estudios publicados de la combinación como tal. La agrupación en un mismo vial es comercial y no demuestra complementariedad ni sinergia, de modo que un diseño experimental honesto necesita brazos separados para cada péptido, un brazo de mezcla y controles de vehículo; sin ellos, cualquier resultado es inatribuible.',
+        'A esto se suma que la evidencia de BPC-157 procede en gran medida de un núcleo reducido de grupos y carece de replicación independiente amplia, y que los datos de unión a actina están establecidos para la timosina beta-4 íntegra, no para el fragmento.' ] },
       { title: 'Manejo en laboratorio', paragraphs: [
         'Vial liofilizado sellado; frío, seco y protegido de la luz.',
         'Reconstituir con diluyente estéril vertido por la pared, sin agitación. Refrigerar la solución.' ] },
@@ -1135,9 +600,11 @@ const monographs = {
     tagline: 'Mezcla BPC-157 + TB-500, 5 mg de cada uno',
     sections: [
       { title: 'Qué es', paragraphs: [
-        'La misma combinación de BPC-157 y TB-500 en presentación de 5 mg de cada componente, para protocolos que requieren menos material total o series de ensayo más cortas.' ] },
-      { title: 'Por qué se combinan', paragraphs: [
-        'La lógica es idéntica a la de la presentación de 10 mg: dos péptidos que intervienen en fases distintas del mismo proceso de reparación —angiogénesis y señalización por un lado, migración celular y citoesqueleto por el otro—.',
+        'La misma presentación comercial de BPC-157 y TB-500 con 5 mg de cada componente, para protocolos que requieren menos material total o series de ensayo más cortas.',
+        'BPC-157 es un pentadecapéptido sintético descrito como fragmento de un material gástrico. TB-500 es el fragmento N-acetilado 17-23 de la timosina beta-4, Ac-LKKTETQ, y no debe equipararse a la proteína completa de 43 residuos.' ] },
+      { title: 'Qué contiene y qué no está demostrado', paragraphs: [
+        'Cada péptido se investiga por separado: BPC-157 en modelos de angiogénesis y señalización de factores de crecimiento, con evidencia exclusivamente preclínica que aún no cuenta con replicación independiente; TB-500 en trabajos sobre dinámica de actina y migración celular, donde el mecanismo está descrito para la proteína íntegra más que para el fragmento.',
+        'No hay literatura publicada sobre la mezcla. La combinación es comercial y no acredita complementariedad ni sinergia; para concluir algo del vial completo hacen falta brazos independientes de cada componente y controles de vehículo.',
         'La elección entre 5 y 10 mg es una decisión de diseño experimental: lo que cambia es el material disponible por vial, no la relación entre los componentes.' ] },
       { title: 'Manejo en laboratorio', paragraphs: [
         'Vial liofilizado sellado; frío, seco y sin luz.',
@@ -1180,6 +647,7 @@ const monographs = {
         'Presentación combinada de Retatrutida (triple agonista GIP/GLP-1/glucagón) y Tirzepatida (agonista dual GIP/GLP-1) en un solo vial.' ] },
       { title: 'Consideración experimental', paragraphs: [
         'Conviene decirlo con franqueza: combinar dos agonistas que comparten dos de sus tres receptores es, desde el punto de vista del diseño experimental, una situación difícil de interpretar. Los efectos sobre GLP-1 y GIP se suman de forma no trivial y la contribución de cada molécula no se puede separar a posteriori.',
+        'Es además una mezcla no estandarizada: no existe una formulación publicada de esta combinación, de modo que la interacción entre los dos componentes, su estabilidad conjunta en solución y la atribución causal de cualquier resultado deben determinarse experimentalmente y no pueden darse por conocidas.',
         'Para estudiar la diferencia entre agonismo dual y triple, lo limpio metodológicamente es ensayar cada compuesto por separado y comparar. Esta presentación tiene sentido cuando el objetivo es la respuesta agregada, no la atribución de causa.' ] },
       { title: 'Manejo en laboratorio', paragraphs: [
         'Vial liofilizado sellado; frío, seco y protegido de la luz.',
@@ -1194,7 +662,7 @@ const monographs = {
         'Combinación de un análogo de amilina (Cagrilintida) con un análogo de GLP-1 (Semaglutida) en el mismo vial, en proporción 1:1.' ] },
       { title: 'Por qué se combinan', paragraphs: [
         'A diferencia de la mezcla de dos incretinas, aquí los dos componentes actúan sobre sistemas de saciedad **distintos**: la amilina señaliza a través de receptores de calcitonina asociados a RAMP en el área postrema, y el GLP-1 sobre su propio receptor en núcleos hipotalámicos y del tronco encefálico.',
-        'Esa independencia es lo que hace la combinación interesante: la pregunta experimental —si dos vías de saciedad separadas producen un efecto aditivo o sinérgico— sí se puede plantear con limpieza, porque los receptores no se solapan.' ] },
+        'Esa independencia permite formular una hipótesis de interacción entre la señalización de amilina y la de GLP-1, que es lo que hace interesante la combinación. La sinergia no debe presuponerse: la pregunta se plantea con limpieza porque los receptores no se solapan, pero responderla exige brazos separados para cada componente y un brazo de mezcla.' ] },
       { title: 'Manejo en laboratorio', paragraphs: [
         'Vial liofilizado sellado. Los análogos de amilina son especialmente propensos a la agregación: manejar con cuidado.',
         'Reconstituir con diluyente estéril de forma muy suave, sin vórtice. Refrigerar y evitar congelado y descongelado.' ] },
@@ -1212,21 +680,6 @@ const monographs = {
       { title: 'Manejo en laboratorio', paragraphs: [
         'Liofilizado en vial sellado, de color azulado. Los complejos de cobre son fotosensibles: frío y oscuridad.',
         'Reconstituir con diluyente estéril de forma muy suave, evitando cambios bruscos de pH. Refrigerar y proteger de la luz.' ] },
-    ],
-  },
-
-  matrixyl: {
-    tagline: 'Palmitoil pentapéptido (péptido cosmético de matriz)',
-    sections: [
-      { title: 'Qué es', paragraphs: [
-        'Matrixyl es un pentapéptido —secuencia Lys-Thr-Thr-Lys-Ser— conjugado con ácido palmítico. La cadena grasa no está ahí para prolongar la vida media en circulación, como en los análogos de GLP-1, sino para aumentar la lipofilia del péptido y facilitar su paso a través de barreras lipídicas.',
-        'La secuencia deriva de un fragmento del propéptido del colágeno tipo I, una región que en el organismo participa en la retroalimentación de la síntesis de matriz.' ] },
-      { title: 'Qué se estudia con él', paragraphs: [
-        'Se investiga en modelos de fibroblasto dérmico en cultivo: expresión de colágeno tipo I y IV, fibronectina y otros componentes de la matriz extracelular.',
-        'Es uno de los péptidos de matriz mejor caracterizados en la literatura de biología cutánea y aparece con frecuencia como comparador frente a GHK-Cu, que aborda el mismo terreno por una química distinta.' ] },
-      { title: 'Manejo en laboratorio', paragraphs: [
-        'Liofilizado en vial sellado. La conjugación con palmitoilo cambia su perfil de solubilidad respecto de un péptido sin acilar: revisar la ficha del lote.',
-        'Conservar en frío, seco y protegido de la luz; refrigerar la solución.' ] },
     ],
   },
 
@@ -1266,54 +719,11 @@ const monographs = {
       { title: 'Qué es', paragraphs: [
         'Kisspeptina-10 es el fragmento de 10 aminoácidos biológicamente activo de la kisspeptina, producto del gen KISS1. Actúa sobre el receptor KISS1R (antes GPR54), y su descubrimiento reorganizó la comprensión del eje reproductivo: resultó ser el regulador que está por encima de la GnRH.' ] },
       { title: 'Qué se estudia con ella', paragraphs: [
-        'Las neuronas de kisspeptina del hipotálamo son las que marcan el patrón pulsátil de liberación de GnRH, e integran señales metabólicas y de esteroides sexuales. Por eso la kisspeptina es el punto donde convergen el estado energético del organismo y la función reproductiva.',
-        'Aparece en modelos de regulación del eje hipotálamo-hipófisis-gonadal, pubertad, retroalimentación por esteroides sexuales y en la conexión entre metabolismo y reproducción.' ] },
+        'Las redes de kisspeptina del hipotálamo participan de forma central en la generación y la modulación de los pulsos de GnRH, junto con la neuroquinina B y la dinorfina, en el circuito conocido como KNDy. Ahí integran además señales metabólicas y de esteroides sexuales, lo que convierte al sistema en un punto de convergencia entre estado energético y función reproductiva.',
+        'Aparece en modelos de regulación del eje hipotálamo-hipófisis-gonadal, pubertad, retroalimentación por esteroides sexuales y en la conexión entre metabolismo y reproducción. Conviene distinguir la kisspeptina-10 de las formas de 54, 14 y 13 residuos: comparten el extremo C-terminal activo sobre KISS1R pero difieren en estabilidad y en comportamiento experimental.' ] },
       { title: 'Manejo en laboratorio', paragraphs: [
         'Liofilizada en vial sellado; frío, seco y sin luz.',
         'Reconstituir con diluyente estéril de forma suave y refrigerar.' ] },
-    ],
-  },
-
-  oxitocina: {
-    tagline: 'Nonapéptido con puente disulfuro',
-    sections: [
-      { title: 'Qué es', paragraphs: [
-        'La oxitocina es un nonapéptido cíclico con un puente disulfuro entre las cisteínas 1 y 6, sintetizado en el hipotálamo y liberado por la neurohipófisis. Tiene un lugar especial en la historia de la química: fue el primer péptido hormonal secuenciado y sintetizado, trabajo que le valió el Nobel a Vincent du Vigneaud en 1955.',
-        'Se diferencia de la vasopresina en solo dos residuos, un parecido que explica su afinidad cruzada por los receptores de esa hormona.' ] },
-      { title: 'Qué se estudia con ella', paragraphs: [
-        'Actúa sobre el receptor de oxitocina, acoplado a Gq y a la vía de la fosfolipasa C. Se investiga en dos terrenos bastante separados: el periférico clásico —contracción de músculo liso— y el central, donde participa en circuitos de vínculo social, reconocimiento y modulación del estrés.',
-        'Aparece también en estudios de especificidad de receptor, precisamente por su reactividad cruzada con los receptores de vasopresina, que obliga a controles cuidadosos.' ] },
-      { title: 'Manejo en laboratorio', paragraphs: [
-        'Liofilizada en vial sellado. El puente disulfuro es sensible a agentes reductores: evitar diluyentes con tioles.',
-        'Reconstituir con diluyente estéril de forma suave; refrigerar y evitar congelado y descongelado repetidos.' ] },
-    ],
-  },
-
-  vip: {
-    tagline: 'Péptido intestinal vasoactivo, 28 aminoácidos',
-    sections: [
-      { title: 'Qué es', paragraphs: [
-        'VIP es un péptido de 28 aminoácidos de la superfamilia secretina-glucagón, la misma a la que pertenecen GHRH y GLP-1. Se aisló originalmente de intestino, de donde viene su nombre, pero se expresa también de forma amplia en el sistema nervioso central y periférico.' ] },
-      { title: 'Qué se estudia con él', paragraphs: [
-        'Actúa sobre los receptores VPAC1 y VPAC2, acoplados a Gs y a la vía del AMP cíclico. Sus líneas de investigación son notablemente diversas: relajación de músculo liso vascular y bronquial, secreción intestinal, inmunomodulación y neurotransmisión.',
-        'Un capítulo aparte es su papel en el núcleo supraquiasmático, donde la señalización VIP es esencial para la sincronización entre las neuronas del reloj circadiano central. Es uno de los mecanismos mejor establecidos de acoplamiento entre osciladores celulares.' ] },
-      { title: 'Manejo en laboratorio', paragraphs: [
-        'Liofilizado en vial sellado. Cadena de 28 residuos, más sensible que un péptido corto: frío, seco y protegido de la luz.',
-        'Reconstituir con diluyente estéril de forma suave, sin agitación; refrigerar.' ] },
-    ],
-  },
-
-  p21: {
-    tagline: 'Mimético peptídico de CNTF con actividad neurogénica',
-    sections: [
-      { title: 'Qué es', paragraphs: [
-        'P21 es un péptido sintético derivado de una región activa del factor neurotrófico ciliar (CNTF). Se diseñó como mimético de bajo peso molecular de esa proteína, con la idea de conservar la señal neurogénica en una molécula mucho más pequeña y manejable. Existe también en versión adamantilada, modificación que aumenta su lipofilia.' ] },
-      { title: 'Qué se estudia con él', paragraphs: [
-        'Se investiga en modelos de neurogénesis en el hipocampo adulto, supervivencia y diferenciación neuronal, y expresión de factores neurotróficos como BDNF.',
-        'Metodológicamente es un buen ejemplo de una estrategia recurrente en el campo: reducir una proteína grande a un péptido corto que conserve el motivo de unión al receptor, con las ventajas prácticas —síntesis, difusión, costo— que eso implica.' ] },
-      { title: 'Manejo en laboratorio', paragraphs: [
-        'Liofilizado en vial sellado; frío, seco y sin luz.',
-        'Reconstituir con diluyente estéril de forma suave; refrigerar.' ] },
     ],
   },
 
@@ -1364,10 +774,12 @@ const monographs = {
     tagline: 'Dominio de transducción proteica',
     sections: [
       { title: 'Qué es', paragraphs: [
-        'PTD-1 es un dominio de transducción proteica, es decir, una secuencia corta capaz de cruzar la membrana plasmática y de arrastrar consigo una carga unida a ella. Los PTD, también llamados péptidos penetrantes de célula, suelen ser secuencias ricas en aminoácidos básicos.' ] },
+        'PTD-1 es una etiqueta ambigua, no el nombre de una secuencia única. En la literatura publicada se ha usado para péptidos distintos: en unos trabajos designa el dominio básico de la proteína TAT, y en otra serie publicada corresponde a una secuencia diferente. Esta ficha debe indicar la secuencia exacta y la proteína de origen del lote antes de describir nada más.',
+        'La categoría a la que pertenece sí está bien definida: los dominios de transducción proteica, también llamados péptidos penetrantes de célula, son secuencias cortas y habitualmente ricas en aminoácidos básicos, capaces de cruzar la membrana plasmática arrastrando una carga unida a ellas.' ] },
       { title: 'Qué se estudia con él', paragraphs: [
         'Su interés es sobre todo como vehículo: la barrera práctica de muchas moléculas terapéuticas o experimentales no es la afinidad por su diana sino la incapacidad de llegar al citoplasma. Los PTD existen para resolver eso.',
-        'Se investiga en mecanismos de internalización —endocitosis frente a translocación directa—, eficiencia de entrega de cargas de distinto tamaño y toxicidad de membrana asociada a péptidos catiónicos. Es el módulo que aparece en construcciones como PTD-DBM.' ] },
+        'Se investiga en mecanismos de internalización, endocitosis frente a translocación directa, eficiencia de entrega de cargas de distinto tamaño y toxicidad de membrana asociada a péptidos catiónicos, que es un control obligado en cualquier ensayo con este tipo de secuencias.',
+        'No debe afirmarse que este material es el módulo penetrante de construcciones como PTD-DBM sin demostrar que las secuencias coinciden: la coincidencia de nombre no acredita coincidencia química.' ] },
       { title: 'Manejo en laboratorio', paragraphs: [
         'Liofilizado en vial sellado. Los péptidos catiónicos se adsorben a superficies de plástico y vidrio; conviene tenerlo presente al preparar diluciones seriadas.',
         'Frío, seco y sin luz. Reconstituir con diluyente estéril de forma suave y refrigerar.' ] },
@@ -1375,20 +787,6 @@ const monographs = {
   },
 
   // ===== Tanda 9: músculo, miostatina, vitaminas y lipotrópicos =====
-
-  follistatin: {
-    tagline: 'Glicoproteína que secuestra miembros de la familia TGF-β',
-    sections: [
-      { title: 'Qué es', paragraphs: [
-        'La folistatina es una glicoproteína de unión que actúa como antagonista natural de varios miembros de la superfamilia TGF-β, entre ellos la activina A y la miostatina (GDF-8). No bloquea un receptor: secuestra al ligando antes de que llegue a él, un mecanismo de regulación distinto y bastante elegante.' ] },
-      { title: 'Qué se estudia con ella', paragraphs: [
-        'Su papel mejor documentado es en músculo esquelético: al retirar miostatina de circulación, levanta el freno que esa proteína ejerce sobre el crecimiento muscular. Es la herramienta de referencia para estudiar la vía de la miostatina desde el lado del ligando.',
-        'Aparece también en modelos de diferenciación de miotubos, señalización de activina y biología del folículo ovárico, donde la activina participa de forma central.' ] },
-      { title: 'Manejo en laboratorio', paragraphs: [
-        'Liofilizada en vial sellado. Es una glicoproteína, no un péptido corto: sensible a la desnaturalización por calor y agitación. Frío, seco y sin luz.',
-        'Reconstituir con mucha suavidad, sin espuma ni vórtice. Refrigerar y evitar ciclos de congelado y descongelado.' ] },
-    ],
-  },
 
   'gdf-8': {
     tagline: 'Miostatina, factor de diferenciación de crecimiento 8',
@@ -1423,9 +821,9 @@ const monographs = {
     tagline: 'Transportador de ácidos grasos de cadena larga',
     sections: [
       { title: 'Qué es', paragraphs: [
-        'La L-carnitina no es un péptido sino un compuesto de amonio cuaternario derivado de los aminoácidos lisina y metionina. Su función es de transporte: forma acilcarnitinas con los ácidos grasos de cadena larga, que es la única forma en que estos pueden atravesar la membrana mitocondrial interna.' ] },
+        'La L-carnitina no es un péptido sino un compuesto de amonio cuaternario derivado de los aminoácidos lisina y metionina. Su función es de transporte: forma acilcarnitinas con los ácidos grasos de cadena larga, mecanismo necesario para que estos atraviesen la membrana mitocondrial interna. Los ácidos grasos de cadena corta y media entran por otras rutas y no dependen de la misma lanzadera.' ] },
       { title: 'Qué se estudia con ella', paragraphs: [
-        'Sin carnitina, la beta-oxidación no arranca: los ácidos grasos largos se quedan fuera de la matriz mitocondrial. Ese cuello de botella la vuelve una herramienta obligada en estudios de metabolismo lipídico.',
+        'La lanzadera de carnitina es necesaria para la entrada mitocondrial de la mayoría de los ácidos grasos de cadena larga, y opera mediante el sistema CPT1, la translocasa CACT y CPT2. Ese cuello de botella la vuelve una herramienta habitual en estudios de metabolismo lipídico, aunque no gobierna todas las rutas de oxidación.',
         'Aparece en modelos de oxidación de ácidos grasos, función mitocondrial, metabolismo del músculo esquelético y en los llamados perfiles de acilcarnitinas, que se usan como lectura indirecta del estado de la beta-oxidación.' ] },
       { title: 'Manejo en laboratorio', paragraphs: [
         'Molécula pequeña, no péptido. Es muy higroscópica: absorbe humedad del aire con facilidad y eso afecta la pesada.',
@@ -1433,25 +831,11 @@ const monographs = {
     ],
   },
 
-  b12: {
-    tagline: 'Cobalamina, cofactor con núcleo de cobalto',
-    sections: [
-      { title: 'Qué es', paragraphs: [
-        'La vitamina B12 o cobalamina es una molécula compleja organizada alrededor de un anillo de corrina con un átomo de cobalto en el centro. Es el único compuesto biológico conocido que incorpora cobalto, y también el más grande y estructuralmente elaborado de las vitaminas.' ] },
-      { title: 'Qué se estudia con ella', paragraphs: [
-        'Es cofactor de dos enzimas: la metionina sintasa, que conecta el ciclo del folato con el de la metionina y por tanto con la disponibilidad de grupos metilo para toda la célula, y la metilmalonil-CoA mutasa, del metabolismo de ácidos grasos de cadena impar.',
-        'Aparece en modelos de metabolismo de un carbono, metilación de ADN, homocisteína y función neurológica. En el catálogo se relaciona con SAM-e y con el metabolismo de metilos que también toca la NNMT.' ] },
-      { title: 'Manejo en laboratorio', paragraphs: [
-        'Es marcadamente fotosensible: la exposición a la luz la degrada, así que la protección lumínica es parte del método, no una precaución opcional. Su color rojo intenso es característico.',
-        'Conservar sellada, en frío y en oscuridad total.' ] },
-    ],
-  },
-
   'vitamina-b12': {
-    tagline: 'Cobalamina inyectable de laboratorio',
+    tagline: 'Cobalamina para análisis de laboratorio',
     sections: [
       { title: 'Qué es', paragraphs: [
-        'Presentación de vitamina B12 (cobalamina) para uso en laboratorio. Químicamente es la misma molécula descrita en la ficha de B12: anillo de corrina con cobalto central, cofactor de la metionina sintasa y de la metilmalonil-CoA mutasa.',
+        'Presentación de vitamina B12 (cobalamina) para análisis de laboratorio. Químicamente es la misma molécula descrita en la ficha de B12: anillo de corrina con cobalto central, cofactor de la metionina sintasa y de la metilmalonil-CoA mutasa.',
         'Las formas comerciales varían —cianocobalamina, hidroxocobalamina, metilcobalamina— y no son intercambiables sin más en un diseño experimental: difieren en el grupo unido al cobalto y en su conversión a las formas activas.' ] },
       { title: 'Qué se estudia con ella', paragraphs: [
         'Metabolismo de un carbono, disponibilidad de grupos metilo, ciclo de la homocisteína y metabolismo mitocondrial de ácidos grasos de cadena impar.',
@@ -1470,7 +854,7 @@ const monographs = {
         'No es un péptido ni una molécula única: es una mezcla, y eso condiciona por completo cómo se puede usar experimentalmente.' ] },
       { title: 'Consideración experimental', paragraphs: [
         'Trabajar con una mezcla significa que un efecto observado no se puede atribuir a un componente concreto sin ensayarlos por separado. Para un diseño que busque causa, lo correcto es partir la fórmula; para uno que evalúe la preparación tal cual, la mezcla es el objeto de estudio.',
-        'Los componentes habituales tocan el metabolismo de un carbono (metionina, colina), la señalización de fosfoinosítidos (inositol) y el transporte mitocondrial de ácidos grasos (carnitina). Verificar la composición exacta en la ficha del lote.' ] },
+        'Los componentes habituales tocan el metabolismo de un carbono (metionina, colina), la señalización de fosfoinosítidos (inositol) y el transporte mitocondrial de ácidos grasos (carnitina). Ahora bien, mientras no se documenten la composición y las concentraciones reales del lote, no existe propiamente una monografía de este producto: lo anterior describe a la familia de fórmulas, no al vial. Exigir al proveedor fórmula cuantitativa y certificado antes de cualquier uso experimental.' ] },
       { title: 'Manejo en laboratorio', paragraphs: [
         'Conservar sellado, en frío y protegido de la luz; varios de sus componentes son fotosensibles.',
         'No usar si la solución presenta turbidez, precipitado o cambio de color.' ] },
@@ -1486,7 +870,7 @@ const monographs = {
         'La metionina es donante de grupos metilo a través de la S-adenosilmetionina y participa en el metabolismo de un carbono. La colina es precursora de fosfatidilcolina, componente estructural de membranas y necesaria para el ensamblaje y la exportación hepática de lipoproteínas VLDL. El inositol participa en la señalización de fosfoinosítidos. La B12 es cofactor de la metionina sintasa, lo que la conecta directamente con el primero de la lista.',
         'Vistos juntos, los cuatro convergen en el metabolismo hepático de lípidos y en la disponibilidad de grupos metilo, que es la lógica de la fórmula.' ] },
       { title: 'Consideración experimental y manejo', paragraphs: [
-        'Al ser una mezcla, los efectos no son atribuibles a un componente sin ensayarlos por separado. Verificar la composición exacta del lote.',
+        'Al ser una mezcla, los efectos no son atribuibles a un componente sin ensayarlos por separado. Y mientras no se documenten las cantidades exactas del lote y la forma concreta de cobalamina que contiene, la descripción anterior corresponde a la familia de fórmulas MIC, no a este vial: sin fórmula cuantitativa y certificado no hay monografía del producto.',
         'Conservar sellado, en frío y protegido de la luz (la B12 es fotosensible). No usar si hay turbidez o precipitado.' ] },
     ],
   },
@@ -1498,7 +882,7 @@ const monographs = {
         'Solución diluida de ácido acético, usada como diluyente alternativo cuando un péptido no se disuelve bien en agua bacteriostática o en agua estéril. No es un principio activo: es una herramienta de reconstitución.' ] },
       { title: 'Cuándo se usa', paragraphs: [
         'La solubilidad de un péptido depende de su carga neta, y esa carga depende del pH del medio. Los péptidos básicos —ricos en lisina, arginina o histidina— se disuelven mejor en medio ligeramente ácido, porque ahí ganan carga positiva y las moléculas se repelen entre sí en lugar de agregarse.',
-        'El procedimiento habitual es disolver primero en el volumen mínimo de solución ácida y después llevar al volumen final con el diluyente acuoso que corresponda. Los péptidos ácidos, en cambio, suelen requerir lo contrario: medio ligeramente básico.' ] },
+        'La elección de pH y de disolvente depende de la secuencia concreta, de su punto isoeléctrico y del ensayo al que se destine, y debe definirse dentro de un protocolo institucional validado. Los péptidos ácidos, por el contrario, suelen comportarse mejor en medio ligeramente básico.' ] },
       { title: 'Manejo en laboratorio', paragraphs: [
         'Conservar sellado, a temperatura ambiente controlada y protegido de la luz.',
         'Verificar la compatibilidad del diluyente con el compuesto y con el ensayo antes de usarlo: un cambio de pH puede afectar tanto la estabilidad del péptido como la lectura del experimento.' ] },
@@ -1526,10 +910,10 @@ const monographs = {
     sections: [
       { title: 'Qué es', paragraphs: [
         'SNAP-8 es un octapéptido acetilado, extensión de la secuencia del hexapéptido Argireline. Su diana es el complejo SNARE, la maquinaria proteica que acopla las vesículas sinápticas a la membrana para que liberen su contenido.',
-        'La secuencia imita el extremo N-terminal de SNAP-25, una de las tres proteínas del complejo, y compite con ella por incorporarse al ensamblaje. Un complejo mal formado libera neurotransmisor con menos eficiencia.' ] },
+        'La secuencia imita el extremo N-terminal de SNAP-25, una de las tres proteínas del complejo. A partir de esa analogía estructural se propuso la hipótesis de que compite por incorporarse al ensamblaje y de que un complejo mal formado libera neurotransmisor con menos eficiencia. Es una hipótesis de diseño, respaldada sobre todo por ensayos del propio fabricante, no un bloqueo demostrado de la neurotransmisión en tejido intacto.' ] },
       { title: 'Qué se estudia con él', paragraphs: [
         'Es el enfoque peptídico al mismo problema que aborda la toxina botulínica, pero por un camino distinto: la toxina corta enzimáticamente SNAP-25, mientras que SNAP-8 compite por el ensamblaje del complejo. Uno es irreversible y catalítico; el otro, competitivo y reversible.',
-        'Aparece en modelos de exocitosis mediada por SNARE, biología de la unión neuromuscular y estudios de péptidos cosméticos de acción sobre la contracción.' ] },
+        'Aparece en modelos de exocitosis mediada por SNARE y en estudios de péptidos cosméticos. Conviene subrayar dos límites que la literatura independiente no ha resuelto: la evidencia específica sobre acetyl octapeptide-3 es escasa, y no está demostrado que el péptido penetre hasta una unión neuromuscular intacta. Todo ensayo de formulación necesita un brazo de vehículo.' ] },
       { title: 'Manejo en laboratorio', paragraphs: [
         'Liofilizado en vial sellado; frío, seco y protegido de la luz.',
         'Reconstituir con diluyente estéril de forma suave y refrigerar.' ] },
@@ -1551,20 +935,6 @@ const monographs = {
     ],
   },
 
-  admax: {
-    tagline: 'Análogo lipofílico de Semax',
-    sections: [
-      { title: 'Qué es', paragraphs: [
-        'ADMAX es un análogo de Semax al que se incorpora un grupo adamantano, una estructura de hidrocarburo en jaula muy rígida y marcadamente lipofílica. La adamantilación es un recurso conocido en química medicinal para aumentar la lipofilia de una molécula sin alterar sus grupos funcionales.' ] },
-      { title: 'Qué se estudia con él', paragraphs: [
-        'La razón de ser de la modificación es el paso a través de barreras lipídicas: comparar ADMAX con Semax permite estudiar cuánto de la actividad observada depende de la secuencia y cuánto de la capacidad de la molécula para llegar a su sitio de acción.',
-        'Comparte terreno de investigación con Semax —factores neurotróficos, plasticidad, neuroprotección— con el añadido del eje de biodisponibilidad, que es precisamente lo que la modificación pone sobre la mesa.' ] },
-      { title: 'Manejo en laboratorio', paragraphs: [
-        'Liofilizado en vial sellado. El grupo adamantano cambia el perfil de solubilidad respecto de Semax: revisar la ficha del lote antes de elegir diluyente.',
-        'Conservar en frío, seco y protegido de la luz; refrigerar la solución.' ] },
-    ],
-  },
-
   'melanotan-i': {
     tagline: 'Afamelanotida, análogo lineal selectivo de MC1R',
     sections: [
@@ -1580,20 +950,6 @@ const monographs = {
     ],
   },
 
-  cerebrolysin: {
-    tagline: 'Hidrolizado peptídico de origen porcino',
-    sections: [
-      { title: 'Qué es', paragraphs: [
-        'Cerebrolysin no es un péptido único sino un hidrolizado: una mezcla de péptidos de bajo peso molecular y aminoácidos libres obtenida por digestión enzimática controlada de tejido cerebral porcino. Como preparado, se parece más a Thymalin que a un péptido sintético de secuencia definida.',
-        'Esa naturaleza de fracción condiciona por completo cómo puede usarse: no hay una secuencia que citar ni una masa molecular que verificar por espectrometría, sino un perfil de composición que varía dentro de las tolerancias del proceso.' ] },
-      { title: 'Consideración experimental', paragraphs: [
-        'Con una mezcla no se puede atribuir un efecto a un componente, y la reproducibilidad entre lotes depende de la consistencia del proceso de hidrólisis, no de una síntesis. Cualquier diseño experimental serio con este material tiene que tomar el lote como variable.',
-        'En la literatura aparece en modelos de neuroprotección, plasticidad sináptica y actividad de tipo neurotrófico. Conviene señalar que su estatus regulatorio varía por país: en varios está clasificado como medicamento, no como reactivo.' ] },
-      { title: 'Manejo en laboratorio', paragraphs: [
-        'Conservar sellado, en frío y protegido de la luz. Al ser una fracción compleja de origen biológico, es especialmente sensible al calor.',
-        'No usar si presenta turbidez, precipitado o cambio de color. Manejar con técnica estéril.' ] },
-    ],
-  },
   'retatrutida': {
     tagline: 'Triple agonista GIP, GLP-1 y glucagón',
     sections: [
@@ -1607,7 +963,11 @@ const monographs = {
       },
       {
         title: 'Qué dice la evidencia',
-        paragraphs: ['Es la molécula con más respaldo humano del grupo todavía experimental. El ensayo fase 2 publicado en el New England Journal of Medicine en 2023, con 338 adultos seguidos 48 semanas, reportó reducciones medias de peso corporal de hasta 24.2 por ciento en las ramas de mayor exposición frente a 2.1 por ciento con placebo, y un fase 2a mostró descensos marcados de grasa hepática. Los programas fase 3 siguen en curso, de modo que no existen aún datos de desenlaces cardiovasculares ni de seguridad a largo plazo. Los eventos gastrointestinales y los aumentos de frecuencia cardiaca observados son limitaciones reales del perfil.'],
+        paragraphs: [
+          'La monografía RUO se limita a mecanismo y modelos experimentales. Se omiten resultados terapéuticos en personas y comparaciones de eficacia porque el producto se ofrece exclusivamente para investigación.',
+          'Lo pertinente para el diseño experimental es que la contribución relativa de cada uno de los tres receptores al efecto agregado de la molécula no está aislada, de modo que atribuir una respuesta concreta a la rama de glucagón, de GIP o de GLP-1 exige controles con agonistas selectivos y antagonistas específicos.',
+          'Producto exclusivo para investigación; esta monografía no emite afirmaciones de aprobación, legalidad, receta, licencia ni autorización sanitaria.',
+        ],
       },
       {
         title: 'Manejo en laboratorio',
@@ -1629,7 +989,11 @@ const monographs = {
       },
       {
         title: 'Qué dice la evidencia',
-        paragraphs: ['La evidencia humana metabólica es de las más sólidas que existen en péptidos: los programas SUSTAIN y STEP suman decenas de miles de participantes con resultados replicados en control glucémico y peso corporal, y el estudio SELECT mostró reducción de eventos cardiovasculares mayores en personas con obesidad sin diabetes. Las líneas neurológicas son mucho más frágiles: los ensayos fase 3 EVOKE y EVOKE plus, con 3808 participantes, no lograron frenar la progresión de la enfermedad de Alzheimer temprana pese a señales en biomarcadores. Los eventos gastrointestinales y la pérdida de masa magra son limitaciones bien documentadas.'],
+        paragraphs: [
+          'La monografía RUO se limita a mecanismo y modelos experimentales. Se omiten resultados terapéuticos en personas y comparaciones de eficacia porque el producto se ofrece exclusivamente para investigación.',
+          'Como herramienta de laboratorio, su interés está en que la acilación con diácido graso y la unión reversible a albúmina permiten estudiar exposición sostenida frente a señal pulsátil sobre el mismo receptor, y en que el receptor de GLP-1 se expresa en tejidos muy distintos, lo que obliga a definir el modelo antes de interpretar cualquier lectura.',
+          'Producto exclusivo para investigación; esta monografía no emite afirmaciones de aprobación, legalidad, receta, licencia ni autorización sanitaria.',
+        ],
       },
       {
         title: 'Manejo en laboratorio',
@@ -1651,7 +1015,11 @@ const monographs = {
       },
       {
         title: 'Qué dice la evidencia',
-        paragraphs: ['La base clínica es amplia y de buena calidad: los programas SURPASS en diabetes tipo 2 y SURMOUNT en obesidad incluyeron miles de participantes con comparadores activos, y reportaron reducciones de hemoglobina glucosilada y de peso corporal superiores a las de semaglutida en comparación directa. También hay datos positivos en apnea obstructiva del sueño y señales favorables en esteatohepatitis. Lo que aún falta es evidencia madura de desenlaces cardiovasculares duros, que sigue en desarrollo. Persisten preguntas abiertas sobre cuánto aporta realmente la rama GIP frente al componente GLP-1, y sobre la tolerancia gastrointestinal.'],
+        paragraphs: [
+          'La monografía RUO se limita a mecanismo y modelos experimentales. Se omiten resultados terapéuticos en personas y comparaciones de eficacia porque el producto se ofrece exclusivamente para investigación.',
+          'La pregunta abierta con valor experimental es cuánto aporta la rama GIP frente al componente GLP-1 dentro del mismo esqueleto molecular. Separar esas contribuciones requiere brazos con agonistas simples y antagonistas de cada receptor; el compuesto dual por sí solo no permite la atribución.',
+          'Producto exclusivo para investigación; esta monografía no emite afirmaciones de aprobación, legalidad, receta, licencia ni autorización sanitaria.',
+        ],
       },
       {
         title: 'Manejo en laboratorio',
@@ -1673,7 +1041,11 @@ const monographs = {
       },
       {
         title: 'Qué dice la evidencia',
-        paragraphs: ['Hay evidencia humana real, aunque menos madura que la de los agonistas de incretinas. Un ensayo fase 2 de búsqueda de dosis mostró reducciones de peso corporal superiores a las de liraglutida en monoterapia a 26 semanas, y el desarrollo se ha volcado hacia la combinación con semaglutida, que en el programa fase 3 REDEFINE alcanzó reducciones cercanas al 20 por ciento. Un trabajo de 2025 con antagonistas selectivos en roedores atribuyó el efecto principalmente a receptores cerebrales AMY1 y AMY3. Falta seguimiento largo, datos de desenlaces duros y caracterización de su perfil en monoterapia.'],
+        paragraphs: [
+          'La monografía RUO se limita a mecanismo y modelos experimentales. Se omiten resultados terapéuticos en personas y comparaciones de eficacia porque el producto se ofrece exclusivamente para investigación.',
+          'En el terreno mecanístico, trabajos con antagonistas selectivos en roedores apuntan a receptores centrales de amilina como responsables principales de la señal, un resultado que sigue siendo preclínico y dependiente del modelo. La caracterización del compuesto por separado, sin combinar con análogos de GLP-1, está poco desarrollada.',
+          'Producto exclusivo para investigación; esta monografía no emite afirmaciones de aprobación, legalidad, receta, licencia ni autorización sanitaria.',
+        ],
       },
       {
         title: 'Manejo en laboratorio',
@@ -1695,7 +1067,11 @@ const monographs = {
       },
       {
         title: 'Qué dice la evidencia',
-        paragraphs: ['La evidencia humana existe y es de fase 3, pero está muy concentrada en población china. El programa GLORY reportó reducciones de peso corporal de alrededor de 14 por ciento a 48 semanas en obesidad, con descensos importantes de grasa hepática y de factores de riesgo cardiometabólico, y dos estudios fase 3 en diabetes tipo 2 se publicaron en 2025. En junio de 2025 obtuvo aprobación regulatoria en China para control de peso. Las limitaciones son claras: poca diversidad étnica en los ensayos, ausencia de datos de desenlaces cardiovasculares a largo plazo y el efecto conocido del agonismo de glucagón sobre frecuencia cardiaca.'],
+        paragraphs: [
+          'La monografía RUO se limita a mecanismo y modelos experimentales. Se omiten resultados terapéuticos en personas y comparaciones de eficacia porque el producto se ofrece exclusivamente para investigación.',
+          'Como herramienta comparativa dentro de la familia, su rasgo distintivo es el componente de agonismo de glucagón sumado al de GLP-1, lo que la hace útil para preguntar qué parte de una respuesta metabólica depende de cada rama. Esa separación no está resuelta y exige controles selectivos.',
+          'Producto exclusivo para investigación; esta monografía no emite afirmaciones de aprobación, legalidad, receta, licencia ni autorización sanitaria.',
+        ],
       },
       {
         title: 'Manejo en laboratorio',
@@ -1717,7 +1093,11 @@ const monographs = {
       },
       {
         title: 'Qué dice la evidencia',
-        paragraphs: ['La evidencia clínica es de fase 2 y bastante buena para ese nivel. En un ensayo de 295 participantes con esteatohepatitis metabólica, hasta 83 por ciento de los tratados alcanzó mejoría histológica frente a 18.2 por ciento con placebo a 48 semanas, y algo más de la mitad mostró mejoría en el estadio de fibrosis. También hay datos fase 2 de reducción de peso y de presión arterial. Lo que falta es lo decisivo: los ensayos fase 3 siguen en marcha, no hay datos de desenlaces a largo plazo y la tolerancia gastrointestinal y el aumento de frecuencia cardiaca limitan la escalada.'],
+        paragraphs: [
+          'La monografía RUO se limita a mecanismo y modelos experimentales. Se omiten resultados terapéuticos en personas y comparaciones de eficacia porque el producto se ofrece exclusivamente para investigación.',
+          'El interés experimental se concentra en el metabolismo hepático de lípidos, donde la rama de glucagón abre una línea que los agonistas simples de GLP-1 no tienen. La contribución de cada receptor al fenotipo observado no está aislada.',
+          'Producto exclusivo para investigación; esta monografía no emite afirmaciones de aprobación, legalidad, receta, licencia ni autorización sanitaria.',
+        ],
       },
       {
         title: 'Manejo en laboratorio',
@@ -1739,7 +1119,11 @@ const monographs = {
       },
       {
         title: 'Qué dice la evidencia',
-        paragraphs: ['Es de los análogos con historia clínica más larga. El programa LEAD estableció su efecto glucémico, el programa SCALE su efecto sobre peso corporal, y el ensayo LEADER, con más de 9000 participantes, mostró reducción de eventos cardiovasculares mayores en diabetes tipo 2 con riesgo alto. Esa base es sólida y replicada. Su magnitud de efecto sobre el peso es claramente menor que la de semaglutida o tirzepatida en comparaciones directas. En neuroprotección la evidencia sigue siendo preliminar: hay ensayos pequeños en Parkinson con resultados mixtos y ningún desenlace confirmado.'],
+        paragraphs: [
+          'La monografía RUO se limita a mecanismo y modelos experimentales. Se omiten resultados terapéuticos en personas y comparaciones de eficacia porque el producto se ofrece exclusivamente para investigación.',
+          'Su valor de laboratorio es sobre todo el de comparador: es un análogo de GLP-1 acilado de vida media corta frente a los análogos semanales, lo que permite estudiar cómo cambia la respuesta del mismo receptor según el perfil de exposición. Las líneas neurológicas siguen siendo preliminares y dependientes del modelo.',
+          'Producto exclusivo para investigación; esta monografía no emite afirmaciones de aprobación, legalidad, receta, licencia ni autorización sanitaria.',
+        ],
       },
       {
         title: 'Manejo en laboratorio',
@@ -1761,7 +1145,11 @@ const monographs = {
       },
       {
         title: 'Qué dice la evidencia',
-        paragraphs: ['La evidencia humana es amplia y de alta calidad. El programa AWARD cubrió eficacia glucémica frente a múltiples comparadores activos, y el ensayo REWIND, con 9901 participantes seguidos una mediana de 5.4 años, mostró reducción del desenlace cardiovascular compuesto con una razón de riesgo de 0.88. REWIND es notable porque el 69 por ciento de los participantes no tenía enfermedad cardiovascular establecida, lo que lo acerca a prevención primaria. Su efecto sobre el peso corporal es modesto comparado con los agonistas más recientes, y no hay datos que respalden líneas neurológicas por su pobre acceso al cerebro.'],
+        paragraphs: [
+          'La monografía RUO se limita a mecanismo y modelos experimentales. Se omiten resultados terapéuticos en personas y comparaciones de eficacia porque el producto se ofrece exclusivamente para investigación.',
+          'Su arquitectura de proteína de fusión con fragmento Fc la separa del resto de la familia: el tamaño molecular condiciona la distribución tisular y el acceso al sistema nervioso central, lo que la vuelve útil como comparador frente a análogos acilados de menor tamaño.',
+          'Producto exclusivo para investigación; esta monografía no emite afirmaciones de aprobación, legalidad, receta, licencia ni autorización sanitaria.',
+        ],
       },
       {
         title: 'Manejo en laboratorio',
@@ -1783,7 +1171,11 @@ const monographs = {
       },
       {
         title: 'Qué dice la evidencia',
-        paragraphs: ['La evidencia mecanicista in vitro y en roedores es abundante y consistente; la traslación humana es débil. El trabajo de Narkar y colaboradores publicado en Cell en 2008, que reportó un aumento de aproximadamente 44 por ciento en la resistencia de ratones sedentarios vía el eje AMPK y PPAR delta, popularizó la etiqueta de mimético del ejercicio, pero esas cantidades en animales son enormes en términos de peso corporal. La biodisponibilidad oral es pobre y la vida media corta. La experiencia humana se limita casi por completo a infusiones intravenosas cortas en cirugía cardiaca, sin datos de rendimiento. AICAR tampoco es selectivo: el ZMP afecta otras enzimas sensibles a AMP.'],
+        paragraphs: [
+          'La evidencia mecanicista in vitro y en roedores es abundante y consistente; fuera de ese terreno la monografía RUO no recoge resultados de rendimiento ni experiencia en personas.',
+          'Hay tres limitaciones que condicionan cualquier diseño experimental. La biodisponibilidad oral es pobre y la vida media corta, de modo que las cantidades empleadas en modelos animales son muy grandes en relación con el peso corporal. El compuesto tampoco es selectivo: el ZMP que se forma intracelularmente afecta a otras enzimas sensibles a AMP, así que atribuir un efecto a la activación de AMPK exige controles adicionales.',
+          'Producto exclusivo para investigación; esta monografía no emite afirmaciones de aprobación, legalidad, receta, licencia ni autorización sanitaria.',
+        ],
       },
       {
         title: 'Manejo en laboratorio',
@@ -1805,7 +1197,11 @@ const monographs = {
       },
       {
         title: 'Qué dice la evidencia',
-        paragraphs: ['La evidencia es enteramente preclínica y hay que decirlo con claridad: no existen ensayos clínicos en humanos. El trabajo fundacional de Baar y colaboradores publicado en Cell en 2017 reportó mejoras en actividad física, densidad del pelaje y función renal en ratones envejecidos, y desde entonces se han sumado estudios en condrocitos humanos expandidos in vitro, células endoteliales y células de Leydig en ratones. La replicación independiente es limitada, la selectividad real por células senescentes se ha cuestionado en algunos sistemas, y no hay datos de seguridad ni farmacocinética humana. La literatura es interesante pero temprana.'],
+        paragraphs: [
+          'La evidencia es enteramente preclínica y hay que decirlo con claridad: no existen ensayos clínicos en humanos. Se investiga en modelos de senescencia celular, y hay trabajos posteriores en condrocitos humanos expandidos in vitro, células endoteliales y modelos murinos.',
+          'La replicación independiente es limitada, la selectividad real por células senescentes se ha cuestionado en varios sistemas y no hay datos de farmacocinética humana. La literatura es interesante pero temprana, y conviene tratar el mecanismo propuesto como hipótesis de trabajo.',
+          'Producto exclusivo para investigación; esta monografía no emite afirmaciones de aprobación, legalidad, receta, licencia ni autorización sanitaria.',
+        ],
       },
       {
         title: 'Manejo en laboratorio',
@@ -1827,7 +1223,11 @@ const monographs = {
       },
       {
         title: 'Qué dice la evidencia',
-        paragraphs: ['Casi toda la evidencia es preclínica: cultivos celulares y modelos animales. Los datos de neuroprotección frente a péptido beta amiloide y de mejora de sensibilidad a la insulina en roedores son consistentes entre laboratorios, y en humanos existen estudios observacionales que correlacionan niveles plasmáticos más altos con longevidad, incluidos trabajos en hijos de centenarios. Pero correlación no es causalidad y no hay ensayos clínicos de intervención con humanina o sus análogos. La vida media del péptido nativo es muy corta, y buena parte de los hallazgos proviene de análogos sintéticos más estables, lo que complica extrapolar al compuesto nativo.'],
+        paragraphs: [
+          'Casi toda la evidencia es preclínica: cultivos celulares y modelos animales. Los datos de neuroprotección frente al péptido beta amiloide y de señalización sobre sensibilidad a la insulina en roedores son razonablemente consistentes entre laboratorios.',
+          'Dos advertencias importan para el diseño experimental. La vida media del péptido nativo es muy corta, y buena parte de los hallazgos publicados proviene de análogos sintéticos más estables, de modo que extrapolar al compuesto nativo del vial no es directo. No existen ensayos de intervención en personas.',
+          'Producto exclusivo para investigación; esta monografía no emite afirmaciones de aprobación, legalidad, receta, licencia ni autorización sanitaria.',
+        ],
       },
       {
         title: 'Manejo en laboratorio',
@@ -1849,7 +1249,11 @@ const monographs = {
       },
       {
         title: 'Qué dice la evidencia',
-        paragraphs: ['El grueso de la literatura es preclínico. El trabajo fundacional de Raun y colaboradores en 1998 documentó liberación de hormona de crecimiento en roedores y cerdos sin elevaciones significativas de ACTH, cortisol ni prolactina, y esa selectividad ha sido replicada de forma consistente en modelos animales. En humanos la evidencia es escasa: el compuesto llegó a estudios clínicos tempranos para íleo posoperatorio y el programa se descontinuó sin resultados de eficacia convincentes. No existen ensayos controlados publicados sobre composición corporal, recuperación o envejecimiento en personas; las afirmaciones en ese terreno son extrapolaciones, no hallazgos.'],
+        paragraphs: [
+          'El grueso de la literatura es preclínico. El trabajo fundacional de Raun y colaboradores en 1998 documentó liberación de hormona de crecimiento en roedores y cerdos sin elevaciones significativas de ACTH, cortisol ni prolactina, y esa selectividad se ha replicado de forma consistente en modelos animales.',
+          'Fuera de la farmacología del receptor, la monografía RUO no recoge usos ni resultados en personas. No existen ensayos controlados publicados sobre composición corporal, recuperación o envejecimiento; las afirmaciones en ese terreno son extrapolaciones, no hallazgos.',
+          'Producto exclusivo para investigación; esta monografía no emite afirmaciones de aprobación, legalidad, receta, licencia ni autorización sanitaria.',
+        ],
       },
       {
         title: 'Manejo en laboratorio',
@@ -1863,7 +1267,7 @@ const monographs = {
     sections: [
       {
         title: 'Qué es',
-        paragraphs: ['La sermorelina es un péptido sintético de 29 aminoácidos amidado en su extremo carboxilo, correspondiente al fragmento 1-29 de la hormona liberadora de hormona de crecimiento humana (GHRH). Ese fragmento concentra prácticamente toda la actividad biológica de la molécula nativa de 44 aminoácidos, por lo que se le conoce también como GRF(1-29). Fue una de las primeras herramientas peptídicas del eje somatotropo en llegar al terreno clínico: se autorizó en Estados Unidos en 1990 como agente diagnóstico y más tarde bajo la marca Geref, retirada del mercado en 2008 por motivos comerciales, no de seguridad.'],
+        paragraphs: ['La sermorelina es un péptido sintético de 29 aminoácidos amidado en su extremo carboxilo, correspondiente al fragmento 1-29 de la hormona liberadora de hormona de crecimiento humana (GHRH). Ese fragmento concentra prácticamente toda la actividad biológica de la molécula nativa de 44 aminoácidos, por lo que se le conoce también como GRF(1-29). Fue una de las primeras herramientas peptídicas del eje somatotropo que se caracterizó a fondo, y sigue siendo la referencia para estudiar la respuesta del receptor de GHRH a una señal breve.'],
       },
       {
         title: 'Qué se estudia con él',
@@ -1871,7 +1275,11 @@ const monographs = {
       },
       {
         title: 'Qué dice la evidencia',
-        paragraphs: ['Es uno de los péptidos de esta categoría con mejor respaldo humano, aunque acotado. Existe literatura clínica sólida sobre su valor como prueba de estimulación de la reserva hipofisaria de hormona de crecimiento y datos de eficacia en deficiencia idiopática pediátrica que sustentaron su registro sanitario. Fuera de esos usos la evidencia se debilita rápido: no hay ensayos controlados de calidad que documenten efectos sobre composición corporal, sueño o rendimiento en adultos sanos. Además, su vida media plasmática es de pocos minutos y la respuesta depende de la integridad de la hipófisis, lo que limita la interpretación de estudios sin controles adecuados.'],
+        paragraphs: [
+          'La monografía RUO se limita a mecanismo y modelos experimentales. Se omiten indicaciones y resultados terapéuticos en personas porque el producto se ofrece exclusivamente para investigación.',
+          'Lo relevante para el laboratorio son dos limitaciones estructurales: su vida media plasmática es de pocos minutos, y la respuesta depende de la integridad de la hipófisis del modelo empleado. Cualquier lectura obtenida sin controlar esas dos variables es difícil de interpretar.',
+          'Producto exclusivo para investigación; esta monografía no emite afirmaciones de aprobación, legalidad, receta, licencia ni autorización sanitaria.',
+        ],
       },
       {
         title: 'Manejo en laboratorio',
@@ -1881,11 +1289,11 @@ const monographs = {
   },
 
   'tesamorelina': {
-    tagline: 'Análogo estabilizado de GHRH con registro sanitario',
+    tagline: 'Análogo estabilizado del GHRH completo de 44 aminoácidos',
     sections: [
       {
         title: 'Qué es',
-        paragraphs: ['La tesamorelina es un análogo sintético de la hormona liberadora de hormona de crecimiento humana completa, de 44 aminoácidos, modificado en el extremo amino con un grupo trans-3-hexenoilo. Esa modificación bloquea el sitio preferente de corte de la dipeptidil peptidasa 4 y le confiere una estabilidad plasmática muy superior a la de la GHRH nativa y a la del fragmento 1-29. Es el único análogo de GHRH con aprobación regulatoria vigente en Estados Unidos, autorizado en 2010 bajo la marca Egrifta para la reducción de grasa abdominal excesiva en adultos con lipodistrofia asociada a VIH.'],
+        paragraphs: ['La tesamorelina es un análogo sintético de la hormona liberadora de hormona de crecimiento humana completa, de 44 aminoácidos, modificado en el extremo amino con un grupo trans-3-hexenoilo. Esa modificación bloquea el sitio preferente de corte de la dipeptidil peptidasa 4 y le confiere una estabilidad plasmática muy superior a la de la GHRH nativa y a la del fragmento 1-29. Esa diferencia frente al fragmento 1-29 es justamente lo que la vuelve útil como comparador: misma vía receptora, distinta resistencia a la degradación.'],
       },
       {
         title: 'Qué se estudia con él',
@@ -1893,7 +1301,11 @@ const monographs = {
       },
       {
         title: 'Qué dice la evidencia',
-        paragraphs: ['Es el compuesto de esta familia con la base humana más firme. Dos ensayos aleatorizados de fase 3 con más de ochocientos participantes documentaron reducciones del tejido adiposo visceral cercanas al quince por ciento a las veintiséis semanas, medidas por tomografía, con reducciones adicionales de grasa hepática en estudios posteriores. Los límites son reales y conviene nombrarlos: el efecto revierte al suspender la administración, eleva IGF-1 y puede deteriorar la tolerancia a la glucosa, y la evidencia se generó en una población clínica específica, por lo que no es extrapolable a personas sanas ni a otros contextos metabólicos.'],
+        paragraphs: [
+          'La monografía RUO se limita a mecanismo y modelos experimentales. Se omiten resultados terapéuticos en personas y magnitudes de efecto porque el producto se ofrece exclusivamente para investigación.',
+          'En términos de farmacología experimental, es un análogo estabilizado del GHRH completo de 44 aminoácidos, y esa diferencia frente al fragmento 1-29 es justamente lo que permite comparar molécula íntegra y fragmento sobre el mismo receptor. La señal sobre el eje somatotrópico se refleja en IGF-1, marcador que conviene medir como control.',
+          'Producto exclusivo para investigación; esta monografía no emite afirmaciones de aprobación, legalidad, receta, licencia ni autorización sanitaria.',
+        ],
       },
       {
         title: 'Manejo en laboratorio',
@@ -1915,7 +1327,11 @@ const monographs = {
       },
       {
         title: 'Qué dice la evidencia',
-        paragraphs: ['La evidencia humana es amplia y de buena calidad en las indicaciones para las que existe registro sanitario: deficiencia de hormona de crecimiento en niños y adultos, síndrome de Turner, síndrome de Prader-Willi, insuficiencia renal crónica pediátrica y bajo peso para edad gestacional sin recuperación. Fuera de ese terreno el panorama cambia. En adultos sanos los estudios controlados muestran cambios modestos de composición corporal sin mejoras funcionales consistentes, acompañados de edema, artralgias, síndrome del túnel del carpo e intolerancia a la glucosa. La relación entre exposición prolongada y riesgo neoplásico sigue siendo un punto abierto en la literatura.'],
+        paragraphs: [
+          'La monografía RUO se limita a identidad molecular, mecanismo y control analítico. Se omiten indicaciones, resultados terapéuticos y comparaciones de eficacia porque el producto se ofrece exclusivamente para investigación.',
+          'Lo que sí corresponde a esta ficha es la caracterización del material: una cadena de 191 aminoácidos con dos puentes disulfuro es sensible a la agregación, a la desamidación y a la oxidación, y ninguna de esas alteraciones se ve a simple vista. Sin certificado de análisis del lote, con contenido proteico, perfil de agregados y endotoxina, la caracterización queda pendiente.',
+          'Producto exclusivo para investigación; esta monografía no emite afirmaciones de aprobación, legalidad, receta, licencia ni autorización sanitaria.',
+        ],
       },
       {
         title: 'Manejo en laboratorio',
@@ -1937,7 +1353,11 @@ const monographs = {
       },
       {
         title: 'Qué dice la evidencia',
-        paragraphs: ['Que la somatropina de 191 aminoácidos es farmacológicamente equivalente a la hormona endógena está bien establecido y es la base de décadas de uso clínico registrado. Lo que la literatura también documenta con claridad es que la identidad declarada no garantiza la calidad real del material: los análisis independientes de productos no registrados que circulan en el mercado han encontrado con frecuencia contenido proteico menor al declarado, agregación elevada y presencia de endotoxina. Para un laboratorio esto significa que la etiqueta 191AA es una afirmación de secuencia, no un certificado de pureza, y que sin certificado de análisis del lote la caracterización queda pendiente.'],
+        paragraphs: [
+          'Que la somatropina de 191 aminoácidos reproduce la secuencia de la hormona endógena está bien establecido, y la identidad molecular es lo que esta ficha puede afirmar.',
+          'Lo que la literatura analítica también documenta con claridad es que la identidad declarada no garantiza la calidad real del material: los análisis independientes de productos no registrados que circulan en el mercado han encontrado con frecuencia contenido proteico menor al declarado, agregación elevada y presencia de endotoxina. La etiqueta 191AA es una afirmación de secuencia, no un certificado de pureza.',
+          'Producto exclusivo para investigación; esta monografía no emite afirmaciones de aprobación, legalidad, receta, licencia ni autorización sanitaria.',
+        ],
       },
       {
         title: 'Manejo en laboratorio',
@@ -1959,7 +1379,11 @@ const monographs = {
       },
       {
         title: 'Qué dice la evidencia',
-        paragraphs: ['La evidencia es enteramente preclínica y de laboratorio. Los datos de cultivo celular sobre activación de células satélite son reproducibles y el papel de la isoforma dentro de la fisiología del músculo está razonablemente bien descrito. Lo que no existe es un solo ensayo clínico publicado del péptido E administrado como compuesto en humanos. A esto se suma un problema farmacocinético serio: el péptido no pegilado tiene una vida media en suero de pocos minutos, lo que vuelve difícil trasladar los hallazgos in vitro a un modelo entero, y explica por qué la pegilación se propuso como alternativa. Los efectos sobre hipertrofia en personas no están demostrados.'],
+        paragraphs: [
+          'La evidencia es enteramente preclínica y de laboratorio. Los datos de cultivo celular sobre activación de células satélite son reproducibles y el papel de la isoforma dentro de la fisiología del músculo está razonablemente descrito.',
+          'A esto se suma un problema farmacocinético serio: el péptido no pegilado tiene una vida media en suero de pocos minutos, lo que vuelve difícil trasladar hallazgos in vitro a un organismo entero y explica por qué se propuso la pegilación como alternativa. La monografía se limita a isoforma, secuencia y modelos celulares.',
+          'Producto exclusivo para investigación; esta monografía no emite afirmaciones de aprobación, legalidad, receta, licencia ni autorización sanitaria.',
+        ],
       },
       {
         title: 'Manejo en laboratorio',
@@ -1981,7 +1405,11 @@ const monographs = {
       },
       {
         title: 'Qué dice la evidencia',
-        paragraphs: ['Los datos preclínicos son contundentes: los ratones que sobreexpresan folistatina alcanzan aumentos de masa muscular muy superiores a los del ratón sin miostatina, precisamente porque además neutralizan activina. En humanos la evidencia proviene casi por completo de terapia génica, no de proteína administrada: los ensayos de fase 1/2a con AAV1-FS344 inyectado en músculo de pacientes con distrofia de Becker y miositis por cuerpos de inclusión mostraron aumentos de volumen muscular y mejoras modestas en la caminata de seis minutos, en cohortes muy pequeñas y sin grupo control robusto. No hay ensayos de folistatina recombinante inyectada. Su vida media plasmática es de minutos.'],
+        paragraphs: [
+          'Los datos preclínicos son contundentes en el terreno genético: los modelos murinos que sobreexpresan folistatina alcanzan aumentos de masa muscular superiores a los del ratón sin miostatina, precisamente porque además neutralizan activina.',
+          'Hay una distinción que no puede pasarse por alto al leer la literatura: los trabajos en humanos proceden de terapia génica con vector viral, no de proteína recombinante administrada, de modo que esa evidencia no corresponde al material de este vial. No hay estudios publicados de folistatina recombinante inyectada, y su vida media plasmática es de minutos.',
+          'Producto exclusivo para investigación; esta monografía no emite afirmaciones de aprobación, legalidad, receta, licencia ni autorización sanitaria.',
+        ],
       },
       {
         title: 'Manejo en laboratorio',
@@ -1995,7 +1423,7 @@ const monographs = {
     sections: [
       {
         title: 'Qué es',
-        paragraphs: ['Semax es un heptapéptido sintético de secuencia Met-Glu-His-Phe-Pro-Gly-Pro, desarrollado en el Instituto de Genética Molecular de la Academia Rusa de Ciencias. Su fragmento activo corresponde a los residuos 4 a 7 de la hormona adrenocorticotropa, al que se añadió la cola tripeptídica Pro-Gly-Pro para conferirle resistencia a las peptidasas y prolongar su permanencia biológica. Esa modificación elimina la actividad corticotropa del fragmento original: Semax no estimula la corteza suprarrenal. Está registrado en Rusia como medicamento para indicaciones neurológicas y no cuenta con aprobación de agencias occidentales.'],
+        paragraphs: ['Semax es un heptapéptido sintético de secuencia Met-Glu-His-Phe-Pro-Gly-Pro, desarrollado en el Instituto de Genética Molecular de la Academia Rusa de Ciencias. Su fragmento activo corresponde a los residuos 4 a 7 de la hormona adrenocorticotropa, al que se añadió la cola tripeptídica Pro-Gly-Pro para conferirle resistencia a las peptidasas y prolongar su permanencia biológica. Esa modificación elimina la actividad corticotropa del fragmento original: Semax no estimula la corteza suprarrenal. Su desarrollo y su literatura proceden casi por completo de ese mismo entorno institucional, lo que condiciona cómo debe leerse la evidencia disponible.'],
       },
       {
         title: 'Qué se estudia con él',
@@ -2003,7 +1431,11 @@ const monographs = {
       },
       {
         title: 'Qué dice la evidencia',
-        paragraphs: ['Existe un cuerpo clínico real, pero geográficamente concentrado y metodológicamente limitado. Los estudios rusos en ictus isquémico agudo, incluido el trabajo de Gusev y colaboradores con más de cien pacientes, reportan elevación sostenida de BDNF plasmático y mejores puntajes de déficit neurológico frente a tratamiento estándar. El problema es que casi toda esa literatura se publicó en revistas rusas, con tamaños de muestra y estándares de cegamiento que no cumplirían los criterios de una fase 3 occidental, y sin replicación independiente fuera de la región. Para uso cognitivo en personas sanas no hay ensayos controlados de calidad. La evidencia debe considerarse preliminar.'],
+        paragraphs: [
+          'La línea mejor documentada es la de expresión génica: en modelos preclínicos se describen cambios en la transcripción de factores neurotróficos y de sus receptores, incluida la vía de BDNF, tras la exposición al péptido.',
+          'El resto de la literatura hay que leerlo con reservas metodológicas: casi toda se publicó en revistas rusas, con tamaños de muestra y estándares de cegamiento que no cumplirían criterios internacionales, y sin replicación independiente fuera de la región. La monografía RUO no recoge desenlaces clínicos.',
+          'Producto exclusivo para investigación; esta monografía no emite afirmaciones de aprobación, legalidad, receta, licencia ni autorización sanitaria.',
+        ],
       },
       {
         title: 'Manejo en laboratorio',
@@ -2017,7 +1449,7 @@ const monographs = {
     sections: [
       {
         title: 'Qué es',
-        paragraphs: ['Selank es un heptapéptido sintético de secuencia Thr-Lys-Pro-Arg-Pro-Gly-Pro, diseñado en el Instituto de Genética Molecular de la Academia Rusa de Ciencias. Su núcleo corresponde a la tuftsina, un tetrapéptido endógeno inmunomodulador que se libera por proteólisis de la región Fc de la inmunoglobulina G, al que se añadió la cola Pro-Gly-Pro para resistir la degradación por peptidasas y prolongar su acción. Está registrado como medicamento en Rusia bajo el mismo nombre y no cuenta con autorización regulatoria en Norteamérica ni en la Unión Europea.'],
+        paragraphs: ['Selank es un heptapéptido sintético de secuencia Thr-Lys-Pro-Arg-Pro-Gly-Pro, diseñado en el Instituto de Genética Molecular de la Academia Rusa de Ciencias. Su núcleo corresponde a la tuftsina, un tetrapéptido endógeno inmunomodulador que se libera por proteólisis de la región Fc de la inmunoglobulina G, al que se añadió la cola Pro-Gly-Pro para resistir la degradación por peptidasas y prolongar su acción. Su desarrollo y su literatura proceden casi por completo de ese mismo entorno institucional, lo que condiciona cómo debe leerse la evidencia disponible.'],
       },
       {
         title: 'Qué se estudia con él',
@@ -2025,7 +1457,11 @@ const monographs = {
       },
       {
         title: 'Qué dice la evidencia',
-        paragraphs: ['Selank tiene más datos humanos que la mayoría de los péptidos nootrópicos: se han publicado ensayos con varios cientos de pacientes con trastorno de ansiedad generalizada y neurastenia, incluidos estudios comparativos frente a la benzodiacepina medazepam en los que la reducción de ansiedad fue similar pero sin sedación ni síndrome de abstinencia. Las limitaciones son las mismas que las de Semax y hay que decirlas con claridad: los estudios se realizaron casi exclusivamente en Rusia, con muestras pequeñas, criterios diagnósticos locales y publicación en revistas de difícil acceso, sin replicación independiente occidental. La evidencia es sugerente, no concluyente.'],
+        paragraphs: [
+          'La literatura disponible procede casi exclusivamente de un mismo entorno institucional ruso, con muestras pequeñas, criterios locales y publicación en revistas de difícil acceso, sin replicación independiente. La monografía RUO no recoge comparaciones de eficacia ni desenlaces clínicos.',
+          'Lo que sí tiene interés experimental es su mecanismo propuesto: se investiga su influencia sobre la expresión de genes relacionados con la señalización gabaérgica y sobre el metabolismo de encefalinas, líneas que se estudian en modelos animales y celulares.',
+          'Producto exclusivo para investigación; esta monografía no emite afirmaciones de aprobación, legalidad, receta, licencia ni autorización sanitaria.',
+        ],
       },
       {
         title: 'Manejo en laboratorio',
@@ -2047,7 +1483,11 @@ const monographs = {
       },
       {
         title: 'Qué dice la evidencia',
-        paragraphs: ['La evidencia es antigua, fragmentada y francamente inconsistente. Los estudios en animales muestran resultados que dependen de la especie: predominio de sueño delta en conejo, rata y ratón, pero efecto más marcado sobre sueño REM en gato. En humanos los pocos estudios doble ciego en insomnio crónico reportaron mejor eficiencia del sueño y menor latencia de conciliación, aunque otros trabajos no encontraron diferencias frente a placebo. Una revisión clásica en Journal of Neurochemistry describe al compuesto como un enigma sin resolver, precisamente por la ausencia de gen, receptor y ruta identificados. No hay ensayos modernos con metodología actual.'],
+        paragraphs: [
+          'La evidencia es antigua, fragmentada y francamente inconsistente. Los estudios en animales muestran resultados que dependen de la especie: predominio de sueño delta en conejo, rata y ratón, pero efecto más marcado sobre sueño REM en gato.',
+          'Una revisión clásica en Journal of Neurochemistry describe al compuesto como un enigma sin resolver, precisamente por la ausencia de gen, receptor y ruta identificados. No hay trabajos modernos con metodología actual, y la monografía RUO no recoge desenlaces en personas.',
+          'Producto exclusivo para investigación; esta monografía no emite afirmaciones de aprobación, legalidad, receta, licencia ni autorización sanitaria.',
+        ],
       },
       {
         title: 'Manejo en laboratorio',
@@ -2069,7 +1509,11 @@ const monographs = {
       },
       {
         title: 'Qué dice la evidencia',
-        paragraphs: ['La evidencia humana es abundante y desigual según la pregunta. Es sólida para el desplazamiento de fase circadiana: síndrome de fase de sueño retrasada, trastorno del ritmo no de 24 horas en personas ciegas y desfase por viajes transmeridianos, donde el efecto depende críticamente del momento de administración respecto al reloj interno. Para insomnio primario los metaanálisis muestran un efecto real pero pequeño, del orden de pocos minutos de reducción en la latencia de conciliación, muy inferior al de los hipnóticos convencionales. Las líneas antioxidante y oncológica siguen siendo mayoritariamente preclínicas, con estudios clínicos pequeños y heterogéneos.'],
+        paragraphs: [
+          'La monografía RUO se limita a bioquímica y modelos experimentales. Se omiten resultados terapéuticos en personas porque el producto se ofrece exclusivamente para investigación.',
+          'En el laboratorio, la variable crítica es temporal: la respuesta a la melatonina depende del momento de exposición respecto al reloj interno del modelo, y una curva de respuesta de fase mal controlada produce resultados contradictorios. Las líneas antioxidante y de señalización por receptores MT1 y MT2 siguen siendo mayoritariamente preclínicas.',
+          'Producto exclusivo para investigación; esta monografía no emite afirmaciones de aprobación, legalidad, receta, licencia ni autorización sanitaria.',
+        ],
       },
       {
         title: 'Manejo en laboratorio',
@@ -2083,7 +1527,7 @@ const monographs = {
     sections: [
       {
         title: 'Qué es',
-        paragraphs: ['Cerebrolysin no es una molécula única sino una preparación biológica compleja obtenida por degradación enzimática controlada de tejido cerebral porcino purificado y libre de lípidos. El producto final es una mezcla estandarizada de péptidos de bajo peso molecular, por debajo de diez kilodaltons, que representan alrededor del quince por ciento del contenido, junto con aminoácidos libres que constituyen el resto. Se comercializa en más de cincuenta países, sobre todo en Rusia, Europa del Este, China y varios países asiáticos, y no cuenta con aprobación de la agencia regulatoria estadounidense para ninguna indicación.'],
+        paragraphs: ['Cerebrolysin no es una molécula única sino una preparación biológica compleja obtenida por degradación enzimática controlada de tejido cerebral porcino purificado y libre de lípidos. El producto final es una mezcla estandarizada de péptidos de bajo peso molecular, por debajo de diez kilodaltons, que representan alrededor del quince por ciento del contenido, junto con aminoácidos libres que constituyen el resto. Al tratarse de una fracción de origen biológico y no de una molécula definida, cada lote depende del proceso de fabricación y no existe una secuencia única que citar.'],
       },
       {
         title: 'Qué se estudia con él',
@@ -2091,7 +1535,11 @@ const monographs = {
       },
       {
         title: 'Qué dice la evidencia',
-        paragraphs: ['Aquí hay una discrepancia notable que conviene nombrar sin adornos. Existen numerosos ensayos aleatorizados positivos, en su mayoría financiados por el fabricante, pero las revisiones sistemáticas Cochrane a lo largo de tres décadas han concluido de forma reiterada que la evidencia es insuficiente. En ictus isquémico agudo, la actualización que reunió siete ensayos y cerca de mil ochocientos participantes no encontró beneficio sobre mortalidad ni dependencia, y sí un aumento estadísticamente significativo de eventos adversos graves no fatales. En demencia vascular los revisores describieron ganancias cognitivas posibles pero con estudios escasos, heterogéneos y de corta duración, sin recomendar su uso rutinario.'],
+        paragraphs: [
+          'Al ser una mezcla y no una molécula definida, la evidencia sobre este material arrastra un problema de base: no se puede atribuir un efecto a un componente, y la reproducibilidad entre lotes depende del proceso de fabricación.',
+          'La literatura publicada es además heterogénea y buena parte procede del propio fabricante, mientras que las revisiones sistemáticas independientes han sido reiteradamente críticas con su calidad metodológica. La monografía RUO no recoge desenlaces clínicos ni conclusiones terapéuticas, ni a favor ni en contra.',
+          'Producto exclusivo para investigación; esta monografía no emite afirmaciones de aprobación, legalidad, receta, licencia ni autorización sanitaria.',
+        ],
       },
       {
         title: 'Manejo en laboratorio',
@@ -2113,7 +1561,11 @@ const monographs = {
       },
       {
         title: 'Qué dice la evidencia',
-        paragraphs: ['La evidencia es exclusivamente preclínica y debe presentarse como tal. Los estudios en el ratón triple transgénico 3xTg-AD, con administración prolongada en la dieta desde los tres meses de edad, reportan menor fosforilación de tau, preservación de espinas dendríticas, aumento de marcadores de neurogénesis hipocampal y mejor desempeño en pruebas cognitivas, con hallazgos concordantes en resonancia magnética de difusión. Sin embargo, no existe ningún ensayo publicado en humanos, ni siquiera de fase 1, y buena parte de los resultados proviene de un solo grupo de investigación con replicación externa muy limitada. Cualquier extrapolación clínica carece hoy de sustento.'],
+        paragraphs: [
+          'La evidencia es exclusivamente preclínica y debe presentarse como tal. En el modelo murino triple transgénico 3xTg-AD se han medido variables como fosforilación de tau, densidad de espinas dendríticas y marcadores de neurogénesis hipocampal, junto con lecturas de resonancia magnética de difusión.',
+          'Esas son variables medidas en un modelo animal, no beneficios trasladables. No existe ningún trabajo publicado en humanos, ni siquiera de fase 1, y buena parte de los resultados proviene de un solo grupo de investigación con replicación externa muy limitada.',
+          'Producto exclusivo para investigación; esta monografía no emite afirmaciones de aprobación, legalidad, receta, licencia ni autorización sanitaria.',
+        ],
       },
       {
         title: 'Manejo en laboratorio',
@@ -2135,7 +1587,11 @@ const monographs = {
       },
       {
         title: 'Qué dice la evidencia',
-        paragraphs: ['Conviene separar dos literaturas de calidad muy distinta. La evidencia obstétrica es sólida y de larga data: inducción y conducción del trabajo de parto y prevención de la hemorragia posparto están respaldadas por ensayos amplios y guías internacionales. La evidencia sobre conducta social es mucho más frágil. Los metaanálisis de oxitocina intranasal en trastornos del neurodesarrollo muestran efectos nulos o muy pequeños sobre reconocimiento de emociones y deterioro social, varios hallazgos iniciales sobre confianza y lectura de la mente no se han replicado, y el campo arrastra problemas reconocidos de muestras insuficientes, sesgo de publicación e incertidumbre sobre cuánto péptido llega realmente al cerebro por vía nasal.'],
+        paragraphs: [
+          'La monografía RUO se limita a mecanismo y modelos experimentales. Se omiten indicaciones y usos en personas porque el producto se ofrece exclusivamente para investigación.',
+          'La literatura de conducta social, que es la línea experimental más activa, debe leerse con cautela: los metaanálisis de administración intranasal muestran efectos nulos o muy pequeños, varios hallazgos iniciales no se han replicado, y el campo arrastra problemas reconocidos de muestras insuficientes, sesgo de publicación e incertidumbre sobre cuánto péptido alcanza realmente el sistema nervioso central por esa vía.',
+          'Producto exclusivo para investigación; esta monografía no emite afirmaciones de aprobación, legalidad, receta, licencia ni autorización sanitaria.',
+        ],
       },
       {
         title: 'Manejo en laboratorio',
@@ -2157,7 +1613,11 @@ const monographs = {
       },
       {
         title: 'Qué dice la evidencia',
-        paragraphs: ['La base humana es amplia y de buena calidad en reproducción: su uso como desencadenante de la maduración ovocitaria y su papel en el mantenimiento de la esteroidogénesis testicular en varones con hipogonadismo secundario están bien documentados en ensayos y consensos clínicos. La evidencia es igualmente clara en el sentido contrario para otras aplicaciones: los ensayos controlados sobre pérdida de peso, realizados desde los años setenta, no encontraron diferencia alguna frente a placebo cuando se controló la restricción calórica, y las agencias regulatorias han emitido advertencias explícitas al respecto. Es un ejemplo útil de compuesto con indicaciones sólidas y usos populares sin sustento.'],
+        paragraphs: [
+          'La monografía RUO se limita a identidad molecular, mecanismo de receptor y modelos experimentales. Se omiten indicaciones y usos en personas porque el producto se ofrece exclusivamente para investigación.',
+          'Lo que sí conviene registrar es un contraste metodológico útil: los ensayos controlados sobre pérdida de peso realizados desde los años setenta no encontraron diferencia frente a placebo cuando se controló la restricción calórica. Es un ejemplo clásico de efecto popular sin sustento experimental, y sirve de advertencia para el diseño de controles.',
+          'Producto exclusivo para investigación; esta monografía no emite afirmaciones de aprobación, legalidad, receta, licencia ni autorización sanitaria.',
+        ],
       },
       {
         title: 'Manejo en laboratorio',
@@ -2179,7 +1639,11 @@ const monographs = {
       },
       {
         title: 'Qué dice la evidencia',
-        paragraphs: ['Es una de las preparaciones con historia clínica más larga, en uso desde los años sesenta, y cuenta con un cuerpo importante de ensayos aleatorizados y revisiones sistemáticas en reproducción asistida. Los metaanálisis que comparan menotropinas altamente purificadas con FSH recombinante muestran diferencias modestas y no siempre concordantes: algunos reportan tasas de nacido vivo ligeramente superiores con HMG, otros no encuentran diferencia significativa, y los protocolos, poblaciones y criterios de desenlace varían considerablemente entre estudios. La heterogeneidad de lotes propia de un producto de origen urinario es una limitación estructural reconocida frente a las preparaciones recombinantes.'],
+        paragraphs: [
+          'La monografía RUO se limita a composición, mecanismo y control analítico. Se omiten desenlaces y comparaciones de eficacia en personas porque el producto se ofrece exclusivamente para investigación.',
+          'La limitación estructural que sí pertenece a esta ficha es el origen: al tratarse de una preparación derivada de fuente urinaria, la heterogeneidad entre lotes es inherente y la relación entre actividad FSH y LH puede variar. Frente a preparaciones recombinantes, eso obliga a caracterizar cada lote antes de comparar resultados.',
+          'Producto exclusivo para investigación; esta monografía no emite afirmaciones de aprobación, legalidad, receta, licencia ni autorización sanitaria.',
+        ],
       },
       {
         title: 'Manejo en laboratorio',
@@ -2201,7 +1665,11 @@ const monographs = {
       },
       {
         title: 'Qué dice la evidencia',
-        paragraphs: ['La evidencia hematológica es muy sólida: la eritropoyetina recombinante transformó el tratamiento de la anemia renal y redujo drásticamente la dependencia transfusional, con décadas de ensayos que lo respaldan. Pero la literatura también documenta con claridad dónde está el límite. Los ensayos que buscaron normalizar la hemoglobina, entre ellos CHOIR, CREATE y TREAT, mostraron aumento de eventos cardiovasculares, trombosis y mortalidad frente a objetivos más conservadores, lo que obligó a modificar guías y etiquetas. En oncología se documentó menor supervivencia en algunos escenarios. La rama neuroprotectora sigue siendo mayoritariamente preclínica y con resultados clínicos inconsistentes.'],
+        paragraphs: [
+          'La monografía RUO se limita a identidad molecular, señalización del receptor y modelos experimentales. Se omiten indicaciones y resultados terapéuticos porque el producto se ofrece exclusivamente para investigación.',
+          'Para el laboratorio, el punto crítico es la glicosilación: la eritropoyetina es una glicoproteína cuyo patrón de glicanos determina su estabilidad y su comportamiento, de modo que material producido en sistemas distintos no es equivalente aunque comparta secuencia. La rama de señalización no eritropoyética, asociada a receptores tisulares, sigue siendo preclínica y con resultados inconsistentes.',
+          'Producto exclusivo para investigación; esta monografía no emite afirmaciones de aprobación, legalidad, receta, licencia ni autorización sanitaria.',
+        ],
       },
       {
         title: 'Manejo en laboratorio',
@@ -2223,7 +1691,11 @@ const monographs = {
       },
       {
         title: 'Qué dice la evidencia',
-        paragraphs: ['La evidencia humana es escasa y en su mayor parte decepcionante, y conviene decirlo sin matices. En sarcoidosis solo existe un estudio abierto de fase 2 con veinte pacientes que reportó buena tolerancia, menor producción de TNF alfa y aumento de linfocitos T reguladores, sin grupo control. En hipertensión arterial pulmonar, los estudios con VIP inhalado arrojaron resultados hemodinámicos negativos que llevaron a replantear el programa. En síndrome de dificultad respiratoria aguda el aviptadil obtuvo designación de medicamento huérfano, pero los ensayos posteriores no produjeron resultados convincentes. A ello se suma una vida media plasmática de apenas uno a dos minutos, que es en sí misma un obstáculo mayor.'],
+        paragraphs: [
+          'La monografía RUO se limita a mecanismo de receptor y modelos de señalización. Se omiten enfermedades, desenlaces y usos en personas porque el producto se ofrece exclusivamente para investigación.',
+          'La limitación experimental dominante es su vida media plasmática, de apenas uno a dos minutos, que condiciona por completo cualquier diseño in vivo y explica el interés por análogos estabilizados. En cultivo, el trabajo se centra en la señalización de los receptores VPAC1 y VPAC2 y su acoplamiento a la vía del AMP cíclico.',
+          'Producto exclusivo para investigación; esta monografía no emite afirmaciones de aprobación, legalidad, receta, licencia ni autorización sanitaria.',
+        ],
       },
       {
         title: 'Manejo en laboratorio',
@@ -2245,7 +1717,11 @@ const monographs = {
       },
       {
         title: 'Qué dice la evidencia',
-        paragraphs: ['Es imprescindible ser claro: la enorme mayoría de la literatura sobre epithalon procede de un solo grupo de investigación ruso y de revistas afines, con muy poca replicación internacional independiente. Existen algunos trabajos in vitro recientes de otros laboratorios que exploran su efecto sobre telomerasa, pero los datos de prolongación de vida en roedores y los reportes clínicos en humanos no han sido reproducidos por equipos externos, y varios estudios son abiertos, pequeños o metodológicamente débiles. No existe aprobación regulatoria en México, Estados Unidos ni la Unión Europea. Debe tratarse como un compuesto experimental de evidencia limitada y de una sola fuente.'],
+        paragraphs: [
+          'Es imprescindible ser claro: la enorme mayoría de la literatura sobre epithalon procede de un solo grupo de investigación ruso y de revistas afines, con muy poca replicación internacional independiente.',
+          'Existen algunos trabajos in vitro recientes de otros laboratorios que exploran su efecto sobre telomerasa, pero los datos en roedores y los reportes en humanos no han sido reproducidos por equipos externos, y varios estudios son abiertos, pequeños o metodológicamente débiles. Debe tratarse como un compuesto experimental de evidencia limitada y de una sola fuente.',
+          'Producto exclusivo para investigación; esta monografía no emite afirmaciones de aprobación, legalidad, receta, licencia ni autorización sanitaria.',
+        ],
       },
       {
         title: 'Manejo en laboratorio',
@@ -2267,7 +1743,11 @@ const monographs = {
       },
       {
         title: 'Qué dice la evidencia',
-        paragraphs: ['La evidencia es casi exclusivamente rusa y proviene del mismo entorno institucional que desarrolló el producto, publicada en buena parte en revistas locales o de bajo factor de impacto. No hay ensayos aleatorizados grandes, independientes y bien controlados en Occidente. A esto se suma un problema estructural: al ser un extracto y no una molécula definida, la reproducibilidad entre lotes es difícil de garantizar, razón por la cual las agencias regulatorias occidentales nunca lo han evaluado. Los reportes sobre infecciones respiratorias graves son de calidad metodológica limitada. Debe considerarse un material experimental con respaldo científico débil y poco replicado.'],
+        paragraphs: [
+          'La evidencia es casi exclusivamente rusa y proviene del mismo entorno institucional que desarrolló el producto, publicada en buena parte en revistas locales o de bajo factor de impacto, sin ensayos independientes grandes y bien controlados.',
+          'A esto se suma un problema estructural: al ser un extracto y no una molécula definida, la reproducibilidad entre lotes es difícil de garantizar y no hay una secuencia única que citar. Debe considerarse un material experimental con respaldo científico débil y poco replicado.',
+          'Producto exclusivo para investigación; esta monografía no emite afirmaciones de aprobación, legalidad, receta, licencia ni autorización sanitaria.',
+        ],
       },
       {
         title: 'Manejo en laboratorio',
@@ -2289,7 +1769,11 @@ const monographs = {
       },
       {
         title: 'Qué dice la evidencia',
-        paragraphs: ['Como en el resto de los bioreguladores de esta familia, la evidencia procede casi por completo de un único grupo ruso y de colaboradores cercanos, con escasa replicación internacional. Los estudios son mayoritariamente in vitro o en roedores, con tamaños de muestra pequeños y controles no siempre descritos con detalle. No existen ensayos clínicos aleatorizados publicados en revistas de alto impacto ni evaluación por agencias regulatorias occidentales. Los mecanismos moleculares propuestos, como la unión directa de un tripéptido a promotores génicos, siguen sin confirmación independiente robusta. Debe entenderse como una hipótesis de investigación, no como un efecto establecido.'],
+        paragraphs: [
+          'Como en el resto de los bioreguladores de esta familia, la evidencia procede casi por completo de un único grupo ruso y de colaboradores cercanos, con escasa replicación internacional.',
+          'Los estudios son mayoritariamente in vitro o en roedores, con tamaños de muestra pequeños y controles no siempre descritos con detalle. Los mecanismos moleculares propuestos, como la unión directa de un tripéptido a promotores génicos, siguen sin confirmación independiente robusta. Debe entenderse como una hipótesis de investigación, no como un efecto establecido.',
+          'Producto exclusivo para investigación; esta monografía no emite afirmaciones de aprobación, legalidad, receta, licencia ni autorización sanitaria.',
+        ],
       },
       {
         title: 'Manejo en laboratorio',
@@ -2311,7 +1795,11 @@ const monographs = {
       },
       {
         title: 'Qué dice la evidencia',
-        paragraphs: ['La literatura sobre Bronchogen es escasa y casi toda proviene del mismo grupo ruso que lo desarrolló, sin replicación internacional relevante. Predominan los estudios in vitro con líneas y cultivos primarios, y algunos modelos animales; no existen ensayos clínicos controlados publicados en revistas de referencia. Buena parte del material que circula en internet sobre este compuesto es de origen comercial, no científico, y repite afirmaciones no verificadas. No cuenta con aprobación regulatoria en ningún mercado occidental. En términos prácticos, su base de evidencia es preliminar, de una sola fuente y claramente insuficiente para conclusiones firmes.'],
+        paragraphs: [
+          'La literatura sobre Bronchogen es escasa y casi toda proviene del mismo grupo ruso que lo desarrolló, sin replicación internacional relevante. Predominan los estudios in vitro con líneas y cultivos primarios, y algunos modelos animales.',
+          'Buena parte del material que circula en internet sobre este compuesto es de origen comercial, no científico, y repite afirmaciones no verificadas. Su base de evidencia es preliminar, de una sola fuente y claramente insuficiente para conclusiones firmes.',
+          'Producto exclusivo para investigación; esta monografía no emite afirmaciones de aprobación, legalidad, receta, licencia ni autorización sanitaria.',
+        ],
       },
       {
         title: 'Manejo en laboratorio',
@@ -2333,7 +1821,11 @@ const monographs = {
       },
       {
         title: 'Qué dice la evidencia',
-        paragraphs: ['Hay que decirlo sin rodeos: la evidencia sobre Cardiogen es escasa, preclínica y prácticamente monopolizada por un solo grupo de investigación ruso, con muy poca o nula replicación por laboratorios independientes. No existen ensayos clínicos aleatorizados y controlados publicados en revistas internacionales de referencia, ni evaluación por la FDA, la EMA o COFEPRIS. Gran parte de la información disponible en línea procede de vendedores y no de literatura revisada por pares. Cualquier afirmación sobre efectos cardiovasculares en humanos carece hoy de respaldo científico suficiente y debe tratarse como no demostrada.'],
+        paragraphs: [
+          'Hay que decirlo sin rodeos: la evidencia sobre Cardiogen es escasa, preclínica y prácticamente monopolizada por un solo grupo de investigación ruso, con muy poca o nula replicación por laboratorios independientes.',
+          'Gran parte de la información disponible en línea procede de vendedores y no de literatura revisada por pares. Cualquier afirmación sobre efectos cardiovasculares carece hoy de respaldo suficiente y debe tratarse como no demostrada.',
+          'Producto exclusivo para investigación; esta monografía no emite afirmaciones de aprobación, legalidad, receta, licencia ni autorización sanitaria.',
+        ],
       },
       {
         title: 'Manejo en laboratorio',
@@ -2355,7 +1847,11 @@ const monographs = {
       },
       {
         title: 'Qué dice la evidencia',
-        paragraphs: ['La base de datos publicada es pequeña, preclínica y procede esencialmente del mismo grupo ruso, sin replicación independiente significativa fuera de ese entorno. Se limita a cultivos celulares y estudios de expresión génica; no hay ensayos clínicos controlados en humanos, ni datos comparativos frente a intervenciones establecidas para patología articular. Tampoco existe aprobación regulatoria en México, Estados Unidos o Europa. Mucho del contenido divulgativo sobre Cartalax es material de marketing que extrapola resultados in vitro a supuestos beneficios articulares, extrapolación que la literatura actual no sostiene.'],
+        paragraphs: [
+          'La base de datos publicada es pequeña, preclínica y procede esencialmente del mismo grupo ruso, sin replicación independiente significativa fuera de ese entorno. Se limita a cultivos celulares y estudios de expresión génica.',
+          'Mucho del contenido divulgativo sobre Cartalax es material de marketing que extrapola resultados in vitro a supuestos beneficios articulares, extrapolación que la literatura actual no sostiene.',
+          'Producto exclusivo para investigación; esta monografía no emite afirmaciones de aprobación, legalidad, receta, licencia ni autorización sanitaria.',
+        ],
       },
       {
         title: 'Manejo en laboratorio',
@@ -2377,7 +1873,11 @@ const monographs = {
       },
       {
         title: 'Qué dice la evidencia',
-        paragraphs: ['Hay que ser explícito: casi toda la literatura sobre Cortagen proviene del mismo grupo ruso que lo creó y de revistas de circulación limitada, con escasísima replicación internacional. Los estudios son preclínicos, de tamaño pequeño y con metodología no siempre descrita al nivel exigido por revistas de alto impacto. No hay ensayos clínicos aleatorizados y controlados en humanos publicados en la literatura internacional, ni evaluación regulatoria en Occidente. Los efectos neuroprotectores o regenerativos que se le atribuyen deben considerarse hipótesis de una sola fuente, no hallazgos consolidados por la comunidad científica.'],
+        paragraphs: [
+          'Hay que ser explícito: casi toda la literatura sobre Cortagen proviene del mismo grupo ruso que lo creó y de revistas de circulación limitada, con escasísima replicación internacional.',
+          'Los estudios son preclínicos, de tamaño pequeño y con metodología no siempre descrita al nivel exigido por revistas de alto impacto. Los efectos neuroprotectores o regenerativos que se le atribuyen deben considerarse hipótesis de una sola fuente, no hallazgos consolidados.',
+          'Producto exclusivo para investigación; esta monografía no emite afirmaciones de aprobación, legalidad, receta, licencia ni autorización sanitaria.',
+        ],
       },
       {
         title: 'Manejo en laboratorio',
@@ -2399,7 +1899,11 @@ const monographs = {
       },
       {
         title: 'Qué dice la evidencia',
-        paragraphs: ['La evidencia es muy limitada y prácticamente toda de origen ruso, generada por el mismo entorno institucional, con nula replicación independiente relevante. No existen ensayos clínicos rigurosos de eficacia en humanos, ni revisiones sistemáticas favorables, ni evaluación por agencias regulatorias occidentales. A ello se suma la inconsistencia entre proveedores respecto a la secuencia y la composición, lo que dificulta comparar resultados entre lotes y estudios. En resumen, se trata de un compuesto experimental con respaldo científico débil, cuyos efectos inmunomoduladores atribuidos no pueden considerarse demostrados.'],
+        paragraphs: [
+          'La evidencia es muy limitada y prácticamente toda de origen ruso, generada por el mismo entorno institucional, con nula replicación independiente relevante.',
+          'A ello se suma la inconsistencia entre proveedores respecto a la secuencia y la composición, lo que dificulta comparar resultados entre lotes y estudios. Se trata de un material experimental con respaldo científico débil, cuyos efectos inmunomoduladores atribuidos no pueden considerarse demostrados.',
+          'Producto exclusivo para investigación; esta monografía no emite afirmaciones de aprobación, legalidad, receta, licencia ni autorización sanitaria.',
+        ],
       },
       {
         title: 'Manejo en laboratorio',
@@ -2421,7 +1925,11 @@ const monographs = {
       },
       {
         title: 'Qué dice la evidencia',
-        paragraphs: ['KPV tiene una base preclínica más sólida y más internacional que los bioreguladores rusos: hay publicaciones en revistas revisadas por pares de grupos en Estados Unidos, Europa y Asia, con mecanismos moleculares razonablemente coherentes entre estudios. Dicho esto, la evidencia sigue siendo esencialmente in vitro y en animales. No existen ensayos clínicos aleatorizados de tamaño relevante en humanos, no está aprobado por ninguna agencia regulatoria como medicamento, y los datos de farmacocinética y seguridad a largo plazo son escasos. La traslación de los resultados en roedores a personas no está demostrada.'],
+        paragraphs: [
+          'KPV tiene una base preclínica más sólida y más internacional que los bioreguladores rusos: hay publicaciones revisadas por pares de grupos en Estados Unidos, Europa y Asia, con mecanismos moleculares razonablemente coherentes entre estudios.',
+          'Dicho esto, la evidencia sigue siendo esencialmente in vitro y en animales. Los datos de farmacocinética y de comportamiento a largo plazo son escasos, y la traslación de los resultados en roedores a otros sistemas no está demostrada.',
+          'Producto exclusivo para investigación; esta monografía no emite afirmaciones de aprobación, legalidad, receta, licencia ni autorización sanitaria.',
+        ],
       },
       {
         title: 'Manejo en laboratorio',
@@ -2443,7 +1951,11 @@ const monographs = {
       },
       {
         title: 'Qué dice la evidencia',
-        paragraphs: ['Hay que distinguir dos planos. Como molécula biológica, el glutatión está respaldado por décadas de bioquímica sólida y consenso internacional. Como producto administrado, la situación es muy distinta: la biodisponibilidad oral es pobre, los estudios de aclarado cutáneo son pequeños, cortos y con resultados modestos o inconsistentes, y varias agencias sanitarias, incluida la FDA de Filipinas, han emitido advertencias formales contra el glutatión inyectable por reacciones adversas graves y falta de aprobación para esa indicación. No existe aprobación como despigmentante en México, Estados Unidos ni la Unión Europea.'],
+        paragraphs: [
+          'Hay que distinguir dos planos. Como molécula biológica, el glutatión está respaldado por décadas de bioquímica sólida: su papel como principal antioxidante intracelular y como sustrato de las glutatión transferasas es consenso.',
+          'Como producto administrado, la situación es muy distinta. La biodisponibilidad oral es pobre, los estudios de aclarado cutáneo son pequeños, cortos y de resultados inconsistentes, y varias autoridades sanitarias han emitido advertencias formales sobre el glutatión inyectable. La monografía RUO se limita a la química y a los ensayos de laboratorio.',
+          'Producto exclusivo para investigación; esta monografía no emite afirmaciones de aprobación, legalidad, receta, licencia ni autorización sanitaria.',
+        ],
       },
       {
         title: 'Manejo en laboratorio',
@@ -2453,11 +1965,11 @@ const monographs = {
   },
 
   'b12': {
-    tagline: 'Cianocobalamina inyectable, vitamina B12',
+    tagline: 'Cianocobalamina para análisis de laboratorio',
     sections: [
       {
         title: 'Qué es',
-        paragraphs: ['La cianocobalamina es la forma sintética y más estable de la vitamina B12, un corrinoide de gran tamaño que contiene un átomo de cobalto central coordinado a un anillo de corrina y a un ligando ciano. No es un péptido: es una vitamina hidrosoluble de estructura organometálica, la más compleja conocida entre las vitaminas. En el organismo se convierte en las formas coenzimáticas activas, metilcobalamina y adenosilcobalamina. La presentación inyectable es una solución acuosa estéril de color rojo intenso, característico del cromóforo de cobalto, y marcadamente fotosensible.'],
+        paragraphs: ['La cianocobalamina es la forma sintética y más estable de la vitamina B12, un corrinoide de gran tamaño que contiene un átomo de cobalto central coordinado a un anillo de corrina y a un ligando ciano. No es un péptido: es una vitamina hidrosoluble de estructura organometálica, la más compleja conocida entre las vitaminas. En el organismo se convierte en las formas coenzimáticas activas, metilcobalamina y adenosilcobalamina. El material se presenta como solución acuosa de color rojo intenso, característico del cromóforo de cobalto, y marcadamente fotosensible.'],
       },
       {
         title: 'Qué se estudia con él',
@@ -2465,11 +1977,15 @@ const monographs = {
       },
       {
         title: 'Qué dice la evidencia',
-        paragraphs: ['Es, junto con el glutatión en su vertiente bioquímica, uno de los pocos compuestos de esta lista con evidencia clínica realmente robusta: la corrección de la deficiencia de B12 está establecida desde hace décadas, figura en farmacopeas y guías internacionales, y su perfil está bien caracterizado. Ahora bien, esa solidez aplica al tratamiento de la deficiencia demostrada. El uso popular de B12 inyectable como energizante, adelgazante o coadyuvante estético en personas sin deficiencia no está respaldado por ensayos controlados de calidad y no debe presentarse como beneficio comprobado.'],
+        paragraphs: [
+          'La monografía RUO se limita a la química y a las funciones bioquímicas de la cobalamina: su papel como cofactor de la metionina sintasa y de la metilmalonil-CoA mutasa, y la conversión entre sus formas.',
+          'Se omite todo terreno clínico. El uso popular de B12 como energizante, adelgazante o coadyuvante estético no está respaldado por trabajos controlados de calidad y no debe presentarse como beneficio comprobado.',
+          'Producto exclusivo para investigación; esta monografía no emite afirmaciones de aprobación, legalidad, receta, licencia ni autorización sanitaria.',
+        ],
       },
       {
         title: 'Manejo en laboratorio',
-        paragraphs: ['La solución inyectable se conserva a temperatura ambiente controlada o en refrigeración según el fabricante, siempre en su envase original y protegida de la luz, ya que la exposición lumínica degrada la molécula. No debe congelarse. Es incompatible con agentes reductores y oxidantes fuertes, y con ácido ascórbico, que acelera su descomposición en mezcla. Los viales multidosis requieren técnica aséptica en cada extracción y registro de la fecha de primera perforación. Descartar si aparece turbidez o pérdida del color rojo característico.'],
+        paragraphs: ['La solución se conserva en su envase original, a temperatura controlada y protegida de la luz, ya que la exposición lumínica degrada la molécula. No debe congelarse. Es incompatible con agentes reductores y oxidantes fuertes, y con ácido ascórbico, que acelera su descomposición en mezcla. Se maneja con técnica aséptica y se descarta si aparece turbidez o pérdida del color rojo característico. La forma exacta de cobalamina del lote debe verificarse en su ficha antes de comparar resultados con la literatura.'],
       },
     ],
   },
@@ -2479,19 +1995,23 @@ const monographs = {
     sections: [
       {
         title: 'Qué es',
-        paragraphs: ['Matrixyl es el nombre comercial del palmitoil pentapéptido-4, es decir, la secuencia lisina, treonina, treonina, lisina, serina (KTTKS) unida a un ácido palmítico. El fragmento KTTKS procede del propéptido C-terminal del procolágeno tipo I humano, un péptido que se libera durante la maduración del colágeno y actúa como señal de retroalimentación. La palmitoilación aumenta la lipofilia y facilita el paso a través del estrato córneo. La variante Matrixyl 3000 no contiene KTTKS, sino una combinación de palmitoil tripéptido-1 y palmitoil tetrapéptido-7. Es un ingrediente de formulación tópica.'],
+        paragraphs: ['Matrixyl es el nombre comercial del palmitoil pentapéptido-4, es decir, la secuencia lisina, treonina, treonina, lisina, serina (KTTKS) unida a un ácido palmítico. El fragmento KTTKS procede del propéptido C-terminal del procolágeno tipo I humano, un péptido que se libera durante la maduración del colágeno y actúa como señal de retroalimentación. La palmitoilación aumenta la lipofilia y facilita el paso a través del estrato córneo. La variante Matrixyl 3000 no contiene KTTKS, sino una combinación de palmitoil tripéptido-1 y palmitoil tetrapéptido-7, de modo que el nombre comercial no identifica una sola molécula: hay que verificar cuál corresponde al lote.'],
       },
       {
         title: 'Qué se estudia con él',
-        paragraphs: ['La hipótesis mecanística es que KTTKS actúa como señal de estímulo para fibroblastos dérmicos, promoviendo la síntesis de colágeno tipo I y III, fibronectina y glicosaminoglicanos, replicando la retroalimentación fisiológica del recambio de matriz extracelular. Los estudios en cultivos de fibroblastos miden expresión génica y producción proteica de estos componentes. En piel se han hecho ensayos de aplicación tópica con seguimiento fotográfico, perfilometría y evaluación clínica de rugosidad y profundidad de arrugas, así como estudios de penetración cutánea que comparan el péptido palmitoilado con el fragmento libre.'],
+        paragraphs: ['La hipótesis mecanística es que KTTKS actúa como señal de estímulo para fibroblastos dérmicos, promoviendo la síntesis de colágeno tipo I y III, fibronectina y glicosaminoglicanos, replicando la retroalimentación fisiológica del recambio de matriz extracelular. Los estudios en cultivos de fibroblastos miden expresión génica y producción proteica de estos componentes. Se evalúa también en sistemas de formulación y en modelos de barrera cutánea, incluidos estudios de permeación que comparan el péptido palmitoilado con el fragmento libre. La penetración a través del estrato córneo es precisamente uno de los puntos que la literatura independiente señala como limitante.'],
       },
       {
         title: 'Qué dice la evidencia',
-        paragraphs: ['Existe al menos un ensayo doble ciego controlado con vehículo, de aproximadamente doce semanas, que mostró mejoras estadísticamente significativas pero clínicamente modestas en rugosidad y arrugas frente al vehículo. El problema principal es que la mayor parte de la investigación fue generada o financiada por el fabricante del ingrediente, con pocas replicaciones verdaderamente independientes, muestras pequeñas y desenlaces sensibles al efecto del propio vehículo hidratante. La evidencia es mejor que la de muchos ingredientes cosméticos, pero sigue siendo limitada. No compite en magnitud de efecto con retinoides tópicos bien estudiados.'],
+        paragraphs: [
+          'La mayor parte de la investigación sobre este ingrediente fue generada o financiada por su fabricante, con pocas replicaciones verdaderamente independientes, muestras pequeñas y desenlaces sensibles al efecto del propio vehículo.',
+          'Se evalúa en modelos de matriz dérmica y en sistemas de formulación, donde la pregunta experimental es si el fragmento peptídico modifica la expresión de componentes de matriz extracelular. Todo diseño necesita un brazo de vehículo, porque la base hidratante produce por sí sola cambios medibles.',
+          'Producto exclusivo para investigación; esta monografía no emite afirmaciones de aprobación, legalidad, receta, licencia ni autorización sanitaria.',
+        ],
       },
       {
         title: 'Manejo en laboratorio',
-        paragraphs: ['Se presenta como polvo o como solución concentrada en base glicólica o acuosa para incorporación en formulaciones. El material seco se conserva en envase cerrado, en frío, protegido de la luz y de la humedad. En formulación es sensible al pH extremo, a temperaturas altas durante el proceso y a la presencia de oxidantes, por lo que suele añadirse en la fase de enfriamiento. Las diluciones de trabajo se preparan con agua purificada y se conservan refrigeradas. Es un ingrediente de uso tópico, no un material inyectable.'],
+        paragraphs: ['Se presenta como polvo o como solución concentrada en base glicólica o acuosa para incorporación en formulaciones. El material seco se conserva en envase cerrado, en frío, protegido de la luz y de la humedad. En formulación es sensible al pH extremo, a temperaturas altas durante el proceso y a la presencia de oxidantes, por lo que suele añadirse en la fase de enfriamiento. Las diluciones de trabajo se preparan con agua purificada y se conservan refrigeradas. Se investiga en sistemas de formulación y modelos de barrera cutánea; esta ficha no recomienda ninguna vía de uso.'],
       },
     ],
   },
@@ -2505,15 +2025,19 @@ const monographs = {
       },
       {
         title: 'Qué se estudia con él',
-        paragraphs: ['El interés investigativo se dirige a sus componentes por separado más que al producto terminado. La fosfatidilcolina y el desoxicolato tienen literatura previa como agentes lipolíticos que actúan desestabilizando la membrana del adipocito y provocando lisis celular seguida de respuesta inflamatoria y reabsorción. La riboflavina se estudia como precursora de FAD y FMN, coenzimas implicadas en la beta-oxidación de ácidos grasos. La bromelina cuenta con literatura como enzima proteolítica con efecto antiedematoso. Aplicado al producto completo, el estudio se limita a observaciones clínicas no controladas y series fotográficas.'],
+        paragraphs: ['La composición del producto terminado no está verificada de manera pública e independiente, de modo que no puede explicarse su comportamiento con la literatura de ingredientes que la propia ficha no acredita que contenga. En particular, la fórmula declarada no identifica desoxicolato, así que el mecanismo descrito para las mezclas de fosfatidilcolina y desoxicolato no le es aplicable.', 'De los componentes que sí declara el fabricante puede decirse lo siguiente por separado: la riboflavina se estudia como precursora de FAD y FMN, coenzimas implicadas en la beta-oxidación de ácidos grasos, y la bromelina cuenta con literatura como enzima proteolítica. Extrapolar cualquiera de esas líneas al producto terminado exige antes un análisis del lote que confirme componentes y concentraciones.'],
       },
       {
         title: 'Qué dice la evidencia',
-        paragraphs: ['Hay que decirlo con toda claridad: Lemon Bottle es una mezcla propietaria sin literatura revisada por pares sobre el producto terminado. No existen ensayos clínicos aleatorizados, controlados ni publicados que evalúen su eficacia o su seguridad, y la composición cuantitativa no es pública, lo que impide siquiera extrapolar desde la evidencia de sus ingredientes aislados. No cuenta con aprobación de la FDA ni marcado CE como producto médico, y varias autoridades sanitarias han advertido sobre productos lipolíticos inyectables no autorizados. Todo lo que se afirma sobre él procede de material promocional, no de ciencia publicada.'],
+        paragraphs: [
+          'La composición del producto terminado no está verificada de manera pública e independiente, y la composición cuantitativa no es pública. Un análisis de una autoridad sanitaria europea sobre muestras del producto describió una composición no confiable.',
+          'Eso tiene una consecuencia metodológica directa: la literatura sobre ingredientes lipolíticos aislados no debe extrapolarse a esta mezcla salvo que un análisis del lote confirme qué componentes contiene y en qué concentraciones. No existe literatura revisada por pares sobre el producto terminado.',
+          'Producto exclusivo para investigación; esta monografía no emite afirmaciones de aprobación, legalidad, receta, licencia ni autorización sanitaria.',
+        ],
       },
       {
         title: 'Manejo en laboratorio',
-        paragraphs: ['Se recibe como solución estéril lista para usar en viales sellados, de color amarillo, con etiquetado del fabricante. Se conserva a temperatura ambiente controlada o en refrigeración según indicación del envase, siempre protegida de la luz por la fotosensibilidad de la riboflavina, y sin congelar. Debe inspeccionarse antes de cada uso descartando turbidez, partículas o cambio de color. Los viales son de un solo uso y deben desecharse tras abrirse. Conviene conservar lote, fecha de caducidad y documentación de importación.'],
+        paragraphs: ['Mezcla comercial de composición no verificada. No debe describirse como solución lista para usar ni acompañarse de instrucciones posteriores a la apertura, porque la ficha no puede acreditar qué contiene el vial.', 'Lo que sí procede: conservar el envase sellado y protegido de la luz, sin congelar, registrar lote, caducidad y documentación de importación, y exigir al proveedor un análisis de identidad y concentración antes de cualquier uso experimental.'],
       },
     ],
   },
@@ -2527,15 +2051,19 @@ const monographs = {
       },
       {
         title: 'Qué se estudia con él',
-        paragraphs: ['El mecanismo está muy bien caracterizado: la cadena ligera del serotipo A escinde específicamente la proteína SNAP-25, mientras el serotipo B corta VAMP o sinaptobrevina; en ambos casos se impide el ensamblaje del complejo SNARE y con ello la liberación de acetilcolina en la unión neuromuscular. Por eso es una herramienta clásica en neurociencia para disecar la maquinaria de exocitosis. Las líneas de investigación abarcan transporte axonal retrógrado, recuperación de la placa motora, dolor neuropático, hiperhidrosis, espasticidad, distonías, vejiga neurógena y migraña crónica, además de aplicaciones estéticas.'],
+        paragraphs: ['El mecanismo está muy bien caracterizado: la cadena ligera del serotipo A escinde específicamente la proteína SNAP-25, mientras el serotipo B corta VAMP o sinaptobrevina; en ambos casos se impide el ensamblaje del complejo SNARE y con ello la liberación de acetilcolina en la unión neuromuscular. Por eso es una herramienta clásica en neurociencia para disecar la maquinaria de exocitosis. Las líneas de investigación experimental abarcan el transporte axonal retrógrado, la recuperación de la placa motora y la cinética de escisión de sustratos SNARE en preparaciones celulares y tisulares.'],
       },
       {
         title: 'Qué dice la evidencia',
-        paragraphs: ['Es de los compuestos mejor documentados de esta lista: cuenta con ensayos clínicos aleatorizados, aprobaciones regulatorias en múltiples indicaciones y farmacovigilancia extensa. Un punto crítico y frecuentemente malinterpretado es la potencia: se expresa en unidades biológicas definidas por el ensayo de letalidad del propio fabricante, de modo que las unidades no son intercambiables entre marcas ni existen factores de conversión oficialmente validados. Confundirlas es una fuente conocida de error. Además, es un agente de alta toxicidad sujeto a controles de bioseguridad y, en varios países, a normativa de agentes seleccionados.'],
+        paragraphs: [
+          'Un punto crítico y frecuentemente malinterpretado es la potencia: se expresa en unidades biológicas definidas por el ensayo del propio fabricante, de modo que las unidades no son intercambiables entre marcas ni existen factores de conversión oficialmente validados. Confundirlas es una fuente conocida de error.',
+          'Es además un agente biológico de alta peligrosidad, sujeto a controles de bioseguridad y, en varios países, a normativa de agentes seleccionados. La monografía RUO no recoge indicaciones, aplicaciones ni resultados en personas.',
+          'Producto exclusivo para investigación; esta monografía no emite afirmaciones de aprobación, legalidad, receta, licencia ni autorización sanitaria.',
+        ],
       },
       {
         title: 'Manejo en laboratorio',
-        paragraphs: ['Requiere personal capacitado e instalaciones adecuadas. Se presenta liofilizada o en polvo al vacío en viales sellados, conservada en refrigeración o congelación según el fabricante, con cadena de frío documentada. La reconstitución se hace con solución salina estéril sin conservador, introducida lentamente y sin agitación vigorosa, ya que la proteína se desnaturaliza por burbujeo o espuma. La solución reconstituida se mantiene refrigerada y tiene vida útil corta. Los derrames y residuos se inactivan con hipoclorito diluido y se descartan como residuo biológico peligroso.'],
+        paragraphs: ['Agente biológico de alta peligrosidad. Su recepción, contención, inactivación y desecho requieren una evaluación institucional de bioseguridad y la ficha específica del fabricante; esta monografía no publica un protocolo operativo de reconstitución ni de descontaminación.', 'Lo que sí corresponde señalar: se presenta liofilizada o en polvo al vacío en viales sellados, con cadena de frío documentada, y ninguna operación con el material debe realizarse fuera de instalaciones autorizadas y por personal acreditado.'],
       },
     ],
   },
@@ -2545,19 +2073,23 @@ const monographs = {
     sections: [
       {
         title: 'Qué es',
-        paragraphs: ['Dysport es la marca comercial de la abobotulinumtoxinA, un preparado de toxina botulínica tipo A desarrollado por Ipsen y disponible en viales liofilizados de distintas potencias. Contiene el mismo principio activo neurotóxico que otros productos de tipo A, pero difiere en el proceso de purificación, en los excipientes, entre ellos albúmina humana y lactosa, y en el tamaño del complejo proteico asociado, menor que el de otros preparados. Estas diferencias de formulación se traducen en un perfil propio de difusión y de potencia declarada. Es un producto biológico de manejo especializado.'],
+        paragraphs: ['Dysport es la marca comercial de la abobotulinumtoxinA, un preparado de toxina botulínica tipo A desarrollado por Ipsen y disponible en viales liofilizados de distintas potencias. Contiene el mismo principio activo neurotóxico que otros productos de tipo A, pero difiere en el proceso de purificación, en los excipientes, entre ellos albúmina humana y lactosa, y en el tamaño del complejo proteico asociado. No debe inferirse su difusión a partir de ese tamaño: las revisiones comparativas concluyen que el complejo se disocia en condiciones fisiológicas. Lo que sí difiere de forma sustantiva es la formulación y la unidad biológica en que se declara su potencia, que no es intercambiable con la de otros productos. Es un agente biológico de manejo especializado.'],
       },
       {
         title: 'Qué se estudia con él',
-        paragraphs: ['Comparte el mecanismo del serotipo A: escisión de la proteína SNAP-25 y bloqueo de la liberación de acetilcolina en la unión neuromuscular. La investigación específica sobre este preparado se centra en comparaciones de potencia, campo de difusión y duración de efecto frente a otras marcas, en estudios de conversión entre unidades, en su uso en espasticidad de adultos y niños, distonía cervical, blefaroespasmo, hiperhidrosis y aplicaciones estéticas. También se estudian la inmunogenicidad y la formación de anticuerpos neutralizantes, un fenómeno que varía según el contenido proteico total del preparado.'],
+        paragraphs: ['Comparte el mecanismo del serotipo A: escisión de la proteína SNAP-25 y bloqueo de la liberación de acetilcolina en la unión neuromuscular. La investigación específica sobre este preparado se centra en comparaciones de potencia y de campo de difusión frente a otras preparaciones, en la imposibilidad de convertir unidades entre marcas, y en la inmunogenicidad y la formación de anticuerpos neutralizantes, un fenómeno que varía según el contenido proteico total. La difusión observada depende sobre todo de cantidad, concentración, volumen y técnica experimental.'],
       },
       {
         title: 'Qué dice la evidencia',
-        paragraphs: ['Cuenta con ensayos clínicos aleatorizados y aprobación regulatoria en múltiples países para varias indicaciones, por lo que su base de evidencia es sólida en comparación con la mayoría de los productos de esta lista. El punto que debe subrayarse es que su potencia se mide en unidades Speywood, propias del fabricante y definidas por su propio bioensayo: no son intercambiables con las unidades de ningún otro producto de toxina botulínica. Los factores de conversión que circulan en la literatura son aproximaciones discutidas y no aceptadas oficialmente. Es material de manejo exclusivamente profesional y especializado.'],
+        paragraphs: [
+          'El punto que debe subrayarse es que su potencia se mide en unidades propias del fabricante, definidas por su propio bioensayo: no son intercambiables con las unidades de ningún otro producto de toxina botulínica, y los factores de conversión que circulan en la literatura son aproximaciones discutidas y no aceptadas oficialmente.',
+          'Conviene además desmontar una idea extendida: las revisiones comparativas concluyen que el complejo proteico se disocia en condiciones fisiológicas y que su tamaño no determina la difusión. Lo que se observa depende en gran medida de cantidad, concentración, volumen y técnica experimental.',
+          'Producto exclusivo para investigación; esta monografía no emite afirmaciones de aprobación, legalidad, receta, licencia ni autorización sanitaria.',
+        ],
       },
       {
         title: 'Manejo en laboratorio',
-        paragraphs: ['Se conserva liofilizado en refrigeración, dentro de su envase original, protegido de la luz y con cadena de frío documentada; no debe congelarse salvo indicación expresa del fabricante. La reconstitución se realiza con solución salina estéril sin conservador, añadida despacio por la pared del vial y mezclada por rotación muy suave, evitando espuma que desnaturaliza la proteína. Una vez reconstituido su periodo de estabilidad es corto y requiere refrigeración. Residuos, viales y material contaminado se inactivan con hipoclorito diluido antes de su desecho.'],
+        paragraphs: ['Agente biológico de alta peligrosidad. Su recepción, contención, manipulación, inactivación y desecho requieren una evaluación institucional de bioseguridad y la ficha técnica específica del fabricante; esta monografía no publica un protocolo operativo.', 'Lo que sí corresponde señalar es que se conserva liofilizado, con cadena de frío documentada y en su envase original, y que ninguna operación con el material debe realizarse fuera de instalaciones autorizadas y por personal acreditado.'],
       },
     ],
   },
@@ -2571,15 +2103,19 @@ const monographs = {
       },
       {
         title: 'Qué se estudia con él',
-        paragraphs: ['El interés científico se ha desplazado de la idea original de reemplazo tisular hacia un modelo paracrino: estas células secretan factores de crecimiento, citocinas inmunomoduladoras y vesículas extracelulares que modifican el microambiente inflamatorio. Se investigan en modelos preclínicos de infarto de miocardio, lesión medular, artrosis, enfermedad injerto contra huésped, fibrosis pulmonar, cicatrización y enfermedades autoinmunes. Frente a las células de médula ósea o tejido adiposo, las de cordón muestran mayor capacidad proliferativa, menor inmunogenicidad y obtención no invasiva a partir de tejido normalmente desechado, lo que explica su popularidad como fuente experimental.'],
+        paragraphs: ['El interés científico se ha desplazado de la idea original de reemplazo tisular hacia un modelo paracrino: estas células secretan factores de crecimiento, citocinas inmunomoduladoras y vesículas extracelulares que modifican el microambiente inflamatorio. Se investigan en modelos preclínicos de infarto de miocardio, lesión medular, artrosis, enfermedad injerto contra huésped, fibrosis pulmonar, cicatrización y enfermedades autoinmunes. Frente a las células de médula ósea o tejido adiposo, las de cordón suelen mostrar mayor capacidad proliferativa y baja expresión basal de moléculas inmunogénicas en determinados ensayos, además de una obtención no invasiva a partir de tejido normalmente desechado. Esa baja expresión es una tendencia observada in vitro, no una propiedad garantizada del vial ni ausencia de respuesta inmune.'],
       },
       {
         title: 'Qué dice la evidencia',
-        paragraphs: ['Debe quedar claro que se trata de terapia celular experimental. La literatura preclínica es amplia, pero los ensayos en humanos son mayoritariamente de fase I o I/II, con muestras pequeñas, seguimiento corto y desenlaces de seguridad más que de eficacia. Ninguna indicación cuenta con aprobación regulatoria amplia basada en ensayos de fase III concluyentes, y persisten preguntas abiertas sobre dosis, vía, supervivencia celular tras la infusión y estandarización entre laboratorios. La FDA y otras agencias han advertido reiteradamente contra clínicas que ofrecen estos productos como tratamientos probados. Aquí es material de investigación.'],
+        paragraphs: [
+          'Debe quedar claro que se trata de material celular experimental. La literatura preclínica es amplia, pero persisten preguntas abiertas sobre supervivencia celular tras la infusión, estandarización entre laboratorios y caracterización comparable de los lotes.',
+          'Las células estromales mesenquimales no son inmunológicamente invisibles: su perfil depende del donante, de la expansión, del estado inflamatorio y del ensayo empleado. La baja expresión basal de moléculas inmunogénicas descrita en ciertos ensayos no equivale a ausencia de respuesta inmune ni garantiza inmunoprivilegio, y debe verificarse en la caracterización del lote.',
+          'Producto exclusivo para investigación; esta monografía no emite afirmaciones de aprobación, legalidad, receta, licencia ni autorización sanitaria.',
+        ],
       },
       {
         title: 'Manejo en laboratorio',
-        paragraphs: ['Se reciben criopreservadas en crioviales o bolsas, en medio con crioprotector, generalmente DMSO, y deben mantenerse en nitrógeno líquido en fase vapor o a temperaturas ultrabajas sin interrupción de la cadena de frío. La descongelación es rápida, en baño a temperatura controlada, seguida de dilución gradual para retirar el crioprotector. Nunca deben recongelarse. Todo el manejo exige cabina de bioseguridad, técnica estéril y verificación de viabilidad, esterilidad y ausencia de micoplasma. Se conservan certificado de caracterización, trazabilidad del donante y documentación regulatoria.'],
+        paragraphs: ['El manejo de material celular exige un procedimiento operativo validado para el lote concreto, instalaciones autorizadas, trazabilidad del donante y controles documentados de viabilidad, esterilidad y ausencia de micoplasma. Esta monografía no publica un protocolo de descongelación ni de preparación.', 'Lo que sí corresponde indicar es que se reciben criopreservadas y deben mantenerse a temperaturas ultrabajas sin interrupción de la cadena de frío, que nunca deben recongelarse, y que sin certificado de caracterización del lote el material no es utilizable en un ensayo del que se quiera concluir algo.'],
       },
     ],
   },
@@ -2590,15 +2126,19 @@ const monographs = {
     sections: [
       {
         title: 'Qué es',
-        paragraphs: ['ADMAX es una denominación comercial, no un compuesto químico con definición única, y esto debe advertirse desde el inicio. El nombre se ha usado al menos para dos cosas distintas: una mezcla propietaria de extractos vegetales adaptógenos, con raíces de Leuzea carthamoides, Rhodiola rosea y Eleutherococcus senticosus y frutos de Schisandra chinensis, y, en el mercado de péptidos, para un análogo sintético emparentado con Semax modificado con un grupo adamantano. Al no existir una composición pública y estandarizada, el contenido real depende por completo del proveedor.'],
+        paragraphs: ['ADMAX es una denominación comercial sin identidad química estandarizada en literatura revisada por pares, y esto debe advertirse desde el inicio. El nombre se ha usado para materiales completamente distintos: una mezcla propietaria de extractos vegetales adaptógenos y, en el mercado de péptidos, un supuesto análogo sintético emparentado con Semax. Esta ficha no puede indicar cuál de los dos contiene el producto vendido.', 'Mientras no se documenten fórmula o secuencia exacta, masa molecular, número CAS y certificado de identidad del lote, no deben atribuirse a este material mecanismo, familia química ni actividad alguna. La descripción que sigue es de contexto, no una caracterización del vial.'],
       },
       {
         title: 'Qué se estudia con él',
-        paragraphs: ['Los componentes de la versión vegetal se han estudiado por separado como adaptógenos: Rhodiola rosea y Eleutherococcus en fatiga y respuesta al estrés, Schisandra en función hepática y rendimiento, Leuzea por sus ecdisteroides. Sobre la mezcla completa existe únicamente un pequeño estudio publicado en pacientes con cáncer de ovario avanzado, que midió subpoblaciones linfocitarias e inmunoglobulinas tras quimioterapia. La versión peptídica, en cambio, se estudia en el marco de los análogos de fragmentos de ACTH con modificaciones que buscan aumentar la estabilidad metabólica y la permeabilidad a barreras biológicas.'],
+        paragraphs: ['No es posible describir qué se estudia con este material mientras su identidad no esté resuelta: los dos candidatos que circulan bajo el mismo nombre pertenecen a campos de investigación sin relación entre sí. Cualquier cuerpo de literatura que se le atribuya sería, por fuerza, el de otro material.', 'El paso previo a cualquier uso experimental es documental, no de laboratorio: obtener del proveedor la composición o secuencia, el número CAS y un certificado de identidad del lote. Sin eso, el vial no puede formar parte de un diseño del que se quiera concluir algo.'],
       },
       {
         title: 'Qué dice la evidencia',
-        paragraphs: ['La honestidad obliga a decirlo sin adornos: ADMAX es una preparación propietaria sin literatura revisada por pares que respalde el producto tal como se comercializa. La ambigüedad misma del nombre, que remite a materiales completamente distintos según la fuente, hace imposible atribuirle un cuerpo de evidencia coherente. El único estudio localizable sobre la mezcla vegetal es pequeño, antiguo y no replicado; la variante peptídica carece de publicaciones independientes en revistas indexadas. No existe aprobación regulatoria en ningún mercado. Debe tratarse como material experimental de composición no verificada científicamente.'],
+        paragraphs: [
+          'ADMAX es una denominación comercial sin identidad química estandarizada en literatura revisada por pares. El nombre se ha usado para materiales completamente distintos según la fuente, lo que hace imposible atribuirle un cuerpo de evidencia coherente.',
+          'Antes de describirlo hace falta la fórmula o secuencia exacta, la masa molecular, el número CAS y un certificado de identidad del lote. Mientras falten, no deben atribuirse mecanismo, familia ni actividad. Debe tratarse como material experimental de composición no verificada.',
+          'Producto exclusivo para investigación; esta monografía no emite afirmaciones de aprobación, legalidad, receta, licencia ni autorización sanitaria.',
+        ],
       },
       {
         title: 'Manejo en laboratorio',
