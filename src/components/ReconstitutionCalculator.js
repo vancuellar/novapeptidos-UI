@@ -346,11 +346,18 @@ const ReconstitutionCalculator = ({ variant = 'full', purchased = [], onTrack, s
       setVialMg(vial);
       setWaterMl(aguaSugerida(vial, p));
     }
-    // Dosis de referencia (RUO) si existe; si no, unidad automática + valor
-    // genérico ajustado para que se pueda medir en la jeringa con este vial.
-    if (full && p && p.startDose != null) {
-      setDoseUnit(p.startUnit === 'mg' ? 'mg' : 'mcg');
-      setDose(p.startDose);
+    // SIEMPRE SE ABRE EN EL NIVEL INICIAL, NUNCA EN EL TÍPICO.
+    //
+    // `start_dose` no siempre es el nivel más bajo: en NAD+ vale 50 mg, que es
+    // la TÍPICA, y la calculadora abría ahí. A un cliente que compra por primera
+    // vez le estábamos poniendo enfrente el nivel de en medio como si fuera el
+    // punto de partida. Si va a equivocarse el default, que se equivoque por
+    // abajo. El cliente puede subir de nivel con un clic; lo que no puede es
+    // deshacer una inyección. (Christian, 2026-07-26)
+    const inicial = p?.startLevels?.inicial;
+    if (full && p && (inicial != null || p.startDose != null)) {
+      setDoseUnit((p.startLevels?.unit || p.startUnit) === 'mg' ? 'mg' : 'mcg');
+      setDose(inicial != null ? inicial : p.startDose);
     } else {
       const u = unitFor(name);
       setDoseUnit(u);
