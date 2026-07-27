@@ -520,7 +520,15 @@ const ReconstitutionCalculator = ({ variant = 'full', purchased = [], onTrack, s
 
       <div className="grid lg:grid-cols-5 gap-5 items-start">
         {/* Entradas */}
-        <Card className="p-6 space-y-5 lg:col-span-2">
+        {/* La columna de controles quedó mucho más corta que la de resultados
+            (391 px contra 1,174) al mudar la cuadrícula de niveles a ancho
+            completo. En vez de rellenar con aire, se pega: los controles siguen
+            al cliente mientras lee el resultado largo, y el hueco deja de verse
+            como columna abandonada. (Christian, 2026-07-26)
+
+            Esto depende de que el BODY no sea contenedor de scroll — ver la
+            regla de oro en index.css. */}
+        <Card className="p-6 space-y-5 lg:col-span-2 lg:sticky lg:top-28 self-start">
 
           <div>
             <Label className="text-sm mb-1.5 block">{t('calc.vial')}</Label>
