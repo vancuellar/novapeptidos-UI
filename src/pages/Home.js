@@ -180,18 +180,21 @@ const Home = () => {
   const heroLead = commaIdx >= 0 ? heroTitleRaw.slice(0, commaIdx + 1) : heroTitleRaw.split(' ').slice(0, -2).join(' ');
   const heroAccent = commaIdx >= 0 ? heroTitleRaw.slice(commaIdx + 1).trim() : heroTitleRaw.split(' ').slice(-2).join(' ');
 
+  // Los dos primeros renglones son los que de verdad nos separan y por eso van
+  // ARRIBA, no al final: Certified abre su comparativa con "fabricado en EE. UU."
+  // y aquí el origen se leía hasta el último lugar, donde casi nadie llega.
+  // El del catálogo va con 'no' porque no es cuestión de grado: el más amplio es
+  // uno solo. El del origen va con 'partial' porque algún competidor sí dice de
+  // dónde viene su material. (Christian, 2026-07-28.)
   const whyRows = [
+    { label: t('home.why.r8'), others: 'partial' },
+    { label: t('home.why.r7', { presentaciones: PRESENTACIONES }), others: 'no' },
     { label: t('home.why.r1'), others: 'no' },
     { label: t('home.why.r2'), others: 'partial' },
     { label: t('home.why.r3'), others: 'partial' },
     { label: t('home.why.r4'), others: 'partial' },
     { label: t('home.why.r5'), others: 'no' },
     { label: t('home.why.r6'), others: 'partial' },
-    // Los dos renglones nuevos (Christian, 2026-07-28). El del catálogo va con 'no'
-    // porque no es cuestión de grado: el más amplio es uno solo. El del origen va con
-    // 'partial' porque algún competidor sí dice de dónde viene su material.
-    { label: t('home.why.r7', { presentaciones: PRESENTACIONES }), others: 'no' },
-    { label: t('home.why.r8'), others: 'partial' },
   ];
 
   return (
@@ -561,12 +564,24 @@ const Home = () => {
             lo que sobra, la columna "Otros vendedores" quedaba cortada a la mitad.
             Pasaba desde antes y con los renglones nuevos se notó más. El arreglo:
             en pantalla chica los encabezados pueden partirse en dos renglones y los
-            costados van más justos; de sm en adelante todo queda como estaba. */}
+            costados van más justos; de sm en adelante todo queda como estaba.
+
+            Y en teléfono las dos columnas de la derecha van a ANCHO FIJO, no 'auto'.
+            Con 'auto' las dimensionaba el encabezado "Otros vendedores", que se
+            comía más de la mitad de la pantalla y dejaba la columna del texto tan
+            angosta que el renglón del origen en Estados Unidos —el más largo y el
+            que Christian quiere que se lea primero— caía en diez líneas. Fijando
+            56 y 88 px el encabezado se parte en dos renglones (que es justo lo que
+            ya permitía el arreglo anterior) y el texto recupera casi el doble de
+            ancho. De sm en adelante vuelve a 'auto' y no cambia nada. */}
         <Card className="overflow-hidden shadow-none">
-          <div className="grid grid-cols-[1fr_auto_auto] text-sm">
+          <div className="grid grid-cols-[1fr_3.5rem_5.5rem] sm:grid-cols-[1fr_auto_auto] text-sm">
             <div className="px-3.5 sm:px-5 py-3.5 bg-[hsl(var(--secondary))]"> </div>
-            <div className="px-3 sm:px-8 py-3.5 font-heading font-bold text-[hsl(var(--primary))] bg-[hsl(var(--accent))] text-center sm:whitespace-nowrap">Exygen Labs</div>
-            <div className="px-3 sm:px-8 py-3.5 font-medium text-muted-foreground bg-[hsl(var(--secondary))] text-center sm:whitespace-nowrap">{t('home.why.others')}</div>
+            {/* En teléfono los encabezados van en 11 px y con los costados justos:
+                "vendedores" es la palabra más larga y con 14 px se salía de su
+                celda, y como la tarjeta recorta, se leía cortada. */}
+            <div className="px-2 sm:px-8 py-3.5 text-[11px] sm:text-sm font-heading font-bold text-[hsl(var(--primary))] bg-[hsl(var(--accent))] text-center sm:whitespace-nowrap">Exygen Labs</div>
+            <div className="px-2 sm:px-8 py-3.5 text-[11px] sm:text-sm font-medium text-muted-foreground bg-[hsl(var(--secondary))] text-center sm:whitespace-nowrap">{t('home.why.others')}</div>
             {whyRows.map((row, i) => (
               <React.Fragment key={i}>
                 <div className="px-3.5 sm:px-5 py-3.5 border-t border-border min-w-0">{row.label}</div>

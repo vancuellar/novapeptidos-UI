@@ -27,6 +27,16 @@ const page = {
           q: '¿En qué presentación llegan los péptidos?',
           a: 'Casi todo llega como polvo liofilizado en vial de vidrio sellado con tapón de goma y engargolado de aluminio. El liofilizado es el mismo péptido al que se le quitó el agua por sublimación, lo que le da una estabilidad muchísimo mayor que la de una solución. Algunos productos, como el agua bacteriostática, llegan en solución.',
         },
+        // Es de las primeras cosas que pregunta quien viene comparando tiendas:
+        // la competencia lo grita en su portada y en su propio FAQ, y a nosotros
+        // no aparecía por ningún lado de esta página. Se contesta con lo
+        // comprobable —de dónde se compra el material y desde dónde se despacha—
+        // y se aclara de una vez lo que NO somos, para que nadie entienda que
+        // tenemos planta propia allá. ⛔ Nunca se menciona Asia, en ningún idioma.
+        {
+          q: '¿De dónde viene el material que venden?',
+          a: 'Nuestra materia prima se compra a laboratorios de Estados Unidos. De ahí sale el péptido que después se verifica lote por lote —identidad por espectrometría de masas y pureza por HPLC— y que se despacha desde México a todo el país. Para que quede claro lo que no somos: no tenemos planta ni laboratorio propio en Estados Unidos, no tenemos domicilio allá y nada de lo que vendemos está aprobado por la FDA. Somos una operación mexicana que compra material estadounidense, lo verifica y lo entrega aquí.',
+        },
         {
           q: '¿Qué pureza manejan y cómo la comprueban?',
           a: 'El estándar de la casa es 99% o más por HPLC, con identidad confirmada por espectrometría de masas. Cada lote se analiza y esos dos datos (pureza cromatográfica y masa observada contra masa teórica) son la base del certificado de análisis del lote.',

@@ -12,6 +12,12 @@ const page = {
       paragraphs: [
         'Un péptido de investigación no se juzga por la etiqueta ni por la foto del vial. Se juzga por dos preguntas: ¿es realmente la molécula que dice ser? y ¿qué proporción del material es esa molécula y no otra cosa? La primera es identidad, la segunda es pureza. Un lote puede tener 99% de pureza y aun así ser inútil si lo que está purísimo no es la secuencia que pediste.',
         'En un experimento, un lote mal caracterizado no produce un resultado equivocado de forma evidente: produce un resultado que parece válido y que nadie puede reproducir. Por eso el control de calidad no es papeleo, es la parte del proceso que hace que tus datos signifiquen algo.',
+        // El origen del material entra aquí porque es el primer eslabón del
+        // recorrido: la competencia dedica su página de pruebas de laboratorio a
+        // repetir que su material es estadounidense y en la nuestra no aparecía.
+        // Solo se afirma lo comprobable: a quién se le compra y desde dónde se
+        // despacha. ⛔ Nunca se menciona Asia, en ningún idioma (orden de Christian).
+        'El recorrido empieza antes del primer análisis, en la compra: nuestra materia prima se adquiere a laboratorios de Estados Unidos. Eso no sustituye a nada de lo que viene después —el lote se verifica igual, y la procedencia nunca es motivo para saltarse un paso—, pero sí explica de dónde sale el polvo que entra a control.',
         'Aquí explicamos, paso a paso, qué le pasa a un lote antes de que se pueda vender, qué documentos lo respaldan y cómo interpretarlos. Todo el material descrito es de uso exclusivo en investigación (RUO): no es para consumo humano ni animal, ni para uso diagnóstico o terapéutico.',
       ],
     },

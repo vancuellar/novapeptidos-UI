@@ -743,9 +743,15 @@ const esMX = {
   'home.why.r5': 'Soporte experto en español 24/7',
   'home.why.r6': 'Precios claros en MXN',
   // Los dos renglones que de verdad nos separan: nadie en México tiene más
-  // presentaciones, y casi nadie dice de dónde viene su materia prima.
+  // presentaciones, y casi nadie dice de dónde viene su materia prima. Van
+  // PRIMEROS en la tabla (ver whyRows en Home.js): Certified pone su "fabricado
+  // en EE. UU." como primer argumento de su comparativa y aquí se leía hasta el
+  // final. El renglón del origen dice explícitamente que los péptidos salen de
+  // laboratorios de Estados Unidos — es lo que Christian pidió que dijera esta
+  // sección (2026-07-28). No se promete fábrica propia, ni domicilio en EUA, ni
+  // FDA: solo lo comprobable, que es de dónde se compra el material.
   'home.why.r7': 'El catálogo más amplio de México ({{presentaciones}} presentaciones)',
-  'home.why.r8': 'Materia prima de laboratorios de Estados Unidos',
+  'home.why.r8': 'Nuestros péptidos se hacen con materia prima de laboratorios de Estados Unidos',
   'home.paymentsTitle': 'Pagos seguros y protegidos',
   'home.paymentsNote': 'Elige el método que prefieras al finalizar tu compra.',
   'home.explore': 'Explorar',
@@ -1933,7 +1939,7 @@ const enUS = {
   'home.why.r5': 'Expert support 24/7',
   'home.why.r6': 'Clear MXN pricing',
   'home.why.r7': 'The widest catalog in Mexico ({{presentaciones}} presentations)',
-  'home.why.r8': 'Raw material from laboratories in the United States',
+  'home.why.r8': 'Our peptides are made from raw material sourced in United States laboratories',
   'home.paymentsTitle': 'Safe, protected payments',
   'home.paymentsNote': 'Choose your preferred method at checkout.',
   'home.explore': 'Explore',
@@ -3077,7 +3083,7 @@ const ptBR = {
   'home.why.r5': 'Suporte especializado 24/7',
   'home.why.r6': 'Preços claros em MXN',
   'home.why.r7': 'O catálogo mais amplo do México ({{presentaciones}} apresentações)',
-  'home.why.r8': 'Matéria-prima de laboratórios dos Estados Unidos',
+  'home.why.r8': 'Nossos peptídeos são feitos com matéria-prima de laboratórios dos Estados Unidos',
   'home.paymentsTitle': 'Pagamentos seguros e protegidos',
   'home.paymentsNote': 'Escolha o método preferido ao finalizar a compra.',
   'home.explore': 'Explorar',

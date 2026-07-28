@@ -13,6 +13,22 @@ const page = {
       body:
         'Cada lote se analiza por HPLC para pureza y por espectrometría de masas para confirmar identidad. La pureza típica de nuestro catálogo es ≥99%. Cada vial lleva impreso su número de lote y el análisis de ese lote está disponible a solicitud, escribiendo a hola@exygenlabs.com con el número que aparece en tu etiqueta.',
     },
+    // El origen va ARRIBA de todo lo analítico, y a propósito. Certified dedica su
+    // página de pruebas de laboratorio a repetir que su material es de Estados
+    // Unidos, y quien compara las dos páginas se llevaba la impresión de que
+    // nosotros lo escondíamos. Aquí se dice lo que sí es cierto y comprobable:
+    // dónde se compra la materia prima y desde dónde se despacha. Nada de fábrica
+    // propia, domicilio en EUA, aprobación FDA ni certificaciones que no tenemos.
+    // ⛔ Y nunca se menciona Asia, en ningún idioma — orden expresa de Christian.
+    {
+      type: 'prose',
+      title: 'De dónde sale el material',
+      paragraphs: [
+        'Nuestra materia prima se compra a laboratorios de Estados Unidos. Es el punto de partida de todo lo que sigue en esta página: un control de calidad solo vale lo que vale el material que entra a control, y por eso decimos de dónde viene antes de contar qué se le hace.',
+        'Ese abastecimiento estadounidense no nos exime de nada. Cada lote pasa igual por identidad por espectrometría de masas y pureza por HPLC, y ninguno entra a inventario por el mero hecho de su procedencia. El certificado que recibes es el de tu lote, no el del proveedor.',
+        'Lo que no vas a leer aquí: que tengamos planta propia, laboratorio propio o domicilio en Estados Unidos, ni que algo de esto esté aprobado por la FDA. No lo tenemos y no lo decimos. Somos una operación mexicana que compra material estadounidense, lo verifica y lo despacha dentro de México.',
+      ],
+    },
     {
       type: 'prose',
       title: 'Por qué la pureza es la única cifra que importa de verdad',

@@ -1926,7 +1926,13 @@ const monographs = {
       {
         title: 'Qué dice la evidencia',
         paragraphs: [
-          'KPV tiene una base preclínica más sólida y más internacional que los bioreguladores rusos: hay publicaciones revisadas por pares de grupos en Estados Unidos, Europa y Asia, con mecanismos moleculares razonablemente coherentes entre estudios.',
+          // ⛔ Aquí decía "Estados Unidos, Europa y Asia". La regla de Christian
+          // (2026-07-28) es que la palabra no aparece en el sitio en ningún
+          // idioma, y este renglón se había quedado fuera de la limpieza porque
+          // vive en las monografías, no en las traducciones ni en las páginas.
+          // La frase no pierde nada: lo que sostenía el argumento era que la
+          // evidencia viene de varios países, no la lista de continentes.
+          'KPV tiene una base preclínica más sólida y más internacional que los bioreguladores rusos: hay publicaciones revisadas por pares de grupos de investigación en Estados Unidos, Europa y otros países, con mecanismos moleculares razonablemente coherentes entre estudios.',
           'Dicho esto, la evidencia sigue siendo esencialmente in vitro y en animales. Los datos de farmacocinética y de comportamiento a largo plazo son escasos, y la traslación de los resultados en roedores a otros sistemas no está demostrada.',
           'Producto exclusivo para investigación; esta monografía no emite afirmaciones de aprobación, legalidad, receta, licencia ni autorización sanitaria.',
         ],
@@ -2021,7 +2027,7 @@ const monographs = {
     sections: [
       {
         title: 'Qué es',
-        paragraphs: ['Lemon Bottle es una solución acuosa de formulación propietaria y origen coreano, presentada habitualmente en viales de diez mililitros. Según la información del fabricante, combina riboflavina (vitamina B2), que le da su color amarillo característico, lecitina o fosfatidilcolina, bromelina procedente de piña, y una mezcla de extractos vegetales como Centella asiatica, Salvia miltiorrhiza, manzanilla y Scutellaria baicalensis. No es un péptido ni un compuesto único: es una mezcla comercial cuyas proporciones exactas no se publican. Se distribuye como material cosmético o de investigación, no como medicamento aprobado.'],
+        paragraphs: ['Lemon Bottle es una solución acuosa de formulación propietaria y origen coreano, presentada habitualmente en viales de diez mililitros. Según la información del fabricante, combina riboflavina (vitamina B2), que le da su color amarillo característico, lecitina o fosfatidilcolina, bromelina procedente de piña, y una mezcla de extractos vegetales como Centella (gotu kola), Salvia miltiorrhiza, manzanilla y Scutellaria baicalensis. No es un péptido ni un compuesto único: es una mezcla comercial cuyas proporciones exactas no se publican. Se distribuye como material cosmético o de investigación, no como medicamento aprobado.'],
       },
       {
         title: 'Qué se estudia con él',
