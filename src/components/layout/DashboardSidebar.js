@@ -44,7 +44,7 @@ const DashboardSidebar = ({ items }) => {
     <>
       {/* Móvil: barra horizontal arriba del contenido */}
       <TabsList className="lg:hidden h-auto w-full flex flex-row items-stretch justify-start gap-1 bg-transparent p-0 overflow-x-auto mb-4">
-        {items.map(({ value, icon: Icon, label }) => (
+        {items.filter((i) => !i.grupo).map(({ value, icon: Icon, label }) => (
           <TabsTrigger key={value} value={value} onClick={alTope}
             className="justify-start gap-2 rounded-lg shrink-0">
             <Icon className="h-4 w-4" /> {label}
@@ -68,12 +68,19 @@ const DashboardSidebar = ({ items }) => {
           </button>
           {!collapsed && (
             <TabsList className="h-auto w-full flex flex-col items-stretch justify-start gap-1 bg-transparent p-0 mt-1">
-              {items.map(({ value, icon: Icon, label }) => (
+              {items.map(({ value, icon: Icon, label, grupo }, i) => (grupo ? (
+                // Separador. No es un boton: es una etiqueta para que la vista se lea de
+                // un golpe en vez de renglon por renglon.
+                <div key={`g-${grupo}`}
+                  className={`px-2 pb-1 text-[10px] font-medium uppercase tracking-wider text-muted-foreground/70 ${i ? 'pt-3' : 'pt-1'}`}>
+                  {grupo}
+                </div>
+              ) : (
                 <TabsTrigger key={value} value={value} onClick={alTope}
                   className="justify-start w-full gap-2.5 rounded-lg py-2">
                   <Icon className="h-4 w-4 shrink-0" /> <span className="truncate">{label}</span>
                 </TabsTrigger>
-              ))}
+              )))}
             </TabsList>
           )}
         </div>

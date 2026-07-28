@@ -430,20 +430,28 @@ const Admin = () => {
       <p className="text-muted-foreground text-sm mb-6">{t('admin.subtitle')}</p>
 
       <Tabs value={params.get('tab') || 'sales'} onValueChange={(v) => setParams(v === 'sales' ? {} : { tab: v }, { replace: true })} className="lg:flex lg:gap-8 lg:items-start">
+        {/* Agrupado por lo que uno viene a hacer, no por el orden en que se fueron
+            construyendo las pestañas. Catorce entradas seguidas se leen como una lista
+            de nada; en cinco grupos se encuentra sin leer. Recompra ya no está aquí:
+            vive DENTRO de Clientes, que es lo que es. */}
         <DashboardSidebar items={[
+          { grupo: 'Negocio' },
           { value: 'sales', icon: TrendingUp, label: t('admin.salesTab') },
+          { value: 'orders', icon: ShoppingBag, label: t('admin.ordersTab') },
           { value: 'funnel', icon: Filter, label: t('admin.funnelTab') },
-          { value: 'marketing', icon: Target, label: 'Marketing' },
-          { value: 'meta', icon: BarChart3, label: t('admin.metaTab') },
           { value: 'intentos', icon: ShoppingCart, label: t('admin.tryTab') },
+          { grupo: 'Gente' },
           { value: 'customers', icon: Users, label: t('admin.customersTab') },
           { value: 'distributors', icon: Store, label: t('admin.distributorsTab') },
-          { value: 'orders', icon: ShoppingBag, label: t('admin.ordersTab') },
+          { grupo: 'Catálogo' },
           { value: 'products', icon: Package, label: t('admin.productsTab') },
-          { value: 'motor', icon: Gauge, label: 'Motor de Precios' },
           { value: 'stock', icon: Boxes, label: t('admin.stockTab') },
-          { value: 'repurchase', icon: RefreshCw, label: t('admin.repurchaseTab') },
+          { value: 'motor', icon: Gauge, label: 'Motor de Precios' },
+          { grupo: 'Difusión' },
+          { value: 'marketing', icon: Target, label: 'Marketing' },
+          { value: 'meta', icon: BarChart3, label: t('admin.metaTab') },
           { value: 'news', icon: Megaphone, label: t('adminNews.tab') },
+          { grupo: 'Ajustes' },
           { value: 'pagos', icon: KeyRound, label: 'Cobros' },
         ]} />
         <div className="min-w-0 flex-1">
@@ -1016,6 +1024,42 @@ const Admin = () => {
               </TableBody>
             </Table>
           </Card>
+        
+          {/* Recompra vive DENTRO de Clientes: es una vista de clientes —quien esta por
+              quedarse sin producto— y como pestana aparte se miraba una vez y nunca mas. */}
+          <div className="mt-10 space-y-4" data-testid="admin-recompra">
+            <h3 className="font-heading font-semibold flex items-center gap-2">
+              <RefreshCw className="h-4 w-4 text-[hsl(var(--primary))]" />
+              {t('admin.repurchaseTab')}
+            </h3>
+          <p className="text-sm text-muted-foreground">{t('admin.repurchase.hint')}</p>
+          <Card className="overflow-x-auto">
+            <Table data-testid="admin-repurchase-table">
+              <TableHeader>
+                <TableRow>
+                  <TableHead>{t('distributor.table.client')}</TableHead>
+                  <TableHead>{t('calc.product')}</TableHead>
+                  <TableHead>{t('admin.repurchase.daysLeft')}</TableHead>
+                  <TableHead>{t('admin.repurchase.runsOut')}</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {repurchase.length === 0 ? (
+                  <TableRow><TableCell colSpan={4} className="text-center text-muted-foreground py-8">{t('admin.repurchase.empty')}</TableCell></TableRow>
+                ) : repurchase.map((r, i) => (
+                  <TableRow key={i} className={r.needs_repurchase ? 'bg-[hsl(var(--warning))]/10' : ''}>
+                    <TableCell><div className="text-sm">{r.customer_name}</div><div className="text-xs text-muted-foreground">{r.customer_email}</div></TableCell>
+                    <TableCell className="text-sm">{r.product_name}</TableCell>
+                    <TableCell className={r.needs_repurchase ? 'font-semibold text-[hsl(var(--primary))]' : ''}>
+                      {t('admin.repurchase.days', { count: r.days_left })}
+                    </TableCell>
+                    <TableCell className="text-xs text-muted-foreground">{fmtDate(r.runs_out_at)}</TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </Card>
+                  </div>
         </TabsContent>
 
         <TabsContent value="distributors" className="mt-5">
@@ -1176,35 +1220,6 @@ const Admin = () => {
                       <Button variant="ghost" size="icon" onClick={() => openEdit(p)} data-testid="admin-edit-product-button"><Pencil className="h-4 w-4" /></Button>
                       <Button variant="destructive" size="icon" onClick={() => remove(p)} className="ml-1" data-testid="admin-delete-product-button"><Trash2 className="h-4 w-4" /></Button>
                     </TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </Card>
-        </TabsContent>
-        <TabsContent value="repurchase" className="mt-5 space-y-4">
-          <p className="text-sm text-muted-foreground">{t('admin.repurchase.hint')}</p>
-          <Card className="overflow-x-auto">
-            <Table data-testid="admin-repurchase-table">
-              <TableHeader>
-                <TableRow>
-                  <TableHead>{t('distributor.table.client')}</TableHead>
-                  <TableHead>{t('calc.product')}</TableHead>
-                  <TableHead>{t('admin.repurchase.daysLeft')}</TableHead>
-                  <TableHead>{t('admin.repurchase.runsOut')}</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {repurchase.length === 0 ? (
-                  <TableRow><TableCell colSpan={4} className="text-center text-muted-foreground py-8">{t('admin.repurchase.empty')}</TableCell></TableRow>
-                ) : repurchase.map((r, i) => (
-                  <TableRow key={i} className={r.needs_repurchase ? 'bg-[hsl(var(--warning))]/10' : ''}>
-                    <TableCell><div className="text-sm">{r.customer_name}</div><div className="text-xs text-muted-foreground">{r.customer_email}</div></TableCell>
-                    <TableCell className="text-sm">{r.product_name}</TableCell>
-                    <TableCell className={r.needs_repurchase ? 'font-semibold text-[hsl(var(--primary))]' : ''}>
-                      {t('admin.repurchase.days', { count: r.days_left })}
-                    </TableCell>
-                    <TableCell className="text-xs text-muted-foreground">{fmtDate(r.runs_out_at)}</TableCell>
                   </TableRow>
                 ))}
               </TableBody>

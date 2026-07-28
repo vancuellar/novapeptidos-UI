@@ -1,19 +1,153 @@
-# 🔴 EN CURSO — 2026-07-28 (noche)
+# 🤝 HANDOFF — 2026-07-28 (cierre del día)
+
+> **Léelo en 30 segundos. Todo lo demás es detalle.**
+
+**En qué estado quedó.** El sitio, el backend y el Panel están **en vivo y en verde**. Hoy se
+cerraron seis frentes: los 3 HGH pasaron a venta directa (aplicado y cobrando), el Panel tiene
+una pestaña nueva **Motor de Precios** que enseña costos y márgenes **sólo al admin**, entró un
+proveedor nuevo (**Lumi**) junto con tres arreglos de raíz en el lector de listas, Codex ya se
+lanza con los permisos correctos, las comisiones absurdas quedaron prohibidas en la base, y el
+Panel navega mejor (abre arriba al cambiar de pestaña, y "Surtir el catálogo completo" vive en
+Inventario). El sello del home dice ahora sólo **"Hasta el 15%"**.
+
+**Qué está corriendo ahora mismo.** ⚠️ **Otro agente está trabajando EN EL HOME** (el mensaje
+de "el distribuidor más grande de México" apoyado en las 193 presentaciones, y las menciones de
+EUA). **NO toques `src/pages/Home.js` ni `src/i18n/translations.js`** hasta confirmar que ya
+terminó. Quedó **pendiente de verificar**.
+
+**Qué falta.**
+1. **Meta está bloqueado del lado de Meta**, no nuestro (ver abajo). El panel enseña el CSV del
+   25-jul y no se puede subir el presupuesto a 10 USD/día hasta desbloquear la app.
+2. **Terminar de migrar el motor**: `reprecio.py` todavía LEE `MAESTRA.xlsx`. Hasta que escriba
+   en la base, el bloque "movimientos de precio" del Dashboard sigue vacío (se reconstruye desde
+   `maestra.csv` en cada corrida, así que todo sale como carga inicial — y el tablero lo dice).
+3. Pendientes viejos que siguen vivos: vigencias traslapadas, `certeza.py` compara poco,
+   `v_roi_real` resta el envío contra lo que dice `FUENTE-DE-VERDAD.md`.
+
+**Qué espera decisión de Christian.**
+- **HCG 2,000 y 10,000 IU:** `FUENTE-DE-VERDAD.md` los lista como "solo venta directa", pero en
+  la maestra salen elegibles para distribuidor con 30% y 35%. Según la fórmula ambos aguantan la
+  comisión. Si manda el documento, se agregan a `solo_venta_directa.json` y listo.
+- **Lumi vende esteroides anabólicos.** Están vetados de nuestro lado, pero decide él si eso
+  cambia algo sobre seguir tratando con ese proveedor.
+- Subir el presupuesto de Meta a 10 USD/día — en cuanto se desbloquee la app.
+
+**Compuertas al cierre (todas en verde, comprobadas hoy).**
+
+| Compuerta | Resultado |
+|---|---|
+| `pricing-system` · pytest | **116** |
+| `novapeptidos-RBAC` · pytest | **240** |
+| `python3 auditar_catalogo.py` | **14 bien, 0 por revisar** |
+| `python3 certeza.py` | **204 productos, las tres listas idénticas** |
+| Auditoría del sitio (`npm run verificar`) | **80 / 0** |
+
+---
+
+# 🔴 ESTADO — 2026-07-28
+
+## ✅ Lo que se cerró hoy (una línea cada uno)
+
+1. **Los 3 HGH a venta directa** — HGH 36 IU, HGH Fragment 176-191 12 mg y HCG 1,000 IU quedaron
+   `vender = si` + `elegible_distribuidor = no`, declarado en `pricing-system/solo_venta_directa.json`.
+   Aplicado y en vivo. *(detalle abajo)*
+2. **Codex con los permisos que hacían falta** — `pricing-system/auditar_con_codex.sh`, con
+   `--skip-git-repo-check`, `--sandbox workspace-write` y **red abierta**. `PROMPT-AUDITORIA.md` y
+   `PROMPT-ROMPEDOR.md` al día.
+3. **Comisiones absurdas: cerrado.** La columna aceptaba −50%, 150% y 300%; ahora la base sólo
+   admite 0%–50% y lo rechaza con un CHECK.
+4. **Dashboard del Motor de Precios** en el Panel Admin (`?tab=motor`), sólo lectura y sólo para
+   admin. *(detalle abajo — casi se publica en internet)*
+5. **Botones nuevos en el Panel**: "Refrescar" y "Vender esto / descartar". Aprobar **no publica**:
+   deja la decisión anotada y el alta la hace el motor. *(detalle abajo)*
+6. **Proveedor nuevo: Lumi (P31)**, 118 precios, y **tres fallas de raíz** tapadas en el lector de
+   listas de proveedor. *(detalle abajo — es lo más importante del día después de los HGH)*
+7. **Panel más navegable**: cambiar de pestaña abre ARRIBA, Recompra se movió dentro de Clientes,
+   el sidebar quedó agrupado en **Negocio · Gente · Catálogo · Difusión · Ajustes**, y hay sección
+   nueva en Inventario: "Surtir el catálogo completo".
+8. **Sello del home**: ya sólo dice **"Hasta el 15%"** (se quitó "ya aplicado" y el monto mínimo).
+
+## 🔴 Lo que sigue ABIERTO
+
+### 1. Meta — bloqueado por Meta, no por nosotros
+
+La API de Marketing responde **`API access blocked`** (OAuthException, code 200) a **CUALQUIER**
+llamada, incluida `/me`. Comprobado hoy con el token bueno. **No es el token ni el código: es un
+bloqueo de Meta sobre la app.** Mientras tanto el panel enseña el **CSV del 25-jul**, que es
+exactamente para lo que existe el doble camino en `novapeptidos-RBAC/meta_ads.py` (CSV y API dan
+la misma salida, el panel no se entera de cuál viene).
+
+⚠️ **Christian quiere subir el presupuesto diario a 10 USD y no se puede hasta desbloquear la app.**
+
+### 2. El home — hay otro agente trabajando AHÍ AHORA MISMO
+
+Mensaje de "el distribuidor más grande de México" apoyado en las 193 presentaciones, y menciones
+de EUA. **No lo toques.** Quedó **pendiente de verificar** cuando termine.
+
+### 3. Movimientos de precio del Dashboard: van a seguir vacíos
+
+Hasta que `reprecio.py` escriba en la base, la base se reconstruye desde `maestra.csv` en cada
+corrida y todo sale como carga inicial. El tablero lo dice con todas sus letras en vez de fingir
+que hay historial.
+
+### 4. Pendientes viejos que siguen vivos
+
+- **Vigencias traslapadas.** La base acepta dos periodos históricos que se encimen; el índice
+  único sólo impide dos precios ABIERTOS. Hoy no está pasando.
+- **`certeza.py` compara poco.** No mira SKU, ni presentación, ni vigencia, ni el motivo, ni
+  vender/oculto. Tampoco detecta llaves repetidas dentro de un JSON. Y base y `maestra.csv`
+  pueden estar equivocadas de la misma forma: **no consulta producción**.
+- **`v_roi_real` resta el envío**, pero `FUENTE-DE-VERDAD.md` dice expresamente que **el envío NO
+  cuenta contra el ROI** (nunca pasa del 10%, y ese 10% ya está aceptado). Es el número que el
+  Dashboard enseña en "al filo del ROI". Contradicción viva.
+- **`reprecio.py` todavía lee el Excel.** ⛔ **NO apagar `MAESTRA.xlsx`**: por eso el reporte se
+  escribe en `REPORTE-EXYGEN.xlsx` y no encima de ella. Sobrescribirla hoy rompe el motor.
+- **Una prueba sale a internet** y si no hay red esa comprobación no se hace — y no queda claro
+  que no se hizo.
+
+### 5. Lista larga de pendientes (orden de gravedad, no de urgencia)
+
+1. **Actualizar el Vigía** para que lea de la base (pedido de Christian).
+2. **Terminar de migrar el motor**: que `reprecio.py` escriba en la base. Ahí se apaga
+   `MAESTRA.xlsx` del todo.
+3. **Cargar el CAC** del panel de Meta a `costo_adquisicion` (la tabla está creada y vacía).
+4. **Traer descuentos y puntos por cliente** del backend a la base.
+5. **Costos de envío de los proveedores nuevos** — sin eso "el más barato" puede mentir.
+6. **Mover los costos al Panel Admin** (acordado, no empezado): hoy hace falta una terminal.
+7. **Que el reabastecimiento viva EN LÍNEA**, no en la Mac de Christian (lo pidió él).
+8. **Preguntarle a los proveedores** lo de `datos/preguntar_al_proveedor.csv`: qué es "TBFing",
+   si el SLU-PP es 322 o 332, y cuál precio vale de los dos que da DT.
+9. **Revisar la calculadora de péptidos de Certiva** —
+   https://certivapeptides.com/peptide-calculator/#reconstitution-calculator — y compararla con
+   la nuestra (pedido de Christian, 28-jul).
+10. **Escalera**: 3 casos donde el grande sale más caro POR MILIGRAMO y la banda no deja arreglo —
+    Glutatión 1,500 mg, HGH 40 IU y MOTS-c 40 mg. (El auditor reportaba más; los otros eran
+    falsos, comparaba el combo BPC+TB contra el BPC-157 simple. Ya usa la familia del motor.)
+11. **IGF-1 LR3 1 mg queda en 4.87×** y no tiene arreglo (Certified lo topa en $1,460).
+12. ⚠️ **En mano aparece 5-Amino-1MQ 5 mg, pero la compra real fue de 10 mg** (a Lisa, $45). Uno
+    de los dos está mal y hay que confirmarlo.
+13. **Vigía y Motor, separados** (aprobado por Christian el 28-jul): el Vigía CAPTURA y CONTRASTA
+    los precios de la competencia a diario y **no toca los nuestros**; el Motor propone el ajuste
+    según las reglas; Christian aprueba. Si el que mira también mueve precios, una lectura mala de
+    una página web cambia el catálogo sin que nadie se entere.
+
+---
+
+# 📐 EL DETALLE TÉCNICO
 
 ## 🟢 EL MOTOR DE PRECIOS — se acabó el Excel como fuente de la verdad
 
 Así se llama el feature: **Motor de Precios** (decisión de Christian). Hace juego con el
-**Vigía**, que observa a la competencia; el Motor pone el precio. ⚠️ **Pendiente: actualizar
-el Vigía** para que lea de la base cuando el Motor esté terminado y probado.
+**Vigía**, que observa a la competencia; el Motor pone el precio.
 
-Todo vivía en `MAESTRA.xlsx`. Una hoja de cálculo no sabe decir "ese proveedor no existe"
-ni "ese producto ya está dos veces", así que los errores se guardaban sin protestar. El
-28-jul pasaron los dos casos: 502 precios colgados del producto equivocado, y las 11
-COMPRAS REALES borradas al reescribir un CSV. Ahora hay una base de verdad.
+Todo vivía en `MAESTRA.xlsx`. Una hoja de cálculo no sabe decir "ese proveedor no existe" ni "ese
+producto ya está dos veces", así que los errores se guardaban sin protestar. El 28-jul pasaron los
+dos casos: 502 precios colgados del producto equivocado, y las 11 COMPRAS REALES borradas al
+reescribir un CSV. Ahora hay una base de verdad.
 
-**UNA base, MUCHAS tablas** (Christian preguntó si convenía separarlas: no — el ROI
-necesita costo + comisión + descuento + envío al mismo tiempo, y en bases separadas no se
-pueden cruzar). Todo en `pricing-system/`, repo privado `exygen-pricing`:
+**UNA base, MUCHAS tablas** (Christian preguntó si convenía separarlas: no — el ROI necesita costo
++ comisión + descuento + envío al mismo tiempo, y en bases separadas no se pueden cruzar). Todo en
+`pricing-system/`, repo privado `exygen-pricing`:
 
 | Archivo | Qué es |
 |---|---|
@@ -21,77 +155,274 @@ pueden cruzar). Todo en `pricing-system/`, repo privado `exygen-pricing`:
 | `db.py` | Construye la base y la consulta · `poner_precio()` |
 | `certeza.py` | **Comprueba que todas las listas digan lo mismo** |
 | `oportunidades.py` | Qué nos ofrecen y no vendemos |
+| `reabastecer.py` | Qué reponer y a quién comprarle |
+| `aplicar_aprobados.py` | Da de alta lo que Christian aprobó desde el Panel |
+| `publicar_dashboard_precios.py` | Calcula la foto del tablero y la sube |
+| `auditar_con_codex.sh` | Lanza a Codex con los permisos correctos |
 | `reporte_excel.py` | Genera `REPORTE-EXYGEN.xlsx`, marcado NO EDITAR |
+| `solo_venta_directa.json` | Los que se venden pero NO por el canal, por decisión |
 | `datos/*.csv` | La verdad en texto, versionada: compras reales, reglas, alias, exclusiones |
 
 ```
 python3 db.py --construir      python3 certeza.py         python3 oportunidades.py
 python3 db.py --revisar        python3 reporte_excel.py   python3 reprecio.py --desde-base
+python3 publicar_dashboard_precios.py --subir             python3 aplicar_aprobados.py
 ```
 
 ### Lo que la base impide y el Excel permitía
 
 - Un costo no puede apuntar a un proveedor que no existe.
-- **Los precios no se sobrescriben: se versionan** (`vigente_desde`/`vigente_hasta`, con
-  hora en UTC porque un día de repricing tiene varios movimientos). Un índice único
-  garantiza **exactamente un precio vigente** por producto.
-- `db.poner_precio()` es la única forma de mover un precio: **exige motivo**, guarda quién
-  y cuándo, conserva el anterior y es atómica.
+- **Los precios no se sobrescriben: se versionan** (`vigente_desde`/`vigente_hasta`, con hora en
+  UTC porque un día de repricing tiene varios movimientos). Un índice único garantiza
+  **exactamente un precio vigente** por producto.
+- `db.poner_precio()` es la única forma de mover un precio: **exige motivo**, guarda quién y
+  cuándo, conserva el anterior y es atómica.
 - No se puede vender abajo del **piso de 5×** sin *declarar* la excepción por escrito.
 - El distribuidor nunca paga más que el público.
+- **La comisión sólo puede ir de 0% a 50%** (arreglado el 28-jul: aceptaba −50%, 150% y 300%).
 
 ### CERTEZA: una sola verdad, comprobada
 
 `certeza.py` compara la base contra **las tres listas que se publican** (`maestra.csv`,
-`precios_maestra.json`, `distribuidor_maestra.json`). Hoy: **204 productos, idénticos**.
-Probado saboteando un precio a mano — lo caza y devuelve error.
+`precios_maestra.json`, `distribuidor_maestra.json`). Hoy: **204 productos, idénticos**. Probado
+saboteando un precio a mano — lo caza y devuelve error.
 ⚠️ Esto compara lo que se PUBLICA, no lo que el servidor COBRA. Eso es la suite E2E, y la
 distinción es la que costó caro en julio.
 
 ### Las reglas del negocio, como DATOS (tabla `regla`)
 
-Copiadas del backend en vivo con archivo y línea: envío $250, tope de envío **10%**, envío
-gratis desde $2,500 (**derivado** del tope, ya no escrito a mano), descuento máximo 40%,
-puntos 3%, tope de comisión 50%, piso de ROI 5×. Un aviso salta si el umbral deja de ser
-el 10% del ticket.
+Copiadas del backend en vivo con archivo y línea: envío $250, tope de envío **10%**, envío gratis
+desde $2,500 (**derivado** del tope, ya no escrito a mano), descuento máximo 40%, puntos 3%, tope
+de comisión 50%, piso de ROI 5×. Un aviso salta si el umbral deja de ser el 10% del ticket.
 
 ### ROI real (`v_roi_real`) y CAC (`v_cac`)
 
-⚠️ **Casi se publica mal.** El descuento y la comisión **NO se suman: comparten el mismo
-tope por producto** — el backend reparte `cap − descuento`
-(`novapeptidos-RBAC/server.py:1224`). Restándolos por separado salían **149 productos
-abajo del piso**; con la cuenta correcta es **UNO**: IGF-1 LR3 1 mg en **4.87×**, el ya
-conocido. Hay prueba que fija la regla.
-El **CAC va aparte**: es por CLIENTE (gasto de Meta ÷ clientes nuevos), no por producto.
-La tabla `costo_adquisicion` está creada y **vacía**: falta cargarla del panel de Meta.
+⚠️ **Casi se publica mal.** El descuento y la comisión **NO se suman: comparten el mismo tope por
+producto** — el backend reparte `cap − descuento` (`novapeptidos-RBAC/server.py:1224`).
+Restándolos por separado salían **149 productos abajo del piso**; con la cuenta correcta es
+**UNO**: IGF-1 LR3 1 mg en **4.87×**, el ya conocido. Hay prueba que fija la regla.
+El **CAC va aparte**: es por CLIENTE (gasto de Meta ÷ clientes nuevos), no por producto. La tabla
+`costo_adquisicion` está creada y **vacía**: falta cargarla del panel de Meta.
 
 ### Migración del motor — paso 1 de 2, hecho
 
-`reprecio.py` tiene ahora **dos lectores para un motor**: `leer()` del Excel y
-`leer_de_base()` de la base. `python3 reprecio.py --desde-base` corre el mismo motor
-leyendo de la base (solo simulacro). **Dos pruebas exigen que los dos caminos den
-idéntico**: mismos datos de entrada, y mismo precio y motivo de salida. Hoy coinciden en
-los 190 productos y ninguno cambia.
+`reprecio.py` tiene ahora **dos lectores para un motor**: `leer()` del Excel y `leer_de_base()` de
+la base. `python3 reprecio.py --desde-base` corre el mismo motor leyendo de la base (solo
+simulacro). **Dos pruebas exigen que los dos caminos den idéntico**: mismos datos de entrada, y
+mismo precio y motivo de salida.
 
-⛔ **NO apagar MAESTRA.xlsx todavía**: `reprecio.py` aún la LEE, y por eso el reporte se
-escribe en `REPORTE-EXYGEN.xlsx` y no encima de ella. Sobrescribirla hoy rompe el motor.
+⛔ **NO apagar `MAESTRA.xlsx` todavía**: `reprecio.py` aún la LEE.
 
-### Catálogo: qué nos ofrecen y no vendemos
+## ✅ Los 3 HGH: venta directa, aplicado y en vivo (28-jul)
 
-`oportunidades.py` — de **46 huecos falsos a 5 candidatos reales**. Los 41 restantes eran
-el mismo producto escrito distinto ("Adamax" vs ADMAX, "Frag17-23" vs Fragment 17-23,
-"LYSINE-PROLINE-VALINE" vs KPV). Las equivalencias las revisó Claude y viven en
-`datos/alias_proveedores.csv`, con prueba que las fija.
+Christian lo confirmó. Los tres —HGH Fragment 176-191 12 mg ($2,709), HGH 36 IU ($1,548) y HCG
+1,000 IU ($629)— quedaron con `vender = si` + `elegible_distribuidor = no`, que es lo que de
+verdad significa "solo venta directa". Ya NO están marcados "no vender", que es la marca de lo
+retirado por seguridad.
 
-**Reales: Dihexa** (2 prov., desde $35), **MK-677 / Ibutamoren** (2 prov., desde $24),
-**Oligopeptide-24** (1 prov., $40). Excluidos a propósito en `datos/no_vender.csv` con
-motivo y quién: Dysport, HUMSC, toxina botulínica, insulina, ácido hialurónico, Adipotida,
-ACE-031 e insumos.
+**El matiz que lo destrabó:** el campo `vender` se estaba usando para CUATRO cosas distintas —
+retirados por seguridad (Adipotide, ACE-031), ocultos por regulación (Dysport, HUMSC), dominados
+por la competencia, y **"solo venta directa"**. Ese último NO significa "no vender": significa
+"véndelo sin comisión de distribuidor", y eso ya lo controla `elegible_distribuidor`.
 
-### Revisión externa de Codex — 7 hallazgos, todos arreglados
+La decisión vive **DECLARADA** en `pricing-system/solo_venta_directa.json`, con SKU, motivo y
+fecha. **Eso es lo importante del arreglo:** la elegibilidad se recalcula **por fórmula para TODAS
+las filas** en cada corrida de `reprecio.py` (`roi × (1 − comisión) ≥ 5×`), y los tres **SÍ**
+aguantan la comisión — así que sin ese archivo el motor se los habría vuelto a llevar al canal en
+la siguiente corrida y la decisión se pierde en silencio. `reprecio.py`, `test_precios.py` y
+`auditar_catalogo.py` leen los tres el mismo archivo.
 
-1. **Reconstruir la base borraba el historial** (el diseño se contradecía solo). Ahora vive
-   en `datos/historial_precios.csv` y sobrevive; probado.
+Las dos reglas NO se contradicen: `_eligible()` en `novapeptidos-RBAC/server.py` exige
+`distributor_eligible` **Y** no ser de la familia HGH neta. Se suman, gana la más restrictiva.
+
+**Consecuencia que nadie había visto:** al prender el HCG 1,000 IU, el de 2,000 IU quedaba más
+barato que el chico ($609 contra $629) — rompía la escalera. **Lo cazó el propio motor** y lo
+corrigió por fórmula: HCG 2,000 IU subió a **$639**. Ya está en la maestra, la base, el sitio y el
+backend en vivo.
+
+## ✅ Codex — el lanzador con los permisos que faltaban
+
+`pricing-system/auditar_con_codex.sh`. Trae las tres banderas y explica por qué cada una:
+
+- `--skip-git-repo-check` — esta carpeta NO es un repo de git. Sin esto **Codex falla callado**:
+  no arranca y el agente reporta un lanzamiento que nunca ocurrió.
+- `--sandbox workspace-write` — con `read-only` pytest ni arranca, y la suite entera se veía como
+  "fallando" cuando en realidad nunca corrió.
+- `--config sandbox_workspace_write.network_access=true` — **lo que de verdad faltaba**. Sin red
+  no puede comprobar lo único que importa (que el backend **EN VIVO** cobre lo que dice la
+  maestra) ni leer a la competencia. Eso daba 3 fallas + 3 errores que no eran hallazgos, sino su
+  encierro. Probado: `curl` a la API devuelve 200 desde dentro del sandbox.
+
+```
+./auditar_con_codex.sh                     # la auditoría (PROMPT-AUDITORIA.md)
+./auditar_con_codex.sh PROMPT-ROMPEDOR.md  # que intente romper el motor
+```
+
+Se quedó como lanzador y no como perfil en `~/.codex/config.toml` porque el clasificador no deja
+tocar esa configuración global desde aquí. Da igual: el permiso es de esa corrida y no del Codex
+de diario.
+
+⚠️ Si Codex se niega por "cybersecurity", es el lenguaje del prompt ("romper", "corromper").
+Cambiar el encabezado a *"Eres un ingeniero de calidad, encuentra casos de prueba que violen estas
+reglas"* lo resuelve: es el mismo ejercicio dicho de otro modo.
+
+También existe `PROMPT-DISENO.md` (segunda opinión de diseño). Los tres son de sólo lectura y se
+pueden correr en simultáneo.
+
+## ✅ Dashboard del Motor de Precios (Panel Admin, `?tab=motor`)
+
+Seis bloques, sólo lectura: **semáforo de certeza** (un puntito arriba del todo; la tarjeta grande
+sólo sale cuando algo NO cuadra — una que siempre dice "todo bien" se deja de leer justo antes del
+día en que dice otra cosa) · **los que están al filo del ROI** · **dónde estás pagando de más** ·
+**qué reponer y a quién comprarle** (con el WhatsApp listo) · **qué te ofrecen y no vendes** ·
+**últimos movimientos de precio**.
+
+Piezas:
+- `novapeptidos-UI/src/components/admin/MotorPrecios.js` — la pantalla.
+- `pricing-system/publicar_dashboard_precios.py` — calcula y sube la foto.
+- `novapeptidos-RBAC/server.py:1694` `GET /api/admin/motor-precios` · `:1704` `PUT` ·
+  `:1726` `GET .../decisiones` · `:1732` `PUT .../decisiones/{llave}`.
+
+⛔ **Lo que casi sale mal, y por qué está así.** La primera versión dejaba la foto en
+`novapeptidos-UI/public/motor-precios.json`. **Esa carpeta se publica ENTERA en exygenlabs.com**, o
+sea que el costo de cada producto, el nombre de cada proveedor y el margen habrían quedado a un
+enlace de distancia de cualquiera. Ahora la foto se guarda en `pricing-system/datos/`
+(fuera del sitio) y se sube a `PUT /api/admin/motor-precios`, que sólo contesta con sesión de
+admin. **`novapeptidos-RBAC/test_motor_precios.py` lo cuida con 7 pruebas, y una de ellas MIRA EL
+DISCO** para cachar que alguien vuelva a dejar el archivo en la carpeta pública.
+
+`reabastecer.py` y `oportunidades.py` tienen su cálculo separado de la impresión (`calcular()`),
+para que el Panel enseñe LO MISMO que la terminal en vez de recalcularlo por su cuenta. Dos
+cuentas para el mismo número acaban dando dos números distintos.
+
+**Desplegado el 28-jul** (con Christian autorizando el SSH a mano). `GET /api/admin/motor-precios`
+sin sesión devuelve **401**; con sesión de admin devuelve la foto. Cómo se hizo, porque el `ssh` lo
+bloquea el clasificador y hay que pedir autorización en el momento: abrir el 22 para la IP de hoy,
+mandar la llave con Instance Connect (dura 60 s), `cd /opt/exygen/app && sudo git pull && sudo
+docker compose up -d --build api`, y **cerrar la regla del 22 al terminar** (se cerró). Ver "CÓMO
+ENTRAR AL EC2".
+
+Para refrescar el tablero, desde la Mac:
+
+```
+python3 pricing-system/publicar_dashboard_precios.py --subir
+```
+
+## ✅ Botones nuevos del Panel — y por qué aprobar NO publica
+
+- **"Refrescar"** — vuelve a leer del servidor; **NO recalcula**. La cuenta la hace la base del
+  motor, que vive en la Mac. Si la foto tiene días lo dice y da el comando, para no darle tres
+  veces esperando números nuevos.
+- **"Vender esto / descartar"** en las oportunidades — **no publican**: dejan la decisión anotada
+  y el alta la hace `pricing-system/aplicar_aprobados.py` desde la Mac, **pasando el producto por
+  el motor**. Razón: el precio lo pone el motor con las reglas de la casa (costo, competencia,
+  piso de 5×, terminación en 9). Un alta desde una pantalla se saltaría todo eso, y así es como se
+  acaba vendiendo algo por debajo del costo sin que nadie lo note.
+- **El veto se comprueba en el SERVIDOR**, no sólo en la pantalla: los vetados (esteroides,
+  regulados, insumos) ni aparecen ni se pueden aprobar, y `aplicar_aprobados.py` vuelve a
+  comprobar CADA aprobado contra `datos/no_vender.csv` sin fiarse de que la pantalla ya filtró. Un
+  esteroide anabólico dado de alta por descuido es un problema legal, no un renglón mal puesto.
+
+Después de `aplicar_aprobados.py --aplicar` hay que correr, en este orden:
+
+```
+python3 reprecio.py --aplicar
+python3 exportar_precios_maestra.py
+python3 generar_maestra_csv.py --aplicar
+python3 db.py --construir
+```
+
+## 🆕 PROVEEDOR NUEVO: LUMI (P31) — y las tres fallas de raíz del lector de listas
+
+Llegó por WhatsApp con lista completa, titulada **"Mexico Warehouse Directory"**. **118 precios
+cargados de los 145 que trae el PDF.** Es el **2º más barato en Retatrutida 40 mg ($166**, contra
+$139 de Lucy y $179 de Certiva; a Lily, que es a quien se le compra, $230) y el **más barato** en
+Survodutida 10 mg, Mazdutida 10 mg y CJC-1295 con DAC 5 mg.
+
+⚠️ **No se le ha comprado y no se sabe su envío.** Dice tener **bodega en México**: sin comprobar,
+y esa promesa ya resultó falsa con otros.
+
+⚠️ **Su lista trae ESTEROIDES ANABÓLICOS** —testosterona, winstrol, trembolona, dianabol,
+equipoise, primobolan, anadrol— y el sistema los estaba **proponiendo como productos a vender**,
+con "ganancias" de $19,000 por caja. Están vetados en `datos/no_vender.csv` por sustancia
+controlada. **Decisión de Christian si eso cambia algo sobre seguir tratando con él.**
+
+**Su tabla está perfecta; el que fallaba era nuestro lector.** Ese PDF es un Excel exportado, y en
+texto plano sale en UN SOLO CHORRO sin renglones. El importador sacó **9 precios de 145 y dijo
+"listo"**. Tres arreglos de raíz:
+
+1. **Se lee respetando las columnas** (`extraction_mode='layout'`). Las celdas combinadas se
+   reparten cortando donde la DOSIS baja, que es donde de verdad empieza otro producto: el nombre
+   va CENTRADO en su bloque, así que ni "el de arriba" ni "el más cercano" sirven — con "el más
+   cercano", dos precios de la Retatrutida acababan colgados del AOD9604.
+2. **CANDADO del 85%**: si lo leído no llega al **85% de los signos de peso del documento, NO se
+   guarda nada.** Antes bastaban 4 precios para que se viera igual de bien que 145, y ese silencio
+   es lo que dejó invisible el destrozo de 502 precios de julio.
+3. **Los alias de proveedor se aplican AL CARGAR LA BASE.** El comparador agrupa por nombre
+   exacto, así que "RT Retatrutide" no cruzaba con "Retatrutide" y Lumi quedaba fuera de la
+   comparación con los otros diez que la venden. Es un hueco que NO se ve: la consulta contesta
+   bien, sólo que de menos productos.
+
+**Y un cuarto arreglo, en el veto:** los patrones de **4 letras o menos ahora exigen coincidencia
+exacta** (`oportunidades.py:162`). Hacen falta patrones cortos —"TRA", "TRE", "EQ"— para tapar los
+esteroides, pero con coincidencia difusa barrían péptidos buenos **sin dejar rastro**.
+
+Quedaron **27 precios sin leer de los 145**: son todos esteroides con la celda de presentación
+partida en varias líneas. No se persiguieron porque no se venden.
+
+## 🔧 Panel: navegación y "Surtir el catálogo completo"
+
+**Cambiar de pestaña ahora abre ARRIBA.** El arreglo va en
+`novapeptidos-UI/src/components/layout/DashboardSidebar.js`, **no** en el `ScrollToTop` general de
+la app — y así debe seguir. Razón: el `ScrollToTop` general **sólo mira el `pathname`**, y estas
+pestañas viven en la **query**; si se le pidiera mirar la query también, en el catálogo brincaría
+arriba cada vez que el usuario filtra, que estorba. El arreglo en el sidebar además cubre Mi
+cuenta y Distribuidor.
+
+**Recompra se movió DENTRO de Clientes** (`src/pages/Admin.js:1028`): es una vista de clientes, no
+un frente aparte.
+
+**El sidebar quedó agrupado** en **Negocio · Gente · Catálogo · Difusión · Ajustes**
+(`src/pages/Admin.js:438` en adelante). En cinco grupos se encuentra; en una lista larga no.
+
+**Sección nueva en INVENTARIO: "Surtir el catálogo completo"**
+(`src/components/admin/SurtirCatalogo.js`, calculado en `publicar_dashboard_precios.py:129`).
+Responde "¿cuánto tengo que poner para surtirme completo?" — una caja de cada producto. Hoy:
+**$301,541 MXN (~$17,231 USD) por 184 cajas**, de 193 a la venta y 9 que ya tiene en mano. **Baja
+sola conforme compra**, descontando lo que ya tiene del inventario en vivo **cruzando por SKU**
+(por nombre no cruza: el sitio dice "Retatrutida" y la maestra "Retatrutide").
+
+## 🏷️ Sello del home
+
+Ya sólo dice **"Hasta el 15%"** (`home.stamp.sub` en `src/i18n/translations.js`, en los tres
+idiomas). Se quitó "ya aplicado" y el monto mínimo.
+⚠️ El home lo está tocando **otro agente ahora mismo**. No lo edites.
+
+## 🔁 Reabastecimiento: el sistema avisa, y deja el mensaje listo
+
+`reabastecer.py` — pedido de Christian: «cuando un cliente pague por algo que no tenemos, avísame y
+ayúdame a pedirle una caja al proveedor más barato por WhatsApp, o avísame y yo lo hago».
+
+**Hallazgo que cambió el diseño:** el `stock` de `/api/products` **NO es inventario real**
+(devuelve 40 en 191 productos y 41 en dos: es un valor sembrado). El bueno está en
+**`GET /api/stock`**, que además trae `in_hand`. Y eso es lo que importa, porque —palabras de
+Christian— *«los de entrega inmediata son los que tengo aquí conmigo; los demás los tengo que
+solicitar y me tardan 7 a 14 días»*.
+
+**Hoy hay 9 EN MANO** y cuadran exactamente con sus compras reales: Retatrutida 10/20/40 mg,
+Tirzepatida 10 mg, NAD+ 500 mg, KLOW 80 mg, 5-Amino-1MQ 5 mg y las dos aguas bacteriostáticas. Los
+otros 184 son **bajo pedido**.
+
+⛔ **NO manda nada.** Un pedido es dinero que sale y un inventario mal leído pediría cajas de más.
+Para automatizarlo de verdad, el paso que falta es que Christian apruebe cada pedido en el Panel —
+no que un script le escriba solo a un proveedor en China.
+
+## 📖 Lecciones de las revisiones de Codex (1ª a 4ª pasada) — todas ARREGLADAS
+
+**1ª revisión — 7 hallazgos:**
+
+1. **Reconstruir la base borraba el historial** (el diseño se contradecía solo). Ahora vive en
+   `datos/historial_precios.csv` y sobrevive; probado.
 2. El candado exigía ~1×, no el piso de 5×.
 3. `poner_precio()` podía dejar un producto **sin precio vigente** si fallaba a la mitad.
 4. Las vigencias aceptaban periodos invertidos, de duración cero y fechas inválidas.
@@ -101,405 +432,146 @@ ACE-031 e insumos.
 
 Además: **las pruebas escribían en los datos reales del negocio**. Corregido.
 
-### 2ª revisión de Codex (a fondo) — 8 hallazgos más
+**2ª revisión — el silencio de `certeza.py`.** La compuerta que autoriza publicar **se salía en
+silencio cuando un valor de la lista venía vacío o nulo**, así que BORRAR un precio pasaba en
+verde. Es el mismo patrón que ya costó dinero cuatro veces. Ahora un campo obligatorio que falte, o
+un valor que no sea número, es un problema; y se exige que todo producto de la base esté en la
+lista de distribuidores. Hay prueba que lo fija (rompe el archivo de tres formas). Al endurecerla
+saltaron 9 avisos que resultaron ser productos NO elegibles —correcto que no tengan tope—, así que
+el tope sólo se exige a los elegibles, y ahora también se avisa al revés: un NO elegible que traiga
+tope.
 
-**Arreglado ya:** `certeza.py` —la compuerta que autoriza publicar— **se salía en silencio
-cuando un valor de la lista venía vacío o nulo**, así que BORRAR un precio pasaba en verde.
-Es el mismo patrón que ya costó dinero cuatro veces. Ahora un campo obligatorio que falte,
-o un valor que no sea número, es un problema; y se exige que todo producto de la base esté
-en la lista de distribuidores. Hay prueba que lo fija (rompe el archivo de tres formas).
-Al endurecerla saltaron 9 avisos que resultaron ser productos NO elegibles —correcto que no
-tengan tope—, así que el tope sólo se exige a los elegibles, y ahora también se avisa al
-revés: un NO elegible que traiga tope.
+**3ª y 4ª pasada (rompedor + auditoría):**
 
-**Lo que Codex marcó y SIGUE PENDIENTE** (por orden de gravedad):
+- **El motor cambiaba de opinión según hubiera internet.** Lo destapó la corrida del auditor sin
+  querer: con red propone **0 cambios**; sin red propone subir el CJC-1295 + Ipamorelina de
+  **$1,699 a $1,879**. Sin conexión no puede leer a Certified y le falta el **techo cruzado**, que
+  es un TOPE. El motor imprimía el aviso y **seguía calculando igual**: correr `--aplicar` sin
+  internet subía un precio $180 por vial con datos incompletos. Ahora `techos_cruzados()` devuelve
+  si lo logró; en simulacro avisa que esos precios no son definitivos y **con `--aplicar` se
+  detiene en seco**.
+- **La excepción de ROI no tenía piso.** Con cualquier texto en `excepcion_roi` se aceptaba una
+  caja de $10,000 vendida en $100 (ROI 0.01×): vender **abajo del costo** pasaba el candado. Ahora
+  hay un segundo CHECK.
+- **Un producto podía quedarse SIN precio vigente.** El índice único garantiza MÁXIMO uno, no
+  EXACTAMENTE uno: un `UPDATE` que cierre el vigente sin abrir otro deja cero y nada protesta.
+  Ahora lo revisa `certeza.py`.
+- **El redondeo rompía el techo en silencio.** `bajar_a_9` devolvía `max(9, ...)` —un número MAYOR
+  que el pedido— así que con techo de $8 producía $9 sin reportar conflicto. La prueba vieja decía
+  que eso era "a propósito": no lo era, **estaba codificando el bug**.
+- **Cajas que no son de 10.** El motor multiplicaba por 10 a mano; una caja de 2 viales pasaba el
+  candado con un rendimiento real de 1.998×. Ahora cada renglón carga los suyos.
+- **El comparador de proveedores comparaba cajas de distinto tamaño.** La caja de Cerebrolysin de
+  Lucy a **$32 parecía la más barata**, pero es de 6 viales: $5.33/vial contra $4.00 de Lily. Ahora
+  `reabastecer.py` compara **por vial**, con el envío repartido.
+- **La escalera no revisaba los combos**, y `auditar_escalera.py` tenía su PROPIA definición de
+  "familia" que metía el combo BPC+TB en la familia del BPC-157 simple y reportaba una escalera
+  rota que no existía. Ya usa la familia del motor.
 
-1. **Cajas que no son de 10.** La base y `v_roi_real` ya las soportan, pero `reprecio.py`
-   sigue multiplicando y dividiendo por 10 a mano, y `leer_de_base()` no le pasa
-   `viales_por_caja`. Hoy el catálogo es todo de 10, por eso las pruebas pasan sin probarlo.
-2. **`certeza.py` compara poco.** No mira SKU, ni vender/oculto, ni presentación, ni la
-   vigencia ni el motivo. Tampoco detecta llaves repetidas dentro de un JSON. Y base y
-   `maestra.csv` pueden estar equivocadas de la misma forma: **no consulta producción**.
-3. **Las 2 pruebas de migración no bastan.** Faltan: comisión/elegibilidad/precio de
-   distribuidor resultantes, escritura atómica con `poner_precio()`, dos corridas seguidas
-   sin cambios, reconstrucción idéntica después, prueba de historial corrompido o perdido,
-   y dos cambios del mismo SKU en el mismo segundo.
-4. **Silencios que quedan en `db.py`**: números inválidos → `None`, archivos que no existen
-   → lista vacía, varios `INSERT OR IGNORE`, un precio de distribuidor malo se sustituye por
-   nulo y la carga sigue. Para una compuerta deberían terminar en error, no en aviso.
-5. **`oportunidades.py`**: el emparejamiento difuso podría FUSIONAR dos productos distintos
-   (DAC vs no-DAC, MT-1 vs MT-2, simple vs mezcla) y hacernos creer que ya vendemos algo que
-   no vendemos. Faltan pruebas negativas de eso.
-6. **Lo que le falta al modelo para ser una base de tienda seria**: amarrar `costo_lista` y
-   `compra_real` a un SKU real (hoy usan nombres libres); registrar tipo de cambio, flete y
-   aduana para tener el costo PUESTO EN MÉXICO; ligar cada precio a la compra y la regla que
-   lo originaron; prohibir vigencias traslapadas; bitácora inmutable con identidad
-   verificable (hoy `quien='christian'` lo puede escribir cualquiera); y estados formales de
-   propuesta → aprobación → publicación → verificado en producción.
+**Lo que Codex marcó y sigue abierto** (además de lo listado arriba en "pendientes viejos"):
 
-### Reabastecimiento: el sistema avisa, y deja el mensaje listo
+- **Las 2 pruebas de migración no bastan.** Faltan: comisión/elegibilidad/precio de distribuidor
+  resultantes, escritura atómica con `poner_precio()`, dos corridas seguidas sin cambios,
+  reconstrucción idéntica después, prueba de historial corrompido o perdido, y dos cambios del
+  mismo SKU en el mismo segundo.
+- **Silencios que quedan en `db.py`**: números inválidos → `None`, archivos que no existen → lista
+  vacía, varios `INSERT OR IGNORE`, un precio de distribuidor malo se sustituye por nulo y la carga
+  sigue. Para una compuerta deberían terminar en error, no en aviso.
+- **`oportunidades.py`**: el emparejamiento difuso podría FUSIONAR dos productos distintos (DAC vs
+  no-DAC, MT-1 vs MT-2, simple vs mezcla) y hacernos creer que ya vendemos algo que no vendemos.
+  Faltan pruebas negativas de eso.
+- **Lo que le falta al modelo para ser una base de tienda seria**: amarrar `costo_lista` y
+  `compra_real` a un SKU real (hoy usan nombres libres); registrar tipo de cambio, flete y aduana
+  para tener el costo PUESTO EN MÉXICO; ligar cada precio a la compra y la regla que lo originaron;
+  prohibir vigencias traslapadas; bitácora inmutable con identidad verificable (hoy
+  `quien='christian'` lo puede escribir cualquiera); y estados formales de propuesta → aprobación →
+  publicación → verificado en producción.
 
-`reabastecer.py` — pedido de Christian: «cuando un cliente pague por algo que no tenemos,
-avísame y ayúdame a pedirle una caja al proveedor más barato por WhatsApp, o avísame y yo
-lo hago».
+## 🗂️ Catálogo: qué nos ofrecen y no vendemos
 
-**Hallazgo que cambió el diseño:** el `stock` de `/api/products` **NO es inventario real**
-(devuelve 40 en 191 productos y 41 en dos: es un valor sembrado). El bueno está en
-**`GET /api/stock`**, que además trae `in_hand`. Y eso es lo que importa, porque —palabras
-de Christian— *«los de entrega inmediata son los que tengo aquí conmigo; los demás los
-tengo que solicitar y me tardan 7 a 14 días»*.
+`oportunidades.py` — de **46 huecos falsos a 5 candidatos reales**. Los 41 restantes eran el mismo
+producto escrito distinto ("Adamax" vs ADMAX, "Frag17-23" vs Fragment 17-23,
+"LYSINE-PROLINE-VALINE" vs KPV). Las equivalencias viven en `datos/alias_proveedores.csv`, con
+prueba que las fija.
 
-**Hoy hay 9 EN MANO** y cuadran exactamente con sus compras reales: Retatrutida 10/20/40mg,
-Tirzepatida 10mg, NAD+ 500mg, KLOW 80mg, 5-Amino-1MQ 5mg y las dos aguas bacteriostáticas.
-Los otros 184 son **bajo pedido**: no hay nada que reponer porque no los tiene.
-
-Lo que hace: lee el inventario en vivo, marca lo que se está acabando **de lo que sí tiene**,
-busca a quién comprarle (el más barato **contando el envío**, marcando a quién ya se le
-compró de verdad y avisando cuando al más barato no se le sabe el envío), y escribe el
-mensaje de WhatsApp con enlace `wa.me` listo.
-
-⛔ **NO manda nada.** Un pedido es dinero que sale y un inventario mal leído pediría cajas
-de más. Para automatizarlo de verdad, el paso que falta es que Christian apruebe cada
-pedido en el Panel — no que un script le escriba solo a un proveedor en China.
-
-⚠️ **Pendiente que Christian pidió: que esto viva EN LÍNEA**, no en su Mac.
-⚠️ Ojo: en mano aparece **5-Amino-1MQ 5 mg**, pero la compra real fue **10 mg** (a Lisa,
-$45). Uno de los dos está mal y hay que confirmarlo.
-
-### 3ª y 4ª pasada de Codex (rompedor + auditoría) — lo que salió
-
-**Los prompts quedaron guardados** para volver a correrlos sin pegar texto:
-`PROMPT-ROMPEDOR.md` (adversarial), `PROMPT-AUDITORIA.md` (auditor completo) y
-`PROMPT-DISENO.md` (segunda opinión de diseño). Se corren así, y **se pueden correr en
-simultáneo** porque los tres son de sólo lectura:
-
-```
-codex exec --skip-git-repo-check --sandbox read-only "$(cat PROMPT-ROMPEDOR.md)"
-```
-
-⚠️ Si Codex se niega por "cybersecurity", es el lenguaje del prompt ("romper", "corromper").
-Cambiar el encabezado a *"Eres un ingeniero de calidad, encuentra casos de prueba que violen
-estas reglas"* lo resuelve: es el mismo ejercicio dicho de otro modo.
-
-**ARREGLADO — el motor cambiaba de opinión según hubiera internet.** Lo destapó la corrida
-del auditor sin querer: con red propone **0 cambios**; sin red propone subir el
-CJC-1295 + Ipamorelina de **$1,699 a $1,879**. Sin conexión no puede leer a Certified y le
-falta el **techo cruzado**, que es un TOPE. El motor imprimía el aviso y **seguía calculando
-igual**: correr `--aplicar` sin internet subía un precio $180 por vial con datos
-incompletos. Ahora `techos_cruzados()` devuelve si lo logró; en simulacro avisa que esos
-precios no son los definitivos y **con `--aplicar` se detiene en seco**.
-
-**ARREGLADO — la excepción de ROI no tenía piso.** Con cualquier texto en `excepcion_roi`
-se aceptaba una caja de $10,000 vendida en $100 (ROI 0.01×): vender **abajo del costo**
-pasaba el candado. Ahora hay un segundo CHECK.
-
-**ARREGLADO — un producto podía quedarse SIN precio vigente.** El índice único garantiza
-MÁXIMO uno, no EXACTAMENTE uno: un `UPDATE` que cierre el vigente sin abrir otro deja cero
-y nada protesta. Ahora lo revisa `certeza.py`, que es la compuerta antes de publicar.
-
-**ARREGLADO — el redondeo rompía el techo en silencio.** `bajar_a_9` devolvía `max(9, ...)`
-—un número MAYOR que el pedido— así que con techo de $8 producía $9 sin reportar conflicto.
-La prueba vieja decía que eso era "a propósito": no lo era, estaba codificando el bug.
-
-**ARREGLADO — cajas que no son de 10.** El motor multiplicaba por 10 a mano; una caja de 2
-viales pasaba el candado con un rendimiento real de 1.998×. Ahora cada renglón carga los
-suyos.
-
-**ARREGLADO — el comparador de proveedores comparaba cajas de distinto tamaño.** La caja de
-Cerebrolysin de Lucy a **$32 parecía la más barata**, pero es de 6 viales: $5.33/vial contra
-$4.00 de Lily. Ahora `reabastecer.py` compara **por vial**, con el envío repartido.
-
-**ARREGLADO — la escalera no revisaba los combos**, y `auditar_escalera.py` tenía su PROPIA
-definición de "familia" que metía el combo BPC+TB en la familia del BPC-157 simple y
-reportaba una escalera rota que no existía. De 1 rojo + 4 amarillos a **2 amarillos reales**
-(Glutatión 600→1500 mg y MOTS-c 20→40 mg salen más caros por miligramo).
-
-## 🔴 DECISIÓN PENDIENTE DE CHRISTIAN — tres productos marcados "no vender" SE ESTÁN COBRANDO
-
-Verificado contra el backend EN VIVO el 28-jul:
-
-| Producto | Se cobra | ROI |
-|---|---:|---:|
-| HGH Fragment 176-191 12 mg | **$2,709** | 9.99× |
-| HGH 36 IU | **$1,548** | 5.53× |
-| HCG 1,000 IU | **$629** | 9.98× |
-
-Ninguna compuerta los veía: todas partían de los 190 que SÍ se venden y nunca preguntaban
-qué sobra del otro lado. `certeza.py` ya los caza (y si no hay red, lo dice en vez de
-callarse).
-
-**El matiz que importa: los tres tienen ROI sano.** No están marcados por perder dinero. El
-campo `vender` se está usando para CUATRO cosas distintas —retirados por seguridad
-(Adipotide, ACE-031), ocultos por regulación (Dysport, HUMSC), dominados por competencia, y
-**"solo venta directa"**, que es el caso del HGH 36 IU. Ese último NO significa "no vender":
-significa "véndelo sin comisión de distribuidor", y eso ya lo controla `elegible_distribuidor`.
-
-**La pregunta para Christian es una sola: ¿esos tres se venden o no?** Si sí, hay que
-quitarles la marca en la maestra. Si no, bajarlos del sitio. No se tocó: es decisión de
-ingresos, no un bug.
-
-### Hallazgos anotados y NO arreglados
-
-1. **Vigencias traslapadas.** La base acepta dos periodos históricos que se encimen; el
-   índice sólo impide dos precios ABIERTOS. Hoy no está pasando.
-3. **`certeza.py` compara poco.** No mira SKU, ni presentación, ni vigencia, ni el motivo.
-4. **Una prueba sale a internet** y si no hay red esa comprobación no se hace — y no queda
-   claro que no se hizo.
-5. **HCG contradice la fuente de verdad**: el documento lista HCG 2,000 y 10,000 IU entre los
-   11 de "solo venta directa", pero en la maestra salen elegibles con 30% y 35%. Según la
-   fórmula ambos aguantan la comisión. Christian decide cuál manda.
-6. **`v_roi_real` resta el envío**, pero `FUENTE-DE-VERDAD.md` dice expresamente que **el
-   envío NO cuenta contra el ROI** (nunca pasa del 10%, y ese 10% ya está aceptado).
-   Contradicción a resolver.
-
-## ✅ LOS 4 PUNTOS DEL 2026-07-28 — HECHOS
-
-**1. Los 3 HGH: venta directa, sin distribuidores. APLICADO Y EN VIVO.**
-Christian lo confirmó. Los tres —HGH Fragment 176-191 12 mg ($2,709), HGH 36 IU ($1,548) y
-HCG 1,000 IU ($629)— quedaron con `vender = si` + `elegible_distribuidor = no`, que es lo
-que de verdad significa "solo venta directa". Ya NO están marcados "no vender", que es la
-marca de lo retirado por seguridad.
-
-La decisión vive DECLARADA en `pricing-system/solo_venta_directa.json`, con motivo y fecha.
-**Eso es lo importante del arreglo:** la elegibilidad se recalcula por fórmula para TODAS las
-filas en cada corrida de `reprecio.py` (`roi × (1 − comisión) ≥ 5×`), y los tres SÍ aguantan
-la comisión — así que sin ese archivo el motor se los habría vuelto a llevar al canal en la
-siguiente corrida y la decisión se pierde en silencio. `reprecio.py`, `test_precios.py` y
-`auditar_catalogo.py` leen los tres el mismo archivo.
-
-Las dos reglas NO se contradicen: `_eligible()` en `novapeptidos-RBAC/server.py` exige
-`distributor_eligible` **Y** no ser de la familia HGH neta. Se suman, gana la más restrictiva.
-
-**Consecuencia que nadie había visto:** al prender el HCG 1,000 IU, el de 2,000 IU quedaba
-más barato que el chico ($609 contra $629) — rompía la escalera. **Lo cazó el propio motor**
-y lo corrigió por fórmula: HCG 2,000 IU subió a **$639**. Ya está en la maestra, la base, el
-sitio y el backend en vivo.
-
-**2. Permisos a Codex — resuelto con un lanzador.**
-`pricing-system/auditar_con_codex.sh`. Trae las tres banderas que hacían falta y explica por
-qué cada una: `--skip-git-repo-check` (esta carpeta no es un repo y sin esto Codex falla
-callado), `--sandbox workspace-write` (con `read-only` pytest ni arranca) y **red abierta**,
-que era lo que faltaba — sin ella no puede comprobar lo único que importa de verdad, que el
-backend EN VIVO cobre lo que dice la maestra. Probado: `curl` a la API devuelve 200 desde
-dentro del sandbox.
-
-```
-./auditar_con_codex.sh                     # la auditoría
-./auditar_con_codex.sh PROMPT-ROMPEDOR.md  # que intente romper el motor
-```
-
-Se quedó como lanzador y no como perfil en `~/.codex/config.toml` porque el clasificador no
-deja tocar esa configuración global desde aquí. Da igual: el permiso es de esa corrida y no
-del Codex de diario.
-
-**3. Comisiones absurdas — cerrado.**
-La columna `comision` aceptaba −50%, 150% y 300%. Ahora sólo 0%–50%. Comprobado contra la
-base de hoy: un INSERT con −0.5 lo rechaza el CHECK.
-
-**4. Dashboard del Motor de Precios — CONSTRUIDO.**
-Pestaña **Motor de Precios** en el Panel Admin (`?tab=motor`), seis bloques, sólo lectura:
-semáforo de certeza · los que están al filo del ROI · dónde estás pagando de más · qué
-reponer y a quién comprarle (con el WhatsApp listo) · qué te ofrecen y no vendes · últimos
-movimientos de precio.
-
-Piezas: `novapeptidos-UI/src/components/admin/MotorPrecios.js` (la pantalla),
-`pricing-system/publicar_dashboard_precios.py` (calcula y sube la foto), y dos rutas nuevas
-en `novapeptidos-RBAC/server.py`.
-
-⛔ **Lo que casi sale mal, y por qué está así:** la primera versión dejaba la foto en
-`novapeptidos-UI/public/motor-precios.json`. Esa carpeta se publica ENTERA en exygenlabs.com,
-o sea que el costo de cada producto, el nombre de cada proveedor y el margen habrían quedado
-a un enlace de distancia de cualquiera. Ahora la foto se guarda en `pricing-system/datos/`
-(fuera del sitio) y se sube a `PUT /api/admin/motor-precios`, que sólo contesta con sesión de
-admin. `test_motor_precios.py` lo cuida con cuatro pruebas, y una de ellas **mira el disco**
-para cachar que alguien vuelva a dejar el archivo en la carpeta pública.
-
-`reabastecer.py` y `oportunidades.py` ahora tienen su cálculo separado de la impresión
-(`calcular()`), para que el Panel enseñe LO MISMO que la terminal en vez de recalcularlo por
-su cuenta. Dos cuentas para el mismo número acaban dando dos números distintos.
-
-### ✅ BACKEND DESPLEGADO (28-jul, con Christian autorizando el SSH a mano)
-
-Las dos rutas están EN VIVO. `GET /api/admin/motor-precios` sin sesión devuelve **401**,
-y con sesión de admin devuelve la foto. Ya se subió la primera.
-
-Cómo se hizo, porque el `ssh` lo bloquea el clasificador en automático y hay que pedirle
-autorización a Christian en el momento: abrir el 22 para la IP de hoy, mandar la llave con
-Instance Connect (dura 60 s), `cd /opt/exygen/app && sudo git pull && sudo docker compose
-up -d --build api`, y **cerrar la regla del 22 al terminar** (se cerró: quedaron sólo las
-dos IPs viejas). Ver "CÓMO ENTRAR AL EC2".
-
-Para refrescar el tablero, desde la Mac:
-
-```
-python3 pricing-system/publicar_dashboard_precios.py --subir
-```
-
-## 🆕 PROVEEDOR NUEVO: LUMI (28-jul) — y el candado que faltaba al leer listas
-
-Llegó por WhatsApp con lista completa. **118 precios cargados**, ya en la base (31
-proveedores, 1,594 precios). Es el **2º más barato en Retatrutida 40 mg ($166**, contra
-$139 de Lucy y $179 de Certiva) y el **más barato** en Survodutida 10 mg, Mazdutida 10 mg
-y CJC-1295 con DAC 5 mg. **No se le ha comprado y no se sabe su envío.** Dice tener
-**bodega en México**: sin comprobar, y esa promesa ya resultó falsa con otros.
-
-⚠️ **Su lista trae ESTEROIDES ANABÓLICOS** —testosterona, winstrol, trembolona, dianabol,
-equipoise, primobolan— y el sistema los estaba proponiendo como productos a vender, con
-"ganancias" de $19,000 por caja. Están vetados en `datos/no_vender.csv` por sustancia
-controlada. Decisión de Christian si eso cambia algo sobre seguir tratando con él.
-
-**Su tabla está perfecta; el que fallaba era nuestro lector.** Ese PDF es un Excel
-exportado, y en texto plano sale en UN SOLO CHORRO sin renglones. El importador sacó
-**9 precios de 145 y dijo "listo"**. Tres arreglos:
-
-1. **Se lee respetando las columnas** (`extraction_mode='layout'`). Las celdas combinadas
-   se reparten cortando donde la DOSIS baja, que es donde de verdad empieza otro producto:
-   el nombre va CENTRADO en su bloque, así que ni "el de arriba" ni "el más cercano"
-   sirven — con "el más cercano", dos precios de la Retatrutida acababan colgados del
-   AOD9604.
-2. **CANDADO**: si lo leído no llega al **85%** de los signos de peso del documento, NO se
-   guarda. Antes bastaban 4 precios para que se viera igual de bien que 145, y ese
-   silencio es lo que dejó invisible el destrozo de 502 precios de julio.
-3. **Los alias de proveedor se aplican AL CARGAR LA BASE.** El comparador agrupa por
-   nombre exacto, así que "RT Retatrutide" no cruzaba con "Retatrutide" y Lumi quedaba
-   fuera de la comparación con los otros diez que la venden. Es un hueco que NO se ve:
-   la consulta contesta bien, sólo que de menos productos.
-
-Quedaron **27 precios sin leer de los 145**: son todos esteroides con la presentación
-partida en varias líneas. No se persiguieron porque no se venden.
-
-## ▶️ LO SIGUIENTE
-
-1. **Los 3 HGH ya no están en duda, pero el punto 5 de "hallazgos" sí:** la fuente de verdad
-   lista HCG 2,000 y 10,000 IU entre los de "solo venta directa" y en la maestra salen
-   elegibles. Según la fórmula ambos aguantan la comisión. **Christian decide cuál manda** —
-   si es el documento, se agregan a `solo_venta_directa.json` y listo.
-2. **Terminar de migrar el motor**: que `reprecio.py` escriba en la base y no en el Excel.
-   Hasta que eso pase, el bloque de "movimientos de precio" del Dashboard va a seguir vacío:
-   la base se reconstruye desde `maestra.csv` en cada corrida, así que no hay historial que
-   enseñar. El tablero lo dice con todas sus letras en vez de fingir que sí lo hay.
-3. **`v_roi_real` resta el envío** y `FUENTE-DE-VERDAD.md` dice que no debe. Contradicción
-   viva: es el número que el Dashboard enseña en "al filo del ROI".
+**Reales: Dihexa** (2 prov., desde $35), **MK-677 / Ibutamoren** (2 prov., desde $24),
+**Oligopeptide-24** (1 prov., $40). Excluidos a propósito en `datos/no_vender.csv` (hoy 68
+renglones) con motivo y quién: Dysport, HUMSC, toxina botulínica, insulina, ácido hialurónico,
+Adipotida, ACE-031, insumos y **los esteroides anabólicos que entraron con Lumi**.
 
 ## 🟡 PROVEEDORES — ver `pricing-system/HANDOFF-PROVEEDORES.md`
 
-**30 proveedores, 1,476 precios de 11 de ellos**, de 28 chats de WhatsApp.
+**31 proveedores, ~1,594 precios de 11 de ellos**, de 28 chats de WhatsApp.
 
-**Se repararon 502 precios mal leídos**: los 4 proveedores con lista en PDF tenían los
-precios colgados del producto EQUIVOCADO (en la lista de Lucy, el Semax de $41 y el PT-141
-de $44 estaban guardados como **Retatrutida**). Dos fallas de raíz, tapadas: el lector no
-guardaba el nombre cuando venía pegado al precio, y el importador **tiraba en silencio**
-los repetidos aunque trajeran otro precio.
+**Se repararon 502 precios mal leídos**: los 4 proveedores con lista en PDF tenían los precios
+colgados del producto EQUIVOCADO (en la lista de Lucy, el Semax de $41 y el PT-141 de $44 estaban
+guardados como **Retatrutida**). Dos fallas de raíz, tapadas: el lector no guardaba el nombre
+cuando venía pegado al precio, y el importador **tiraba en silencio** los repetidos aunque
+trajeran otro precio.
 
-**Retatrutida 40 mg** (le compra a Lily a $230): **Lucy $139**, **Certiva $179**,
-Mia HK $212. Lucy sale más barata en todo y su lista se llama "Internal price" — o es la
-fuente real o es carnada; a ninguno se le ha comprado. ⚠️ **A ninguno se le sabe el envío.**
+**Retatrutida 40 mg** (le compra a Lily a $230): **Lucy $139**, **Lumi $166**, **Certiva $179**,
+Mia HK $212. Lucy sale más barata en todo y su lista se llama "Internal price" — o es la fuente
+real o es carnada; a ninguno se le ha comprado. ⚠️ **A ninguno se le sabe el envío.**
+
+⚠️ **La lista de DT se contradice sola.** Repite productos con precios hasta del DOBLE (Glutathione
+600 mg a $32.2 y a $64.5; PNC-27 5 mg a $107.5 y a $139.7). Se guardó el más caro y está en
+`datos/preguntar_al_proveedor.csv`.
 
 **Quién es quién** (`huella_archivos.py`, compara adjuntos byte por byte):
 **Lucia = US Lab RT40-275 = +1 505 518-0805 = +86 185 0279 6387** (tres COAs idénticos),
-**Anna = RT40-186**, **Lee Factory = Lily**. Seis fotos que parecían probar que los tres
-"US Lab" son el mismo **las reenvió Christian**: no prueban nada, el script ya las separa.
+**Anna = RT40-186**, **Lee Factory = Lily**. Seis fotos que parecían probar que los tres "US Lab"
+son el mismo **las reenvió Christian**: no prueban nada, el script ya las separa.
 
-## Pendientes
+⚠️ **Los proveedores mienten:** ninguno tiene bodega en México ni EE.UU., y los COA que enseñan son
+de clientes suyos (se comprobó: uno dice `Customer: Finnrick`). Solo cuenta lo verificado con una
+compra.
 
-1. **Actualizar el Vigía** para que lea de la base (pedido de Christian).
-2. **Terminar de migrar el motor**: que `reprecio.py` escriba en la base y no en el Excel.
-   Ahí se apaga MAESTRA.xlsx del todo.
-3. **Cargar el CAC** del panel de Meta a `costo_adquisicion` (la tabla está vacía).
-4. **Traer descuentos y puntos por cliente** del backend a la base.
-5. **Costos de envío de los proveedores nuevos** — sin eso "el más barato" puede mentir.
-6. **Mover los costos al Panel Admin** (acordado, no empezado): hoy hace falta una terminal.
-7. **Preguntarle a los proveedores** lo de `datos/preguntar_al_proveedor.csv`: qué es
-   "TBFing", si el SLU-PP es 322 o 332, y cuál precio vale de los dos que da DT.
-8. IGF-1 LR3 1 mg queda en 4.87× y no tiene arreglo (Certified lo topa en $1,460).
-9. **Revisar la calculadora de péptidos de Certiva** —
-   https://certivapeptides.com/peptide-calculator/#reconstitution-calculator — y
-   compararla con la nuestra (pedido de Christian, 28-jul).
-10. **Escalera:** quedan 2 casos reales donde el grande sale más caro POR MILIGRAMO —
-    Glutatión 600→1500 mg y MOTS-c 20→40 mg. (Los otros 3 que reportaba el auditor eran
-    falsos: comparaba el combo BPC+TB contra el BPC-157 normal. Ya usa la familia del
-    motor.)
-11. **Vigía y Motor, separados** (aprobado por Christian el 28-jul): el Vigía CAPTURA y
-    CONTRASTA los precios de la competencia a diario y **no toca los nuestros**; el Motor
-    propone el ajuste según las reglas; Christian aprueba. Si el que mira también mueve
-    precios, una lectura mala de una página web cambia el catálogo sin que nadie se entere.
+**Falta:** leer los precios que vienen en las **97 fotos** de los chats (solo se capturó la de
+Mia), dos catálogos en PDF sin capa de texto, los teléfonos y **costos de envío** de los nuevos,
+bajar los videos, y cruzar los **COAs por número de lote** para confirmar fuentes comunes (idea de
+Christian — ya se vio que el mismo COA de Retatrutida lo mandan TRES "proveedores" distintos).
 
-## Compuertas (todas en verde)
+## 🔐 Lo más grave que se cerró el 28-jul de madrugada
 
-`npm run verificar` → 80 + 21 + 15 · Backend: 232 pytest · **Precios: 69** ·
-Auditor de catálogo: 14/14 · `python3 certeza.py`: 204/204 · **Precios: 112** · `python3 db.py --revisar`.
+**Seguridad.** `POST /orders` sumaba `item.price` **tal como venía del navegador**. Se podía mandar
+precio $0 y llevarse un vial de $9,359 pagando los $250 del envío. Lo encontró una auditoría
+externa con Codex; ni las 229 pruebas ni los tres auditores de precios lo veían, porque **todos
+comparaban precios publicados y ninguno el precio realmente cobrado**. Arreglado, desplegado y
+comprobado contra producción: mandando $0 ahora cobra $9,359. Un producto que no se resuelve se
+rechaza.
 
----
+**Bug hermano:** el pedido descontaba inventario por `id` y la devolución por `id` O `sku`. El
+carrito manda SKU → el pedido no bajaba piezas y la cancelación sí las sumaba: **el inventario se
+inflaba solo**. Arreglado; ciclo comprobado 40 → 38 → 40.
 
-## 📁 Lo de más temprano ese día (2026-07-28)
+**Precios.** 11 violaciones de banda corregidas + Tirzepatida repreciada (llevaba meses con una
+regla muerta): 10 mg $1,749 → $2,119, hasta 60 mg $3,919. Todo bajo el techo de Certified. Reglas
+de Christian: **trinquete** (a Exoma no se le sigue para abajo), **Certified menos $10 con
+terminación 9**, **techo cruzado** (no cobrar más por menos producto del que el competidor da en su
+presentación mayor), y **5× neto o venta directa** para distribuidores.
 
-## Lo que se cerró hoy (todo en vivo y verificado)
+**Dysport y HUMSC ocultos** del catálogo público (no son péptidos RUO). Interruptor `hidden` en el
+backend.
 
-**Seguridad, lo más grave del día.** `POST /orders` sumaba `item.price` **tal como venía
-del navegador**. Se podía mandar precio $0 y llevarse un vial de $9,359 pagando los $250
-del envío. Lo encontró una auditoría externa con Codex; ni las 229 pruebas ni los tres
-auditores de precios lo veían, porque **todos comparaban precios publicados y ninguno el
-precio realmente cobrado**. Arreglado, desplegado y comprobado contra producción: mandando
-$0 ahora cobra $9,359. Un producto que no se resuelve se rechaza.
-
-**Bug hermano:** el pedido descontaba inventario por `id` y la devolución por `id` O `sku`.
-El carrito manda SKU → el pedido no bajaba piezas y la cancelación sí las sumaba: **el
-inventario se inflaba solo**. Arreglado; ciclo comprobado 40 → 38 → 40.
-
-**Precios.** 11 violaciones de banda corregidas + Tirzepatida repreciada (llevaba meses con
-una regla muerta): 10mg $1,749 → $2,119, hasta 60mg $3,919. Todo bajo el techo de Certified.
-Reglas nuevas de Christian: **trinquete** (a Exoma no se le sigue para abajo), **Certified
-menos $10 con terminación 9**, **techo cruzado** (no cobrar más por menos producto del que
-el competidor da en su presentación mayor), y **5× neto o venta directa** para distribuidores.
-
-**Sistema de precios en repo privado:** `github.com/vancuellar/exygen-pricing`. Archivo
-maestro auditable `maestra.csv` (entradas vs derivado), motor `reprecio.py`, **42 pruebas**
-(19 de estado + 22 de estrés: mutación, 4,000 combinaciones al azar, bordes).
-
-**Dysport y HUMSC ocultos** del catálogo público (no son péptidos RUO). Interruptor `hidden`
-nuevo en el backend.
-
-**Correos:** las suites E2E usaban `auditoria@exygenlabs.com` como cliente de prueba, así que
-cada corrida le mandaba a Christian "compra confirmada". Ya usan un dominio no entregable.
-
-## 🟡 PROVEEDORES — lo que quedó a medias
-
-Ver **`pricing-system/HANDOFF-PROVEEDORES.md`** (está todo ahí).
-
-Resumen: **28 proveedores registrados, 1,028 precios de 8 de ellos**, sacados de los 26
-chats de WhatsApp que Christian exportó. Hallazgos: compra la **RT 40mg a $230** cuando hay
-tres contactos ofreciéndola a **$185-190**; **Bainuo y Lily son la misma bodega** (86% del
-catálogo idéntico) y Lily es la barata; **Lisa cobra ~8% menos que su propia lista**.
-
-**Falta:** leer los precios que vienen en las **97 fotos** de los chats (solo se capturó la
-de Mia), dos catálogos en PDF sin capa de texto, los teléfonos y **costos de envío** de los
-nuevos, bajar los videos, y cruzar los **COAs por número de lote** para confirmar fuentes
-comunes (idea de Christian — ya se vio que el mismo COA de Retatrutida lo mandan TRES
-"proveedores" distintos).
-
-⚠️ **Los proveedores mienten:** ninguno tiene bodega en México ni EE.UU., y los COA que
-enseñan son de clientes suyos (se comprobó: uno dice `Customer: Finnrick`). Solo cuenta lo
-verificado con una compra.
-
-## Pendientes de Christian
-1. Decidir el ROI real: con descuento + comisión + puntos, **IGF-1 LR3 1mg queda en 4.96×**.
-   Es el único abajo de 5× y no tiene arreglo (Certified lo topa en $1,460).
-2. Costos de envío de los proveedores nuevos.
-3. Mover los costos al Panel Admin (se acordó, no se empezó).
+**Correos:** las suites E2E usaban `auditoria@exygenlabs.com` como cliente de prueba, así que cada
+corrida le mandaba a Christian "compra confirmada". Ya usan un dominio no entregable.
 
 ---
 
 # Exygen Labs — Website Continuation File
 
-> **Propósito:** fuente única de verdad del SITIO WEB (frontend, backend, IA, marca, despliegue). Pega este archivo en un chat nuevo para retomar con todo el contexto. Complementa a `../NOVA-PRICING-SYSTEM-CONTINUATION.md` (el sistema de precios). **Última actualización: 2026-07-27 (noche).** Empieza por 🔴 EN CURSO.
+> **Propósito:** fuente única de verdad del SITIO WEB (frontend, backend, IA, marca, despliegue). Pega este archivo en un chat nuevo para retomar con todo el contexto. Complementa a `../NOVA-PRICING-SYSTEM-CONTINUATION.md` (el sistema de precios). **Última actualización: 2026-07-28 (cierre).** Empieza por el 🤝 HANDOFF de hasta arriba.
 
 > **Estilo con Christian:** abogado, no dev ("abogado de 95 años haciendo vibe coding"). Respuestas **ultra cortas, español claro, sin jerga**. Corre TÚ los comandos (nunca le pidas abrir terminal). Términos de git en inglés (commit, push, merge — no "commitear").
 
 ---
 
-## 🔴 EN CURSO — FICHAS TÉCNICAS (2026-07-27, noche)
+## 📁 FICHAS TÉCNICAS (2026-07-27, noche) — pausadas, con pendientes vivos
 
-**Es lo que estamos trabajando ahora mismo.** Christian pasó como referencia las fichas
+*(Ya no es lo que se está trabajando: el 28-jul el foco se fue al Motor de Precios. Los cuatro
+pendientes del final de esta sección siguen abiertos.)*
+
+Christian pasó como referencia las fichas
 oficiales de **Genolab** (`~/Downloads/FICHA_TECNICA_RT80_OFICIAL.pdf`, 9 páginas, y la de
 GHK-Cu, 8 páginas). La nuestra tenía 2. Error de método propio: se leyeron 2 páginas de la
 referencia y se asumió el resto.
