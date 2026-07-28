@@ -1,0 +1,26 @@
+# Cómo Cloudflare publica el sitio.
+#
+# Cloudflare fusionó Pages dentro de Workers: los proyectos nuevos ya no tienen la
+# casilla "Build output directory" del asistente viejo, y en su lugar leen este archivo.
+# Por eso existe — sin él, el botón "Deploy" del panel no sabe qué carpeta subir.
+#
+# Nos mudamos de GitHub Pages por dos razones (2026-07-28):
+#   1. Sus términos dicen que Pages no es para sitios cuyo fin principal sean
+#      transacciones comerciales, y exygenlabs.com es una tienda.
+#   2. Cloudflare entrega más rápido en México, que es de donde viene el tráfico.
+name = "novapeptidos-ui"
+compatibility_date = "2026-07-28"
+
+[assets]
+# Lo que `npm run build` deja listo: el sitio compilado MÁS las 135 páginas que
+# `scripts/prerender-routes.js` escribe con el nombre, el precio y la descripción ya
+# dentro del HTML. Eso es lo que hace que el precio se vea en 2 segundos y no en 6.3,
+# así que esta carpeta tiene que ser la del build completo, no la de React a secas.
+directory = "./build"
+
+# Una ruta que no existe como archivo se atiende con `index.html` y la resuelve el
+# router de React. Es lo que en GitHub Pages había que emular con el truco de 404.html
+# —el mismo que un día devolvió 404 a Google y nos sacó del índice—. Aquí es nativo.
+# OJO: las 135 rutas prerenderizadas SÍ existen como archivo, así que se sirven tal
+# cual, con su contenido escrito. Esta regla es sólo para lo que no está.
+not_found_handling = "single-page-application"
