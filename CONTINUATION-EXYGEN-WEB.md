@@ -342,6 +342,25 @@ reinstalarlo (los navegadores sí estaban en caché).
 - **Huella digital o cara** (WebAuthn / passkeys). La biometría nunca sale del teléfono.
 - Sugerencia de orden: passkeys primero, Outlook después.
 
+### 💬 WhatsApp de Christian — pregunta abierta, SIN RESOLVER
+Christian quiere saber si puede darle acceso a su cuenta de WhatsApp para **bajar las
+cotizaciones de sus distintos proveedores, los seguimientos y las conversaciones**, y trabajar
+con esa información (comparar precios, armar la maestra, no perder seguimientos).
+
+**Estado: no se ha intentado ni se ha dicho que sí.** Lo que hay que resolver antes:
+- **Por dónde.** WhatsApp no tiene una API de lectura de la cuenta personal. Las vías reales son
+  (a) **exportar el chat** desde el teléfono ("Exportar chat" por conversación, sale un .txt que
+  se puede leer sin credenciales), o (b) **WhatsApp Business API**, que es de números de empresa
+  y no lee el historial viejo. La vía (a) no necesita darle acceso a nadie: la exporta él y la
+  pasa como archivo.
+- **Qué NO se debe hacer:** pedirle su contraseña, su código de 6 dígitos o vincular WhatsApp Web
+  a una sesión automatizada. Eso es entregar la cuenta entera, y además viola los términos.
+- **Lo que hay dentro.** Sus chats traen datos personales de clientes y de proveedores. Si se
+  procesan, tienen que quedar en la máquina y no subirse al repo.
+- **Recomendación para la próxima sesión:** empezar por exportar 2 o 3 chats de proveedores
+  como prueba, ver si el formato sirve para sacar precios, y solo entonces decidir si vale la
+  pena algo más.
+
 ### Fichas técnicas — EN CURSO, ver el bloque de hasta arriba
 - Regenerar las 75 con el diseño nuevo.
 - Llenar `farmacocinetica.json` (hoy 7 de 75).
