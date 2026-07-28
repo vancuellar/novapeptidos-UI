@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import {
   ShieldCheck, FlaskConical, Truck, BadgeCheck, ArrowRight, HeartPulse, Activity, Flame, Hourglass,
   Brain, Sparkles, Layers, CheckCircle2, MinusCircle, FileCheck2, ScanSearch, Landmark, CreditCard,
-  ChevronLeft, ChevronRight, Building2, Mail, Bitcoin, Trophy, Globe,
+  ChevronLeft, ChevronRight, Building2, Mail, Bitcoin, Globe,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
@@ -211,21 +211,6 @@ const Home = () => {
               (Christian, 2026-07-26). */}
           <div className="grid lg:grid-cols-[1.1fr_0.9fr] gap-8 lg:gap-16 items-center">
             <div>
-              {/* SELLO DE LIDERAZGO. Va ARRIBA de todo, incluso del kicker, porque es
-                  la razón para quedarse: al visitante no le mueve la marca, le mueve
-                  saber que aquí está lo que anda buscando. Certified vende su origen
-                  desde el primer renglón; esto es lo mismo con nuestro dato fuerte.
-                  Es un texto, no un banner: nada de fondo chillante ni signos de
-                  admiración, que es lo que le baja el tono a una marca seria. */}
-              <div
-                className="inline-flex items-start gap-2 rounded-full border border-[hsl(var(--primary))]/25 bg-[hsl(var(--accent))] pl-3 pr-4 py-1.5 mb-5 max-w-full"
-                data-testid="hero-sello-lider"
-              >
-                <Trophy className="h-3.5 w-3.5 text-[hsl(var(--primary))] shrink-0 mt-[3px]" />
-                <span className="text-[11px] sm:text-xs font-semibold leading-snug text-[hsl(var(--primary))]">
-                  {t('home.leadBadge', { presentaciones: PRESENTACIONES })}
-                </span>
-              </div>
               <div className="kicker">{t('home.kicker')}</div>
               <h1 className="font-heading text-[2.1rem] sm:text-5xl lg:text-[3.6rem] font-bold tracking-tight leading-[1.08] mt-6 break-words">
                 {heroLead}
@@ -376,9 +361,9 @@ const Home = () => {
           el visitante acaba de leer las garantías y lo siguiente que tiene que saber
           es por qué comprar aquí y no en la otra tienda. La respuesta es la variedad,
           y la variedad se demuestra con las tres cuentas de la derecha, no con
-          adjetivos. La tarjeta de abajo es el origen: quién nos surte de verdad
-          (laboratorios de Estados Unidos y de Asia), sin inventarle a nadie una
-          fábrica propia que no tenemos. */}
+          adjetivos. La tarjeta de abajo es el origen: laboratorios de Estados Unidos.
+          ⛔ NUNCA se menciona Asia, en ningún idioma — orden expresa de Christian
+          (2026-07-28). Y tampoco se inventa una fábrica propia que no tenemos. */}
       <section className="border-b border-border" data-testid="home-liderazgo">
         <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 py-16 lg:py-20 grid lg:grid-cols-[1fr_1fr] gap-10 lg:gap-16 items-center">
           <div>

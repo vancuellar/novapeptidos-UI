@@ -1175,8 +1175,8 @@ export const fallbackProducts = [
         "batch_number": "NP-HGHF10-2601",
         "id": "a5df0b96-095e-4efa-a6db-144331024c6a",
         "sku": "HGHFRAGMENT176-12MG",
-        "commission_cap": 0.3,
-        "distributor_eligible": false
+        "commission_cap": 0.35,
+        "distributor_eligible": true
       },
       {
         "presentation": "15 mg",
@@ -4540,13 +4540,13 @@ export const fallbackProducts = [
       },
       {
         "presentation": "20 mg",
-        "price": 1169,
+        "price": 1429,
         "stock": 40,
         "batch_number": "NP-BPC20-2601",
         "id": "d390e21b-2ac7-45e9-9520-ae0d8e807527",
         "sku": "BPC157-20MG",
         "commission_cap": 0.25,
-        "distributor_eligible": false
+        "distributor_eligible": true
       }
     ],
     "tiers": [],
@@ -5207,8 +5207,8 @@ export const fallbackProducts = [
         "batch_number": "NP-HCG2000-2601",
         "id": "2681f24c-6203-4813-80ad-9c7b88871311",
         "sku": "HCG-1000IU",
-        "commission_cap": 0.3,
-        "distributor_eligible": false
+        "commission_cap": 0.35,
+        "distributor_eligible": true
       },
       {
         "presentation": "2,000IU",
