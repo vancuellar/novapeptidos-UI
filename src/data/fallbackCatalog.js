@@ -1090,8 +1090,8 @@ export const fallbackProducts = [
         "batch_number": "NP-HGH40-2601",
         "id": "24dd69be-8468-40a2-9030-36ca5bdda515",
         "sku": "HGH-40IU",
-        "commission_cap": 0.2,
-        "distributor_eligible": false
+        "commission_cap": 0.35,
+        "distributor_eligible": true
       }
     ],
     "tiers": [],
@@ -1238,8 +1238,8 @@ export const fallbackProducts = [
         "batch_number": "NP-IGF101-2601",
         "id": "adc6f9d6-6c27-4485-a728-f1f758f362a1",
         "sku": "IGF1LR3-01MG",
-        "commission_cap": 0.25,
-        "distributor_eligible": false
+        "commission_cap": 0.3,
+        "distributor_eligible": true
       },
       {
         "presentation": "1 mg",
@@ -2312,7 +2312,7 @@ export const fallbackProducts = [
         "id": "767a631b-3c6c-4f25-9a75-915860bef1ca",
         "sku": "SELANK-10MG",
         "commission_cap": 0.3,
-        "distributor_eligible": false
+        "distributor_eligible": true
       }
     ],
     "tiers": [],
@@ -2463,7 +2463,7 @@ export const fallbackProducts = [
         "batch_number": "NP-ADMA5-2601",
         "id": "31b78f27-4ca4-4c73-ba18-9065f0c59f85",
         "sku": "ADMAX-5MG",
-        "commission_cap": 0.3,
+        "commission_cap": 0.4,
         "distributor_eligible": true
       },
       {
@@ -2473,7 +2473,7 @@ export const fallbackProducts = [
         "batch_number": "NP-ADMA10-2601",
         "id": "00e3f5ac-c399-4bac-930d-85dec63a4fa7",
         "sku": "ADMAX-10MG",
-        "commission_cap": 0.3,
+        "commission_cap": 0.4,
         "distributor_eligible": true
       }
     ],
@@ -2578,7 +2578,7 @@ export const fallbackProducts = [
         "id": "fcea43c2-0c8f-446e-9b5a-395bf7ab0944",
         "sku": "CJC1295CONDAC-2MG",
         "commission_cap": 0.25,
-        "distributor_eligible": false
+        "distributor_eligible": true
       },
       {
         "presentation": "5 mg",
@@ -2588,7 +2588,7 @@ export const fallbackProducts = [
         "id": "da9906d3-487d-49d3-b2ee-017e427c2f54",
         "sku": "CJC1295CONDAC-5MG",
         "commission_cap": 0.2,
-        "distributor_eligible": false
+        "distributor_eligible": true
       }
     ],
     "tiers": [],
@@ -2657,7 +2657,7 @@ export const fallbackProducts = [
         "id": "1d795150-41ef-4f8f-a099-5a456f56f1b4",
         "sku": "CJC1295SINDAC-10MG",
         "commission_cap": 0.25,
-        "distributor_eligible": false
+        "distributor_eligible": true
       }
     ],
     "tiers": [],
@@ -2680,44 +2680,6 @@ export const fallbackProducts = [
         "10": 2.5
       }
     },
-    "featured": false,
-    "is_new": false
-  },
-  {
-    "id": "fallback-dysport",
-    "name": "Dysport",
-    "slug": "dysport",
-    "category": "estetica",
-    "categories": [
-      "estetica"
-    ],
-    "short_description": "Toxina botulínica tipo A medida en unidades.",
-    "description": "Dysport (abobotulinumtoxinA) es una preparación de toxina botulínica tipo A estudiada en la unión neuromuscular; su potencia se expresa en unidades biológicas propias, no intercambiables. Solo para uso en investigación (RUO).",
-    "presentation": "500 u",
-    "form": "Liofilizado",
-    "purity": "99.0%",
-    "price": 789,
-    "variants": [
-      {
-        "presentation": "500 u",
-        "price": 789,
-        "stock": 40,
-        "batch_number": "NP-DYSP500-2601",
-        "id": "3f95cdb9-612b-4dea-96d0-299bc01a2974",
-        "sku": "DYSPORT-500U",
-        "commission_cap": 0.35,
-        "distributor_eligible": true
-      }
-    ],
-    "tiers": [],
-    "stock": 40,
-    "image_url": "https://images.pexels.com/photos/10514991/pexels-photo-10514991.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
-    "coa_url": "https://exygenlabs.com/coa/dysport.pdf",
-    "batch_number": "NP-DYSP500-2601",
-    "storage": "Conservar a -20 °C, protegido de la luz. Reconstituido: 2–8 °C.",
-    "start_dose": null,
-    "start_unit": null,
-    "start_levels": null,
     "featured": false,
     "is_new": false
   },
@@ -3083,22 +3045,22 @@ export const fallbackProducts = [
       },
       {
         "presentation": "5 mg",
-        "price": 959,
+        "price": 789,
         "stock": 40,
         "batch_number": "NP-OXY5-2601",
         "id": "17bc65bf-139d-40c8-86a5-acdce12edd60",
         "sku": "OXITOCINA-5MG",
-        "commission_cap": 0.4,
+        "commission_cap": 0.35,
         "distributor_eligible": true
       },
       {
         "presentation": "10 mg",
-        "price": 1199,
+        "price": 849,
         "stock": 40,
         "batch_number": "NP-OXY10-2601",
         "id": "6f7eaffb-8997-4272-8178-04bc4efe13af",
         "sku": "OXITOCINA-10MG",
-        "commission_cap": 0.4,
+        "commission_cap": 0.3,
         "distributor_eligible": true
       }
     ],
@@ -3203,7 +3165,7 @@ export const fallbackProducts = [
         "id": "22d43665-3610-490a-bb73-6832b431619c",
         "sku": "SOMATROPINAHGH-12IU",
         "commission_cap": 0.5,
-        "distributor_eligible": true
+        "distributor_eligible": false
       },
       {
         "presentation": "15 IU",
@@ -3213,7 +3175,7 @@ export const fallbackProducts = [
         "id": "ee8711a9-06a2-4a85-be1e-a5294b8729d5",
         "sku": "SOMATROPINAHGH-15IU",
         "commission_cap": 0.5,
-        "distributor_eligible": true
+        "distributor_eligible": false
       }
     ],
     "tiers": [],
@@ -3258,7 +3220,7 @@ export const fallbackProducts = [
         "id": "e4e46c55-b8da-4058-96e3-db76f99905d9",
         "sku": "TESAMORELINA-2MG",
         "commission_cap": 0.2,
-        "distributor_eligible": false
+        "distributor_eligible": true
       },
       {
         "presentation": "5 mg",
@@ -3268,7 +3230,7 @@ export const fallbackProducts = [
         "id": "517d579b-7afc-427e-ac06-53c88855fb90",
         "sku": "TESAMORELINA-5MG",
         "commission_cap": 0.25,
-        "distributor_eligible": false
+        "distributor_eligible": true
       },
       {
         "presentation": "10 mg",
@@ -3278,7 +3240,7 @@ export const fallbackProducts = [
         "id": "864667b7-3027-48f6-a393-d28f163e4fd6",
         "sku": "TESAMORELINA-10MG",
         "commission_cap": 0.25,
-        "distributor_eligible": false
+        "distributor_eligible": true
       },
       {
         "presentation": "20 mg",
@@ -3530,7 +3492,7 @@ export const fallbackProducts = [
         "id": "9b73c607-b922-45fe-bc94-c7e9c5979048",
         "sku": "AOD9604-5MG",
         "commission_cap": 0.25,
-        "distributor_eligible": false
+        "distributor_eligible": true
       },
       {
         "presentation": "10 mg",
@@ -3540,7 +3502,7 @@ export const fallbackProducts = [
         "id": "ea123747-3255-47ab-8c5b-4e764d080dd4",
         "sku": "AOD9604-10MG",
         "commission_cap": 0.25,
-        "distributor_eligible": false
+        "distributor_eligible": true
       }
     ],
     "tiers": [],
@@ -3647,7 +3609,7 @@ export const fallbackProducts = [
         "id": "1e9b01d9-04f6-4a9d-9abd-41cd6e2da48a",
         "sku": "CAGRILINTIDA-5MG",
         "commission_cap": 0.3,
-        "distributor_eligible": false
+        "distributor_eligible": true
       },
       {
         "presentation": "10 mg",
@@ -3657,7 +3619,7 @@ export const fallbackProducts = [
         "id": "0a87407d-f81b-44d8-b5f1-c5a13fe06b87",
         "sku": "CAGRILINTIDA-10MG",
         "commission_cap": 0.25,
-        "distributor_eligible": false
+        "distributor_eligible": true
       }
     ],
     "tiers": [],
@@ -3946,7 +3908,7 @@ export const fallbackProducts = [
         "id": "de77919d-830a-4e45-abc2-0977f46b7d30",
         "sku": "MOTSC-10MG",
         "commission_cap": 0.3,
-        "distributor_eligible": false
+        "distributor_eligible": true
       },
       {
         "presentation": "15 mg",
@@ -5177,7 +5139,7 @@ export const fallbackProducts = [
         "id": "7ca299ad-2828-439e-92b7-0b77e280b6d4",
         "sku": "TB500-10MG",
         "commission_cap": 0.25,
-        "distributor_eligible": false
+        "distributor_eligible": true
       }
     ],
     "tiers": [],
