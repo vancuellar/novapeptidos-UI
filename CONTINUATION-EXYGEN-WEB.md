@@ -197,6 +197,17 @@ fuente real o es carnada; a ninguno se le ha comprado. ⚠️ **A ninguno se le 
 7. **Preguntarle a los proveedores** lo de `datos/preguntar_al_proveedor.csv`: qué es
    "TBFing", si el SLU-PP es 322 o 332, y cuál precio vale de los dos que da DT.
 8. IGF-1 LR3 1 mg queda en 4.87× y no tiene arreglo (Certified lo topa en $1,460).
+9. **Revisar la calculadora de péptidos de Certiva** —
+   https://certivapeptides.com/peptide-calculator/#reconstitution-calculator — y
+   compararla con la nuestra (pedido de Christian, 28-jul).
+10. **Escalera:** quedan 2 casos reales donde el grande sale más caro POR MILIGRAMO —
+    Glutatión 600→1500 mg y MOTS-c 20→40 mg. (Los otros 3 que reportaba el auditor eran
+    falsos: comparaba el combo BPC+TB contra el BPC-157 normal. Ya usa la familia del
+    motor.)
+11. **Vigía y Motor, separados** (aprobado por Christian el 28-jul): el Vigía CAPTURA y
+    CONTRASTA los precios de la competencia a diario y **no toca los nuestros**; el Motor
+    propone el ajuste según las reglas; Christian aprueba. Si el que mira también mueve
+    precios, una lectura mala de una página web cambia el catálogo sin que nadie se entere.
 
 ## Compuertas (todas en verde)
 
