@@ -3,6 +3,7 @@ import { useNavigate, useSearchParams } from 'react-router-dom';
 import { Filter, Eye, LayoutDashboard, Package, ShoppingBag, Plus, Pencil, Trash2, DollarSign, Users, Clock, TrendingUp, MapPin, Phone, Receipt, Store, Copy, Boxes, Truck, RefreshCw, MailCheck, Ban, Megaphone, BarChart3, Upload, ShoppingCart, Target, KeyRound, Gauge } from 'lucide-react';
 import Marketing from '@/components/admin/Marketing';
 import MotorPrecios from '@/components/admin/MotorPrecios';
+import SurtirCatalogo from '@/components/admin/SurtirCatalogo';
 import { fallbackProducts } from '@/data/fallbackCatalog';
 import { ResponsiveContainer, AreaChart, Area, BarChart, Bar, ComposedChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts';
 import { Button } from '@/components/ui/button';
@@ -465,6 +466,9 @@ const Admin = () => {
         </TabsContent>
 
         <TabsContent value="stock" className="mt-5">
+          {/* Cuánto costaría surtirse completo. Va arriba del inventario porque es la
+              pregunta que se hace al mirarlo: cuánto falta por comprar. */}
+          <SurtirCatalogo />
           <div className="flex flex-wrap items-center justify-between gap-3 mb-4">
             <h3 className="font-heading font-semibold">{t('admin.stock.title', { count: STOCK_VARIANTS.length })}</h3>
             <Input className="w-64" placeholder={t('admin.stock.search')} value={stockFilter} onChange={(e) => setStockFilter(e.target.value)} data-testid="admin-stock-search" />

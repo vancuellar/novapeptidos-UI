@@ -16,14 +16,18 @@
 // y desde ahí se sube. Por eso la fecha se enseña en rojo cuando ya tiene días — un
 // tablero que parece vivo y está viejo es peor que no tener tablero.
 //
-// SOLO LECTURA. Desde aquí no se mueve ningún precio (eso viene después, cuando el
-// motor escriba en la base en vez de en el Excel).
-import React, { useEffect, useState } from 'react';
+// Desde aquí NO se mueve ningún precio ni se da de alta nada: lo único que se puede
+// hacer es DECIDIR ("esto sí lo quiero vender"), y esa decisión la aplica después la Mac
+// pasando el producto por el motor. El precio lo pone la fórmula —costo, competencia,
+// piso de 5×—, y un alta desde una pantalla se saltaría todo eso.
+import React, { useCallback, useEffect, useState } from 'react';
 import {
-  AlertTriangle, CheckCircle2, Gauge, PackageSearch, RefreshCw,
-  ShoppingBasket, TrendingDown, History, Lightbulb,
+  AlertTriangle, Check, Gauge, PackageSearch, RefreshCw,
+  ShoppingBasket, TrendingDown, History, Lightbulb, X,
 } from 'lucide-react';
 import { Card } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { toast } from 'sonner';
 import api from '@/lib/api';
 
 const pesos = (n) => `$${Math.round(Number(n) || 0).toLocaleString('es-MX')}`;
@@ -82,17 +86,92 @@ const Tabla = ({ cols, filas, vacio }) => {
   );
 };
 
+// Los dos botones de una oportunidad. Cuando ya hay decisión se enseña el sello y la
+// forma de deshacerla: una decisión que no se puede cambiar acaba siendo una decisión
+// que no se toma.
+const Decidir = ({ fila, estado, ocupado, onDecidir }) => {
+  if (estado === 'aprobado') {
+    return (
+      <span className="inline-flex items-center gap-1 whitespace-nowrap">
+        <span className="rounded-full px-2 py-0.5 text-[11px] bg-[hsl(var(--success))]/15 text-[hsl(var(--success))]">
+          Se va a dar de alta
+        </span>
+        <button className="text-[11px] text-muted-foreground underline" disabled={ocupado}
+          onClick={() => onDecidir(fila, 'pendiente')}>deshacer</button>
+      </span>
+    );
+  }
+  if (estado === 'descartado') {
+    return (
+      <span className="inline-flex items-center gap-1 whitespace-nowrap">
+        <span className="rounded-full px-2 py-0.5 text-[11px] bg-[hsl(var(--muted))] text-muted-foreground">
+          Descartado
+        </span>
+        <button className="text-[11px] text-muted-foreground underline" disabled={ocupado}
+          onClick={() => onDecidir(fila, 'pendiente')}>deshacer</button>
+      </span>
+    );
+  }
+  return (
+    <span className="inline-flex items-center gap-1.5 whitespace-nowrap">
+      <Button size="sm" className="h-6 px-2 text-[11px] gap-1" disabled={ocupado}
+        onClick={() => onDecidir(fila, 'aprobado')}
+        data-testid={`motor-vender-${fila.llave}`}>
+        <Check className="h-3 w-3" /> Vender esto
+      </Button>
+      <Button size="sm" variant="ghost" className="h-6 px-1.5 text-[11px]" disabled={ocupado}
+        onClick={() => onDecidir(fila, 'descartado')} title="No me interesa">
+        <X className="h-3 w-3" />
+      </Button>
+    </span>
+  );
+};
+
 export default function MotorPrecios() {
   const [d, setD] = useState(null);
   const [error, setError] = useState(null);
+  const [cargando, setCargando] = useState(false);
+  const [decisiones, setDecisiones] = useState({});
+  const [guardando, setGuardando] = useState(null);
 
-  useEffect(() => {
-    api.get('/admin/motor-precios')
-      .then((r) => setD(r.data))
+  const cargar = useCallback((avisar) => {
+    setCargando(true);
+    return Promise.all([
+      api.get('/admin/motor-precios'),
+      api.get('/admin/motor-precios/decisiones').catch(() => ({ data: {} })),
+    ])
+      .then(([foto, dec]) => {
+        setD(foto.data);
+        setDecisiones(dec.data || {});
+        setError(null);
+        if (avisar) {
+          // Se dice SIEMPRE de cuándo es la foto, incluso al refrescar a mano: si la Mac
+          // no ha vuelto a subirla, "actualizado" a secas sería mentira.
+          toast.success(`Leído del servidor · foto del ${foto.data?.generado || '—'}`);
+        }
+      })
       .catch((e) => setError(e.response?.status === 404
         ? 'Todavía no se ha subido ninguna foto del motor.'
-        : (e.response?.data?.detail || e.message)));
+        : (e.response?.data?.detail || e.message)))
+      .finally(() => setCargando(false));
   }, []);
+
+  useEffect(() => { cargar(false); }, [cargar]);
+
+  const decidir = (fila, decision) => {
+    setGuardando(fila.llave);
+    api.put(`/admin/motor-precios/decisiones/${encodeURIComponent(fila.llave)}`,
+      { decision, nota: `${fila.nombre} · ${fila.mejor_prov}` })
+      .then(() => api.get('/admin/motor-precios/decisiones'))
+      .then((r) => {
+        setDecisiones(r.data || {});
+        toast.success(decision === 'aprobado'
+          ? `${fila.nombre}: anotado para darlo de alta`
+          : `${fila.nombre}: descartado`);
+      })
+      .catch((e) => toast.error(e.response?.data?.detail || e.message))
+      .finally(() => setGuardando(null));
+  };
 
   if (error) {
     return (
@@ -122,30 +201,65 @@ export default function MotorPrecios() {
       {/* Frescura primero: sin saber de cuándo es la foto, nada de lo de abajo se
           puede usar para decidir. */}
       <div className="flex flex-wrap items-center justify-between gap-3">
-        <div className="text-xs text-muted-foreground">
-          {d.a_la_venta} a la venta de {d.productos} en la maestra
+        <div className="flex items-center gap-2">
+          {/* El semáforo, chiquito y arriba del todo: es lo primero que Christian mira y
+              casi siempre está en verde, así que no necesita una tarjeta entera. Cuando
+              se pone rojo, abajo aparece la lista de qué no cuadra. */}
+          <span className={`inline-flex items-center gap-1.5 rounded-full px-2 py-0.5 text-[11px] font-medium ${s.ok
+            ? 'bg-[hsl(var(--success))]/15 text-[hsl(var(--success))]'
+            : 'bg-red-500/15 text-red-600'}`} data-testid="motor-semaforo">
+            <span className={`h-2 w-2 rounded-full ${s.ok ? 'bg-[hsl(var(--success))]' : 'bg-red-600 animate-pulse'}`} />
+            {s.ok ? 'Todo cuadra' : `${(s.problemas || []).length} precios no cuadran`}
+          </span>
+          <span className="text-xs text-muted-foreground">
+            {d.a_la_venta} a la venta de {d.productos} en la maestra
+          </span>
         </div>
-        <span className={`rounded-full px-2 py-0.5 text-[11px] ${vieja ? 'bg-red-500/15 text-red-600' : 'bg-[hsl(var(--muted))] text-muted-foreground'}`}>
-          {vieja ? `Foto de hace ${dias} días — vuelve a generarla` : `Foto del ${d.generado}`}
-        </span>
+        <div className="flex items-center gap-2">
+          <span className={`rounded-full px-2 py-0.5 text-[11px] ${vieja ? 'bg-red-500/15 text-red-600' : 'bg-[hsl(var(--muted))] text-muted-foreground'}`}>
+            {vieja ? `Foto de hace ${dias} días` : `Foto del ${d.generado}`}
+          </span>
+          <Button size="sm" variant="outline" className="h-7 text-xs gap-1.5"
+            onClick={() => cargar(true)} disabled={cargando} data-testid="motor-refrescar">
+            <RefreshCw className={`h-3.5 w-3.5 ${cargando ? 'animate-spin' : ''}`} />
+            {cargando ? 'Leyendo…' : 'Refrescar'}
+          </Button>
+        </div>
       </div>
 
-      {/* 1. Semáforo de certeza */}
-      <Bloque
-        icon={s.ok ? CheckCircle2 : AlertTriangle}
-        alerta={!s.ok}
-        titulo={s.ok ? 'Todas las listas dicen lo mismo' : 'HAY PRECIOS QUE NO CUADRAN'}
-        nota="La base, el maestro, el sitio y el backend, comparados uno contra otro."
-      >
-        <p className="text-xs">{s.resumen}</p>
-        {!s.ok && (
+      {/* El botón vuelve a LEER del servidor; no recalcula. La cuenta la hace la base del
+          motor, que vive en la Mac de Christian y no en el servidor, así que si la foto
+          está vieja lo que hace falta es volver a subirla desde allá. Decirlo aquí evita
+          la trampa de darle a "refrescar" tres veces esperando números nuevos. */}
+      {vieja && (
+        <Card className="p-3 border-red-500/40">
+          <p className="text-xs">
+            <span className="text-red-600 font-medium">Esta foto tiene {dias} días.</span>{' '}
+            Refrescar sólo vuelve a leer la última que se subió: los números los calcula la
+            Mac. Para tenerlos de hoy, corre allá{' '}
+            <code>python3 pricing-system/publicar_dashboard_precios.py --subir</code>.
+          </p>
+        </Card>
+      )}
+
+      {/* 1. El detalle del semáforo, SÓLO cuando algo no cuadra. En verde no hace falta:
+             el puntito de arriba ya lo dice, y una tarjeta que siempre dice "todo bien"
+             se deja de leer justo antes del día en que dice otra cosa. */}
+      {!s.ok && (
+        <Bloque
+          icon={AlertTriangle}
+          alerta
+          titulo="HAY PRECIOS QUE NO CUADRAN"
+          nota="La base, el maestro, el sitio y el backend, comparados uno contra otro. No publiques hasta arreglarlo."
+        >
+          <p className="text-xs">{s.resumen}</p>
           <ul className="mt-2 space-y-1">
             {(s.problemas || []).map((p, i) => (
               <li key={i} className="text-xs text-red-600">· {p}</li>
             ))}
           </ul>
-        )}
-      </Bloque>
+        </Bloque>
+      )}
 
       <div className="grid gap-4 lg:grid-cols-2">
         {/* 2. Los que están al filo */}
@@ -242,8 +356,20 @@ export default function MotorPrecios() {
               { k: 'mejor_usd', t: 'Caja', der: true, pinta: (f) => dolares(f.mejor_usd) },
               { k: 'gana_caja_mxn', t: 'Dejaría', der: true,
                 pinta: (f) => <span className="text-[hsl(var(--success))]">{pesos(f.gana_caja_mxn)}</span> },
+              { k: 'llave', t: '', der: true,
+                pinta: (f) => (
+                  <Decidir fila={f} estado={decisiones[f.llave]?.decision}
+                    ocupado={guardando === f.llave} onDecidir={decidir} />
+                ) },
             ]}
           />
+          <p className="text-[11px] text-muted-foreground mt-3">
+            "Vender esto" no lo publica: lo deja anotado y lo da de alta el motor desde la
+            Mac, con su precio calculado (costo, competencia y piso de 5×). Los{' '}
+            {opos.excluidos || 0} excluidos no aparecen aquí y no se pueden aprobar
+            {(opos.motivos_vetados || []).length > 0
+              && `: ${(opos.motivos_vetados || []).join(' · ').toLowerCase()}`}.
+          </p>
         </Bloque>
       </div>
 
