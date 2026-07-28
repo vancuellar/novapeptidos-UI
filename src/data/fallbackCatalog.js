@@ -455,7 +455,7 @@ export const fallbackProducts = [
       },
       {
         "presentation": "10 mg",
-        "price": 1429,
+        "price": 1439,
         "stock": 40,
         "batch_number": "NP-THYM10-2601",
         "id": "17c3f0ff-a6d0-45a1-b35c-d5e620780829",
@@ -3007,7 +3007,7 @@ export const fallbackProducts = [
       },
       {
         "presentation": "5 mg",
-        "price": 819,
+        "price": 829,
         "stock": 40,
         "batch_number": "NP-OXY5-2601",
         "id": "17bc65bf-139d-40c8-86a5-acdce12edd60",
@@ -3017,7 +3017,7 @@ export const fallbackProducts = [
       },
       {
         "presentation": "10 mg",
-        "price": 849,
+        "price": 859,
         "stock": 40,
         "batch_number": "NP-OXY10-2601",
         "id": "6f7eaffb-8997-4272-8178-04bc4efe13af",
@@ -3874,7 +3874,7 @@ export const fallbackProducts = [
       },
       {
         "presentation": "15 mg",
-        "price": 1049,
+        "price": 1059,
         "stock": 40,
         "batch_number": "NP-MOTS15-2601",
         "id": "9e336d64-8af3-4991-ac30-fafb9f736bf2",
@@ -3884,7 +3884,7 @@ export const fallbackProducts = [
       },
       {
         "presentation": "20 mg",
-        "price": 1089,
+        "price": 1099,
         "stock": 40,
         "batch_number": "NP-MOTS20-2601",
         "id": "f878af32-45f7-4b6b-82da-52b985ac90ed",
@@ -4328,11 +4328,11 @@ export const fallbackProducts = [
     "presentation": "10 mg – 120 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
-    "price": 1749,
+    "price": 2119,
     "variants": [
       {
         "presentation": "10 mg",
-        "price": 1749,
+        "price": 2119,
         "stock": 40,
         "batch_number": "NP-TIRZ10-2601",
         "id": "289d914f-67f2-472d-83c1-3809dc0ee225",
@@ -4342,7 +4342,7 @@ export const fallbackProducts = [
       },
       {
         "presentation": "20 mg",
-        "price": 1799,
+        "price": 2189,
         "stock": 40,
         "batch_number": "NP-TIRZ20-2601",
         "id": "e7856e6b-dcee-4a94-8126-2528113cf4d5",
@@ -4352,7 +4352,7 @@ export const fallbackProducts = [
       },
       {
         "presentation": "30 mg",
-        "price": 2559,
+        "price": 3069,
         "stock": 40,
         "batch_number": "NP-TIRZ30-2601",
         "id": "e5c68138-7652-4036-91c9-8c51f8c379f6",
@@ -4362,7 +4362,7 @@ export const fallbackProducts = [
       },
       {
         "presentation": "40 mg",
-        "price": 2639,
+        "price": 3169,
         "stock": 40,
         "batch_number": "NP-TIRZ40-2601",
         "id": "c5e91908-e427-4af6-b631-b33ae4846c61",
@@ -4372,22 +4372,22 @@ export const fallbackProducts = [
       },
       {
         "presentation": "50 mg",
-        "price": 2879,
+        "price": 3269,
         "stock": 40,
         "batch_number": "NP-TIRZ50-2601",
         "id": "e94e4156-f26e-40b8-aecc-a5cd1583a3a1",
         "sku": "TIRZEPATIDA-50MG",
-        "commission_cap": 0.35,
+        "commission_cap": 0.4,
         "distributor_eligible": true
       },
       {
         "presentation": "60 mg",
-        "price": 3449,
+        "price": 3919,
         "stock": 40,
         "batch_number": "NP-TIRZ60-2601",
         "id": "0169ea33-313d-49c8-9681-866f55f854f7",
         "sku": "TIRZEPATIDA-60MG",
-        "commission_cap": 0.35,
+        "commission_cap": 0.4,
         "distributor_eligible": true
       },
       {
@@ -4448,7 +4448,7 @@ export const fallbackProducts = [
     "presentation": "10 mg – 16 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
-    "price": 1579,
+    "price": 1689,
     "variants": [
       {
         "presentation": "10 mg",
@@ -4462,7 +4462,7 @@ export const fallbackProducts = [
       },
       {
         "presentation": "16 mg",
-        "price": 1579,
+        "price": 1739,
         "stock": 40,
         "batch_number": "NP-ARA216-2601",
         "id": "582df66d-c396-44e1-994a-adf34e693203",
