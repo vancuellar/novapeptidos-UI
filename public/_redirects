@@ -1,14 +1,10 @@
-# Los dominios viejos mandan a exygenlabs.com, CONSERVANDO la ruta: un enlace a
-# /producto/bpc-157 no debe acabar en la portada. 301 = permanente, para que Google
-# traslade el peso del dominio viejo al bueno en vez de tratarlos como dos sitios
-# distintos con el mismo contenido (eso es lo que castiga el buscador).
+# Cualquier ruta que no exista como archivo se atiende con index.html y la resuelve el
+# router de React, devolviendo 200 y no 404. Sin esto, /admin y todo lo que no esté
+# pre-generado contestaba 404 — que es exactamente el fallo que un día sacó al sitio del
+# índice de Google cuando vivía en GitHub Pages.
 #
-# Va aquí y no en una regla del panel de Cloudflare porque el token de Christian tiene
-# permiso de Pages y DNS, pero no de reglas de redirección. El efecto es el mismo.
-https://exygenpeptides.com/*      https://exygenlabs.com/:splat  301
-https://www.exygenpeptides.com/*  https://exygenlabs.com/:splat  301
-https://exygenpeptides.mx/*       https://exygenlabs.com/:splat  301
-https://www.exygenpeptides.mx/*   https://exygenlabs.com/:splat  301
-https://exygenlabs.mx/*           https://exygenlabs.com/:splat  301
-https://www.exygenlabs.mx/*       https://exygenlabs.com/:splat  301
-https://www.exygenlabs.com/*      https://exygenlabs.com/:splat  301
+# ⚠️ AQUÍ SÓLO VAN RUTAS, NUNCA DOMINIOS COMPLETOS. Esa sintaxis (https://otro.com/*)
+# es de Netlify; Cloudflare rechaza el archivo ENTERO si la encuentra, y entonces no
+# funciona ni esta regla. Costó un despliegue descubrirlo (2026-07-28).
+# Las redirecciones de exygenpeptides.com y compañía se hacen con reglas del panel.
+/*  /index.html  200

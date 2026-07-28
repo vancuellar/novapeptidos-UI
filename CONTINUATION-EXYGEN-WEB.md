@@ -3774,3 +3774,49 @@ Christian pidió que las páginas de los dos menús estuvieran "desarrolladas co
 - **SSH**: `~/.ssh/id_ed25519` — autorizada en el server de JADA (13.223.241.123) **y en el backend nuevo de Exygen (ubuntu@44.204.127.242, key pair `exygen-key`)**.
 - **Cloudflare**: dominio exygenlabs.com + DNS. Token acotado (Edit zone DNS) lo da Christian cuando se necesite.
 - **Gmail de la marca**: exygenlabs@gmail.com (login admin del sitio + correo del dominio).
+
+## ☁️ CLOUDFLARE — a medio camino (2026-07-28, noche)
+
+**Hecho:** proyecto `exygenlabs` creado, sitio desplegado y funcionando en
+**https://exygenlabs.pages.dev** con la versión de hoy. Responde en ~0.2 s y el precio
+viaja dentro del HTML. Portada, catálogo, ficha, checkout, aprende, calculadora, /cuenta/
+e /info/* devuelven 200. Token bueno guardado en `~/.config/exygen/cloudflare.env` (con
+`CLOUDFLARE_ACCOUNT_ID` y `CLOUDFLARE_ZONE_ID`); tiene permiso de **Pages y DNS**, NO de
+reglas de redirección.
+
+**⛔ EL BLOQUEO que impide mover el dominio, y cómo se resuelve:**
+`/admin` devuelve **404** en Cloudflare. La causa es `public/404.html` — el truco que
+GitHub Pages necesitaba para las rutas profundas. Cloudflare Pages, al ver ese archivo,
+lo sirve para todo lo no encontrado y **le gana a la regla `/* /index.html 200`** de
+`public/_redirects`. La solución es borrar `public/404.html`… pero eso rompe GitHub Pages,
+así que **se hace en el mismo movimiento que el cambio de dominio, no antes.**
+
+**El orden para terminar la mudanza (una sola sesión, con calma):**
+1. Borrar `public/404.html` y el script que lo acompaña en `public/index.html` (el que
+   reconstruye la URL desde `?/ruta`). Ya no hacen falta.
+2. `npm run build` + `npx wrangler pages deploy build --project-name=exygenlabs --branch=main`
+3. Comprobar que `/admin`, `/cuenta`, `/distribuidor` y una ficha den **200** en
+   `exygenlabs.pages.dev`. **Si no, PARAR aquí**: todavía no se movió nada.
+4. Enganchar los dominios al proyecto (`/pages/projects/exygenlabs/domains`):
+   exygenlabs.com, www.exygenlabs.com, y los tres secundarios.
+5. Cambiar el DNS de exygenlabs.com: hoy son cuatro registros A a GitHub Pages
+   (**185.199.108.153, .109.153, .110.153, .111.153** — anótalos, son la marcha atrás).
+6. Verificar el sitio en vivo y hacer una compra de prueba.
+7. Las redirecciones de exygenpeptides.com / .mx y exygenlabs.mx: los registros DNS ya
+   están creados y proxeados a 192.0.2.1. Falta la regla, que necesita un token con
+   permiso de **Zone → Config Rules → Edit** (el actual no lo tiene). ⚠️ NO se hacen con
+   `_redirects`: la sintaxis de dominio completo es de Netlify y **Cloudflare rechaza el
+   archivo entero** si la encuentra — costó un despliegue descubrirlo.
+
+**exygenlabs.mx sigue en `pending`**: el registro `.mx` todavía no lo delega. No hay nada
+que tocar; cuando se active, lo demás ya está listo.
+
+**La marcha atrás, si algo sale mal:** devolver los cuatro registros A de exygenlabs.com a
+las IPs de GitHub Pages de arriba. Tarda minutos.
+
+### Calculadora de la competencia — mirar y adoptar lo bueno
+Christian pidió (2026-07-28) analizar ésta y ver qué conviene copiar a la nuestra:
+**https://certivapeptides.com/peptide-calculator/#reconstitution-calculator**
+La nuestra vive en `/calculadora` (`src/pages/`). Comparar: qué preguntan y en qué orden,
+qué enseñan del resultado, si dibujan la jeringa, si guardan lo calculado, y si sirve en
+teléfono con una mano. Anotar qué se adopta y qué no, con el porqué.
