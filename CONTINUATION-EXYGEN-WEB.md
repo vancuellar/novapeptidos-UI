@@ -1,3 +1,61 @@
+# 🔴 EN CURSO — 2026-07-28
+
+## Lo que se cerró hoy (todo en vivo y verificado)
+
+**Seguridad, lo más grave del día.** `POST /orders` sumaba `item.price` **tal como venía
+del navegador**. Se podía mandar precio $0 y llevarse un vial de $9,359 pagando los $250
+del envío. Lo encontró una auditoría externa con Codex; ni las 229 pruebas ni los tres
+auditores de precios lo veían, porque **todos comparaban precios publicados y ninguno el
+precio realmente cobrado**. Arreglado, desplegado y comprobado contra producción: mandando
+$0 ahora cobra $9,359. Un producto que no se resuelve se rechaza.
+
+**Bug hermano:** el pedido descontaba inventario por `id` y la devolución por `id` O `sku`.
+El carrito manda SKU → el pedido no bajaba piezas y la cancelación sí las sumaba: **el
+inventario se inflaba solo**. Arreglado; ciclo comprobado 40 → 38 → 40.
+
+**Precios.** 11 violaciones de banda corregidas + Tirzepatida repreciada (llevaba meses con
+una regla muerta): 10mg $1,749 → $2,119, hasta 60mg $3,919. Todo bajo el techo de Certified.
+Reglas nuevas de Christian: **trinquete** (a Exoma no se le sigue para abajo), **Certified
+menos $10 con terminación 9**, **techo cruzado** (no cobrar más por menos producto del que
+el competidor da en su presentación mayor), y **5× neto o venta directa** para distribuidores.
+
+**Sistema de precios en repo privado:** `github.com/vancuellar/exygen-pricing`. Archivo
+maestro auditable `maestra.csv` (entradas vs derivado), motor `reprecio.py`, **42 pruebas**
+(19 de estado + 22 de estrés: mutación, 4,000 combinaciones al azar, bordes).
+
+**Dysport y HUMSC ocultos** del catálogo público (no son péptidos RUO). Interruptor `hidden`
+nuevo en el backend.
+
+**Correos:** las suites E2E usaban `auditoria@exygenlabs.com` como cliente de prueba, así que
+cada corrida le mandaba a Christian "compra confirmada". Ya usan un dominio no entregable.
+
+## 🟡 PROVEEDORES — lo que quedó a medias
+
+Ver **`pricing-system/HANDOFF-PROVEEDORES.md`** (está todo ahí).
+
+Resumen: **28 proveedores registrados, 1,028 precios de 8 de ellos**, sacados de los 26
+chats de WhatsApp que Christian exportó. Hallazgos: compra la **RT 40mg a $230** cuando hay
+tres contactos ofreciéndola a **$185-190**; **Bainuo y Lily son la misma bodega** (86% del
+catálogo idéntico) y Lily es la barata; **Lisa cobra ~8% menos que su propia lista**.
+
+**Falta:** leer los precios que vienen en las **97 fotos** de los chats (solo se capturó la
+de Mia), dos catálogos en PDF sin capa de texto, los teléfonos y **costos de envío** de los
+nuevos, bajar los videos, y cruzar los **COAs por número de lote** para confirmar fuentes
+comunes (idea de Christian — ya se vio que el mismo COA de Retatrutida lo mandan TRES
+"proveedores" distintos).
+
+⚠️ **Los proveedores mienten:** ninguno tiene bodega en México ni EE.UU., y los COA que
+enseñan son de clientes suyos (se comprobó: uno dice `Customer: Finnrick`). Solo cuenta lo
+verificado con una compra.
+
+## Pendientes de Christian
+1. Decidir el ROI real: con descuento + comisión + puntos, **IGF-1 LR3 1mg queda en 4.96×**.
+   Es el único abajo de 5× y no tiene arreglo (Certified lo topa en $1,460).
+2. Costos de envío de los proveedores nuevos.
+3. Mover los costos al Panel Admin (se acordó, no se empezó).
+
+---
+
 # Exygen Labs — Website Continuation File
 
 > **Propósito:** fuente única de verdad del SITIO WEB (frontend, backend, IA, marca, despliegue). Pega este archivo en un chat nuevo para retomar con todo el contexto. Complementa a `../NOVA-PRICING-SYSTEM-CONTINUATION.md` (el sistema de precios). **Última actualización: 2026-07-27 (noche).** Empieza por 🔴 EN CURSO.
