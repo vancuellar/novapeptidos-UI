@@ -318,23 +318,55 @@ para cachar que alguien vuelva a dejar el archivo en la carpeta pública.
 (`calcular()`), para que el Panel enseñe LO MISMO que la terminal en vez de recalcularlo por
 su cuenta. Dos cuentas para el mismo número acaban dando dos números distintos.
 
-### ⛔ LO ÚNICO QUE FALTA: DESPLEGAR EL BACKEND
+### ✅ BACKEND DESPLEGADO (28-jul, con Christian autorizando el SSH a mano)
 
-Las dos rutas nuevas (`GET`/`PUT /api/admin/motor-precios`) están escritas y probadas en
-local, pero **NO están en el servidor**, así que la pestaña hoy dice "todavía no se ha subido
-ninguna foto". El clasificador de Claude Code bloquea el `ssh` al EC2 en modo automático — se
-intentó hoy: se abrió el puerto 22 para la IP del momento, se mandó la llave con Instance
-Connect, y el `ssh` se bloqueó. **La regla del puerto 22 ya se cerró** (quedaron sólo las dos
-IPs viejas de siempre).
+Las dos rutas están EN VIVO. `GET /api/admin/motor-precios` sin sesión devuelve **401**,
+y con sesión de admin devuelve la foto. Ya se subió la primera.
 
-Para dejarlo andando hacen falta dos pasos, en este orden:
+Cómo se hizo, porque el `ssh` lo bloquea el clasificador en automático y hay que pedirle
+autorización a Christian en el momento: abrir el 22 para la IP de hoy, mandar la llave con
+Instance Connect (dura 60 s), `cd /opt/exygen/app && sudo git pull && sudo docker compose
+up -d --build api`, y **cerrar la regla del 22 al terminar** (se cerró: quedaron sólo las
+dos IPs viejas). Ver "CÓMO ENTRAR AL EC2".
 
-1. Desplegar `novapeptidos-RBAC/server.py` al EC2 (`/opt/exygen/app`,
-   `sudo git pull && sudo docker compose up -d --build api`). Ver "CÓMO ENTRAR AL EC2".
-2. Desde la Mac: `python3 pricing-system/publicar_dashboard_precios.py --subir`
+Para refrescar el tablero, desde la Mac:
 
-Mientras tanto la pestaña ya está en el sitio y no estorba: enseña el aviso de que falta la
-foto, no una pantalla rota.
+```
+python3 pricing-system/publicar_dashboard_precios.py --subir
+```
+
+## 🆕 PROVEEDOR NUEVO: LUMI (28-jul) — y el candado que faltaba al leer listas
+
+Llegó por WhatsApp con lista completa. **118 precios cargados**, ya en la base (31
+proveedores, 1,594 precios). Es el **2º más barato en Retatrutida 40 mg ($166**, contra
+$139 de Lucy y $179 de Certiva) y el **más barato** en Survodutida 10 mg, Mazdutida 10 mg
+y CJC-1295 con DAC 5 mg. **No se le ha comprado y no se sabe su envío.** Dice tener
+**bodega en México**: sin comprobar, y esa promesa ya resultó falsa con otros.
+
+⚠️ **Su lista trae ESTEROIDES ANABÓLICOS** —testosterona, winstrol, trembolona, dianabol,
+equipoise, primobolan— y el sistema los estaba proponiendo como productos a vender, con
+"ganancias" de $19,000 por caja. Están vetados en `datos/no_vender.csv` por sustancia
+controlada. Decisión de Christian si eso cambia algo sobre seguir tratando con él.
+
+**Su tabla está perfecta; el que fallaba era nuestro lector.** Ese PDF es un Excel
+exportado, y en texto plano sale en UN SOLO CHORRO sin renglones. El importador sacó
+**9 precios de 145 y dijo "listo"**. Tres arreglos:
+
+1. **Se lee respetando las columnas** (`extraction_mode='layout'`). Las celdas combinadas
+   se reparten cortando donde la DOSIS baja, que es donde de verdad empieza otro producto:
+   el nombre va CENTRADO en su bloque, así que ni "el de arriba" ni "el más cercano"
+   sirven — con "el más cercano", dos precios de la Retatrutida acababan colgados del
+   AOD9604.
+2. **CANDADO**: si lo leído no llega al **85%** de los signos de peso del documento, NO se
+   guarda. Antes bastaban 4 precios para que se viera igual de bien que 145, y ese
+   silencio es lo que dejó invisible el destrozo de 502 precios de julio.
+3. **Los alias de proveedor se aplican AL CARGAR LA BASE.** El comparador agrupa por
+   nombre exacto, así que "RT Retatrutide" no cruzaba con "Retatrutide" y Lumi quedaba
+   fuera de la comparación con los otros diez que la venden. Es un hueco que NO se ve:
+   la consulta contesta bien, sólo que de menos productos.
+
+Quedaron **27 precios sin leer de los 145**: son todos esteroides con la presentación
+partida en varias líneas. No se persiguieron porque no se venden.
 
 ## ▶️ LO SIGUIENTE
 
