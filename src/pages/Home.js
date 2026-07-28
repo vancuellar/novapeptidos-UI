@@ -585,6 +585,26 @@ const Home = () => {
               </div>
             ))}
           </div>
+          {/* FOTOS DE PRODUCCIÓN (Christian, 2026-07-28): la página era pura letra
+              y Certified enseña planta. Son cuadros de los videos del laboratorio
+              donde se fabrica; ⛔ ninguno con personas ni con etiquetas que choquen
+              con el RUO. Carga diferida: van muy abajo y no deben frenar la portada. */}
+          <div className="mt-10 grid sm:grid-cols-3 gap-4" data-testid="home-fotos-produccion">
+            {[
+              { src: 'viales-liofilizados', alt: t('home.photos.lyo') },
+              { src: 'envasado', alt: t('home.photos.filling') },
+              { src: 'taponado', alt: t('home.photos.capping') },
+            ].map((f) => (
+              <figure key={f.src} className="overflow-hidden rounded-xl border border-border bg-card">
+                <img
+                  src={`${process.env.PUBLIC_URL}/images/laboratorio/${f.src}.jpg`}
+                  alt={f.alt} loading="lazy" width="1200" height="676"
+                  className="w-full h-44 object-cover"
+                />
+                <figcaption className="px-4 py-3 text-xs text-muted-foreground">{f.alt}</figcaption>
+              </figure>
+            ))}
+          </div>
           <Button asChild className="mt-8"><Link to="/info/calidad">{t('home.learnProcess')}</Link></Button>
         </div>
       </section>
