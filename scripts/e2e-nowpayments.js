@@ -92,7 +92,12 @@ function firmar(payload, secreto) {
     body: JSON.stringify({
       items: [{ product_id: prod.id, name: prod.name, price: prod.price, quantity: 1,
                 presentation: prod.presentation || '', image_url: '' }],
-      customer: { full_name: 'E2E Cripto', email: 'auditoria@exygenlabs.com',
+      // OJO: example.com es un dominio reservado y NO ENTREGABLE, a propósito.
+      // Con 'auditoria@exygenlabs.com' cada corrida le mandaba a Christian un
+      // "compra confirmada" y un "pago confirmado" a su buzón real — y esta
+      // suite se corre antes de CADA push (2026-07-27). No lo cambies a un
+      // correo que alguien lea.
+      customer: { full_name: 'E2E Cripto', email: 'e2e-no-responder@example.com',
                   phone: '+52 5512345678', address: 'x', city: 'Mérida', state: 'Yucatán',
                   postal_code: '97000', country: 'MX', notes: 'E2E CRIPTO — se borra sola' },
       payment_method: 'cripto', shipping: 0,

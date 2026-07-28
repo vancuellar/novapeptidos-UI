@@ -298,7 +298,12 @@ async function reglasDeDinero(porSku, h) {
     method: 'POST', headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
       items,
-      customer: { full_name: 'Auditoría E2E', email: 'auditoria@exygenlabs.com',
+      // OJO: example.com es un dominio reservado y NO ENTREGABLE, a propósito.
+      // Con 'auditoria@exygenlabs.com' cada corrida le mandaba a Christian un
+      // "compra confirmada" y un "pago confirmado" a su buzón real — y esta
+      // suite se corre antes de CADA push (2026-07-27). No lo cambies a un
+      // correo que alguien lea.
+      customer: { full_name: 'Auditoría E2E', email: 'e2e-no-responder@example.com',
                   phone: '+52 5512345678', address: 'x', city: 'Mérida', state: 'Yucatán',
                   postal_code: '97000', country: 'MX', notes: 'AUDITORÍA — se borra sola' },
       payment_method: 'spei', shipping: 0, distributor_code: codigo || null,
