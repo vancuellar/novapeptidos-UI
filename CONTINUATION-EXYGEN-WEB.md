@@ -41,7 +41,14 @@ en Mercado Pago y allá ya tienen la tarjeta. De paso le tocó el arreglo de la 
    SKU/presentación/vigencia · `v_roi_real` resta el envío contra lo que dice
    `FUENTE-DE-VERDAD.md` · `reprecio.py` todavía lee el Excel.
 
+👉 **Todo lo que Christian ha pedido y no está terminado vive en UNA sola sección, aquí abajo:
+"💡 IDEAS DE CHRISTIAN — no se pierde ninguna".** Cada idea con qué pidió, por qué, en qué estado
+está de verdad y quién la tiene. Si vas a ponerte a trabajar, empieza por ahí.
+
 **Qué espera decisión de Christian.**
+- **La política de envío.** 🟠 **En discusión, sin decidir.** Quitó el cobro automático y luego
+  dudó si dejar un cobro fijo. La recomendación es **gratis arriba de $1,500 y cobrar el real
+  abajo de eso** — los argumentos están completos en la sección de ideas, punto 9.
 - **Cuándo se reanudan los anuncios.** Las 6 campañas están **pausadas a propósito**. La
   recomendación es no prenderlas hasta tener 1 y 2.
 - **El pedido de prueba a Lumi.** Christian va a hacerle un pedido chico para comprobar que de
@@ -70,6 +77,168 @@ limpio (`e002ad1`) eran 242. Quien retome: vuelve a correrlas cuando ese agente 
 
 ---
 
+# 💡 IDEAS DE CHRISTIAN — no se pierde ninguna
+
+> **Para qué existe esta sección.** Christian pide cosas mientras trabajamos y las buenas ideas se
+> caen entre sesiones. Aquí está **todo lo que pidió y todavía no está terminado**, con: qué pidió
+> (en sus palabras), por qué, en qué estado está de verdad, y **quién la tiene**. Si él lee esta
+> sección, ve todo lo suyo sin tener que acordarse de nada.
+>
+> **Regla de la casa:** nada sale de esta lista por olvido. Sale porque se terminó (y se dice
+> dónde quedó) o porque él lo canceló (y se anota **CANCELADA**, para que nadie lo reviva).
+>
+> *Estado verificado contra el repo la noche del 2026-07-28.*
+
+## 🔧 EN CURSO AHORA MISMO — las tiene el agente del checkout
+
+⚠️ **Todo este bloque está escrito pero SIN COMMIT** (al cierre de la noche del 28-jul). Sale en
+`git status` de `novapeptidos-UI` (`Checkout.js`, `CountryPhoneFields.js`, `RuoGate.js`,
+`CartContext.js`, `Account.js`, `ConfirmEmail.js`, `OrderConfirmation.js`, `Cart.js`,
+`translations.js`, `subdivisions.js` nuevo) y de `novapeptidos-RBAC` (`models.py`, `server.py`,
+`test_core.py`). **No toques `src/pages/Checkout.js` ni `novapeptidos-RBAC/models.py`.**
+👉 **Lo primero que debe hacer quien retome: correr `git status` en los dos repos.** Si ya salen
+limpios, es que el agente terminó y commiteó — entonces esto ya está en vivo y hay que marcarlo
+como cerrado aquí.
+
+### 1. Segunda línea de dirección (interior, referencia)
+- **Qué pidió:** que quepa el interior, el departamento y la referencia — no todo apretado en un
+  solo renglón.
+- **Por qué:** la paquetería necesita el interior o el paquete se queda en la recepción.
+- **Estado:** ✅ hecho, sin commit. Va dentro de la primera línea de dirección en `Checkout.js`.
+- **Quién la tiene:** el agente del checkout.
+
+### 2. Buscador dentro del selector de países
+- **Qué pidió:** poder escribir el país en vez de rodar la lista entera.
+- **Por qué:** son ~200 países y hoy hay que bajarlos todos con el dedo.
+- **Estado:** ✅ hecho, sin commit (`CommandInput` con filtro en `CountryPhoneFields.js`). Busca
+  **sin acentos y en los tres idiomas del sitio**, así que "mexico", "México" y "Mexico" pegan
+  igual.
+- **Quién la tiene:** el agente del checkout.
+
+### 3. Estado / provincia como LISTA (México, EUA, Canadá, Brasil)
+- **Qué pidió:** que el estado se elija de una lista en esos cuatro países; texto libre para el
+  resto.
+- **Por qué:** hoy cada quien escribe lo suyo — **"CDMX", "Cd. de México", "DF" y "Distrito
+  Federal" son la MISMA entidad** y la paquetería las trata como cuatro. Con lista cerrada el dato
+  sale limpio y se puede agrupar por estado sin adivinar.
+- **Estado:** ✅ hecho, sin commit. Archivo nuevo `src/data/subdivisions.js` con los 32 de México,
+  los 50 + DC de EUA, las provincias de Canadá y los estados de Brasil. Guarda el **nombre
+  completo**, no la abreviatura, porque es lo que ya viven los pedidos viejos ("Yucatán") y lo que
+  entiende cualquier guía. Cambiar de país deja el estado en blanco a propósito.
+- **Quién la tiene:** el agente del checkout.
+
+### 4. Prellenado para clientes con cuenta
+- **Qué pidió:** *que no le pidamos otra vez lo que ya nos dio.*
+- **Por qué:** el cliente que ya compró no tiene por qué volver a teclear su nombre, su correo, su
+  teléfono y su dirección. Cada campo repetido es una oportunidad de abandonar el carrito.
+- **Estado:** ✅ hecho, sin commit. Al abrir el checkout llegan puestos, **siempre editables**, con
+  un aviso de que se pueden cambiar. **Se prellena, no se congela**: nunca pisa lo que la persona
+  ya escribió. Se guardan solos al comprar. ⛔ **La compra como invitado NO se toca.**
+- **Quién la tiene:** el agente del checkout.
+
+### 5. Adopción de pedidos de invitado
+- **Qué pidió:** que quien compró sin cuenta y después crea una **se quede con esa compra** —
+  historial, puntos y nivel.
+- **Por qué:** si no, la persona crea su cuenta, entra, y su compra no está: parece que la
+  perdimos. Y los puntos que se ganó se evaporan.
+- **El candado que él mismo pidió:** **sólo después de confirmar el correo.** Si se adoptara al
+  registrarse, cualquiera podría poner el correo de otro y quedarse con su historial y sus puntos.
+- **Estado:** ✅ hecho, sin commit. `_adoptar_pedidos_de_invitado()` en `server.py`, colgada de los
+  cuatro momentos donde la cuenta queda con el correo confirmado. **Idempotente por construcción**:
+  al adoptarlo el pedido deja de ser huérfano, así que correrlo dos veces no duplica nada. Compara
+  el correo sin distinguir mayúsculas ("Ana@X.com" es "ana@x.com"), y **las cuentas viejas sin el
+  campo de confirmación NO adoptan nada**. En `ConfirmEmail.js` se le avisa a la persona cuántas
+  compras acaba de recuperar, para que no le aparezcan de la nada.
+- **Quién la tiene:** el agente del checkout.
+
+### 6. Quitar el cobro automático de envío
+- **Qué pidió:** que el pedido deje de cobrar envío solo.
+- **Por qué:** el envío se va a cotizar de verdad con Skydropx; cobrar $250 fijos mientras tanto es
+  inventar un número. ⚠️ **Ojo: él está repensando esto** — ver la decisión pendiente más abajo.
+- **Estado:** ✅ hecho, sin commit. `COBRAR_ENVIO = False` en `server.py`, y **quien manda es el
+  servidor, no la pantalla** (`shipping_charged`). La fórmula del umbral **se dejó viva pero sin
+  llamar**, para que el día que se vuelva a cobrar no haya que reinventarla.
+- **Quién la tiene:** el agente del checkout.
+
+### 7. La casilla legal que hacía parecer muerto el botón de pagar
+- **Qué pidió:** que se arregle. *(Salió del diagnóstico de Fable 5 — ver abajo.)*
+- **Por qué:** una casilla chica y gris arriba del botón; si no se marcaba, **el botón parecía
+  muerto** (el aviso se borraba en 4 segundos y la página saltaba arriba, lejos de la casilla).
+  **Fable creyó tres veces que el sitio estaba roto.** Y era **redundante**: el visitante ya había
+  aceptado lo mismo en la puerta de entrada.
+- **Estado:** ✅ hecho, sin commit. **La casilla se quitó.** En su lugar quedó lo único que de
+  verdad aportaba: `ruoAcceptedAt()` en `RuoGate.js` guarda **la FECHA en que aceptó** y esa
+  constancia viaja dentro del pedido. Así no se pierde nada legalmente y el botón funciona a la
+  primera.
+- **Quién la tiene:** el agente del checkout.
+
+## ⛔ CANCELADAS — que nadie las reviva
+
+### Dirección de facturación en el checkout — **NO se hace**
+- **Por qué se canceló:** el pago ocurre **en Mercado Pago**, y allá ya tienen la tarjeta y sus
+  datos. Pedirla otra vez de nuestro lado sólo alarga el formulario, que es exactamente lo que
+  estamos tratando de acortar.
+- **Decidido por Christian el 2026-07-28.** Si alguien la propone de nuevo, ésta es la respuesta.
+
+## ➡️ LAS SIGUIENTES DE LA FILA
+
+### 8. Skydropx — cotizar, pagar y recibir la guía, **en un solo paso**
+- **Qué pidió:** que el cliente vea el costo real de SU envío en el momento, lo pague ahí mismo, y
+  reciba su número de guía sin que nadie mueva un dedo.
+- **Por qué:** hoy el envío se cotiza **aparte y a mano**. Eso no escala, y mientras tanto no
+  sabemos lo que de verdad cuesta mandar cada pedido.
+- **Estado:** 🔜 **no empezado. Es lo siguiente en la fila** — Christian lo pidió expresamente como
+  lo que sigue. Pendientes viejos que arrastra: Estafeta por API, remitente de un trabajador,
+  precio real por peso y CP.
+- **Quién la tiene:** nadie todavía. **Es el trabajo del próximo agente.**
+
+### 9. 🟠 LA POLÍTICA DE ENVÍO — **EN DISCUSIÓN, la decide Christian**
+- **Dónde está parada:** él primero pidió **quitar el cobro automático** (hecho, punto 6) y
+  **luego dudó** si conviene dejar un cobro fijo. **No está decidido.**
+- **La recomendación sobre la mesa: gratis arriba de $1,500 MXN, y cobrar el envío real abajo de
+  eso.** Los tres argumentos:
+  1. **Su ticket promedio es de $3,000–$4,300**, así que **casi todos los pedidos caen en gratis**
+     de todos modos. El umbral no le quita ventas al cliente típico.
+  2. **Los pedidos chicos sangran.** Una agua bacteriostática de **$179** con envío gratis se lleva
+     el margen y más.
+  3. **"Te faltan $300 para el envío gratis" sube el ticket.** Es la palanca más barata que existe
+     para que el carrito crezca solo.
+  4. **Contra la competencia:** **Certified cobra $250 fijos SIEMPRE.** Gratis-desde-un-monto le
+     gana en casi todos los pedidos, y en los chicos empatamos.
+- ⚠️ **El número exacto se afina con los costos reales de Skydropx** (punto 8). Decidirlo antes de
+  tener esos costos sería adivinar otra vez.
+- **Quién la tiene:** **Christian.** Nadie debe cambiar la política de envío hasta que él diga.
+
+### 10. El Panel Admin: simple y con radiografías
+- **Qué pidió:** que el Panel sea **simple de usar y de entender**; las métricas son **esenciales**,
+  y él necesita ver **"radiografías"** para decidir **junto con el agente**.
+- **Estado:** escrito como **línea de trabajo**, no como tarea suelta.
+  👉 **Ver la sección "🎯 LÍNEA DE TRABAJO: EL PANEL ADMIN A FUTURO"**, más abajo en este archivo,
+  con las dos reglas: cada pantalla responde **una** pregunta de negocio, y **ningún número va solo,
+  va con qué hacer con él**.
+- **Quién la tiene:** aplica a **todo** el que toque el Panel de aquí en adelante.
+
+## 🗃️ OTRAS IDEAS SUYAS QUE SIGUEN VIVAS (de días anteriores)
+
+*(Ninguna está terminada. El detalle largo de cada una ya está en este archivo, en las secciones
+de su día; aquí sólo van para que no se pierdan de vista.)*
+
+| Lo que pidió | Estado | Dónde está el detalle |
+|---|---|---|
+| **Pedido de prueba a Lumi** — comprobar que de verdad tiene bodega en México y entrega en 2-3 días | 🟠 **lo hace él**; hoy es sólo promesa del proveedor | "Proveedor Lumi (P31)", arriba |
+| **Reanudar los anuncios optimizando a Compras, no a clics** | 🟠 pausados a propósito; **espera a Skydropx y al `React.lazy`** | "El diagnóstico de por qué no vendíamos", arriba |
+| **Que el reabastecimiento viva EN LÍNEA**, no en su Mac | 🔜 no empezado | Pendientes, punto 7 |
+| **Mover los costos al Panel Admin** — hoy hace falta una terminal | 🔜 acordado, no empezado; encaja con la línea del Panel | Pendientes, punto 6 |
+| **Que el Vigía lea de la base** | 🔜 no empezado *(el Vigía sí se actualizó el 28-jul en otras cosas)* | Pendientes, punto 1 |
+| **Revisar la calculadora de Certiva** y compararla con la nuestra | 🔜 no empezado (pedido del 28-jul) | Pendientes, punto 9 |
+| **Entrar con Outlook / Microsoft** (OAuth de Entra) | 🔜 no empezado | "Cuenta y acceso (2026-07-27)" |
+| **Entrar con huella o cara** — que sea **biométrico del teléfono**, no la "llave de acceso" que no le funciona | 🔜 no empezado; hay que preferir el autenticador de plataforma. ⚠️ **no se puede probar aquí, se prueba en su teléfono** | "Cuenta y acceso" y "Pendientes del 2026-07-23" |
+| **Bajar sus chats de WhatsApp de proveedores** para comparar precios y no perder seguimientos | 🟠 **pregunta abierta, sin resolver.** La vía segura es que **él exporte el chat** y pase el archivo. ⛔ Nunca su contraseña, su código de 6 dígitos, ni vincular WhatsApp Web | "💬 WhatsApp de Christian" |
+| **Monografías, en tandas de 10** | 🟠 **van 18 de 112** | "Monografías: segunda tanda de 10" |
+| **Activar la facturación de Gemini** para el chat de IA | 🟠 **del lado de él**; hoy va en plan gratis, 20 mensajes al día y se cae con tráfico real | "Del lado de Christian" |
+| **Videos tutoriales 2 al 8** | 🟠 pendientes | Pipeline de videos |
+
+---
 # 🔴 ESTADO — 2026-07-28 (tarde y noche)
 
 ## 🩹 Los dos agujeros del checkout — cerrados y desplegados
@@ -205,8 +374,7 @@ checkout ahora mismo — `RuoGate.js` y `Checkout.js` salen modificados y **sin 
 El **`PageView` del píxel ahora se dispara desde `public/index.html`**, no desde React. Antes
 esperaba a que bajaran y se ejecutaran los 2.36 MB: quien se cansaba antes **sí había llegado**,
 pero para Meta **nunca existió**.
-⚠️ **Está hecho pero SIN COMMIT** (`public/index.html` sale modificado en `git status`). Que no se
-pierda.
+✅ **Ya está commiteado** (`9347ad2`, "El pixel cuenta la visita desde el HTML, no desde React").
 ⚠️ **No borres el `track('visit')` de React**: ése alimenta NUESTRO embudo, que es otra cosa. Meta
 descarta los PageView repetidos de la misma carga.
 
@@ -242,7 +410,7 @@ toque ese archivo.
 lista paralela del canal ahora que lo decide la fórmula, y (16) romper el pedido repetido por
 otros caminos (mismo producto con dos identificadores, dos pedidos a la vez, cantidades negativas
 o fraccionarias) y comprobar que el inventario vivo **de verdad baje**.
-⚠️ **Los dos están modificados y SIN COMMIT.**
+✅ **Ya están commiteados** (`7437068` en `pricing-system`).
 
 ## 🔴 Proveedor Lumi (P31) — DOS PRECIOS MAL ASIGNADOS, PENDIENTE
 
