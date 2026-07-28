@@ -3784,18 +3784,49 @@ e /info/* devuelven 200. Token bueno guardado en `~/.config/exygen/cloudflare.en
 `CLOUDFLARE_ACCOUNT_ID` y `CLOUDFLARE_ZONE_ID`); tiene permiso de **Pages y DNS**, NO de
 reglas de redirección.
 
-**⛔ EL BLOQUEO que impide mover el dominio, y cómo se resuelve:**
-`/admin` devuelve **404** en Cloudflare. La causa es `public/404.html` — el truco que
-GitHub Pages necesitaba para las rutas profundas. Cloudflare Pages, al ver ese archivo,
-lo sirve para todo lo no encontrado y **le gana a la regla `/* /index.html 200`** de
-`public/_redirects`. La solución es borrar `public/404.html`… pero eso rompe GitHub Pages,
-así que **se hace en el mismo movimiento que el cambio de dominio, no antes.**
+**⛔ EL BLOQUEO REAL (probado el 28-jul por la noche, NO es lo que parecía):**
+
+`/admin` devuelve **404** en Cloudflare. Se creyó que la culpa era `public/404.html` —el
+truco de GitHub Pages— y **se comprobó que NO**: se borró, se volvió a desplegar, y `/admin`
+siguió en 404. Ya se restauró; el sitio en vivo nunca se tocó.
+
+Lo que de verdad pasa, medido:
+
+| URL | Resultado |
+|---|---|
+| `/admin/` (con diagonal final) | **200** ✅ |
+| `/admin` (sin diagonal) | **404** ❌ |
+| `/rutainventada/` | **200** ✅ |
+| `/rutainventada` | **404** ❌ |
+| `/cuenta` | 308 → `/cuenta/` → 200 ✅ |
+
+O sea: la regla `/*  /index.html  200` de `_redirects` **sólo atrapa las rutas que terminan
+en diagonal.** Sin diagonal, Cloudflare busca un archivo, no lo encuentra y contesta 404
+antes de aplicar la regla. `/cuenta` sí funciona porque existe la carpeta `/cuenta/`
+pre-generada y Cloudflare redirige solo con un 308; `/admin` no está pre-generado, así que
+no hay a dónde redirigir.
+
+**Sólo afecta a quien escribe o pega una URL sin diagonal final.** Los enlaces de dentro del
+sitio navegan por JavaScript y no pasan por aquí, y las 135 rutas pre-generadas terminan en
+diagonal. Aun así hay que resolverlo antes de mover el dominio.
+
+**Caminos a probar (en este orden):**
+1. Copiar `index.html` a `404.html` **en el build de Cloudflare** (no en `public/`, que es
+   de GitHub Pages): Cloudflare sirve ese archivo para lo no encontrado y React resuelve la
+   ruta. Contra: devuelve estado 404, malo para el buscador.
+2. Desplegar como **Worker con assets** en vez de `wrangler pages deploy`, que sí lee
+   `wrangler.toml` y su `not_found_handling = "single-page-application"` — el archivo ya
+   está escrito en el repo. `wrangler pages deploy` lo IGNORA (lo dice al correr).
+3. Revisar si el proyecto tiene ajuste de trailing slash en el panel de Cloudflare.
+
+**El camino 2 es el más limpio** y es por donde hay que empezar.
 
 **El orden para terminar la mudanza (una sola sesión, con calma):**
-1. Borrar `public/404.html` y el script que lo acompaña en `public/index.html` (el que
-   reconstruye la URL desde `?/ruta`). Ya no hacen falta.
-2. `npm run build` + `npx wrangler pages deploy build --project-name=exygenlabs --branch=main`
-3. Comprobar que `/admin`, `/cuenta`, `/distribuidor` y una ficha den **200** en
+1. Resolver el 404 de las rutas sin diagonal (ver arriba: empezar por el camino 2).
+   ⚠️ NO borres `public/404.html` hasta DESPUÉS de mover el dominio: GitHub Pages lo
+   necesita y es lo que sigue sirviendo el sitio en vivo.
+2. `npm run build` + desplegar a Cloudflare.
+3. Comprobar que `/admin`, `/admin/`, `/cuenta`, `/distribuidor` y una ficha den **200** en
    `exygenlabs.pages.dev`. **Si no, PARAR aquí**: todavía no se movió nada.
 4. Enganchar los dominios al proyecto (`/pages/projects/exygenlabs/domains`):
    exygenlabs.com, www.exygenlabs.com, y los tres secundarios.
