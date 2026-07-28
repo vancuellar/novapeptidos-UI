@@ -1,0 +1,68 @@
+{
+  "_comentario": "Farmacocinética por compuesto. REGLA: solo entra lo que tiene fuente. Si un compuesto no está aquí, su ficha simplemente no imprime la sección — nunca se rellena con un valor plausible. Christian, 2026-07-27.",
+  "_campos": "via, vida_media, frecuencia, estado_estable, metabolismo, eliminacion, fuente",
+
+  "retatrutida": {
+    "via": "Subcutánea",
+    "vida_media": "≈ 6 días",
+    "frecuencia": "1 aplicación por semana",
+    "estado_estable": "≈ 4 a 5 semanas (4 a 5 dosis)",
+    "metabolismo": "Degradación proteolítica; acilación con diácido graso C20 que promueve unión a albúmina",
+    "eliminacion": "Renal y metabólica",
+    "fuente": "Jastreboff AM et al., N Engl J Med 2023;389(6):514-526 (PMID 37366315) · registro NCT04881760"
+  },
+  "semaglutida": {
+    "via": "Subcutánea",
+    "vida_media": "≈ 7 días",
+    "frecuencia": "1 aplicación por semana",
+    "estado_estable": "≈ 4 a 5 semanas",
+    "metabolismo": "Degradación proteolítica; unión a albúmina por cadena de ácido graso",
+    "eliminacion": "Renal y metabólica",
+    "fuente": "Etiqueta aprobada de semaglutida (FDA/DailyMed)"
+  },
+  "tirzepatida": {
+    "via": "Subcutánea",
+    "vida_media": "≈ 5 días",
+    "frecuencia": "1 aplicación por semana",
+    "estado_estable": "≈ 4 semanas",
+    "metabolismo": "Degradación proteolítica; unión a albúmina por cadena de ácido graso",
+    "eliminacion": "Renal y metabólica",
+    "fuente": "Etiqueta aprobada de tirzepatida (FDA)"
+  },
+  "liraglutida": {
+    "via": "Subcutánea",
+    "vida_media": "≈ 13 horas",
+    "frecuencia": "1 aplicación al día",
+    "estado_estable": "≈ 3 días",
+    "metabolismo": "Degradación proteolítica endógena; sin órgano de eliminación específico",
+    "eliminacion": "Metabólica",
+    "fuente": "Etiqueta aprobada de Saxenda (FDA/DailyMed)"
+  },
+  "dulaglutida": {
+    "via": "Subcutánea",
+    "vida_media": "≈ 5 días",
+    "frecuencia": "1 aplicación por semana",
+    "estado_estable": "2 a 4 semanas",
+    "metabolismo": "Catabolismo proteico general",
+    "eliminacion": "Metabólica",
+    "fuente": "Etiqueta aprobada de Trulicity (FDA)"
+  },
+  "cjc-1295-con-dac": {
+    "via": "Subcutánea",
+    "vida_media": "≈ 6 a 8 días",
+    "frecuencia": "Semanal o cada dos semanas",
+    "estado_estable": "No informado en el ensayo localizado",
+    "metabolismo": "Unión covalente a albúmina (tecnología DAC)",
+    "eliminacion": "Metabólica",
+    "fuente": "Teichman SL et al., J Clin Endocrinol Metab 2006;91(3):799-805 (PMID 16352683)"
+  },
+  "tesamorelina": {
+    "via": "Subcutánea",
+    "vida_media": "≈ 26 a 38 minutos",
+    "frecuencia": "1 aplicación al día",
+    "estado_estable": "No aplica por su vida media corta",
+    "metabolismo": "Degradación proteolítica rápida",
+    "eliminacion": "Metabólica",
+    "fuente": "Etiqueta aprobada de tesamorelina (FDA)"
+  }
+}

@@ -1,8 +1,79 @@
 # Exygen Labs — Website Continuation File
 
-> **Propósito:** fuente única de verdad del SITIO WEB (frontend, backend, IA, marca, despliegue). Pega este archivo en un chat nuevo para retomar con todo el contexto. Complementa a `../NOVA-PRICING-SYSTEM-CONTINUATION.md` (el sistema de precios). **Última actualización: 2026-07-27 (madrugada).** Empieza por 🔴 PRIORIDAD 00.
+> **Propósito:** fuente única de verdad del SITIO WEB (frontend, backend, IA, marca, despliegue). Pega este archivo en un chat nuevo para retomar con todo el contexto. Complementa a `../NOVA-PRICING-SYSTEM-CONTINUATION.md` (el sistema de precios). **Última actualización: 2026-07-27 (noche).** Empieza por 🔴 EN CURSO.
 
 > **Estilo con Christian:** abogado, no dev ("abogado de 95 años haciendo vibe coding"). Respuestas **ultra cortas, español claro, sin jerga**. Corre TÚ los comandos (nunca le pidas abrir terminal). Términos de git en inglés (commit, push, merge — no "commitear").
+
+---
+
+## 🔴 EN CURSO — FICHAS TÉCNICAS (2026-07-27, noche)
+
+**Es lo que estamos trabajando ahora mismo.** Christian pasó como referencia las fichas
+oficiales de **Genolab** (`~/Downloads/FICHA_TECNICA_RT80_OFICIAL.pdf`, 9 páginas, y la de
+GHK-Cu, 8 páginas). La nuestra tenía 2. Error de método propio: se leyeron 2 páginas de la
+referencia y se asumió el resto.
+
+### Cómo quedó la ficha (probada con Retatrutida: 7 páginas)
+
+| # | Sección | Estado |
+|---|---|---|
+| — | **Portada** con logotipo (molécula + Marcellus), vial y título | ✅ |
+| — | **Carta de presentación** "Sobre este documento" | ✅ |
+| — | **Índice** numerado, se arma solo con las secciones que sí se imprimen | ✅ |
+| — | **Referencia rápida** — rejilla de un vistazo | ✅ |
+| 1 | Identidad química | ✅ |
+| 2 | Presentaciones | ✅ |
+| 3 | Descripción y líneas de investigación | ✅ |
+| 4 | **Farmacocinética** | ⚠️ solo 7 compuestos |
+| 5 | **Reconstitución recomendada** + procedimiento de 6 pasos | ✅ |
+| 6 | **Dosis de referencia** con unidades de jeringa calculadas | ✅ |
+| 7 | **Selección de jeringa** (la regla de la rayita) | ✅ |
+| 8 | **Conservación y estabilidad** | ✅ |
+| 9 | Manejo en laboratorio | ✅ |
+| 10 | Certificado de análisis del lote | ✅ |
+| 11 | Fuentes de los datos de identidad | ✅ |
+
+**Decisiones tomadas con Christian:**
+- Farmacocinética: **sí**, pero solo donde hay fuente. Vive en `fichas-tecnicas/farmacocinetica.json`;
+  si un compuesto no está ahí, su sección no se imprime y el índice se renumera solo.
+  Hoy son 7: Retatrutida, Semaglutida, Tirzepatida, Liraglutida, Dulaglutida, CJC-1295 con DAC
+  y Tesamorelina.
+- "Beneficios observados en estudios": **sí va** (ya está como "Qué dice la evidencia" en 47
+  monografías). Razón de Christian: la ficha no es pública, solo la recibe quien compra o quien
+  la pide por el chat.
+- El **cromatograma HPLC del COA**: se omite por ahora. Es lo que de verdad hace la ficha de
+  Genolab de 9 páginas. Cuando lleguen los COAs del laboratorio, la ficha crece 3-4 páginas sola.
+- Tipografías: **Franklin Gothic** para el cuerpo, **Marcellus** para el logotipo y títulos
+  (es la del logo). Ambas ya instaladas en el Mac. Tamaños: título 14, subtítulos 12, cuerpo 11,
+  número de página 9.
+
+### 🐛 Bug que cazó Christian y hay que no repetir
+La tabla de reconstitución caía a un **respaldo ciego de 2 mL** cuando una presentación no estaba
+en `start_levels.agua_ml`. En Retatrutida las de **60 y 100 mg** salían a 30 y 50 mg/mL cuando las
+seis presentaciones investigadas están todas en **10.0 mg/mL**. Ahora el agua se **deriva de la
+concentración documentada** y la fila se marca con **†** más su nota al pie. Regla: un respaldo
+silencioso es peor que un hueco.
+
+### Lo que falta de las fichas
+1. **Regenerar las 75** con el diseño nuevo (solo se regeneraron NAD+ y Retatrutida de muestra).
+2. **Llenar `farmacocinetica.json`** compuesto por compuesto. Para ~68 no hay vida media publicada
+   en humanos: NO se inventa.
+3. **Las 35 secuencias** que siguen faltando.
+4. Los COAs, cuando Christian los tenga del laboratorio.
+
+---
+
+## 🟡 PENDIENTES NUEVOS QUE PIDIÓ CHRISTIAN (2026-07-27)
+
+### Entrar a la cuenta con Outlook y con huella o cara
+- **Iniciar sesión con Outlook / Microsoft** además del correo y contraseña de hoy.
+  Va por OAuth de Microsoft Entra; hay que registrar la app y guardar el secreto en
+  Admin → Cobros (o su equivalente), nunca en el repo.
+- **Huella digital o reconocimiento facial** (WebAuthn / passkeys). Es el estándar que ya
+  traen iPhone y Android: el navegador guarda la llave, nosotros solo verificamos. No hay
+  que manejar biometría — nunca sale del teléfono.
+- Orden sugerido: primero passkeys (resuelve el 90% del dolor de escribir contraseña en el
+  teléfono) y después Outlook.
 
 ---
 
@@ -209,7 +280,73 @@ para que siga al cliente. **No resolvió la queja** — sigue viéndose desbalan
 
 ---
 
+## ✅ LO QUE QUEDÓ EN VIVO EL 2026-07-27 (día completo)
+
+**Calculadora**
+- La barra lateral ya no desaparece. Era el `overflow` del body, pero nuestra regla **nunca se
+  aplicaba**: react-remove-scroll inyecta su `<style>` DESPUÉS con el mismo selector. Se arregló
+  con `html body[data-scroll-locked]` (más especificidad). La auditoría falla si alguien le quita
+  el `html`.
+- Una sola columna: se acabaron los 391 px contra 1,174.
+- Aviso de **dosis que no cabe** en la jeringa, y de **dosis que no se puede medir** (en la de
+  1 mL cada rayita vale DOS unidades — hueco real que teníamos).
+- "Titulación" fuera; ahora dice **"cuándo subir la dosis"**, con las fuentes enfrentadas.
+- Jeringa rediseñada.
+
+**Dosis: de 2 a 87 productos encendidos de 98**
+- 67 con fuente real (researchdosing + literatura primaria: etiquetas FDA de Saxenda y Trulicity,
+  Teichman JCEM 2006 para CJC con DAC, Fase IIa del Fragment 176-191, etiqueta de somatropina).
+- 20 **derivadas**, marcadas en pantalla en su propio renglón y en color.
+- **19 cifras estaban mal**: Cerebrolysin hasta 800× alto, FOXO4 112×, 5-Amino-1MQ 150×, los
+  bioreguladores 10× (alguien leyó el TOTAL DEL CURSO de Khavinson como dosis por inyección).
+- ⚠️ **Thymalin fue un error MÍO al corregir**: lo bajé a 1-2 mg por analogía con los otros
+  bioreguladores y su protocolo publicado sí es de 10 mg/día. Ya está en 10 mg.
+
+**researchdosing.com analizado a fondo** → `ANALISIS-RESEARCHDOSING-2026-07-27.md`
+Su candado de acceso es un `<div>`: el texto viaja completo en el HTML. Se bajaron sus 81 fichas.
+Hallazgo que nos aplicaba: **el LIPO-C no va al refrigerador, se gelifica** — nuestra ficha decía
+-20 °C.
+
+**Nueva página `/info/preparacion`** — guía de preparación e inyección que no existía.
+
+**OXXO** como método de pago, por Mercado Pago. `binary_mode` apagado (un pago OXXO nace
+'pendiente' por naturaleza).
+
+**40% = sin puntos de lealtad.** Programado y desplegado. Los 100 puntos que ya tenía Paz
+Cambray se revirtieron a mano en producción.
+
+**Fable 5 revisó el sitio** → `REVISION-FABLE-2026-07-27.md` + 43 capturas. Aplicado: acentos del
+modal de entrada y del carrito, "22+" → 98 (ahora se calcula solo), la burbuja de chat ya no tapa
+el botón Agregar en móvil, **precio por mg** en cada presentación con sello "mejor valor", la
+ficha arranca en la presentación de **mejor valor que esté en mano**, y bloque "Para usar este
+vial vas a necesitar".
+
+**Sello de descuento en el hero** — dorado, sin recuadro. Antes el 10% solo aparecía en el carrito.
+
+**Videos 9 y 10 regrabados.** ⚠️ La cuenta demo `carlos.demo` **ya no existe** en producción; el
+video de la calculadora se grabó contra localhost con la calculadora en modo completo (sale
+idéntico: Playwright graba solo el viewport). Si se quiere volver a grabar con cuenta real, hay
+que recrear ese usuario.
+
+**Codex:** su pase estricto (`DOSIS-CODEX-2026-07-27.md`) dice NO encender ninguno de los ~52 sin
+fuente. Christian decidió encenderlos igual con lo que hubiera, marcando lo derivado.
+⚠️ Codex necesita `--skip-git-repo-check` o falla callado; y el paquete de Playwright hubo que
+reinstalarlo (los navegadores sí estaban en caché).
+
+---
+
 ## 📋 TODOS LOS DEMÁS PENDIENTES (2026-07-27)
+
+### Cuenta y acceso (pedido de Christian, 2026-07-27)
+- **Entrar con Outlook / Microsoft** (OAuth de Entra).
+- **Huella digital o cara** (WebAuthn / passkeys). La biometría nunca sale del teléfono.
+- Sugerencia de orden: passkeys primero, Outlook después.
+
+### Fichas técnicas — EN CURSO, ver el bloque de hasta arriba
+- Regenerar las 75 con el diseño nuevo.
+- Llenar `farmacocinetica.json` (hoy 7 de 75).
+- 35 secuencias faltantes.
+- COAs cuando lleguen del laboratorio.
 
 ### Decisión que Christian debe tomar (bloquea Skydropx)
 - **Tope del 10% en envío gratis.** Regla fijada: envío gratis arriba de $2,500 *siempre y

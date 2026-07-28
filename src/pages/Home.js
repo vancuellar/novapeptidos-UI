@@ -202,7 +202,23 @@ const Home = () => {
               <p className="mt-3 text-lg text-muted-foreground max-w-xl leading-relaxed">
                 {t('home.heroBody')}
               </p>
-              <div className="mt-8 flex flex-wrap items-center gap-4">
+              {/* SELLO DE DESCUENTO. (Christian, 2026-07-27)
+                  El 10% se aplicaba solo en el carrito, así que el visitante se
+                  enteraba hasta el final — o nunca. Aquí se anuncia de entrada,
+                  con forma de sello estampado y no de banner de descuento, que es
+                  lo que baja el tono de una marca. La cifra es la real del
+                  servidor: 10%, y 15% arriba de $35,000. */}
+              <div className="mt-7 inline-flex items-center gap-3.5" data-testid="hero-sello-descuento">
+                <div className="sello">
+                  <span className="sello-pct">10%</span>
+                  <span className="sello-off">OFF</span>
+                </div>
+                <div className="leading-tight">
+                  <div className="text-sm font-semibold text-foreground">{t('home.stamp.title')}</div>
+                  <div className="text-xs text-muted-foreground mt-0.5">{t('home.stamp.sub')}</div>
+                </div>
+              </div>
+              <div className="mt-7 flex flex-wrap items-center gap-4">
                 <Link to="/catalogo" className="btn-resend" data-testid="hero-catalog-button">
                   {t('home.viewCatalog')} <ArrowRight className="h-4 w-4" />
                 </Link>

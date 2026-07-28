@@ -644,3 +644,27 @@ img {
 @media (max-width: 639px) {
     .hero-vial-flecha { display: none; }
 }
+
+/* ═══ SELLO DE DESCUENTO DEL HERO ═══ (Christian, 2026-07-27)
+   Se pidió "como un sello", sin recuadro alrededor y el sello en DORADO.
+   El dorado es el único color cálido del sitio: por eso funciona como sello
+   —destaca sin competir con el azul de la marca— y por eso no se usa en nada
+   más. Solo el sello va dorado; el texto de al lado se queda neutro. */
+.sello {
+  width: 66px; height: 66px; flex: none;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  border-radius: 999px;
+  border: 2px dashed #d4af37;
+  background: radial-gradient(circle at 50% 32%, rgba(212,175,55,.30), rgba(212,175,55,.10));
+  transform: rotate(-9deg);
+  box-shadow: 0 6px 24px rgba(212,175,55,.28);
+}
+.sello-pct {
+  font-family: var(--font-heading, Georgia, serif);
+  font-size: 20px; font-weight: 700; line-height: 1;
+  color: #e8c25a; letter-spacing: -.02em;
+}
+.sello-off {
+  font-size: 8.5px; font-weight: 700; letter-spacing: .18em;
+  color: #e8c25a; opacity: .9; margin-top: 2px;
+}
