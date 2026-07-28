@@ -779,11 +779,11 @@ export const fallbackProducts = [
     "presentation": "10 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
-    "price": 1919,
+    "price": 1689,
     "variants": [
       {
         "presentation": "10 mg",
-        "price": 1919,
+        "price": 1689,
         "stock": 40,
         "batch_number": "NP-CJC110-2601",
         "id": "801c9ec0-6131-4b13-94d0-5e2a26c19a08",
@@ -2722,44 +2722,6 @@ export const fallbackProducts = [
     "is_new": false
   },
   {
-    "id": "fallback-humsc-celulas-madre",
-    "name": "HUMSC (células madre)",
-    "slug": "humsc-celulas-madre",
-    "category": "otros",
-    "categories": [
-      "otros"
-    ],
-    "short_description": "Células madre mesenquimales de cordón umbilical humano.",
-    "description": "Material biológico de investigación: células madre mesenquimales derivadas de cordón umbilical humano, usadas en estudios in vitro de diferenciación, secreción paracrina y modelos de reparación tisular. Solo para uso en investigación (RUO).",
-    "presentation": "100 mil",
-    "form": "Liofilizado",
-    "purity": "99.0%",
-    "price": 13999,
-    "variants": [
-      {
-        "presentation": "100 mil",
-        "price": 13999,
-        "stock": 40,
-        "batch_number": "NP-HUMS100-2601",
-        "id": "737fe975-da2a-4a0d-ab2e-87766e118e28",
-        "sku": "HUMSCCELULASMA-100MIL",
-        "commission_cap": 0.3,
-        "distributor_eligible": true
-      }
-    ],
-    "tiers": [],
-    "stock": 40,
-    "image_url": "https://images.pexels.com/photos/6129873/pexels-photo-6129873.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
-    "coa_url": "https://exygenlabs.com/coa/humsc-celulas-madre.pdf",
-    "batch_number": "NP-HUMS100-2601",
-    "storage": "Conservar a -20 °C, protegido de la luz. Reconstituido: 2–8 °C.",
-    "start_dose": null,
-    "start_unit": null,
-    "start_levels": null,
-    "featured": false,
-    "is_new": false
-  },
-  {
     "id": "fallback-kisspeptina-10",
     "name": "Kisspeptina-10",
     "slug": "kisspeptina-10",
@@ -3159,7 +3121,7 @@ export const fallbackProducts = [
       },
       {
         "presentation": "12 IU",
-        "price": 659,
+        "price": 639,
         "stock": 40,
         "batch_number": "NP-SOMA12-2601",
         "id": "22d43665-3610-490a-bb73-6832b431619c",
@@ -3496,7 +3458,7 @@ export const fallbackProducts = [
       },
       {
         "presentation": "10 mg",
-        "price": 1919,
+        "price": 1889,
         "stock": 40,
         "batch_number": "NP-AOD910-2601",
         "id": "ea123747-3255-47ab-8c5b-4e764d080dd4",
@@ -3912,12 +3874,12 @@ export const fallbackProducts = [
       },
       {
         "presentation": "15 mg",
-        "price": 1489,
+        "price": 999,
         "stock": 40,
         "batch_number": "NP-MOTS15-2601",
         "id": "9e336d64-8af3-4991-ac30-fafb9f736bf2",
         "sku": "MOTSC-15MG",
-        "commission_cap": 0.35,
+        "commission_cap": 0.25,
         "distributor_eligible": true
       },
       {
@@ -3992,7 +3954,7 @@ export const fallbackProducts = [
       },
       {
         "presentation": "10 mg",
-        "price": 2379,
+        "price": 2369,
         "stock": 40,
         "batch_number": "NP-RETA10-2601",
         "id": "3562d760-400f-43a3-aab3-7244a0e7c9e3",
@@ -5236,7 +5198,7 @@ export const fallbackProducts = [
     "presentation": "2,000IU – 10,000IU",
     "form": "Liofilizado",
     "purity": "99.0%",
-    "price": 469,
+    "price": 609,
     "variants": [
       {
         "presentation": "1,000 IU",
@@ -5250,13 +5212,13 @@ export const fallbackProducts = [
       },
       {
         "presentation": "2,000IU",
-        "price": 469,
+        "price": 609,
         "stock": 40,
         "batch_number": "NP-HCG2000-2601",
         "id": "799774c2-d701-4db3-98e9-1a9a4b250296",
         "sku": "HCG-2000IU",
-        "commission_cap": 0.25,
-        "distributor_eligible": false
+        "commission_cap": 0.3,
+        "distributor_eligible": true
       },
       {
         "presentation": "5,000IU",
@@ -5270,13 +5232,13 @@ export const fallbackProducts = [
       },
       {
         "presentation": "10,000IU",
-        "price": 1379,
+        "price": 2269,
         "stock": 40,
         "batch_number": "NP-HCG10000-2601",
         "id": "9477d32e-5227-4d2d-b5e5-6bc688adee92",
         "sku": "HCG-10000IU",
-        "commission_cap": 0.25,
-        "distributor_eligible": false
+        "commission_cap": 0.35,
+        "distributor_eligible": true
       }
     ],
     "tiers": [],
@@ -5599,7 +5561,7 @@ export const fallbackProducts = [
       },
       {
         "presentation": "5 mL",
-        "price": 329,
+        "price": 279,
         "stock": 40,
         "batch_number": "NP-CIDO5-2601",
         "id": "66f91f7f-5c40-4da9-98f2-3a5a49af7103",
