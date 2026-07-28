@@ -2454,11 +2454,11 @@ export const fallbackProducts = [
     "presentation": "5 mg – 10 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
-    "price": 1229,
+    "price": 2309,
     "variants": [
       {
         "presentation": "5 mg",
-        "price": 1229,
+        "price": 2309,
         "stock": 40,
         "batch_number": "NP-ADMA5-2601",
         "id": "31b78f27-4ca4-4c73-ba18-9065f0c59f85",
@@ -2468,7 +2468,7 @@ export const fallbackProducts = [
       },
       {
         "presentation": "10 mg",
-        "price": 1749,
+        "price": 3469,
         "stock": 40,
         "batch_number": "NP-ADMA10-2601",
         "id": "00e3f5ac-c399-4bac-930d-85dec63a4fa7",
