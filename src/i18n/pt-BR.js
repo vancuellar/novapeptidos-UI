@@ -634,6 +634,9 @@ const ptBR = {
   'footer.legalBody': 'Todos os produtos são vendidos exclusivamente para uso em pesquisa e desenvolvimento. Não são destinados ao consumo humano ou animal, nem para diagnóstico, tratamento, cura ou prevenção de doencas. Ao comprar, o cliente confirma que e um pesquisador qualificado.',
   'footer.backToTop': 'Voltar ao topo',
   'footer.rights': 'Exygen Labs. Todos os direitos reservados.',
+  'footer.ruoLine': 'Research Use Only · Somente para pesquisa',
+  'footer.flagMexico': 'Envios em todo o México',
+  'footer.flagUsa': 'Matéria-prima dos EUA',
 
   'common.catalog': 'Catálogo',
   'common.home': 'Inicio',

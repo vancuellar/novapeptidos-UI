@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { User, Menu, LogOut, Bell, LayoutDashboard, ChevronDown, Search, ShoppingCart, Moon, Sun, SlidersHorizontal, Home, LayoutGrid, BadgeCheck, GraduationCap, MessageCircle, Calculator, Sparkles, FlaskConical, Flame, Activity, HeartPulse, Hourglass, HeartHandshake, Brain, ShieldPlus, Package, Layers } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -103,6 +103,34 @@ const Header = () => {
     onScroll();
     window.addEventListener('scroll', onScroll, { passive: true });
     return () => window.removeEventListener('scroll', onScroll);
+  }, []);
+
+  // Barra de progreso de lectura (como Exoma): una línea delgada del color
+  // primario pegada al borde de abajo del header que avanza de 0 a 100% del
+  // ancho conforme se baja en la página. Se anima con transform + rAF sobre un
+  // ref (sin estado de React ni reflow por frame) y NUNCA toca overflow del
+  // body: el header sigue sticky y siempre visible.
+  const progressRef = useRef(null);
+  useEffect(() => {
+    let raf = 0;
+    const update = () => {
+      raf = 0;
+      const el = progressRef.current;
+      if (!el) return;
+      const doc = document.documentElement;
+      const max = doc.scrollHeight - window.innerHeight;
+      const p = max > 0 ? Math.min(1, Math.max(0, window.scrollY / max)) : 0;
+      el.style.transform = `scaleX(${p})`;
+    };
+    const onScroll = () => { if (!raf) raf = requestAnimationFrame(update); };
+    update();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onScroll, { passive: true });
+    return () => {
+      if (raf) cancelAnimationFrame(raf);
+      window.removeEventListener('scroll', onScroll);
+      window.removeEventListener('resize', onScroll);
+    };
   }, []);
 
   // Las categorias salen del MISMO catalogo con el que el buscador filtra
@@ -465,6 +493,12 @@ const Header = () => {
             )}
           </div>
         </div>
+      </div>
+      {/* Barra de progreso de scroll pegada al borde inferior del header. */}
+      <div aria-hidden="true" className="absolute inset-x-0 bottom-0 h-[2.5px] pointer-events-none">
+        <div ref={progressRef} data-testid="scroll-progress"
+          className="h-full w-full origin-left bg-[hsl(var(--primary))]"
+          style={{ transform: 'scaleX(0)' }} />
       </div>
     </header>
   );

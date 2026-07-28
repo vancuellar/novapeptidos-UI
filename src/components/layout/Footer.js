@@ -5,6 +5,35 @@ import { useLanguage } from '@/context/LanguageContext';
 import { INSTAGRAM_URL, FACEBOOK_URL } from '@/lib/contact';
 import BrandLogo from '@/components/BrandLogo';
 
+// Banderas chiquitas en SVG inline (a color, esquinas redondeadas). NO se usan
+// emojis de bandera porque en Windows no se ven, ni imágenes externas.
+const FlagMX = () => (
+  <svg viewBox="0 0 21 14" aria-hidden="true" className="h-[13px] w-auto shrink-0" data-testid="footer-flag-mx">
+    <defs><clipPath id="flagmx-clip"><rect width="21" height="14" rx="2" /></clipPath></defs>
+    <g clipPath="url(#flagmx-clip)">
+      <rect width="7" height="14" fill="#006847" />
+      <rect x="7" width="7" height="14" fill="#FFFFFF" />
+      <rect x="14" width="7" height="14" fill="#CE1126" />
+      {/* Escudo simplificado: a este tamaño el águila real no se distingue. */}
+      <circle cx="10.5" cy="7" r="1.7" fill="#B8860B" opacity="0.9" />
+      <path d="M9.1 8.4c.9.7 1.9.7 2.8 0" stroke="#006847" strokeWidth="0.6" fill="none" strokeLinecap="round" />
+    </g>
+  </svg>
+);
+const FlagUS = () => (
+  <svg viewBox="0 0 21 14" aria-hidden="true" className="h-[13px] w-auto shrink-0" data-testid="footer-flag-us">
+    <defs><clipPath id="flagus-clip"><rect width="21" height="14" rx="2" /></clipPath></defs>
+    <g clipPath="url(#flagus-clip)">
+      <rect width="21" height="14" fill="#FFFFFF" />
+      {[0, 4, 8, 12].map((y) => <rect key={y} y={y} width="21" height="2" fill="#B22234" />)}
+      <rect width="9.2" height="7" fill="#3C3B6E" />
+      {[1.6, 4.6, 7.6].map((x) => [1.6, 3.5, 5.4].map((y) => (
+        <circle key={`${x}-${y}`} cx={x} cy={y} r="0.55" fill="#FFFFFF" />
+      )))}
+    </g>
+  </svg>
+);
+
 const Footer = () => {
   const { t } = useLanguage();
 
@@ -31,6 +60,12 @@ const Footer = () => {
               <BrandLogo />
             </button>
             <p className="text-sm text-muted-foreground leading-relaxed">{t('footer.description')}</p>
+            {/* Banderas a color donde el texto habla de México (envío nacional)
+                y de Estados Unidos (materia prima), como en peptides.mx. */}
+            <div className="flex flex-wrap items-center gap-x-4 gap-y-1.5 mt-3 text-xs text-muted-foreground">
+              <span className="flex items-center gap-1.5"><FlagMX /> {t('footer.flagMexico')}</span>
+              <span className="flex items-center gap-1.5"><FlagUS /> {t('footer.flagUsa')}</span>
+            </div>
             <div className="flex items-center gap-3 mt-5 text-[hsl(var(--primary))]">
               <ShieldCheck className="h-5 w-5" /><BadgeCheck className="h-5 w-5" /><Truck className="h-5 w-5" />
               {/* Redes sociales: se vuelven enlaces en cuanto Christian ponga las
@@ -109,9 +144,11 @@ const Footer = () => {
             </div>
           </div>
         </div>
-        {/* El copyright quedaba pegado a los pagos y al correo en telefono. */}
-        <div className="flex items-center justify-center pt-8 sm:pt-6 pb-1">
-          <p className="text-xs text-muted-foreground text-center font-mono-tech leading-none">© {new Date().getFullYear()} {t('footer.rights')}</p>
+        {/* Última línea, como peptides.mx: copyright a la IZQUIERDA y leyenda
+            RUO a la DERECHA en el mismo renglón; en teléfono se apilan. */}
+        <div className="flex flex-col sm:flex-row items-center justify-center sm:justify-between gap-y-1.5 pt-8 sm:pt-6 pb-1">
+          <p className="text-xs text-muted-foreground text-center sm:text-left font-mono-tech leading-none">© {new Date().getFullYear()} {t('footer.rights')}</p>
+          <p className="text-xs text-muted-foreground text-center sm:text-right font-mono-tech leading-none" data-testid="footer-ruo-line">{t('footer.ruoLine')}</p>
         </div>
       </div>
     </footer>
