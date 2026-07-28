@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import {
   ShieldCheck, FlaskConical, Truck, BadgeCheck, ArrowRight, HeartPulse, Activity, Flame, Hourglass,
   Brain, Sparkles, Layers, CheckCircle2, MinusCircle, FileCheck2, ScanSearch, Landmark, CreditCard,
-  ChevronLeft, ChevronRight, Building2, Mail, Bitcoin, Globe,
+  ChevronLeft, ChevronRight, Building2, Mail, Bitcoin, Globe, Store,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
@@ -232,7 +232,20 @@ const Home = () => {
                   El sello enseña el TECHO (15%) porque es lo que hace mirar, y el
                   renglón de abajo dice el rango completo (10 al 15%) para que nadie
                   llegue al carrito esperando 15% y se encuentre 10. */}
-              <div className="mt-7 inline-flex items-center gap-3.5" data-testid="hero-sello-descuento">
+              <div className="mt-7 flex flex-wrap items-center gap-4">
+                <Link to="/catalogo" className="btn-resend" data-testid="hero-catalog-button">
+                  {t('home.viewCatalog')} <ArrowRight className="h-4 w-4" />
+                </Link>
+                <Link to="/aprende/empieza-aqui" className="btn-resend-ghost">{t('home.startHere')}</Link>
+              </div>
+            </div>
+            <div className="flex flex-col items-center justify-center">
+              {/* SELLO DE DESCUENTO. (Christian, 2026-07-28): vive del lado
+                  derecho del hero, ARRIBA de los viales — no encima de ellos.
+                  El sello enseña el TECHO (15%) porque es lo que hace mirar, y
+                  el renglón de al lado dice el rango completo (10 al 15%) para
+                  que nadie llegue al carrito esperando 15 y se encuentre 10. */}
+              <div className="inline-flex items-center gap-3.5 mb-5 self-center" data-testid="hero-sello-descuento">
                 <div className="sello">
                   <span className="sello-hasta">hasta</span>
                   <span className="sello-pct">15%</span>
@@ -243,14 +256,6 @@ const Home = () => {
                   <div className="text-xs text-muted-foreground mt-0.5">{t('home.stamp.sub')}</div>
                 </div>
               </div>
-              <div className="mt-7 flex flex-wrap items-center gap-4">
-                <Link to="/catalogo" className="btn-resend" data-testid="hero-catalog-button">
-                  {t('home.viewCatalog')} <ArrowRight className="h-4 w-4" />
-                </Link>
-                <Link to="/aprende/empieza-aqui" className="btn-resend-ghost">{t('home.startHere')}</Link>
-              </div>
-            </div>
-            <div className="flex items-center justify-center">
               <div className="hero-vials w-full max-w-[540px]">
                 <div className="hero-vials-glow" />
                 {/* Quince viales, cinco a la vista. Las flechas (o el dedo) los van
@@ -682,7 +687,7 @@ const Home = () => {
             <div className="text-xs text-muted-foreground mt-0.5">{t('home.paymentsNote')}</div>
           </div>
           <div className="flex flex-wrap items-center justify-center gap-2.5">
-            {[{ i: Landmark, l: 'SPEI' }, { i: CreditCard, l: 'Visa · Mastercard · Amex' }, { i: Bitcoin, l: 'Cripto' }].map((p, i) => (
+            {[{ i: Landmark, l: 'SPEI' }, { i: CreditCard, l: 'Visa · Mastercard · Amex' }, { i: Store, l: 'OXXO' }, { i: Bitcoin, l: 'Cripto' }].map((p, i) => (
               <span key={i} className="inline-flex items-center gap-1.5 rounded-lg border border-border bg-[hsl(var(--secondary))] px-3 py-2 text-xs font-medium">
                 <p.i className="h-3.5 w-3.5 text-[hsl(var(--primary))]" /> {p.l}
               </span>

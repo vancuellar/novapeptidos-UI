@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { ShieldCheck, Truck, BadgeCheck, Mail, Phone, Landmark, CreditCard, Bitcoin, Instagram, Facebook } from 'lucide-react';
+import { ShieldCheck, Truck, BadgeCheck, Mail, Phone, Landmark, CreditCard, Bitcoin, Store, Instagram, Facebook } from 'lucide-react';
 import { useLanguage } from '@/context/LanguageContext';
 import { INSTAGRAM_URL, FACEBOOK_URL } from '@/lib/contact';
 import BrandLogo from '@/components/BrandLogo';
@@ -21,7 +21,8 @@ const FlagMX = () => (
   </svg>
 );
 const FlagUS = () => (
-  <svg viewBox="0 0 21 14" aria-hidden="true" className="h-[13px] w-auto shrink-0" data-testid="footer-flag-us">
+  // inline-block y align para que se siente bien DENTRO del párrafo.
+  <svg viewBox="0 0 21 14" aria-hidden="true" className="inline-block h-[13px] w-auto shrink-0 align-[-2px]" data-testid="footer-flag-us">
     <defs><clipPath id="flagus-clip"><rect width="21" height="14" rx="2" /></clipPath></defs>
     <g clipPath="url(#flagus-clip)">
       <rect width="21" height="14" fill="#FFFFFF" />
@@ -59,13 +60,14 @@ const Footer = () => {
               className="inline-flex items-center mb-4 origin-left transition-transform duration-200 hover:scale-110" data-testid="footer-logo" aria-label={t('footer.backToTop')}>
               <BrandLogo />
             </button>
-            <p className="text-sm text-muted-foreground leading-relaxed">{t('footer.description')}</p>
-            {/* Banderas a color donde el texto habla de México (envío nacional)
-                y de Estados Unidos (materia prima), como en peptides.mx. */}
-            <div className="flex flex-wrap items-center gap-x-4 gap-y-1.5 mt-3 text-xs text-muted-foreground">
-              <span className="flex items-center gap-1.5"><FlagMX /> {t('footer.flagMexico')}</span>
-              <span className="flex items-center gap-1.5"><FlagUS /> {t('footer.flagUsa')}</span>
-            </div>
+            {/* La mención de EUA va DENTRO del párrafo, como la trae Certified
+                (Christian, 2026-07-28): la bandera aparece junto a "Estados
+                Unidos" en la propia frase, no como etiqueta aparte. Solo se
+                habla de materia prima y abastecimiento — nunca de planta,
+                laboratorio propio ni FDA. */}
+            <p className="text-sm text-muted-foreground leading-relaxed">
+              {t('footer.descriptionPre')} <FlagUS /> {t('footer.descriptionPost')}
+            </p>
             <div className="flex items-center gap-3 mt-5 text-[hsl(var(--primary))]">
               <ShieldCheck className="h-5 w-5" /><BadgeCheck className="h-5 w-5" /><Truck className="h-5 w-5" />
               {/* Redes sociales: se vuelven enlaces en cuanto Christian ponga las
@@ -136,11 +138,16 @@ const Footer = () => {
               <li className="flex items-center gap-2"><Mail className="h-4 w-4 text-[hsl(var(--primary))]" /> hola@exygenlabs.com</li>
             </ul>
             <div className="flex flex-wrap gap-2 mt-5">
-              {[{ i: CreditCard, l: 'Visa · MC · Amex' }, { i: Landmark, l: 'SPEI' }, { i: Bitcoin, l: 'Cripto' }].map((p, i) => (
+              {[{ i: CreditCard, l: 'Visa · MC · Amex' }, { i: Landmark, l: 'SPEI' }, { i: Store, l: 'OXXO' }, { i: Bitcoin, l: 'Cripto' }].map((p, i) => (
                 <span key={i} className="inline-flex items-center gap-1.5 rounded-md border border-border bg-[hsl(var(--secondary))] px-2.5 py-1.5 text-[11px]">
                   <p.i className="h-3 w-3 text-[hsl(var(--primary))]" /> {p.l}
                 </span>
               ))}
+            </div>
+            {/* "Envíos en todo México" vive DEBAJO de los métodos de pago
+                (Christian, 2026-07-28), con su bandera a color. */}
+            <div className="flex items-center gap-1.5 mt-3 text-xs text-muted-foreground">
+              <FlagMX /> {t('footer.flagMexico')}
             </div>
           </div>
         </div>

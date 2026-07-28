@@ -559,7 +559,10 @@ const esMX = {
   'account.stats.spent': 'Total comprado',
   'account.memberSince': 'Cliente desde {{date}}',
 
-  'footer.description': 'El distribuidor de péptidos más grande de México. Materia prima de laboratorios de Estados Unidos, trazabilidad por lote, pureza verificada por HPLC y envíos dentro de México.',
+  // La descripción va en DOS partes porque la bandera de EUA se dibuja en medio,
+  // dentro de la frase (como Certified). Juntas leen como una sola oración.
+  'footer.descriptionPre': 'El distribuidor de péptidos más grande de México. Materia prima de laboratorios de Estados Unidos',
+  'footer.descriptionPost': ', trazabilidad por lote, pureza verificada por HPLC y envíos dentro de México.',
   'footer.catalogTitle': 'Catálogo',
   'footer.infoTitle': 'Información',
   'footer.contactTitle': 'Contacto',
@@ -576,7 +579,6 @@ const esMX = {
   'footer.rights': 'Exygen Labs. Todos los derechos reservados.',
   'footer.ruoLine': 'Research Use Only · Solo para investigación',
   'footer.flagMexico': 'Envíos en todo México',
-  'footer.flagUsa': 'Materia prima de EUA',
   'controls.language': 'Idioma',
   'ruo.gate.badge': 'Uso exclusivo en investigación',
   'ruo.gate.title': 'Antes de entrar, confirma esto',

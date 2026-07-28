@@ -123,7 +123,7 @@ const page = {
       items: [
         {
           q: '¿Qué formas de pago aceptan?',
-          a: 'Dos: tarjeta de crédito o débito, y transferencia bancaria SPEI. No manejamos pago en OXXO, ni contra entrega, ni PayPal.',
+          a: 'Cuatro: tarjeta de crédito o débito, transferencia bancaria SPEI, efectivo en OXXO (generas tu ficha al confirmar el pedido) y criptomonedas. No manejamos pago contra entrega ni PayPal.',
         },
         {
           q: '¿Cómo funciona el pago por SPEI?',

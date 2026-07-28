@@ -619,7 +619,8 @@ const ptBR = {
   'account.stats.spent': 'Total comprado',
   'account.memberSince': 'Cliente desde {{date}}',
 
-  'footer.description': 'O maior distribuidor de peptídeos do México. Matéria-prima de laboratórios dos Estados Unidos, rastreabilidade por lote, pureza verificada por HPLC e envios dentro do México.',
+  'footer.descriptionPre': 'O maior distribuidor de peptídeos do México. Matéria-prima de laboratórios dos Estados Unidos',
+  'footer.descriptionPost': ', rastreabilidade por lote, pureza verificada por HPLC e envios dentro do México.',
   'footer.catalogTitle': 'Catálogo',
   'footer.infoTitle': 'Informações',
   'footer.contactTitle': 'Contato',
@@ -636,7 +637,6 @@ const ptBR = {
   'footer.rights': 'Exygen Labs. Todos os direitos reservados.',
   'footer.ruoLine': 'Research Use Only · Somente para pesquisa',
   'footer.flagMexico': 'Envios em todo o México',
-  'footer.flagUsa': 'Matéria-prima dos EUA',
 
   'common.catalog': 'Catálogo',
   'common.home': 'Inicio',

@@ -605,7 +605,8 @@ const enUS = {
   'account.stats.spent': 'Total spent',
   'account.memberSince': 'Member since {{date}}',
 
-  'footer.description': "Mexico's largest peptide distributor. Raw material from laboratories in the United States, lot-level traceability, HPLC-verified purity, and shipping within Mexico.",
+  'footer.descriptionPre': "Mexico's largest peptide distributor. Raw material from laboratories in the United States",
+  'footer.descriptionPost': ', lot-level traceability, HPLC-verified purity, and shipping within Mexico.',
   'footer.catalogTitle': 'Catalog',
   'footer.infoTitle': 'Information',
   'footer.contactTitle': 'Contact',
@@ -622,7 +623,6 @@ const enUS = {
   'footer.rights': 'Exygen Labs. All rights reserved.',
   'footer.ruoLine': 'Research Use Only',
   'footer.flagMexico': 'Shipping across Mexico',
-  'footer.flagUsa': 'US-sourced raw material',
   'controls.language': 'Language',
   'ruo.gate.badge': 'Research use only',
   'ruo.gate.title': 'Before you continue, please confirm',

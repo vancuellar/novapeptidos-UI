@@ -28,7 +28,7 @@ const page = {
         {
           title: 'Verificamos el pago (estado: confirmado)',
           body:
-            'Con tarjeta y con criptomoneda la verificación es prácticamente inmediata. Con SPEI depende de tu banco: las transferencias suelen reflejarse en minutos en horario bancario, pero una transferencia hecha de noche, en fin de semana o en día festivo puede tardar hasta el siguiente día hábil en aparecer.',
+            'Con tarjeta y con criptomoneda la verificación es prácticamente inmediata. Con SPEI depende de tu banco: las transferencias suelen reflejarse en minutos en horario bancario, pero una transferencia hecha de noche, en fin de semana o en día festivo puede tardar hasta el siguiente día hábil en aparecer. Con OXXO, tu pedido se confirma en cuanto la tienda nos avisa de tu pago en caja; normalmente tarda unas horas.',
           note: 'Si transferiste y no ves el cambio al siguiente día hábil, mándanos el comprobante.',
         },
         {
