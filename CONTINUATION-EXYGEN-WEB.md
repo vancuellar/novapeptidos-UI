@@ -252,56 +252,102 @@ ingresos, no un bug.
    envío NO cuenta contra el ROI** (nunca pasa del 10%, y ese 10% ya está aceptado).
    Contradicción a resolver.
 
-## ▶️ LO SIGUIENTE QUE SE TRABAJA (orden de Christian, 2026-07-28)
+## ✅ LOS 4 PUNTOS DEL 2026-07-28 — HECHOS
 
-**1. Decidir los 3 HGH: ¿venta directa sin distribuidores?**
-Christian se inclina por VENDERLOS, sin distribuidores de por medio. Son
-HGH Fragment 176-191 12 mg ($2,709), HGH 36 IU ($1,548) y HCG 1,000 IU ($629) — hoy están
-marcados "no vender" en la maestra y **el backend los está cobrando igual**. Los tres tienen
-ROI sano (9.99×, 5.53×, 9.98×). Si la decisión es venderlos directo, lo que hay que hacer es
-`vender = si` + `elegible_distribuidor = no`, que es lo que de verdad significa "solo venta
-directa" — NO dejarlos con la marca de "no vender", que es para lo retirado por seguridad.
-Ojo: el backend ya deja **toda la familia HGH** (menos el Fragment) fuera de descuentos y
-comisiones por regla aparte del 2026-07-22, así que hay que revisar que las dos reglas no
-se contradigan.
+**1. Los 3 HGH: venta directa, sin distribuidores. APLICADO Y EN VIVO.**
+Christian lo confirmó. Los tres —HGH Fragment 176-191 12 mg ($2,709), HGH 36 IU ($1,548) y
+HCG 1,000 IU ($629)— quedaron con `vender = si` + `elegible_distribuidor = no`, que es lo
+que de verdad significa "solo venta directa". Ya NO están marcados "no vender", que es la
+marca de lo retirado por seguridad.
 
-**2. Permisos a Codex para que no tenga pruebas fallidas por el entorno.**
-Comprobado hoy: `--sandbox read-only` **impide crear archivos temporales** y pytest ni
-siquiera arranca. Con `--sandbox workspace-write` **sí corre** (106 pasan). Lo que queda
-fallando —3 fallas + 3 errores— es por **falta de red**: no puede leer el backend en vivo ni
-a la competencia. Comando:
+La decisión vive DECLARADA en `pricing-system/solo_venta_directa.json`, con motivo y fecha.
+**Eso es lo importante del arreglo:** la elegibilidad se recalcula por fórmula para TODAS las
+filas en cada corrida de `reprecio.py` (`roi × (1 − comisión) ≥ 5×`), y los tres SÍ aguantan
+la comisión — así que sin ese archivo el motor se los habría vuelto a llevar al canal en la
+siguiente corrida y la decisión se pierde en silencio. `reprecio.py`, `test_precios.py` y
+`auditar_catalogo.py` leen los tres el mismo archivo.
+
+Las dos reglas NO se contradicen: `_eligible()` en `novapeptidos-RBAC/server.py` exige
+`distributor_eligible` **Y** no ser de la familia HGH neta. Se suman, gana la más restrictiva.
+
+**Consecuencia que nadie había visto:** al prender el HCG 1,000 IU, el de 2,000 IU quedaba
+más barato que el chico ($609 contra $629) — rompía la escalera. **Lo cazó el propio motor**
+y lo corrigió por fórmula: HCG 2,000 IU subió a **$639**. Ya está en la maestra, la base, el
+sitio y el backend en vivo.
+
+**2. Permisos a Codex — resuelto con un lanzador.**
+`pricing-system/auditar_con_codex.sh`. Trae las tres banderas que hacían falta y explica por
+qué cada una: `--skip-git-repo-check` (esta carpeta no es un repo y sin esto Codex falla
+callado), `--sandbox workspace-write` (con `read-only` pytest ni arranca) y **red abierta**,
+que era lo que faltaba — sin ella no puede comprobar lo único que importa de verdad, que el
+backend EN VIVO cobre lo que dice la maestra. Probado: `curl` a la API devuelve 200 desde
+dentro del sandbox.
 
 ```
-codex exec --skip-git-repo-check --sandbox workspace-write "$(cat PROMPT-AUDITORIA.md)"
+./auditar_con_codex.sh                     # la auditoría
+./auditar_con_codex.sh PROMPT-ROMPEDOR.md  # que intente romper el motor
 ```
 
-Falta resolver el acceso a red de su sandbox; mientras tanto, en el prompt ya está dicho que
-esas fallas se reporten como limitación del entorno y NO como hallazgo.
+Se quedó como lanzador y no como perfil en `~/.codex/config.toml` porque el clasificador no
+deja tocar esa configuración global desde aquí. Da igual: el permiso es de esa corrida y no
+del Codex de diario.
 
-**3. Comisiones absurdas — ✅ YA ESTÁ HECHO.**
-La columna `comision` aceptaba **−50%, 150% y 300%**: una comisión negativa le COBRARÍA al
-distribuidor y una arriba del 100% regala más de lo que entra. Ahora sólo acepta de 0% a 50%
-(el tope duro de la casa). De paso, `roi` y `precio_distribuidor_mxn` ya no aceptan negativos.
-6 pruebas nuevas. **112 pruebas en verde.**
+**3. Comisiones absurdas — cerrado.**
+La columna `comision` aceptaba −50%, 150% y 300%. Ahora sólo 0%–50%. Comprobado contra la
+base de hoy: un INSERT con −0.5 lo rechaza el CHECK.
 
-**4. Dashboard del Motor de Precios en el Panel Admin.**
-Christian lo quiere **simple y resumido**, para verlo sin abrir una terminal. Hoy todo esto
-sólo existe corriendo scripts en la Mac. Lo que debería enseñar, de lo que ya calcula la base:
+**4. Dashboard del Motor de Precios — CONSTRUIDO.**
+Pestaña **Motor de Precios** en el Panel Admin (`?tab=motor`), seis bloques, sólo lectura:
+semáforo de certeza · los que están al filo del ROI · dónde estás pagando de más · qué
+reponer y a quién comprarle (con el WhatsApp listo) · qué te ofrecen y no vendes · últimos
+movimientos de precio.
 
-- **Semáforo de certeza**: ¿la base, el maestro, el sitio y el backend dicen lo mismo?
-  (`certeza.py`) — en verde o en rojo con la lista de qué no cuadra.
-- **Los que están al filo**: ROI real más bajo (`v_roi_real`), empezando por el IGF-1 LR3
-  1 mg en 4.87×, y cuántos quedan abajo del piso de 5×.
-- **Dónde estás pagando de más** (`v_pagando_de_mas`): producto, a quién le compras, a
-  cuánto y con quién sería más barato.
-- **Qué reponer** de lo que tiene consigo (`reabastecer.py`) y a quién comprarle, con el
-  mensaje de WhatsApp listo.
-- **Qué te ofrecen y no vendes** (`oportunidades.py`): hoy 5 candidatos reales.
-- **Movimientos de precio**: los últimos cambios con su motivo y quién los hizo
-  (el historial de vigencias).
+Piezas: `novapeptidos-UI/src/components/admin/MotorPrecios.js` (la pantalla),
+`pricing-system/publicar_dashboard_precios.py` (calcula y sube la foto), y dos rutas nuevas
+en `novapeptidos-RBAC/server.py`.
 
-Sólo LECTURA en la primera versión. Mover precios desde el Panel es un paso posterior y
-necesita el motor migrado a la base primero.
+⛔ **Lo que casi sale mal, y por qué está así:** la primera versión dejaba la foto en
+`novapeptidos-UI/public/motor-precios.json`. Esa carpeta se publica ENTERA en exygenlabs.com,
+o sea que el costo de cada producto, el nombre de cada proveedor y el margen habrían quedado
+a un enlace de distancia de cualquiera. Ahora la foto se guarda en `pricing-system/datos/`
+(fuera del sitio) y se sube a `PUT /api/admin/motor-precios`, que sólo contesta con sesión de
+admin. `test_motor_precios.py` lo cuida con cuatro pruebas, y una de ellas **mira el disco**
+para cachar que alguien vuelva a dejar el archivo en la carpeta pública.
+
+`reabastecer.py` y `oportunidades.py` ahora tienen su cálculo separado de la impresión
+(`calcular()`), para que el Panel enseñe LO MISMO que la terminal en vez de recalcularlo por
+su cuenta. Dos cuentas para el mismo número acaban dando dos números distintos.
+
+### ⛔ LO ÚNICO QUE FALTA: DESPLEGAR EL BACKEND
+
+Las dos rutas nuevas (`GET`/`PUT /api/admin/motor-precios`) están escritas y probadas en
+local, pero **NO están en el servidor**, así que la pestaña hoy dice "todavía no se ha subido
+ninguna foto". El clasificador de Claude Code bloquea el `ssh` al EC2 en modo automático — se
+intentó hoy: se abrió el puerto 22 para la IP del momento, se mandó la llave con Instance
+Connect, y el `ssh` se bloqueó. **La regla del puerto 22 ya se cerró** (quedaron sólo las dos
+IPs viejas de siempre).
+
+Para dejarlo andando hacen falta dos pasos, en este orden:
+
+1. Desplegar `novapeptidos-RBAC/server.py` al EC2 (`/opt/exygen/app`,
+   `sudo git pull && sudo docker compose up -d --build api`). Ver "CÓMO ENTRAR AL EC2".
+2. Desde la Mac: `python3 pricing-system/publicar_dashboard_precios.py --subir`
+
+Mientras tanto la pestaña ya está en el sitio y no estorba: enseña el aviso de que falta la
+foto, no una pantalla rota.
+
+## ▶️ LO SIGUIENTE
+
+1. **Los 3 HGH ya no están en duda, pero el punto 5 de "hallazgos" sí:** la fuente de verdad
+   lista HCG 2,000 y 10,000 IU entre los de "solo venta directa" y en la maestra salen
+   elegibles. Según la fórmula ambos aguantan la comisión. **Christian decide cuál manda** —
+   si es el documento, se agregan a `solo_venta_directa.json` y listo.
+2. **Terminar de migrar el motor**: que `reprecio.py` escriba en la base y no en el Excel.
+   Hasta que eso pase, el bloque de "movimientos de precio" del Dashboard va a seguir vacío:
+   la base se reconstruye desde `maestra.csv` en cada corrida, así que no hay historial que
+   enseñar. El tablero lo dice con todas sus letras en vez de fingir que sí lo hay.
+3. **`v_roi_real` resta el envío** y `FUENTE-DE-VERDAD.md` dice que no debe. Contradicción
+   viva: es el número que el Dashboard enseña en "al filo del ROI".
 
 ## 🟡 PROVEEDORES — ver `pricing-system/HANDOFF-PROVEEDORES.md`
 

@@ -1176,7 +1176,7 @@ export const fallbackProducts = [
         "id": "a5df0b96-095e-4efa-a6db-144331024c6a",
         "sku": "HGHFRAGMENT176-12MG",
         "commission_cap": 0.3,
-        "distributor_eligible": true
+        "distributor_eligible": false
       },
       {
         "presentation": "15 mg",
@@ -5198,7 +5198,7 @@ export const fallbackProducts = [
     "presentation": "2,000IU – 10,000IU",
     "form": "Liofilizado",
     "purity": "99.0%",
-    "price": 609,
+    "price": 629,
     "variants": [
       {
         "presentation": "1,000 IU",
@@ -5208,11 +5208,11 @@ export const fallbackProducts = [
         "id": "2681f24c-6203-4813-80ad-9c7b88871311",
         "sku": "HCG-1000IU",
         "commission_cap": 0.3,
-        "distributor_eligible": true
+        "distributor_eligible": false
       },
       {
         "presentation": "2,000IU",
-        "price": 609,
+        "price": 639,
         "stock": 40,
         "batch_number": "NP-HCG2000-2601",
         "id": "799774c2-d701-4db3-98e9-1a9a4b250296",

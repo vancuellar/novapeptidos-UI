@@ -1,7 +1,8 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import { Filter, Eye, LayoutDashboard, Package, ShoppingBag, Plus, Pencil, Trash2, DollarSign, Users, Clock, TrendingUp, MapPin, Phone, Receipt, Store, Copy, Boxes, Truck, RefreshCw, MailCheck, Ban, Megaphone, BarChart3, Upload, ShoppingCart, Target, KeyRound } from 'lucide-react';
+import { Filter, Eye, LayoutDashboard, Package, ShoppingBag, Plus, Pencil, Trash2, DollarSign, Users, Clock, TrendingUp, MapPin, Phone, Receipt, Store, Copy, Boxes, Truck, RefreshCw, MailCheck, Ban, Megaphone, BarChart3, Upload, ShoppingCart, Target, KeyRound, Gauge } from 'lucide-react';
 import Marketing from '@/components/admin/Marketing';
+import MotorPrecios from '@/components/admin/MotorPrecios';
 import { fallbackProducts } from '@/data/fallbackCatalog';
 import { ResponsiveContainer, AreaChart, Area, BarChart, Bar, ComposedChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts';
 import { Button } from '@/components/ui/button';
@@ -438,6 +439,7 @@ const Admin = () => {
           { value: 'distributors', icon: Store, label: t('admin.distributorsTab') },
           { value: 'orders', icon: ShoppingBag, label: t('admin.ordersTab') },
           { value: 'products', icon: Package, label: t('admin.productsTab') },
+          { value: 'motor', icon: Gauge, label: 'Motor de Precios' },
           { value: 'stock', icon: Boxes, label: t('admin.stockTab') },
           { value: 'repurchase', icon: RefreshCw, label: t('admin.repurchaseTab') },
           { value: 'news', icon: Megaphone, label: t('adminNews.tab') },
@@ -591,6 +593,13 @@ const Admin = () => {
             pasaba de 1700 líneas. */}
         <TabsContent value="marketing" className="mt-5">
           <Marketing />
+        </TabsContent>
+
+        {/* El Motor de Precios, resumido. Vive en su propio archivo por lo mismo que
+            Marketing: seis bloques con sus tablas no caben aquí sin volver Admin.js
+            ilegible. */}
+        <TabsContent value="motor" className="mt-5">
+          <MotorPrecios />
         </TabsContent>
 
         <TabsContent value="meta" className="mt-5 space-y-4">
