@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import {
   ShieldCheck, FlaskConical, Truck, BadgeCheck, ArrowRight, HeartPulse, Activity, Flame, Hourglass,
   Brain, Sparkles, Layers, CheckCircle2, MinusCircle, FileCheck2, ScanSearch, Landmark, CreditCard,
-  ChevronLeft, ChevronRight, Building2, Mail, Bitcoin,
+  ChevronLeft, ChevronRight, Building2, Mail, Bitcoin, Trophy, Globe,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
@@ -21,6 +21,20 @@ import { useLanguage } from '@/context/LanguageContext';
 import { localizeCategories, localizeProducts } from '@/i18n/catalog';
 
 const ICONS = { HeartPulse, Activity, Flame, Hourglass, Brain, Sparkles, Layers, FlaskConical };
+
+// EL NÚMERO QUE SOSTIENE LA AFIRMACIÓN (Christian, 2026-07-28).
+// "Somos el distribuidor de péptidos más grande de México" es un adjetivo, y un
+// adjetivo lo escribe cualquiera. Lo que no puede escribir cualquiera es la cuenta:
+// hoy vendemos 193 presentaciones contra 183 de Exoma y 47 de Certified/PepMex, o
+// sea el catálogo más amplio de los que se miden. Por eso la frase nunca sale sola
+// en la portada: siempre lleva la cifra pegada.
+//
+// La cifra se CUENTA del catálogo del sitio, no se escribe a mano. Si mañana se
+// oculta un producto (pasó con Dysport y HUMSC), el número baja solo y la portada
+// nunca queda prometiendo un catálogo que ya no existe.
+const PRESENTACIONES = fallbackProducts.reduce((n, p) => n + (p.variants?.length || 1), 0);
+const COMPUESTOS = fallbackProducts.length;
+const CATEGORIAS = VISIBLE_CATEGORIES.length;
 
 // Un archivo por vial (botellas que mandó Christian): cada uno se levanta solo
 // al pasar el cursor y lleva al catálogo. Alturas escalonadas para la silueta.
@@ -173,6 +187,11 @@ const Home = () => {
     { label: t('home.why.r4'), others: 'partial' },
     { label: t('home.why.r5'), others: 'no' },
     { label: t('home.why.r6'), others: 'partial' },
+    // Los dos renglones nuevos (Christian, 2026-07-28). El del catálogo va con 'no'
+    // porque no es cuestión de grado: el más amplio es uno solo. El del origen va con
+    // 'partial' porque algún competidor sí dice de dónde viene su material.
+    { label: t('home.why.r7', { presentaciones: PRESENTACIONES }), others: 'no' },
+    { label: t('home.why.r8'), others: 'partial' },
   ];
 
   return (
@@ -192,6 +211,21 @@ const Home = () => {
               (Christian, 2026-07-26). */}
           <div className="grid lg:grid-cols-[1.1fr_0.9fr] gap-8 lg:gap-16 items-center">
             <div>
+              {/* SELLO DE LIDERAZGO. Va ARRIBA de todo, incluso del kicker, porque es
+                  la razón para quedarse: al visitante no le mueve la marca, le mueve
+                  saber que aquí está lo que anda buscando. Certified vende su origen
+                  desde el primer renglón; esto es lo mismo con nuestro dato fuerte.
+                  Es un texto, no un banner: nada de fondo chillante ni signos de
+                  admiración, que es lo que le baja el tono a una marca seria. */}
+              <div
+                className="inline-flex items-start gap-2 rounded-full border border-[hsl(var(--primary))]/25 bg-[hsl(var(--accent))] pl-3 pr-4 py-1.5 mb-5 max-w-full"
+                data-testid="hero-sello-lider"
+              >
+                <Trophy className="h-3.5 w-3.5 text-[hsl(var(--primary))] shrink-0 mt-[3px]" />
+                <span className="text-[11px] sm:text-xs font-semibold leading-snug text-[hsl(var(--primary))]">
+                  {t('home.leadBadge', { presentaciones: PRESENTACIONES })}
+                </span>
+              </div>
               <div className="kicker">{t('home.kicker')}</div>
               <h1 className="font-heading text-[2.1rem] sm:text-5xl lg:text-[3.6rem] font-bold tracking-tight leading-[1.08] mt-6 break-words">
                 {heroLead}
@@ -301,9 +335,13 @@ const Home = () => {
               <div className="font-heading text-3xl font-bold">≥99%</div>
               <div className="font-mono-tech text-[10.5px] uppercase tracking-[0.16em] text-muted-foreground mt-1.5">{t('home.typicalPurity')} · HPLC</div>
             </div>
+            {/* Aquí decía "96 Productos". Pesa más la cuenta de PRESENTACIONES: es
+                mayor, es la que de verdad mide la variedad (un mismo compuesto en
+                tres tamaños son tres cosas distintas para quien compra) y es la que
+                usa el sello de arriba, así que las dos cifras concuerdan. */}
             <div className="sm:border-l border-border sm:pl-12">
-              <div className="font-heading text-3xl font-bold">{fallbackProducts.length}</div>
-              <div className="font-mono-tech text-[10.5px] uppercase tracking-[0.16em] text-muted-foreground mt-1.5">{t('home.products')}</div>
+              <div className="font-heading text-3xl font-bold">{PRESENTACIONES}</div>
+              <div className="font-mono-tech text-[10.5px] uppercase tracking-[0.16em] text-muted-foreground mt-1.5">{t('home.presentations')}</div>
             </div>
             <div className="sm:border-l border-border sm:pl-12">
               <div className="font-heading text-3xl font-bold">{t('home.shippingValue')}</div>
@@ -318,14 +356,64 @@ const Home = () => {
       </section>
 
       {/* ===== Trust strip ===== */}
+      {/* Son CINCO sellos desde el 2026-07-28: entró el del origen en Estados Unidos.
+          La rejilla pasa de 4 a 5 columnas en pantalla grande y se queda en 2 y 3 en
+          las chicas — con cinco, el último renglón deja un hueco, que es preferible a
+          apretar cinco tarjetas en una fila de teléfono. */}
       <section className="border-b border-border bg-card">
-        <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 py-6 grid grid-cols-2 md:grid-cols-4 gap-4">
-          {[{ i: ShieldCheck, t: t('home.trust.coa.title'), d: t('home.trust.coa.desc') }, { i: BadgeCheck, t: t('home.trust.purity.title'), d: t('home.trust.purity.desc') }, { i: Truck, t: t('home.trust.shipping.title'), d: t('home.trust.shipping.desc') }, { i: FlaskConical, t: t('home.trust.support.title'), d: t('home.trust.support.desc') }].map((b, idx) => (
+        <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 py-6 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
+          {[{ i: ShieldCheck, t: t('home.trust.coa.title'), d: t('home.trust.coa.desc') }, { i: BadgeCheck, t: t('home.trust.purity.title'), d: t('home.trust.purity.desc') }, { i: Globe, t: t('home.trust.origin.title'), d: t('home.trust.origin.desc') }, { i: Truck, t: t('home.trust.shipping.title'), d: t('home.trust.shipping.desc') }, { i: FlaskConical, t: t('home.trust.support.title'), d: t('home.trust.support.desc') }].map((b, idx) => (
             <div key={idx} className="flex items-center gap-3">
               <div className="h-10 w-10 rounded-lg bg-[hsl(var(--accent))] flex items-center justify-center shrink-0"><b.i className="h-5 w-5 text-[hsl(var(--primary))]" /></div>
               <div><div className="font-semibold text-sm">{b.t}</div><div className="text-xs text-muted-foreground">{b.d}</div></div>
             </div>
           ))}
+        </div>
+      </section>
+
+      {/* ===== El catálogo más grande de México ===== */}
+      {/* Va INMEDIATAMENTE después de la barra de confianza, antes de los destacados:
+          el visitante acaba de leer las garantías y lo siguiente que tiene que saber
+          es por qué comprar aquí y no en la otra tienda. La respuesta es la variedad,
+          y la variedad se demuestra con las tres cuentas de la derecha, no con
+          adjetivos. La tarjeta de abajo es el origen: quién nos surte de verdad
+          (laboratorios de Estados Unidos y de Asia), sin inventarle a nadie una
+          fábrica propia que no tenemos. */}
+      <section className="border-b border-border" data-testid="home-liderazgo">
+        <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 py-16 lg:py-20 grid lg:grid-cols-[1fr_1fr] gap-10 lg:gap-16 items-center">
+          <div>
+            <div className="kicker">{t('home.leadKicker')}</div>
+            <h2 className="font-heading text-2xl sm:text-3xl lg:text-[2.4rem] font-bold tracking-tight leading-[1.12] mt-2">
+              {t('home.leadTitle')}
+            </h2>
+            <p className="mt-4 text-muted-foreground leading-relaxed max-w-xl">
+              {t('home.leadBody', { presentaciones: PRESENTACIONES, categorias: CATEGORIAS })}
+            </p>
+            <Link to="/catalogo" className="btn-resend mt-7" data-testid="lead-catalog-button">
+              {t('home.leadCta', { presentaciones: PRESENTACIONES })} <ArrowRight className="h-4 w-4" />
+            </Link>
+          </div>
+          <div>
+            <div className="grid grid-cols-3 gap-3 sm:gap-4">
+              {[
+                { n: PRESENTACIONES, l: t('home.leadStat1') },
+                { n: COMPUESTOS, l: t('home.leadStat2') },
+                { n: CATEGORIAS, l: t('home.leadStat3') },
+              ].map((s, i) => (
+                <div key={i} className="rounded-xl border border-border bg-card px-4 py-5 text-center">
+                  <div className="font-heading text-3xl sm:text-4xl font-bold text-[hsl(var(--primary))] leading-none">{s.n}</div>
+                  <div className="font-mono-tech text-[10px] uppercase tracking-[0.14em] text-muted-foreground mt-2.5 leading-snug">{s.l}</div>
+                </div>
+              ))}
+            </div>
+            <div className="mt-4 rounded-xl border border-border bg-[hsl(var(--secondary))] p-5" data-testid="home-origen-eua">
+              <div className="flex items-center gap-2.5">
+                <Globe className="h-4 w-4 text-[hsl(var(--primary))] shrink-0" />
+                <h3 className="font-heading font-semibold text-sm">{t('home.leadUsa.title')}</h3>
+              </div>
+              <p className="mt-2.5 text-sm leading-relaxed text-muted-foreground">{t('home.leadUsa.body')}</p>
+            </div>
+          </div>
         </div>
       </section>
 
@@ -454,10 +542,14 @@ const Home = () => {
             <h2 className="font-heading text-2xl sm:text-3xl font-bold tracking-tight mt-2">{t('home.transparencyTitle')}</h2>
             <p className="mt-3 text-muted-foreground leading-relaxed">{t('home.transparencyBody')}</p>
           </div>
-          <div className="mt-9 grid md:grid-cols-3 gap-4">
+          {/* Cuatro pasos desde el 2026-07-28: entró el origen. Rastrear el lote sirve
+              de poco si no se dice de qué laboratorio salió, así que va como paso más
+              y la rejilla pasa de 3 a 4 columnas (2 en tableta, para que no se aplasten). */}
+          <div className="mt-9 grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
             {[
               { icon: ScanSearch, text: t('home.transparency.bullet2') },
               { icon: FileCheck2, text: t('home.transparency.bullet1') },
+              { icon: Globe, text: t('home.transparency.bullet4') },
               { icon: ShieldCheck, text: t('home.transparency.bullet3') },
             ].map((s, i) => (
               <div key={i} className="rounded-xl border border-border bg-card p-5">
@@ -480,18 +572,24 @@ const Home = () => {
           <h2 className="font-heading text-2xl sm:text-3xl font-bold tracking-tight mt-2">{t('home.whyTitle')}</h2>
           <p className="text-muted-foreground text-sm mt-1">{t('home.whySubtitle')}</p>
         </div>
+        {/* En teléfono esta tabla ya se salía de su tarjeta y, como la tarjeta recorta
+            lo que sobra, la columna "Otros vendedores" quedaba cortada a la mitad.
+            Pasaba desde antes y con los renglones nuevos se notó más. El arreglo:
+            en pantalla chica los encabezados pueden partirse en dos renglones y los
+            costados van más justos; de sm en adelante todo queda como estaba. */}
         <Card className="overflow-hidden shadow-none">
           <div className="grid grid-cols-[1fr_auto_auto] text-sm">
-            <div className="px-5 py-3.5 bg-[hsl(var(--secondary))]"> </div>
-            <div className="px-5 sm:px-8 py-3.5 font-heading font-bold text-[hsl(var(--primary))] bg-[hsl(var(--accent))] text-center whitespace-nowrap">Exygen Labs</div>
-            <div className="px-5 sm:px-8 py-3.5 font-medium text-muted-foreground bg-[hsl(var(--secondary))] text-center whitespace-nowrap">{t('home.why.others')}</div>
+            <div className="px-3.5 sm:px-5 py-3.5 bg-[hsl(var(--secondary))]"> </div>
+            <div className="px-3 sm:px-8 py-3.5 font-heading font-bold text-[hsl(var(--primary))] bg-[hsl(var(--accent))] text-center sm:whitespace-nowrap">Exygen Labs</div>
+            <div className="px-3 sm:px-8 py-3.5 font-medium text-muted-foreground bg-[hsl(var(--secondary))] text-center sm:whitespace-nowrap">{t('home.why.others')}</div>
             {whyRows.map((row, i) => (
               <React.Fragment key={i}>
-                <div className="px-5 py-3.5 border-t border-border">{row.label}</div>
-                <div className="px-5 sm:px-8 py-3.5 border-t border-border bg-[hsl(var(--accent))]/40 flex items-center justify-center">
+                <div className="px-3.5 sm:px-5 py-3.5 border-t border-border min-w-0">{row.label}</div>
+                <div className="px-3 sm:px-8 py-3.5 border-t border-border bg-[hsl(var(--accent))]/40 flex items-center justify-center">
                   <CheckCircle2 className="h-5 w-5 text-[hsl(var(--success))]" />
                 </div>
-                <div className="px-5 sm:px-8 py-3.5 border-t border-border flex items-center justify-center">
+                <div className="px-3 sm:px-8 py-3.5 border-t border-border flex items-center justify-center">
+                  {/* "Parcial" también se parte si hace falta: en 320 px cada píxel cuenta. */}
                   {row.others === 'partial'
                     ? <span className="text-xs text-muted-foreground">{t('home.why.partial')}</span>
                     : <MinusCircle className="h-5 w-5 text-muted-foreground/50" />}
