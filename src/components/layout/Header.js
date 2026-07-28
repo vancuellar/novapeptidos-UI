@@ -75,7 +75,7 @@ const HELP_ITEMS = [
 const Header = () => {
   const { count } = useCart();
   const { user, logout } = useAuth();
-  const { language, languages, setLanguage, t } = useLanguage();
+  const { language, languages, setLanguage, preloadLanguage, t } = useLanguage();
   const { theme, setTheme } = useTheme();
   const navigate = useNavigate();
   const [search, setSearch] = useState('');
@@ -179,9 +179,12 @@ const Header = () => {
                       <DropdownMenuLabel className="text-[10px] font-semibold uppercase tracking-[0.16em] text-muted-foreground">
                         {t('controls.language')}
                       </DropdownMenuLabel>
+                      {/* Al rozar una opción ya se va bajando ese idioma: cuando
+                          el dedo suelta, el texto ya está aquí. */}
                       <DropdownMenuRadioGroup value={language} onValueChange={setLanguage}>
                         {languages.map((item) => (
-                          <DropdownMenuRadioItem key={item.code} value={item.code} data-testid={`mobile-language-${item.code}`}>
+                          <DropdownMenuRadioItem key={item.code} value={item.code} data-testid={`mobile-language-${item.code}`}
+                            onPointerEnter={() => preloadLanguage(item.code)}>
                             <span className="inline-flex items-center gap-2"><span aria-hidden="true">{item.flag}</span> {item.label}</span>
                           </DropdownMenuRadioItem>
                         ))}
@@ -393,7 +396,8 @@ const Header = () => {
                 </DropdownMenuLabel>
                 <DropdownMenuRadioGroup value={language} onValueChange={setLanguage}>
                   {languages.map((item) => (
-                    <DropdownMenuRadioItem key={item.code} value={item.code}>
+                    <DropdownMenuRadioItem key={item.code} value={item.code}
+                      onPointerEnter={() => preloadLanguage(item.code)}>
                       <span className="inline-flex items-center gap-2"><span aria-hidden="true">{item.flag}</span> {item.label}</span>
                     </DropdownMenuRadioItem>
                   ))}

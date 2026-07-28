@@ -659,6 +659,13 @@ img {
   transform: rotate(-9deg);
   box-shadow: 0 6px 24px rgba(212,175,55,.28);
 }
+/* El "hasta" va chiquito arriba del número: sin él, un 15% a secas promete un
+   descuento que no todos van a recibir. Con él, el sello sigue gritando 15 —que es
+   lo que hace mirar— pero no miente. */
+.sello-hasta {
+  font-size: 7.5px; font-weight: 700; letter-spacing: .16em; text-transform: uppercase;
+  color: #e8c25a; opacity: .85; margin-bottom: 1px;
+}
 .sello-pct {
   font-family: var(--font-heading, Georgia, serif);
   font-size: 20px; font-weight: 700; line-height: 1;

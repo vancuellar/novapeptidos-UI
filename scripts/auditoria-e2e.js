@@ -173,15 +173,28 @@ function idioma() {
 
 // ------------------------------------------------------------ traducciones
 function traducciones() {
-  const tr = leer('src/i18n/translations.js');
-  const bloque = (n) => {
+  // Desde 2026-07-28 cada idioma vive en su propio archivo (se baja sólo el que
+  // se usa). Las revisiones son EXACTAMENTE las mismas: sólo cambia de dónde se
+  // lee cada bloque.
+  const bloque = (archivo, n) => {
+    const tr = leer(`src/i18n/${archivo}`);
     const i = tr.indexOf(`const ${n} = {`);
-    return tr.slice(i, tr.indexOf('\n};', i));
+    return i < 0 ? '' : tr.slice(i, tr.indexOf('\n};', i));
   };
   const claves = (txt) => [...txt.matchAll(/^\s*'([^']+)':/gm)].map((m) => m[1]);
 
-  const es = bloque('esMX'), en = bloque('enUS'), pt = bloque('ptBR');
+  const es = bloque('es-MX.js', 'esMX'), en = bloque('en-US.js', 'enUS'), pt = bloque('pt-BR.js', 'ptBR');
   const kEs = new Set(claves(es));
+  revisar(kEs.size > 1000, 'el archivo del español trae todos los textos', `${kEs.size} claves`);
+
+  // El español NO puede irse a un archivo aparte: tiene que viajar dentro del
+  // principal o el visitante mexicano vería la pantalla a medio pintar mientras
+  // baja. Aquí se vigila que nadie lo convierta en un `import()` perezoso.
+  const cargador = leer('src/i18n/loader.js');
+  revisar(/^import esMX from '\.\/es-MX';$/m.test(cargador),
+          'el español viaja en el archivo principal', 'import normal en loader.js, no import()');
+  revisar(/import\(/.test(cargador) && cargador.includes('./en-US') && cargador.includes('./pt-BR'),
+          'inglés y portugués se bajan aparte');
 
   for (const [nombre, txt] of [['inglés', en], ['portugués', pt]]) {
     const faltan = [...kEs].filter((k) => !claves(txt).includes(k));
