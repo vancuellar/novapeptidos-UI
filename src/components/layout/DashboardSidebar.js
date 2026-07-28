@@ -11,6 +11,22 @@ import { useLanguage } from '@/context/LanguageContext';
 
 const STORAGE_KEY = 'exygen-dash-sidebar-collapsed';
 
+// Cambiar de pestaña abre ARRIBA. Sin esto te quedas a la altura a la que venías, y
+// como cada pestaña mide distinto, entras a media tabla sin saber qué estás viendo.
+//
+// El `ScrollToTop` general de la app NO cubre este caso a propósito: sólo mira el
+// `pathname` y estas pestañas viven en la query (`?tab=stock`). Y así debe seguir — en
+// el catálogo la query también cambia al filtrar, y ahí brincar arriba estorba. Por eso
+// el arreglo va aquí, en los tableros, y no allá.
+//
+// Se mueven los tres (`window`, `html`, `body`) por lo mismo que el otro: cuál scrollea
+// depende del CSS, y ese CSS ya cambió una vez con la regla del header pegado.
+const alTope = () => {
+  window.scrollTo({ top: 0, behavior: 'auto' });
+  if (document.documentElement) document.documentElement.scrollTop = 0;
+  if (document.body) document.body.scrollTop = 0;
+};
+
 const DashboardSidebar = ({ items }) => {
   const { t } = useLanguage();
   const [collapsed, setCollapsed] = useState(() => {
@@ -29,7 +45,8 @@ const DashboardSidebar = ({ items }) => {
       {/* Móvil: barra horizontal arriba del contenido */}
       <TabsList className="lg:hidden h-auto w-full flex flex-row items-stretch justify-start gap-1 bg-transparent p-0 overflow-x-auto mb-4">
         {items.map(({ value, icon: Icon, label }) => (
-          <TabsTrigger key={value} value={value} className="justify-start gap-2 rounded-lg shrink-0">
+          <TabsTrigger key={value} value={value} onClick={alTope}
+            className="justify-start gap-2 rounded-lg shrink-0">
             <Icon className="h-4 w-4" /> {label}
           </TabsTrigger>
         ))}
@@ -52,7 +69,8 @@ const DashboardSidebar = ({ items }) => {
           {!collapsed && (
             <TabsList className="h-auto w-full flex flex-col items-stretch justify-start gap-1 bg-transparent p-0 mt-1">
               {items.map(({ value, icon: Icon, label }) => (
-                <TabsTrigger key={value} value={value} className="justify-start w-full gap-2.5 rounded-lg py-2">
+                <TabsTrigger key={value} value={value} onClick={alTope}
+                  className="justify-start w-full gap-2.5 rounded-lg py-2">
                   <Icon className="h-4 w-4 shrink-0" /> <span className="truncate">{label}</span>
                 </TabsTrigger>
               ))}
