@@ -242,7 +242,6 @@ ingresos, no un bug.
 
 1. **Vigencias traslapadas.** La base acepta dos periodos históricos que se encimen; el
    índice sólo impide dos precios ABIERTOS. Hoy no está pasando.
-2. **Comisiones absurdas.** La columna `comision` acepta −50% y 150%: no tiene límites.
 3. **`certeza.py` compara poco.** No mira SKU, ni presentación, ni vigencia, ni el motivo.
 4. **Una prueba sale a internet** y si no hay red esa comprobación no se hace — y no queda
    claro que no se hizo.
@@ -252,6 +251,57 @@ ingresos, no un bug.
 6. **`v_roi_real` resta el envío**, pero `FUENTE-DE-VERDAD.md` dice expresamente que **el
    envío NO cuenta contra el ROI** (nunca pasa del 10%, y ese 10% ya está aceptado).
    Contradicción a resolver.
+
+## ▶️ LO SIGUIENTE QUE SE TRABAJA (orden de Christian, 2026-07-28)
+
+**1. Decidir los 3 HGH: ¿venta directa sin distribuidores?**
+Christian se inclina por VENDERLOS, sin distribuidores de por medio. Son
+HGH Fragment 176-191 12 mg ($2,709), HGH 36 IU ($1,548) y HCG 1,000 IU ($629) — hoy están
+marcados "no vender" en la maestra y **el backend los está cobrando igual**. Los tres tienen
+ROI sano (9.99×, 5.53×, 9.98×). Si la decisión es venderlos directo, lo que hay que hacer es
+`vender = si` + `elegible_distribuidor = no`, que es lo que de verdad significa "solo venta
+directa" — NO dejarlos con la marca de "no vender", que es para lo retirado por seguridad.
+Ojo: el backend ya deja **toda la familia HGH** (menos el Fragment) fuera de descuentos y
+comisiones por regla aparte del 2026-07-22, así que hay que revisar que las dos reglas no
+se contradigan.
+
+**2. Permisos a Codex para que no tenga pruebas fallidas por el entorno.**
+Comprobado hoy: `--sandbox read-only` **impide crear archivos temporales** y pytest ni
+siquiera arranca. Con `--sandbox workspace-write` **sí corre** (106 pasan). Lo que queda
+fallando —3 fallas + 3 errores— es por **falta de red**: no puede leer el backend en vivo ni
+a la competencia. Comando:
+
+```
+codex exec --skip-git-repo-check --sandbox workspace-write "$(cat PROMPT-AUDITORIA.md)"
+```
+
+Falta resolver el acceso a red de su sandbox; mientras tanto, en el prompt ya está dicho que
+esas fallas se reporten como limitación del entorno y NO como hallazgo.
+
+**3. Comisiones absurdas — ✅ YA ESTÁ HECHO.**
+La columna `comision` aceptaba **−50%, 150% y 300%**: una comisión negativa le COBRARÍA al
+distribuidor y una arriba del 100% regala más de lo que entra. Ahora sólo acepta de 0% a 50%
+(el tope duro de la casa). De paso, `roi` y `precio_distribuidor_mxn` ya no aceptan negativos.
+6 pruebas nuevas. **112 pruebas en verde.**
+
+**4. Dashboard del Motor de Precios en el Panel Admin.**
+Christian lo quiere **simple y resumido**, para verlo sin abrir una terminal. Hoy todo esto
+sólo existe corriendo scripts en la Mac. Lo que debería enseñar, de lo que ya calcula la base:
+
+- **Semáforo de certeza**: ¿la base, el maestro, el sitio y el backend dicen lo mismo?
+  (`certeza.py`) — en verde o en rojo con la lista de qué no cuadra.
+- **Los que están al filo**: ROI real más bajo (`v_roi_real`), empezando por el IGF-1 LR3
+  1 mg en 4.87×, y cuántos quedan abajo del piso de 5×.
+- **Dónde estás pagando de más** (`v_pagando_de_mas`): producto, a quién le compras, a
+  cuánto y con quién sería más barato.
+- **Qué reponer** de lo que tiene consigo (`reabastecer.py`) y a quién comprarle, con el
+  mensaje de WhatsApp listo.
+- **Qué te ofrecen y no vendes** (`oportunidades.py`): hoy 5 candidatos reales.
+- **Movimientos de precio**: los últimos cambios con su motivo y quién los hizo
+  (el historial de vigencias).
+
+Sólo LECTURA en la primera versión. Mover precios desde el Panel es un paso posterior y
+necesita el motor migrado a la base primero.
 
 ## 🟡 PROVEEDORES — ver `pricing-system/HANDOFF-PROVEEDORES.md`
 
@@ -299,7 +349,7 @@ fuente real o es carnada; a ninguno se le ha comprado. ⚠️ **A ninguno se le 
 ## Compuertas (todas en verde)
 
 `npm run verificar` → 80 + 21 + 15 · Backend: 232 pytest · **Precios: 69** ·
-Auditor de catálogo: 14/14 · `python3 certeza.py`: 204/204 · **Precios: 106** · `python3 db.py --revisar`.
+Auditor de catálogo: 14/14 · `python3 certeza.py`: 204/204 · **Precios: 112** · `python3 db.py --revisar`.
 
 ---
 
