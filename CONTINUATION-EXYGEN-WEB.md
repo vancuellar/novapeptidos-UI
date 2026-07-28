@@ -1,4 +1,182 @@
-# 🔴 EN CURSO — 2026-07-28
+# 🔴 EN CURSO — 2026-07-28 (noche)
+
+## 🟢 EL MOTOR DE PRECIOS — se acabó el Excel como fuente de la verdad
+
+Así se llama el feature: **Motor de Precios** (decisión de Christian). Hace juego con el
+**Vigía**, que observa a la competencia; el Motor pone el precio. ⚠️ **Pendiente: actualizar
+el Vigía** para que lea de la base cuando el Motor esté terminado y probado.
+
+Todo vivía en `MAESTRA.xlsx`. Una hoja de cálculo no sabe decir "ese proveedor no existe"
+ni "ese producto ya está dos veces", así que los errores se guardaban sin protestar. El
+28-jul pasaron los dos casos: 502 precios colgados del producto equivocado, y las 11
+COMPRAS REALES borradas al reescribir un CSV. Ahora hay una base de verdad.
+
+**UNA base, MUCHAS tablas** (Christian preguntó si convenía separarlas: no — el ROI
+necesita costo + comisión + descuento + envío al mismo tiempo, y en bases separadas no se
+pueden cruzar). Todo en `pricing-system/`, repo privado `exygen-pricing`:
+
+| Archivo | Qué es |
+|---|---|
+| `esquema.sql` | Las tablas, con llaves y validaciones |
+| `db.py` | Construye la base y la consulta · `poner_precio()` |
+| `certeza.py` | **Comprueba que todas las listas digan lo mismo** |
+| `oportunidades.py` | Qué nos ofrecen y no vendemos |
+| `reporte_excel.py` | Genera `REPORTE-EXYGEN.xlsx`, marcado NO EDITAR |
+| `datos/*.csv` | La verdad en texto, versionada: compras reales, reglas, alias, exclusiones |
+
+```
+python3 db.py --construir      python3 certeza.py         python3 oportunidades.py
+python3 db.py --revisar        python3 reporte_excel.py   python3 reprecio.py --desde-base
+```
+
+### Lo que la base impide y el Excel permitía
+
+- Un costo no puede apuntar a un proveedor que no existe.
+- **Los precios no se sobrescriben: se versionan** (`vigente_desde`/`vigente_hasta`, con
+  hora en UTC porque un día de repricing tiene varios movimientos). Un índice único
+  garantiza **exactamente un precio vigente** por producto.
+- `db.poner_precio()` es la única forma de mover un precio: **exige motivo**, guarda quién
+  y cuándo, conserva el anterior y es atómica.
+- No se puede vender abajo del **piso de 5×** sin *declarar* la excepción por escrito.
+- El distribuidor nunca paga más que el público.
+
+### CERTEZA: una sola verdad, comprobada
+
+`certeza.py` compara la base contra **las tres listas que se publican** (`maestra.csv`,
+`precios_maestra.json`, `distribuidor_maestra.json`). Hoy: **204 productos, idénticos**.
+Probado saboteando un precio a mano — lo caza y devuelve error.
+⚠️ Esto compara lo que se PUBLICA, no lo que el servidor COBRA. Eso es la suite E2E, y la
+distinción es la que costó caro en julio.
+
+### Las reglas del negocio, como DATOS (tabla `regla`)
+
+Copiadas del backend en vivo con archivo y línea: envío $250, tope de envío **10%**, envío
+gratis desde $2,500 (**derivado** del tope, ya no escrito a mano), descuento máximo 40%,
+puntos 3%, tope de comisión 50%, piso de ROI 5×. Un aviso salta si el umbral deja de ser
+el 10% del ticket.
+
+### ROI real (`v_roi_real`) y CAC (`v_cac`)
+
+⚠️ **Casi se publica mal.** El descuento y la comisión **NO se suman: comparten el mismo
+tope por producto** — el backend reparte `cap − descuento`
+(`novapeptidos-RBAC/server.py:1224`). Restándolos por separado salían **149 productos
+abajo del piso**; con la cuenta correcta es **UNO**: IGF-1 LR3 1 mg en **4.87×**, el ya
+conocido. Hay prueba que fija la regla.
+El **CAC va aparte**: es por CLIENTE (gasto de Meta ÷ clientes nuevos), no por producto.
+La tabla `costo_adquisicion` está creada y **vacía**: falta cargarla del panel de Meta.
+
+### Migración del motor — paso 1 de 2, hecho
+
+`reprecio.py` tiene ahora **dos lectores para un motor**: `leer()` del Excel y
+`leer_de_base()` de la base. `python3 reprecio.py --desde-base` corre el mismo motor
+leyendo de la base (solo simulacro). **Dos pruebas exigen que los dos caminos den
+idéntico**: mismos datos de entrada, y mismo precio y motivo de salida. Hoy coinciden en
+los 190 productos y ninguno cambia.
+
+⛔ **NO apagar MAESTRA.xlsx todavía**: `reprecio.py` aún la LEE, y por eso el reporte se
+escribe en `REPORTE-EXYGEN.xlsx` y no encima de ella. Sobrescribirla hoy rompe el motor.
+
+### Catálogo: qué nos ofrecen y no vendemos
+
+`oportunidades.py` — de **46 huecos falsos a 5 candidatos reales**. Los 41 restantes eran
+el mismo producto escrito distinto ("Adamax" vs ADMAX, "Frag17-23" vs Fragment 17-23,
+"LYSINE-PROLINE-VALINE" vs KPV). Las equivalencias las revisó Claude y viven en
+`datos/alias_proveedores.csv`, con prueba que las fija.
+
+**Reales: Dihexa** (2 prov., desde $35), **MK-677 / Ibutamoren** (2 prov., desde $24),
+**Oligopeptide-24** (1 prov., $40). Excluidos a propósito en `datos/no_vender.csv` con
+motivo y quién: Dysport, HUMSC, toxina botulínica, insulina, ácido hialurónico, Adipotida,
+ACE-031 e insumos.
+
+### Revisión externa de Codex — 7 hallazgos, todos arreglados
+
+1. **Reconstruir la base borraba el historial** (el diseño se contradecía solo). Ahora vive
+   en `datos/historial_precios.csv` y sobrevive; probado.
+2. El candado exigía ~1×, no el piso de 5×.
+3. `poner_precio()` podía dejar un producto **sin precio vigente** si fallaba a la mitad.
+4. Las vigencias aceptaban periodos invertidos, de duración cero y fechas inválidas.
+5. Los 10 viales por caja estaban clavados a mano: una caja de 5 pasaba con otras unidades.
+6. `v_margen` unía contra la tabla y no contra el precio vigente.
+7. La prueba principal era **circular**. Ahora se compara contra `precios_maestra.json`.
+
+Además: **las pruebas escribían en los datos reales del negocio**. Corregido.
+
+### 2ª revisión de Codex (a fondo) — 8 hallazgos más
+
+**Arreglado ya:** `certeza.py` —la compuerta que autoriza publicar— **se salía en silencio
+cuando un valor de la lista venía vacío o nulo**, así que BORRAR un precio pasaba en verde.
+Es el mismo patrón que ya costó dinero cuatro veces. Ahora un campo obligatorio que falte,
+o un valor que no sea número, es un problema; y se exige que todo producto de la base esté
+en la lista de distribuidores. Hay prueba que lo fija (rompe el archivo de tres formas).
+Al endurecerla saltaron 9 avisos que resultaron ser productos NO elegibles —correcto que no
+tengan tope—, así que el tope sólo se exige a los elegibles, y ahora también se avisa al
+revés: un NO elegible que traiga tope.
+
+**Lo que Codex marcó y SIGUE PENDIENTE** (por orden de gravedad):
+
+1. **Cajas que no son de 10.** La base y `v_roi_real` ya las soportan, pero `reprecio.py`
+   sigue multiplicando y dividiendo por 10 a mano, y `leer_de_base()` no le pasa
+   `viales_por_caja`. Hoy el catálogo es todo de 10, por eso las pruebas pasan sin probarlo.
+2. **`certeza.py` compara poco.** No mira SKU, ni vender/oculto, ni presentación, ni la
+   vigencia ni el motivo. Tampoco detecta llaves repetidas dentro de un JSON. Y base y
+   `maestra.csv` pueden estar equivocadas de la misma forma: **no consulta producción**.
+3. **Las 2 pruebas de migración no bastan.** Faltan: comisión/elegibilidad/precio de
+   distribuidor resultantes, escritura atómica con `poner_precio()`, dos corridas seguidas
+   sin cambios, reconstrucción idéntica después, prueba de historial corrompido o perdido,
+   y dos cambios del mismo SKU en el mismo segundo.
+4. **Silencios que quedan en `db.py`**: números inválidos → `None`, archivos que no existen
+   → lista vacía, varios `INSERT OR IGNORE`, un precio de distribuidor malo se sustituye por
+   nulo y la carga sigue. Para una compuerta deberían terminar en error, no en aviso.
+5. **`oportunidades.py`**: el emparejamiento difuso podría FUSIONAR dos productos distintos
+   (DAC vs no-DAC, MT-1 vs MT-2, simple vs mezcla) y hacernos creer que ya vendemos algo que
+   no vendemos. Faltan pruebas negativas de eso.
+6. **Lo que le falta al modelo para ser una base de tienda seria**: amarrar `costo_lista` y
+   `compra_real` a un SKU real (hoy usan nombres libres); registrar tipo de cambio, flete y
+   aduana para tener el costo PUESTO EN MÉXICO; ligar cada precio a la compra y la regla que
+   lo originaron; prohibir vigencias traslapadas; bitácora inmutable con identidad
+   verificable (hoy `quien='christian'` lo puede escribir cualquiera); y estados formales de
+   propuesta → aprobación → publicación → verificado en producción.
+
+## 🟡 PROVEEDORES — ver `pricing-system/HANDOFF-PROVEEDORES.md`
+
+**30 proveedores, 1,476 precios de 11 de ellos**, de 28 chats de WhatsApp.
+
+**Se repararon 502 precios mal leídos**: los 4 proveedores con lista en PDF tenían los
+precios colgados del producto EQUIVOCADO (en la lista de Lucy, el Semax de $41 y el PT-141
+de $44 estaban guardados como **Retatrutida**). Dos fallas de raíz, tapadas: el lector no
+guardaba el nombre cuando venía pegado al precio, y el importador **tiraba en silencio**
+los repetidos aunque trajeran otro precio.
+
+**Retatrutida 40 mg** (le compra a Lily a $230): **Lucy $139**, **Certiva $179**,
+Mia HK $212. Lucy sale más barata en todo y su lista se llama "Internal price" — o es la
+fuente real o es carnada; a ninguno se le ha comprado. ⚠️ **A ninguno se le sabe el envío.**
+
+**Quién es quién** (`huella_archivos.py`, compara adjuntos byte por byte):
+**Lucia = US Lab RT40-275 = +1 505 518-0805 = +86 185 0279 6387** (tres COAs idénticos),
+**Anna = RT40-186**, **Lee Factory = Lily**. Seis fotos que parecían probar que los tres
+"US Lab" son el mismo **las reenvió Christian**: no prueban nada, el script ya las separa.
+
+## Pendientes
+
+1. **Actualizar el Vigía** para que lea de la base (pedido de Christian).
+2. **Terminar de migrar el motor**: que `reprecio.py` escriba en la base y no en el Excel.
+   Ahí se apaga MAESTRA.xlsx del todo.
+3. **Cargar el CAC** del panel de Meta a `costo_adquisicion` (la tabla está vacía).
+4. **Traer descuentos y puntos por cliente** del backend a la base.
+5. **Costos de envío de los proveedores nuevos** — sin eso "el más barato" puede mentir.
+6. **Mover los costos al Panel Admin** (acordado, no empezado): hoy hace falta una terminal.
+7. **Preguntarle a los proveedores** lo de `datos/preguntar_al_proveedor.csv`: qué es
+   "TBFing", si el SLU-PP es 322 o 332, y cuál precio vale de los dos que da DT.
+8. IGF-1 LR3 1 mg queda en 4.87× y no tiene arreglo (Certified lo topa en $1,460).
+
+## Compuertas (todas en verde)
+
+`npm run verificar` → 80 + 21 + 15 · Backend: 232 pytest · **Precios: 69** ·
+Auditor de catálogo: 14/14 · `python3 certeza.py`: 204/204 · **Precios: 70** · `python3 db.py --revisar`.
+
+---
+
+## 📁 Lo de más temprano ese día (2026-07-28)
 
 ## Lo que se cerró hoy (todo en vivo y verificado)
 
