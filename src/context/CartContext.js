@@ -178,17 +178,21 @@ export const CartProvider = ({ children }) => {
     .filter((i) => i.applied < discountRate - 1e-9);
   const nextTier = discountableSubtotal < 35000 ? { min: 35000, rate: 0.15 } : null;
 
-  // ENVÍO: gratis a partir de cierto monto, cobrado abajo de eso. Los números los
-  // manda el servidor para que la pantalla enseñe lo mismo que se cobra.
-  const [envio, setEnvio] = useState({ shipping_flat: 250, free_shipping_from: 2500 });
+  // ENVÍO. Hoy el pedido NO lo cobra: se cotiza por separado (Christian, 2026-07-28).
+  // Quién manda es `shipping_charged` del servidor — nunca esta pantalla. Es la
+  // misma lección de siempre: cuando el sitio calcula el dinero por su cuenta,
+  // tarde o temprano enseña un total distinto del que se cobra. Por eso el default
+  // mientras carga la configuración es "no se cobra": es lo que hace el servidor.
+  const [envio, setEnvio] = useState({ shipping_charged: false, shipping_flat: 250, free_shipping_from: 2500 });
   useEffect(() => {
     api.get('/payments/config')
       .then((r) => { if (r.data?.free_shipping_from) setEnvio(r.data); })
       .catch(() => {});
   }, []);
   const pagaMercancia = subtotal - discount;
-  const shipping = items.length && pagaMercancia < envio.free_shipping_from ? envio.shipping_flat : 0;
-  const faltaParaEnvioGratis = shipping > 0 ? envio.free_shipping_from - pagaMercancia : 0;
+  const cobraEnvio = envio.shipping_charged === true;
+  const shipping = cobraEnvio && items.length && pagaMercancia < envio.free_shipping_from ? envio.shipping_flat : 0;
+  const faltaParaEnvioGratis = cobraEnvio && shipping > 0 ? envio.free_shipping_from - pagaMercancia : 0;
 
   return (
     <CartContext.Provider value={{ items, addItem, updateQty, removeItem, clearCart, subtotal, count, discount, discountRate, discountSource, cappedItems, nextTier, shipping, faltaParaEnvioGratis, envioGratisDesde: envio.free_shipping_from, distCode, distRate, codeMin, codeMinMet, applyDistCode, clearDistCode }}>

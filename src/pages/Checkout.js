@@ -12,7 +12,8 @@ import { toast } from 'sonner';
 import { track, attribution } from '@/lib/track';
 import api, { formatMXN, PAYMENT_METHODS } from '@/lib/api';
 import { phoneValid } from '@/lib/utils';
-import { CountrySelect, PhoneField, composePhone, parsePhone } from '@/components/CountryPhoneFields';
+import { PhoneField, StateField, composePhone, parsePhone } from '@/components/CountryPhoneFields';
+import { ruoAcceptedAt } from '@/components/RuoGate';
 import { useCart } from '@/context/CartContext';
 import { useAuth } from '@/context/AuthContext';
 import { useLanguage } from '@/context/LanguageContext';
@@ -29,17 +30,20 @@ const Checkout = () => {
   const navigate = useNavigate();
   const [payment, setPayment] = useState('spei');
   const [submitting, setSubmitting] = useState(false);
-  const [consent, setConsent] = useState(false);
   const [summaryOpen, setSummaryOpen] = useState(true);
   const savedPhone = parsePhone(user?.phone);
   const [phoneCountry, setPhoneCountry] = useState(savedPhone.country);
   const [form, setForm] = useState({
     full_name: user?.name || '', email: user?.email || '', phone: savedPhone.national,
-    address: user?.shipping_address?.address || '', city: user?.shipping_address?.city || '',
+    address: user?.shipping_address?.address || '', address_2: user?.shipping_address?.address_2 || '',
+    city: user?.shipping_address?.city || '',
     state: user?.shipping_address?.state || '', postal_code: user?.shipping_address?.postal_code || '',
-    country: user?.shipping_address?.country || 'MX',
+    country: 'MX',   // solo enviamos dentro de México
     notes: '',
   });
+  // Si el formulario llegó lleno con lo de su última compra, se le dice — con una
+  // línea, no con un diálogo que haya que cerrar para poder comprar.
+  const [prefilled, setPrefilled] = useState(false);
   const [loyalty, setLoyalty] = useState({ eligible: false, balance: 0 });
   const [usePoints, setUsePoints] = useState(false);
   const [cryptoOn, setCryptoOn] = useState(false);
@@ -54,6 +58,36 @@ const Checkout = () => {
       setOxxoOn(!!r.data?.oxxo_enabled);
     }).catch(() => {});
   }, []);
+  // Con sesión iniciada, el formulario llega LLENO con lo de su última compra: no
+  // le volvemos a pedir lo que ya nos dio (Christian, 2026-07-28). Los datos salen
+  // de una ruta que solo responde al dueño de la sesión. Todo sigue siendo editable
+  // — se prellena, no se congela — y por eso nunca se pisa lo que ya escribió: solo
+  // se rellenan los campos que están vacíos. Sin sesión, esto ni se pregunta y la
+  // compra como invitado queda igual que siempre.
+  useEffect(() => {
+    if (!user) return;
+    api.get('/me/checkout').then((r) => {
+      const d = r.data || {};
+      const dir = d.shipping_address || {};
+      const tel = parsePhone(d.phone);
+      setForm((f) => ({
+        ...f,
+        full_name: f.full_name || d.full_name || '',
+        email: f.email || d.email || '',
+        phone: f.phone || tel.national,
+        address_2: f.address_2 || dir.address_2 || '',
+        city: f.city || dir.city || '',
+        state: f.state || dir.state || '',
+        postal_code: f.postal_code || dir.postal_code || '',
+        // El país NO se prellena: el envío es solo a México y el pedido viaja
+        // siempre con 'MX', aunque el perfil traiga otro país de antes.
+        address: f.address || dir.address || '',
+      }));
+      if (!savedPhone.national && d.phone) setPhoneCountry(tel.country);
+      setPrefilled(!!d.prefilled);
+    }).catch(() => {});
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user]);
   // La TARJETA solo aparece si Mercado Pago esta configurado. Antes salia siempre
   // — y por defecto — con un formulario que pedia el numero, lo validaba y lo
   // TIRABA: nadie cobraba y el cliente se iba creyendo que habia pagado.
@@ -107,22 +141,44 @@ const Checkout = () => {
     return <div className="max-w-2xl mx-auto px-4 py-20 text-center"><p className="text-muted-foreground">{t('checkout.empty')}</p><Button className="mt-4" onClick={() => navigate('/catalogo')}>{t('home.viewCatalog')}</Button></div>;
   }
 
+  // Un aviso que se borra en 4 segundos, arriba de todo, no le sirve a quien está
+  // abajo tocando el botón: hay que LLEVARLO al campo que falta. Nunca al revés —
+  // mandar la pantalla al principio cuando el error está al final es exactamente
+  // lo que hacía parecer muerto el botón de pagar (Christian, 2026-07-28).
+  const llevarAlCampo = (testid) => {
+    const el = document.querySelector(`[data-testid="${testid}"]`);
+    if (!el) return;
+    el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    // El foco va después del desplazamiento y sin volver a mover la página: si se
+    // enfoca primero, el navegador da su propio salto y se pelea con el nuestro.
+    setTimeout(() => el.focus({ preventScroll: true }), 350);
+  };
+
   const submit = async (e) => {
     e.preventDefault();
-    if (!form.full_name || !form.email || !form.phone || !form.address) {
+    const faltante = [
+      ['full_name', 'checkout-name-input'], ['email', 'checkout-email-input'],
+      ['phone', 'checkout-phone-input'], ['address', 'checkout-address-input'],
+    ].find(([campo]) => !form[campo]);
+    if (faltante) {
       toast.error(t('checkout.toast.required'));
+      llevarAlCampo(faltante[1]);
       return;
     }
     if (!phoneValid(form.phone, phoneCountry)) {
       toast.error(t('checkout.toast.phone'));
+      llevarAlCampo('checkout-phone-input');
       return;
     }
-    if (!consent) { toast.error(t('checkout.toast.consent')); return; }
     setSubmitting(true);
     try {
       const payload = {
         items: items.map((i) => ({ product_id: i.sku || i.product_id, name: i.name, price: i.price, quantity: i.quantity, presentation: i.presentation, image_url: i.image_url })),
         customer: { ...form, phone: composePhone(phoneCountry, form.phone) },
+        // Constancia de la aceptación 18+/RUO que dio en la puerta del sitio. Es lo
+        // que antes se le volvía a pedir aquí con una casilla; el dato se conserva,
+        // el estorbo no.
+        terms_accepted_at: ruoAcceptedAt(),
         payment_method: payment,
         shipping,
         discount,
@@ -179,6 +235,11 @@ const Checkout = () => {
           {t('checkout.haveAccount')} <Link to="/login" className="text-[hsl(var(--primary))] font-medium hover:underline">{t('checkout.loginLink')}</Link> · {t('checkout.guestOk')}
         </p>
       )}
+      {prefilled && (
+        <p className="text-sm text-muted-foreground mb-4" data-testid="checkout-prefilled-hint">
+          {t('checkout.prefilled')}
+        </p>
+      )}
       <div className="flex items-center justify-center sm:justify-start gap-2 sm:gap-3 mb-6 text-xs sm:text-sm" data-testid="checkout-stepper">
         {steps.map((s, idx) => (
           <React.Fragment key={idx}>
@@ -205,10 +266,25 @@ const Checkout = () => {
             {sectionHeader(2, t('checkout.step2'), t('checkout.shippingHint'))}
             <div className="grid sm:grid-cols-2 gap-4">
               <div className="sm:col-span-2"><Label>{t('checkout.address')}</Label><Input className="mt-1.5" value={form.address} onChange={(e) => set('address', e.target.value)} data-testid="checkout-address-input" /></div>
+              {/* Interior / referencia. Metida en la primera línea, la paquetería la
+                  imprime pegada al número y el repartidor no la lee. */}
+              <div className="sm:col-span-2"><Label>{t('checkout.address2')}</Label><Input className="mt-1.5" value={form.address_2} onChange={(e) => set('address_2', e.target.value)} placeholder={t('checkout.address2Placeholder')} data-testid="checkout-address2-input" /></div>
               <div><Label>{t('checkout.city')}</Label><Input className="mt-1.5" value={form.city} onChange={(e) => set('city', e.target.value)} data-testid="checkout-city-input" /></div>
-              <div><Label>{t('checkout.state')}</Label><Input className="mt-1.5" value={form.state} onChange={(e) => set('state', e.target.value)} data-testid="checkout-state-input" /></div>
+              {/* Lista cerrada donde la hay (MX/EUA/CA/BR) y texto libre donde no:
+                  "CDMX", "Cd. de México" y "DF" son la misma entidad y así no se
+                  puede ni agrupar ni imprimir una guía. */}
+              <div><Label>{t('checkout.state')}</Label><StateField country={form.country} value={form.state} onChange={(v) => set('state', v)} testid="checkout-state-input" /></div>
               <div><Label>{t('checkout.postalCode')}</Label><Input className="mt-1.5" value={form.postal_code} onChange={(e) => set('postal_code', e.target.value)} data-testid="checkout-postal-code-input" /></div>
-              <div><Label>{t('checkout.country')}</Label><CountrySelect value={form.country} onChange={(v) => set('country', v)} testid="checkout-country-select" /></div>
+              {/* ⛔ SOLO SE ENVÍA A MÉXICO (Christian, 2026-07-28). Era un
+                  desplegable de ~200 países: invitaba a elegir un destino al que
+                  no llegamos, y el cliente solo se enteraba al final. Ahora es un
+                  dato fijo, y el aviso está ARRIBA de la sección — nadie llena
+                  seis campos para que luego le digan que no le llega. */}
+              <div><Label>{t('checkout.country')}</Label>
+                <div className="mt-1.5 flex h-10 items-center rounded-md border border-input bg-[hsl(var(--secondary))]/40 px-3 text-sm text-muted-foreground" data-testid="checkout-country-fixed">
+                  <span className="mr-2">🇲🇽</span>{t('checkout.countryMexico')}
+                </div>
+              </div>
               <div className="sm:col-span-2"><Label>{t('checkout.notes')}</Label><Textarea className="mt-1.5" value={form.notes} onChange={(e) => set('notes', e.target.value)} data-testid="checkout-notes-input" /></div>
             </div>
           </Card>
@@ -258,16 +334,25 @@ const Checkout = () => {
               </div>
             )}
 
-            <label className="mt-5 flex items-start gap-2.5 text-xs text-muted-foreground cursor-pointer" data-testid="checkout-consent">
-              <input type="checkbox" className="mt-0.5 h-4 w-4 accent-[hsl(var(--primary))]" checked={consent} onChange={(e) => setConsent(e.target.checked)} />
+            {/* ⛔ AQUÍ HABÍA UNA CASILLA Y SE QUITÓ (Christian, 2026-07-28).
+                Pedía otra vez lo MISMO que el visitante ya aceptó en la puerta de
+                entrada del sitio (RuoGate: 18+ y RUO, antes de ver nada). Sin
+                marcarla, "Realizar pedido" no hacía nada visible: solo un avisito
+                que se borraba en 4 segundos, y la pantalla se iba hasta arriba,
+                lejos de la casilla que faltaba. Tres veces seguidas se creyó que el
+                botón estaba roto — en el último metro antes del dinero.
+                Lo único que la casilla aportaba de verdad era la constancia, y esa
+                no se perdió: viaja en el pedido como `terms_accepted_at`, con la
+                fecha real en que aceptó la puerta. */}
+            <p className="mt-5 text-xs text-muted-foreground leading-relaxed" data-testid="checkout-legal-note">
               <span>
-                {t('checkout.consentText')}{' '}
+                {t('checkout.legalNote')}{' '}
                 <Link to="/info/privacidad" className="text-[hsl(var(--primary))] hover:underline">{t('auth.terms.privacy')}</Link> ·{' '}
                 <Link to="/info/terminos" className="text-[hsl(var(--primary))] hover:underline">{t('auth.terms.service')}</Link> ·{' '}
                 <Link to="/info/envios" className="text-[hsl(var(--primary))] hover:underline">{t('footer.shipping')}</Link> ·{' '}
                 <Link to="/info/devoluciones" className="text-[hsl(var(--primary))] hover:underline">{t('footer.returns')}</Link>
               </span>
-            </label>
+            </p>
           </Card>
         </div>
 
@@ -309,11 +394,15 @@ const Checkout = () => {
                 </div>
               )}
               {pointsApplied > 0 && <div className="flex justify-between text-[hsl(var(--success))]"><span>{t('loyalty.line')}</span><span>− {formatMXN(pointsApplied)}</span></div>}
+              {/* El pedido ya NO cobra envío: se cotiza aparte (Christian, 2026-07-28).
+                  El renglón se queda para que nadie crea que se le olvidó, pero sin
+                  cargo. Si algún día se vuelve a cobrar, el servidor prende su
+                  interruptor y este mismo renglón enseña el monto otra vez. */}
               <div className="flex justify-between">
                 <span className="text-muted-foreground">{t('common.shipping')}</span>
                 {shipping > 0
                   ? <span>{formatMXN(shipping)}</span>
-                  : <span className="text-[hsl(var(--success))]">{t('cart.shippingFree')}</span>}
+                  : <span className="text-muted-foreground text-xs text-right">{t('cart.shippingQuoted')}</span>}
               </div>
               {faltaParaEnvioGratis > 0 && (
                 <p className="text-xs text-[hsl(var(--primary))]">{t('cart.freeShippingAt', { amount: formatMXN(faltaParaEnvioGratis) })}</p>

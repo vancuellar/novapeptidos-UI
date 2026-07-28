@@ -49,7 +49,8 @@ const OrderConfirmation = () => {
               ))}
               <Separator className="my-2" />
               <div className="flex justify-between"><span className="text-muted-foreground">{t('common.subtotal')}</span><span>{formatMXN(order.subtotal)}</span></div>
-              <div className="flex justify-between"><span className="text-muted-foreground">{t('common.shipping')}</span><span>{order.shipping === 0 ? t('common.free') : formatMXN(order.shipping)}</span></div>
+              {/* Ya no se cobra envio en el pedido: se cotiza aparte. Los pedidos viejos que si lo pagaron siguen enseñando su monto. */}
+              <div className="flex justify-between"><span className="text-muted-foreground">{t('common.shipping')}</span><span>{order.shipping === 0 ? t('cart.shippingQuoted') : formatMXN(order.shipping)}</span></div>
               <div className="flex justify-between font-bold"><span>{t('common.total')}</span><span>{formatMXN(order.total)}</span></div>
               <Separator className="my-2" />
               <div className="flex justify-between"><span className="text-muted-foreground">{t('order.paymentMethod')}</span><span>{t(`payment.${order.payment_method}.label`) || order.payment_method}</span></div>

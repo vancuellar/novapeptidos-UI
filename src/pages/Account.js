@@ -20,7 +20,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Separator } from '@/components/ui/separator';
 import { toast } from 'sonner';
 import api, { formatMXN, PAYMENT_METHODS } from '@/lib/api';
-import { CountrySelect, PhoneField, composePhone, parsePhone } from '@/components/CountryPhoneFields';
+import { CountrySelect, PhoneField, StateField, composePhone, parsePhone } from '@/components/CountryPhoneFields';
 import { useAuth } from '@/context/AuthContext';
 import { useLanguage } from '@/context/LanguageContext';
 
@@ -32,15 +32,19 @@ const STATUS_COLORS = {
   cancelado: 'bg-[hsl(var(--muted))] text-[hsl(var(--muted-foreground))] border border-border',
 };
 
-const EMPTY_ADDR = { address: '', city: '', state: '', postal_code: '', country: 'MX' };
+const EMPTY_ADDR = { address: '', address_2: '', city: '', state: '', postal_code: '', country: 'MX' };
 
+// Los mismos campos que el checkout, a propósito: si aquí faltara la segunda línea,
+// editar el perfil BORRARÍA el interior que el cliente escribió al comprar.
 const AddressFields = ({ value, onChange, t, testid }) => (
   <div className="grid sm:grid-cols-2 gap-3">
     <div className="sm:col-span-2"><Label>{t('profile.addr.street')}</Label><Input className="mt-1.5" value={value.address} onChange={(e) => onChange({ ...value, address: e.target.value })} data-testid={`${testid}-street`} /></div>
+    <div className="sm:col-span-2"><Label>{t('checkout.address2')}</Label><Input className="mt-1.5" value={value.address_2 || ''} onChange={(e) => onChange({ ...value, address_2: e.target.value })} placeholder={t('checkout.address2Placeholder')} data-testid={`${testid}-street2`} /></div>
     <div><Label>{t('profile.addr.city')}</Label><Input className="mt-1.5" value={value.city} onChange={(e) => onChange({ ...value, city: e.target.value })} /></div>
-    <div><Label>{t('profile.addr.state')}</Label><Input className="mt-1.5" value={value.state} onChange={(e) => onChange({ ...value, state: e.target.value })} /></div>
+    <div><Label>{t('profile.addr.state')}</Label><StateField country={value.country} value={value.state} onChange={(v) => onChange({ ...value, state: v })} testid={`${testid}-state`} /></div>
     <div><Label>{t('profile.addr.zip')}</Label><Input className="mt-1.5" value={value.postal_code} onChange={(e) => onChange({ ...value, postal_code: e.target.value })} /></div>
-    <div><Label>{t('profile.addr.country')}</Label><CountrySelect value={value.country} onChange={(v) => onChange({ ...value, country: v })} testid={`${testid}-country`} /></div>
+    {/* Cambiar de país limpia el estado: "Yucatán" no existe en Canadá. */}
+    <div><Label>{t('profile.addr.country')}</Label><CountrySelect value={value.country} onChange={(v) => onChange({ ...value, country: v, state: '' })} testid={`${testid}-country`} /></div>
   </div>
 );
 
@@ -363,7 +367,7 @@ const Account = () => {
                                 <span>−{formatMXN(o.points_used)}</span>
                               </div>
                             )}
-                            <div className="flex justify-between"><span className="text-muted-foreground">{t('common.shipping')}</span><span>{o.shipping === 0 ? t('common.free') : formatMXN(o.shipping)}</span></div>
+                            <div className="flex justify-between"><span className="text-muted-foreground">{t('common.shipping')}</span><span>{o.shipping === 0 ? t('cart.shippingQuoted') : formatMXN(o.shipping)}</span></div>
                             <Separator className="my-2" />
                             <div className="flex justify-between font-bold text-base"><span>{t('common.total')}</span><span>{formatMXN(o.total)}</span></div>
                             <div className="flex justify-between"><span className="text-muted-foreground">{t('common.payment')}</span><span>{t(`payment.${o.payment_method}.label`)}</span></div>

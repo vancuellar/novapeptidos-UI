@@ -155,11 +155,13 @@ const Cart = () => {
                   </ul>
                 </div>
               )}
+              {/* Ya no se cobra envío en el pedido: se cotiza aparte (Christian,
+                  2026-07-28). El renglón sigue ahí para que no parezca un olvido. */}
               <div className="flex justify-between">
                 <span className="text-muted-foreground">{t('common.shipping')}</span>
                 {shipping > 0
                   ? <span data-testid="cart-shipping">{formatMXN(shipping)}</span>
-                  : <span className="text-[hsl(var(--success))]" data-testid="cart-shipping">{t('cart.shippingFree')}</span>}
+                  : <span className="text-muted-foreground text-xs text-right" data-testid="cart-shipping">{t('cart.shippingQuoted')}</span>}
               </div>
               {faltaParaEnvioGratis > 0 && (
                 <p className="text-xs text-[hsl(var(--primary))]" data-testid="cart-free-shipping-hint">

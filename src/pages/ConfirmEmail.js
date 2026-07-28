@@ -31,6 +31,12 @@ const ConfirmEmail = () => {
       .then((r) => {
         adoptSession(r.data.token, r.data.user);
         setState('ok');
+        // Si compró antes SIN cuenta, esos pedidos acaban de pasar a ser suyos: hay
+        // que decírselo, porque si no aparecen compras en su historial de la nada.
+        const cuantas = r.data.adopted_orders || 0;
+        if (cuantas > 0) {
+          toast.success(cuantas === 1 ? t('verify.adoptedOne') : t('verify.adopted', { count: cuantas }));
+        }
         setTimeout(() => navigate(r.data.user.role === 'admin' ? '/admin' : '/cuenta'), 1600);
       })
       .catch((err) => {

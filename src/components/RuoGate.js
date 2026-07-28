@@ -10,6 +10,22 @@ import { useLanguage } from '@/context/LanguageContext';
 // solo aparece una vez por dispositivo.
 const STORAGE_KEY = 'exygen_ruo_ack';
 
+/**
+ * Cuándo aceptó esta persona la puerta (ISO), o '' si no hay rastro.
+ *
+ * Lo usa el checkout: el pedido guarda esa constancia. Antes el checkout volvía a
+ * pedir la MISMA aceptación con una casilla en letra chica —y sin marcarla el botón
+ * de pagar parecía muerto—, así que la casilla se quitó y quedó esto, que es lo
+ * único que de verdad aportaba: la prueba de que aceptó y cuándo.
+ */
+export const ruoAcceptedAt = () => {
+  try {
+    return localStorage.getItem(STORAGE_KEY) || sessionStorage.getItem(STORAGE_KEY) || '';
+  } catch {
+    return '';
+  }
+};
+
 // No se puede exigir aceptar algo que no se deja leer: en estas rutas el aviso
 // NO se muestra, para que Terminos y Privacidad sean legibles aunque nadie haya
 // aceptado todavia. Dentro del aviso se enlazan en pestana nueva.
@@ -42,7 +58,15 @@ const RuoGate = () => {
   }, [open]);
 
   const accept = () => {
-    try { localStorage.setItem(STORAGE_KEY, new Date().toISOString()); } catch { /* sin almacenamiento */ }
+    // Se guarda la FECHA, no un "sí": es la constancia que después viaja en el
+    // pedido. Si el navegador no deja escribir en localStorage se intenta en la
+    // sesión, para no perder el rastro de quien navega en modo privado.
+    const cuando = new Date().toISOString();
+    try {
+      localStorage.setItem(STORAGE_KEY, cuando);
+    } catch {
+      try { sessionStorage.setItem(STORAGE_KEY, cuando); } catch { /* sin almacenamiento */ }
+    }
     setAccepted(true);
   };
 
