@@ -7,7 +7,6 @@ import { Card } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Skeleton } from '@/components/ui/skeleton';
-import { monographFor } from '@/data/productMonographs';
 import { track } from '@/lib/track';
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from '@/components/ui/breadcrumb';
 import ProductCard from '@/components/ProductCard';
@@ -29,6 +28,11 @@ const ProductDetail = () => {
   const [variantIdx, setVariantIdx] = useState(0);
   const [loading, setLoading] = useState(true);
   const [stockMap, setStockMap] = useState(null);
+  // La monografía larga son 212 kB de texto para los ~75 productos que la tienen
+  // escrita, y vive MUY abajo en la ficha (dentro de la pestaña "Descripción").
+  // Si viaja con la página, el precio y el botón de comprar esperan por ella. Se
+  // pide aparte: la ficha pinta de inmediato y el texto entra en cuanto llega.
+  const [monograph, setMonograph] = useState(null);
 
   useEffect(() => {
     setLoading(true);
@@ -80,12 +84,23 @@ const ProductDetail = () => {
   // si se pone después de un return condicional, React truena.
   useEffect(() => { if (product?.slug) track('product_view', { product: product.slug }); }, [product?.slug]);
 
+  // Monografía a parte (ver el useState de arriba). `vigente` evita que una
+  // respuesta vieja pise la ficha nueva si cambias de producto rápido.
+  useEffect(() => {
+    let vigente = true;
+    setMonograph(null);
+    if (!product?.slug) return undefined;
+    import(/* webpackChunkName: "monografias" */ '@/data/productMonographs')
+      .then(({ monographFor }) => { if (vigente) setMonograph(monographFor(product.slug)); })
+      .catch(() => {});
+    return () => { vigente = false; };
+  }, [product?.slug]);
+
   if (loading) return <div className="max-w-[1280px] mx-auto px-4 py-10"><Skeleton className="h-96 rounded-xl" /></div>;
   if (!product) return <div className="max-w-[1280px] mx-auto px-4 py-20 text-center">{t('product.notFound')} <Link to="/catalogo" className="text-[hsl(var(--primary))]">{t('product.backToCatalog')}</Link></div>;
 
   const localizedProduct = localizeProduct(product, language);
   const localizedRelated = localizeProducts(related, language);
-  const monograph = monographFor(product.slug);
   const variants = product.variants || [];
   const active = variants[variantIdx] || { price: localizedProduct.price, presentation: localizedProduct.presentation, stock: localizedProduct.stock, batch_number: localizedProduct.batch_number };
   // Los insumos y la calculadora solo tienen sentido en lo que llega en polvo y se

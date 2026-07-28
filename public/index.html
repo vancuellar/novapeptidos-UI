@@ -68,11 +68,93 @@
         </script>
         <noscript><img height="1" width="1" style="display:none"
           src="https://www.facebook.com/tr?id=2487053198462294&ev=PageView&noscript=1" alt="" /></noscript>
+        <!--
+        TEMA ANTES DE PINTAR. Va DESPUÉS del píxel a propósito: el píxel sigue
+        siendo lo primero que se ejecuta.
+
+        El sitio abre en oscuro (ThemeContext), pero la clase `dark` se la ponía
+        React al montar — o sea después de descargar el JavaScript. Hasta ese
+        momento el navegador pintaba el tema claro (marfil) y luego saltaba a
+        negro: un fogonazo blanco de varios segundos en móvil.
+
+        Estas cuatro líneas leen exactamente lo mismo que ThemeContext
+        (localStorage 'nova-theme', por omisión 'dark') y ponen la clase antes
+        del primer pintado. Si cambias el valor por omisión allá, cámbialo aquí.
+        -->
+        <script>
+          (function () {
+            try {
+              var t = localStorage.getItem('nova-theme');
+              if (t !== 'light' && t !== 'dark' && t !== 'system') t = 'dark';
+              var oscuro = t === 'dark' || (t === 'system'
+                && window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches);
+              if (oscuro) document.documentElement.classList.add('dark');
+            } catch (e) { document.documentElement.classList.add('dark'); }
+          })();
+        </script>
+        <!--
+        PINTADO PREVIO (2026-07-28). El estilo del armazón que se ve mientras
+        llega el JavaScript. Va aquí, en el HTML, porque tiene que estar listo
+        antes de que se descargue nada más.
+
+        Se apaga solo: en cuanto React pinta algo dentro de #root, la regla
+        `#root:not(:empty) ~ #pintado-previo` lo esconde. Sin JavaScript de por
+        medio, así que no puede quedarse encima del sitio real.
+        Los colores salen de las mismas variables del tema, así que respeta
+        claro/oscuro sin duplicar nada.
+        -->
+        <style>
+          #root:not(:empty) ~ #pintado-previo { display: none; }
+          #pintado-previo { font-family: 'Manrope', 'Helvetica Neue', Arial, sans-serif; }
+          #pintado-previo .pp-barra { max-width: 1280px; margin: 0 auto; padding: 0 16px; height: 60px; display: flex; align-items: center; }
+          #pintado-previo .pp-barra img { height: 12px; width: auto; }
+          html.dark #pintado-previo .pp-barra img { filter: brightness(0) invert(1); }
+          #pintado-previo .pp-cuerpo { max-width: 1280px; margin: 0 auto; padding: 32px 16px 0; }
+          #pintado-previo .pp-titulo { font-size: 28px; line-height: 1.2; font-weight: 700; margin: 0; letter-spacing: -0.01em; }
+          #pintado-previo .pp-precio { font-size: 20px; font-weight: 700; margin: 12px 0 0; }
+          #pintado-previo .pp-desc { font-size: 15px; line-height: 1.6; margin: 12px 0 0; max-width: 62ch; opacity: 0.72; }
+          #pintado-previo .pp-tam { font-size: 13px; margin: 4px 0 0; opacity: 0.6; }
+          #pintado-previo .pp-lista { list-style: none; margin: 24px 0 0; padding: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+          #pintado-previo .pp-item { border: 1px solid hsl(var(--border)); border-radius: 12px; padding: 14px; display: flex; flex-direction: column; gap: 4px; min-height: 96px; }
+          #pintado-previo .pp-nombre { font-size: 14px; font-weight: 600; line-height: 1.3; }
+          #pintado-previo .pp-item .pp-tam { font-size: 12px; margin: 0; }
+          #pintado-previo .pp-mini-precio { font-size: 16px; font-weight: 700; margin-top: auto; }
+          @media (min-width: 640px) {
+            #pintado-previo .pp-lista { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+          }
+          @media (min-width: 1024px) {
+            #pintado-previo .pp-lista { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+          }
+          @media (min-width: 640px) {
+            #pintado-previo .pp-barra { padding: 0 24px; }
+            #pintado-previo .pp-barra img { height: 16px; }
+            #pintado-previo .pp-cuerpo { padding: 40px 24px 0; }
+            #pintado-previo .pp-titulo { font-size: 40px; }
+          }
+        </style>
         <script>window.addEventListener("error",function(e){if(e.error instanceof DOMException&&e.error.name==="DataCloneError"&&e.message&&e.message.includes("PerformanceServerTiming")){e.stopImmediatePropagation();e.preventDefault()}},true);</script>
     </head>
     <body>
         <noscript>You need to enable JavaScript to run this app.</noscript>
         <div id="root"></div>
+        <!--
+        Lo que se ve mientras llega el JavaScript. Va DESPUÉS de #root (no
+        dentro) para que React nunca tenga que borrarlo: se esconde solo con la
+        regla CSS de arriba en cuanto #root deja de estar vacío.
+
+        `scripts/prerender-routes.js` reemplaza el bloque `pp-cuerpo` con el
+        título, el precio y el texto REALES de cada una de las 135 rutas. Este
+        de aquí es el de la portada.
+        -->
+        <div id="pintado-previo" aria-hidden="true">
+            <div class="pp-barra">
+                <img src="%PUBLIC_URL%/images/exygen-logo-wordmark.png" alt="Exygen Labs" width="1766" height="187" />
+            </div>
+            <div class="pp-cuerpo">
+                <h1 class="pp-titulo">Exygen Labs</h1>
+                <p class="pp-desc">Péptidos de investigación (RUO) con pureza HPLC y certificado de análisis por lote. Envíos a todo México.</p>
+            </div>
+        </div>
         <!--
       This HTML file is a template.
       If you open it directly in the browser, you will see an empty page.
