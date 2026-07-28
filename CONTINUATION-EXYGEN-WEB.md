@@ -166,6 +166,93 @@ pedido en el Panel — no que un script le escriba solo a un proveedor en China.
 ⚠️ Ojo: en mano aparece **5-Amino-1MQ 5 mg**, pero la compra real fue **10 mg** (a Lisa,
 $45). Uno de los dos está mal y hay que confirmarlo.
 
+### 3ª y 4ª pasada de Codex (rompedor + auditoría) — lo que salió
+
+**Los prompts quedaron guardados** para volver a correrlos sin pegar texto:
+`PROMPT-ROMPEDOR.md` (adversarial), `PROMPT-AUDITORIA.md` (auditor completo) y
+`PROMPT-DISENO.md` (segunda opinión de diseño). Se corren así, y **se pueden correr en
+simultáneo** porque los tres son de sólo lectura:
+
+```
+codex exec --skip-git-repo-check --sandbox read-only "$(cat PROMPT-ROMPEDOR.md)"
+```
+
+⚠️ Si Codex se niega por "cybersecurity", es el lenguaje del prompt ("romper", "corromper").
+Cambiar el encabezado a *"Eres un ingeniero de calidad, encuentra casos de prueba que violen
+estas reglas"* lo resuelve: es el mismo ejercicio dicho de otro modo.
+
+**ARREGLADO — el motor cambiaba de opinión según hubiera internet.** Lo destapó la corrida
+del auditor sin querer: con red propone **0 cambios**; sin red propone subir el
+CJC-1295 + Ipamorelina de **$1,699 a $1,879**. Sin conexión no puede leer a Certified y le
+falta el **techo cruzado**, que es un TOPE. El motor imprimía el aviso y **seguía calculando
+igual**: correr `--aplicar` sin internet subía un precio $180 por vial con datos
+incompletos. Ahora `techos_cruzados()` devuelve si lo logró; en simulacro avisa que esos
+precios no son los definitivos y **con `--aplicar` se detiene en seco**.
+
+**ARREGLADO — la excepción de ROI no tenía piso.** Con cualquier texto en `excepcion_roi`
+se aceptaba una caja de $10,000 vendida en $100 (ROI 0.01×): vender **abajo del costo**
+pasaba el candado. Ahora hay un segundo CHECK.
+
+**ARREGLADO — un producto podía quedarse SIN precio vigente.** El índice único garantiza
+MÁXIMO uno, no EXACTAMENTE uno: un `UPDATE` que cierre el vigente sin abrir otro deja cero
+y nada protesta. Ahora lo revisa `certeza.py`, que es la compuerta antes de publicar.
+
+**ARREGLADO — el redondeo rompía el techo en silencio.** `bajar_a_9` devolvía `max(9, ...)`
+—un número MAYOR que el pedido— así que con techo de $8 producía $9 sin reportar conflicto.
+La prueba vieja decía que eso era "a propósito": no lo era, estaba codificando el bug.
+
+**ARREGLADO — cajas que no son de 10.** El motor multiplicaba por 10 a mano; una caja de 2
+viales pasaba el candado con un rendimiento real de 1.998×. Ahora cada renglón carga los
+suyos.
+
+**ARREGLADO — el comparador de proveedores comparaba cajas de distinto tamaño.** La caja de
+Cerebrolysin de Lucy a **$32 parecía la más barata**, pero es de 6 viales: $5.33/vial contra
+$4.00 de Lily. Ahora `reabastecer.py` compara **por vial**, con el envío repartido.
+
+**ARREGLADO — la escalera no revisaba los combos**, y `auditar_escalera.py` tenía su PROPIA
+definición de "familia" que metía el combo BPC+TB en la familia del BPC-157 simple y
+reportaba una escalera rota que no existía. De 1 rojo + 4 amarillos a **2 amarillos reales**
+(Glutatión 600→1500 mg y MOTS-c 20→40 mg salen más caros por miligramo).
+
+## 🔴 DECISIÓN PENDIENTE DE CHRISTIAN — tres productos marcados "no vender" SE ESTÁN COBRANDO
+
+Verificado contra el backend EN VIVO el 28-jul:
+
+| Producto | Se cobra | ROI |
+|---|---:|---:|
+| HGH Fragment 176-191 12 mg | **$2,709** | 9.99× |
+| HGH 36 IU | **$1,548** | 5.53× |
+| HCG 1,000 IU | **$629** | 9.98× |
+
+Ninguna compuerta los veía: todas partían de los 190 que SÍ se venden y nunca preguntaban
+qué sobra del otro lado. `certeza.py` ya los caza (y si no hay red, lo dice en vez de
+callarse).
+
+**El matiz que importa: los tres tienen ROI sano.** No están marcados por perder dinero. El
+campo `vender` se está usando para CUATRO cosas distintas —retirados por seguridad
+(Adipotide, ACE-031), ocultos por regulación (Dysport, HUMSC), dominados por competencia, y
+**"solo venta directa"**, que es el caso del HGH 36 IU. Ese último NO significa "no vender":
+significa "véndelo sin comisión de distribuidor", y eso ya lo controla `elegible_distribuidor`.
+
+**La pregunta para Christian es una sola: ¿esos tres se venden o no?** Si sí, hay que
+quitarles la marca en la maestra. Si no, bajarlos del sitio. No se tocó: es decisión de
+ingresos, no un bug.
+
+### Hallazgos anotados y NO arreglados
+
+1. **Vigencias traslapadas.** La base acepta dos periodos históricos que se encimen; el
+   índice sólo impide dos precios ABIERTOS. Hoy no está pasando.
+2. **Comisiones absurdas.** La columna `comision` acepta −50% y 150%: no tiene límites.
+3. **`certeza.py` compara poco.** No mira SKU, ni presentación, ni vigencia, ni el motivo.
+4. **Una prueba sale a internet** y si no hay red esa comprobación no se hace — y no queda
+   claro que no se hizo.
+5. **HCG contradice la fuente de verdad**: el documento lista HCG 2,000 y 10,000 IU entre los
+   11 de "solo venta directa", pero en la maestra salen elegibles con 30% y 35%. Según la
+   fórmula ambos aguantan la comisión. Christian decide cuál manda.
+6. **`v_roi_real` resta el envío**, pero `FUENTE-DE-VERDAD.md` dice expresamente que **el
+   envío NO cuenta contra el ROI** (nunca pasa del 10%, y ese 10% ya está aceptado).
+   Contradicción a resolver.
+
 ## 🟡 PROVEEDORES — ver `pricing-system/HANDOFF-PROVEEDORES.md`
 
 **30 proveedores, 1,476 precios de 11 de ellos**, de 28 chats de WhatsApp.
@@ -212,7 +299,7 @@ fuente real o es carnada; a ninguno se le ha comprado. ⚠️ **A ninguno se le 
 ## Compuertas (todas en verde)
 
 `npm run verificar` → 80 + 21 + 15 · Backend: 232 pytest · **Precios: 69** ·
-Auditor de catálogo: 14/14 · `python3 certeza.py`: 204/204 · **Precios: 92** · `python3 db.py --revisar`.
+Auditor de catálogo: 14/14 · `python3 certeza.py`: 204/204 · **Precios: 106** · `python3 db.py --revisar`.
 
 ---
 
