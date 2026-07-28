@@ -1,0 +1,14 @@
+# Los dominios viejos mandan a exygenlabs.com, CONSERVANDO la ruta: un enlace a
+# /producto/bpc-157 no debe acabar en la portada. 301 = permanente, para que Google
+# traslade el peso del dominio viejo al bueno en vez de tratarlos como dos sitios
+# distintos con el mismo contenido (eso es lo que castiga el buscador).
+#
+# Va aquí y no en una regla del panel de Cloudflare porque el token de Christian tiene
+# permiso de Pages y DNS, pero no de reglas de redirección. El efecto es el mismo.
+https://exygenpeptides.com/*      https://exygenlabs.com/:splat  301
+https://www.exygenpeptides.com/*  https://exygenlabs.com/:splat  301
+https://exygenpeptides.mx/*       https://exygenlabs.com/:splat  301
+https://www.exygenpeptides.mx/*   https://exygenlabs.com/:splat  301
+https://exygenlabs.mx/*           https://exygenlabs.com/:splat  301
+https://www.exygenlabs.mx/*       https://exygenlabs.com/:splat  301
+https://www.exygenlabs.com/*      https://exygenlabs.com/:splat  301

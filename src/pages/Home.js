@@ -321,7 +321,13 @@ const Home = () => {
           </div>
         </div>
         <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 pb-24 relative">
-          <div className="mt-4 grid grid-cols-2 gap-x-6 gap-y-6 pt-4 sm:flex sm:flex-wrap sm:gap-x-12">
+          {/* Centrado bajo el carrusel de compuestos (Christian, 2026-07-28). Antes
+              colgaba a la izquierda y quedaba desalineado con la cinta que corre
+              arriba, que sí ocupa todo el ancho. En pantalla chica siguen siendo dos
+              columnas —a un ancho de teléfono, cuatro cifras en fila no se leen— pero
+              el bloque entero va centrado. `justify-center` en la fila y `text-center`
+              en cada dato, para que el número y su etiqueta compartan eje. */}
+          <div className="mt-4 grid grid-cols-2 gap-x-6 gap-y-6 pt-4 text-center sm:flex sm:flex-wrap sm:justify-center sm:gap-x-12">
             <div>
               <div className="font-heading text-3xl font-bold">≥99%</div>
               <div className="font-mono-tech text-[10.5px] uppercase tracking-[0.16em] text-muted-foreground mt-1.5">{t('home.typicalPurity')} · HPLC</div>
@@ -330,15 +336,15 @@ const Home = () => {
                 mayor, es la que de verdad mide la variedad (un mismo compuesto en
                 tres tamaños son tres cosas distintas para quien compra) y es la que
                 usa el sello de arriba, así que las dos cifras concuerdan. */}
-            <div className="sm:border-l border-border sm:pl-12">
+            <div>
               <div className="font-heading text-3xl font-bold">{PRESENTACIONES}</div>
               <div className="font-mono-tech text-[10.5px] uppercase tracking-[0.16em] text-muted-foreground mt-1.5">{t('home.presentations')}</div>
             </div>
-            <div className="sm:border-l border-border sm:pl-12">
+            <div>
               <div className="font-heading text-3xl font-bold">{t('home.shippingValue')}</div>
               <div className="font-mono-tech text-[10.5px] uppercase tracking-[0.16em] text-muted-foreground mt-1.5">{t('home.nationalShipping')}</div>
             </div>
-            <div className="sm:border-l border-border sm:pl-12">
+            <div>
               <div className="font-heading text-3xl font-bold text-[hsl(var(--primary))]">COA</div>
               <div className="font-mono-tech text-[10.5px] uppercase tracking-[0.16em] text-muted-foreground mt-1.5">{t('home.coa.batch')} NP-BPC5-2401 · 99.4%</div>
             </div>
