@@ -352,69 +352,10 @@ const Home = () => {
         </div>
       </section>
 
-      {/* ===== Trust strip ===== */}
-      {/* Son CINCO sellos desde el 2026-07-28: entró el del origen en Estados Unidos.
-          La rejilla pasa de 4 a 5 columnas en pantalla grande y se queda en 2 y 3 en
-          las chicas — con cinco, el último renglón deja un hueco, que es preferible a
-          apretar cinco tarjetas en una fila de teléfono. */}
-      <section className="border-b border-border bg-card">
-        <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 py-6 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
-          {[{ i: ShieldCheck, t: t('home.trust.coa.title'), d: t('home.trust.coa.desc') }, { i: BadgeCheck, t: t('home.trust.purity.title'), d: t('home.trust.purity.desc') }, { i: Globe, t: t('home.trust.origin.title'), d: t('home.trust.origin.desc') }, { i: Truck, t: t('home.trust.shipping.title'), d: t('home.trust.shipping.desc') }, { i: FlaskConical, t: t('home.trust.support.title'), d: t('home.trust.support.desc') }].map((b, idx) => (
-            <div key={idx} className="flex items-center gap-3">
-              <div className="h-10 w-10 rounded-lg bg-[hsl(var(--accent))] flex items-center justify-center shrink-0"><b.i className="h-5 w-5 text-[hsl(var(--primary))]" /></div>
-              <div><div className="font-semibold text-sm">{b.t}</div><div className="text-xs text-muted-foreground">{b.d}</div></div>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* ===== El catálogo más grande de México ===== */}
-      {/* Va INMEDIATAMENTE después de la barra de confianza, antes de los destacados:
-          el visitante acaba de leer las garantías y lo siguiente que tiene que saber
-          es por qué comprar aquí y no en la otra tienda. La respuesta es la variedad,
-          y la variedad se demuestra con las tres cuentas de la derecha, no con
-          adjetivos. La tarjeta de abajo es el origen: laboratorios de Estados Unidos.
-          ⛔ NUNCA se menciona Asia, en ningún idioma — orden expresa de Christian
-          (2026-07-28). Y tampoco se inventa una fábrica propia que no tenemos. */}
-      <section className="border-b border-border" data-testid="home-liderazgo">
-        <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 py-16 lg:py-20 grid lg:grid-cols-[1fr_1fr] gap-10 lg:gap-16 items-center">
-          <div>
-            <div className="kicker">{t('home.leadKicker')}</div>
-            <h2 className="font-heading text-2xl sm:text-3xl lg:text-[2.4rem] font-bold tracking-tight leading-[1.12] mt-2">
-              {t('home.leadTitle')}
-            </h2>
-            <p className="mt-4 text-muted-foreground leading-relaxed max-w-xl">
-              {t('home.leadBody', { presentaciones: PRESENTACIONES, categorias: CATEGORIAS })}
-            </p>
-            <Link to="/catalogo" className="btn-resend mt-7" data-testid="lead-catalog-button">
-              {t('home.leadCta', { presentaciones: PRESENTACIONES })} <ArrowRight className="h-4 w-4" />
-            </Link>
-          </div>
-          <div>
-            <div className="grid grid-cols-3 gap-3 sm:gap-4">
-              {[
-                { n: PRESENTACIONES, l: t('home.leadStat1') },
-                { n: COMPUESTOS, l: t('home.leadStat2') },
-                { n: CATEGORIAS, l: t('home.leadStat3') },
-              ].map((s, i) => (
-                <div key={i} className="rounded-xl border border-border bg-card px-4 py-5 text-center">
-                  <div className="font-heading text-3xl sm:text-4xl font-bold text-[hsl(var(--primary))] leading-none">{s.n}</div>
-                  <div className="font-mono-tech text-[10px] uppercase tracking-[0.14em] text-muted-foreground mt-2.5 leading-snug">{s.l}</div>
-                </div>
-              ))}
-            </div>
-            <div className="mt-4 rounded-xl border border-border bg-[hsl(var(--secondary))] p-5" data-testid="home-origen-eua">
-              <div className="flex items-center gap-2.5">
-                <Globe className="h-4 w-4 text-[hsl(var(--primary))] shrink-0" />
-                <h3 className="font-heading font-semibold text-sm">{t('home.leadUsa.title')}</h3>
-              </div>
-              <p className="mt-2.5 text-sm leading-relaxed text-muted-foreground">{t('home.leadUsa.body')}</p>
-            </div>
-          </div>
-        </div>
-      </section>
-
       {/* ===== Featured products ===== */}
+      {/* Subieron aquí, JUSTO debajo de la cinta de compuestos y los cuatro datos
+          del hero (Christian, 2026-07-28): los péptidos son el único producto y el
+          enfoque de la marca, así que el producto se enseña antes que los sellos. */}
       <section className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 py-24">
         <div className="flex items-end justify-between mb-6">
           <div>
@@ -462,6 +403,69 @@ const Home = () => {
               <ProductCard product={p} />
             </div>
           ))}
+        </div>
+      </section>
+
+      {/* ===== Trust strip ===== */}
+      {/* Son CINCO sellos desde el 2026-07-28: entró el del origen en Estados Unidos.
+          La rejilla pasa de 4 a 5 columnas en pantalla grande y se queda en 2 y 3 en
+          las chicas — con cinco, el último renglón deja un hueco, que es preferible a
+          apretar cinco tarjetas en una fila de teléfono. */}
+      <section className="border-b border-border bg-card">
+        <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 py-6 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
+          {[{ i: ShieldCheck, t: t('home.trust.coa.title'), d: t('home.trust.coa.desc') }, { i: BadgeCheck, t: t('home.trust.purity.title'), d: t('home.trust.purity.desc') }, { i: Globe, t: t('home.trust.origin.title'), d: t('home.trust.origin.desc') }, { i: Truck, t: t('home.trust.shipping.title'), d: t('home.trust.shipping.desc') }, { i: FlaskConical, t: t('home.trust.support.title'), d: t('home.trust.support.desc') }].map((b, idx) => (
+            <div key={idx} className="flex items-center gap-3">
+              <div className="h-10 w-10 rounded-lg bg-[hsl(var(--accent))] flex items-center justify-center shrink-0"><b.i className="h-5 w-5 text-[hsl(var(--primary))]" /></div>
+              <div><div className="font-semibold text-sm">{b.t}</div><div className="text-xs text-muted-foreground">{b.d}</div></div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* ===== El catálogo más grande de México ===== */}
+      {/* Va INMEDIATAMENTE después de la barra de confianza (los destacados quedan
+          arriba, pegados al hero, desde el 2026-07-28):
+          el visitante acaba de leer las garantías y lo siguiente que tiene que saber
+          es por qué comprar aquí y no en la otra tienda. La respuesta es la variedad,
+          y la variedad se demuestra con las tres cuentas de la derecha, no con
+          adjetivos. La tarjeta de abajo es el origen: laboratorios de Estados Unidos.
+          ⛔ NUNCA se menciona Asia, en ningún idioma — orden expresa de Christian
+          (2026-07-28). Y tampoco se inventa una fábrica propia que no tenemos. */}
+      <section className="border-b border-border" data-testid="home-liderazgo">
+        <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 py-16 lg:py-20 grid lg:grid-cols-[1fr_1fr] gap-10 lg:gap-16 items-center">
+          <div>
+            <div className="kicker">{t('home.leadKicker')}</div>
+            <h2 className="font-heading text-2xl sm:text-3xl lg:text-[2.4rem] font-bold tracking-tight leading-[1.12] mt-2">
+              {t('home.leadTitle')}
+            </h2>
+            <p className="mt-4 text-muted-foreground leading-relaxed max-w-xl">
+              {t('home.leadBody', { presentaciones: PRESENTACIONES, categorias: CATEGORIAS })}
+            </p>
+            <Link to="/catalogo" className="btn-resend mt-7" data-testid="lead-catalog-button">
+              {t('home.leadCta', { presentaciones: PRESENTACIONES })} <ArrowRight className="h-4 w-4" />
+            </Link>
+          </div>
+          <div>
+            <div className="grid grid-cols-3 gap-3 sm:gap-4">
+              {[
+                { n: PRESENTACIONES, l: t('home.leadStat1') },
+                { n: COMPUESTOS, l: t('home.leadStat2') },
+                { n: CATEGORIAS, l: t('home.leadStat3') },
+              ].map((s, i) => (
+                <div key={i} className="rounded-xl border border-border bg-card px-4 py-5 text-center">
+                  <div className="font-heading text-3xl sm:text-4xl font-bold text-[hsl(var(--primary))] leading-none">{s.n}</div>
+                  <div className="font-mono-tech text-[10px] uppercase tracking-[0.14em] text-muted-foreground mt-2.5 leading-snug">{s.l}</div>
+                </div>
+              ))}
+            </div>
+            <div className="mt-4 rounded-xl border border-border bg-[hsl(var(--secondary))] p-5" data-testid="home-origen-eua">
+              <div className="flex items-center gap-2.5">
+                <Globe className="h-4 w-4 text-[hsl(var(--primary))] shrink-0" />
+                <h3 className="font-heading font-semibold text-sm">{t('home.leadUsa.title')}</h3>
+              </div>
+              <p className="mt-2.5 text-sm leading-relaxed text-muted-foreground">{t('home.leadUsa.body')}</p>
+            </div>
+          </div>
         </div>
       </section>
 
