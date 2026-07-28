@@ -565,7 +565,7 @@ export const fallbackProducts = [
         "batch_number": "NP-BOTU100-2601",
         "id": "89080fe9-e7c2-471b-b61a-87f6f4f43642",
         "sku": "BOTULINUMTOXIN-100IU",
-        "commission_cap": 0.3,
+        "commission_cap": 0.35,
         "distributor_eligible": true
       }
     ],
@@ -1165,7 +1165,7 @@ export const fallbackProducts = [
         "batch_number": "NP-HGHF10-2601",
         "id": "681da265-e826-49f7-87b6-37da77343e0a",
         "sku": "HGHFRAGMENT176-10MG",
-        "commission_cap": 0.3,
+        "commission_cap": 0.35,
         "distributor_eligible": true
       },
       {
@@ -1185,7 +1185,7 @@ export const fallbackProducts = [
         "batch_number": "NP-HGHF15-2601",
         "id": "27ef0698-42b0-4ba3-8b6e-6e2bb7217713",
         "sku": "HGHFRAGMENT176-15MG",
-        "commission_cap": 0.3,
+        "commission_cap": 0.35,
         "distributor_eligible": true
       }
     ],
@@ -1643,7 +1643,7 @@ export const fallbackProducts = [
         "batch_number": "NP-FOXO10-2601",
         "id": "39be60d1-8886-4c73-b1b4-d9c093390e9b",
         "sku": "FOXO4-10MG",
-        "commission_cap": 0.3,
+        "commission_cap": 0.35,
         "distributor_eligible": true
       }
     ],
@@ -1806,7 +1806,7 @@ export const fallbackProducts = [
         "batch_number": "NP-NAD100-2601",
         "id": "17253e95-6318-4827-bed2-1dbc536a51c1",
         "sku": "NAD-100MG",
-        "commission_cap": 0.35,
+        "commission_cap": 0.4,
         "distributor_eligible": true
       },
       {
@@ -2107,7 +2107,7 @@ export const fallbackProducts = [
         "batch_number": "NP-OREX10-2601",
         "id": "662781a5-c3e9-4791-95e9-7f65594458f8",
         "sku": "OREXINA-10MG",
-        "commission_cap": 0.3,
+        "commission_cap": 0.35,
         "distributor_eligible": true
       }
     ],
@@ -2163,7 +2163,7 @@ export const fallbackProducts = [
         "batch_number": "NP-OREX10-2601",
         "id": "5c16ed8b-0dca-4b7e-ba62-1478724aeca3",
         "sku": "OREXINB-10MG",
-        "commission_cap": 0.3,
+        "commission_cap": 0.35,
         "distributor_eligible": true
       }
     ],
@@ -3070,7 +3070,7 @@ export const fallbackProducts = [
         "batch_number": "NP-P215-2601",
         "id": "68d58d21-b0de-4389-810c-fb3881990691",
         "sku": "P21-5MG",
-        "commission_cap": 0.3,
+        "commission_cap": 0.35,
         "distributor_eligible": true
       }
     ],
@@ -3628,7 +3628,7 @@ export const fallbackProducts = [
         "batch_number": "NP-DULA10-2601",
         "id": "11daa5fa-ed8b-4393-9650-7eee681e952e",
         "sku": "DULAGLUTIDA-10MG",
-        "commission_cap": 0.3,
+        "commission_cap": 0.35,
         "distributor_eligible": true
       }
     ],
@@ -3707,7 +3707,7 @@ export const fallbackProducts = [
         "batch_number": "NP-LCAR1200-2601",
         "id": "e15cb83b-ccf8-4065-ae95-451375f2074b",
         "sku": "LCARNITINE-1200MG",
-        "commission_cap": 0.3,
+        "commission_cap": 0.35,
         "distributor_eligible": true
       }
     ],
@@ -4692,7 +4692,7 @@ export const fallbackProducts = [
         "batch_number": "NP-FOLL1-2601",
         "id": "8361b994-45e4-488a-8ff3-110b5e24a031",
         "sku": "FOLLISTATIN-1MG",
-        "commission_cap": 0.3,
+        "commission_cap": 0.35,
         "distributor_eligible": true
       }
     ],
@@ -5080,7 +5080,7 @@ export const fallbackProducts = [
         "batch_number": "NP-TB2-2601",
         "id": "a8c10f43-ab4d-4c85-9f2a-7eeae9fb9fe6",
         "sku": "TB500-2MG",
-        "commission_cap": 0.3,
+        "commission_cap": 0.35,
         "distributor_eligible": true
       },
       {
@@ -5371,7 +5371,7 @@ export const fallbackProducts = [
         "batch_number": "NP-TRIP2-2601",
         "id": "50b8ec4d-9ed9-4bd8-98bb-d9920a7fa57c",
         "sku": "TRIPTORELINACE-2MG",
-        "commission_cap": 0.3,
+        "commission_cap": 0.35,
         "distributor_eligible": true
       }
     ],
@@ -5511,7 +5511,7 @@ export const fallbackProducts = [
         "batch_number": "NP-VITA10-2601",
         "id": "63699f2e-cd73-427e-93e0-3c5e9c4bd00d",
         "sku": "VITAMINAB12-10MG",
-        "commission_cap": 0.3,
+        "commission_cap": 0.35,
         "distributor_eligible": true
       }
     ],
