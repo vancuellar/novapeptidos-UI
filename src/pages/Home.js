@@ -245,7 +245,8 @@ const Home = () => {
                   El sello enseña el TECHO (15%) porque es lo que hace mirar, y
                   el renglón de al lado dice el rango completo (10 al 15%) para
                   que nadie llegue al carrito esperando 15 y se encuentre 10. */}
-              <div className="inline-flex items-center gap-3.5 mb-5 self-center" data-testid="hero-sello-descuento">
+              {/* self-end: alineado a la DERECHA de la columna (Christian, 2026-07-28). */}
+              <div className="inline-flex items-center gap-3.5 mb-5 self-center lg:self-end" data-testid="hero-sello-descuento">
                 <div className="sello">
                   <span className="sello-hasta">hasta</span>
                   <span className="sello-pct">15%</span>
