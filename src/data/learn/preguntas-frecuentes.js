@@ -35,7 +35,7 @@ const page = {
         // tenemos planta propia allá. ⛔ Nunca se menciona Asia, en ningún idioma.
         {
           q: '¿De dónde viene el material que venden?',
-          a: 'Nuestra materia prima se compra a laboratorios de Estados Unidos. De ahí sale el péptido que después se verifica lote por lote —identidad por espectrometría de masas y pureza por HPLC— y que se despacha desde México a todo el país. Para que quede claro lo que no somos: no tenemos planta ni laboratorio propio en Estados Unidos, no tenemos domicilio allá y nada de lo que vendemos está aprobado por la FDA. Somos una operación mexicana que compra material estadounidense, lo verifica y lo entrega aquí.',
+          a: 'Nuestros péptidos se fabrican en laboratorios de Estados Unidos. De ahí sale el péptido que después se verifica lote por lote —identidad por espectrometría de masas y pureza por HPLC— y que se despacha desde México a todo el país. Para que quede claro lo que no somos: la planta y el laboratorio no son nuestros, no tenemos domicilio allá y nada de lo que vendemos está aprobado por la FDA. Somos una operación mexicana que vende péptidos fabricados en Estados Unidos, los verifica y los entrega aquí.',
         },
         {
           q: '¿Qué pureza manejan y cómo la comprueban?',

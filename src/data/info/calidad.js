@@ -17,16 +17,17 @@ const page = {
     // página de pruebas de laboratorio a repetir que su material es de Estados
     // Unidos, y quien compara las dos páginas se llevaba la impresión de que
     // nosotros lo escondíamos. Aquí se dice lo que sí es cierto y comprobable:
-    // dónde se compra la materia prima y desde dónde se despacha. Nada de fábrica
-    // propia, domicilio en EUA, aprobación FDA ni certificaciones que no tenemos.
+    // dónde se FABRICAN los péptidos (laboratorios de Estados Unidos, orden de
+    // Christian 2026-07-28) y desde dónde se despachan. Nada de fábrica PROPIA,
+    // domicilio en EUA, aprobación FDA ni certificaciones que no tenemos.
     // ⛔ Y nunca se menciona Asia, en ningún idioma — orden expresa de Christian.
     {
       type: 'prose',
       title: 'De dónde sale el material',
       paragraphs: [
-        'Nuestra materia prima se compra a laboratorios de Estados Unidos. Es el punto de partida de todo lo que sigue en esta página: un control de calidad solo vale lo que vale el material que entra a control, y por eso decimos de dónde viene antes de contar qué se le hace.',
+        'Nuestros péptidos se fabrican en laboratorios de Estados Unidos. Es el punto de partida de todo lo que sigue en esta página: un control de calidad solo vale lo que vale el material que entra a control, y por eso decimos de dónde viene antes de contar qué se le hace.',
         'Ese abastecimiento estadounidense no nos exime de nada. Cada lote pasa igual por identidad por espectrometría de masas y pureza por HPLC, y ninguno entra a inventario por el mero hecho de su procedencia. El certificado que recibes es el de tu lote, no el del proveedor.',
-        'Lo que no vas a leer aquí: que tengamos planta propia, laboratorio propio o domicilio en Estados Unidos, ni que algo de esto esté aprobado por la FDA. No lo tenemos y no lo decimos. Somos una operación mexicana que compra material estadounidense, lo verifica y lo despacha dentro de México.',
+        'Lo que no vas a leer aquí: que la planta o el laboratorio sean nuestros, que tengamos domicilio en Estados Unidos, ni que algo de esto esté aprobado por la FDA. No lo es y no lo decimos. Somos una operación mexicana que vende péptidos fabricados en laboratorios de Estados Unidos, los verifica y los despacha dentro de México.',
       ],
     },
     {

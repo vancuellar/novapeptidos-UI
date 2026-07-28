@@ -561,8 +561,10 @@ const esMX = {
 
   // La descripción va en DOS partes porque la bandera de EUA se dibuja en medio,
   // dentro de la frase (como Certified). Juntas leen como una sola oración.
-  'footer.descriptionPre': 'El distribuidor de péptidos más grande de México. Materia prima de laboratorios de Estados Unidos',
-  'footer.descriptionPost': ', trazabilidad por lote, pureza verificada por HPLC y envíos dentro de México.',
+  // "Fabricado en EUA" es orden de Christian (2026-07-28): se dice "fabricados en
+  // laboratorios de Estados Unidos" — laboratorios de terceros, nunca "nuestra planta".
+  'footer.descriptionPre': 'El distribuidor de péptidos más grande de México. Péptidos fabricados en laboratorios de Estados Unidos',
+  'footer.descriptionPost': ', con trazabilidad por lote, pureza verificada por HPLC y envíos dentro de México.',
   'footer.catalogTitle': 'Catálogo',
   'footer.infoTitle': 'Información',
   'footer.contactTitle': 'Contacto',
@@ -652,7 +654,7 @@ const esMX = {
   //
   // ⛔ NUNCA se menciona Asia en el sitio, en ningún idioma. Orden expresa de Christian
   // (2026-07-28). Si vuelves a escribir de dónde sale el material, esta es la regla.
-  'home.heroBody': 'Péptidos liofilizados de investigación con materia prima de laboratorios de Estados Unidos. Pureza verificada por HPLC, COA por lote y envío nacional desde México.',
+  'home.heroBody': 'Péptidos liofilizados de investigación, fabricados en laboratorios de Estados Unidos. Pureza verificada por HPLC, COA por lote y envío nacional desde México.',
   'home.heroRuo': 'Solo para uso en investigación (RUO).',
 
   // ===== "El más grande de México" (Christian, 2026-07-28) =====
@@ -669,8 +671,8 @@ const esMX = {
   'home.leadStat1': 'Presentaciones a la venta',
   'home.leadStat2': 'Compuestos distintos',
   'home.leadStat3': 'Categorías de investigación',
-  'home.leadUsa.title': 'Abastecimiento en Estados Unidos',
-  'home.leadUsa.body': 'Nuestro material se compra directamente a laboratorios de Estados Unidos y pasa por el mismo estándar analítico: pureza por HPLC y certificado de análisis del lote que recibes.',
+  'home.leadUsa.title': 'Fabricado en Estados Unidos',
+  'home.leadUsa.body': 'Nuestros péptidos se fabrican en laboratorios de Estados Unidos y pasan por el mismo estándar analítico: pureza por HPLC y certificado de análisis del lote que recibes.',
   'home.presentations': 'Presentaciones a la venta',
   'home.viewCatalog': 'Ver catálogo',
   'home.verifyPurity': 'Cómo verificamos la pureza',
@@ -704,26 +706,27 @@ const esMX = {
   // Quinto sello de la barra de confianza: es el lugar donde el visitante compara
   // garantías de un vistazo, y es justo ahí donde Certified pone su "fabricado en
   // EE. UU.". Nosotros ponemos lo que sí es nuestro: de dónde compramos.
-  'home.trust.origin.title': 'Origen Estados Unidos',
-  'home.trust.origin.desc': 'Materia prima de laboratorios de EUA',
+  'home.trust.origin.title': 'Fabricado en EUA',
+  'home.trust.origin.desc': 'En laboratorios de Estados Unidos',
   'home.categoriesTitle': 'Explora por categoría',
   'home.categoriesSubtitle': 'Encuentra el péptido según tu objetivo de investigación',
   'home.featuredTitle': 'Productos destacados',
   'home.featuredSubtitle': 'Los más solicitados por la comunidad de investigación',
   'home.viewAll': 'Ver todo',
   'home.transparencyTitle': 'Transparencia total por lote',
-  'home.transparencyBody': 'Cada producto incluye su número de lote impreso y su pureza se analiza por HPLC. Trabajamos con laboratorios de Estados Unidos, y nuestros clientes reciben el certificado del lote que les corresponde en su cuenta.',
+  'home.transparencyBody': 'Cada producto incluye su número de lote impreso y su pureza se analiza por HPLC. Nuestros péptidos se fabrican en laboratorios de Estados Unidos, y nuestros clientes reciben el certificado del lote que les corresponde en su cuenta.',
   'home.transparency.bullet1': 'Pureza analizada por HPLC en cada lote',
   'home.transparency.bullet2': 'Número de lote visible en cada vial',
   'home.transparency.bullet3': 'Almacenamiento y manejo documentados',
   // El cuarto paso de trazabilidad es el origen: de nada sirve rastrear el lote si
   // no se dice de qué laboratorio salió.
-  'home.transparency.bullet4': 'Materia prima de laboratorios de Estados Unidos',
+  'home.transparency.bullet4': 'Fabricado en laboratorios de Estados Unidos',
   'home.learnProcess': 'Conoce nuestro proceso',
   'home.ruoNotice': 'Nuestros productos no están destinados al consumo humano ni animal, ni para diagnóstico, tratamiento, cura o prevención de enfermedades. Su uso es responsabilidad exclusiva de investigadores calificados.',
   'home.labAlt': 'Laboratorio Exygen Labs',
   'home.coaAlt': 'Transparencia y COA',
   'home.kicker': 'Research Grade Peptides',
+  'home.madeInUsa': 'Fabricado en EUA',
   'home.shippingValue': '2–5 días',
   'home.coa.header': 'Certificado de Análisis',
   'home.coa.product': 'Producto',
@@ -756,7 +759,7 @@ const esMX = {
   // sección (2026-07-28). No se promete fábrica propia, ni domicilio en EUA, ni
   // FDA: solo lo comprobable, que es de dónde se compra el material.
   'home.why.r7': 'El catálogo más amplio de México ({{presentaciones}} presentaciones)',
-  'home.why.r8': 'Nuestros péptidos se hacen con materia prima de laboratorios de Estados Unidos',
+  'home.why.r8': 'Fabricado en laboratorios de Estados Unidos',
   'home.paymentsTitle': 'Pagos seguros y protegidos',
   'home.paymentsNote': 'Elige el método que prefieras al finalizar tu compra.',
   'home.explore': 'Explorar',

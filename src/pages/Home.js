@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { FlagUS } from '@/components/Flags';
 import {
   ShieldCheck, FlaskConical, Truck, BadgeCheck, ArrowRight, HeartPulse, Activity, Flame, Hourglass,
   Brain, Sparkles, Layers, CheckCircle2, MinusCircle, FileCheck2, ScanSearch, Landmark, CreditCard,
@@ -186,8 +187,10 @@ const Home = () => {
   // El del catálogo va con 'no' porque no es cuestión de grado: el más amplio es
   // uno solo. El del origen va con 'partial' porque algún competidor sí dice de
   // dónde viene su material. (Christian, 2026-07-28.)
+  // El primer renglón lleva la banderita de EUA (Christian, 2026-07-28): es el
+  // argumento de apertura de la competencia y aquí tiene que verse igual de fuerte.
   const whyRows = [
-    { label: t('home.why.r8'), others: 'partial' },
+    { label: t('home.why.r8'), others: 'partial', flag: 'us' },
     { label: t('home.why.r7', { presentaciones: PRESENTACIONES }), others: 'no' },
     { label: t('home.why.r1'), others: 'no' },
     { label: t('home.why.r2'), others: 'partial' },
@@ -214,7 +217,15 @@ const Home = () => {
               (Christian, 2026-07-26). */}
           <div className="grid lg:grid-cols-[1.1fr_0.9fr] gap-8 lg:gap-16 items-center">
             <div>
-              <div className="kicker">{t('home.kicker')}</div>
+              {/* "FABRICADO EN EUA" con bandera, junto al kicker: es el primer
+                  argumento de la competencia y Christian lo quiere con el mismo
+                  peso (2026-07-28). Laboratorios de terceros — nunca planta propia. */}
+              <div className="flex flex-wrap items-center gap-x-3 gap-y-2">
+                <div className="kicker">{t('home.kicker')}</div>
+                <span className="inline-flex items-center gap-1.5 rounded-full border border-border bg-[hsl(var(--secondary))] px-2.5 py-1 font-mono-tech text-[10.5px] uppercase tracking-[0.16em]" data-testid="hero-made-in-usa">
+                  <FlagUS /> {t('home.madeInUsa')}
+                </span>
+              </div>
               <h1 className="font-heading text-[2.1rem] sm:text-5xl lg:text-[3.6rem] font-bold tracking-tight leading-[1.08] mt-6 break-words">
                 {heroLead}
                 {/* "lote por lote" va en su propio renglon, debajo. */}
@@ -245,16 +256,19 @@ const Home = () => {
                   El sello enseña el TECHO (15%) porque es lo que hace mirar, y
                   el renglón de al lado dice el rango completo (10 al 15%) para
                   que nadie llegue al carrito esperando 15 y se encuentre 10. */}
-              {/* self-end: alineado a la DERECHA de la columna (Christian, 2026-07-28). */}
-              <div className="inline-flex items-center gap-3.5 mb-5 self-center lg:self-end" data-testid="hero-sello-descuento">
+              {/* El texto va a la IZQUIERDA y el sello a su DERECHA, y el bloque
+                  entero va CENTRADO sobre los viales (Christian, 2026-07-28):
+                  pegado al borde derecho quedaba desalineado con la fila de
+                  botellas, que sí va centrada en su columna. */}
+              <div className="inline-flex items-center gap-3.5 mb-5 self-center" data-testid="hero-sello-descuento">
+                <div className="leading-tight text-right">
+                  <div className="text-sm font-semibold text-foreground">{t('home.stamp.title')}</div>
+                  <div className="text-xs text-muted-foreground mt-0.5">{t('home.stamp.sub')}</div>
+                </div>
                 <div className="sello">
                   <span className="sello-hasta">hasta</span>
                   <span className="sello-pct">15%</span>
                   <span className="sello-off">OFF</span>
-                </div>
-                <div className="leading-tight">
-                  <div className="text-sm font-semibold text-foreground">{t('home.stamp.title')}</div>
-                  <div className="text-xs text-muted-foreground mt-0.5">{t('home.stamp.sub')}</div>
                 </div>
               </div>
               <div className="hero-vials w-full max-w-[540px]">
@@ -606,7 +620,9 @@ const Home = () => {
             <div className="px-2 sm:px-8 py-3.5 text-[11px] sm:text-sm font-medium text-muted-foreground bg-[hsl(var(--secondary))] text-center sm:whitespace-nowrap">{t('home.why.others')}</div>
             {whyRows.map((row, i) => (
               <React.Fragment key={i}>
-                <div className="px-3.5 sm:px-5 py-3.5 border-t border-border min-w-0">{row.label}</div>
+                <div className="px-3.5 sm:px-5 py-3.5 border-t border-border min-w-0">
+                  {row.flag === 'us' && <><FlagUS />{' '}</>}{row.label}
+                </div>
                 <div className="px-3 sm:px-8 py-3.5 border-t border-border bg-[hsl(var(--accent))]/40 flex items-center justify-center">
                   <CheckCircle2 className="h-5 w-5 text-[hsl(var(--success))]" />
                 </div>

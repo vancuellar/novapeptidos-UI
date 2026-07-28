@@ -17,7 +17,7 @@ const page = {
         // repetir que su material es estadounidense y en la nuestra no aparecía.
         // Solo se afirma lo comprobable: a quién se le compra y desde dónde se
         // despacha. ⛔ Nunca se menciona Asia, en ningún idioma (orden de Christian).
-        'El recorrido empieza antes del primer análisis, en la compra: nuestra materia prima se adquiere a laboratorios de Estados Unidos. Eso no sustituye a nada de lo que viene después —el lote se verifica igual, y la procedencia nunca es motivo para saltarse un paso—, pero sí explica de dónde sale el polvo que entra a control.',
+        'El recorrido empieza antes del primer análisis, en la compra: nuestros péptidos se fabrican en laboratorios de Estados Unidos. Eso no sustituye a nada de lo que viene después —el lote se verifica igual, y la procedencia nunca es motivo para saltarse un paso—, pero sí explica de dónde sale el polvo que entra a control.',
         'Aquí explicamos, paso a paso, qué le pasa a un lote antes de que se pueda vender, qué documentos lo respaldan y cómo interpretarlos. Todo el material descrito es de uso exclusivo en investigación (RUO): no es para consumo humano ni animal, ni para uso diagnóstico o terapéutico.',
       ],
     },
