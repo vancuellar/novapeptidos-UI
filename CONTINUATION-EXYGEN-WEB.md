@@ -1,3 +1,42 @@
+# 🤝 HANDOFF — 2026-07-28 (última hora: LA MUDANZA A CLOUDFLARE ESTÁ HECHA)
+
+> *(Este bloque va ENCIMA del handoff del cierre de la noche, que sigue abajo y sigue valiendo
+> para todo lo demás.)*
+
+**☁️ exygenlabs.com y www YA SIRVEN DESDE CLOUDFLARE.** Hecho esta sesión:
+
+1. **El 404 sin diagonal NO era lo que decía el diagnóstico de anoche.** El culpable SÍ era el
+   `404.html` dentro del build: con él presente, Cloudflare Pages apaga su modo SPA. La prueba de
+   anoche ("se borró y siguió el 404") falló porque quedaban duplicados (`404 2.html`) en
+   `public/` que el build arrastraba. **El arreglo:** `npm run build` y luego **borrar
+   `build/404.html` antes de `wrangler pages deploy`** (NUNCA borrar `public/404.html`: ese es de
+   GitHub Pages, que queda como marcha atrás). Con eso `/admin`, `/rutainventada` y todo lo demás
+   dan **200**. No hizo falta el Worker (además el token NO tiene permiso de Workers Scripts —
+   probado).
+2. **Dominios enganchados** al proyecto `exygenlabs` (apex y www, certificados activos) y **DNS
+   cambiado**: las 4 A de GitHub (185.199.108/109/110/111.153 — la marcha atrás) se borraron;
+   apex y www son CNAME proxeados a `exygenlabs.pages.dev`. Verificado desde el borde de
+   Cloudflare: portada, /admin, /cuenta, /distribuidor, ficha con precio en el HTML, /calculadora,
+   /tutoriales, sitemap — **todo 200, server: cloudflare**. (Ojo: el caché DNS de la Mac tarda en
+   soltar GitHub; `dig @1.1.1.1` dice la verdad.)
+3. **Pendiente de la mudanza (lo único):** las redirecciones de exygenpeptides.com/.mx y
+   exygenlabs.mx → exygenlabs.com necesitan un token con **Zone → Config Rules → Edit**; el
+   actual solo tiene Pages y DNS. Eso lo crea Christian en el panel de Cloudflare.
+   exygenlabs.mx sigue `pending` en el registro .mx.
+4. **Homepage:** los **Productos destacados subieron** a justo debajo de la cinta de compuestos y
+   los 4 datos (pedido de Christian; commit `7831117`, pusheado). Auditoría 83/0 después.
+5. **Las 7 compuertas corridas en esta sesión, todas en cero:** 116 precios · 261 backend ·
+   auditor 14/0 · certeza OK · auditoría del sitio 83/0 · E2E cripto 21/0 · E2E tarjeta 15/0.
+6. **En curso al cierre:** un agente Opus atacando 5 hallazgos de Codex (inventario por encima
+   del real, envío, historial vs maestra, 27 precios de Lumi que el lector tira, excepción
+   IGF-1 sin registrar). Y quedan para la sesión: escalera por mg en `reprecio.py:427`, precio
+   infinito en `db.py:49`, los 2 precios mal asignados de Lumi (MOTS-C↔KPV, NAD+↔Mazdutide),
+   Skydropx en un paso, y la calculadora de Certiva.
+7. **Los anuncios de Meta siguen PAUSADOS a propósito**; cuando se prendan, optimizando a
+   Compras.
+
+---
+
 # 🤝 HANDOFF — 2026-07-28 (cierre de la noche)
 
 > **Léelo en 30 segundos. Todo lo demás es detalle.**
