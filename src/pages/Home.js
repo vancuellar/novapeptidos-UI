@@ -492,8 +492,37 @@ const Home = () => {
         </div>
       </section>
 
+      {/* ===== Fotos de producción ===== */}
+      {/* Sección propia entre "Variedad" y "Catálogo" (Christian, 2026-07-28): así
+          la portada alterna una sección con fotos y una sin fotos, en vez de ser
+          pura letra. Son cuadros de los videos del laboratorio donde se fabrica;
+          ⛔ ninguno con personas ni con etiquetas que choquen con el RUO.
+          Carga diferida: no deben frenar lo que se ve primero. */}
+      <section className="border-b border-border">
+        <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 py-16">
+          <div className="grid sm:grid-cols-3 gap-4" data-testid="home-fotos-produccion">
+            {[
+              { src: 'viales-liofilizados', alt: t('home.photos.lyo') },
+              { src: 'envasado', alt: t('home.photos.filling') },
+              { src: 'taponado', alt: t('home.photos.capping') },
+            ].map((f) => (
+              <figure key={f.src} className="overflow-hidden rounded-xl border border-border bg-card">
+                <img
+                  src={`${process.env.PUBLIC_URL}/images/laboratorio/${f.src}.jpg`}
+                  alt={f.alt} loading="lazy" width="1200" height="676"
+                  className="w-full h-52 object-cover"
+                />
+                <figcaption className="px-4 py-3 text-xs text-muted-foreground">{f.alt}</figcaption>
+              </figure>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* ===== Categories ===== */}
-      <section className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 pb-24">
+      {/* pt-[5px]: el kicker "CATÁLOGO" quedaba PEGADO a la línea divisoria de la
+          banda de arriba — cero píxeles de aire (Christian, 2026-07-28). */}
+      <section className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 pt-[5px] pb-24">
         <div className="mb-12">
           <div className="kicker">{t('home.categoriesKicker')}</div>
           <h2 className="font-heading text-2xl sm:text-3xl font-bold tracking-tight mt-2">{t('home.categoriesTitle')}</h2>
@@ -585,26 +614,6 @@ const Home = () => {
               </div>
             ))}
           </div>
-          {/* FOTOS DE PRODUCCIÓN (Christian, 2026-07-28): la página era pura letra
-              y Certified enseña planta. Son cuadros de los videos del laboratorio
-              donde se fabrica; ⛔ ninguno con personas ni con etiquetas que choquen
-              con el RUO. Carga diferida: van muy abajo y no deben frenar la portada. */}
-          <div className="mt-10 grid sm:grid-cols-3 gap-4" data-testid="home-fotos-produccion">
-            {[
-              { src: 'viales-liofilizados', alt: t('home.photos.lyo') },
-              { src: 'envasado', alt: t('home.photos.filling') },
-              { src: 'taponado', alt: t('home.photos.capping') },
-            ].map((f) => (
-              <figure key={f.src} className="overflow-hidden rounded-xl border border-border bg-card">
-                <img
-                  src={`${process.env.PUBLIC_URL}/images/laboratorio/${f.src}.jpg`}
-                  alt={f.alt} loading="lazy" width="1200" height="676"
-                  className="w-full h-44 object-cover"
-                />
-                <figcaption className="px-4 py-3 text-xs text-muted-foreground">{f.alt}</figcaption>
-              </figure>
-            ))}
-          </div>
           <Button asChild className="mt-8"><Link to="/info/calidad">{t('home.learnProcess')}</Link></Button>
         </div>
       </section>
@@ -640,8 +649,10 @@ const Home = () => {
             <div className="px-2 sm:px-8 py-3.5 text-[11px] sm:text-sm font-medium text-muted-foreground bg-[hsl(var(--secondary))] text-center sm:whitespace-nowrap">{t('home.why.others')}</div>
             {whyRows.map((row, i) => (
               <React.Fragment key={i}>
+                {/* La bandera va DESPUÉS del texto (Christian, 2026-07-28), igual
+                    que el sello del hero: primero se lee, luego se ve el sello. */}
                 <div className="px-3.5 sm:px-5 py-3.5 border-t border-border min-w-0">
-                  {row.flag === 'us' && <><FlagUS />{' '}</>}{row.label}
+                  {row.label}{row.flag === 'us' && <>{' '}<FlagUS /></>}
                 </div>
                 <div className="px-3 sm:px-8 py-3.5 border-t border-border bg-[hsl(var(--accent))]/40 flex items-center justify-center">
                   <CheckCircle2 className="h-5 w-5 text-[hsl(var(--success))]" />
