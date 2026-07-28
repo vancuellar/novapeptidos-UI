@@ -1,4 +1,101 @@
-# 🤝 HANDOFF — 2026-07-28 (última hora: LA MUDANZA A CLOUDFLARE ESTÁ HECHA)
+# 🤝 HANDOFF — 2026-07-28 (cierre real de la jornada)
+
+> *Esto reemplaza a todo lo de abajo en lo que se contradiga. Lo de abajo sigue valiendo
+> para el detalle histórico.*
+
+## Lo que quedó hecho hoy (todo verificado, todo pusheado)
+
+**☁️ Cloudflare: la mudanza TERMINÓ.** exygenlabs.com y www sirven desde Cloudflare. El 404 de
+las rutas sin diagonal **sí era `404.html`** (el diagnóstico de anoche se equivocó porque
+quedaban duplicados `404 2.html` en `public/` que el build arrastraba). **La receta de
+despliegue, memorízala:**
+```
+npm run build && rm -f build/404.html && npx wrangler pages deploy build --project-name exygenlabs --commit-dirty=true
+```
+⛔ **NUNCA borres `public/404.html`** — es de GitHub Pages, la marcha atrás. Solo se borra la
+copia dentro de `build/`. No hizo falta el Worker (y el token no tiene permiso de Workers).
+**Marcha atrás:** devolver el apex a las cuatro A de GitHub (185.199.108/109/110/111.153).
+**Pendiente:** las redirecciones de exygenpeptides.com/.mx necesitan un token con
+**Zone → Config Rules → Edit**; lo crea Christian. exygenlabs.mx sigue `pending` en el registro.
+
+**📣 Meta: REACTIVADO a $20 USD/día por campaña** (orden de Christian; eligió prender las 6 tal
+cual, sabiendo que siguen optimizando a clics/interacción y no a Compras). Tres campañas
+quedaron con presupuesto diario de $20; a las otras tres Meta **no deja** cambiar de
+presupuesto de por vida a diario por API, así que se les puso bolsa hasta el 4-ago
+equivalente a ~$20/día. Dos campañas viejas quedaron pausadas por estar sustituidas — no hay
+gasto doble. ⚠️ Varias creatividades apuntan a publicaciones que Meta ya no deja promocionar
+("Page Post Can't Be Used"): las copias nuevas se borraron por eso.
+
+**🐛 Los DOS barridos de Codex, cerrados** (11 hallazgos + los 2 precios de Lumi). Commits
+`49a4e98` (pricing) y `ee4b93d` (RBAC), ambos pusheados. Lo más grave que salió:
+- **De 193 productos, CERO encontraban su renglón de inventario** (la llave que escribe el
+  Panel es `fallback-<familia>::<presentación>` y el backend no la probaba). Ahora 187; los 6
+  que faltan **no tienen renglón en `db.stock`** y se gritan en el log.
+- **La venta directa sumaba el precio que mandaba el cliente.** Ahora retasa contra el catálogo.
+- **Había cuatro cuentas distintas del ROI**; tres multiplicaban por un 10 escrito a mano. Se
+  publicaba 5.99× lo que de verdad dejaba 2.995×. Unificado.
+- Escalera por miligramo, precios infinitos, "Deca-Durabolin" saltándose el veto, tres
+  productos fusionados que no eran el mismo, y alarma si el historial desaparece.
+- **Los 2 precios de Lumi corregidos**: MS10 US$88 pasó de KPV a **MOTS-C 10 mg**; NJ100 US$38
+  pasó de Mazdutide a **NAD+ 100 mg**. Ningún precio de venta se movió.
+- Compuertas al cierre: **160** precios · **285** backend · auditor 14/0 · certeza ✅ ·
+  auditoría del sitio **83/0** · E2E tarjeta **15/0** · E2E cripto **21/0** · `reprecio.py` dos
+  corridas, cero cambios.
+
+**🇺🇸 "Fabricado en EUA" en todo el sitio** (orden expresa de Christian; Certified lo usa como
+primer argumento y **compra en China**, así que la discusión está cerrada). Ya no se dice
+"materia prima de": se dice **"fabricados en laboratorios de Estados Unidos"** — portada,
+footer, calidad, FAQ, cómo verificamos, en ES/EN/PT. Hay insignia con bandera junto a
+"RESEARCH GRADE PEPTIDES" y es el **primer renglón** de "¿Por qué Exygen Labs?".
+⛔ Sigue prohibido decir planta PROPIA, laboratorio PROPIO, domicilio en EUA o FDA.
+
+**🖼️ Tres fotos de producción en la portada** (`public/images/laboratorio/`), sacadas con
+ffmpeg de los videos del proveedor en `Media/Videos/`. Los cuadros cosechados y **las reglas
+para usarlos** están en `Media/frames-fabrica/LEEME.md`: ⛔ nada con personas ni manos, ⛔ nunca
+el vial que dice "Retatrutide **Injection**" (choca con el RUO), ⚠️ los que traen la marca de
+agua "/ peptide ." hay que recortarla.
+
+**🎨 Portada:** destacados subieron a debajo de la cinta · menos aire entre secciones · sello de
+15% con el texto a la izquierda y el sello a la derecha, centrado sobre los viales · barra
+azul de progreso de scroll en el header · footer con copyright a la izquierda y RUO a la
+derecha, banderas a color · **OXXO agregado** en los métodos de pago y en TODOS los textos
+(las FAQ decían "no manejamos pago en OXXO" — era mentira) · "Envíos en todo México" debajo
+de los pagos.
+
+**👤 Javier Rojo Mortera** invitado como distribuidor: código **JAVI-7116**, comisión 35%.
+
+## ⚡ REGLA NUEVA DE CHRISTIAN (2026-07-28)
+**Los cambios PURAMENTE visuales van directo a vivo, SIN correr pruebas.** Quiere verlos de
+inmediato. Las siete compuertas siguen siendo obligatorias para todo lo que toque dinero,
+precios, inventario o backend.
+
+## Lo que sigue, en el orden que él fijó
+1. ~~Fabricado en EUA~~ ✅ · 2. ~~Más fotos~~ ✅ (se pueden agregar más) · 3. ~~Errores de
+Codex~~ ✅ · **4. Skydropx** (en curso) · **5. Desplegar el backend al EC2** ⛔ bloqueado.
+
+## ⛔ LO QUE ESTÁ BLOQUEADO Y POR QUÉ
+- **El backend NO está desplegado.** Los arreglos de inventario y venta directa están
+  pusheados pero **no en vivo**: el clasificador de permisos de Claude Code bloqueó
+  `aws ec2 authorize-security-group-ingress` y `ssh`. Christian debe permitir esos comandos
+  en los ajustes, o desplegar él. La receta completa sigue en "CÓMO ENTRAR AL EC2".
+  ⚠️ Ojo con el perfil: es `--profile certis --region us-east-1`; el perfil por omisión es otra
+  cuenta y devuelve "no existe" en vez de un error claro de permisos.
+- **Skydropx** necesita de Christian: la **llave de API**, la **dirección del remitente** (la de
+  un trabajador, no la suya), los **pesos reales** de los productos, y **definir qué pasa cuando
+  el envío pasa del 10% en un pedido de más de $2,500** (¿paga todo el envío o solo el
+  excedente?).
+
+## 🧮 Tres números que esperan su decisión (nadie los movió)
+1. **HGH 36 IU cuesta $1,548** — el único precio del catálogo que no termina en 9 (sería $1,549).
+2. **Tres escalones sin arreglo dentro de la banda:** Glutatión 1,500 mg ($1.00/mg vs $0.96 del
+   de 600 mg), HGH 40 IU ($96.72/IU vs $43.00 del de 36 IU) y MOTS-c 40 mg ($69.97/mg vs $54.95
+   del de 20 mg).
+3. **Seis productos sin renglón de inventario** en el Panel: B12 1 mg, HGH 36 IU, HCG 1,000 IU,
+   HGH Fragment 12 mg, 5-Amino-1MQ 10 mg y 50 mg.
+
+---
+
+# 🤝 HANDOFF — 2026-07-28 (la mudanza a Cloudflare)
 
 > *(Este bloque va ENCIMA del handoff del cierre de la noche, que sigue abajo y sigue valiendo
 > para todo lo demás.)*
