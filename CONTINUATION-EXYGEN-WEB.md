@@ -1,56 +1,304 @@
-# 🤝 HANDOFF — 2026-07-28 (cierre del día)
+# 🤝 HANDOFF — 2026-07-28 (cierre de la noche)
 
 > **Léelo en 30 segundos. Todo lo demás es detalle.**
+> *(Este handoff sustituye al de la mañana del mismo día. Lo que la mañana daba por cierto y
+> la tarde cambió está marcado abajo con ⤴️.)*
 
-**En qué estado quedó.** El sitio, el backend y el Panel están **en vivo y en verde**. Hoy se
-cerraron seis frentes: los 3 HGH pasaron a venta directa (aplicado y cobrando), el Panel tiene
-una pestaña nueva **Motor de Precios** que enseña costos y márgenes **sólo al admin**, entró un
-proveedor nuevo (**Lumi**) junto con tres arreglos de raíz en el lector de listas, Codex ya se
-lanza con los permisos correctos, las comisiones absurdas quedaron prohibidas en la base, y el
-Panel navega mejor (abre arriba al cambiar de pestaña, y "Surtir el catálogo completo" vive en
-Inventario). El sello del home dice ahora sólo **"Hasta el 15%"**.
+**En qué estado quedó.** El sitio, el backend y el Panel están **en vivo y en verde**, con las
+siete compuertas corridas de verdad esta noche (tabla al final de este bloque). La tarde se fue
+en tres cosas: **se taparon dos agujeros graves del checkout** (el mismo producto repetido se
+llevaba el doble de inventario; y el inventario vivo nunca bajaba), **el canal de distribuidores
+pasó a decidirlo el motor solo, sin listas a mano**, y **el sitio dejó de mencionar Asia y ahora
+dice, con la cifra al lado, que somos el distribuidor más grande de México**.
 
-**Qué está corriendo ahora mismo.** ⚠️ **Otro agente está trabajando EN EL HOME** (el mensaje
-de "el distribuidor más grande de México" apoyado en las 193 presentaciones, y las menciones de
-EUA). **NO toques `src/pages/Home.js` ni `src/i18n/translations.js`** hasta confirmar que ya
-terminó. Quedó **pendiente de verificar**.
+**Lo más importante del día no fue código: fue el diagnóstico de por qué no vendemos.**
+El sitio **sí funciona** —hubo un pedido real completado como desconocido en celular y Christian
+pagó de verdad con tarjeta, con sus dos correos—. Lo que mata la venta es **una casilla legal
+chica y gris arriba del botón de pagar** y **2.36 MB de JavaScript en un solo archivo**. Está
+todo desglosado abajo, en "El diagnóstico de por qué no vendíamos".
 
-**Qué falta.**
-1. **Meta está bloqueado del lado de Meta**, no nuestro (ver abajo). El panel enseña el CSV del
-   25-jul y no se puede subir el presupuesto a 10 USD/día hasta desbloquear la app.
-2. **Terminar de migrar el motor**: `reprecio.py` todavía LEE `MAESTRA.xlsx`. Hasta que escriba
-   en la base, el bloque "movimientos de precio" del Dashboard sigue vacío (se reconstruye desde
-   `maestra.csv` en cada corrida, así que todo sale como carga inicial — y el tablero lo dice).
-3. Pendientes viejos que siguen vivos: vigencias traslapadas, `certeza.py` compara poco,
-   `v_roi_real` resta el envío contra lo que dice `FUENTE-DE-VERDAD.md`.
+**Qué está corriendo ahora mismo.** ⚠️ **Un agente está rehaciendo el checkout.**
+**NO toques `src/pages/Checkout.js` ni `novapeptidos-RBAC/models.py`.** También tiene en la mano
+`CountryPhoneFields.js`, `RuoGate.js`, `CartContext.js`, `Account.js`, `ConfirmEmail.js`,
+`OrderConfirmation.js`, `Cart.js` y `src/data/subdivisions.js` (nuevo). Sus seis encargos:
+segunda línea de dirección · buscador en el selector de países · estado como lista para
+México/EUA/Canadá/Brasil · prellenado para clientes con cuenta · adopción de pedidos de invitado
+al crear cuenta (**sólo tras confirmar el correo**, para que nadie herede historial ajeno) ·
+quitar el cobro automático de envío. **La dirección de facturación se canceló**: el pago ocurre
+en Mercado Pago y allá ya tienen la tarjeta. De paso le tocó el arreglo de la casilla legal.
+
+**Qué falta, por orden (esto es la lista de trabajo, no una lluvia de ideas).**
+1. **Skydropx** — Christian lo pidió expresamente como lo siguiente: que el cliente cotice su
+   envío en el momento, lo pague y reciba su guía, **en un solo paso**. Hoy se cotiza aparte y a
+   mano.
+2. **Partir el paquete de JavaScript (`React.lazy`)** — es lo que más mueve el embudo completo.
+   Comprobado hoy: `build/static/js/main.52aa2176.js` pesa **2,363,767 bytes** y **no hay ni un
+   `React.lazy` en `src/App.js`**.
+3. **Los dos precios mal asignados de Lumi** (detalle abajo, con el renglón exacto del CSV).
+4. **Reiniciar los anuncios sólo cuando 1 y 2 estén hechos**, y optimizando a **Compras**, no a
+   clics.
+5. Los pendientes viejos que siguen vivos: vigencias traslapadas · `certeza.py` no compara
+   SKU/presentación/vigencia · `v_roi_real` resta el envío contra lo que dice
+   `FUENTE-DE-VERDAD.md` · `reprecio.py` todavía lee el Excel.
 
 **Qué espera decisión de Christian.**
-- **HCG 2,000 y 10,000 IU:** `FUENTE-DE-VERDAD.md` los lista como "solo venta directa", pero en
-  la maestra salen elegibles para distribuidor con 30% y 35%. Según la fórmula ambos aguantan la
-  comisión. Si manda el documento, se agregan a `solo_venta_directa.json` y listo.
-- **Lumi vende esteroides anabólicos.** Están vetados de nuestro lado, pero decide él si eso
-  cambia algo sobre seguir tratando con ese proveedor.
-- Subir el presupuesto de Meta a 10 USD/día — en cuanto se desbloquee la app.
+- **Cuándo se reanudan los anuncios.** Las 6 campañas están **pausadas a propósito**. La
+  recomendación es no prenderlas hasta tener 1 y 2.
+- **El pedido de prueba a Lumi.** Christian va a hacerle un pedido chico para comprobar que de
+  verdad tiene bodega en México y entrega en 2-3 días — hoy eso es sólo promesa suya. Y sigue
+  abierto si le incomoda que Lumi venda esteroides anabólicos (vetados de nuestro lado).
+- **HCG 2,000 y 10,000 IU:** `FUENTE-DE-VERDAD.md` los lista como "solo venta directa", pero la
+  fórmula dice que aguantan la comisión. ⤴️ Con la regla nueva, **si no hay un documento que lo
+  prohíba, el motor los mete al canal solo**. Si Christian tiene ese documento, se anota en
+  `solo_venta_directa.json` con motivo y fecha.
 
-**Compuertas al cierre (todas en verde, comprobadas hoy).**
+**Compuertas al cierre — corridas de verdad la noche del 28-jul, no copiadas.**
 
-| Compuerta | Resultado |
-|---|---|
-| `pricing-system` · pytest | **116** |
-| `novapeptidos-RBAC` · pytest | **240** |
-| `python3 auditar_catalogo.py` | **14 bien, 0 por revisar** |
-| `python3 certeza.py` | **204 productos, las tres listas idénticas** |
-| Auditoría del sitio (`npm run verificar`) | **80 / 0** |
+| Compuerta | Comando | Resultado REAL |
+|---|---|---|
+| Pruebas de precios | `pricing-system` · `./.venv/bin/python -m pytest -q` | **116 passed** |
+| Pruebas del backend | `novapeptidos-RBAC` · `pytest -q` | **261 passed** ⚠️ |
+| Auditor de catálogo | `python3 auditar_catalogo.py` | **14 bien, 0 por revisar** (193 SKUs) |
+| Certeza | `python3 certeza.py` | **204 productos, las tres listas idénticas** |
+| Auditoría del sitio | `npm run auditoria` | **80 bien, 0 FALLAS** |
+| Cobro E2E · cripto | `npm run e2e:cripto` | **21 bien, 0 por revisar** |
+| Cobro E2E · tarjeta | `npm run e2e:tarjeta` | **15 bien, 0 por revisar** |
+
+⚠️ Las 261 del backend **incluyen el trabajo sin commit del agente que está en el checkout**
+(`models.py`, `server.py`, `test_core.py` salen modificados en `git status`). En el último commit
+limpio (`e002ad1`) eran 242. Quien retome: vuelve a correrlas cuando ese agente termine.
 
 ---
 
-# 🔴 ESTADO — 2026-07-28
+# 🔴 ESTADO — 2026-07-28 (tarde y noche)
 
-## ✅ Lo que se cerró hoy (una línea cada uno)
+## 🩹 Los dos agujeros del checkout — cerrados y desplegados
+
+Commit `e002ad1` en `novapeptidos-RBAC`. **Los dos los encontró el barrido adversarial de Codex**,
+no una prueba nuestra. Las dos son de las que no se ven mirando el código: se ven atacándolo.
+
+1. **Pedir 40 dos veces eran 80.** El servidor validaba **renglón por renglón**, así que el mismo
+   SKU repetido pasaba por su cuenta cada vez y el pedido se llevaba el doble —o el triple— de lo
+   que hay. **Sin tope**: bastaba con añadir otro renglón. Ahora **suma por producto antes de
+   comparar**.
+   ⚠️ Es el MISMO hueco que se creyó cerrado el 25-jul: entonces se tapó el "pediste 99,999", no
+   el "pediste 40 dos veces". Lección: tapar un caso no es tapar la clase de caso.
+2. **El inventario vivo NUNCA bajaba.** La llave de `db.stock` es `<slug>::<presentación>`, pero
+   el carrito manda a veces un UUID y a veces el SKU. `update_one` no encontraba el documento y
+   devolvía **cero modificados en silencio**: el pedido salía, las piezas se quedaban, y el
+   siguiente cliente compraba algo que ya no existe. Ahora se prueban las llaves conocidas y, si
+   ninguna existe, **se avisa en el log**. **Cobrar y cancelar usan el MISMO resolvedor** — si
+   cada lado busca distinto, el inventario se desbalancea.
+
+## 💰 Canje de puntos al 100%: se permite, pero sin comisión y sin puntos nuevos
+
+Commit `8e748ce`. Regla de Christian. Los puntos ya se ganaron y son del cliente, así que **sí**
+se puede pagar el 100% de la mercancía con ellos. Pero ese pedido **no paga comisión de
+distribuidor ni deposita puntos nuevos**.
+
+Antes, un pedido donde no entraba **un solo peso** por la mercancía pagaba además comisión
+calculada sobre el precio íntegro. Con los números del barrido adversarial: **$262,076 de pérdida
+en un solo pedido**.
+
+## 🤖 El canal de distribuidores lo decide EL MOTOR, no la mano ⤴️
+
+Commit `54ea90c` en `pricing-system`. **Christian revirtió su decisión de la mañana** (la de sacar
+los 3 HGH a mano). La regla nueva, en una línea: **si el producto aguanta su comisión y sigue
+dejando 5×, entra al canal solo; si no la aguanta, sale solo. Sin excepciones a mano.**
+
+Lo que hizo el motor en cuanto se le quitó la lista:
+- **HCG 1,000 IU** y **HGH Fragment 176-191 12 mg** → **VOLVIERON** al canal, al 35%.
+- **HGH 36 IU** → **se quedó fuera**: 5.53× menos su comisión son 4.42×, debajo del piso.
+
+**Hoy son 8 los que quedan fuera, y ese número cambia solo.** Un producto entrando o saliendo del
+canal **NO es una alarma** — es la regla funcionando.
+
+`pricing-system/solo_venta_directa.json` quedó **VACÍO a propósito**, pero vivo: existe para el
+día que haya una razón que **no** sea el ROI (una regulación, un proveedor único, un compromiso
+escrito). Ese día se anota ahí con motivo y fecha. *(Verificado: el archivo sólo tiene la nota
+`_lee_esto` que explica esto mismo.)*
+
+### De paso: Certified subió el BPC-157 20 mg y nuestra hoja traía el viejo
+
+De **$1,180 a $1,440**. Refrescada la competencia: **nuestro precio sube a $1,429** y el producto
+vuelve al canal. **Lo cazó la prueba de que los dos lectores dan lo mismo** — no una alerta del
+Vigía. Vale la pena recordarlo: la comprobación que parecía burocrática fue la que encontró
+dinero.
+
+## 🌎 El sitio: las dos órdenes de Christian, ya en vivo
+
+Commits `9a54c0e`, `b84204f`, `c3134ba` en `novapeptidos-UI`.
+
+1. ⛔ **NUNCA se menciona Asia, en ningún idioma.** Se quitaron **21 menciones** en ES/EN/PT.
+   *(Verificado esta noche: **cero** menciones de Asia en `src/` y `public/`; lo único que
+   aparece son los comentarios con la regla escrita, en `Home.js`, `translations.js`,
+   `productMonographs.js`, `info/calidad.js`, `learn/como-verificamos-cada-lote.js` y
+   `learn/preguntas-frecuentes.js` — a propósito, para que nadie la reintroduzca.)*
+2. **"El distribuidor de péptidos más grande de México"**, y **siempre apoyado en el dato**:
+   **193 presentaciones** contra **183 de Exoma** y **47 de Certified**. Un adjetivo lo escribe
+   cualquiera; la cuenta no.
+   **El número se CUENTA del catálogo, no está escrito a mano** (`PRESENTACIONES` en `Home.js`).
+   Si mañana se oculta un producto, el número baja solo y la portada nunca queda prometiendo un
+   catálogo que ya no existe. *(Verificado: el auditor del sitio y `auditar_catalogo.py` reportan
+   los mismos 193.)*
+   Se quitó el banner azul del hero; la frase vive como **título de la sección de variedad**.
+3. **Estados Unidos** mencionado en varios lugares, espejando los 8 donde lo dice Certified
+   *(lo de "8 de Certified" no se puede verificar desde el repo — **sin verificar**)*. Se habla
+   de **materia prima y abastecimiento**. ⛔ **NO** se dice que tengamos planta, laboratorio,
+   domicilio en EUA ni aprobación FDA.
+4. **El sello del descuento** ya sólo dice **"Hasta el 15%"** (`home.stamp.sub`).
+
+## 📣 Meta: estaba bloqueada, ya no
+
+⤴️ La mañana decía "bloqueado por Meta y no se puede hacer nada". **Ya se desbloqueó.** El bloqueo
+era de Meta —verificación de identidad de Christian—, **no del código ni del token**; el
+diagnóstico técnico de la mañana era correcto pero la conclusión "no hay nada que hacer" no.
+
+Al reactivarse aparecieron **6 campañas**. El panel enseñaba **2** porque estaba leyendo el **CSV
+del 25-jul**. Se subió el presupuesto diario a **$10 USD** y **después se pausaron las 6**, a
+propósito, **hasta comprobar que se puede comprar**.
+
+*(Los números de la cuenta no se pueden verificar desde el repo — **sin verificar**, vienen del
+panel de Meta: **$51.31 USD gastados · 1,145 clics al sitio · 514 vistas de página · CERO ventas
+por internet**. La única venta que existía —Paz, $3,347— la hizo la mamá de Christian **en
+persona**.)*
+
+⚠️ **Los seis días de anuncios (23–28 jul) coinciden uno a uno con los días en que los precios y
+el cobro estaban rotos.** Ese tráfico **no sirve para sacar conclusiones** sobre si el producto
+o el mensaje funcionan.
+
+## 🔬 EL DIAGNÓSTICO DE POR QUÉ NO VENDÍAMOS (Fable 5, 28-jul)
+
+**Esto es lo más valioso del día. Si sólo lees una sección, que sea ésta.**
+
+### 1. El sitio SÍ funciona. Está probado, no supuesto.
+
+Fable completó **un pedido real como desconocido, en celular**. Y **Christian pagó de verdad con
+tarjeta**: le llegaron el correo de confirmación y el de pago recibido. Los dos pedidos de prueba
+**ya se cancelaron y el inventario volvió a su lugar**. Así que el embudo entero, de la portada al
+cobro, está comprobado de punta a punta por una persona, no sólo por una suite.
+
+### 2. El "55% que se caía entre el clic y la página" era un espejismo
+
+**3 de los 4 anuncios mandaban a WhatsApp.** Un clic a WhatsApp **jamás** puede generar una vista
+de página: el píxel no existe ahí. No había fuga; había una resta mal planteada.
+
+### 3. El asesino real está en el checkout
+
+Una **casilla legal chica y gris arriba del botón**. Si no se marca, **el botón parece muerto**:
+el aviso se borra a los 4 segundos y la página salta arriba, lejos de la casilla. **Fable creyó
+tres veces que el sitio estaba roto.** Y encima es **redundante**: el visitante ya aceptó lo mismo
+en la puerta de entrada (`RuoGate`). *(El arreglo va dentro del trabajo del agente que está en el
+checkout ahora mismo — `RuoGate.js` y `Checkout.js` salen modificados y **sin commit**.)*
+
+### 4. Velocidad
+
+- **2.36 MB de JavaScript en un solo archivo** *(verificado: `build/static/js/main.52aa2176.js`,
+  2,363,767 bytes)*. **De 3 a 13 segundos** hasta pintar en móvil con mala señal.
+- **Certified pesa 26 MB pero muestra contenido en 2.0 s**, porque **su HTML llega armado del
+  servidor** (WooCommerce). Pesar menos no es la meta; **pintar antes** sí.
+- **Recomendación: partir el paquete con `React.lazy`.** *(Verificado: hoy no hay ninguno en
+  `src/App.js`.)* Es el punto 2 de la lista de trabajo.
+
+### 5. La medición ya se arregló
+
+El **`PageView` del píxel ahora se dispara desde `public/index.html`**, no desde React. Antes
+esperaba a que bajaran y se ejecutaran los 2.36 MB: quien se cansaba antes **sí había llegado**,
+pero para Meta **nunca existió**.
+⚠️ **Está hecho pero SIN COMMIT** (`public/index.html` sale modificado en `git status`). Que no se
+pierda.
+⚠️ **No borres el `track('visit')` de React**: ése alimenta NUESTRO embudo, que es otra cosa. Meta
+descarta los PageView repetidos de la misma carga.
+
+### 6. Los anuncios optimizaban a CLICS, no a compras
+
+De ahí los clics de **$0.045**: se compraron curiosos, no compradores. Cuando se reanuden, van a
+**Compras**.
+
+### 7. La competencia
+
+- **Exoma no tiene NI UN anuncio corriendo.**
+- **Certified lleva 6 activos desde el 7-13 de julio, sin parar, ~$1,000 USD/día.**
+- Fable dejó **3-4 anuncios concretos propuestos**. El mejor ataca **lo que Certified no puede
+  copiar**: **OXXO, SPEI y cripto** (ellos sólo aceptan tarjeta) y **envío gratis** contra sus
+  **$250**.
+
+## 🐕 Vigía actualizado
+
+`~/.claude/scheduled-tasks/vigia-precios-exygen/SKILL.md`:
+- Decía **41 pruebas** y son **116**.
+- Se le agregó **`certeza.py`** a lo que corre.
+- **Regla de distribuidores nueva**: ya no hay listas a mano, y **un producto entrando o saliendo
+  del canal NO es alarma**.
+
+⚠️ **Queda un renglón viejo sin corregir**: la línea 111 (el reporte "sin novedad") todavía dice
+**"41 pruebas en verde"**. Las otras tres menciones ya dicen 116. Arreglarlo la próxima vez que se
+toque ese archivo.
+
+## 📝 Los dos prompts de Codex, al día
+
+`pricing-system/PROMPT-AUDITORIA.md` y `PROMPT-ROMPEDOR.md` — al día con todo lo anterior, más
+**dos preguntas nuevas para el auditor**: (15) que ninguna parte del sistema siga guardando una
+lista paralela del canal ahora que lo decide la fórmula, y (16) romper el pedido repetido por
+otros caminos (mismo producto con dos identificadores, dos pedidos a la vez, cantidades negativas
+o fraccionarias) y comprobar que el inventario vivo **de verdad baje**.
+⚠️ **Los dos están modificados y SIN COMMIT.**
+
+## 🔴 Proveedor Lumi (P31) — DOS PRECIOS MAL ASIGNADOS, PENDIENTE
+
+118 precios leídos de los 145 del PDF. **Codex encontró dos mal asignados que siguen sin
+corregir.** *(Verificados esta noche renglón por renglón en `pricing-system/costos_proveedores.csv`.)*
+
+| Lo que dice el PDF | Cómo quedó guardado | Cómo se ve el error |
+|---|---|---|
+| **MOTS-C 10 mg · US$88** | `P31,Lumi,KPV,10mg,…,88.0,…` | el código de catálogo es **MS10** (MS = MOTS-C), pero está bajo KPV |
+| **NAD+ 100 mg · US$38** | `P31,Lumi,Mazdutide,100mg,…,38.0,…` | el código es **NJ100** (NJ = NAD+), pero está bajo Mazdutide |
+
+Pista extra para quien lo arregle: **`NJ100` aparece dos veces** en el CSV —una como "Mazdutide
+100mg" y otra como "NAD+ 100mg / 10 ml"—. El lector no está usando el código de catálogo para
+desambiguar, y ahí está la falla de raíz.
+
+**Además:** Christian va a hacerle **un pedido pequeño a Lumi** para comprobar su bodega en México
+y los 2-3 días de entrega, **que hoy son sólo promesa suya**. (Regla vieja de la casa: los
+proveedores mienten hasta que una compra real dice lo contrario.)
+
+---
+
+# 🎯 LÍNEA DE TRABAJO: EL PANEL ADMIN A FUTURO
+
+**Esto lo pidió Christian expresamente y no es una tarea suelta: es el criterio con el que se
+diseña cualquier pantalla nueva del Panel de aquí en adelante.**
+
+Sus palabras: **el Panel tiene que ser simple de usar y de entender**. Las métricas son
+**esenciales**, y él necesita ver **"radiografías"** para tomar decisiones **junto con el agente**.
+
+De ahí salen dos reglas para todo lo que se construya en el Panel:
+
+1. **Cada pantalla responde UNA pregunta de negocio.** No "aquí están los datos", sino
+   "¿estoy ganando dinero con esto?", "¿qué me falta surtir?", "¿qué producto se está
+   comiendo el margen?". Si una pantalla no se puede resumir en una pregunta, está mal
+   planteada.
+2. **Ningún número va solo: va con qué hacer con él.** Un ROI de 4.42× no dice nada; "4.42×,
+   debajo del piso de 5×, por eso este producto salió del canal" sí. El Panel no es un tablero
+   de instrumentos: es una conversación entre Christian y el agente, y los números son los
+   argumentos.
+
+Corolario: cuando haya que elegir entre **más datos** y **más claridad**, gana la claridad. Un
+Panel que Christian entiende solo vale más que uno completo que necesita traducción.
+
+---
+
+# 🗄️ HISTORIA DEL DÍA — LA MAÑANA DEL 2026-07-28
+
+*(Se conserva porque explica de dónde salieron las cosas. Ojo: lo marcado ⤴️ arriba lo cambió la
+tarde. En particular, **los 3 HGH ya NO están en una lista a mano** y **Meta ya no está
+bloqueada**.)*
+
+## ✅ Lo que se cerró en la mañana (una línea cada uno)
 
 1. **Los 3 HGH a venta directa** — HGH 36 IU, HGH Fragment 176-191 12 mg y HCG 1,000 IU quedaron
    `vender = si` + `elegible_distribuidor = no`, declarado en `pricing-system/solo_venta_directa.json`.
-   Aplicado y en vivo. *(detalle abajo)*
+   ⤴️ **REVERTIDO por la tarde**: hoy lo decide el motor; dos de los tres volvieron al canal.
 2. **Codex con los permisos que hacían falta** — `pricing-system/auditar_con_codex.sh`, con
    `--skip-git-repo-check`, `--sandbox workspace-write` y **red abierta**. `PROMPT-AUDITORIA.md` y
    `PROMPT-ROMPEDOR.md` al día.
@@ -61,36 +309,34 @@ terminó. Quedó **pendiente de verificar**.
 5. **Botones nuevos en el Panel**: "Refrescar" y "Vender esto / descartar". Aprobar **no publica**:
    deja la decisión anotada y el alta la hace el motor. *(detalle abajo)*
 6. **Proveedor nuevo: Lumi (P31)**, 118 precios, y **tres fallas de raíz** tapadas en el lector de
-   listas de proveedor. *(detalle abajo — es lo más importante del día después de los HGH)*
+   listas de proveedor. *(detalle abajo — y ver arriba los dos precios mal asignados que quedan)*
 7. **Panel más navegable**: cambiar de pestaña abre ARRIBA, Recompra se movió dentro de Clientes,
    el sidebar quedó agrupado en **Negocio · Gente · Catálogo · Difusión · Ajustes**, y hay sección
    nueva en Inventario: "Surtir el catálogo completo".
 8. **Sello del home**: ya sólo dice **"Hasta el 15%"** (se quitó "ya aplicado" y el monto mínimo).
 
-## 🔴 Lo que sigue ABIERTO
+## 🔴 Lo que la mañana dejó abierto (y cómo quedó a la noche)
 
-### 1. Meta — bloqueado por Meta, no por nosotros
+### 1. Meta — ⤴️ RESUELTO por la tarde
 
-La API de Marketing responde **`API access blocked`** (OAuthException, code 200) a **CUALQUIER**
-llamada, incluida `/me`. Comprobado hoy con el token bueno. **No es el token ni el código: es un
-bloqueo de Meta sobre la app.** Mientras tanto el panel enseña el **CSV del 25-jul**, que es
-exactamente para lo que existe el doble camino en `novapeptidos-RBAC/meta_ads.py` (CSV y API dan
-la misma salida, el panel no se entera de cuál viene).
+La API de Marketing respondía **`API access blocked`** (OAuthException, code 200) a **CUALQUIER**
+llamada, incluida `/me`. **No era el token ni el código: era un bloqueo de Meta sobre la app**, y
+se levantó cuando Christian completó la verificación de identidad. Mientras duró, el panel enseñó
+el **CSV del 25-jul** — exactamente para lo que existe el doble camino en
+`novapeptidos-RBAC/meta_ads.py` (CSV y API dan la misma salida, el panel no se entera de cuál
+viene). Ese doble camino se ganó su lugar.
 
-⚠️ **Christian quiere subir el presupuesto diario a 10 USD y no se puede hasta desbloquear la app.**
+### 2. El home — ⤴️ TERMINADO por la tarde
 
-### 2. El home — hay otro agente trabajando AHÍ AHORA MISMO
+Ver arriba, "El sitio: las dos órdenes de Christian".
 
-Mensaje de "el distribuidor más grande de México" apoyado en las 193 presentaciones, y menciones
-de EUA. **No lo toques.** Quedó **pendiente de verificar** cuando termine.
-
-### 3. Movimientos de precio del Dashboard: van a seguir vacíos
+### 3. Movimientos de precio del Dashboard: van a seguir vacíos — SIGUE ABIERTO
 
 Hasta que `reprecio.py` escriba en la base, la base se reconstruye desde `maestra.csv` en cada
 corrida y todo sale como carga inicial. El tablero lo dice con todas sus letras en vez de fingir
 que hay historial.
 
-### 4. Pendientes viejos que siguen vivos
+### 4. Pendientes viejos que siguen vivos — SIGUEN ABIERTOS
 
 - **Vigencias traslapadas.** La base acepta dos periodos históricos que se encimen; el índice
   único sólo impide dos precios ABIERTOS. Hoy no está pasando.
@@ -107,13 +353,17 @@ que hay historial.
 
 ### 5. Lista larga de pendientes (orden de gravedad, no de urgencia)
 
-1. **Actualizar el Vigía** para que lea de la base (pedido de Christian).
+1. **Actualizar el Vigía para que lea de la base** (pedido de Christian). *(El Vigía sí se
+   actualizó el 28-jul en su regla de distribuidores y en el número de pruebas, pero **esto otro
+   sigue pendiente**.)*
 2. **Terminar de migrar el motor**: que `reprecio.py` escriba en la base. Ahí se apaga
    `MAESTRA.xlsx` del todo.
 3. **Cargar el CAC** del panel de Meta a `costo_adquisicion` (la tabla está creada y vacía).
+   *(Ahora que Meta está desbloqueada, esto ya se puede hacer.)*
 4. **Traer descuentos y puntos por cliente** del backend a la base.
 5. **Costos de envío de los proveedores nuevos** — sin eso "el más barato" puede mentir.
 6. **Mover los costos al Panel Admin** (acordado, no empezado): hoy hace falta una terminal.
+   *(Encaja con la línea de trabajo del Panel, arriba.)*
 7. **Que el reabastecimiento viva EN LÍNEA**, no en la Mac de Christian (lo pidió él).
 8. **Preguntarle a los proveedores** lo de `datos/preguntar_al_proveedor.csv`: qué es "TBFing",
    si el SLU-PP es 322 o 332, y cuál precio vale de los dos que da DT.

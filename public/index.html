@@ -53,6 +53,18 @@
           s.parentNode.insertBefore(t,s)}(window,document,'script',
           'https://connect.facebook.net/en_US/fbevents.js');
           fbq('init', '2487053198462294');
+          // La VISITA se cuenta AQUÍ, en el HTML, no desde React.
+          //
+          // Antes sólo se disparaba desde `App.js` (`track('visit')`), o sea después de
+          // descargar y ejecutar 2.35 MB de JavaScript: entre 3 y 13 segundos en un
+          // celular con mala señal. Quien se cansaba antes SÍ había llegado, pero para
+          // Meta nunca existió. Con esto la visita se cuenta cuando la página llega, que
+          // es lo que de verdad pasó. (Diagnóstico de Fable 5, 2026-07-28: 1,145 clics
+          // contra 514 "vistas" — y buena parte del hueco era esto.)
+          //
+          // ⚠️ No borres el `track('visit')` de React: ése alimenta NUESTRO embudo, que
+          // es otra cosa. Meta descarta los PageView repetidos de la misma carga.
+          fbq('track', 'PageView');
         </script>
         <noscript><img height="1" width="1" style="display:none"
           src="https://www.facebook.com/tr?id=2487053198462294&ev=PageView&noscript=1" alt="" /></noscript>
