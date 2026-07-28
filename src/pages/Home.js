@@ -320,7 +320,9 @@ const Home = () => {
             ))}
           </div>
         </div>
-        <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 pb-24 relative">
+        {/* pb-12 y no pb-24: los destacados vienen justo abajo y con los dos
+            colchones juntos quedaba un hueco enorme (Christian, 2026-07-28). */}
+        <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 pb-12 relative">
           {/* Centrado bajo el carrusel de compuestos (Christian, 2026-07-28). Antes
               colgaba a la izquierda y quedaba desalineado con la cinta que corre
               arriba, que sí ocupa todo el ancho. En pantalla chica siguen siendo dos
@@ -355,8 +357,9 @@ const Home = () => {
       {/* ===== Featured products ===== */}
       {/* Subieron aquí, JUSTO debajo de la cinta de compuestos y los cuatro datos
           del hero (Christian, 2026-07-28): los péptidos son el único producto y el
-          enfoque de la marca, así que el producto se enseña antes que los sellos. */}
-      <section className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 py-24">
+          enfoque de la marca, así que el producto se enseña antes que los sellos.
+          pt-8 arriba (el hero ya trae su pb-12) y pb-24 abajo, donde sí hay corte. */}
+      <section className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 pt-8 pb-24">
         <div className="flex items-end justify-between mb-6">
           <div>
             <div className="kicker">{t('home.featuredKicker')}</div>

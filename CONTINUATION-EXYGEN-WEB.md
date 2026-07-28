@@ -3884,7 +3884,36 @@ que tocar; cuando se active, lo demás ya está listo.
 **La marcha atrás, si algo sale mal:** devolver los cuatro registros A de exygenlabs.com a
 las IPs de GitHub Pages de arriba. Tarda minutos.
 
-### Calculadora de la competencia — mirar y adoptar lo bueno
+### Calculadora de Certiva — ANÁLISIS HECHO (2026-07-28, esta sesión)
+
+Se compararon las dos en vivo. **La nuestra gana en lo más importante**: recomienda cuánta agua
+poner (Certiva te la pide como dato), se precarga con NUESTRO catálogo (vende), dibuja la
+jeringa igual que ellos, da dosis por vial y concentración igual que ellos, y está en español.
+
+**Lo que Certiva tiene y nosotros no (candidatos a adoptar):**
+1. **Aviso de jeringa rebasada** — si la dosis pide más rayitas de las que caben, ellos lo
+   marcan; nosotros no avisan nada. *Adoptar: sí, es seguridad y es barato.*
+2. **Sección de fórmulas transparentes + FAQ + "agua bacteriostática vs estéril"** en la misma
+   página. Es contenido SEO puro (por eso rankean por "peptide calculator"). Nuestra página es
+   delgada. *Adoptar: sí, en español; nadie lo tiene en México.*
+3. **Convertidor por peso corporal (mcg/kg × kg, con lb→kg)** — neutro, "tú pones el valor".
+   *Adoptar: probablemente; encaja con nuestras dosis de referencia (63/90) sin copiar a nadie.*
+4. **Selector de capacidad de jeringa (0.3/0.5/1 mL)** y **modo "yo pongo el agua"** — nosotros
+   los tenemos PERO encerrados en la versión de cuenta. Certiva los da gratis.
+   ⚠️ *Ésta es decisión de Christian: abrirlos al público debilita el gancho de "entra a tu
+   cuenta", pero contra Certiva gratis el gancho se ve flaco.*
+5. **Modo genérico sin elegir producto** (masa y agua a mano) — hoy obligamos a elegir un
+   producto nuestro. ⚠️ *También decisión de negocio: el candado actual vende, el genérico
+   atrae tráfico.*
+
+**Lo que NO se adopta:** su negativa a dar dosis de referencia (nuestras 63/90 con niveles son
+ventaja deliberada y viven tras la cuenta, regla ya establecida); y pedir el agua como dato
+obligatorio (nuestro "te digo cuánta agua" es mejor para novatos).
+
+**Estado: análisis terminado; la implementación espera el visto bueno de Christian en los
+puntos 4-5 (tocan la estrategia de cuenta). Los puntos 1-3 se pueden hacer sin permiso.**
+
+### Calculadora de la competencia — mirar y adoptar lo bueno (pedido original)
 Christian pidió (2026-07-28) analizar ésta y ver qué conviene copiar a la nuestra:
 **https://certivapeptides.com/peptide-calculator/#reconstitution-calculator**
 La nuestra vive en `/calculadora` (`src/pages/`). Comparar: qué preguntan y en qué orden,
