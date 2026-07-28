@@ -137,6 +137,35 @@ revés: un NO elegible que traiga tope.
    verificable (hoy `quien='christian'` lo puede escribir cualquiera); y estados formales de
    propuesta → aprobación → publicación → verificado en producción.
 
+### Reabastecimiento: el sistema avisa, y deja el mensaje listo
+
+`reabastecer.py` — pedido de Christian: «cuando un cliente pague por algo que no tenemos,
+avísame y ayúdame a pedirle una caja al proveedor más barato por WhatsApp, o avísame y yo
+lo hago».
+
+**Hallazgo que cambió el diseño:** el `stock` de `/api/products` **NO es inventario real**
+(devuelve 40 en 191 productos y 41 en dos: es un valor sembrado). El bueno está en
+**`GET /api/stock`**, que además trae `in_hand`. Y eso es lo que importa, porque —palabras
+de Christian— *«los de entrega inmediata son los que tengo aquí conmigo; los demás los
+tengo que solicitar y me tardan 7 a 14 días»*.
+
+**Hoy hay 9 EN MANO** y cuadran exactamente con sus compras reales: Retatrutida 10/20/40mg,
+Tirzepatida 10mg, NAD+ 500mg, KLOW 80mg, 5-Amino-1MQ 5mg y las dos aguas bacteriostáticas.
+Los otros 184 son **bajo pedido**: no hay nada que reponer porque no los tiene.
+
+Lo que hace: lee el inventario en vivo, marca lo que se está acabando **de lo que sí tiene**,
+busca a quién comprarle (el más barato **contando el envío**, marcando a quién ya se le
+compró de verdad y avisando cuando al más barato no se le sabe el envío), y escribe el
+mensaje de WhatsApp con enlace `wa.me` listo.
+
+⛔ **NO manda nada.** Un pedido es dinero que sale y un inventario mal leído pediría cajas
+de más. Para automatizarlo de verdad, el paso que falta es que Christian apruebe cada
+pedido en el Panel — no que un script le escriba solo a un proveedor en China.
+
+⚠️ **Pendiente que Christian pidió: que esto viva EN LÍNEA**, no en su Mac.
+⚠️ Ojo: en mano aparece **5-Amino-1MQ 5 mg**, pero la compra real fue **10 mg** (a Lisa,
+$45). Uno de los dos está mal y hay que confirmarlo.
+
 ## 🟡 PROVEEDORES — ver `pricing-system/HANDOFF-PROVEEDORES.md`
 
 **30 proveedores, 1,476 precios de 11 de ellos**, de 28 chats de WhatsApp.
@@ -172,7 +201,7 @@ fuente real o es carnada; a ninguno se le ha comprado. ⚠️ **A ninguno se le 
 ## Compuertas (todas en verde)
 
 `npm run verificar` → 80 + 21 + 15 · Backend: 232 pytest · **Precios: 69** ·
-Auditor de catálogo: 14/14 · `python3 certeza.py`: 204/204 · **Precios: 70** · `python3 db.py --revisar`.
+Auditor de catálogo: 14/14 · `python3 certeza.py`: 204/204 · **Precios: 92** · `python3 db.py --revisar`.
 
 ---
 
