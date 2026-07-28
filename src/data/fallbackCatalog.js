@@ -1229,11 +1229,11 @@ export const fallbackProducts = [
     "presentation": "0.1 mg – 1 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
-    "price": 419,
+    "price": 589,
     "variants": [
       {
         "presentation": "0.1 mg",
-        "price": 419,
+        "price": 589,
         "stock": 40,
         "batch_number": "NP-IGF101-2601",
         "id": "adc6f9d6-6c27-4485-a728-f1f758f362a1",
@@ -1624,11 +1624,11 @@ export const fallbackProducts = [
     "presentation": "2 mg – 10 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
-    "price": 1439,
+    "price": 1429,
     "variants": [
       {
         "presentation": "2 mg",
-        "price": 1439,
+        "price": 1429,
         "stock": 40,
         "batch_number": "NP-FOXO2-2601",
         "id": "3b6fceed-222a-42da-ab79-33e948a211c0",
@@ -1877,11 +1877,11 @@ export const fallbackProducts = [
     "presentation": "10 mg – 50 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
-    "price": 1319,
+    "price": 1099,
     "variants": [
       {
         "presentation": "10 mg",
-        "price": 1319,
+        "price": 1099,
         "stock": 40,
         "batch_number": "NP-SS3110-2601",
         "id": "1e910b14-c23a-48b5-87e6-4658ba7d4548",
@@ -2568,11 +2568,11 @@ export const fallbackProducts = [
     "presentation": "2 mg – 5 mg",
     "form": "Liofilizado",
     "purity": "99.1%",
-    "price": 889,
+    "price": 1079,
     "variants": [
       {
         "presentation": "2 mg",
-        "price": 889,
+        "price": 1079,
         "stock": 40,
         "batch_number": "NP-CJCD2-2601",
         "id": "fcea43c2-0c8f-446e-9b5a-395bf7ab0944",
@@ -2582,7 +2582,7 @@ export const fallbackProducts = [
       },
       {
         "presentation": "5 mg",
-        "price": 1599,
+        "price": 1919,
         "stock": 40,
         "batch_number": "NP-CJCD5-2601",
         "id": "da9906d3-487d-49d3-b2ee-017e427c2f54",
@@ -2641,7 +2641,7 @@ export const fallbackProducts = [
       },
       {
         "presentation": "5 mg",
-        "price": 1089,
+        "price": 1319,
         "stock": 40,
         "batch_number": "NP-CJCN5-2601",
         "id": "5ab62375-3a75-4e76-9296-722a63ad9eec",
@@ -2928,11 +2928,11 @@ export const fallbackProducts = [
     "presentation": "10 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
-    "price": 599,
+    "price": 939,
     "variants": [
       {
         "presentation": "10 mg",
-        "price": 599,
+        "price": 939,
         "stock": 40,
         "batch_number": "NP-MELA10-2601",
         "id": "95db77c5-be8e-4dc8-8a72-4ab8d2161f90",
@@ -2975,11 +2975,11 @@ export const fallbackProducts = [
     "presentation": "10 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
-    "price": 959,
+    "price": 719,
     "variants": [
       {
         "presentation": "10 mg",
-        "price": 959,
+        "price": 719,
         "stock": 40,
         "batch_number": "NP-MT210-2601",
         "id": "3a2d63d3-e84a-4892-be29-2f776fdd8491",
@@ -3024,11 +3024,11 @@ export const fallbackProducts = [
     "presentation": "10 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
-    "price": 1579,
+    "price": 1569,
     "variants": [
       {
         "presentation": "10 mg",
-        "price": 1579,
+        "price": 1569,
         "stock": 40,
         "batch_number": "NP-MICL10-2601",
         "id": "391fa2fe-a5cf-413b-b16a-a14660de474a",
@@ -3248,11 +3248,11 @@ export const fallbackProducts = [
     "presentation": "2 mg – 20 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
-    "price": 439,
+    "price": 749,
     "variants": [
       {
         "presentation": "2 mg",
-        "price": 439,
+        "price": 749,
         "stock": 40,
         "batch_number": "NP-TESA2-2601",
         "id": "e4e46c55-b8da-4058-96e3-db76f99905d9",
@@ -3262,7 +3262,7 @@ export const fallbackProducts = [
       },
       {
         "presentation": "5 mg",
-        "price": 899,
+        "price": 1179,
         "stock": 40,
         "batch_number": "NP-TESA5-2601",
         "id": "517d579b-7afc-427e-ac06-53c88855fb90",
@@ -3272,7 +3272,7 @@ export const fallbackProducts = [
       },
       {
         "presentation": "10 mg",
-        "price": 1939,
+        "price": 1799,
         "stock": 40,
         "batch_number": "NP-TESA10-2601",
         "id": "864667b7-3027-48f6-a393-d28f163e4fd6",
@@ -3341,7 +3341,7 @@ export const fallbackProducts = [
       },
       {
         "presentation": "10 mg",
-        "price": 2399,
+        "price": 1579,
         "stock": 40,
         "batch_number": "NP-VIP10-2601",
         "id": "982833c9-b7e9-4504-b2cb-5be84ae9e3e8",
@@ -3912,7 +3912,7 @@ export const fallbackProducts = [
     "start_levels": {
       "inicial": 0.6,
       "tipica": 1.8,
-      "avanzada": 3.0,
+      "avanzada": 3,
       "unit": "mg",
       "fuente": "Etiqueta aprobada de Saxenda (liraglutida) — DailyMed/FDA: 0.6 mg al día la primera semana y se sube 0.6 mg cada semana hasta 3 mg. https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=3946d389-0926-4f77-a708-0acb8153b143",
       "agua_ml": {
@@ -3970,7 +3970,7 @@ export const fallbackProducts = [
       },
       {
         "presentation": "40 mg",
-        "price": 2198,
+        "price": 2799,
         "stock": 40,
         "batch_number": "NP-MOTS40-2601",
         "id": "befcc9bf-0e3d-4a19-a5ca-9ec4512d1a16",
@@ -4524,7 +4524,7 @@ export const fallbackProducts = [
     "presentation": "10 mg – 16 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
-    "price": 1579,
+    "price": 1569,
     "variants": [
       {
         "presentation": "10 mg",
@@ -4538,7 +4538,7 @@ export const fallbackProducts = [
       },
       {
         "presentation": "16 mg",
-        "price": 1579,
+        "price": 1569,
         "stock": 40,
         "batch_number": "NP-ARA216-2601",
         "id": "582df66d-c396-44e1-994a-adf34e693203",
@@ -5007,11 +5007,11 @@ export const fallbackProducts = [
     "presentation": "5 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
-    "price": 1799,
+    "price": 1639,
     "variants": [
       {
         "presentation": "5 mg",
-        "price": 1799,
+        "price": 1639,
         "stock": 40,
         "batch_number": "NP-LL375-2601",
         "id": "36e337ce-8b7a-497b-aa01-7c5bc853e277",
