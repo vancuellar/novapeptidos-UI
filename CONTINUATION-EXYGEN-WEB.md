@@ -116,16 +116,19 @@ suya. El dato que lo decidió: clics **~$97 → 0 compras**; WhatsApp **$2.55 �
 una campaña de interacción a **$40/día** que no creamos nosotros. **Christián pidió bajarla
 a $20 y YA SE HIZO** (id `120247593627860767`, ahora $20/día).
 
-⛔ **PERO EL GASTO REAL NO SON $20.** Hay DOS campañas con bolsa que se han pausado **tres
-veces** y **vuelven a activarse solas**:
-- `120247575287620767` — le quedan **$16.99** hasta el 31-jul (~$8/día)
-- `120247526324890767` — le quedan **$129.87** hasta el 4-ago (~$21/día)
+**Christián autorizó que María las reactive** (2026-07-29): *"Está bien que reactivó las
+campañas, déjalo así. Solo reduce el presupuesto"*. ⛔ **NO las vuelvas a pausar.** Se les
+bajó la bolsa en vez de apagarlas:
+- `120247575287620767` — de $16.99 a **$5** restantes hasta el 31-jul (~$2.50/día)
+- `120247526324890767` — de $129.87 a **$15** restantes hasta el 4-ago (~$2.50/día)
 
-Sumadas a los $20 de María, el gasto real anda en **~$49/día**, no $20. **No las vuelvas a
-pausar sin hablar con Christián y María**: alguien las está reactivando a propósito y
-pausarlas otra vez sólo genera una pelea de configuración. Las campañas con **bolsa de por
-vida no enseñan "presupuesto diario"**, así que no aparecen al sumar y es fácil creer que
-se gasta menos de lo que se gasta — ojo con eso al revisar.
+**Estado final: ~$45/día** — WhatsApp $20 + la de María $20 + $5 entre las dos de bolsa.
+(Bajó de ~$49.) Si Christián quiere volver a los $20 totales que pidió al principio, hay
+que bajar una de las dos de $20.
+
+⚠️ **Trampa al revisar el gasto:** las campañas con **bolsa de por vida NO enseñan
+"presupuesto diario"**, así que al sumar la columna parece que se gasta mucho menos de lo
+que de verdad se gasta. Hay que dividir la bolsa restante entre los días que faltan.
 
 **Para María, los UTM:** destino `https://exygenlabs.com/catalogo` (NO la portada: de 782
 visitas sólo 20 vieron un producto) y en el campo "Parámetros de URL":
