@@ -364,8 +364,9 @@ export default function MotorPrecios() {
             ]}
           />
           <p className="text-[11px] text-muted-foreground mt-3">
-            "Vender esto" no lo publica: lo deja anotado y lo da de alta el motor desde la
-            Mac, con su precio calculado (costo, competencia y piso de 5×). Los{' '}
+            "Vender esto" deja la decisión anotada; el alta completa la corre la Mac con{' '}
+            <code>python3 pricing-system/dar_de_alta.py --aplicar</code> — precio por
+            fórmula, catálogo, vial, ficha y despliegue, con todas las compuertas. Los{' '}
             {opos.excluidos || 0} excluidos no aparecen aquí y no se pueden aprobar
             {(opos.motivos_vetados || []).length > 0
               && `: ${(opos.motivos_vetados || []).join(' · ').toLowerCase()}`}.

@@ -439,7 +439,7 @@ const Admin = () => {
             construyendo las pestañas. Catorce entradas seguidas se leen como una lista
             de nada; en cinco grupos se encuentra sin leer. Recompra ya no está aquí:
             vive DENTRO de Clientes, que es lo que es. */}
-        <DashboardSidebar items={[
+        <DashboardSidebar activeTab={tab} items={[
           { grupo: 'Negocio' },
           { value: 'sales', icon: TrendingUp, label: t('admin.salesTab') },
           { value: 'orders', icon: ShoppingBag, label: t('admin.ordersTab') },

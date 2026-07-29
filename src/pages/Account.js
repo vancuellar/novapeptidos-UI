@@ -222,7 +222,7 @@ const Account = () => {
         {/* Antes de la primera compra pagada el menú se muestra recortado:
             solo Mis pedidos (necesario para pagar/subir comprobante SPEI) y
             Perfil. El resto aparece cuando se confirma su primer pago. */}
-        <DashboardSidebar items={toolsUnlocked ? [
+        <DashboardSidebar activeTab={tabActiva} items={toolsUnlocked ? [
           { value: 'orders', icon: Package, label: t('account.ordersTab') },
           { value: 'news', icon: Bell, label: t('news.tab') + (notifUnread ? ` (${notifUnread})` : '') },
           { value: 'tools', icon: Syringe, label: t('account.toolsTab') },

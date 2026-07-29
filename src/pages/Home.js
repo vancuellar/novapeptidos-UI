@@ -15,6 +15,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { toast } from 'sonner';
 import ProductCard from '@/components/ProductCard';
+import { WHATSAPP_URL, WHATSAPP_DISPLAY } from '@/lib/contact';
 import api from '@/lib/api';
 import { VISIBLE_CATEGORIES, fallbackProducts } from '@/data/fallbackCatalog';
 import { FEATURED_TABS, getTabProducts } from '@/data/featured';
@@ -221,9 +222,14 @@ const Home = () => {
             40 y 56 (2026-07-26). */}
         <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 pt-10 lg:pt-14 pb-16 relative">
           {/* El titulo va ARRIBA de los viales tambien en telefono
-              (Christian, 2026-07-26). */}
-          <div className="grid lg:grid-cols-[1.1fr_0.9fr] gap-8 lg:gap-16 items-center">
-            <div>
+              (Christian, 2026-07-26). Y los VIALES van arriba del doblez en
+              telefono (arreglo de Fable, 2026-07-29): antes la primera pantalla
+              del celular era puro texto y el producto quedaba abajo. Con las
+              grid-areas el orden en movil es titulo → viales → texto/botones,
+              y en escritorio se ve EXACTAMENTE igual que antes (dos columnas,
+              viales a la derecha). */}
+          <div className="grid grid-cols-1 [grid-template-areas:'a'_'b'_'c'] lg:grid-cols-[1.1fr_0.9fr] lg:[grid-template-areas:'a_b'_'c_b'] gap-8 lg:gap-x-16 lg:gap-y-0 items-center">
+            <div className="[grid-area:a] lg:self-end">
               {/* "FABRICADO EN EUA" con bandera, junto al kicker: es el primer
                   argumento de la competencia y Christian lo quiere con el mismo
                   peso (2026-07-28). Laboratorios de terceros — nunca planta propia. */}
@@ -238,18 +244,12 @@ const Home = () => {
                 {/* "lote por lote" va en su propio renglon, debajo. */}
                 <span className="hero-title-accent block">{heroAccent}</span>
               </h1>
+            </div>
+            <div className="[grid-area:c] lg:self-start">
               {/* Márgenes de Resend: subtítulo pegado al título (8px) y 32px antes de los botones. */}
-              <p className="mt-3 text-lg text-muted-foreground max-w-xl leading-relaxed">
+              <p className="lg:mt-3 text-lg text-muted-foreground max-w-xl leading-relaxed">
                 {t('home.heroBody')}
               </p>
-              {/* SELLO DE DESCUENTO. (Christian, 2026-07-27; cifra actualizada 2026-07-28)
-                  El 10% se aplicaba solo en el carrito, así que el visitante se
-                  enteraba hasta el final — o nunca. Aquí se anuncia de entrada,
-                  con forma de sello estampado y no de banner de descuento, que es
-                  lo que baja el tono de una marca.
-                  El sello enseña el TECHO (15%) porque es lo que hace mirar, y el
-                  renglón de abajo dice el rango completo (10 al 15%) para que nadie
-                  llegue al carrito esperando 15% y se encuentre 10. */}
               <div className="mt-7 flex flex-wrap items-center gap-4">
                 <Link to="/catalogo" className="btn-resend" data-testid="hero-catalog-button">
                   {t('home.viewCatalog')} <ArrowRight className="h-4 w-4" />
@@ -257,7 +257,7 @@ const Home = () => {
                 <Link to="/aprende/empieza-aqui" className="btn-resend-ghost">{t('home.startHere')}</Link>
               </div>
             </div>
-            <div className="flex flex-col items-center justify-center">
+            <div className="[grid-area:b] flex flex-col items-center justify-center">
               {/* SELLO DE DESCUENTO. (Christian, 2026-07-28): vive del lado
                   derecho del hero, ARRIBA de los viales — no encima de ellos.
                   El sello enseña el TECHO (15%) porque es lo que hace mirar, y
@@ -742,6 +742,30 @@ const Home = () => {
               <Link to="/catalogo">{t('home.b2bCta2')}</Link>
             </Button>
           </div>
+        </div>
+
+        {/* ===== Mónica Fuentes — la cara del negocio ===== */}
+        {/* La revisión de Fable lo dijo sin rodeos: "cero rostros, cero nombres, un
+            catálogo sin dueño". Mónica es la representante de ventas REAL (Christián,
+            2026-07-28). Sin foto no se inventa una: iniciales y nombre de verdad.
+            El WhatsApp es el mismo del negocio — es el canal que ella atiende. */}
+        <div className="mt-6 rounded-2xl border border-border bg-card px-6 py-8 sm:px-10 flex flex-col sm:flex-row items-center gap-6" data-testid="home-representante">
+          <div className="h-20 w-20 shrink-0 rounded-full bg-[hsl(var(--primary))]/15 border border-[hsl(var(--primary))]/30 flex items-center justify-center font-heading text-2xl font-bold text-[hsl(var(--primary))]">
+            MF
+          </div>
+          <div className="text-center sm:text-left flex-1">
+            <div className="font-heading text-xl font-bold">Mónica Fuentes</div>
+            <div className="text-sm text-[hsl(var(--primary))] font-medium mt-0.5">{t('home.rep.role')}</div>
+            <p className="text-sm text-muted-foreground mt-2 max-w-xl leading-relaxed">{t('home.rep.body')}</p>
+          </div>
+          {WHATSAPP_URL && (
+            <a href={`${WHATSAPP_URL}?text=${encodeURIComponent(t('home.rep.prefill'))}`}
+              target="_blank" rel="noreferrer" data-testid="home-rep-whatsapp"
+              className="inline-flex items-center gap-2 rounded-full bg-[#25D366] text-white px-6 h-12 text-sm font-semibold hover:opacity-90 transition-opacity shrink-0">
+              {t('home.rep.cta')}
+              <span className="font-normal opacity-90 hidden md:inline">· {WHATSAPP_DISPLAY}</span>
+            </a>
+          )}
         </div>
 
         {/* Solicitud de distribuidor: llega al Admin de Christian, nada se aprueba solo. */}

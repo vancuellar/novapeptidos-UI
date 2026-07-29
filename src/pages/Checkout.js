@@ -58,6 +58,14 @@ const Checkout = () => {
   const [envio, setEnvio] = useState({ estado: 'idle', options: [], detail: '' });
   const [envioElegido, setEnvioElegido] = useState('');
 
+  // ⛔ EL PASO QUE NUNCA SE MEDÍA. El backend espera `checkout_start` (ver
+  // EVENT_TYPES en server.py) y el frontend jamás lo mandaba: el embudo del Panel
+  // decía 0 con compras hechas, y a Meta se le avisaba InitiateCheckout sólo de
+  // rebote, atado a la visita. Sin este escalón no se puede saber si la gente se
+  // cae ANTES o DESPUÉS de llegar al checkout — que es justo lo que hay que saber
+  // con 2,700 clics y cero compras. (Christián, 2026-07-29)
+  useEffect(() => { track('checkout_start'); }, []);
+
   // Cripto (BTCPay) solo aparece si el servidor lo tiene encendido.
   useEffect(() => {
     api.get('/payments/config').then((r) => {

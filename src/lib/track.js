@@ -103,6 +103,10 @@ const META = {
   visit: 'PageView',
   product_view: 'ViewContent',
   add_to_cart: 'AddToCart',
+  // El nombre bueno es `checkout_start`: es el que el backend acepta
+  // (EVENT_TYPES en server.py). `checkout` se queda como alias porque el mapa
+  // viejo lo usaba y no cuesta nada seguir entendiéndolo.
+  checkout_start: 'InitiateCheckout',
   checkout: 'InitiateCheckout',
   purchase: 'Purchase',
 };

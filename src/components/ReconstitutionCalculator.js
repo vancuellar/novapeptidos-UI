@@ -8,7 +8,7 @@ import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Popover, PopoverTrigger, PopoverContent } from '@/components/ui/popover';
 import { Command, CommandInput, CommandList, CommandEmpty, CommandItem } from '@/components/ui/command';
-import { Syringe, Droplet, FlaskConical, Search, Check, ChevronsUpDown, RotateCcw, Copy, Link2, FileDown, ShoppingBag, CalendarClock } from 'lucide-react';
+import { Syringe, Droplet, FlaskConical, Search, Check, ChevronsUpDown, RotateCcw, Copy, Link2, FileDown, ShoppingBag, CalendarClock, AlertTriangle } from 'lucide-react';
 import { fallbackProducts } from '@/data/fallbackCatalog';
 import { useLanguage } from '@/context/LanguageContext';
 
@@ -874,7 +874,23 @@ const ReconstitutionCalculator = ({ variant = 'full', purchased = [], onTrack, s
                     </div>
                   </div>
                 </div>
-                {known.overfill && <div className="text-xs text-muted-foreground mt-2">{t('calc.overfill')}</div>}
+                {/* Rebase de jeringa: era letra chiquita gris y nadie la veía — es
+                    justo el error que llena la jeringa dos veces sin darse cuenta.
+                    Ahora es una alarma ámbar con el número exacto del faltante. */}
+                {known.overfill && (
+                  <div className="mt-3 rounded-lg border border-amber-500/50 bg-amber-500/10 px-3 py-2.5 flex items-start gap-2" data-testid="calc-overfill-warning">
+                    <AlertTriangle className="h-4 w-4 text-amber-500 shrink-0 mt-0.5" />
+                    <div className="text-sm">
+                      <span className="font-semibold text-amber-600 dark:text-amber-400">{t('calc.overfillTitle')}</span>{' '}
+                      <span className="text-muted-foreground">
+                        {t('calc.overfillDetail', {
+                          necesita: known.drawMl.toFixed(2),
+                          cabe: syringe.maxMl,
+                        })} {t('calc.overfill')}
+                      </span>
+                    </div>
+                  </div>
+                )}
                 <div className="grid grid-cols-2 gap-3 mt-4 lg:max-w-[560px]">
                   <Stat icon={FlaskConical} label={t('calc.conc')} value={(known.conc / 1000).toFixed(1)} unit="mg/mL" />
                   <Stat icon={Droplet} label={t('calc.dosesPerVial')} value={known.dosesPerVial} unit={t('calc.doses')} />

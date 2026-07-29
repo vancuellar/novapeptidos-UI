@@ -1,5 +1,4 @@
 import React, { useMemo, useState } from 'react';
-import { useSearchParams } from 'react-router-dom';
 import { ChevronDown, ChevronRight, PanelLeftClose, PanelLeftOpen } from 'lucide-react';
 import { TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useLanguage } from '@/context/LanguageContext';
@@ -37,10 +36,11 @@ const leerGrupos = () => {
   catch { return {}; }
 };
 
-const DashboardSidebar = ({ items }) => {
+// `activeTab` viene de la página (ella sabe cuál es la pestaña por omisión; la URL
+// no la trae). Solo se usa para resaltar el encabezado de un grupo cerrado.
+const DashboardSidebar = ({ items, activeTab }) => {
   const { t } = useLanguage();
-  const [params] = useSearchParams();
-  const activo = params.get('tab');
+  const activo = activeTab;
   const [collapsed, setCollapsed] = useState(() => {
     try { return localStorage.getItem(STORAGE_KEY) === '1'; } catch { return false; }
   });
@@ -100,10 +100,11 @@ const DashboardSidebar = ({ items }) => {
           {!collapsed && (
             <TabsList className="h-auto w-full flex flex-col items-stretch justify-start gap-1 bg-transparent p-0 mt-1">
               {secciones.map(({ grupo, hijos }, i) => {
-                // Un grupo cerrado que contiene la pestaña activa se enseña abierto:
-                // esconder dónde estás parado confunde más de lo que ordena.
-                const cerrado = grupo && grupos[grupo]
-                  && !hijos.some((h) => h.value === (activo || ''));
+                // Cerrado es cerrado, aunque adentro viva la pestaña activa (orden
+                // expresa de Christián, 2026-07-29). Para no perder el "dónde estoy",
+                // el encabezado del grupo cerrado que la contiene se pinta resaltado.
+                const cerrado = grupo && !!grupos[grupo];
+                const contieneActiva = grupo && hijos.some((h) => h.value === (activo || ''));
                 return (
                   <React.Fragment key={grupo || 'libres'}>
                     {grupo && (
@@ -112,7 +113,7 @@ const DashboardSidebar = ({ items }) => {
                         onClick={() => toggleGrupo(grupo)}
                         aria-expanded={!cerrado}
                         data-testid={`dash-grupo-${grupo}`}
-                        className={`flex items-center gap-1 px-2 pb-1 text-[10px] font-medium uppercase tracking-wider text-muted-foreground/70 hover:text-foreground transition-colors ${i ? 'pt-3' : 'pt-1'}`}
+                        className={`flex items-center gap-1 px-2 pb-1 text-[10px] font-medium uppercase tracking-wider transition-colors ${cerrado && contieneActiva ? 'text-[hsl(var(--primary))]' : 'text-muted-foreground/70'} hover:text-foreground ${i ? 'pt-3' : 'pt-1'}`}
                       >
                         {cerrado ? <ChevronRight className="h-3 w-3" /> : <ChevronDown className="h-3 w-3" />}
                         {grupo}

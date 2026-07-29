@@ -149,7 +149,7 @@ const Distributor = () => {
 
       <Tabs value={params.get('tab') || 'overview'} onValueChange={(v) => setParams(v === 'overview' ? {} : { tab: v }, { replace: true })}
         className="lg:flex lg:gap-8 lg:items-start">
-        <DashboardSidebar items={[
+        <DashboardSidebar activeTab={tabActiva} items={[
           { value: 'overview', icon: TrendingUp, label: t('distributor.overviewTab') },
           { value: 'news', icon: Bell, label: t('news.tab') + (notifUnread ? ` (${notifUnread})` : '') },
           { value: 'codes', icon: Ticket, label: t('distributor.codesTab') },
