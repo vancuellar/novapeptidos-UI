@@ -5,10 +5,11 @@ const AuthContext = createContext(null);
 
 export const useAuth = () => useContext(AuthContext);
 
-// Al ENTRAR, la cuenta manda: si trae idioma/tema preferidos (María: portugués
-// y oscuro), se aplican sobre lo que tenga el navegador. Solo al iniciar
-// sesión — dentro de la sesión, lo que la persona elija se respeta (y se
-// guarda en su cuenta desde los propios contextos de idioma/tema).
+// La cuenta manda: si trae idioma/tema preferidos (María: portugués y
+// oscuro), se aplican sobre lo que tenga el navegador. Se aplica al iniciar
+// sesión Y en cada carga con sesión ya abierta — dentro de la sesión, lo que
+// la persona elija se respeta (y se guarda en su cuenta desde los propios
+// contextos de idioma/tema).
 const aplicarPrefsDeCuenta = (u) => {
   try {
     if (u?.preferred_language || u?.preferred_theme) {
@@ -27,7 +28,14 @@ export const AuthProvider = ({ children }) => {
     const token = localStorage.getItem('np_token');
     if (token) {
       api.get('/auth/me')
-        .then((res) => setUser(res.data))
+        .then((res) => {
+          setUser(res.data);
+          // También al recargar con sesión ya abierta: la cuenta es la fuente
+          // de verdad. Esto no pisa la elección manual del usuario, porque
+          // cuando cambia idioma/tema con sesión abierta los contextos ya lo
+          // guardan en su cuenta (PUT /auth/me/prefs).
+          aplicarPrefsDeCuenta(res.data);
+        })
         .catch(() => localStorage.removeItem('np_token'))
         .finally(() => setLoading(false));
     } else {
