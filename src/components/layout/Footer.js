@@ -1,9 +1,9 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { ShieldCheck, Truck, BadgeCheck, Mail, Phone, Landmark, CreditCard, Bitcoin, Store, MessageCircle, Instagram, Facebook } from 'lucide-react';
+import { ShieldCheck, Truck, BadgeCheck, Mail, Phone, Landmark, CreditCard, Bitcoin, Store, Instagram, Facebook } from 'lucide-react';
 import { useLanguage } from '@/context/LanguageContext';
 import { INSTAGRAM_URL, FACEBOOK_URL, WHATSAPP_URL, WHATSAPP_HANDLE } from '@/lib/contact';
-import { FlagMX, FlagUS } from '@/components/Flags';
+import { FlagMX, FlagUS, WhatsAppIcon } from '@/components/Flags';
 import BrandLogo from '@/components/BrandLogo';
 
 
@@ -117,7 +117,7 @@ const Footer = () => {
                 <a href={WHATSAPP_URL} target="_blank" rel="noreferrer"
                    className="flex items-center gap-2 hover:text-foreground transition-colors"
                    data-testid="footer-whatsapp">
-                  <MessageCircle className="h-4 w-4 text-[hsl(var(--primary))]" /> {WHATSAPP_HANDLE}
+                  <WhatsAppIcon className="h-4 w-4 text-[#25D366]" /> {WHATSAPP_HANDLE}
                 </a>
               </li>
             </ul>
