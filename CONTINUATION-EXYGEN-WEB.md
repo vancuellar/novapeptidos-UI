@@ -1,3 +1,104 @@
+# 🤝 HANDOFF — 2026-07-28 (noche, cierre definitivo)
+
+> *Esto manda sobre todo lo de abajo. Lo demás es historia y detalle.*
+
+## ⚡ REGLAS NUEVAS DE CHRISTIAN — respétalas o te las va a repetir
+
+1. **De aquí en adelante TODO va por rama y PR.** Nada directo a `main`. Él revisa y aprueba.
+   Flujo textual: *"commit everything, rebase, push, PR, merge, promote to main"*.
+2. **Los cambios de imagen o de texto NO llevan pruebas.** Se suben y ya. Las siete
+   compuertas siguen siendo obligatorias para dinero, precios, inventario y backend.
+3. **No le pidas permisos ni datos a cuentagotas.** Pídele TODO de una vez. Se enoja —con
+   razón— cuando se le pide tres veces lo mismo.
+4. **Cuando él dice un dato, es dato.** La dirección de Mérida es su OFICINA REAL, no una
+   inventada. No la vuelvas a cuestionar.
+
+## Lo que quedó EN VIVO
+
+- **☁️ Cloudflare terminado.** exygenlabs.com y www sirven desde Cloudflare. **Las
+  redirecciones ya funcionan** (exygenpeptides.com/.mx → exygenlabs.com, conservando la
+  ruta), hechas con **Page Rules** — ojo: "Dynamic Redirect" NO existe en su plan. El token
+  de `~/.config/exygen/cloudflare.env` ya trae Page Rules y Config Rules.
+  ⚠️ **Receta de despliegue:** `npm run build && rm -f build/404.html && npx wrangler pages
+  deploy build --project-name exygenlabs --commit-dirty=true`. Sin borrar ese 404, `/admin`
+  se cae. NUNCA borres `public/404.html`.
+- **📣 Meta a $20 USD/día por campaña**, las 6 activas.
+- **🇺🇸 "Fabricado en EUA"** en todo el sitio, con bandera. Decisión cerrada: Certified
+  compra en China. No se vuelve a discutir.
+- **🖼️ Fotos:** 3 de producción (de sus videos) + 4 de laboratorio (Pexels, licencia libre).
+  **REGLA: toda foto que no sea NUESTRO péptido va en blanco y negro y toma color al pasar
+  el cursor.** Los únicos a color son los viales de la marca en el hero.
+- **💊 Los 15 viales del hero corregidos.** Decían la palabra MAL ESCRITA — 14 "Lyoph**l**ized"
+  y Retatrutide "Lyop**t**ilized". Ahora el renglón dice sólo **"Research Peptides"**; se fue
+  el "for Injection". El "FOR RESEARCH USE ONLY" se quedó.
+  ⚠️ La foto de los dos viales (de Nano Banana) TODAVÍA dice "for Injection": cuando se
+  regenere, que diga sólo "Research Peptides".
+- **🐛 Todos los barridos de Codex cerrados.** Lo más grave que salió en el día: de 193
+  productos, **CERO encontraban su renglón de inventario**; los puntos se podían **gastar
+  dos veces**; la venta directa aceptaba el precio que mandara el cliente; y había **cuatro
+  cuentas distintas del ROI** (se publicaba 5.99× lo que dejaba 2.995×).
+- **📦 Skydropx migrado a la API PRO (v2)** y funcionando: OAuth2, cotización asíncrona de
+  2-4 s, tres paqueterías (Paquetexpress, Estafeta, FedEx). **Sigue apagado.**
+
+## ⏳ PRs ABIERTOS esperándolo
+
+- **novapeptidos-RBAC #23 — Envío $250 parejo.** ⚠️ Es el único cambio que toca lo que paga
+  el cliente. Sube `COBRAR_ENVIO` a `True` y hace que entre las opciones que cumplen el
+  plazo gane la **más rápida**, no la más barata.
+
+## 🚚 ENVÍOS — lo decidido y el dato incómodo
+
+- **$250 parejo**, gratis arriba de $2,500 **con tope del 10%**: la casa absorbe hasta el 10%
+  de la compra y **el cliente paga la diferencia** (decisión textual del 28-jul).
+- **Origen: Playa del Carmen. Devoluciones: la oficina de Mérida** (Calle 60 #258 x 37, Col.
+  Centro, 97000). Guardado en `~/.config/exygen/skydropx-remitente.env`.
+- ⚠️ **Desde Playa TODO tarda casi el doble que desde Mérida.** FedEx a CDMX: 4 días desde
+  Mérida, **8 desde Playa**, al mismo precio. Lo de $51 tarda 7-8 días y **rompe la promesa
+  de "2-5 días" del sitio**; lo que la cumple anda en $139-$165. Por eso los $250.
+- **Falta de él:** calle y número en Playa + un teléfono, para la recolección.
+
+## 🏭 PROVEEDORES — ojo con esto
+
+- **Proveedor nuevo P32 "Peptideals"** (Hong Kong, +852 9686 0149), 196 precios leídos de 200.
+- ⚠️ **LA COMPARACIÓN ENTRE PROVEEDORES ESTABA MAL Y SE DIJO UNA CIFRA FALSA.** `v_mejor_costo`
+  empareja por el TEXTO exacto de la presentación, y cada proveedor escribe distinto
+  (`5mg` vs `5mg*10vials` vs `10 mg/vial，10vial/kit`). Se llegó a decir que Peptideals era el
+  más barato en 114 presentaciones. **Falso.** Normalizando a mano: de los 70 productos que
+  Lumi y Peptideals venden en común, **Lumi gana en 61**, muchas veces a un TERCIO del precio
+  (BPC-157 5 mg: Lumi US$3.60 vs Peptideals US$11.20).
+  👉 Hay un agente arreglando esto en la rama `emparejar-proveedores` del repo de precios.
+  **Christian pidió que cuando esté, se lo pase a Codex para que lo revise.**
+- ⛔ Al normalizar, **NO fusionar combos con sus componentes** — ya pasó y se corrigió en
+  `49a4e98`.
+
+## 🕵️ Certified — lo que se comprobó
+
+Es la **sucursal mexicana de una marca gringa** (certified-pep.com); mismo dueño, Ivan, con
+seudónimo en EUA. **Sus COAs NO traen número de lote** ("Client Name/Lot No.: Certified
+Peptides"). Su "fabricado en Texas" no aparece en ningún documento; una página suya dice que
+trabajan "exclusivamente con laboratorios en **México**" y otra nombra uno de Washington; sus
+Términos se rigen por las leyes de **Alaska** (copiado sin adaptar). Cobran **$250 fijos
+SIEMPRE por FedEx** — aunque a una amiga de Christian le llegó en GDL por mensajería propia.
+Su pasarela "EasyProcess" son los plugins `auxpay-wocommerce-plugin` + `give-payments-gateway`
+(AuxPay/AuxVAULT, Las Vegas) — el plan B si Mercado Pago retiene fondos.
+
+## 📋 PENDIENTES, en orden
+
+1. **Aprobar el PR #23** del envío.
+2. **Datos que faltan de él:** calle+número+teléfono en Playa del Carmen.
+3. **Los 5 arreglos de diseño de Fable** — el más gordo: en celular la portada enseña puro
+   texto y el producto queda abajo del doblez.
+4. **Mónica Fuentes** en el sitio (representante de ventas real).
+5. **Calculadora:** 3 mejoras ya analizadas (aviso de jeringa rebasada, fórmulas+FAQ para SEO,
+   convertidor por peso corporal).
+6. **Comparar su descuento por monto (10-15%) contra el de Certified por volumen** (hasta
+   16.66% por 9+ viales).
+7. **Anuncios a Compras**, no a clics.
+8. **AuxPay:** falta que Christian mande el correo (ya redactado) preguntando si tienen API,
+   si aceptan comercio mexicano en MXN y si aceptan la categoría.
+
+---
+
 # 💳 PLAN B DE COBRO — pasarelas de alto riesgo (guardar, no perder)
 
 **Christian, 2026-07-28: guardarlo en varios lugares por si Mercado Pago nos retiene fondos.**
