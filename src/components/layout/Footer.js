@@ -1,8 +1,8 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { ShieldCheck, Truck, BadgeCheck, Mail, Phone, Landmark, CreditCard, Bitcoin, Store, Instagram, Facebook } from 'lucide-react';
+import { ShieldCheck, Truck, BadgeCheck, Mail, Phone, Landmark, CreditCard, Bitcoin, Store, MessageCircle, Instagram, Facebook } from 'lucide-react';
 import { useLanguage } from '@/context/LanguageContext';
-import { INSTAGRAM_URL, FACEBOOK_URL } from '@/lib/contact';
+import { INSTAGRAM_URL, FACEBOOK_URL, WHATSAPP_URL, WHATSAPP_HANDLE } from '@/lib/contact';
 import { FlagMX, FlagUS } from '@/components/Flags';
 import BrandLogo from '@/components/BrandLogo';
 
@@ -109,6 +109,17 @@ const Footer = () => {
                   ligado a él. Al tenerlo, restaurar aquí el <li> con formato
                   +52 (XXX) XXX-XXXX y liga tel:. */}
               <li className="flex items-center gap-2"><Mail className="h-4 w-4 text-[hsl(var(--primary))]" /> hola@exygenlabs.com</li>
+              {/* WhatsApp debajo del correo (Christian, 2026-07-28): se enseña el
+                  nombre de usuario, que es lo que él reparte, pero el enlace va al
+                  wa.me del número — es el que abre la conversación en cualquier
+                  teléfono, con o sin el usuario guardado. */}
+              <li>
+                <a href={WHATSAPP_URL} target="_blank" rel="noreferrer"
+                   className="flex items-center gap-2 hover:text-foreground transition-colors"
+                   data-testid="footer-whatsapp">
+                  <MessageCircle className="h-4 w-4 text-[hsl(var(--primary))]" /> {WHATSAPP_HANDLE}
+                </a>
+              </li>
             </ul>
             <div className="flex flex-wrap gap-2 mt-5">
               {[{ i: CreditCard, l: 'Visa · MC · Amex' }, { i: Landmark, l: 'SPEI' }, { i: Store, l: 'OXXO' }, { i: Bitcoin, l: 'Cripto' }].map((p, i) => (
