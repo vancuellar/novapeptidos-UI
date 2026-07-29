@@ -504,12 +504,15 @@ const Home = () => {
           la portada alterna una sección con fotos y una sin fotos, en vez de ser
           pura letra. Son cuadros de los videos del laboratorio donde se fabrica;
           ⛔ ninguno con personas ni con etiquetas que choquen con el RUO.
-          Carga diferida: no deben frenar lo que se ve primero. */}
+          Carga diferida: no deben frenar lo que se ve primero.
+          ⚫ REGLA DE CHRISTIAN (2026-07-28): TODA foto que no sea NUESTRO péptido va
+          en blanco y negro y sólo toma color al pasarle el cursor o el dedo. Los
+          únicos que van a color siempre son los viales de la marca del hero. */}
       <section className="border-b border-border">
         <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 py-16">
           <div className="grid sm:grid-cols-3 gap-4" data-testid="home-fotos-produccion">
             {[
-              { src: 'viales-liofilizados', alt: t('home.photos.lyo'), color: true },  // los VIALES van a color siempre (Christian, 2026-07-28)
+              { src: 'viales-liofilizados', alt: t('home.photos.lyo') },
               { src: 'envasado', alt: t('home.photos.filling') },
               { src: 'taponado', alt: t('home.photos.capping') },
             ].map((f) => (
@@ -517,7 +520,7 @@ const Home = () => {
                 <img
                   src={`${process.env.PUBLIC_URL}/images/laboratorio/${f.src}.jpg`}
                   alt={f.alt} loading="lazy" width="1200" height="676"
-                  className={`w-full h-52 object-cover ${f.color ? '' : 'grayscale group-hover:grayscale-0 transition-[filter] duration-500'}`}
+                  className="w-full h-52 object-cover grayscale group-hover:grayscale-0 transition-[filter] duration-500"
                 />
                 <figcaption className="px-4 py-3 text-xs text-muted-foreground">{f.alt}</figcaption>
               </figure>
