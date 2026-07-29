@@ -9,6 +9,15 @@ import { API } from '@/lib/api';
 
 const BASE = process.env.PUBLIC_URL || '';
 
+// Sufijo de archivo por idioma del sitio. Solo los videos con `localized: true`
+// tienen versiones -en/-pt en el backend; los demás caen al español.
+const LANG_SUFFIX = { 'en-US': '-en', 'pt-BR': '-pt' };
+const videoFileFor = (v, language) => {
+  const suffix = LANG_SUFFIX[language];
+  if (!suffix || !v.localized) return v.file;
+  return v.file.replace(/\.mp4$/, `${suffix}.mp4`);
+};
+
 const VIDEOS = [
   {
     file: 'tutorial-1-panel-distribuidor.mp4',
@@ -60,18 +69,21 @@ const VIDEOS = [
   },
   {
     file: 'tutorial-9-calculadora.mp4',
+    localized: true, // hay versión -en y -pt en el backend
     title: 'La calculadora de reconstitución, paso a paso',
     duration: '1:12',
     audience: 'Clientes', role: 'client',
   },
   {
     file: 'tutorial-11-asesor.mp4',
+    localized: true, // hay versión -en y -pt en el backend
     title: 'El Asesor de Péptidos: tu plan en 3 pasos',
     duration: '0:50',
     audience: 'Todos', role: 'client',
   },
   {
     file: 'tutorial-10-reconstitucion.mp4',
+    localized: true, // hay versión -en y -pt en el backend
     title: 'Cómo reconstituir tu vial con agua bacteriostática',
     duration: '1:06',
     audience: 'Todos', role: 'client',
@@ -208,14 +220,15 @@ const GuideAccordion = ({ items, prefix }) => (
 );
 
 export default function Tutorials() {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
   const { user } = useAuth();
   // Tutoriales = solo miembros. Visitantes ven únicamente la invitación a entrar.
   // La guía y videos de distribuidor solo se muestran a distribuidores/admin.
   const isDist = !!user && ['distributor', 'admin'].includes(user.role);
   const videos = VIDEOS.filter((v) => v.role !== 'dist' || isDist);
   // La etiqueta <video> no manda headers: el token de sesión viaja como query.
-  const videoSrc = (v) => `${API}/tutorials/${v.file}?token=${encodeURIComponent(localStorage.getItem('np_token') || '')}`;
+  // El archivo depende del idioma del sitio (es → original, en → -en, pt → -pt).
+  const videoSrc = (v) => `${API}/tutorials/${videoFileFor(v, language)}?token=${encodeURIComponent(localStorage.getItem('np_token') || '')}`;
 
   if (!user) {
     return (
@@ -251,7 +264,8 @@ export default function Tutorials() {
         <div className="grid sm:grid-cols-2 gap-4">
           {videos.map((v) => (
             <Card key={v.file} className="overflow-hidden" data-testid="tutorial-video-card">
-              <video controls preload="metadata" className="w-full aspect-video bg-black" src={videoSrc(v)} />
+              {/* key = src: al cambiar de idioma el <video> se vuelve a montar con el archivo correcto */}
+              <video key={videoSrc(v)} controls preload="metadata" className="w-full aspect-video bg-black" src={videoSrc(v)} />
               <div className="p-4">
                 <div className="flex items-center gap-2 mb-1">
                   <Badge variant="outline" className="text-[10px]">{v.audience}</Badge>
