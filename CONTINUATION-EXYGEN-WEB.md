@@ -1,3 +1,50 @@
+# 💳 PLAN B DE COBRO — pasarelas de alto riesgo (guardar, no perder)
+
+**Christian, 2026-07-28: guardarlo en varios lugares por si Mercado Pago nos retiene fondos.**
+(Copia también en la memoria: `exygen-pasarelas-alto-riesgo.md`.)
+
+Lo que usa **Certified-PepMex**, visto en su checkout el 28-jul:
+- Al cliente le enseñan la marca **"EasyProcess"** — "Pay securely using your Card".
+- Debajo corren dos plugins de WooCommerce:
+  - **`auxpay-wocommerce-plugin`** (v5.0.24, carga `assets/js/auxpay-drawer.js`)
+  - **`give-payments-gateway`** (carga `assets/js/card.js`)
+- Es su **único** método de pago: solo tarjeta. Y meten un paso extra, "Secure Link Checkout".
+- Envían por **FedEx a $250 fijos** (no Estafeta).
+
+"EasyProcess" no es un banco: es la fachada de un procesador de **alto riesgo**, de los que se
+usan cuando Stripe/PayPal/Mercado Pago no te aceptan por la categoría. Comisión más alta y
+suelen pedir reserva, pero no te cierran por vender péptidos.
+⚠️ Nosotros NO usamos WordPress (React + FastAPI), así que el plugin no sirve: haría falta su
+API REST. Nuestra red de seguridad real hoy es **cripto (NOWPayments) + SPEI**, que no dependen
+de Mercado Pago.
+
+# 🕵️ QUIÉN SURTE A CERTIFIED — investigado el 28-jul
+
+**COMPROBADO:** Certified-PepMex **no fabrica nada**; es la sucursal mexicana de la marca gringa
+**certified-pep.com**. Sus 74 COAs dicen "Certified Peptides" en el renglón de cliente y uno
+trae `jason@certified-pep.com`. Su sitio es copia del gringo (mismas rutas, plugin
+`cp-research-popup`, SKUs con prefijo `CP_`); el dominio .mx se registró el 15-ene-2026 pero
+sirve archivos de dic-2024.
+
+**Quién les ANALIZA** (analizar ≠ fabricar): **Forever Young Pharmacy** (Carlsbad, California —
+que además vende péptidos ella misma y usa la misma plantilla para otras tiendas) y **Vanguard
+Laboratory** (Olympia, Washington, ISO 17025).
+
+**Su punto flaco, y es enorme:** los COAs de Forever Young **NO traen número de lote** — dicen
+"Client Name/Lot No.: Certified Peptides". Ningún certificado suyo corresponde a un lote
+identificable. Los PDFs se hicieron en Word con fecha de creación **un año anterior** al
+análisis. Su "Biblioteca de COA" en el sitio mexicano sale **vacía**. Las fotos de su tienda no
+son fotos: son renders 3D.
+
+**Su "fabricado en USA / Texas" NO se sostiene:** ningún documento menciona Texas ni una
+dirección; una página suya dice "trabajamos exclusivamente con laboratorios líderes en
+**México**" y dos renglones abajo nombra a Vanguard, que está en Washington; y sus Términos se
+rigen por **"las leyes del Estado de Alaska"** (copiado sin adaptar).
+
+⚠️ **NO comprobado que compren en China.** Hay indicios (formato de lote de maquilador,
+etiqueta blanca genérica en la foto de un COA real) pero **ninguna prueba pública**. Cerrarlo
+exige comprarles un vial y pedirles el COA de ESE lote.
+
 # 🤝 HANDOFF — 2026-07-28 (cierre real de la jornada)
 
 > *Esto reemplaza a todo lo de abajo en lo que se contradiga. Lo de abajo sigue valiendo
