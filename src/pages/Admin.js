@@ -103,6 +103,7 @@ const Admin = () => {
   // aquí sólo se le da la cara: NUNCA se manda `forzar` sin que él lo pida.
   const [sel, setSel] = useState([]);                       // ids marcados en la tabla
   const [verArchivados, setVerArchivados] = useState(false);
+  const [filtroStatus, setFiltroStatus] = useState('todos'); // filtro por estado en la tabla de pedidos
   const [archivados, setArchivados] = useState([]);
   const [loteKill, setLoteKill] = useState(null);           // confirmación de borrado en lote
   const [loteBusy, setLoteBusy] = useState(false);
@@ -186,6 +187,14 @@ const Admin = () => {
   const cargarArchivados = useCallback(
     () => api.get('/admin/orders?archivados=true').then((r) => setArchivados(r.data)).catch(() => {}), []);
   useEffect(() => { if (verArchivados && user?.role === 'admin') cargarArchivados(); }, [verArchivados, user, cargarArchivados]);
+
+  // Si una fila deja de verse (cambió de estado con un filtro puesto), sale de la
+  // selección: la barra en lote no debe actuar sobre pedidos invisibles.
+  useEffect(() => {
+    const lista = verArchivados ? archivados : orders;
+    const visibles = new Set(lista.filter((o) => filtroStatus === 'todos' || o.status === filtroStatus).map((o) => o.id));
+    setSel((s) => (s.every((id) => visibles.has(id)) ? s : s.filter((id) => visibles.has(id))));
+  }, [orders, archivados, filtroStatus, verArchivados]);
 
   // La serie va aparte porque se recarga al cambiar de día/semana/mes, y no
   // tiene por qué volver a pedir todo el panel para eso. El rango se estira con
@@ -355,8 +364,13 @@ const Admin = () => {
   };
 
   // ---- Pedidos en lote: archivar / desarchivar / borrar varios de un golpe ----
-  // La tabla enseña activos O archivados, nunca revueltos.
-  const pedidosVista = verArchivados ? archivados : orders;
+  // La tabla enseña activos O archivados, nunca revueltos. Siempre del más
+  // reciente al más viejo, y con filtro por estado para limpiar por tandas.
+  const fechaPedido = (o) => { const n = Date.parse(o.created_at); return Number.isNaN(n) ? 0 : n; };
+  const pedidosVista = (verArchivados ? archivados : orders)
+    .filter((o) => filtroStatus === 'todos' || o.status === filtroStatus)
+    .slice()
+    .sort((a, b) => fechaPedido(b) - fechaPedido(a));
   const toggleSel = (id) => setSel((s) => (s.includes(id) ? s.filter((x) => x !== id) : [...s, id]));
   const todosSel = pedidosVista.length > 0 && pedidosVista.every((o) => sel.includes(o.id));
 
@@ -1231,6 +1245,13 @@ const Admin = () => {
                 onClick={() => { setVerArchivados(true); setSel([]); }} data-testid="admin-ver-archivados">
                 <Archive className="h-3.5 w-3.5 mr-1.5" /> {t('admin.lote.archived')}
               </Button>
+              <Select value={filtroStatus} onValueChange={(v) => { setFiltroStatus(v); setSel([]); }}>
+                <SelectTrigger className="w-40 h-8 ml-2" data-testid="admin-filtro-status"><SelectValue /></SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="todos">{t('admin.filter.allStatuses')}</SelectItem>
+                  {STATUSES.map((s) => <SelectItem key={s} value={s}>{t(`status.${s}`)}</SelectItem>)}
+                </SelectContent>
+              </Select>
             </div>
             {sel.length > 0 && (
               <div className="flex flex-wrap items-center gap-2" data-testid="admin-lote-bar">

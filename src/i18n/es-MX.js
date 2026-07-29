@@ -475,6 +475,7 @@ const esMX = {
   'admin.order.deleteConfirm': 'Sí, borrarlo',
   'admin.order.deleted': 'Pedido {{n}} borrado',
   // Selección múltiple en Pedidos: archivar / desarchivar / borrar en lote.
+  'admin.filter.allStatuses': 'Todos los estados',
   'admin.lote.active': 'Activos',
   'admin.lote.archived': 'Archivados',
   'admin.lote.selected': '{{n}} seleccionado(s)',

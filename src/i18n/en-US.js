@@ -521,6 +521,7 @@ const enUS = {
   'admin.order.deleteConfirm': 'Yes, delete it',
   'admin.order.deleted': 'Order {{n}} deleted',
   // Multi-select on Orders: archive / unarchive / delete in bulk.
+  'admin.filter.allStatuses': 'All statuses',
   'admin.lote.active': 'Active',
   'admin.lote.archived': 'Archived',
   'admin.lote.selected': '{{n}} selected',

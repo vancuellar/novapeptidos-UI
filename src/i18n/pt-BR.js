@@ -535,6 +535,7 @@ const ptBR = {
   'admin.order.deleteConfirm': 'Sim, excluir',
   'admin.order.deleted': 'Pedido {{n}} excluído',
   // Seleção múltipla em Pedidos: arquivar / desarquivar / excluir em lote.
+  'admin.filter.allStatuses': 'Todos os status',
   'admin.lote.active': 'Ativos',
   'admin.lote.archived': 'Arquivados',
   'admin.lote.selected': '{{n}} selecionado(s)',
