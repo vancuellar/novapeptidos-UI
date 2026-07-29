@@ -1,5 +1,49 @@
 # 🤝 HANDOFF — 2026-07-29 (madrugada) — LÉELO PRIMERO
 
+## ✅ PRIORIDAD 00 CERRADA (2026-07-29, sesión de la mañana)
+
+**La verificación independiente del emparejamiento EXISTE — dos veces — y COINCIDE.**
+
+1. **La tarea "fantasma" de ayer (`task-ms5lsczp-u48nv1`) SÍ corrió y terminó.** El
+   "No job found" era otra trampa: **el registro de jobs del companion es POR CARPETA**
+   — `status` solo enseña las tareas si se corre con `cd` a la carpeta desde donde se
+   lanzó. Su log completo: `~/.claude/plugins/data/codex-inline/state/Exygen-Peptides-ae56457b21e30422/jobs/task-ms5lsczp-u48nv1.log`.
+2. **Se lanzó ADEMÁS una verificación 100% a ciegas** (`task-ms5nazn6-hf3ai2`): CSVs
+   crudos exportados a una carpeta neutra sin acceso al repo ni a la columna `llave`.
+   Reporte: `REPORTE-CODEX.md` en el scratchpad `verificacion-ciega/`.
+
+| Métrica | Nosotros | Codex ayer (DB) | Codex hoy (ciego) |
+|---|---|---|---|
+| Productos reales | 380 | 379 | 318* |
+| Emparejados | 1,645 (91%) | 1,638 (90.7%) | 1,790 (99.1%)* |
+| Lumi vs Peptideals en común | 84 | 83 | 89 |
+| Gana Lumi | 71 | 70 | 75 |
+| Catálogo con proveedor | 193/193 | 193/193 | 193/193 |
+| Pagando de más (11 compras) | $527 | $527 | $531 |
+
+\* Las diferencias del ciego son de DEFINICIÓN, no de error: fusionó más alias y reparó
+unidades (por eso menos productos y más emparejados). **Las conclusiones de negocio
+coinciden en las tres corridas**: Lumi domina a Peptideals, nadie sin proveedor, y el
+sobrepago ronda los $527-531. **El emparejamiento queda verificado.**
+
+**Regalos del ciego para el importador** (pendiente menor): 15 renglones con mg que
+deberían ser ml (IDs 513, 1185-86, 1287-88, 1396, 1398, 1442-47, 1785-86); líquidos de
+Lumi con mismo nombre/volumen y precios distintos (falta concentración); un KLOW 10 mg
+sospechoso (ID 996) y la mezcla BPC+TB con presentaciones contradictorias (1473-74).
+
+**También hecho hoy:** sidebar de los tableros con categorías colapsables y scroll
+interno propio (NUNCA overflow en el body), y el arreglo de raíz de "los links abren a
+media página": los tres tableros ahora abren ARRIBA ante CUALQUIER cambio de `?tab=`
+(ScrollToTop solo mira pathname y no los veía). Commit `b0d29f0`, desplegado a
+Cloudflare. **"Vender esto" explicado**: solo ANOTA la decisión; el alta real la hace
+`aplicar_aprobados.py` en la Mac (re-verifica `no_vender.csv`, escribe MAESTRA sin
+precio y el precio lo pone `reprecio.py`) — no crea página ni ficha en automático.
+
+**Aviso nuevo del vigía de precios (2026-07-29): SIN REVISAR.** Reporta 9 productos
+por debajo de Exoma y 4 muy por debajo de Certified en GLP-1. ⚠️ Antes de mover UN
+precio: verificar emparejamientos talla-vs-talla (ya hubo falsa alarma igual con
+Retatrutida) y recordar el trinquete: NO seguimos a Exoma.
+
 # 🚨 PRIORIDAD 00 — ARRANCAR CODEX BIEN, ANTES QUE NADA
 
 **Orden expresa de Christian (2026-07-29).** Hoy se le pidió a Codex una verificación
