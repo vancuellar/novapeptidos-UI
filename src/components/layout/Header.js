@@ -459,7 +459,9 @@ const Header = () => {
                   <DropdownMenuLabel className="truncate">{user.name}</DropdownMenuLabel>
                   <DropdownMenuSeparator />
                   <DropdownMenuItem onClick={() => navigate('/cuenta')}><User className="h-4 w-4 mr-2" /> {t('header.account')}</DropdownMenuItem>
-                  {user.role === 'admin' && (
+                  {/* El rol 'marketing' (difusión) también entra al panel: adentro
+                      solo ve sus tres pestañas y el backend le niega el resto. */}
+                  {['admin', 'marketing'].includes(user.role) && (
                     <DropdownMenuItem onClick={() => navigate('/admin')} data-testid="header-admin-link"><LayoutDashboard className="h-4 w-4 mr-2" /> {t('header.admin')}</DropdownMenuItem>
                   )}
                   {['distributor', 'admin'].includes(user.role) && (

@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { FlagUS } from '@/components/Flags';
+import { FlagUS, WhatsAppIcon } from '@/components/Flags';
 import {
   ShieldCheck, FlaskConical, Truck, BadgeCheck, ArrowRight, HeartPulse, Activity, Flame, Hourglass,
   Brain, Sparkles, Layers, CheckCircle2, MinusCircle, FileCheck2, ScanSearch, Landmark, CreditCard,
@@ -15,7 +15,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { toast } from 'sonner';
 import ProductCard from '@/components/ProductCard';
-import { WHATSAPP_URL, WHATSAPP_DISPLAY } from '@/lib/contact';
+import { WHATSAPP_URL, WHATSAPP_HANDLE } from '@/lib/contact';
 import api from '@/lib/api';
 import { VISIBLE_CATEGORIES, fallbackProducts } from '@/data/fallbackCatalog';
 import { FEATURED_TABS, getTabProducts } from '@/data/featured';
@@ -744,26 +744,26 @@ const Home = () => {
           </div>
         </div>
 
-        {/* ===== Mónica Fuentes — la cara del negocio ===== */}
+        {/* ===== Mónica Fuentes — la cara del negocio, en chiquito ===== */}
         {/* La revisión de Fable lo dijo sin rodeos: "cero rostros, cero nombres, un
             catálogo sin dueño". Mónica es la representante de ventas REAL (Christián,
             2026-07-28). Sin foto no se inventa una: iniciales y nombre de verdad.
-            El WhatsApp es el mismo del negocio — es el canal que ella atiende. */}
-        <div className="mt-6 rounded-2xl border border-border bg-card px-6 py-8 sm:px-10 flex flex-col sm:flex-row items-center gap-6" data-testid="home-representante">
-          <div className="h-20 w-20 shrink-0 rounded-full bg-[hsl(var(--primary))]/15 border border-[hsl(var(--primary))]/30 flex items-center justify-center font-heading text-2xl font-bold text-[hsl(var(--primary))]">
+            Va DISCRETA, del tamaño del contacto del pie (Christián, 2026-07-29): una
+            tarjeta grande con botón verde parecía anuncio y competía con "Ver catálogo".
+            ⛔ Se enseña el USUARIO (@exygenlabs), no el número — pero el enlace SÍ va al
+            wa.me del número, que es lo único que abre la conversación en cualquier
+            teléfono. Mismo patrón que el pie de página. */}
+        <div className="mt-6 flex flex-wrap items-center justify-center gap-x-3 gap-y-1.5 text-sm" data-testid="home-representante">
+          <span className="inline-flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-[hsl(var(--primary))]/15 border border-[hsl(var(--primary))]/30 font-heading text-[11px] font-bold text-[hsl(var(--primary))]">
             MF
-          </div>
-          <div className="text-center sm:text-left flex-1">
-            <div className="font-heading text-xl font-bold">Mónica Fuentes</div>
-            <div className="text-sm text-[hsl(var(--primary))] font-medium mt-0.5">{t('home.rep.role')}</div>
-            <p className="text-sm text-muted-foreground mt-2 max-w-xl leading-relaxed">{t('home.rep.body')}</p>
-          </div>
+          </span>
+          <span className="font-medium">Mónica Fuentes</span>
+          <span className="text-muted-foreground">· {t('home.rep.role')} ·</span>
           {WHATSAPP_URL && (
             <a href={`${WHATSAPP_URL}?text=${encodeURIComponent(t('home.rep.prefill'))}`}
               target="_blank" rel="noreferrer" data-testid="home-rep-whatsapp"
-              className="inline-flex items-center gap-2 rounded-full bg-[#25D366] text-white px-6 h-12 text-sm font-semibold hover:opacity-90 transition-opacity shrink-0">
-              {t('home.rep.cta')}
-              <span className="font-normal opacity-90 hidden md:inline">· {WHATSAPP_DISPLAY}</span>
+              className="inline-flex items-center gap-1.5 text-muted-foreground hover:text-foreground transition-colors">
+              <WhatsAppIcon className="h-4 w-4 text-[#25D366]" /> {WHATSAPP_HANDLE}
             </a>
           )}
         </div>

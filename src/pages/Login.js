@@ -97,7 +97,7 @@ const Login = () => {
         return;
       }
       toast.success(t('auth.toast.welcome'));
-      navigate(result.role === 'admin' ? '/admin' : '/cuenta');
+      navigate(['admin', 'marketing'].includes(result.role) ? '/admin' : '/cuenta');
     } catch (err) {
       if (err.response?.status === 403) setUnverified(email.trim());
       else toast.error(err.response?.data?.detail || t('auth.toast.loginError'));
@@ -111,7 +111,7 @@ const Login = () => {
       const res = await api.post('/auth/totp', { pre_token: totpToken, code: totpCode });
       adoptSession(res.data.token, res.data.user);
       toast.success(t('auth.toast.welcome'));
-      navigate(res.data.user.role === 'admin' ? '/admin' : '/cuenta');
+      navigate(['admin', 'marketing'].includes(res.data.user.role) ? '/admin' : '/cuenta');
     } catch (err) {
       toast.error(err.response?.data?.detail || t('auth.toast.loginError'));
       if (err.response?.status === 401 && /expiro|expired/i.test(err.response?.data?.detail || '')) setTotpToken('');
@@ -124,7 +124,7 @@ const Login = () => {
       const data = await loginWithPasskey();
       adoptSession(data.token, data.user);
       toast.success(t('auth.toast.welcome'));
-      navigate(data.user.role === 'admin' ? '/admin' : '/cuenta');
+      navigate(['admin', 'marketing'].includes(data.user.role) ? '/admin' : '/cuenta');
     } catch (err) {
       // Cancelar el dialogo del sistema no es un error que regañar.
       if (err?.name !== 'NotAllowedError') {

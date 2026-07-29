@@ -1,7 +1,8 @@
 import React, { useEffect, useLayoutEffect, useState, useCallback } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { Store, Users, DollarSign, TrendingUp, ShoppingBag, Copy, Percent, Truck, ExternalLink, FileText, BookOpen, Award, Ticket, RefreshCw, Bell } from 'lucide-react';
-import { ResponsiveContainer, AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip } from 'recharts';
+import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip } from 'recharts';
+import GraficaInteractiva from '@/components/charts/GraficaInteractiva';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -229,7 +230,7 @@ const Distributor = () => {
           ) : (
             <Card className="p-5">
               <h3 className="font-heading font-semibold mb-4">{t('distributor.earningsByMonth')}</h3>
-              <ResponsiveContainer width="100%" height={280}>
+              <GraficaInteractiva height={280}>
                 <AreaChart data={summary.monthly} margin={{ top: 4, right: 8, left: 8, bottom: 0 }}>
                   <defs>
                     <linearGradient id="earn" x1="0" y1="0" x2="0" y2="1">
@@ -243,7 +244,7 @@ const Distributor = () => {
                   <Tooltip contentStyle={CHART_TOOLTIP_STYLE} labelFormatter={fmtMonth} formatter={(v, name) => (name === 'earnings' ? [formatMXN(v), t('distributor.stats.earnings')] : [formatMXN(v), t('distributor.stats.sales')])} />
                   <Area type="monotone" dataKey="earnings" stroke="hsl(var(--primary))" strokeWidth={2} fill="url(#earn)" activeDot={{ r: 4 }} />
                 </AreaChart>
-              </ResponsiveContainer>
+              </GraficaInteractiva>
             </Card>
           )}
 

@@ -7,7 +7,8 @@ import { Label } from '@/components/ui/label';
 import { Badge } from '@/components/ui/badge';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
-import { ResponsiveContainer, LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ReferenceArea } from 'recharts';
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ReferenceArea } from 'recharts';
+import GraficaInteractiva from '@/components/charts/GraficaInteractiva';
 import {
   Upload, FlaskConical, Trash2, Sparkles, AlertTriangle, TrendingUp, Plus, Loader2, FileText,
 } from 'lucide-react';
@@ -211,7 +212,7 @@ const LabReports = () => {
               </SelectContent>
             </Select>
           </div>
-          <ResponsiveContainer width="100%" height={240}>
+          <GraficaInteractiva height={240}>
             <LineChart data={data.series[chartKey]} margin={{ top: 4, right: 8, left: 8, bottom: 0 }}>
               <CartesianGrid vertical={false} stroke="hsl(var(--border))" strokeOpacity={0.5} />
               <XAxis dataKey="date" tickLine={false} axisLine={false} tick={{ fontSize: 11, fill: 'hsl(var(--muted-foreground))' }} />
@@ -228,7 +229,7 @@ const LabReports = () => {
               })()}
               <Line type="monotone" dataKey="value" stroke="hsl(var(--primary))" strokeWidth={2} dot={{ r: 3 }} />
             </LineChart>
-          </ResponsiveContainer>
+          </GraficaInteractiva>
           <p className="text-[11px] text-muted-foreground mt-2">
             La banda verde es el rango de referencia de {chartMarker.label.toLowerCase()}.
           </p>

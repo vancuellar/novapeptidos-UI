@@ -1,11 +1,13 @@
 import React, { useEffect, useLayoutEffect, useState, useCallback } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import { Filter, Eye, LayoutDashboard, Package, ShoppingBag, Plus, Pencil, Trash2, DollarSign, Users, Clock, TrendingUp, MapPin, Phone, Receipt, Store, Copy, Boxes, Truck, RefreshCw, MailCheck, Ban, Megaphone, BarChart3, Upload, ShoppingCart, Target, KeyRound, Gauge } from 'lucide-react';
+import { Filter, Eye, LayoutDashboard, Package, ShoppingBag, Plus, Pencil, Trash2, DollarSign, Users, Clock, TrendingUp, MapPin, Phone, Receipt, Store, Copy, Boxes, Truck, RefreshCw, MailCheck, Ban, Megaphone, BarChart3, Upload, ShoppingCart, Target, KeyRound, Gauge, Search, Archive, ArchiveRestore } from 'lucide-react';
 import Marketing from '@/components/admin/Marketing';
+import VideoComoLeerDifusion from '@/components/admin/VideoComoLeerDifusion';
 import MotorPrecios from '@/components/admin/MotorPrecios';
 import SurtirCatalogo from '@/components/admin/SurtirCatalogo';
 import { fallbackProducts } from '@/data/fallbackCatalog';
-import { ResponsiveContainer, AreaChart, Area, BarChart, Bar, ComposedChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts';
+import { AreaChart, Area, BarChart, Bar, ComposedChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts';
+import GraficaInteractiva from '@/components/charts/GraficaInteractiva';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -17,6 +19,7 @@ import DashboardSidebar, { alTope } from '@/components/layout/DashboardSidebar';
 import GatewayCredentials from '@/components/GatewayCredentials';
 import AdminAnnouncements from '@/components/AdminAnnouncements';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import { Checkbox } from '@/components/ui/checkbox';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Separator } from '@/components/ui/separator';
@@ -34,6 +37,10 @@ const STATUS_COLORS = {
   cancelado: 'bg-[hsl(var(--muted))] text-[hsl(var(--muted-foreground))] border border-border',
 };
 const EMPTY = { name: '', slug: '', category: '', short_description: '', description: '', presentation: '', form: 'Liofilizado', purity: '99%', price: 0, stock: 0, image_url: '', coa_url: '', batch_number: '', storage: 'Conservar a -20 C, protegido de la luz.', featured: false, is_new: false };
+
+// Las únicas pestañas del rol 'marketing' (difusión). El backend rechaza con
+// 403 cualquier otra ruta para ese rol, así que esta lista es solo la vista.
+const TABS_DIFUSION = ['funnel', 'marketing', 'meta'];
 
 // Todas las presentaciones del catalogo curado (key = id::presentacion, igual que el carrito)
 const STOCK_VARIANTS = fallbackProducts.flatMap((p) => {
@@ -91,6 +98,14 @@ const Admin = () => {
   const [funnel, setFunnel] = useState(null);
   const [orderOpen, setOrderOpen] = useState(null);   // pedido abierto para prepararlo
   const [orderKill, setOrderKill] = useState(null);   // pedido que se va a BORRAR
+  // Selección múltiple en Pedidos (Christián, 2026-07-29): limpiar las pruebas de
+  // un golpe y archivar lo viejo. El candado de los pagados vive en el backend;
+  // aquí sólo se le da la cara: NUNCA se manda `forzar` sin que él lo pida.
+  const [sel, setSel] = useState([]);                       // ids marcados en la tabla
+  const [verArchivados, setVerArchivados] = useState(false);
+  const [archivados, setArchivados] = useState([]);
+  const [loteKill, setLoteKill] = useState(null);           // confirmación de borrado en lote
+  const [loteBusy, setLoteBusy] = useState(false);
   const [intentos, setIntentos] = useState(null);    // carritos que no se cerraron
   const [meta, setMeta] = useState(null);
   const [metaBusy, setMetaBusy] = useState(false);
@@ -100,7 +115,13 @@ const Admin = () => {
   // Abrir ARRIBA al cambiar de pestaña, venga el cambio de donde venga: del sidebar,
   // de un link dentro del contenido o de la URL directa. El onClick del sidebar no
   // alcanza — muchos links cambian sólo la query y ScrollToTop no los ve.
-  const tab = params.get('tab') || 'sales';
+  // Rol 'marketing' (María, la de los anuncios): SOLO difusión — Embudo,
+  // Marketing y Meta. Esconderle las demás pestañas aquí es cortesía, no
+  // seguridad: la seguridad vive en el backend, que le contesta 403 a todo
+  // lo que no sea difusión aunque le pegue a la API directo.
+  const esMarketing = user?.role === 'marketing';
+  const tabPedida = params.get('tab') || (esMarketing ? 'funnel' : 'sales');
+  const tab = esMarketing && !TABS_DIFUSION.includes(tabPedida) ? 'funnel' : tabPedida;
   useLayoutEffect(() => { alTope(); }, [tab]);
   const [customerDetail, setCustomerDetail] = useState(null);   // ficha extendida del cliente abierto
   const [couponForm, setCouponForm] = useState({ pct: 10, days: 30, note: '' });
@@ -112,6 +133,10 @@ const Admin = () => {
   const [distributors, setDistributors] = useState([]);
   const [stockMap, setStockMap] = useState({});
   const [stockFilter, setStockFilter] = useState('');
+  // Buscador del catálogo (Christián, 2026-07-29). Con 193 productos, encontrar uno
+  // a ojo es imposible. Busca por nombre, categoría, SKU y lote: quien busca "reta"
+  // quiere el producto, pero quien pega un número de lote está rastreando un pedido.
+  const [productFilter, setProductFilter] = useState('');
   const [distForm, setDistForm] = useState({ name: '', email: '', commission: 25, customerDiscount: 10 });
   // Edición de tasas por distribuidor. Solo hacia adelante: lo ya vendido
   // conserva su comisión congelada en cada orden.
@@ -135,9 +160,13 @@ const Admin = () => {
   const [form, setForm] = useState(EMPTY);
   const [dialogOpen, setDialogOpen] = useState(false);
 
-  useEffect(() => { if (!loading && (!user || user.role !== 'admin')) navigate('/login'); }, [user, loading, navigate]);
+  useEffect(() => { if (!loading && (!user || !['admin', 'marketing'].includes(user.role))) navigate('/login'); }, [user, loading, navigate]);
 
   const loadAll = useCallback(() => {
+    // Difusión: lo único que el rol marketing tiene permitido pedir.
+    api.get('/admin/funnel?days=30').then((r) => setFunnel(r.data)).catch(() => {});
+    api.get('/admin/meta/dashboard').then((r) => setMeta(r.data)).catch(() => {});
+    if (esMarketing) return;  // el resto se lo negaría el backend con 403
     api.get('/admin/stats').then((r) => setStats(r.data)).catch(() => {});
     api.get('/products').then((r) => setProducts(r.data)).catch(() => {});
     api.get('/categories').then((r) => setCategories(r.data)).catch(() => {});
@@ -145,15 +174,18 @@ const Admin = () => {
     api.get('/admin/repurchase').then((r) => setRepurchase(r.data)).catch(() => {});
     api.get('/admin/customers').then((r) => setCustomers(r.data)).catch(() => {});
     api.get('/admin/analytics').then((r) => setAnalytics(r.data)).catch(() => {});
-    api.get('/admin/funnel?days=30').then((r) => setFunnel(r.data)).catch(() => {});
-    api.get('/admin/meta/dashboard').then((r) => setMeta(r.data)).catch(() => {});
     api.get('/admin/intentos').then((r) => setIntentos(r.data)).catch(() => {});
     api.get('/admin/distributors').then((r) => setDistributors(r.data)).catch(() => {});
     api.get('/admin/distributor-applications').then((r) => setApplications(r.data)).catch(() => {});
     api.get('/stock').then((r) => setStockMap(r.data || {})).catch(() => {});
-  }, []);
+  }, [esMarketing]);
 
-  useEffect(() => { if (user?.role === 'admin') loadAll(); }, [user, loadAll]);
+  useEffect(() => { if (['admin', 'marketing'].includes(user?.role)) loadAll(); }, [user, loadAll]);
+
+  // Los archivados se piden hasta que alguien los quiere ver: casi nunca hacen falta.
+  const cargarArchivados = useCallback(
+    () => api.get('/admin/orders?archivados=true').then((r) => setArchivados(r.data)).catch(() => {}), []);
+  useEffect(() => { if (verArchivados && user?.role === 'admin') cargarArchivados(); }, [verArchivados, user, cargarArchivados]);
 
   // La serie va aparte porque se recarga al cambiar de día/semana/mes, y no
   // tiene por qué volver a pedir todo el panel para eso. El rango se estira con
@@ -165,7 +197,7 @@ const Admin = () => {
       .then((r) => setSerie(r.data)).catch(() => {});
   }, [user, serieBucket]);
 
-  if (!user || user.role !== 'admin') return null;
+  if (!user || !['admin', 'marketing'].includes(user.role)) return null;
 
   const openNew = () => { setEditing(null); setForm({ ...EMPTY, category: categories[0]?.slug || '' }); setDialogOpen(true); };
   const openEdit = (p) => { setEditing(p); setForm({ ...p }); setDialogOpen(true); };
@@ -318,8 +350,39 @@ const Admin = () => {
       await api.delete(`/admin/orders/${o.id}`);
       toast.success(t('admin.order.deleted', { n: o.order_number }));
       setOrderKill(null); setOrderOpen(null);
-      load();
+      loadAll();
     } catch (e) { toast.error(e.response?.data?.detail || 'Error'); }
+  };
+
+  // ---- Pedidos en lote: archivar / desarchivar / borrar varios de un golpe ----
+  // La tabla enseña activos O archivados, nunca revueltos.
+  const pedidosVista = verArchivados ? archivados : orders;
+  const toggleSel = (id) => setSel((s) => (s.includes(id) ? s.filter((x) => x !== id) : [...s, id]));
+  const todosSel = pedidosVista.length > 0 && pedidosVista.every((o) => sel.includes(o.id));
+
+  // `forzar` SOLO puede venir del botón explícito del diálogo de protegidos,
+  // nunca de un flujo automático: entre los pedidos de prueba vive la única
+  // venta real, y el candado del backend existe justo para ella.
+  const lote = async (ids, accion, forzar = false) => {
+    setLoteBusy(true);
+    try {
+      const r = await api.post('/admin/orders/lote', { ids, accion, forzar });
+      const { hechos, protegidos } = r.data;
+      if (hechos > 0) toast.success(t(`admin.lote.done.${accion}`, { n: hechos }));
+      if (accion === 'borrar' && protegidos?.length && !forzar) {
+        // Los que el backend rechazó se enseñan con nombre y monto; el forzado
+        // se reintenta SOLO con ellos, no con toda la selección original.
+        const numeros = new Set(protegidos.map((p) => p.order_number));
+        const idsProt = pedidosVista.filter((o) => numeros.has(o.order_number)).map((o) => o.id);
+        setLoteKill({ protegidos, ids: idsProt });
+      } else {
+        setLoteKill(null);
+      }
+      setSel([]);
+      loadAll();
+      cargarArchivados();
+    } catch (e) { toast.error(e.response?.data?.detail || 'Error'); }
+    finally { setLoteBusy(false); }
   };
   const recargarIntentos = () => api.get('/admin/intentos').then((r) => setIntentos(r.data)).catch(() => {});
   const mandarOferta = async (it) => {
@@ -427,6 +490,19 @@ const Admin = () => {
     { i: Users, t: t('admin.stats.customers'), v: stats.total_users },
   ] : [];
 
+  const productosFiltrados = (() => {
+    const q = productFilter.trim().toLowerCase();
+    if (!q) return products;
+    // Cada palabra tiene que aparecer en ALGÚN campo: así "reta 40" encuentra
+    // "Retatrutida 40 mg" sin exigir que se escriba igualito.
+    const palabras = q.split(/\s+/);
+    return products.filter((p) => {
+      const heno = [p.name, p.category, p.sku, p.batch_number, p.presentation]
+        .filter(Boolean).join(' ').toLowerCase();
+      return palabras.every((w) => heno.includes(w));
+    });
+  })();
+
   const payMax = analytics?.by_payment?.[0]?.revenue || 1;
 
   return (
@@ -439,7 +515,14 @@ const Admin = () => {
             construyendo las pestañas. Catorce entradas seguidas se leen como una lista
             de nada; en cinco grupos se encuentra sin leer. Recompra ya no está aquí:
             vive DENTRO de Clientes, que es lo que es. */}
-        <DashboardSidebar activeTab={tab} items={[
+        <DashboardSidebar activeTab={tab} items={esMarketing ? [
+          // Rol marketing: nada más difusión. El embudo también cuenta como
+          // difusión aquí, aunque para el admin viva en "Negocio".
+          { grupo: 'Difusión' },
+          { value: 'funnel', icon: Filter, label: t('admin.funnelTab') },
+          { value: 'marketing', icon: Target, label: 'Marketing' },
+          { value: 'meta', icon: BarChart3, label: t('admin.metaTab') },
+        ] : [
           { grupo: 'Negocio' },
           { value: 'sales', icon: TrendingUp, label: t('admin.salesTab') },
           { value: 'orders', icon: ShoppingBag, label: t('admin.ordersTab') },
@@ -461,6 +544,7 @@ const Admin = () => {
         ]} />
         <div className="min-w-0 flex-1">
 
+        {!esMarketing && (
         <div className="grid grid-cols-2 md:grid-cols-5 gap-3 mb-8">
           {STAT_CARDS.map((s, i) => (
             <Card key={i} className="p-4">
@@ -469,6 +553,7 @@ const Admin = () => {
             </Card>
           ))}
         </div>
+        )}
 
         <TabsContent value="news" className="mt-5">
           <AdminAnnouncements />
@@ -609,6 +694,9 @@ const Admin = () => {
             radiografía por campaña y el director, y aquí adentro Admin.js ya
             pasaba de 1700 líneas. */}
         <TabsContent value="marketing" className="mt-5">
+          {/* El video que explica cómo leer Embudo, Marketing y Anuncios va
+              ARRIBA: es la puerta de entrada para quien no vive en estos números. */}
+          <VideoComoLeerDifusion />
           <Marketing />
         </TabsContent>
 
@@ -901,7 +989,7 @@ const Admin = () => {
                       </div>
                     </div>
 
-                    <ResponsiveContainer width="100%" height={280}>
+                    <GraficaInteractiva height={280}>
                       <ComposedChart data={serie.serie} margin={{ top: 4, right: 8, left: 8, bottom: 0 }}>
                         <CartesianGrid vertical={false} stroke="hsl(var(--border))" strokeOpacity={0.5} />
                         <XAxis dataKey="periodo" tickLine={false} axisLine={false} minTickGap={24}
@@ -919,14 +1007,14 @@ const Admin = () => {
                         <Bar yAxisId="izq" dataKey="pedidos" name={t('admin.series.orders')} fill="hsl(var(--primary))" radius={[4, 4, 0, 0]} />
                         <Line yAxisId="der" type="monotone" dataKey="ingreso" name={t('admin.series.revenue')} stroke="hsl(var(--info))" strokeWidth={2} dot={false} />
                       </ComposedChart>
-                    </ResponsiveContainer>
+                    </GraficaInteractiva>
                   </>
                 )}
               </Card>
 
               <Card className="p-5">
                 <h3 className="font-heading font-semibold mb-4">{t('admin.sales.monthly')}</h3>
-                <ResponsiveContainer width="100%" height={260}>
+                <GraficaInteractiva height={260}>
                   <AreaChart data={analytics.monthly} margin={{ top: 4, right: 8, left: 8, bottom: 0 }}>
                     <defs>
                       <linearGradient id="rev" x1="0" y1="0" x2="0" y2="1">
@@ -940,20 +1028,20 @@ const Admin = () => {
                     <Tooltip contentStyle={CHART_TOOLTIP_STYLE} labelFormatter={fmtMonth} formatter={(v, name) => (name === 'revenue' ? [formatMXN(v), t('admin.stats.revenue')] : [v, t('admin.stats.orders')])} />
                     <Area type="monotone" dataKey="revenue" stroke="hsl(var(--primary))" strokeWidth={2} fill="url(#rev)" activeDot={{ r: 4 }} />
                   </AreaChart>
-                </ResponsiveContainer>
+                </GraficaInteractiva>
               </Card>
 
               <div className="grid lg:grid-cols-2 gap-4">
                 <Card className="p-5">
                   <h3 className="font-heading font-semibold mb-4">{t('admin.sales.topProducts')}</h3>
-                  <ResponsiveContainer width="100%" height={Math.max(180, analytics.top_products.length * 34)}>
+                  <GraficaInteractiva height={Math.max(180, analytics.top_products.length * 34)}>
                     <BarChart data={analytics.top_products} layout="vertical" margin={{ top: 0, right: 8, left: 8, bottom: 0 }}>
                       <XAxis type="number" hide />
                       <YAxis type="category" dataKey="name" width={170} tickLine={false} axisLine={false} tick={{ fontSize: 11, fill: 'hsl(var(--foreground))' }} />
                       <Tooltip cursor={{ fill: 'hsl(var(--muted))', opacity: 0.35 }} contentStyle={CHART_TOOLTIP_STYLE} formatter={(v, name, item) => [`${formatMXN(v)} · ${t('admin.sales.units', { count: item.payload.units })}`, null]} />
                       <Bar dataKey="revenue" fill="hsl(var(--primary))" radius={[0, 4, 4, 0]} barSize={14} />
                     </BarChart>
-                  </ResponsiveContainer>
+                  </GraficaInteractiva>
                 </Card>
 
                 <Card className="p-5">
@@ -1132,10 +1220,46 @@ const Admin = () => {
         </TabsContent>
 
         <TabsContent value="orders" className="mt-5">
+          {/* Activos / Archivados + la barra de acciones en lote cuando hay algo marcado */}
+          <div className="flex flex-wrap items-center justify-between gap-3 mb-4">
+            <div className="flex gap-1">
+              <Button size="sm" variant={!verArchivados ? 'default' : 'outline'}
+                onClick={() => { setVerArchivados(false); setSel([]); }} data-testid="admin-ver-activos">
+                {t('admin.lote.active')}
+              </Button>
+              <Button size="sm" variant={verArchivados ? 'default' : 'outline'}
+                onClick={() => { setVerArchivados(true); setSel([]); }} data-testid="admin-ver-archivados">
+                <Archive className="h-3.5 w-3.5 mr-1.5" /> {t('admin.lote.archived')}
+              </Button>
+            </div>
+            {sel.length > 0 && (
+              <div className="flex flex-wrap items-center gap-2" data-testid="admin-lote-bar">
+                <span className="text-sm text-muted-foreground">{t('admin.lote.selected', { n: sel.length })}</span>
+                {!verArchivados ? (
+                  <Button size="sm" variant="outline" onClick={() => lote(sel, 'archivar')} disabled={loteBusy} data-testid="admin-lote-archivar">
+                    <Archive className="h-3.5 w-3.5 mr-1.5" /> {t('admin.lote.archive')}
+                  </Button>
+                ) : (
+                  <Button size="sm" variant="outline" onClick={() => lote(sel, 'desarchivar')} disabled={loteBusy} data-testid="admin-lote-desarchivar">
+                    <ArchiveRestore className="h-3.5 w-3.5 mr-1.5" /> {t('admin.lote.unarchive')}
+                  </Button>
+                )}
+                <Button size="sm" variant="destructive" disabled={loteBusy} data-testid="admin-lote-borrar"
+                  onClick={() => setLoteKill({ pedidos: pedidosVista.filter((o) => sel.includes(o.id)) })}>
+                  <Trash2 className="h-3.5 w-3.5 mr-1.5" /> {t('admin.lote.delete')}
+                </Button>
+              </div>
+            )}
+          </div>
           <Card className="overflow-x-auto">
             <Table data-testid="admin-orders-table">
               <TableHeader>
                 <TableRow>
+                  <TableHead className="w-8">
+                    <Checkbox checked={todosSel} disabled={pedidosVista.length === 0}
+                      onCheckedChange={(v) => setSel(v ? pedidosVista.map((o) => o.id) : [])}
+                      aria-label={t('admin.lote.selectAll')} data-testid="admin-sel-todo" />
+                  </TableHead>
                   <TableHead>{t('admin.table.order')}</TableHead><TableHead>{t('admin.table.customer')}</TableHead><TableHead>{t('common.total')}</TableHead>
                   <TableHead>{t('admin.table.payment')}</TableHead><TableHead>{t('admin.table.date')}</TableHead><TableHead>{t('admin.table.status')}</TableHead>
                   <TableHead>{t('admin.table.receipt')}</TableHead>
@@ -1144,10 +1268,14 @@ const Admin = () => {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {orders.length === 0 ? (
-                  <TableRow><TableCell colSpan={9} className="text-center text-muted-foreground py-8">{t('admin.noOrders')}</TableCell></TableRow>
-                ) : orders.map((o) => (
-                  <TableRow key={o.id}>
+                {pedidosVista.length === 0 ? (
+                  <TableRow><TableCell colSpan={10} className="text-center text-muted-foreground py-8">{t('admin.noOrders')}</TableCell></TableRow>
+                ) : pedidosVista.map((o) => (
+                  <TableRow key={o.id} data-state={sel.includes(o.id) ? 'selected' : undefined}>
+                    <TableCell>
+                      <Checkbox checked={sel.includes(o.id)} onCheckedChange={() => toggleSel(o.id)}
+                        aria-label={o.order_number} data-testid="admin-sel-pedido" />
+                    </TableCell>
                     <TableCell>
                       <button type="button" onClick={() => setOrderOpen(o)} data-testid="admin-open-order"
                         className="font-mono-tech text-xs underline decoration-dotted underline-offset-4 hover:text-[hsl(var(--primary))] transition">
@@ -1200,9 +1328,23 @@ const Admin = () => {
         </TabsContent>
 
         <TabsContent value="products" className="mt-5">
-          <div className="flex justify-between items-center mb-4">
-            <h3 className="font-heading font-semibold">{t('admin.productsCount', { count: products.length })}</h3>
-            <Button onClick={openNew} data-testid="admin-add-product-button"><Plus className="h-4 w-4 mr-1.5" /> {t('admin.newProduct')}</Button>
+          <div className="flex flex-wrap justify-between items-center gap-3 mb-4">
+            {/* El conteo enseña CUÁNTOS SE VEN de cuántos hay: con el buscador puesto,
+                un "193 productos" fijo mientras la tabla muestra 3 se lee como un error. */}
+            <h3 className="font-heading font-semibold">
+              {productFilter.trim()
+                ? `${productosFiltrados.length} de ${products.length}`
+                : t('admin.productsCount', { count: products.length })}
+            </h3>
+            <div className="flex items-center gap-3">
+              <div className="relative">
+                <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground pointer-events-none" />
+                <Input className="w-64 pl-8" placeholder={t('admin.products.search')}
+                  value={productFilter} onChange={(e) => setProductFilter(e.target.value)}
+                  data-testid="admin-products-search" />
+              </div>
+              <Button onClick={openNew} data-testid="admin-add-product-button"><Plus className="h-4 w-4 mr-1.5" /> {t('admin.newProduct')}</Button>
+            </div>
           </div>
           <Card className="overflow-x-auto">
             <Table data-testid="admin-products-table">
@@ -1213,7 +1355,7 @@ const Admin = () => {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {products.map((p) => (
+                {productosFiltrados.map((p) => (
                   <TableRow key={p.id}>
                     <TableCell className="font-medium">{p.name}{p.featured && <Badge variant="secondary" className="ml-2 text-[10px]">{t('admin.featured')}</Badge>}</TableCell>
                     <TableCell className="text-xs text-muted-foreground">{categories.find((c) => c.slug === p.category)?.name || p.category}</TableCell>
@@ -1401,6 +1543,59 @@ const Admin = () => {
               </div>
             </>
           )}
+        </DialogContent>
+      </Dialog>
+
+      {/* Borrado EN LOTE: primero la lista completa de lo que se va; si el backend
+          protege ventas pagadas, se enseñan con nombre y monto y el forzado es un
+          segundo botón aparte. Jamás se fuerza en automático. */}
+      <Dialog open={!!loteKill} onOpenChange={(v) => !v && setLoteKill(null)}>
+        <DialogContent className="max-w-md" data-testid="admin-lote-dialog">
+          {loteKill && (loteKill.protegidos ? (
+            <>
+              <DialogHeader><DialogTitle>{t('admin.lote.protectedTitle')}</DialogTitle></DialogHeader>
+              <p className="text-sm text-muted-foreground">{t('admin.lote.protectedBody', { n: loteKill.protegidos.length })}</p>
+              <div className="rounded-lg border border-[hsl(var(--warning-border))] bg-[hsl(var(--warning))]/10 p-3 space-y-1.5 text-xs max-h-56 overflow-y-auto" data-testid="admin-lote-protegidos">
+                {loteKill.protegidos.map((p) => (
+                  <div key={p.order_number} className="flex items-center justify-between gap-2">
+                    <span className="font-mono-tech shrink-0">{p.order_number}</span>
+                    <span className="truncate flex-1">{p.cliente}</span>
+                    <Badge variant="outline" className="text-[10px] uppercase shrink-0">{t(`status.${p.status}`)}</Badge>
+                    <span className="font-medium shrink-0">{formatMXN(p.total)}</span>
+                  </div>
+                ))}
+              </div>
+              <p className="text-xs text-muted-foreground">{t('admin.lote.forceHint')}</p>
+              <div className="flex justify-end gap-2 mt-2">
+                <Button variant="outline" size="sm" onClick={() => setLoteKill(null)}>{t('common.cancel')}</Button>
+                <Button variant="destructive" size="sm" disabled={loteBusy || !loteKill.ids?.length}
+                  onClick={() => lote(loteKill.ids, 'borrar', true)} data-testid="admin-lote-forzar">
+                  <Trash2 className="h-4 w-4 mr-1.5" /> {t('admin.lote.force', { n: loteKill.protegidos.length })}
+                </Button>
+              </div>
+            </>
+          ) : (
+            <>
+              <DialogHeader><DialogTitle>{t('admin.lote.deleteTitle', { n: loteKill.pedidos.length })}</DialogTitle></DialogHeader>
+              <div className="rounded-lg border border-border p-3 space-y-1.5 text-xs max-h-56 overflow-y-auto" data-testid="admin-lote-lista">
+                {loteKill.pedidos.map((o) => (
+                  <div key={o.id} className="flex items-center justify-between gap-2">
+                    <span className="font-mono-tech shrink-0">{o.order_number}</span>
+                    <span className="truncate flex-1">{o.customer?.full_name}</span>
+                    <span className="font-medium shrink-0">{formatMXN(o.total)}</span>
+                  </div>
+                ))}
+              </div>
+              <p className="text-xs text-muted-foreground">{t('admin.lote.deleteHint')}</p>
+              <div className="flex justify-end gap-2 mt-2">
+                <Button variant="outline" size="sm" onClick={() => setLoteKill(null)}>{t('common.cancel')}</Button>
+                <Button variant="destructive" size="sm" disabled={loteBusy}
+                  onClick={() => lote(loteKill.pedidos.map((o) => o.id), 'borrar')} data-testid="admin-lote-confirmar">
+                  <Trash2 className="h-4 w-4 mr-1.5" /> {t('admin.lote.deleteConfirm', { n: loteKill.pedidos.length })}
+                </Button>
+              </div>
+            </>
+          ))}
         </DialogContent>
       </Dialog>
 

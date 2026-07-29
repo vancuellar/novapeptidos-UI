@@ -7,8 +7,10 @@
 //
 // Todo lo que no se pudo atribuir se muestra APARTE, nunca repartido entre las
 // campañas: repartirlo haría que todas se vieran mejor de lo que son.
-import React, { useEffect, useState, useCallback } from 'react';
-import { ResponsiveContainer, BarChart, Bar, ComposedChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, Cell } from 'recharts';
+import React, { useEffect, useLayoutEffect, useState, useCallback } from 'react';
+import { BarChart, Bar, ComposedChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, Cell } from 'recharts';
+import GraficaInteractiva from '@/components/charts/GraficaInteractiva';
+import { alTope } from '@/components/layout/DashboardSidebar';
 import { AlertTriangle, ArrowLeft, Copy, RefreshCw, Link2, Sparkles, Users, DollarSign, Target, TrendingUp } from 'lucide-react';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -39,6 +41,21 @@ const Chip = ({ v }) => {
   const s = VEREDICTO[v] || VEREDICTO['sin datos'];
   return <span className={`rounded-full px-2 py-0.5 text-[11px] whitespace-nowrap ${s.c}`}>{s.txt}</span>;
 };
+
+// El nombre de una campaña abre su radiografía en TODOS lados: tablas, gráficas y
+// listas (Christián, 2026-07-29). Es un botón de verdad —no un onClick en un span—
+// para que también funcione con teclado. El punteado es el mismo que usan los
+// números de pedido en el Admin: la señal de la casa de "esto se abre".
+// Sin campaign_id no hay radiografía que abrir y el nombre se queda como texto.
+const NombreCampana = ({ nombre, id, onAbrir, className = '' }) => (
+  id ? (
+    <button type="button" onClick={(e) => { e.stopPropagation(); onAbrir(id); }}
+      data-testid="mkt-abrir-campana"
+      className={`text-left font-medium underline decoration-dotted underline-offset-4 hover:text-[hsl(var(--primary))] transition cursor-pointer ${className}`}>
+      {nombre}
+    </button>
+  ) : <span className={`font-medium ${className}`}>{nombre}</span>
+);
 
 const Kpi = ({ icon: I, label, value, hint, fuerte }) => (
   <Card className={`p-4 ${fuerte ? 'border-[hsl(var(--primary))]' : ''}`}>
@@ -123,7 +140,7 @@ const Radiografia = ({ id, dias, onVolver }) => {
         <Card className="p-4">
           <h4 className="font-semibold text-sm mb-3">Día a día</h4>
           <div className="overflow-x-auto">
-            <ResponsiveContainer width="100%" height={240} minWidth={420}>
+            <GraficaInteractiva height={240} minWidth={420}>
               <ComposedChart data={d.dia_a_dia} margin={{ top: 4, right: 8, left: 8, bottom: 0 }}>
                 <CartesianGrid strokeDasharray="3 3" opacity={0.25} />
                 <XAxis dataKey="fecha" tick={{ fontSize: 11 }} />
@@ -134,7 +151,7 @@ const Radiografia = ({ id, dias, onVolver }) => {
                 <Bar yAxisId="l" dataKey="clics_enlace" name="Clics al enlace" fill="hsl(var(--primary))" />
                 <Line yAxisId="r" dataKey="gasto" name="Gasto" stroke="#f59e0b" dot={false} strokeWidth={2} />
               </ComposedChart>
-            </ResponsiveContainer>
+            </GraficaInteractiva>
           </div>
         </Card>
       )}
@@ -381,6 +398,12 @@ const Marketing = () => {
   const [cargando, setCargando] = useState(false);
   const [abierta, setAbierta] = useState(null);
 
+  // Abrir/cerrar la radiografía cambia TODA la vista, pero no cambia ni la ruta ni la
+  // pestaña: ni ScrollToTop ni el efecto de `tab` en Admin.js se enteran. Sin esto,
+  // volver desde el fondo de una radiografía te dejaba a media página — el caso que
+  // seguía fallando después de arreglar el cambio de pestañas.
+  useLayoutEffect(() => { alTope(); }, [abierta]);
+
   const cargar = useCallback(() => {
     setCargando(true);
     api.get(`/admin/marketing/resumen?days=${dias}`)
@@ -403,6 +426,31 @@ const Marketing = () => {
 
   const T = d.total || {};
   const conCac = (d.campanas || []).filter((c) => c.cac !== null);
+
+  // Para las gráficas y la lista de enlaces: del nombre/slug al campaign_id.
+  const porNombre = Object.fromEntries((d.campanas || []).filter((c) => c.campaign_id).map((c) => [c.campana, c.campaign_id]));
+  const porSlug = Object.fromEntries((d.campanas || []).filter((c) => c.campaign_id).map((c) => [c.slug, c.campaign_id]));
+  const abrirDeBarra = (p) => {
+    const c = p?.payload || p;
+    if (c?.campaign_id) setAbierta(c.campaign_id);
+  };
+  // Etiqueta del eje X clicable: en las gráficas el nombre de la campaña vive ahí.
+  // Es SVG, así que el teclado se maneja a mano (Enter o espacio).
+  const TickCampana = ({ x, y, payload }) => {
+    const id = porNombre[payload.value];
+    const abrir = () => id && setAbierta(id);
+    return (
+      <text x={x} y={y} dy={10} fontSize={10} textAnchor="end" transform={`rotate(-15 ${x} ${y})`}
+        fill="hsl(var(--muted-foreground))"
+        role={id ? 'button' : undefined} tabIndex={id ? 0 : undefined}
+        style={id ? { cursor: 'pointer' } : undefined}
+        onClick={abrir}
+        onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); abrir(); } }}>
+        {id ? <title>Abrir la radiografía de {payload.value}</title> : null}
+        {payload.value}
+      </text>
+    );
+  };
 
   return (
     <div className="space-y-6" data-testid="mkt-resumen">
@@ -498,22 +546,23 @@ const Marketing = () => {
       {conCac.length > 0 && (
         <Card className="p-4">
           <h4 className="font-semibold text-sm mb-1">Cuánto cuesta un cliente en cada campaña</h4>
-          <p className="text-xs text-muted-foreground mb-3">Más bajo es mejor. Solo salen las campañas que ya trajeron al menos un cliente nuevo.</p>
+          <p className="text-xs text-muted-foreground mb-3">Más bajo es mejor. Solo salen las campañas que ya trajeron al menos un cliente nuevo. Haz clic en una barra o en su nombre para abrir la radiografía.</p>
           <div className="overflow-x-auto">
-            <ResponsiveContainer width="100%" height={260} minWidth={420}>
+            <GraficaInteractiva height={260} minWidth={420}>
               <BarChart data={conCac} margin={{ top: 4, right: 8, left: 8, bottom: 0 }}>
                 <CartesianGrid strokeDasharray="3 3" opacity={0.25} />
-                <XAxis dataKey="campana" tick={{ fontSize: 10 }} interval={0} angle={-15} textAnchor="end" height={60} />
+                <XAxis dataKey="campana" tick={<TickCampana />} interval={0} height={60} />
                 <YAxis tick={{ fontSize: 11 }} />
                 <Tooltip formatter={(v) => money(v)} />
-                <Bar dataKey="cac" name="Costo por cliente">
+                <Bar dataKey="cac" name="Costo por cliente" onClick={abrirDeBarra}>
                   {conCac.map((c) => (
-                    <Cell key={c.slug} fill={c.veredicto === 'gana' ? 'hsl(var(--success))'
+                    <Cell key={c.slug} cursor={c.campaign_id ? 'pointer' : undefined}
+                      fill={c.veredicto === 'gana' ? 'hsl(var(--success))'
                       : c.veredicto === 'pierde' ? '#dc2626' : 'hsl(var(--primary))'} />
                   ))}
                 </Bar>
               </BarChart>
-            </ResponsiveContainer>
+            </GraficaInteractiva>
           </div>
         </Card>
       )}
@@ -521,19 +570,19 @@ const Marketing = () => {
       {d.campanas?.length > 0 && (
         <Card className="p-4">
           <h4 className="font-semibold text-sm mb-1">Gasto contra ingreso, campaña por campaña</h4>
-          <p className="text-xs text-muted-foreground mb-3">Si la barra naranja le gana a la azul, esa campaña está costando más de lo que trae.</p>
+          <p className="text-xs text-muted-foreground mb-3">Si la barra naranja le gana a la azul, esa campaña está costando más de lo que trae. Haz clic en una barra o en su nombre para abrir la radiografía.</p>
           <div className="overflow-x-auto">
-            <ResponsiveContainer width="100%" height={260} minWidth={420}>
+            <GraficaInteractiva height={260} minWidth={420}>
               <BarChart data={d.campanas} margin={{ top: 4, right: 8, left: 8, bottom: 0 }}>
                 <CartesianGrid strokeDasharray="3 3" opacity={0.25} />
-                <XAxis dataKey="campana" tick={{ fontSize: 10 }} interval={0} angle={-15} textAnchor="end" height={60} />
+                <XAxis dataKey="campana" tick={<TickCampana />} interval={0} height={60} />
                 <YAxis tick={{ fontSize: 11 }} />
                 <Tooltip formatter={(v) => money(v)} />
                 <Legend />
-                <Bar dataKey="gasto" name="Gastado" fill="#f59e0b" />
-                <Bar dataKey="ingreso" name="Ingreso" fill="hsl(var(--primary))" />
+                <Bar dataKey="gasto" name="Gastado" fill="#f59e0b" cursor="pointer" onClick={abrirDeBarra} />
+                <Bar dataKey="ingreso" name="Ingreso" fill="hsl(var(--primary))" cursor="pointer" onClick={abrirDeBarra} />
               </BarChart>
-            </ResponsiveContainer>
+            </GraficaInteractiva>
           </div>
         </Card>
       )}
@@ -561,7 +610,7 @@ const Marketing = () => {
                     className={`border-b border-border/50 ${c.campaign_id ? 'cursor-pointer hover:bg-[hsl(var(--secondary))]' : ''}`}
                     onClick={() => c.campaign_id && setAbierta(c.campaign_id)}
                     data-testid={`mkt-campana-${c.slug}`}>
-                  <td className="py-2 font-medium">{c.campana}</td>
+                  <td className="py-2"><NombreCampana nombre={c.campana} id={c.campaign_id} onAbrir={setAbierta} /></td>
                   <td className="text-right">{money(c.gasto)}</td>
                   <td className="text-right">{num(c.clics_enlace)}</td>
                   <td className="text-right">{num(c.clientes_nuevos)}</td>
@@ -586,7 +635,8 @@ const Marketing = () => {
           <div className="space-y-1.5">
             {d.enlaces.map((e) => (
               <div key={e.slug} className="flex items-center gap-2">
-                <span className="text-xs w-40 truncate shrink-0">{e.campana}</span>
+                <NombreCampana nombre={e.campana} id={porSlug[e.slug]} onAbrir={setAbierta}
+                  className="text-xs w-40 truncate shrink-0 font-normal" />
                 <code className="text-[11px] bg-[hsl(var(--secondary))] rounded px-2 py-1 flex-1 overflow-x-auto whitespace-nowrap">{e.url}</code>
                 <Button size="sm" variant="outline" onClick={() => copiar(e.url)}><Copy className="h-3.5 w-3.5" /></Button>
               </div>
