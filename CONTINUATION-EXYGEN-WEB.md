@@ -1,5 +1,65 @@
 # 🤝 HANDOFF — 2026-07-29 (madrugada) — LÉELO PRIMERO
 
+# 🚨 PRIORIDAD 00 — ARRANCAR CODEX BIEN, ANTES QUE NADA
+
+**Orden expresa de Christian (2026-07-29).** Hoy se le pidió a Codex una verificación
+independiente del emparejamiento de proveedores. El sistema contestó *"Codex task started in
+background: task-ms5lsczp-u48nv1"*. **Era mentira: la tarea nunca existió.** Al consultarla:
+`No job found for "task-ms5lsczp-u48nv1"`.
+
+Ya había pasado antes ([[exygen-codex-cli-flag]]) y volvió a pasar. **Deja de creerle al
+mensaje de "lanzado".**
+
+## Cómo se hace bien — los comandos que SÍ funcionan
+
+El plugin vive en `~/.claude/plugins/cache/openai-codex/codex/1.0.4/`. El script que de
+verdad responde es `scripts/codex-companion.mjs`:
+
+```
+# listar TODO lo que Codex tiene registrado
+node ~/.claude/plugins/cache/openai-codex/codex/1.0.4/scripts/codex-companion.mjs status
+
+# estado de una tarea concreta
+node ~/.claude/plugins/cache/openai-codex/codex/1.0.4/scripts/codex-companion.mjs status <task-id>
+
+# el reporte completo cuando termina
+node ~/.claude/plugins/cache/openai-codex/codex/1.0.4/scripts/codex-companion.mjs result <task-id>
+```
+
+⚠️ `codex status <id>` **NO existe** como subcomando del CLI — devuelve
+"unrecognized subcommand". Y `codex` a secas falla con "stdin is not a terminal".
+⚠️ En esta carpeta el CLI necesita `--skip-git-repo-check` o falla callado.
+
+## El protocolo, sin excepciones
+
+1. Lanzas la tarea.
+2. **INMEDIATAMENTE** corres `codex-companion.mjs status` y **confirmas que el id aparece en
+   la lista**. Si no aparece, NO arrancó: relánzala.
+3. Verificas que el proceso vive: `ps aux | grep "[c]odex"` debe mostrar `codex app-server`.
+4. Cuando termine, sacas el reporte con `result <task-id>` — no te conformes con el resumen.
+5. **Nunca le digas a Christian "Codex está revisando" sin haber hecho los pasos 2 y 3.**
+
+## Lo que hay que pedirle a Codex esta vez
+
+La verificación **independiente y a ciegas** del emparejamiento: que llegue solo a los
+números, **sin mirar** `db.py`, `emparejar.py` ni las vistas nuevas. Luego se comparan sus
+números contra los nuestros:
+
+| Lo que decimos nosotros | ¿Coincide Codex? |
+|---|---|
+| 1,806 renglones → 380 productos reales | |
+| 1,645 emparejados = **91%** | |
+| 161 huérfanos | |
+| Lumi vs Peptideals: 84 en común, **Lumi gana 71** | |
+| **193 de 193** productos nuestros con proveedor | |
+| Pagando de más: **$527 USD/caja** en 11 compras reales | |
+
+Si sus números coinciden, hay verificación de verdad. Si no, uno de los dos se equivocó y
+hay que averiguar cuál **antes** de comprarle a nadie.
+
+---
+
+
 ## ⚠️ LO PRIMERO: DOS COSAS QUE SALIERON MAL Y HAY QUE SABER
 
 **1. Un PR se fusionó SIN los arreglos que decía traer.** El PR #2 del repo de precios
