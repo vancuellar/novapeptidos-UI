@@ -1,4 +1,112 @@
-# 🤝 HANDOFF — 2026-07-28 (noche, cierre definitivo)
+# 🤝 HANDOFF — 2026-07-29 (madrugada) — LÉELO PRIMERO
+
+## ⚠️ LO PRIMERO: DOS COSAS QUE SALIERON MAL Y HAY QUE SABER
+
+**1. Un PR se fusionó SIN los arreglos que decía traer.** El PR #2 del repo de precios
+describía dos correcciones de Codex que **no iban dentro**: el `git add` falló por el
+`.gitignore` (intentó agregar `.venv`) y la cadena `&&` se rompió, así que el commit nunca
+ocurrió — pero `gh pr create` sí, porque iba después de un `;`. **Ya está corregido**
+(commit `30e38be` en `main`, 228 pruebas en verde).
+👉 **Lección: cuando un `git add` falla, el `git commit` que sigue NO corre. Verifica
+SIEMPRE con `git log`/`git show origin/main:archivo` que lo que dice el PR está de verdad
+dentro.**
+
+**2. La verificación independiente de Codex NUNCA ARRANCÓ.** Se le pidió rehacer el
+emparejamiento desde cero, a ciegas. El sistema reportó `task-ms5lsczp-u48nv1` como lanzada,
+pero al consultarla: *"No job found"*. **Hoy NO existe verificación independiente del
+emparejamiento.** Es el mismo problema ya anotado en
+[[exygen-codex-cli-flag]]: el agente reporta lanzamientos que no arrancan.
+👉 **Cómo consultar a Codex de verdad:**
+`node ~/.claude/plugins/cache/openai-codex/codex/1.0.4/scripts/codex-companion.mjs status`
+y `... result <task-id>`. No te fíes del mensaje de "lanzado".
+
+## ✅ EL EMPAREJAMIENTO DE PROVEEDORES — HECHO Y EN MAIN
+
+Commit `30e38be`. Las comparaciones estaban mal: se emparejaba por el TEXTO exacto, y cada
+proveedor escribe distinto. Ahora hay una **llave canónica** (`nombre|cantidad`).
+
+- 1,806 renglones → **380 productos reales**; **1,645 emparejados (91%)**, 161 huérfanos.
+- **32 productos que vendemos no tenían NI UN proveedor emparejado** — toda la línea GLP-1.
+  Hoy **193 de 193** tienen con quién compararse.
+- **Lumi vs Peptideals: 84 en común, Lumi gana 71.** BPC-157 5 mg: Lumi $3.60 vs $10.40.
+- **Pagando de más: $527 USD/caja** en 11 compras reales. Lo peor: Retatrutida 40 mg a
+  Bainuo ($26.90 vs $13.90 de Lucy) y KLOW 80 mg a Bainuo ($25.10 vs $12.70).
+- Errores de los proveedores que quedan EXCLUIDOS y hay que preguntarles: Mia y Lumi listan
+  el MOTS-c 20 mg en cajas de **20** (los otros diez usan 10); Lisa dice **11** del
+  Adipotide; Cerebrolysin 60 mg con 6.
+
+**Codex revisó y encontró tres cosas. Dos eran reales y YA ESTÁN ARREGLADAS:**
+1. **`0,1mg` se leía como `1mg`** — diez veces más. Ya distingue coma decimal de coma de
+   miles (`1,000mg`→1000, `0,1mg`→0.1).
+2. **El candado de mezclas sólo miraba el `+`.** `Semax 10mg & Selank 10mg` se colaba como
+   producto suelto. Ya cuentan `&`, `y`, `and`.
+   ⛔ **El `/` quedó FUERA a propósito**: probado contra los datos reales, en los alias
+   significa *"también llamado"* (`Adipotide / FTTP`, `Thymalin / Thymulin`), no "mezclado
+   con". Incluirlo rompía dos alias legítimos. **Esto responde el hallazgo de Codex de que
+   "Thymalin y Thymulin se mezclan": ya está resuelto.**
+3. **"reprecio propone 1 cambio de precio"** → **FALSA ALARMA**: Codex corrió **sin red**.
+   Sin precios de competencia el motor calcula distinto. Con red: **0 cambios**.
+
+## 💰 EL ROI NO SE MOVIÓ — NADA SE MOVIÓ
+
+Comparada la maestra renglón por renglón **ignorando la columna de fecha: CERO diferencias**
+en 204 productos. El emparejamiento cambió con QUIÉN comparamos, no QUÉ cobramos.
+
+**ROI hoy: promedio 12.07× · mínimo 5.11× · máximo 27.52×.**
+
+⚠️ **Trampa que costó tiempo:** al pasar de medianoche, `maestra.csv` sale "cambiada" en 280
+renglones y la prueba `test_el_csv_esta_al_dia_con_la_maestra` falla — **pero lo único
+distinto es la fecha**. Antes de asustarte, compara ignorando esa columna.
+
+## 🚚 ENVÍO $250 PAREJO — EN VIVO
+
+Desplegado y verificado: `shipping_charged: true`, `shipping_flat: 250`, gratis desde
+$2,500 con tope del 10% (la casa absorbe hasta el 10% y el cliente paga la diferencia).
+Entre las opciones que cumplen el plazo **gana la más rápida, no la más barata**.
+**Christian entrega EN PERSONA**: no hay recolección, no le pidas dirección de Playa. El
+servicio que corresponde es "Sin Recolección" ($139 a CDMX en 3 días).
+Devoluciones: su oficina de Mérida (Calle 60 #258 x 37, Centro, 97000).
+
+## 🔴 PENDIENTES NUEVOS DE CODEX — NO ATACADOS, VAN PRIMERO
+
+Los dos que de verdad preocupan:
+1. **Canjear puntos puede causar una pérdida real de $37,448.** (Ya se arregló el doble
+   gasto y la carrera; esto es OTRA cosa.)
+2. **Se pueden ignorar 144 de 145 precios y marcar 100% de cobertura** — el candado del 85%
+   se puede burlar. Ver [[exygen-leer-listas-proveedor-candado]].
+
+Los demás:
+3. El lector de proveedores puede asignar costos al producto equivocado (otra vez).
+4. **Clenbuterol pasa el filtro legal** — agregar a `no_vender.csv`.
+5. **Si falta `no_vender.csv`, propone 55 productos, incluidos esteroides, SIN AVISAR.**
+   Debería negarse a correr, no seguir en silencio.
+6. El Panel acepta informes viejos o alterados sin validarlos.
+7. Precios de competidor en $0 (menor).
+8. La revisión completa de la lista de Peptideals quedó pendiente.
+
+## 📋 LO DEMÁS QUE SIGUE PENDIENTE
+
+1. **Verificación independiente del emparejamiento** — relanzar Codex desde cero, a ciegas,
+   y comparar sus números contra los nuestros (91%, 380 productos, Lumi gana 71 de 84).
+2. **Los 5 arreglos de diseño de Fable** — el más gordo: en celular la portada enseña puro
+   texto y el producto queda abajo del doblez.
+3. **Mónica Fuentes** en el sitio.
+4. **Calculadora:** 3 mejoras ya analizadas.
+5. **Comparar el descuento por monto (10-15%) contra el de Certified por volumen** (16.66%
+   por 9+ viales).
+6. **Anuncios a Compras**, no a clics.
+7. **AuxPay:** el correo está en los borradores de Gmail de Christian, sin enviar.
+8. **La foto de los dos viales todavía dice "for Injection"** — al regenerarla con Nano
+   Banana, que diga sólo "Research Peptides".
+
+## ⚡ REGLA NUEVA (2026-07-29)
+**Ya no se usan PRs.** Christian dijo: *"Merge everything, promote to main. No need to PR
+anymore"*. Se commitea y se sube directo a `main`. Las compuertas siguen siendo obligatorias
+para dinero, precios, inventario y backend; los cambios de imagen o texto van sin pruebas.
+
+---
+
+# 🤝 HANDOFF — 2026-07-28 (noche)
 
 > *Esto manda sobre todo lo de abajo. Lo demás es historia y detalle.*
 
