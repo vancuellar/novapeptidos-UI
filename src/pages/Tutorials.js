@@ -21,30 +21,35 @@ const videoFileFor = (v, language) => {
 const VIDEOS = [
   {
     file: 'tutorial-1-panel-distribuidor.mp4',
+    localized: true, // hay versión -en y -pt en el backend
     title: 'Tu panel de distribuidor: resumen y cómo subir de nivel',
     duration: '1:02',
     audience: 'Distribuidores', role: 'dist',
   },
   {
     file: 'tutorial-2-mis-codigos.mp4',
+    localized: true, // hay versión -en y -pt en el backend
     title: 'Tus códigos de referido',
     duration: '0:40',
     audience: 'Distribuidores', role: 'dist',
   },
   {
     file: 'tutorial-3-mis-clientes.mp4',
+    localized: true, // hay versión -en y -pt en el backend
     title: 'Tus clientes y tu red',
     duration: '0:30',
     audience: 'Distribuidores', role: 'dist',
   },
   {
     file: 'tutorial-4-pedidos-y-ventas.mp4',
+    localized: true, // hay versión -en y -pt en el backend
     title: 'Pedidos, envíos y tus ventas',
     duration: '0:35',
     audience: 'Distribuidores', role: 'dist',
   },
   {
     file: 'tutorial-5-novedades.mp4',
+    localized: true, // hay versión -en y -pt en el backend
     title: 'Novedades: tu centro de avisos',
     duration: '0:30',
     audience: 'Distribuidores', role: 'dist',
