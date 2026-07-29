@@ -134,9 +134,12 @@ const GoogleSignInButton = () => {
   // divisor "o" separándolo de los campos.
   return (
     <div className={enabled ? 'flex-1 min-w-0' : 'hidden'} data-testid="google-signin">
-      <div className="relative h-12 w-full">
+      {/* `group` en el contenedor: el iframe invisible tapa el div visual, asi que
+          el :hover se escucha en el ancestro (si se dispara con el mouse sobre un
+          iframe hijo) y de ahi se pinta el boton como los demas. */}
+      <div className="group relative h-12 w-full">
         {/* Monocromo como Resend: la G en blanco, sin colores. */}
-        <div className="absolute inset-0 flex items-center justify-center gap-3 rounded-xl border border-white/10 bg-[#1e1f22] text-sm font-semibold text-white">
+        <div className="absolute inset-0 flex items-center justify-center gap-3 rounded-xl border border-white/10 bg-[#1e1f22] text-sm font-semibold text-white transition-colors group-hover:bg-[#2a2b2f]">
           <svg viewBox="0 0 24 24" className="h-[18px] w-[18px]" aria-hidden fill="currentColor">
             <path d="M23.5 12.27c0-.85-.08-1.66-.22-2.45H12v4.64h6.45a5.52 5.52 0 0 1-2.39 3.62v3h3.87c2.26-2.09 3.57-5.16 3.57-8.81zM12 24c3.24 0 5.96-1.07 7.93-2.91l-3.87-3c-1.07.72-2.44 1.14-4.06 1.14-3.12 0-5.77-2.11-6.71-4.95H1.29v3.1A12 12 0 0 0 12 24zM5.29 14.28a7.2 7.2 0 0 1 0-4.56v-3.1H1.29a12 12 0 0 0 0 10.76l4-3.1zM12 4.77c1.76 0 3.34.6 4.58 1.79l3.44-3.44C17.95 1.19 15.23 0 12 0A12 12 0 0 0 1.29 6.62l4 3.1C6.23 6.88 8.88 4.77 12 4.77z" />
           </svg>
