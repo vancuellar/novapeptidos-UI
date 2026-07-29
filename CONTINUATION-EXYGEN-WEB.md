@@ -1,6 +1,25 @@
 # 🤝 HANDOFF — 2026-07-29 (tarde) — LÉELO PRIMERO
 
-## 🚨 LO PRIMERO Y MÁS URGENTE: **SUBIR EL BACKEND AL SERVIDOR**
+## ✅ 2026-07-29 (noche): EL BACKEND YA ESTÁ EN VIVO — la sección de abajo quedó saldada
+
+Se desplegó `dc85f92` al EC2 (git pull + `docker compose up -d --build api`, regla del
+puerto 22 abierta y cerrada). Compuertas antes de desplegar: **424 backend · 265 precios ·
+auditoría 83/0 · e2e:cripto 21/0**, y auditoría de nuevo en 83/0 después.
+
+Con eso quedó funcionando en vivo: lote de pedidos (`/admin/orders/lote` responde),
+pagado ≠ entregado, rol marketing (el candado), tope real del descuento, y **el video 12**
+(viajaba con git; era el endpoint `/tutorials/` que no existía en vivo — verificado HTTP 206).
+
+**Además (commit `c7483c2`, ya desplegado):** la tabla de pedidos del Admin trae **filtro
+por estado** y ordena **siempre del más reciente al más viejo**; la selección en lote se
+poda si una fila deja de verse. Nació de que Christián no podía borrar en bulk los
+cancelados (era el backend sin desplegar) y quería filtrar/ordenar.
+
+**Pendientes que siguen vivos:** María multi-cuenta (abajo), limpiar los 12 pedidos de
+prueba (⚠️ hay 2 ventas reales: Paz y Alanís), marcar la de Alanís como NO pagada (la
+marca ya está en vivo), Vitamina D3, cron del video semanal.
+
+## 🚨 (SALDADO 2026-07-29 noche — ver arriba) LO PRIMERO Y MÁS URGENTE: **SUBIR EL BACKEND AL SERVIDOR**
 
 **Todo el trabajo del backend de hoy está en `main` y NADA está en vivo.** El EC2 sigue
 sirviendo la versión vieja. Comprobado con curl: `POST /api/admin/orders/lote` → **405**,
