@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { ShieldCheck, Truck, BadgeCheck, Mail, Phone, Landmark, CreditCard, Bitcoin, Store, Instagram, Facebook } from 'lucide-react';
+import { ShieldCheck, Truck, BadgeCheck, Mail, Phone, Instagram, Facebook } from 'lucide-react';
 import { useLanguage } from '@/context/LanguageContext';
 import { INSTAGRAM_URL, FACEBOOK_URL, WHATSAPP_URL, WHATSAPP_HANDLE } from '@/lib/contact';
 import { FlagMX, FlagUS, WhatsAppIcon } from '@/components/Flags';
@@ -11,7 +11,9 @@ const Footer = () => {
   const { t } = useLanguage();
 
   return (
-    <footer className="mt-16 border-t border-border bg-card text-card-foreground">
+    // mt-6 y no mt-16: la portada termina en la banda de pagos y juntos dejaban
+    // un hueco enorme (Christian, 2026-07-28).
+    <footer className="mt-6 border-t border-border bg-card text-card-foreground">
       <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 pt-[10px] pb-0">
         {/* Orden pedido por Christian: sellos y aviso RUO ARRIBA de los links;
             debajo de los links no va NADA más que el copyright. Los sellos van
@@ -121,16 +123,11 @@ const Footer = () => {
                 </a>
               </li>
             </ul>
-            <div className="flex flex-wrap gap-2 mt-5">
-              {[{ i: CreditCard, l: 'Visa · MC · Amex' }, { i: Landmark, l: 'SPEI' }, { i: Store, l: 'OXXO' }, { i: Bitcoin, l: 'Cripto' }].map((p, i) => (
-                <span key={i} className="inline-flex items-center gap-1.5 rounded-md border border-border bg-[hsl(var(--secondary))] px-2.5 py-1.5 text-[11px]">
-                  <p.i className="h-3 w-3 text-[hsl(var(--primary))]" /> {p.l}
-                </span>
-              ))}
-            </div>
-            {/* "Envíos en todo México" vive DEBAJO de los métodos de pago
-                (Christian, 2026-07-28), con su bandera a color. */}
-            <div className="flex items-center gap-1.5 mt-3 text-xs text-muted-foreground">
+            {/* ⛔ Aquí estaban repetidos los cuatro métodos de pago (Christian,
+                2026-07-28): la portada ya los enseña justo arriba, en "Pagos
+                seguros y protegidos", y verlos dos veces seguidas se sentía
+                duplicado. Se quedó solo el envío, que ahí no se dice. */}
+            <div className="flex items-center gap-1.5 mt-5 text-xs text-muted-foreground">
               <FlagMX /> {t('footer.flagMexico')}
             </div>
           </div>

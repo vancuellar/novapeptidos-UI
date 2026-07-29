@@ -137,6 +137,13 @@ const Home = () => {
   const scrollCarousel = (dir) => {
     if (carouselRef.current) carouselRef.current.scrollBy({ left: dir * 300, behavior: 'smooth' });
   };
+  // Las categorías también se deslizan (Christian, 2026-07-28): once tarjetas
+  // apiladas comían tres pantallas de teléfono. Carrusel propio, con su ref, para
+  // que no se pelee con el de los destacados.
+  const categoriesRef = useRef(null);
+  const scrollCategories = (dir) => {
+    if (categoriesRef.current) categoriesRef.current.scrollBy({ left: dir * 300, behavior: 'smooth' });
+  };
 
   useEffect(() => {
     // Los destacados son una lista curada nuestra (src/data/featured.js), no lo
@@ -506,11 +513,11 @@ const Home = () => {
               { src: 'envasado', alt: t('home.photos.filling') },
               { src: 'taponado', alt: t('home.photos.capping') },
             ].map((f) => (
-              <figure key={f.src} className="overflow-hidden rounded-xl border border-border bg-card">
+              <figure key={f.src} className="group overflow-hidden rounded-xl border border-border bg-card">
                 <img
                   src={`${process.env.PUBLIC_URL}/images/laboratorio/${f.src}.jpg`}
                   alt={f.alt} loading="lazy" width="1200" height="676"
-                  className="w-full h-52 object-cover"
+                  className="w-full h-52 object-cover grayscale group-hover:grayscale-0 transition-[filter] duration-500"
                 />
                 <figcaption className="px-4 py-3 text-xs text-muted-foreground">{f.alt}</figcaption>
               </figure>
@@ -523,17 +530,32 @@ const Home = () => {
       {/* pt-[5px]: el kicker "CATÁLOGO" quedaba PEGADO a la línea divisoria de la
           banda de arriba — cero píxeles de aire (Christian, 2026-07-28). */}
       <section className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 pt-[5px] pb-24">
-        <div className="mb-12">
-          <div className="kicker">{t('home.categoriesKicker')}</div>
-          <h2 className="font-heading text-2xl sm:text-3xl font-bold tracking-tight mt-2">{t('home.categoriesTitle')}</h2>
-          <p className="text-muted-foreground text-sm mt-1">{t('home.categoriesSubtitle')}</p>
+        {/* Encabezado con las flechas a la derecha, igual que en los destacados. */}
+        <div className="flex items-end justify-between mb-6">
+          <div>
+            <div className="kicker">{t('home.categoriesKicker')}</div>
+            <h2 className="font-heading text-2xl sm:text-3xl font-bold tracking-tight mt-2">{t('home.categoriesTitle')}</h2>
+            <p className="text-muted-foreground text-sm mt-1">{t('home.categoriesSubtitle')}</p>
+          </div>
+          <div className="hidden sm:flex items-center gap-2">
+            <Button variant="outline" size="icon" className="rounded-full" onClick={() => scrollCategories(-1)} aria-label={t('common.previous')} data-testid="categories-prev">
+              <ChevronLeft className="h-4 w-4" />
+            </Button>
+            <Button variant="outline" size="icon" className="rounded-full" onClick={() => scrollCategories(1)} aria-label={t('common.next')} data-testid="categories-next">
+              <ChevronRight className="h-4 w-4" />
+            </Button>
+            <Button asChild variant="ghost"><Link to="/catalogo">{t('home.viewAll')} <ArrowRight className="h-4 w-4 ml-1.5" /></Link></Button>
+          </div>
         </div>
-        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        {/* Carrusel: las once caben en una sola franja que se desliza, en vez de
+            apilarse. Ancho fijo por tarjeta para que se vea que hay más a la derecha. */}
+        <div ref={categoriesRef} className="flex gap-4 overflow-x-auto snap-x snap-mandatory pb-2 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
           {localizeCategories(categories, language).map((c) => {
             const Icon = ICONS[c.icon] || FlaskConical;
             const chips = CATEGORY_CHIPS[c.slug] || [];
             return (
-              <Link key={c.slug} to={`/catalogo?category=${c.slug}`} data-testid={`home-category-${c.slug}`} className="group">
+              <Link key={c.slug} to={`/catalogo?category=${c.slug}`} data-testid={`home-category-${c.slug}`}
+                className="group shrink-0 snap-start w-[240px] sm:w-[268px]">
                 <Card className="p-5 h-full flex flex-col shadow-none hover:border-foreground/25 transition-colors duration-200 bg-card text-card-foreground rounded-xl">
                   <div className="flex items-center gap-3 mb-3">
                     <div className="h-10 w-10 rounded-lg bg-[hsl(var(--accent))] flex items-center justify-center shrink-0"><Icon className="h-5 w-5 text-[hsl(var(--primary))]" /></div>
@@ -602,11 +624,11 @@ const Home = () => {
               { src: 'analista-muestra', alt: t('home.photos.sample') },
               { src: 'pipeta-multicanal', alt: t('home.photos.multichannel') },
             ].map((f) => (
-              <figure key={f.src} className="overflow-hidden rounded-xl border border-border bg-card">
+              <figure key={f.src} className="group overflow-hidden rounded-xl border border-border bg-card">
                 <img
                   src={`${process.env.PUBLIC_URL}/images/laboratorio/${f.src}.jpg`}
                   alt={f.alt} loading="lazy" width="1200" height="800"
-                  className="w-full h-44 object-cover"
+                  className="w-full h-44 object-cover grayscale group-hover:grayscale-0 transition-[filter] duration-500"
                 />
                 <figcaption className="px-4 py-3 text-xs text-muted-foreground">{f.alt}</figcaption>
               </figure>
@@ -756,7 +778,10 @@ const Home = () => {
       </section>
 
       {/* ===== Payments ===== */}
-      <section className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 pb-24">
+      {/* pb-10 y no pb-24: abajo viene el pie, que ya trae su propio aire, y
+          juntos dejaban un hueco enorme (Christian, 2026-07-28). Los métodos de
+          pago se enseñan AQUÍ y ya no se repiten en el pie. */}
+      <section className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 pb-10">
         <div className="rounded-2xl border border-border bg-card px-6 py-6 flex flex-col sm:flex-row items-center justify-between gap-5">
           <div>
             <div className="font-heading font-semibold">{t('home.paymentsTitle')}</div>
