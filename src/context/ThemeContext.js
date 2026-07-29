@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useEffect, useMemo, useState } from 'react';
+import api from '@/lib/api';
 
 export const THEMES = ['light', 'dark', 'system'];
 
@@ -37,10 +38,25 @@ export const ThemeProvider = ({ children }) => {
     return () => media?.removeEventListener?.('change', applyTheme);
   }, [theme]);
 
+  // La cuenta manda al INICIAR sesión: AuthContext avisa con este evento si el
+  // usuario trae tema preferido (María: oscuro). No pasa por setTheme para no
+  // re-guardar en la cuenta lo que la cuenta acaba de decir.
+  useEffect(() => {
+    const onPrefs = (e) => { if (e.detail?.theme) setThemeState(normalizeTheme(e.detail.theme)); };
+    window.addEventListener('exygen-account-prefs', onPrefs);
+    return () => window.removeEventListener('exygen-account-prefs', onPrefs);
+  }, []);
+
   const value = useMemo(() => ({
     theme,
     themes: THEMES,
-    setTheme: (nextTheme) => setThemeState(normalizeTheme(nextTheme)),
+    setTheme: (nextTheme) => {
+      const next = normalizeTheme(nextTheme);
+      setThemeState(next);
+      // Con sesión abierta, la elección viaja a la cuenta: así el próximo
+      // login abre con lo que la persona dejó, no con el default del admin.
+      if (localStorage.getItem('np_token')) api.put('/auth/me/prefs', { theme: next }).catch(() => {});
+    },
   }), [theme]);
 
   return <ThemeContext.Provider value={value}>{children}</ThemeContext.Provider>;

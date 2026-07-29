@@ -25,6 +25,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Separator } from '@/components/ui/separator';
 import { toast } from 'sonner';
 import api, { formatMXN } from '@/lib/api';
+import { tieneDifusion, soloDifusion } from '@/lib/roles';
 import { useAuth } from '@/context/AuthContext';
 import { useLanguage } from '@/context/LanguageContext';
 
@@ -116,11 +117,11 @@ const Admin = () => {
   // Abrir ARRIBA al cambiar de pestaña, venga el cambio de donde venga: del sidebar,
   // de un link dentro del contenido o de la URL directa. El onClick del sidebar no
   // alcanza — muchos links cambian sólo la query y ScrollToTop no los ve.
-  // Rol 'marketing' (María, la de los anuncios): SOLO difusión — Embudo,
-  // Marketing y Meta. Esconderle las demás pestañas aquí es cortesía, no
-  // seguridad: la seguridad vive en el backend, que le contesta 403 a todo
-  // lo que no sea difusión aunque le pegue a la API directo.
-  const esMarketing = user?.role === 'marketing';
+  // Difusión (María): SOLO Embudo, Marketing y Meta. Puede llegarle por rol
+  // propio ('marketing') o como rol EXTRA que suma sobre el de distribuidora.
+  // Esconderle las demás pestañas aquí es cortesía, no seguridad: la seguridad
+  // vive en el backend, que le contesta 403 a todo lo que no sea difusión.
+  const esMarketing = soloDifusion(user);
   const tabPedida = params.get('tab') || (esMarketing ? 'funnel' : 'sales');
   const tab = esMarketing && !TABS_DIFUSION.includes(tabPedida) ? 'funnel' : tabPedida;
   useLayoutEffect(() => { alTope(); }, [tab]);
@@ -161,7 +162,7 @@ const Admin = () => {
   const [form, setForm] = useState(EMPTY);
   const [dialogOpen, setDialogOpen] = useState(false);
 
-  useEffect(() => { if (!loading && (!user || !['admin', 'marketing'].includes(user.role))) navigate('/login'); }, [user, loading, navigate]);
+  useEffect(() => { if (!loading && !tieneDifusion(user)) navigate('/login'); }, [user, loading, navigate]);
 
   const loadAll = useCallback(() => {
     // Difusión: lo único que el rol marketing tiene permitido pedir.
@@ -181,7 +182,7 @@ const Admin = () => {
     api.get('/stock').then((r) => setStockMap(r.data || {})).catch(() => {});
   }, [esMarketing]);
 
-  useEffect(() => { if (['admin', 'marketing'].includes(user?.role)) loadAll(); }, [user, loadAll]);
+  useEffect(() => { if (tieneDifusion(user)) loadAll(); }, [user, loadAll]);
 
   // Los archivados se piden hasta que alguien los quiere ver: casi nunca hacen falta.
   const cargarArchivados = useCallback(
@@ -206,7 +207,7 @@ const Admin = () => {
       .then((r) => setSerie(r.data)).catch(() => {});
   }, [user, serieBucket]);
 
-  if (!user || !['admin', 'marketing'].includes(user.role)) return null;
+  if (!tieneDifusion(user)) return null;
 
   const openNew = () => { setEditing(null); setForm({ ...EMPTY, category: categories[0]?.slug || '' }); setDialogOpen(true); };
   const openEdit = (p) => { setEditing(p); setForm({ ...p }); setDialogOpen(true); };

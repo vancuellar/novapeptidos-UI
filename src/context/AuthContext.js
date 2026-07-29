@@ -5,6 +5,20 @@ const AuthContext = createContext(null);
 
 export const useAuth = () => useContext(AuthContext);
 
+// Al ENTRAR, la cuenta manda: si trae idioma/tema preferidos (María: portugués
+// y oscuro), se aplican sobre lo que tenga el navegador. Solo al iniciar
+// sesión — dentro de la sesión, lo que la persona elija se respeta (y se
+// guarda en su cuenta desde los propios contextos de idioma/tema).
+const aplicarPrefsDeCuenta = (u) => {
+  try {
+    if (u?.preferred_language || u?.preferred_theme) {
+      window.dispatchEvent(new CustomEvent('exygen-account-prefs', {
+        detail: { language: u.preferred_language, theme: u.preferred_theme },
+      }));
+    }
+  } catch { /* sin window (tests): no pasa nada */ }
+};
+
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -28,6 +42,7 @@ export const AuthProvider = ({ children }) => {
     if (res.data.needs_totp) return res.data;
     localStorage.setItem('np_token', res.data.token);
     setUser(res.data.user);
+    aplicarPrefsDeCuenta(res.data.user);
     return res.data.user;
   };
 
@@ -44,6 +59,7 @@ export const AuthProvider = ({ children }) => {
   const adoptSession = (token, sessionUser) => {
     localStorage.setItem('np_token', token);
     setUser(sessionUser);
+    aplicarPrefsDeCuenta(sessionUser);
   };
 
   const logout = () => {

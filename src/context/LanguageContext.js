@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useEffect, useMemo, useRef, useState } from 'react';
 import { DEFAULT_LANGUAGE, getTranslation, LANGUAGES, normalizeLanguage } from '@/i18n/translations';
 import { adelantarIdioma, cargarIdioma, idiomaGuardado, idiomaListo, STORAGE_KEY } from '@/i18n/loader';
+import api from '@/lib/api';
 
 const LanguageContext = createContext(null);
 
@@ -39,6 +40,20 @@ export const LanguageProvider = ({ children }) => {
     return () => { vivo = false; };
   }, [guardado]);
 
+  // La cuenta manda al INICIAR sesión: AuthContext avisa con este evento si el
+  // usuario trae idioma preferido (María: portugués). Se baja el archivo entero
+  // antes de cambiar, igual que siempre, y NO se re-guarda en la cuenta.
+  useEffect(() => {
+    const onPrefs = (e) => {
+      const code = e.detail?.language && normalizeLanguage(e.detail.language);
+      if (!code || !e.detail?.language) return;
+      if (idiomaListo(code)) { setLanguageState(code); return; }
+      cargarIdioma(code).then(() => setLanguageState(code)).catch(() => {});
+    };
+    window.addEventListener('exygen-account-prefs', onPrefs);
+    return () => window.removeEventListener('exygen-account-prefs', onPrefs);
+  }, []);
+
   const value = useMemo(() => ({
     language,
     languages: LANGUAGES,
@@ -52,10 +67,15 @@ export const LanguageProvider = ({ children }) => {
     setLanguage: (nextLanguage) => {
       const code = normalizeLanguage(nextLanguage);
       if (code === language) return;
-      if (idiomaListo(code)) { setLanguageState(code); return; }
+      // Con sesión abierta, la elección viaja a la cuenta: el próximo login
+      // abre con lo que la persona dejó, no con el default del admin.
+      const guardarEnCuenta = () => {
+        if (localStorage.getItem('np_token')) api.put('/auth/me/prefs', { language: code }).catch(() => {});
+      };
+      if (idiomaListo(code)) { setLanguageState(code); guardarEnCuenta(); return; }
       setCambiando(true);
       cargarIdioma(code)
-        .then(() => setLanguageState(code))
+        .then(() => { setLanguageState(code); guardarEnCuenta(); })
         .catch(() => {}) // no se pudo bajar: nos quedamos donde estábamos
         .finally(() => setCambiando(false));
     },
