@@ -51,18 +51,21 @@ const VIDEOS = [
   },
   {
     file: 'tutorial-6-comprar-con-codigo.mp4',
+    localized: true, // hay versión -en y -pt en el backend
     title: 'Comprar con código de referido',
     duration: '0:33',
     audience: 'Clientes', role: 'client',
   },
   {
     file: 'tutorial-7-cuenta-pedidos-puntos.mp4',
+    localized: true, // hay versión -en y -pt en el backend
     title: 'Tu cuenta: pedidos y puntos de lealtad',
     duration: '0:39',
     audience: 'Clientes', role: 'client',
   },
   {
     file: 'tutorial-8-herramientas.mp4',
+    localized: true, // hay versión -en y -pt en el backend
     title: 'Herramientas: calculadora, certificados y más',
     duration: '0:37',
     audience: 'Clientes', role: 'client',
