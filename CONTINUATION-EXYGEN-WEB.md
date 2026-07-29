@@ -112,9 +112,20 @@ Christián ligó el píxel y dio un token con `business_management`. **Saldo: $5
 Activa: **WhatsApp — Conversaciones con Mónica, $20/día**. Compras **pausada** por orden
 suya. El dato que lo decidió: clics **~$97 → 0 compras**; WhatsApp **$2.55 → 1 conversación**.
 
-⚠️ **ALGUIEN MÁS ESTÁ EN LA CUENTA.** A las 12:22 del 29-jul apareció una campaña de
-interacción a **$40/día** que no creamos nosotros, y dos que se habían pausado **se
-reactivaron solas**. Coordinar con María antes de tocar nada.
+⚠️ **ALGUIEN MÁS ESTÁ EN LA CUENTA — MARÍA, casi seguro.** A las 12:22 del 29-jul apareció
+una campaña de interacción a **$40/día** que no creamos nosotros. **Christián pidió bajarla
+a $20 y YA SE HIZO** (id `120247593627860767`, ahora $20/día).
+
+⛔ **PERO EL GASTO REAL NO SON $20.** Hay DOS campañas con bolsa que se han pausado **tres
+veces** y **vuelven a activarse solas**:
+- `120247575287620767` — le quedan **$16.99** hasta el 31-jul (~$8/día)
+- `120247526324890767` — le quedan **$129.87** hasta el 4-ago (~$21/día)
+
+Sumadas a los $20 de María, el gasto real anda en **~$49/día**, no $20. **No las vuelvas a
+pausar sin hablar con Christián y María**: alguien las está reactivando a propósito y
+pausarlas otra vez sólo genera una pelea de configuración. Las campañas con **bolsa de por
+vida no enseñan "presupuesto diario"**, así que no aparecen al sumar y es fácil creer que
+se gasta menos de lo que se gasta — ojo con eso al revisar.
 
 **Para María, los UTM:** destino `https://exygenlabs.com/catalogo` (NO la portada: de 782
 visitas sólo 20 vieron un producto) y en el campo "Parámetros de URL":
