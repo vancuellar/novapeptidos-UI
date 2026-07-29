@@ -133,7 +133,7 @@ const GoogleSignInButton = () => {
   // el clic de verdad caiga en Google. Va arriba del formulario, con el
   // divisor "o" separándolo de los campos.
   return (
-    <div className={enabled ? 'mb-3' : 'hidden'} data-testid="google-signin">
+    <div className={enabled ? 'flex-1 min-w-0' : 'hidden'} data-testid="google-signin">
       <div className="relative h-12 w-full">
         {/* Monocromo como Resend: la G en blanco, sin colores. */}
         <div className="absolute inset-0 flex items-center justify-center gap-3 rounded-xl border border-white/10 bg-[#1e1f22] text-sm font-semibold text-white">

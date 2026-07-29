@@ -261,10 +261,13 @@ const Login = () => {
             </div>
           )}
 
-          {/* Entrar con Google / Outlook, y el divisor "o" antes del formulario.
-              Cada botón se esconde solo si su proveedor no está configurado. */}
-          <GoogleSignInButton />
-          <MicrosoftSignInButton />
+          {/* Entrar con Google / Outlook lado a lado al 50% (estilo Resend), y el
+              divisor "o" antes del formulario. Cada botón se esconde solo si su
+              proveedor no está configurado; si queda uno, ocupa todo el ancho. */}
+          <div className="flex flex-col sm:flex-row gap-3 mb-3">
+            <GoogleSignInButton />
+            <MicrosoftSignInButton />
+          </div>
           <div className="flex items-center gap-3 mb-6 mt-3">
             <div className="h-px flex-1 bg-border" />
             <span className="text-xs text-muted-foreground">{t('auth.google.divider')}</span>

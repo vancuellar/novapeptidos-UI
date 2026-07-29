@@ -139,9 +139,9 @@ const MicrosoftSignInButton = () => {
 
   // Mismo estilo monocromo que el botón de Google, con las cuatro ventanas.
   return (
-    <div className="mb-3" data-testid="microsoft-signin">
+    <div className="flex-1 min-w-0" data-testid="microsoft-signin">
       <button type="button" onClick={irAMicrosoft} data-testid="microsoft-signin-button"
-        className="flex h-12 w-full items-center justify-center gap-3 rounded-xl border border-white/10 bg-[#1e1f22] text-sm font-semibold text-white hover:bg-[#2a2b2f] transition-colors">
+        className="flex h-12 w-full items-center justify-center gap-3 rounded-xl border border-white/10 bg-[#1e1f22] text-sm font-semibold text-white hover:bg-[#2a2b2f] transition-colors whitespace-nowrap">
         <svg viewBox="0 0 23 23" className="h-[18px] w-[18px]" aria-hidden fill="currentColor">
           <rect x="1" y="1" width="10" height="10" />
           <rect x="12" y="1" width="10" height="10" />
