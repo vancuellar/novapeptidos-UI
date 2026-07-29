@@ -1057,6 +1057,7 @@ const ptBR = {
   'auth.microsoft.consentNote': 'A Microsoft já confirmou seu e-mail. Só falta aceitar nossas condições; as duas primeiras são obrigatórias.',
   'auth.google.cta': 'Continuar com Google',
   'common.error': 'Algo deu errado. Tente novamente.',
+  'passkey.hintCreate': 'Se você ainda não criou sua chave de acesso, entre com sua senha e adicione em Minha Conta → Perfil.',
   'passkey.loginCta': 'Entrar com chave de acesso',
   'passkey.loginFailed': 'Não foi possível entrar com a chave de acesso.',
   'passkey.title': 'Chaves de acesso',

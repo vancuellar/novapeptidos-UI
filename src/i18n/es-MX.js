@@ -1050,6 +1050,7 @@ const esMX = {
   'auth.microsoft.consentNote': 'Microsoft ya confirmó tu correo. Solo falta que aceptes nuestras condiciones; las dos primeras son obligatorias.',
   'auth.google.cta': 'Continuar con Google',
   'common.error': 'Algo salio mal. Intenta de nuevo.',
+  'passkey.hintCreate': 'Si aún no tienes tu llave de acceso, créala entrando con tu contraseña, en Mi Cuenta → Perfil.',
   'passkey.loginCta': 'Entrar con llave de acceso',
   'passkey.loginFailed': 'No se pudo entrar con la llave de acceso.',
   'passkey.title': 'Llaves de acceso',

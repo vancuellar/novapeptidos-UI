@@ -127,8 +127,11 @@ const Login = () => {
       toast.success(t('auth.toast.welcome'));
       navigate(['admin', 'marketing'].includes(data.user.role) ? '/admin' : '/cuenta');
     } catch (err) {
-      // Cancelar el dialogo del sistema no es un error que regañar.
-      if (err?.name !== 'NotAllowedError') {
+      // Cancelar el diálogo no se regaña; pero sí se orienta: la causa más
+      // común es que la persona aún no ha creado su llave.
+      if (err?.name === 'NotAllowedError') {
+        toast.info(t('passkey.hintCreate'));
+      } else {
         toast.error(err.response?.data?.detail || t('passkey.loginFailed'));
       }
     } finally { setLoading(false); }
@@ -289,9 +292,11 @@ const Login = () => {
               </div>
               <button type="submit" className={monoCta} disabled={loading} data-testid="login-submit-button">{loading ? t('auth.login.loading') : t('auth.login.submit')}</button>
               {passkeysSupported() && (
+                // Botón de verdad, al estilo JADA: mismo peso visual que los de
+                // Google/Outlook, debajo de "Iniciar sesión".
                 <button type="button" onClick={passkeyLogin} disabled={loading} data-testid="login-passkey-button"
-                  className="w-full inline-flex items-center justify-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors py-1.5">
-                  <Fingerprint className="h-4 w-4" /> {t('passkey.loginCta')}
+                  className="flex h-12 w-full items-center justify-center gap-3 rounded-xl border border-white/10 bg-[#1e1f22] text-sm font-semibold text-white hover:bg-[#2a2b2f] transition-colors disabled:opacity-40">
+                  <Fingerprint className="h-[18px] w-[18px]" /> {t('passkey.loginCta')}
                 </button>
               )}
             </form>

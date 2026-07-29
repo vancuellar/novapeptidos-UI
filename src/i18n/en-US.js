@@ -1062,6 +1062,7 @@ const enUS = {
   'auth.microsoft.consentNote': 'Microsoft already confirmed your email. You just need to accept our terms; the first two are required.',
   'auth.google.cta': 'Continue with Google',
   'common.error': 'Something went wrong. Try again.',
+  'passkey.hintCreate': "If you haven't created your passkey yet, sign in with your password and add it in My Account → Profile.",
   'passkey.loginCta': 'Log in with passkey',
   'passkey.loginFailed': 'Could not log in with the passkey.',
   'passkey.title': 'Passkeys',
