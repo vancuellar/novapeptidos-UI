@@ -579,7 +579,13 @@ const esMX = {
   'footer.quality': 'Calidad',
   'footer.terms': 'Términos y RUO',
   'footer.legalTitle': 'Aviso legal (RUO):',
-  'footer.legalBody': 'Todos los productos se venden exclusivamente para uso en investigación y desarrollo. No están destinados al consumo humano ni animal, ni para diagnóstico, tratamiento, cura o prevención de enfermedades. Al comprar, el cliente confirma que es un investigador calificado.',
+  // Versión corta, en el tono de Certified (Christian, 2026-07-28): se quitó
+  // "no para consumo humano ni animal", que asustaba, y se conservó el núcleo
+  // RUO —fines informativos, investigación in vitro, sin promesa terapéutica—
+  // que es lo que de verdad protege. Aquí también viven los métodos de pago:
+  // antes tenían su propia sección y se sentía repetido.
+  'footer.legalBody': 'Toda la información y las descripciones de producto de este sitio tienen fines educativos e informativos. Nuestros productos son solo para uso en investigación in vitro y no están destinados a diagnosticar, tratar, curar ni prevenir ninguna enfermedad.',
+  'footer.paymentsInline': 'Pagos seguros:',
   'footer.backToTop': 'Volver arriba',
   'footer.rights': 'Exygen Labs. Todos los derechos reservados.',
   'footer.ruoLine': 'Research Use Only · Solo para investigación',

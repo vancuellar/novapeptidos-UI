@@ -780,25 +780,9 @@ const Home = () => {
         </Dialog>
       </section>
 
-      {/* ===== Payments ===== */}
-      {/* pb-10 y no pb-24: abajo viene el pie, que ya trae su propio aire, y
-          juntos dejaban un hueco enorme (Christian, 2026-07-28). Los métodos de
-          pago se enseñan AQUÍ y ya no se repiten en el pie. */}
-      <section className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 pb-10">
-        <div className="rounded-2xl border border-border bg-card px-6 py-6 flex flex-col sm:flex-row items-center justify-between gap-5">
-          <div>
-            <div className="font-heading font-semibold">{t('home.paymentsTitle')}</div>
-            <div className="text-xs text-muted-foreground mt-0.5">{t('home.paymentsNote')}</div>
-          </div>
-          <div className="flex flex-wrap items-center justify-center gap-2.5">
-            {[{ i: Landmark, l: 'SPEI' }, { i: CreditCard, l: 'Visa · Mastercard · Amex' }, { i: Store, l: 'OXXO' }, { i: Bitcoin, l: 'Cripto' }].map((p, i) => (
-              <span key={i} className="inline-flex items-center gap-1.5 rounded-lg border border-border bg-[hsl(var(--secondary))] px-3 py-2 text-xs font-medium">
-                <p.i className="h-3.5 w-3.5 text-[hsl(var(--primary))]" /> {p.l}
-              </span>
-            ))}
-          </div>
-        </div>
-      </section>
+      {/* La sección "Pagos seguros y protegidos" se ELIMINÓ (Christian,
+          2026-07-28): los métodos de pago ahora viven dentro del recuadro del
+          aviso legal, en el pie. Tenerlos dos veces seguidas se sentía repetido. */}
 
     </div>
   );

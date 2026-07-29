@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { ShieldCheck, Truck, BadgeCheck, Mail, Phone, Instagram, Facebook } from 'lucide-react';
+import { ShieldCheck, Truck, BadgeCheck, Mail, Phone, Landmark, CreditCard, Bitcoin, Store, Instagram, Facebook } from 'lucide-react';
 import { useLanguage } from '@/context/LanguageContext';
 import { INSTAGRAM_URL, FACEBOOK_URL, WHATSAPP_URL, WHATSAPP_HANDLE } from '@/lib/contact';
 import { FlagMX, FlagUS, WhatsAppIcon } from '@/components/Flags';
@@ -23,9 +23,26 @@ const Footer = () => {
           <span className="flex items-center gap-1.5"><ShieldCheck className="h-3.5 w-3.5 text-[hsl(var(--primary))]" /> {t('header.coa')}</span>
           <span className="flex items-center gap-1.5"><Truck className="h-3.5 w-3.5 text-[hsl(var(--primary))]" /> {t('header.shipping')}</span>
         </div>
-        <p className="text-xs leading-relaxed rounded-lg border border-[hsl(var(--warning-border))] bg-[hsl(var(--warning))] text-[hsl(var(--warning-foreground))] p-3.5 mb-10">
-          <strong>{t('footer.legalTitle')}</strong> {t('footer.legalBody')}
-        </p>
+        {/* El aviso legal y los métodos de pago viven en el MISMO recuadro
+            (Christian, 2026-07-28): "Pagos seguros y protegidos" era una sección
+            aparte y se sentía repetido con el pie. Una sola caja, más corta. */}
+        {/* Azul y negro, no amarillo (Christian, 2026-07-28): el amarillo de
+            advertencia le daba tono de alerta a algo que sólo es informativo, y
+            rompía con la paleta oscura del sitio. Fondo oscuro de la casa, filo
+            azul de marca a la izquierda y el título en azul. */}
+        <div className="rounded-lg border border-border border-l-[3px] border-l-[hsl(var(--primary))] bg-[hsl(var(--secondary))] text-muted-foreground p-3.5 mb-10">
+          <p className="text-xs leading-relaxed">
+            <strong className="text-[hsl(var(--primary))]">{t('footer.legalTitle')}</strong> {t('footer.legalBody')}
+          </p>
+          <div className="flex flex-wrap items-center gap-x-3 gap-y-2 mt-3 pt-3 border-t border-border">
+            <span className="text-[11px] font-semibold text-foreground">{t('footer.paymentsInline')}</span>
+            {[{ i: CreditCard, l: 'Visa · MC · Amex' }, { i: Landmark, l: 'SPEI' }, { i: Store, l: 'OXXO' }, { i: Bitcoin, l: 'Cripto' }].map((p, i) => (
+              <span key={i} className="inline-flex items-center gap-1.5 text-[11px]">
+                <p.i className="h-3.5 w-3.5 text-[hsl(var(--primary))]" /> {p.l}
+              </span>
+            ))}
+          </div>
+        </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-8">
           <div>
             {/* El logo del pie SOLO sube al tope de la página actual (orden de
