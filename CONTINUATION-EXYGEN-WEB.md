@@ -1,5 +1,27 @@
 # 🤝 HANDOFF — 2026-07-29 (tarde) — LÉELO PRIMERO
 
+## ✅ 2026-07-29 (noche, 2ª tanda): María, mayúsculas, Outlook y videos
+
+- **María RESUELTA de verdad** (verificado en vivo con "ver como"): `extra_roles`
+  suma — sigue distribuidora Y entra a Difusión desde el menú del perfil
+  ("Difusão"); su cuenta abre en portugués + oscuro (preferencias que viajan con
+  la cuenta, PUT /auth/me/prefs); el video 12 existe narrado en pt-BR y se sirve
+  según el idioma. Si dice que no lo ve: recargar o volver a entrar.
+- **Mayúscula A Cada Palabra** en etiquetas de los 3 dashboards, en es/en/pt
+  (regla dura nueva: todo cambio de texto va en los 3 idiomas a la vez).
+- **Entrar con Outlook**: construido y desplegado (calcado de Google, ID token
+  verificado en servidor). ⚠️ APAGADO hasta que Christián cree el App
+  Registration en Azure y pase el MICROSOFT_CLIENT_ID (pasos en la memoria
+  exygen-outlook-login-pendiente); luego va al .env del EC2 y reiniciar api.
+- **Agente en curso**: traduciendo los videos tutoriales de clientes a EN y PT
+  (misma pantalla, narración traducida) y dejando /tutoriales por idioma. NO
+  commitea: deja los cambios en el working tree para revisión.
+- Pedidos: filtro por estado + orden fijo del más reciente al más viejo; el
+  lote ya funciona en vivo (Christián borró los 11 cancelados de prueba).
+- Alanís marcada NO pagada en vivo (revenue 3,347 = solo Paz; por_cobrar 3,857).
+- Compuertas de esta tanda: backend 438/438 · precios 265 · auditoría 83/0 ·
+  e2e:cripto 21/0 — después de cada despliegue.
+
 ## ✅ 2026-07-29 (noche): EL BACKEND YA ESTÁ EN VIVO — la sección de abajo quedó saldada
 
 Se desplegó `dc85f92` al EC2 (git pull + `docker compose up -d --build api`, regla del
