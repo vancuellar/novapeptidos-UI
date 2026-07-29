@@ -18,6 +18,9 @@ const ETIQUETAS = {
   NOWPAYMENTS_IPN_SECRET: { grupo: 'NOWPayments', label: 'Secreto IPN', pista: '' },
   BTCPAY_API_KEY: { grupo: 'BTCPay', label: 'API key', pista: '' },
   BTCPAY_WEBHOOK_SECRET: { grupo: 'BTCPay', label: 'Secreto del webhook', pista: '' },
+  // Paquetería. No cobra: cotiza envíos y compra guías. Sin ella el checkout
+  // sigue funcionando igual, solo que sin cotización de envío.
+  SKYDROPX_API_KEY: { grupo: 'Skydropx (envíos)', label: 'API key', pista: 'La que da Skydropx Pro en su panel de API' },
 };
 
 const GatewayCredentials = () => {

@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { CreditCard, Landmark, ShieldCheck, Package, UserRound, MapPin, ChevronDown, Bitcoin, Store } from 'lucide-react';
+import { CreditCard, Landmark, ShieldCheck, Package, UserRound, MapPin, ChevronDown, Bitcoin, Store, Truck } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -24,7 +24,7 @@ const ICONS = { CreditCard, Landmark, Bitcoin, Store };
 // Pago, no aqui. Se borraron con el formulario (Christian, 2026-07-26).
 
 const Checkout = () => {
-  const { items, subtotal, discount, discountRate, discountSource, cappedItems, shipping, faltaParaEnvioGratis, distCode, clearCart } = useCart();
+  const { items, subtotal, discount, discountRate, discountSource, cappedItems, shipping, faltaParaEnvioGratis, envioGratisDesde, distCode, clearCart } = useCart();
   const { user } = useAuth();
   const { t } = useLanguage();
   const navigate = useNavigate();
@@ -49,6 +49,14 @@ const Checkout = () => {
   const [cryptoOn, setCryptoOn] = useState(false);
   const [cardOn, setCardOn] = useState(false);
   const [oxxoOn, setOxxoOn] = useState(false);
+  // ⛔ ENVÍO COTIZADO EN EL MOMENTO — DETRÁS DEL INTERRUPTOR DEL SERVIDOR.
+  // `quoteOn` sale de /payments/config. Con él apagado (que es como está hoy)
+  // esta pantalla NO pregunta nada, no pinta nada nuevo y se comporta EXACTAMENTE
+  // como antes de que esto existiera. Quien manda es el servidor, nunca la
+  // pantalla: es la misma regla que ya cuida el precio de los productos.
+  const [quoteOn, setQuoteOn] = useState(false);
+  const [envio, setEnvio] = useState({ estado: 'idle', options: [], detail: '' });
+  const [envioElegido, setEnvioElegido] = useState('');
 
   // Cripto (BTCPay) solo aparece si el servidor lo tiene encendido.
   useEffect(() => {
@@ -56,6 +64,7 @@ const Checkout = () => {
       setCryptoOn(!!r.data?.crypto_enabled);
       setCardOn(!!r.data?.card_enabled);
       setOxxoOn(!!r.data?.oxxo_enabled);
+      setQuoteOn(!!r.data?.shipping_quote_enabled);
     }).catch(() => {});
   }, []);
   // Con sesión iniciada, el formulario llega LLENO con lo de su última compra: no
@@ -131,10 +140,61 @@ const Checkout = () => {
     return () => clearTimeout(t);
   }, [form.email, form.full_name, form.phone, items, subtotal, discount]);
 
+  // Al escribir el código postal se le pregunta al servidor cuánto cuesta mandar
+  // ESTE carrito ahí. Con retraso, para no llamar en cada tecla. El servidor
+  // devuelve un ID por opción y el precio solo para enseñarlo: al comprar viaja el
+  // ID, nunca el monto — el precio lo pone él (ver server.py).
+  const cp = (form.postal_code || '').trim();
+  useEffect(() => {
+    if (!quoteOn || cp.length < 5 || !items.length) {
+      setEnvio({ estado: 'idle', options: [], detail: '' });
+      return undefined;
+    }
+    let vivo = true;
+    setEnvio((e) => ({ ...e, estado: 'cargando' }));
+    const timer = setTimeout(() => {
+      api.post('/shipping/quote', {
+        postal_code: cp,
+        state: form.state || '',
+        city: form.city || '',
+        items: items.map((i) => ({
+          product_id: i.sku || i.product_id, name: i.name,
+          price: i.price, quantity: i.quantity,
+        })),
+      }).then((r) => {
+        if (!vivo) return;
+        const opciones = r.data?.options || [];
+        setEnvio({ estado: opciones.length ? 'listo' : 'vacio', options: opciones, detail: r.data?.detail || '' });
+        // Se preselecciona la más barata: es lo que la gente elige de todos modos,
+        // y así el total nunca se queda sin envío por no haber tocado nada.
+        setEnvioElegido((prev) => (opciones.some((o) => o.id === prev) ? prev : (opciones[0]?.id || '')));
+      }).catch(() => {
+        if (!vivo) return;
+        // Que la paquetería falle NO puede tumbar la compra. Se dice y se sigue.
+        setEnvio({ estado: 'error', options: [], detail: '' });
+        setEnvioElegido('');
+      });
+    }, 700);
+    return () => { vivo = false; clearTimeout(timer); };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [quoteOn, cp, items]);
+
   const afterDiscount = subtotal - discount;
   const pointsApplied = usePoints && loyalty.eligible
     ? Math.min(loyalty.balance, Math.floor(afterDiscount)) : 0;
-  const total = afterDiscount - pointsApplied + shipping;
+  // Con la cotización encendida el envío sale de la opción elegida; apagada, del
+  // camino de siempre (`shipping` del carrito, que hoy vale 0).
+  const opcionEnvio = envio.options.find((o) => o.id === envioElegido) || null;
+  const envioCotizado = quoteOn && opcionEnvio ? Number(opcionEnvio.price || 0) : 0;
+  // La casa absorbe el envío arriba del umbral mientras no pase del 10% del pedido.
+  // Es una PISTA para la pantalla: el número que se cobra lo decide el servidor al
+  // crear el pedido, con su propia cotización guardada.
+  const pagaMercancia = afterDiscount - pointsApplied;
+  const envioGratis = quoteOn && envioCotizado > 0
+    && pagaMercancia >= envioGratisDesde && envioCotizado <= pagaMercancia * 0.10;
+  const envioACobrar = quoteOn ? (envioGratis ? 0 : envioCotizado) : shipping;
+  const total = pagaMercancia + envioACobrar;
+  const diasTexto = (d) => (Number(d) === 1 ? t('checkout.shipping.dayOne') : t('checkout.shipping.days', { days: d }));
   const set = (k, v) => setForm((f) => ({ ...f, [k]: v }));
 
   if (items.length === 0) {
@@ -181,6 +241,11 @@ const Checkout = () => {
         terms_accepted_at: ruoAcceptedAt(),
         payment_method: payment,
         shipping,
+        // ⛔ Viaja el ID de la cotización, NUNCA su precio. El servidor va por el
+        // monto a la cotización que él mismo guardó, y la revalida contra este CP y
+        // este peso antes de cobrar. Lo que mande esta pantalla en `shipping` lo
+        // ignora — creerle un precio al navegador ya costó dinero.
+        shipping_quote_id: quoteOn ? (envioElegido || null) : null,
         discount,
         distributor_code: distCode || null,
         points_to_use: pointsApplied,
@@ -287,6 +352,48 @@ const Checkout = () => {
               </div>
               <div className="sm:col-span-2"><Label>{t('checkout.notes')}</Label><Textarea className="mt-1.5" value={form.notes} onChange={(e) => set('notes', e.target.value)} data-testid="checkout-notes-input" /></div>
             </div>
+
+            {/* ⛔ COTIZACIÓN EN VIVO — SOLO SI EL SERVIDOR LA ENCIENDE.
+                Con `shipping_quote_enabled` apagado (como hoy) este bloque entero
+                no existe: ni un renglón de más en la pantalla. Cuando se prenda,
+                al escribir el código postal aparecen aquí los precios reales de
+                Estafeta con sus días, y el total de la derecha se mueve solo. */}
+            {quoteOn && (
+              <div className="mt-5 rounded-xl border border-border bg-[hsl(var(--secondary))]/40 p-4" data-testid="checkout-shipping-options">
+                <div className="flex items-center gap-2 mb-3">
+                  <Truck className="h-4 w-4 text-[hsl(var(--primary))]" />
+                  <span className="text-sm font-medium">{t('checkout.shipping.pick')}</span>
+                </div>
+                {envio.estado === 'idle' && (
+                  <p className="text-xs text-muted-foreground" data-testid="checkout-shipping-ask-zip">{t('checkout.shipping.askZip')}</p>
+                )}
+                {envio.estado === 'cargando' && (
+                  <p className="text-xs text-muted-foreground" data-testid="checkout-shipping-loading">{t('checkout.shipping.loading')}</p>
+                )}
+                {envio.estado === 'vacio' && (
+                  <p className="text-xs text-muted-foreground" data-testid="checkout-shipping-empty">{envio.detail || t('checkout.shipping.none')}</p>
+                )}
+                {envio.estado === 'error' && (
+                  <p className="text-xs text-muted-foreground" data-testid="checkout-shipping-failed">{t('checkout.shipping.failed')}</p>
+                )}
+                {envio.estado === 'listo' && (
+                  <RadioGroup value={envioElegido} onValueChange={setEnvioElegido} className="space-y-2">
+                    {envio.options.map((o) => (
+                      <Label key={o.id} htmlFor={`envio-${o.id}`}
+                        className={`flex items-center gap-3 rounded-lg border p-3 cursor-pointer transition-all ${envioElegido === o.id ? 'border-[hsl(var(--primary))] ring-2 ring-[hsl(var(--ring))] ring-offset-1' : 'border-border hover:bg-[hsl(var(--secondary))]'}`}
+                        data-testid="checkout-shipping-option">
+                        <RadioGroupItem value={o.id} id={`envio-${o.id}`} />
+                        <div className="flex-1 min-w-0">
+                          <div className="text-sm font-medium">{o.carrier} · {o.service}</div>
+                          <div className="text-xs text-muted-foreground">{diasTexto(o.days)}</div>
+                        </div>
+                        <div className="text-sm font-medium shrink-0">{formatMXN(o.price)}</div>
+                      </Label>
+                    ))}
+                  </RadioGroup>
+                )}
+              </div>
+            )}
           </Card>
 
           <Card className="p-5 scroll-mt-36" ref={sectionRefs[2]} data-testid="checkout-section-payment">
@@ -400,10 +507,18 @@ const Checkout = () => {
                   interruptor y este mismo renglón enseña el monto otra vez. */}
               <div className="flex justify-between">
                 <span className="text-muted-foreground">{t('common.shipping')}</span>
-                {shipping > 0
-                  ? <span>{formatMXN(shipping)}</span>
-                  : <span className="text-muted-foreground text-xs text-right">{t('cart.shippingQuoted')}</span>}
+                {/* Tres formas de pintar el mismo renglón, y las tres las decide el
+                    servidor: cotizado (precio real), regalado (la casa lo absorbe)
+                    o "se cotiza aparte" — que es lo que se ve HOY, sin cambios. */}
+                {quoteOn && envioGratis
+                  ? <span className="text-[hsl(var(--success))]" data-testid="checkout-shipping-total">{t('checkout.shipping.free')}</span>
+                  : envioACobrar > 0
+                    ? <span data-testid="checkout-shipping-total">{formatMXN(envioACobrar)}</span>
+                    : <span className="text-muted-foreground text-xs text-right" data-testid="checkout-shipping-total">{t('cart.shippingQuoted')}</span>}
               </div>
+              {quoteOn && envioGratis && (
+                <p className="text-xs text-[hsl(var(--success))]" data-testid="checkout-shipping-free-note">{t('checkout.shipping.freeNote')}</p>
+              )}
               {faltaParaEnvioGratis > 0 && (
                 <p className="text-xs text-[hsl(var(--primary))]">{t('cart.freeShippingAt', { amount: formatMXN(faltaParaEnvioGratis) })}</p>
               )}

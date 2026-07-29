@@ -541,6 +541,9 @@ const ptBR = {
   'admin.shipping.autoUrl': 'O link de rastreio e montado com a transportadora e o código.',
   'admin.shipping.saved': 'Envio salvo',
   'admin.shipping.error': 'Não foi possível salvar o envio',
+  // Etiqueta comprada sozinha pela Skydropx (desligado hoje).
+  'admin.shipping.label': 'Ver etiqueta (PDF)',
+  'admin.shipping.labelError': 'A etiqueta não pôde ser comprada sozinha:',
   'admin.repurchaseTab': 'Recompra',
   'admin.repurchase.hint': 'Clientes com material acabando, segundo o acompanhamento que registraram.',
   'admin.repurchase.daysLeft': 'Restam',
@@ -746,6 +749,10 @@ const ptBR = {
   'home.labAlt': 'Laboratorio Exygen Labs',
   'home.coaAlt': 'Transparencia e COA',
   'home.kicker': 'Research Grade Peptides',
+  'home.photos.bench': 'Análise de identidade e pureza em laboratório',
+  'home.photos.pipetting': 'Preparo da amostra para HPLC',
+  'home.photos.sample': 'Alíquota da amostra analisada',
+  'home.photos.multichannel': 'Ensaio em placa, lote a lote',
   'home.photos.lyo': 'Peptídeo liofilizado em frasco lacrado',
   'home.photos.filling': 'Linha de envase no laboratório',
   'home.photos.capping': 'Tampagem e lacre de cada frasco',
@@ -975,6 +982,17 @@ const ptBR = {
   'checkout.toast.phone': 'O telefone deve ter 10 digitos (ex. (55) 1234-5678)',
   'checkout.toast.success': 'Pedido realizado com sucesso',
   'checkout.toast.error': 'Erro ao criar o pedido',
+  // Frete cotado na hora (Skydropx). Só aparece quando o servidor liga a cotação;
+  // hoje está desligada e estas chaves não são exibidas.
+  'checkout.shipping.pick': 'Escolha como quer receber',
+  'checkout.shipping.askZip': 'Digite seu CEP e dizemos quanto custa o frete.',
+  'checkout.shipping.loading': 'Consultando a transportadora…',
+  'checkout.shipping.days': '{{days}} dias úteis',
+  'checkout.shipping.dayOne': '1 dia útil',
+  'checkout.shipping.free': 'Grátis',
+  'checkout.shipping.freeNote': 'O frete deste pedido é por nossa conta.',
+  'checkout.shipping.none': 'Não temos cobertura para esse CEP. Fale com a gente que resolvemos.',
+  'checkout.shipping.failed': 'A transportadora não respondeu. Você pode fazer o pedido mesmo assim e cotamos o frete à parte.',
 
   'auth.login.sideTitle': 'Sua fonte confiavel de peptídeos de pesquisa no México',
   'auth.login.bullet1': 'Pureza verificada por HPLC',

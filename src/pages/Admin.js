@@ -1477,10 +1477,25 @@ const Admin = () => {
                   </Card>
                 )}
 
+                {/* La guía que compró Skydropx sola al confirmarse el pago. El PDF
+                    es lo único que le falta al admin para despachar: el número y el
+                    rastreo ya se ven arriba, en la columna de envío. */}
+                {orderOpen.label_error && (
+                  <p className="text-xs text-destructive" data-testid="admin-order-label-error">
+                    {t('admin.shipping.labelError')} {orderOpen.label_error}
+                  </p>
+                )}
                 <div className="flex flex-wrap gap-2">
                   <Button size="sm" onClick={() => { const o = orderOpen; setOrderOpen(null); openShipping(o); }} data-testid="admin-order-ship">
                     <Truck className="h-4 w-4 mr-1.5" /> {orderOpen.tracking_number ? t('admin.shipping.edit') : t('admin.shipping.add')}
                   </Button>
+                  {orderOpen.label_url && (
+                    <Button variant="outline" size="sm" asChild data-testid="admin-order-label">
+                      <a href={orderOpen.label_url} target="_blank" rel="noreferrer">
+                        <Truck className="h-4 w-4 mr-1.5" /> {t('admin.shipping.label')}
+                      </a>
+                    </Button>
+                  )}
                   {orderOpen.spei_receipt_at && (
                     <Button variant="outline" size="sm" onClick={() => openReceipt(orderOpen.id)}>
                       <Receipt className="h-4 w-4 mr-1.5" /> {t('admin.receipt.view')}

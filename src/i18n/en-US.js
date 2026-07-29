@@ -527,6 +527,9 @@ const enUS = {
   'admin.shipping.autoUrl': 'The tracking link is built from the carrier and number.',
   'admin.shipping.saved': 'Shipping saved',
   'admin.shipping.error': 'Could not save shipping',
+  // Label bought automatically by Skydropx (off today).
+  'admin.shipping.label': 'View label (PDF)',
+  'admin.shipping.labelError': 'The label could not be bought automatically:',
   'admin.repurchaseTab': 'Repurchase',
   'admin.repurchase.hint': 'Customers running low on material, based on the tracking they registered.',
   'admin.repurchase.daysLeft': 'Days left',
@@ -751,6 +754,10 @@ const enUS = {
   'home.labAlt': 'Exygen Labs laboratory',
   'home.coaAlt': 'Transparency and COA',
   'home.kicker': 'Research Grade Peptides',
+  'home.photos.bench': 'Identity and purity testing in the laboratory',
+  'home.photos.pipetting': 'Sample preparation for HPLC',
+  'home.photos.sample': 'Aliquot of the sample under analysis',
+  'home.photos.multichannel': 'Plate assay, batch by batch',
   'home.photos.lyo': 'Lyophilized peptide in a sealed vial',
   'home.photos.filling': 'Filling line at the laboratory',
   'home.photos.capping': 'Stoppering and crimping of each vial',
@@ -980,6 +987,17 @@ const enUS = {
   'checkout.toast.phone': 'The phone number must have 10 digits (e.g. (55) 1234-5678)',
   'checkout.toast.success': 'Order placed successfully',
   'checkout.toast.error': 'Error creating the order',
+  // Live shipping quote (Skydropx). Only rendered when the server turns quoting
+  // on; today it is off and these keys never show.
+  'checkout.shipping.pick': 'Choose how you want it delivered',
+  'checkout.shipping.askZip': 'Enter your postal code and we will tell you the shipping cost.',
+  'checkout.shipping.loading': 'Checking with the carrier…',
+  'checkout.shipping.days': '{{days}} business days',
+  'checkout.shipping.dayOne': '1 business day',
+  'checkout.shipping.free': 'Free',
+  'checkout.shipping.freeNote': 'Shipping is on us for this order.',
+  'checkout.shipping.none': 'We do not have coverage for that postal code. Write to us and we will sort it out.',
+  'checkout.shipping.failed': 'The carrier did not respond. You can still place your order and we will quote shipping separately.',
 
   'auth.login.sideTitle': 'Your trusted source for research peptides in Mexico',
   'auth.login.bullet1': 'HPLC-verified purity',

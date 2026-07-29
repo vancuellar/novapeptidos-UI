@@ -481,6 +481,9 @@ const esMX = {
   'admin.shipping.autoUrl': 'El enlace de rastreo se arma solo con la paquetería y la guía.',
   'admin.shipping.saved': 'Envío guardado',
   'admin.shipping.error': 'No se pudo guardar el envío',
+  // Guía comprada sola por Skydropx (hoy apagado).
+  'admin.shipping.label': 'Ver guía (PDF)',
+  'admin.shipping.labelError': 'La guía no se pudo comprar sola:',
   'admin.repurchaseTab': 'Recompra',
   'admin.repurchase.hint': 'Clientes a los que se les está acabando el material, según el seguimiento que ellos registraron.',
   'admin.repurchase.daysLeft': 'Le quedan',
@@ -726,6 +729,10 @@ const esMX = {
   'home.labAlt': 'Laboratorio Exygen Labs',
   'home.coaAlt': 'Transparencia y COA',
   'home.kicker': 'Research Grade Peptides',
+  'home.photos.bench': 'Análisis de identidad y pureza en laboratorio',
+  'home.photos.pipetting': 'Preparación de muestra para HPLC',
+  'home.photos.sample': 'Alícuota de la muestra que se analiza',
+  'home.photos.multichannel': 'Ensayo en placa, por lote',
   'home.photos.lyo': 'Péptido liofilizado en vial sellado',
   'home.photos.filling': 'Línea de envasado en el laboratorio',
   'home.photos.capping': 'Taponado y engargolado de cada vial',
@@ -963,6 +970,17 @@ const esMX = {
   'checkout.toast.phone': 'El teléfono debe tener 10 digitos (ej. (55) 1234-5678)',
   'checkout.toast.success': 'Pedido realizado con exito',
   'checkout.toast.error': 'Error al crear el pedido',
+  // Envío cotizado en el momento (Skydropx). Solo se ven cuando el servidor
+  // enciende la cotización; hoy está apagada y estas claves no se pintan.
+  'checkout.shipping.pick': 'Elige cómo quieres que te llegue',
+  'checkout.shipping.askZip': 'Escribe tu código postal y te decimos cuánto cuesta el envío.',
+  'checkout.shipping.loading': 'Consultando a la paquetería…',
+  'checkout.shipping.days': '{{days}} días hábiles',
+  'checkout.shipping.dayOne': '1 día hábil',
+  'checkout.shipping.free': 'Gratis',
+  'checkout.shipping.freeNote': 'Tu pedido llega con envío por cuenta de la casa.',
+  'checkout.shipping.none': 'No tenemos cobertura para ese código postal. Escríbenos y lo resolvemos contigo.',
+  'checkout.shipping.failed': 'La paquetería no respondió. Tu pedido se puede hacer igual y te cotizamos el envío aparte.',
 
   'auth.login.sideTitle': 'Tu fuente confiable de péptidos de investigación en México',
   'auth.login.bullet1': 'Pureza verificada por HPLC',

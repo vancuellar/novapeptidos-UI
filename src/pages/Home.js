@@ -587,6 +587,34 @@ const Home = () => {
         </div>
       </section>
 
+      {/* ===== Fotos de laboratorio ===== */}
+      {/* Segunda banda de fotos (Christian, 2026-07-28): la portada alterna una
+          sección con fotos y una sin fotos. Éstas son de banco con licencia libre
+          para uso comercial (Pexels) — trabajo de laboratorio, NO nuestra planta,
+          por eso el pie habla del oficio y nunca dice "nuestro laboratorio".
+          ⛔ Ninguna con personas asiáticas ni referencia a Asia. */}
+      <section className="border-b border-border">
+        <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 pb-16">
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4" data-testid="home-fotos-laboratorio">
+            {[
+              { src: 'cientifica-banco', alt: t('home.photos.bench') },
+              { src: 'pipeteo-matraz', alt: t('home.photos.pipetting') },
+              { src: 'analista-muestra', alt: t('home.photos.sample') },
+              { src: 'pipeta-multicanal', alt: t('home.photos.multichannel') },
+            ].map((f) => (
+              <figure key={f.src} className="overflow-hidden rounded-xl border border-border bg-card">
+                <img
+                  src={`${process.env.PUBLIC_URL}/images/laboratorio/${f.src}.jpg`}
+                  alt={f.alt} loading="lazy" width="1200" height="800"
+                  className="w-full h-44 object-cover"
+                />
+                <figcaption className="px-4 py-3 text-xs text-muted-foreground">{f.alt}</figcaption>
+              </figure>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* ===== Traceability — light band, 3 steps ===== */}
       <section className="bg-[hsl(var(--secondary))] border-y border-border">
         <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 py-24">
