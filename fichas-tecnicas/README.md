@@ -5,17 +5,33 @@ sitio más una tabla de identidad química verificada.
 
 ## Reglas de contenido (no negociables)
 
-Son las mismas de las monografías, más una propia:
-
-- Nada de dosis, pautas de administración ni volúmenes de reconstitución.
-- Nada de farmacocinética humana, indicaciones, beneficios ni contraindicaciones.
-- Ningún sello ni referencia a FDA, COFEPRIS u otra agencia.
+- **Ningún dato entra sin fuente.** Cada cifra de identidad remite a su base de
+  datos de origen, y cada dosis de referencia dice de qué publicación sale.
 - **Una ficha que sale a un cliente nunca dice "pendiente" ni "por verificar".**
   Si un dato no está verificado, la fila no se imprime. Regla de Christian,
   2026-07-26.
+- **La aritmética se calcula, no se copia.** Las tablas de reconstitución y de
+  unidades de jeringa se calculan para las presentaciones exactas que vendemos.
+- Nada de indicaciones terapéuticas, beneficios, contraindicaciones ni promesas
+  de resultado.
+- Ningún sello ni referencia a FDA, COFEPRIS u otra agencia.
 
-Los valores analíticos (pureza, identidad, contenido) NO van en la ficha: viven
-en el certificado del lote, que es el único documento que puede acreditarlos.
+Desde el 2026-07-27 la ficha SÍ lleva farmacocinética, reconstitución y dosis de
+referencia, cada una con su fuente citada. Y desde el 2026-07-29 lleva la pureza
+en el badge de portada, confirmado por Christian.
+
+Los valores analíticos **del lote** (pureza medida, identidad, contenido) siguen
+viviendo solo en el certificado de ese lote, que es el único documento que puede
+acreditarlos.
+
+## Quién las recibe
+
+- **Cliente:** solo las fichas de lo que compró.
+- **Distribuidor:** el catálogo completo, en la pestaña *Fichas* de su panel.
+  Vende todo y necesita la ficha antes de que exista el pedido (Christian,
+  2026-07-29). Lo resuelve el servidor en `novapeptidos-RBAC/server.py`,
+  `_ve_el_catalogo_completo()`.
+- **Cualquiera que la pida por el chat:** enlace firmado con caducidad.
 
 ## Cómo se usa
 

@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useEffect, useLayoutEffect, useState, useCallback } from 'react';
 import { useNavigate, useSearchParams, Link } from 'react-router-dom';
 import { Package, User, LogOut, ShoppingBag, DollarSign, MapPin, CreditCard, LockKeyhole, Eye, EyeOff, Syringe, Truck, ExternalLink, Lock, FlaskConical, FileText, BookOpen, Coins, Bell } from 'lucide-react';
 import ReconstitutionCalculator, { mgProducts } from '@/components/ReconstitutionCalculator';
@@ -10,7 +10,7 @@ import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Tabs, TabsContent } from '@/components/ui/tabs';
-import DashboardSidebar from '@/components/layout/DashboardSidebar';
+import DashboardSidebar, { alTope } from '@/components/layout/DashboardSidebar';
 import CoaLibrary from '@/components/CoaLibrary';
 import FichaLibrary from '@/components/FichaLibrary';
 import NotificationsFeed from '@/components/NotificationsFeed';
@@ -67,6 +67,10 @@ const Account = () => {
   const [loyalty, setLoyalty] = useState({ eligible: false, balance: 0, ledger: [] });
   const [saving, setSaving] = useState(false);
   const [params, setParams] = useSearchParams();
+  // Abrir ARRIBA al cambiar de pestaña, venga el cambio de donde venga (sidebar,
+  // link interno o URL directa). ScrollToTop no ve cambios que son sólo de query.
+  const tabActiva = params.get('tab') || 'orders';
+  useLayoutEffect(() => { alTope(); }, [tabActiva]);
 
   // datos personales
   const [name, setName] = useState('');

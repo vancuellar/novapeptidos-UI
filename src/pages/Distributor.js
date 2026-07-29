@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useEffect, useLayoutEffect, useState, useCallback } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { Store, Users, DollarSign, TrendingUp, ShoppingBag, Copy, Percent, Truck, ExternalLink, FileText, BookOpen, Award, Ticket, RefreshCw, Bell } from 'lucide-react';
 import { ResponsiveContainer, AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip } from 'recharts';
@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent } from '@/components/ui/tabs';
-import DashboardSidebar from '@/components/layout/DashboardSidebar';
+import DashboardSidebar, { alTope } from '@/components/layout/DashboardSidebar';
 import CoaLibrary from '@/components/CoaLibrary';
 import FichaLibrary from '@/components/FichaLibrary';
 import NotificationsFeed from '@/components/NotificationsFeed';
@@ -51,6 +51,10 @@ const Distributor = () => {
   const [rotateDays, setRotateDays] = useState(30);
   const [notifUnread, setNotifUnread] = useState(0);
   const [params, setParams] = useSearchParams();
+  // Abrir ARRIBA al cambiar de pestaña, venga el cambio de donde venga (sidebar,
+  // link interno o URL directa). ScrollToTop no ve cambios que son sólo de query.
+  const tabActiva = params.get('tab') || 'overview';
+  useLayoutEffect(() => { alTope(); }, [tabActiva]);
 
   useEffect(() => {
     if (!loading && (!user || !['distributor', 'admin'].includes(user.role))) navigate('/login');
@@ -423,7 +427,7 @@ const Distributor = () => {
         </TabsContent>
 
         <TabsContent value="fichas" className="mt-5">
-          <FichaLibrary />
+          <FichaLibrary catalogoCompleto />
         </TabsContent>
 
         <TabsContent value="sales" className="mt-5 space-y-4">

@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useEffect, useLayoutEffect, useState, useCallback } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { Filter, Eye, LayoutDashboard, Package, ShoppingBag, Plus, Pencil, Trash2, DollarSign, Users, Clock, TrendingUp, MapPin, Phone, Receipt, Store, Copy, Boxes, Truck, RefreshCw, MailCheck, Ban, Megaphone, BarChart3, Upload, ShoppingCart, Target, KeyRound, Gauge } from 'lucide-react';
 import Marketing from '@/components/admin/Marketing';
@@ -13,7 +13,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent } from '@/components/ui/tabs';
-import DashboardSidebar from '@/components/layout/DashboardSidebar';
+import DashboardSidebar, { alTope } from '@/components/layout/DashboardSidebar';
 import GatewayCredentials from '@/components/GatewayCredentials';
 import AdminAnnouncements from '@/components/AdminAnnouncements';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
@@ -97,6 +97,11 @@ const Admin = () => {
   const [funnelDays, setFunnelDays] = useState(30);
   const [customerOpen, setCustomerOpen] = useState(null);
   const [params, setParams] = useSearchParams();
+  // Abrir ARRIBA al cambiar de pestaña, venga el cambio de donde venga: del sidebar,
+  // de un link dentro del contenido o de la URL directa. El onClick del sidebar no
+  // alcanza — muchos links cambian sólo la query y ScrollToTop no los ve.
+  const tab = params.get('tab') || 'sales';
+  useLayoutEffect(() => { alTope(); }, [tab]);
   const [customerDetail, setCustomerDetail] = useState(null);   // ficha extendida del cliente abierto
   const [couponForm, setCouponForm] = useState({ pct: 10, days: 30, note: '' });
   const [giftForm, setGiftForm] = useState({ points: 100, note: '' });
@@ -429,7 +434,7 @@ const Admin = () => {
       <h1 className="font-heading text-2xl sm:text-3xl font-bold tracking-tight mb-1 flex items-center gap-2"><LayoutDashboard className="h-6 w-6 text-[hsl(var(--primary))]" /> {t('admin.title')}</h1>
       <p className="text-muted-foreground text-sm mb-6">{t('admin.subtitle')}</p>
 
-      <Tabs value={params.get('tab') || 'sales'} onValueChange={(v) => setParams(v === 'sales' ? {} : { tab: v }, { replace: true })} className="lg:flex lg:gap-8 lg:items-start">
+      <Tabs value={tab} onValueChange={(v) => setParams(v === 'sales' ? {} : { tab: v }, { replace: true })} className="lg:flex lg:gap-8 lg:items-start">
         {/* Agrupado por lo que uno viene a hacer, no por el orden en que se fueron
             construyendo las pestañas. Catorce entradas seguidas se leen como una lista
             de nada; en cinco grupos se encuentra sin leer. Recompra ya no está aquí:

@@ -2,12 +2,19 @@
 """
 Genera las fichas técnicas de Exygen Labs en PDF, una por compuesto.
 
-Reglas de contenido (RUO, no negociables — son las mismas de las monografías):
-  - Nada de dosis, pautas de administración ni volúmenes de reconstitución.
-  - Nada de farmacocinética humana, indicaciones, beneficios ni contraindicaciones.
+Reglas de contenido (RUO, no negociables):
+  - Ningún dato entra sin fuente. Si no está verificado, la fila NO se imprime.
+    Una ficha que sale a un cliente nunca dice "pendiente" (Christian, 2026-07-26).
+  - Nada de indicaciones terapéuticas, beneficios, contraindicaciones ni promesas
+    de resultado.
   - Ningún sello ni referencia a FDA, COFEPRIS u otra agencia.
-  - Ningún dato analítico que no venga de un informe real del lote. Si falta,
-    la ficha lo dice: "Pendiente". Nunca se rellena con un número inventado.
+  - La aritmética se calcula, no se copia: las tablas de reconstitución y de
+    unidades de jeringa salen de las presentaciones exactas que vendemos.
+
+Sí llevan reconstitución, farmacocinética y dosis de referencia, cada una con su
+fuente citada (Christian, 2026-07-27, con la ficha de Genolab de referencia). Y
+sí llevan la pureza en el badge: Christian lo confirmó el 2026-07-29. Los valores
+analíticos del LOTE siguen viviendo solo en su certificado.
 
 Uso:
     python3 build_fichas.py                 # todas las que haya en datos_identidad.json
@@ -181,8 +188,25 @@ def render(slug, ident):
             manejo = "".join(f"<p>{p}</p>" for p in parrafos
                              if not p.lower().startswith("producto exclusivo para investigaci"))
 
+    # Los nombres de los campos son internos ("cas_complejo", "formula"). En una
+    # ficha que ve un cliente van con su nombre de verdad. Christian, 2026-07-29.
+    ETIQUETA_FUENTE = {
+        "nombre_quimico": "Nombre químico",
+        "cas_complejo": "Número CAS",
+        "cas_peptido_libre": "CAS del péptido libre",
+        "formula": "Fórmula molecular",
+        "formula_peptido_libre": "Fórmula del péptido libre",
+        "peso_molecular": "Peso molecular",
+        "peso_peptido_libre": "Peso del péptido libre",
+        "secuencia": "Secuencia",
+        "residuos": "Número de residuos",
+        "sinonimos": "Sinónimos",
+        "categoria": "Clase",
+        "apariencia": "Apariencia esperada",
+        "solubilidad": "Solubilidad",
+    }
     fuentes = "".join(
-        f"<li><b>{k.replace('_', ' ')}:</b> {v}</li>"
+        f"<li><b>{ETIQUETA_FUENTE.get(k, k.replace('_', ' ').capitalize())}:</b> {v}</li>"
         for k, v in (ident.get("fuentes") or {}).items()
     )
 
@@ -341,12 +365,30 @@ def render(slug, ident):
 
     return f"""<!doctype html><html lang="es"><head><meta charset="utf-8">
 <style>
+/* El pie va en las cajas de margen de @page, NO como elemento del cuerpo.
+   Cuando era un <footer> al final del flujo, en compuestos con mucho texto no
+   le cabía en la última página y se abría una página EN BLANCO solo para él
+   (Retatrutida salía con 7 páginas y la 7 vacía). Christian, 2026-07-29. */
 @page {{
   size: Letter; margin: 14mm 15mm 16mm 15mm;
+  @bottom-left {{
+    content: "Exygen Labs · exygenlabs.com";
+    font-family: {FUENTE}; font-size: 8.5pt; color: {GRIS};
+  }}
   @bottom-center {{
     content: "Página " counter(page) " de " counter(pages);
     font-family: {FUENTE}; font-size: 9pt; color: {GRIS};
   }}
+  @bottom-right {{
+    content: "{ident['nombre']} · Rev. 01 · RUO";
+    font-family: {FUENTE}; font-size: 8.5pt; color: {GRIS};
+  }}
+}}
+/* La portada no lleva pie: es una carátula. */
+@page portada {{
+  @bottom-left {{ content: ""; }}
+  @bottom-center {{ content: ""; }}
+  @bottom-right {{ content: ""; }}
 }}
 * {{ box-sizing: border-box; }}
 body {{ font-family: {FUENTE};
@@ -407,7 +449,7 @@ footer {{ display: flex; margin-top: 14px;
 .fuente-dosis {{ font-size: 9pt; color: {GRIS}; margin-top: 4px; }}
 .pasos {{ counter-reset: paso; padding-left: 0; list-style: none; }}
 .pasos li {{ counter-increment: paso; margin-bottom: 5px; padding-left: 26px; position: relative; }}
-.portada {{ page-break-after: always; text-align: center; padding-top: 34mm; }}
+.portada {{ page: portada; page-break-after: always; text-align: center; padding-top: 34mm; }}
 .portada .plogo {{ width: 105mm; display: block; margin: 0 auto; }}
 .portada .plinea {{ width: 90mm; height: 3px; background: {ORO}; margin: 14mm auto 12mm; }}
 .portada .ptit {{ font-family: {SERIF}; font-size: 30pt; color: {TINTA}; font-weight: 700; letter-spacing: -.02em; }}
@@ -572,11 +614,6 @@ viven en el certificado del lote, que es el único documento que puede acreditar
   afirmaciones de eficacia. No emite afirmación alguna de aprobación, registro, licencia
   ni autorización sanitaria en ninguna jurisdicción.
 </div>
-
-<footer>
-  <span>Exygen Labs · exygenlabs.com</span>
-  <span>Ficha técnica {ident['nombre']} · Rev. 01 · Uso exclusivo en investigación</span>
-</footer>
 </body></html>"""
 
 
