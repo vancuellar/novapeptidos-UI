@@ -509,7 +509,7 @@ const Home = () => {
         <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 py-16">
           <div className="grid sm:grid-cols-3 gap-4" data-testid="home-fotos-produccion">
             {[
-              { src: 'viales-liofilizados', alt: t('home.photos.lyo') },
+              { src: 'viales-liofilizados', alt: t('home.photos.lyo'), color: true },  // los VIALES van a color siempre (Christian, 2026-07-28)
               { src: 'envasado', alt: t('home.photos.filling') },
               { src: 'taponado', alt: t('home.photos.capping') },
             ].map((f) => (
@@ -517,7 +517,7 @@ const Home = () => {
                 <img
                   src={`${process.env.PUBLIC_URL}/images/laboratorio/${f.src}.jpg`}
                   alt={f.alt} loading="lazy" width="1200" height="676"
-                  className="w-full h-52 object-cover grayscale group-hover:grayscale-0 transition-[filter] duration-500"
+                  className={`w-full h-52 object-cover ${f.color ? '' : 'grayscale group-hover:grayscale-0 transition-[filter] duration-500'}`}
                 />
                 <figcaption className="px-4 py-3 text-xs text-muted-foreground">{f.alt}</figcaption>
               </figure>
