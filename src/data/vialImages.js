@@ -2,6 +2,10 @@
 // Un vial por SKU: la etiqueta trae el gramaje impreso, así que la foto
 // tiene que cambiar cuando el cliente cambia de presentación.
 export const VIAL_SKUS = new Set([
+  '10AMINO1MQ-10MG',
+  '10AMINO1MQ-50MG',
+  '5AMINO1MQ-10MG',
+  '5AMINO1MQ-50MG',
   '5AMINO1MQ-5MG',
   'ACIDOACETICO-10ML',
   'ACIDOACETICO-3ML',
@@ -195,4 +199,5 @@ export const VIAL_SKUS = new Set([
   'VIP-10MG',
   'VIP-5MG',
   'VITAMINAB12-10MG',
+  'Viales genericos para fotos de contenido',
 ]);
