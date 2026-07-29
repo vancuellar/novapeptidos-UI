@@ -13,9 +13,12 @@
   verificado en servidor). ⚠️ APAGADO hasta que Christián cree el App
   Registration en Azure y pase el MICROSOFT_CLIENT_ID (pasos en la memoria
   exygen-outlook-login-pendiente); luego va al .env del EC2 y reiniciar api.
-- **Agente en curso**: traduciendo los videos tutoriales de clientes a EN y PT
-  (misma pantalla, narración traducida) y dejando /tutoriales por idioma. NO
-  commitea: deja los cambios en el working tree para revisión.
+- **Videos de clientes en EN y PT: TERMINADO y en vivo.** Los 6 (comprar con
+  código, cuenta/pedidos/puntos, herramientas, calculadora, reconstitución,
+  asesor) + el 12 en PT; /tutoriales sirve según el idioma del sitio, con caída
+  al español. Los videos 6-8 se REDOBLARON (pipeline/redub.js: misma imagen,
+  voz nueva) porque las cuentas demo ya no existen y recrearlas contaminaría
+  las métricas — no recrearlas.
 - Pedidos: filtro por estado + orden fijo del más reciente al más viejo; el
   lote ya funciona en vivo (Christián borró los 11 cancelados de prueba).
 - Alanís marcada NO pagada en vivo (revenue 3,347 = solo Paz; por_cobrar 3,857).
