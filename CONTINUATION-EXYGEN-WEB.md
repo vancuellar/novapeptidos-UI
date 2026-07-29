@@ -1,3 +1,149 @@
+# 🤝 HANDOFF — 2026-07-29 (tarde) — LÉELO PRIMERO
+
+## 🚨 LO PRIMERO Y MÁS URGENTE: **SUBIR EL BACKEND AL SERVIDOR**
+
+**Todo el trabajo del backend de hoy está en `main` y NADA está en vivo.** El EC2 sigue
+sirviendo la versión vieja. Comprobado con curl: `POST /api/admin/orders/lote` → **405**,
+y `?archivados=true` no filtra.
+
+**Lo que NO funciona hasta desplegar** (aunque la interfaz ya esté en el sitio):
+- La selección múltiple de pedidos (archivar / borrar en lote).
+- La marca de **pagado** aparte del estado de entrega.
+- El rol **marketing** de María.
+- El tope real del descuento (hoy en vivo **todavía permite 60%**).
+- El video 12 (falta subir el `.mp4` al servidor).
+
+Receta y trampas en la sección "CÓMO ENTRAR AL EC2" más abajo. ⚠️ El perfil es
+`--profile certis --region us-east-1`; el de por omisión es otra cuenta y contesta
+"no existe" en vez de un error claro de permisos. En sesiones anteriores el clasificador
+de permisos bloqueó `aws ec2 authorize-security-group-ingress` y `ssh`.
+
+## 👤 MARÍA — lo que Christián pidió (2026-07-29, NO está hecho así)
+
+**Christián NO quiere quitarle nada a María.** Ella **ya existe como distribuidora al 40%**
+(`marianeunfeld0@gmail.com`, id `37f6feba-6b3…`). Lo que quiere es que **tenga varias
+cuentas/roles a la vez**, como él, y pueda cambiar entre ellas desde el menú del perfil.
+
+⚠️ **Lo que se construyó hoy NO es eso**: se hizo un rol `marketing` que **sustituye** al
+rol actual. Si se le aplica tal cual, **pierde el panel de distribuidora**.
+👉 **Falta**: permitir varios roles por persona (o un selector de "entrar como" en el menú
+del perfil, igual que el de Christián) y que María entre a Difusión **sin dejar de ser
+distribuidora**. El candado del backend (403 en todo lo que no es difusión) ya está bien
+hecho y con 15 pruebas; lo que falta es que el rol **sume** en vez de reemplazar.
+
+## ✅ LO QUE SÍ QUEDÓ HECHO HOY (todo en `main`, frontend desplegado)
+
+**Backend — 424 pruebas en verde** (commit en `novapeptidos-RBAC`):
+- **PAGADO ≠ ENTREGADO.** `paid`/`paid_at` cuentan el DINERO; `status` sigue contando la
+  MERCANCÍA. El tablero separa `revenue` (cobrado) de `por_cobrar`. Los pedidos viejos no
+  traen el campo y siguen infiriendo del estado, así que **no hace falta migrar la base**.
+  Nació de la venta de Alanís: entregada y sin pagar, y el tablero la sumaba como ingreso.
+- **El descuento de la venta directa topaba en 60%** cuando el máximo es 40% (auditor de
+  Codex). En un pedido de $374,360 son **$74,872 de más**. Y la otra mitad que él no vio:
+  el descuento se calculaba **plano**, ignorando el tope POR PRODUCTO que protege el 5×.
+- **Lote de pedidos**: archivar / desarchivar / borrar, con el mismo camino del borrado
+  individual (devuelve puntos, restaura inventario, limpia bitácora). **Se niega a borrar
+  un pedido pagado sin `forzar`** — entre las 12 pruebas viven las 2 ventas reales.
+
+**Motor de precios — 265 pruebas en verde.** Las cuatro fallas de Codex, todas ciertas:
+- `0,5mg` se leía como **5 mg** (diez veces) — `reprecio.medida()` no usaba la corrección
+  de la coma que ya existía en `db.py`.
+- `BPC-157 5mg+TB-500 5mg` **sin espacios** se colaba como BPC-157 suelto.
+- **`100mcg` devolvía nada**: invisible para la escalera. Un vial de 100 mcg podía costar
+  más que uno de 1 mg sin alarma. Ahora se convierte a 0.1 mg.
+- **`24 U` y `24 IU`** vivían en escaleras separadas. Ahora son la misma unidad.
+
+**Frontend (desplegado):** las 7 gráficas con **arrastre y zoom estilo TradingView**
+(shift+rueda para el eje Y, rueda sobre un eje para ajustar sólo ése, pellizco en celular);
+**video 12** "Cómo leer las métricas de difusión" (3:37) embebido en Marketing, sólo admin;
+**campañas clicables en 18 puntos**; buscador en Productos; mayúsculas en el menú de perfil;
+Mónica compacta con `@exygenlabs` (el enlace lleva al número, pero no se enseña).
+
+**⛔ EL SCROLL — la causa raíz REAL, ya medida.** El cambio de pestaña **ya estaba bien**
+(1138→0, 10293→0, en Chromium y WebKit). Lo que fallaba era la **radiografía de campaña**,
+que cambia de vista **sin tocar la ruta ni `?tab=`**, así que ningún efecto se enteraba.
+Arreglado (2447→0 al abrir, 1708→0 al volver).
+
+## 💰 PROVEEDORES — 3 nuevos y un hallazgo que reencuadra todo
+
+**Winnie (P33) 159 precios · Kiki (P34) 156 · Cell Peptides (P36) 241 · LEISHASHOP (P35)
+SIN PRECIOS** (sólo mandó catálogo, pide que se circulen productos).
+
+**Ninguno es más barato**: Winnie gana en 7 de 148, Kiki en 1 de 141, Cell Peptides en
+**0 de 180**. El único ahorro que vale es **HGH 8 IU de Winnie: $4.50 contra $10.50 =
+$60/caja** — y ése lo encontró Codex, no yo: mi comparación no cruzaba "HGH" con
+"HGH 191AA (Somatropin)". Ya se agregaron los alias.
+
+**🔑 EL HALLAZGO GRANDE: los 12 proveedores con clave usan EL MISMO sistema de catálogo**
+(`BC5`, `RT40`, `CND10`, `TR80`, `CU50`…). Winnie y Kiki comparten 49; Peptideals coincide
+en 94, Lisa en 89. **No son 14 proveedores independientes: son revendedores de la misma
+red de fábricas.** Eso explica por qué GLOW y KLOW coinciden en todos — y por qué ese
+argumento NO servía para señalar al proveedor de Certified. Para el mismo producto la
+dispersión llega a **10x** (ACE-031 1mg de $3.09 a $30.90). Ahí está la palanca real.
+⚠️ Codex advirtió algo importante: la misma clave **NO siempre es el mismo producto**
+(sólo 66%). `AD5` es Adamax para uno y AOD-9604 para otro. **Nuestro motor está a salvo**
+porque empareja por nombre+cantidad, no por clave — verificado.
+
+**Bugs del lector que costaban dinero, arreglados:** el candado del 85% contaba signos de
+pesos y rechazaba listas buenas con dos columnas de precio; nombres que parecen clave
+(`AOD9604`, `B7-33`) se los tragaba el detector; Kiki pone la moneda en el encabezado y
+sus precios van pelones; **`CJC 1295(without` / `DAC)` partido en dos renglones hacía que
+las 5 presentaciones del SIN DAC se guardaran como CON DAC** (el motor toma el costo más
+bajo: habría usado $38 donde son $85); y los encabezados **en chino** no se reconocían.
+
+## 🕵️ VANGUARD / CERTIFIED — barrido completo de 218 imágenes, 24 proveedores
+
+**Los COAs de Vanguard que aparecían son TUYOS**, a nombre de "Nova Peptides" (tu marca
+anterior). Christián los repartió entre proveedores y **RT40-275 le devolvió uno como si
+fuera suyo**. ⚠️ **Lección: repartir COAs propios hace que vuelvan como falsa evidencia.**
+**Ningún proveedor enseñó un COA de Forever Young** — el otro laboratorio de Certified, y
+la prueba que habría sido decisiva. Por la vía Vanguard, **ninguno queda como candidato**.
+
+Lo que sí salió: **Kiki = Peptide Global = LKZ** (`lkzpeptide1.com`, Marko Lukic) y sus
+clientes reales son Adaptive Biology, Aminoplex, PI Peptide Sciences y **"Pepe Tajín"**
+(único nombre mexicano del barrido, sin identificar). **El hilo abierto más prometedor es
+"Wansheng"**: RT30-185 manda COAs de ILS con *"Lot Number: Wansheng Peptides"* y Lee
+Factory apunta a *Wuhan Wansheng Bio* — meter el nombre de la empresa donde va el lote es
+**exactamente** el defecto de los COAs de Certified.
+
+## 📣 META — el píxel ya está ligado y hay saldo
+
+Christián ligó el píxel y dio un token con `business_management`. **Saldo: $500.01.**
+Activa: **WhatsApp — Conversaciones con Mónica, $20/día**. Compras **pausada** por orden
+suya. El dato que lo decidió: clics **~$97 → 0 compras**; WhatsApp **$2.55 → 1 conversación**.
+
+⚠️ **ALGUIEN MÁS ESTÁ EN LA CUENTA.** A las 12:22 del 29-jul apareció una campaña de
+interacción a **$40/día** que no creamos nosotros, y dos que se habían pausado **se
+reactivaron solas**. Coordinar con María antes de tocar nada.
+
+**Para María, los UTM:** destino `https://exygenlabs.com/catalogo` (NO la portada: de 782
+visitas sólo 20 vieron un producto) y en el campo "Parámetros de URL":
+`utm_source=meta&utm_medium=paid&utm_campaign={{campaign.name}}&utm_content={{ad.name}}&utm_term={{adset.name}}`
+Las de WhatsApp no llevan link ni UTM: se miden dentro de Meta.
+
+## 📌 PENDIENTES, en orden
+
+1. **DESPLEGAR EL BACKEND AL EC2.** Nada de lo de arriba sirve hasta entonces.
+2. **María: cuentas múltiples**, no un rol que sustituya (ver arriba).
+3. **Limpiar los 12 pedidos de prueba** con la selección múltiple (ya está la UI; falta el
+   despliegue). Ojo: hoy hay **2 ventas reales** — Paz Cambray y Alanís.
+4. **Marcar la venta de Alanís (`EX-20260729-9934`, $3,857) como NO pagada** en cuanto
+   exista la marca en vivo. Está entregada y sin cobrar.
+5. **Vitamina D3**: Christián le dio "Vender esto" y quedó aprobada, **no publicada**.
+   Antes de subirla hay que decidir si una **vitamina** entra a un catálogo RUO de
+   péptidos (insulina y ácido hialurónico están vetados por esa razón).
+6. **Video semanal de campañas** — el pipeline ya funciona; falta el cron.
+7. La foto de los 2 viales todavía dice "for Injection".
+8. Correo a AuxPay (en los borradores de Gmail de Christián).
+
+## 📄 Reportes guardados en la raíz del proyecto
+
+`COAS-VANGUARD-BARRIDO-2026-07-29.md` · `AUDITORIA-CODEX-PROVEEDORES-NUEVOS.md` ·
+`KIKI-VS-CERTIFIED-CODEX.md` · `INVESTIGACION-KIKI-CERTIFIED.md` ·
+`CODEX-RETRACTACION-CHECKOUT.md` · `META-LECCIONES-DEL-ANUNCIO-DE-CERTIFIED.md`
+
+---
+
 # 🤝 HANDOFF — 2026-07-29 (mañana) — TODOS LOS PENDIENTES CERRADOS
 
 **Se acabó la lista.** Los 10 pendientes están hechos, con las 7 compuertas en cero:
