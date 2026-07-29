@@ -61,6 +61,11 @@ export const loginWithPasskey = async () => {
   const options = data.options;
   options.challenge = toBuffer(options.challenge);
   (options.allowCredentials || []).forEach((c) => { c.id = toBuffer(c.id); });
+  // Primero el autenticador de ESTE equipo (Touch ID / Windows Hello), no el
+  // QR de "usa otro dispositivo": estilo JADA. Si no hay llave local, el
+  // navegador falla rápido y el toast orienta a crearla. Los navegadores que
+  // no conocen `hints` lo ignoran sin ruido.
+  options.hints = ['client-device'];
   const cred = await navigator.credentials.get({ publicKey: options });
   const res = await api.post('/auth/passkey/verify', {
     challenge_id: data.challenge_id,
