@@ -133,7 +133,7 @@ const GoogleSignInButton = () => {
   // el clic de verdad caiga en Google. Va arriba del formulario, con el
   // divisor "o" separándolo de los campos.
   return (
-    <div className={enabled ? 'mb-6' : 'hidden'} data-testid="google-signin">
+    <div className={enabled ? 'mb-3' : 'hidden'} data-testid="google-signin">
       <div className="relative h-12 w-full">
         {/* Monocromo como Resend: la G en blanco, sin colores. */}
         <div className="absolute inset-0 flex items-center justify-center gap-3 rounded-xl border border-white/10 bg-[#1e1f22] text-sm font-semibold text-white">
@@ -145,12 +145,6 @@ const GoogleSignInButton = () => {
         {/* El iframe de Google, invisible pero clicable, cubriendo el botón. */}
         <div ref={slotRef} className="absolute inset-0 overflow-hidden opacity-[0.001] [&>div]:!w-full [&_iframe]:!w-full" />
       </div>
-      <div className="flex items-center gap-3 mt-6">
-        <div className="h-px flex-1 bg-border" />
-        <span className="text-xs text-muted-foreground">{t('auth.google.divider')}</span>
-        <div className="h-px flex-1 bg-border" />
-      </div>
-
       <Dialog open={!!pendingCredential} onOpenChange={(open) => { if (!open) setPendingCredential(''); }}>
         {/* El dialogo vive en un portal fuera del arbol oscuro del login:
             lleva su propia clase `dark` para quedarse monocromo. */}

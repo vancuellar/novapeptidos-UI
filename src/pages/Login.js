@@ -12,6 +12,7 @@ import { useAuth } from '@/context/AuthContext';
 import { useLanguage } from '@/context/LanguageContext';
 import { MoleculeMark } from '@/components/BrandLogo';
 import GoogleSignInButton from '@/components/GoogleSignInButton';
+import MicrosoftSignInButton from '@/components/MicrosoftSignInButton';
 import { passkeysSupported, loginWithPasskey } from '@/lib/webauthn';
 
 // Casilla de consentimiento, monocroma. Etiqueta clicable completa: en móvil
@@ -260,7 +261,15 @@ const Login = () => {
             </div>
           )}
 
+          {/* Entrar con Google / Outlook, y el divisor "o" antes del formulario.
+              Cada botón se esconde solo si su proveedor no está configurado. */}
           <GoogleSignInButton />
+          <MicrosoftSignInButton />
+          <div className="flex items-center gap-3 mb-6 mt-3">
+            <div className="h-px flex-1 bg-border" />
+            <span className="text-xs text-muted-foreground">{t('auth.google.divider')}</span>
+            <div className="h-px flex-1 bg-border" />
+          </div>
 
           {mode === 'login' ? (
             <form onSubmit={submitLogin} className="space-y-4">

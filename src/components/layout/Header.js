@@ -15,7 +15,7 @@ import { useTheme } from '@/context/ThemeContext';
 import BrandLogo from '@/components/BrandLogo';
 import HomeLogoLink from '@/components/HomeLogoLink';
 import api from '@/lib/api';
-import { tieneDifusion } from '@/lib/roles';
+import { tieneDifusion, soloDifusion } from '@/lib/roles';
 import { VISIBLE_CATEGORIES } from '@/data/fallbackCatalog';
 import { localizeCategories } from '@/i18n/catalog';
 
@@ -464,7 +464,7 @@ const Header = () => {
                       panel: adentro solo ve sus tres pestañas y el backend le
                       niega el resto. */}
                   {tieneDifusion(user) && (
-                    <DropdownMenuItem onClick={() => navigate('/admin')} data-testid="header-admin-link"><LayoutDashboard className="h-4 w-4 mr-2" /> {t('header.admin')}</DropdownMenuItem>
+                    <DropdownMenuItem onClick={() => navigate('/admin')} data-testid="header-admin-link"><LayoutDashboard className="h-4 w-4 mr-2" /> {soloDifusion(user) ? t('header.difusion') : t('header.admin')}</DropdownMenuItem>
                   )}
                   {['distributor', 'admin'].includes(user.role) && (
                     <DropdownMenuItem onClick={() => navigate('/distribuidor')} data-testid="header-distributor-link"><LayoutDashboard className="h-4 w-4 mr-2" /> {t('header.distributor')}</DropdownMenuItem>
