@@ -1,5 +1,22 @@
 # 🤝 HANDOFF — 2026-07-29 (tarde) — LÉELO PRIMERO
 
+## ⛔ LECCIÓN CLAVE 2026-07-29: el push NO despliega el frontend
+
+GitHub Actions dice success pero publica al GitHub Pages viejo. El sitio real
+es Cloudflare Pages y se publica A MANO:
+`npm run build && rm -f build/404.html && npx wrangler pages deploy build --project-name exygenlabs --commit-dirty=true`
+(token en ~/.config/exygen/cloudflare.env). Por esto Christián no veía NADA del
+frontend de hoy hasta la noche. Verificar siempre el hash del bundle en vivo.
+
+## ✅ 2026-07-29 (cierre): TODO lo de hoy ya está en el sitio real
+
+Tutoriales 1-11 en ES/EN/PT servidos por idioma (12 dist redoblados con
+pipeline/redub.js) · viales con "Lyophilized" corregido (374 webp) · zoom al
+hover en imágenes de producto · Mayúscula A Cada Palabra (dashboards + menús,
+3 idiomas) · botón Outlook publicado (aparece al poner MICROSOFT_CLIENT_ID en
+el EC2 — falta que Christián registre la app en Azure y pase el Client ID) ·
+María con Difusión + pt-BR + oscuro (verificado). Auditoría final 83/0.
+
 ## ✅ 2026-07-29 (noche, 2ª tanda): María, mayúsculas, Outlook y videos
 
 - **María RESUELTA de verdad** (verificado en vivo con "ver como"): `extra_roles`
