@@ -10,7 +10,7 @@ const esMX = {
   'header.coa': 'Pureza verificada por HPLC',
   'header.shipping': 'Envío nacional en México · Cotizado por separado',
   'header.ruo': 'Solo para uso en investigación (RUO)',
-  'header.brandTagline': 'Péptidos de investigación · México',
+  'header.brandTagline': 'Péptidos de investigación',
   'header.searchShort': 'Buscar péptidos...',
   'header.searchLong': 'Buscar BPC-157, Ipamorelin, TB-500...',
   'header.allCatalog': 'Todo El Catálogo',

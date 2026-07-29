@@ -51,7 +51,7 @@ const ptBR = {
   'header.coa': 'Pureza verificada por HPLC',
   'header.shipping': 'Envio nacional no México · Cotado separadamente',
   'header.ruo': 'Somente para uso em pesquisa (RUO)',
-  'header.brandTagline': 'Peptídeos de pesquisa · México',
+  'header.brandTagline': 'Peptídeos de pesquisa',
   'header.searchShort': 'Buscar peptídeos...',
   'header.searchLong': 'Buscar BPC-157, Ipamorelin, TB-500...',
   'controls.language': 'Idioma',

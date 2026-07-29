@@ -56,7 +56,7 @@ const enUS = {
   'header.coa': 'HPLC-verified purity',
   'header.shipping': 'México-wide shipping · Quoted separately',
   'header.ruo': 'Research use only (RUO)',
-  'header.brandTagline': 'Research peptides · México',
+  'header.brandTagline': 'Research peptides',
   'header.searchShort': 'Search peptides...',
   'header.searchLong': 'Search BPC-157, Ipamorelin, TB-500...',
   'header.allCatalog': 'Full Catalog',
