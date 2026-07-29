@@ -1,3 +1,98 @@
+# 🤝 HANDOFF — 2026-07-29 (mañana) — TODOS LOS PENDIENTES CERRADOS
+
+**Se acabó la lista.** Los 10 pendientes están hechos, con las 7 compuertas en cero:
+backend **378** · precios **237** · auditoría del sitio **83/0** · E2E tarjeta **15/0** ·
+E2E cripto **21/0** · reprecio **0 cambios** · certeza **OK**.
+Commits: `19e6edf` (RBAC) · pricing-system y UI en `main`, verificados con `git show`.
+
+## 🔴 LOS DOS GORDOS DE CODEX — CERRADOS
+
+**1. Comisión sobre puntos.** El canje al 100% ya no pagaba comisión, pero el escalón
+dejaba pasar el resto: con puntos cubriendo el 99% y **$1 en efectivo**, la comisión salía
+COMPLETA sobre dinero que nunca entró — el mismo agujero, repartido en dos pedidos. Ahora
+`pyramid.prorratear_por_dinero()` la prorratea por la fracción pagada EN DINERO. Sin puntos
+la fracción es 1 y nada cambia. 6 pruebas nuevas.
+
+**2. El candado del 85% se burlaba — por DOS puertas, no una.**
+- `importar_proveedor.py` (Excel/CSV) **no tenía candado**: tiraba renglones con `continue`
+  y podía guardar 1 de 145 sin decir nada. Ahora verifica cobertura POR HOJA y truena.
+- `importar_pdf_proveedor.py` declaraba **cobertura 1.0** cuando no hallaba NI UN `$` que
+  contar. Cobertura que no se puede medir no es cobertura del 100%.
+
+**3. Filtro legal.** Clenbuterol (+ clembuterol, clen) al `no_vender.csv`. Y `excluidos()`
+ahora **se niega a correr** si el archivo falta o está vacío — antes devolvía `[]` y el motor
+proponía 55 productos con esteroides SIN AVISAR.
+
+## ✅ "VENDER ESTO" YA ES DE PUNTA A PUNTA — `pricing-system/dar_de_alta.py`
+
+Orden de Christián. Un comando corre TODO: altas del Panel → maestra → precio por fórmula
+(dos corridas, cero cambios) → pruebas → base → catálogo → backend → **vial** → **ficha
+técnica** → build → Cloudflare → certeza + auditoría + E2E. Si una compuerta truena, se
+para ahí a propósito; es re-entrante, lo ya hecho no se repite.
+⚠️ La ficha SÓLO se genera si el compuesto tiene identidad investigada (CAS, fórmula,
+secuencia). Sin eso lo dice y lo deja sin ficha: **una ficha no se inventa**.
+
+## 🎨 DISEÑO Y SITIO — EN VIVO
+
+- **Portada móvil arreglada:** título → **VIALES** → texto. Antes la primera pantalla era
+  puro texto y el producto quedaba abajo del doblez. Escritorio no cambia (grid-areas).
+- **Titular nuevo** en ES/EN/PT: *"Cada vial trae su número de lote, y nosotros traemos el
+  análisis"* — deja de decir lo mismo que Exoma y Certified.
+- **Mónica Fuentes** en la portada con WhatsApp directo (sin foto: iniciales; no se inventa).
+- **Calculadora +3:** alarma ámbar cuando la dosis rebasa la jeringa (con el faltante en mL),
+  convertidor por peso corporal (probado: 80 kg × 15 mcg/kg = 1.2 mg) y fórmulas + 5 FAQ con
+  **JSON-LD FAQPage** para SEO.
+- **Sidebar:** los grupos se colapsan aunque contengan la pestaña activa (el encabezado se
+  resalta para no perder el "dónde estoy"), y el panel scrollea POR DENTRO — nunca el body.
+- **Links a media página:** arreglado de raíz. Los tres tableros abren ARRIBA ante CUALQUIER
+  cambio de `?tab=`; `ScrollToTop` sólo mira `pathname` y no los veía.
+
+## 📣 META — LO QUE SE ENCONTRÓ ES PEOR QUE EL OBJETIVO
+
+Christián pidió pasar los anuncios a Compras. Al hacerlo salieron **tres cosas**:
+
+1. **2,700 clics, ~$97 gastados, CERO compras** en toda la historia de la cuenta. El CTR es
+   bueno (4-5%); el problema no es el anuncio, es lo que pasa después del clic.
+2. **El píxel NO está ligado a la cuenta publicitaria** (`adspixels` devuelve vacío). Por eso
+   Meta no puede optimizar a Compras aunque se le pida: no ve las conversiones.
+   ⛔ **Esto lo tiene que hacer Christián** en Business Manager (o dar un token con
+   `business_management`): el token actual no tiene permiso.
+3. **`checkout_start` NUNCA se mandaba.** El backend lo espera (`EVENT_TYPES` en server.py)
+   y el frontend no lo emitía: el embudo del Panel marcaba **0** con compras hechas. **YA
+   ARREGLADO y en vivo.** Con 2,700 clics y 0 compras, ese escalón es justo el que dice si la
+   gente se cae ANTES o DESPUÉS del checkout.
+
+Embudo real de 30 días: **782 visitas → 20 vistas de producto → 7 al carrito → 3 compras**
+($11,027). El desplome está en visita→producto (2.5%), no en el checkout.
+
+**Campaña `120247581764170767` "VENTAS — Compras (Purchase)"** creada, objetivo
+`OUTCOME_SALES`, $20/día, **EN PAUSA y sin conjunto de anuncios** — no puede gastar un peso.
+Se termina de armar cuando el píxel esté ligado. (Meta NO deja cambiar el objetivo de una
+campaña existente; por eso una nueva.)
+
+## ✅ EL VIGÍA DE HOY: FALSA ALARMA — Y YA NO SE VA A REPETIR
+
+Reportó 9 productos "por debajo de Exoma (regla dura violada)". **Es lo decidido, no una
+violación:** cuando Exoma cobra MÁS que Certified, manda Certified (`reprecio.py banda()`,
+Christián 2026-07-26) — el propio `reprecio` los lista como *"quedan DEBAJO de Exoma porque
+Certified manda"*. Los ~39 de "Exoma +20%" también: esa fórmula SÓLO aplica a productos SIN
+precio de Certified. Y los GLP-1 "muy debajo de Certified" los explica la escalera.
+👉 Se corrigió el SKILL del vigía (`~/.claude/scheduled-tasks/vigia-precios-exygen/`) para
+que no lo vuelva a reportar. **No se movió ni un precio.**
+
+## ⏳ LO QUE FALTA — Y ES DE CHRISTIÁN, NO DEL CÓDIGO
+
+1. **Ligar el píxel 2487053198462294 a la cuenta act_1357297706382259** en Business Manager.
+   Sin eso los anuncios no pueden optimizar a Compras. Es EL cuello de botella del marketing.
+2. Mandar el correo a AuxPay (está en sus borradores de Gmail).
+3. Regenerar la foto de los 2 viales con Nano Banana: todavía dice "for Injection", debe
+   decir sólo "Research Peptides".
+4. **Lo que de verdad mueve la aguja ahora:** 782 visitas y sólo 20 miraron un producto. El
+   dinero de Meta se está yendo en tráfico que rebota. Antes de subir presupuesto, arreglar
+   esa caída (el hero nuevo y Mónica van en esa dirección; falta prueba social y COA abierto).
+
+---
+
 # 🤝 HANDOFF — 2026-07-29 (madrugada) — LÉELO PRIMERO
 
 ## ✅ PRIORIDAD 00 CERRADA (2026-07-29, sesión de la mañana)
