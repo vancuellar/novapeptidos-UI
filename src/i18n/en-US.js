@@ -434,6 +434,7 @@ const enUS = {
   'distributor.clientsTab': 'My Clients',
   'distributor.salesTab': 'My Sales',
   'distributor.noData': 'No earnings to chart yet',
+  'distributor.client.guest': 'Guest',
   'distributor.noClients': 'No clients yet',
   'distributor.noSales': 'No sales yet',
   'distributor.earningsByMonth': 'Earnings by month',

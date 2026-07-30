@@ -391,6 +391,8 @@ const esMX = {
   'distributor.clientsTab': 'Mis Clientes',
   'distributor.salesTab': 'Mis Ventas',
   'distributor.noData': 'Aun no hay ganancias que graficar',
+  'distributor.client.guest': 'Invitado',
+  // Compró con su código sin abrir cuenta. Sigue siendo su cliente: la comisión ya se pagó.
   'distributor.noClients': 'Aun no tienes clientes',
   'distributor.noSales': 'Aun no tienes ventas',
   'distributor.earningsByMonth': 'Ganancias por mes',

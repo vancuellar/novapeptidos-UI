@@ -448,6 +448,7 @@ const ptBR = {
   'distributor.clientsTab': 'Meus Clientes',
   'distributor.salesTab': 'Minhas Vendas',
   'distributor.noData': 'Ainda não ha ganhos para o grafico',
+  'distributor.client.guest': 'Convidado',
   'distributor.noClients': 'Ainda não ha clientes',
   'distributor.noSales': 'Ainda não ha vendas',
   'distributor.earningsByMonth': 'Ganhos por mes',

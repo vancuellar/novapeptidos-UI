@@ -391,7 +391,17 @@ const Distributor = () => {
                   <TableRow><TableCell colSpan={5} className="text-center text-muted-foreground py-8">{t('distributor.noClients')}</TableCell></TableRow>
                 ) : clients.map((c) => (
                   <TableRow key={c.id}>
-                    <TableCell><div className="text-sm font-medium">{c.name}</div></TableCell>
+                    <TableCell>
+                      <div className="text-sm font-medium">{c.name}</div>
+                      {/* Compró con SU código pero sin cuenta. Sigue siendo su cliente
+                          (Christián, 2026-07-30): la comisión ya se le pagó. Se marca para
+                          que sepa que a esa persona hay que contactarla por fuera. */}
+                      {c.guest && (
+                        <Badge variant="outline" className="mt-1 text-[10px]" data-testid="dist-client-guest">
+                          {t('distributor.client.guest')}
+                        </Badge>
+                      )}
+                    </TableCell>
                     <TableCell>{c.orders_count}</TableCell>
                     <TableCell>{formatMXN(c.total_spent)}</TableCell>
                     <TableCell className="font-medium text-[hsl(var(--primary))]">{formatMXN(c.my_earnings)}</TableCell>
