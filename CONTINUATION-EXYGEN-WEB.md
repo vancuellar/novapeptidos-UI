@@ -39,9 +39,10 @@
   se usa).
 - Portada: frase del hero restaurada ("Ciencia y precisión, lote por lote"),
   menos menciones de COA (placa = "99.4% · Pureza por HPLC"), zoom al hover
-  en imágenes de producto, sello del 15% en claro AZUL de marca (era dorado
-  ilegible → gris → azul por pedido de Christián; el dorado del oscuro nunca
-  se tocó).
+  en imágenes de producto, sello del 15% en claro: AZUL SÓLIDO con letra
+  blanca y borde punteado blanco — versión final APROBADA por Christián
+  ("¡Perfecto!") tras iterar dorado→gris→azul contorno→azul sólido; el dorado
+  del tema oscuro nunca se tocó.
 - Mayúscula A Cada Palabra en dashboards y menús + regla dura: TODO texto va
   en los 3 idiomas a la vez. Marca neutral "Exygen Labs" (sin "Mexico").
 
