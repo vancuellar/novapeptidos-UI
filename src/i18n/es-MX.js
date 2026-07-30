@@ -675,7 +675,7 @@ const esMX = {
   'common.piecesFrom': '{{price}} desde {{qty}} pzas',
 
   'home.badge': 'Pureza verificada por HPLC',
-  'home.heroTitle': 'Cada vial trae su número de lote, y nosotros traemos el análisis',
+  'home.heroTitle': 'Ciencia y precisión, lote por lote',
   // El hero ya no dice solo "péptidos liofilizados": dice de DÓNDE salen. Certified
   // vende su procedencia gringa desde el primer renglón y a nosotros nos costaba el
   // comparativo — nuestra materia prima viene de laboratorios de Estados Unidos, así

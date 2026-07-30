@@ -712,7 +712,7 @@ const enUS = {
   'common.piecesFrom': '{{price}} from {{qty}} pcs',
 
   'home.badge': 'HPLC-verified purity',
-  'home.heroTitle': 'Every vial carries its lot number, and we carry the analysis',
+  'home.heroTitle': 'Science and precision, lot by lot',
   'home.heroBody': "We don't publish one purity for the whole catalog: we publish your lot's, HPLC-verified. Made in United States laboratories and at your door in 2 to 5 days, anywhere in Mexico.",
   'home.heroRuo': 'Research use only (RUO).',
 

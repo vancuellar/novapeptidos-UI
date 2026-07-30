@@ -707,7 +707,7 @@ const ptBR = {
   'common.piecesFrom': '{{price}} a partir de {{qty}} unid.',
 
   'home.badge': 'Pureza verificada por HPLC',
-  'home.heroTitle': 'Cada frasco traz seu número de lote, e nós trazemos a análise',
+  'home.heroTitle': 'Ciência e precisão, lote a lote',
   'home.heroBody': 'Não publicamos uma pureza para o catálogo inteiro: publicamos a do seu lote, verificada por HPLC. Fabricados em laboratórios dos Estados Unidos e na sua porta em 2 a 5 dias, em todo o México.',
   'home.heroRuo': 'Somente para uso em pesquisa (RUO).',
 
