@@ -18,6 +18,8 @@ import { Tabs, TabsContent } from '@/components/ui/tabs';
 import DashboardSidebar, { alTope } from '@/components/layout/DashboardSidebar';
 import StatCard from '@/components/panels/StatCard';
 import GatewayCredentials from '@/components/GatewayCredentials';
+import AjustesEnvio from '@/components/AjustesEnvio';
+import CotizarEnvio from '@/components/CotizarEnvio';
 import FichaPedido from '@/components/FichaPedido';
 import AdminAnnouncements from '@/components/AdminAnnouncements';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
@@ -693,6 +695,7 @@ const Admin = () => {
           { value: 'news', icon: Megaphone, label: t('adminNews.tab') },
           { grupo: 'Ajustes' },
           { value: 'pagos', icon: KeyRound, label: 'Cobros' },
+          { value: 'envios', icon: Truck, label: 'Envíos' },
         ]} />
         <div className="min-w-0 flex-1">
 
@@ -713,6 +716,11 @@ const Admin = () => {
 
         <TabsContent value="pagos" className="mt-5">
           <GatewayCredentials />
+        </TabsContent>
+
+        {/* El remitente y las cajas: de aquí sale lo que cuesta cada guía. */}
+        <TabsContent value="envios" className="mt-5">
+          <AjustesEnvio />
         </TabsContent>
 
         <TabsContent value="stock" className="mt-5">
@@ -1604,7 +1612,7 @@ const Admin = () => {
       </Tabs>
 
       <Dialog open={!!shippingOpen} onOpenChange={(v) => !v && setShippingOpen(null)}>
-        <DialogContent className="max-w-md">
+        <DialogContent className="max-w-md max-h-[85vh] overflow-y-auto">
           {shippingOpen && (
             <>
               <DialogHeader>
@@ -1612,6 +1620,9 @@ const Admin = () => {
               </DialogHeader>
               <div className="space-y-4">
                 <div className="text-xs text-muted-foreground font-mono-tech">{shippingOpen.order_number}</div>
+                {/* Cotizar con Skydropx y comprar la guía con un clic. Abajo siguen
+                    los campos de siempre, por si se compró en el mostrador. */}
+                <CotizarEnvio order={shippingOpen} onComprada={() => { setShippingOpen(null); loadAll(); }} />
                 <div>
                   <Label className="text-sm mb-1.5 block">{t('admin.shipping.carrier')}</Label>
                   <Select value={shippingOpen.carrier} onValueChange={(v) => setShippingOpen({ ...shippingOpen, carrier: v })}>
