@@ -618,7 +618,9 @@ const Admin = () => {
     // el correo y dentro de cada ficha: para enterarse había que abrir pedido por
     // pedido. Se toca y aterriza en la lista ya filtrada, con el proveedor a la vista.
     { i: Boxes, t: t('admin.stats.toOrder'),
-      v: `${stats.pedidos_por_surtir || 0} · ${stats.piezas_por_pedir || 0}`,
+      // El número es CUÁNTOS PEDIDOS esperan mercancía, que es la pregunta de
+      // Christián. Las piezas exactas están en la lista, ya filtrada, a un toque.
+      v: stats.pedidos_por_surtir || 0,
       alerta: (stats.pedidos_por_surtir || 0) > 0,
       id: 'admin-stat-por-surtir', go: () => irAPedidos({ surtir: true }) },
     { i: Package, t: t('admin.stats.products'), v: stats.total_products,

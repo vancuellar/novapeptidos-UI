@@ -574,7 +574,7 @@ const ptBR = {
   'admin.order.noPhone': 'sem telefone cadastrado',
   'admin.order.perVial': 'frasco',
   'admin.order.noSupplier': '⚠️ Sem fornecedor cadastrado — revisar o motor de preços',
-  'admin.stats.toOrder': 'A Encomendar (Pedidos · Unidades)',
+  'admin.stats.toOrder': 'A Encomendar',
   'admin.order.backorderHint': 'Envie o que tem e avise quando o restante chegar. O cliente já foi informado de que chega em duas entregas.',
   'admin.order.shipTo': 'Enviar para',
   'admin.order.copyAddress': 'Copiar endereço',

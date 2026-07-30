@@ -560,7 +560,7 @@ const enUS = {
   'admin.order.noPhone': 'no phone on file',
   'admin.order.perVial': 'vial',
   'admin.order.noSupplier': '⚠️ No supplier on file — check the pricing engine',
-  'admin.stats.toOrder': 'To Order (Orders · Units)',
+  'admin.stats.toOrder': 'To Order',
   'admin.order.backorderHint': 'Ship what you have and follow up when the rest arrives. The customer was already told it comes in two deliveries.',
   'admin.order.shipTo': 'Ship to',
   'admin.order.copyAddress': 'Copy address',

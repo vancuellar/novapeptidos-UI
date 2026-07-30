@@ -520,7 +520,7 @@ const esMX = {
   'admin.order.noPhone': 'sin teléfono registrado',
   'admin.order.perVial': 'vial',
   'admin.order.noSupplier': '⚠️ Sin proveedor registrado — revisar el motor de precios',
-  'admin.stats.toOrder': 'Por Surtir (Pedidos · Piezas)',
+  'admin.stats.toOrder': 'Por Surtir',
   'admin.order.backorderHint': 'Manda lo que hay y avisa cuando llegue el resto. Al cliente ya se le dijo que llega en dos entregas.',
   'admin.order.shipTo': 'Enviar a',
   'admin.order.copyAddress': 'Copiar dirección',
