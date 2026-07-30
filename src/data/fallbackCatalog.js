@@ -5480,51 +5480,6 @@ export const fallbackProducts = [
     "is_new": false
   },
   {
-    "id": "fallback-vitamina-b12",
-    "name": "Vitamina B12",
-    "slug": "vitamina-b12",
-    "category": "suministros",
-    "categories": [
-      "suministros"
-    ],
-    "short_description": "Cianocobalamina usada como reactivo de laboratorio.",
-    "description": "La vitamina B12 (cianocobalamina) es un cofactor esencial estudiado en el metabolismo de un carbono, la síntesis de mielina y ensayos bioquímicos de referencia. Solo para uso en investigación (RUO).",
-    "presentation": "10 mg",
-    "form": "Liofilizado",
-    "purity": "99.0%",
-    "price": 699,
-    "variants": [
-      {
-        "presentation": "10 mg",
-        "price": 699,
-        "stock": 40,
-        "batch_number": "NP-VITA10-2601",
-        "id": "63699f2e-cd73-427e-93e0-3c5e9c4bd00d",
-        "sku": "VITAMINAB12-10MG",
-        "commission_cap": 0.35,
-        "distributor_eligible": true
-      }
-    ],
-    "tiers": [],
-    "stock": 40,
-    "image_url": "https://images.pexels.com/photos/6129873/pexels-photo-6129873.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
-    "coa_url": "https://exygenlabs.com/coa/vitamina-b12.pdf",
-    "batch_number": "NP-VITA10-2601",
-    "storage": "Conservar a -20 °C, protegido de la luz. Reconstituido: 2–8 °C.",
-    "start_dose": 1000,
-    "start_unit": "mcg",
-    "start_freq": "weekly",
-    "start_levels": {
-      "inicial": 1000,
-      "tipica": 2500,
-      "avanzada": 5000,
-      "unit": "mcg",
-      "fuente": "researchdosing.com — manual de dosificación del mercado (fuente de vendedor, sin bibliografía). Las rayitas las recalculamos nosotros."
-    },
-    "featured": false,
-    "is_new": false
-  },
-  {
     "id": "fallback-acido-acetico",
     "name": "Ácido acético",
     "slug": "acido-acetico",
@@ -5576,44 +5531,6 @@ export const fallbackProducts = [
     "coa_url": "https://exygenlabs.com/coa/acido-acetico.pdf",
     "batch_number": "NP-CIDO3-2601",
     "storage": "Conservar a -20 °C, protegido de la luz. Reconstituido: 2–8 °C.",
-    "start_dose": null,
-    "start_unit": null,
-    "start_levels": null,
-    "featured": false,
-    "is_new": false
-  },
-  {
-    "id": "f3e86bf7-b65e-4732-a7d0-3b02fea213a5",
-    "name": "Vitamina D3 10 mL",
-    "slug": "vitamina-d3-10-ml",
-    "category": "suministros",
-    "categories": [
-      "suministros"
-    ],
-    "short_description": "Colecalciferol (vitamina D3) como reactivo de laboratorio.",
-    "description": "La vitamina D3 (colecalciferol) es un secosteroide liposoluble estudiado como reactivo de referencia en ensayos de homeostasis del calcio y metabolismo óseo. Material exclusivamente para uso en investigación (RUO): no es un medicamento ni un suplemento, y no está destinado a consumo humano ni animal.",
-    "presentation": "10 mL",
-    "form": "Solución",
-    "purity": "99%",
-    "price": 4199,
-    "variants": [
-      {
-        "presentation": "10 mL",
-        "price": 4199,
-        "stock": 0,
-        "batch_number": "",
-        "id": "f3e86bf7-b65e-4732-a7d0-3b02fea213a5",
-        "sku": "VITAMINAD3-10ML",
-        "commission_cap": 0.35,
-        "distributor_eligible": true
-      }
-    ],
-    "tiers": [],
-    "stock": 0,
-    "image_url": "",
-    "coa_url": "",
-    "batch_number": "",
-    "storage": "Conservar a 2–8 °C, protegido de la luz.",
     "start_dose": null,
     "start_unit": null,
     "start_levels": null,
