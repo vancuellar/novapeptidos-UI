@@ -4576,11 +4576,11 @@ export const fallbackProducts = [
     "presentation": "20 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
-    "price": 2399,
+    "price": 1759,
     "variants": [
       {
         "presentation": "20 mg",
-        "price": 2399,
+        "price": 1759,
         "stock": 40,
         "batch_number": "NP-BPC120-2601",
         "id": "457f70ba-93dc-4290-982d-0ed4e679fb41",
