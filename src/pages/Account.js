@@ -10,6 +10,7 @@ import CoaLibrary from '@/components/CoaLibrary';
 import FichaLibrary from '@/components/FichaLibrary';
 import NotificationsFeed from '@/components/NotificationsFeed';
 import OrdersPanel from '@/components/panels/OrdersPanel';
+import StatCard from '@/components/panels/StatCard';
 import PointsPanel from '@/components/panels/PointsPanel';
 import ProfilePanel from '@/components/panels/ProfilePanel';
 import TutorialsPanel from '@/components/panels/TutorialsPanel';
@@ -72,6 +73,9 @@ const Account = () => {
   // mismo bloque se muestra también en el tablero de distribuidor.
   const toolsUnlocked = herramientasDesbloqueadas(user, orders);
 
+  // Cambiar de pestaña desde una tarjeta del resumen.
+  const irA = (v) => { setParams(v === 'orders' ? {} : { tab: v }, { replace: true }); alTope(); };
+
   // El menú, catalogado. Antes de la primera compra pagada se muestra recortado:
   // sólo lo que sí puede usar (pedidos —necesarios para pagar o subir el
   // comprobante SPEI—, avisos, tutoriales y su perfil). El resto aparece solo
@@ -105,24 +109,17 @@ const Account = () => {
         <DashboardSidebar activeTab={tabActiva} items={menu} />
         <div className="min-w-0 flex-1">
 
+      {/* Las tres tarjetas son ACCESOS DIRECTOS (Christián, 2026-07-30): se tocan
+          y llevan a la pestaña donde vive ese dato. Sus pedidos y lo que lleva
+          comprado abren "Mis Pedidos"; los puntos, "Mis Puntos". */}
       <div className={`grid grid-cols-2 ${loyalty.eligible ? 'sm:grid-cols-3' : ''} gap-3 mb-6`}>
-        <Card className="p-4">
-          <div className="flex items-center gap-2 text-muted-foreground text-xs"><ShoppingBag className="h-4 w-4" /> {t('account.stats.orders')}</div>
-          <div className="font-heading text-xl font-bold mt-1">{orders.length}</div>
-        </Card>
-        <Card className="p-4">
-          <div className="flex items-center gap-2 text-muted-foreground text-xs"><DollarSign className="h-4 w-4" /> {t('account.stats.spent')}</div>
-          <div className="font-heading text-xl font-bold mt-1">{formatMXN(totalSpent)}</div>
-        </Card>
-        {/* La tarjeta ya no abre una ventanita con el historial: lleva a la
-            pestaña "Mis Puntos", que es donde vive ahora — un solo lugar. */}
+        <StatCard icon={ShoppingBag} label={t('account.stats.orders')} value={orders.length}
+          testid="account-stat-pedidos" onClick={() => irA('orders')} />
+        <StatCard icon={DollarSign} label={t('account.stats.spent')} value={formatMXN(totalSpent)}
+          testid="account-stat-gastado" onClick={() => irA('orders')} />
         {loyalty.eligible && (
-          <Card onClick={() => setParams({ tab: 'points' }, { replace: true })}
-            className="p-4 col-span-2 sm:col-span-1 cursor-pointer hover:border-[hsl(var(--primary))]/40 transition-colors" data-testid="account-points-card">
-            <div className="flex items-center gap-2 text-muted-foreground text-xs"><Coins className="h-4 w-4" /> {t('loyalty.title')}</div>
-            <div className="font-heading text-xl font-bold mt-1">{loyalty.balance}</div>
-            <div className="text-[10px] text-muted-foreground mt-0.5">{t('loyalty.cardNote')}</div>
-          </Card>
+          <StatCard icon={Coins} label={t('loyalty.title')} value={loyalty.balance} hint={t('loyalty.cardNote')}
+            className="col-span-2 sm:col-span-1" testid="account-points-card" onClick={() => irA('points')} />
         )}
       </div>
 

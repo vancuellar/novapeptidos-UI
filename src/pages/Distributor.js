@@ -1,6 +1,6 @@
 import React, { useEffect, useLayoutEffect, useState, useCallback } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import { Store, Users, DollarSign, TrendingUp, ShoppingBag, Copy, Percent, Truck, ExternalLink, BookOpen, Award, Ticket, RefreshCw, Bell, Syringe, Package, Coins, User, GraduationCap, FlaskConical, Megaphone } from 'lucide-react';
+import { Store, Users, DollarSign, TrendingUp, ShoppingBag, Copy, Percent, Truck, ExternalLink, BookOpen, Award, Ticket, RefreshCw, Bell, Syringe, Package, Coins, User, GraduationCap, FlaskConical, Megaphone, ChevronRight } from 'lucide-react';
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip } from 'recharts';
 import GraficaInteractiva from '@/components/charts/GraficaInteractiva';
 import { Button } from '@/components/ui/button';
@@ -15,6 +15,7 @@ import LabReports from '@/components/LabReports';
 import NotificationsFeed from '@/components/NotificationsFeed';
 import ToolsPanel, { herramientasDesbloqueadas } from '@/components/ToolsPanel';
 import OrdersPanel from '@/components/panels/OrdersPanel';
+import StatCard from '@/components/panels/StatCard';
 import PointsPanel from '@/components/panels/PointsPanel';
 import ProfilePanel from '@/components/panels/ProfilePanel';
 import TutorialsPanel from '@/components/panels/TutorialsPanel';
@@ -145,11 +146,24 @@ const Distributor = () => {
   };
   const filteredEarnings = filteredSales.filter((o) => o.status !== 'cancelado').reduce((s, o) => s + (o.commission || 0), 0);
 
+  // Cambiar de pestaña desde una tarjeta. Las cifras del resumen son ACCESOS
+  // DIRECTOS (Christián, 2026-07-30): se tocan y llevan a la pestaña donde vive
+  // ese dato, en su propio menú.
+  const irA = (v) => { setParams(v === 'overview' ? {} : { tab: v }, { replace: true }); alTope(); };
+
   const STAT_CARDS = summary ? [
-    { i: DollarSign, t: t('distributor.stats.earnings'), v: formatMXN(summary.earnings_total) },
-    { i: TrendingUp, t: t('distributor.stats.sales'), v: formatMXN(summary.sales_total) },
-    { i: ShoppingBag, t: t('distributor.stats.orders'), v: summary.sales_count },
-    { i: Users, t: t('distributor.stats.clients'), v: summary.clients_count },
+    // Sus ganancias y sus ventas son la misma tabla vista por dos columnas:
+    // las dos abren "Mis Ventas", que es donde está el detalle con comisión.
+    { i: DollarSign, t: t('distributor.stats.earnings'), v: formatMXN(summary.earnings_total),
+      id: 'dist-stat-ganancias', go: () => irA('sales') },
+    { i: TrendingUp, t: t('distributor.stats.sales'), v: formatMXN(summary.sales_total),
+      id: 'dist-stat-ventas', go: () => irA('sales') },
+    // "Pedidos" abre "Pedidos Y Envíos": es la misma venta, pero mirándola por
+    // dónde va la caja, que es lo que uno quiere al tocar ese número.
+    { i: ShoppingBag, t: t('distributor.stats.orders'), v: summary.sales_count,
+      id: 'dist-stat-pedidos', go: () => irA('envios') },
+    { i: Users, t: t('distributor.stats.clients'), v: summary.clients_count,
+      id: 'dist-stat-clientes', go: () => irA('clients') },
   ] : [];
 
   // Barra de nivel: dos metas (ventas + reclutas activos).
@@ -203,11 +217,20 @@ const Distributor = () => {
           <p className="text-muted-foreground text-sm">{t('distributor.subtitle', { name: user.name })}</p>
         </div>
         {summary && (
+          /* El código también lleva a sus datos: tocarlo abre "Mis Códigos". El
+             botón de copiar sigue aparte —como una fila de iOS: el renglón navega,
+             el botón de la orilla hace lo suyo— y NUNCA anidado dentro del otro
+             botón, que sería HTML inválido y rompe el teclado. */
           <Card className="p-3 flex items-center gap-3">
-            <div>
-              <div className="text-[11px] text-muted-foreground">{t('distributor.yourCode')}</div>
+            <button type="button" onClick={() => irA('codes')} data-testid="dist-stat-codigo"
+              aria-label={`${t('distributor.yourCode')}: ${summary.distributor_code || '—'} — ${t('dash.card.open')}`}
+              className="group -m-1.5 p-1.5 rounded-lg text-left cursor-pointer transition duration-200 motion-reduce:transition-none [@media(hover:hover)]:hover:bg-[hsl(var(--muted))]/60 active:scale-[0.985] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[hsl(var(--primary))] focus-visible:ring-offset-2 focus-visible:ring-offset-[hsl(var(--background))]">
+              <div className="flex items-center gap-1 text-[11px] text-muted-foreground">
+                {t('distributor.yourCode')}
+                <ChevronRight aria-hidden="true" className="h-3.5 w-3.5 opacity-40 transition duration-200 motion-reduce:transition-none [@media(hover:hover)]:group-hover:translate-x-0.5 [@media(hover:hover)]:group-hover:opacity-70" />
+              </div>
               <div className="font-mono-tech font-bold text-lg tracking-wide">{summary.distributor_code || '—'}</div>
-            </div>
+            </button>
             <Button variant="outline" size="icon" onClick={copyCode} title={t('distributor.copy')}><Copy className="h-4 w-4" /></Button>
           </Card>
         )}
@@ -223,11 +246,8 @@ const Distributor = () => {
             estuvieras editando tu dirección. */}
         <TabsContent value="overview" className="mt-5">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-4">
-            {STAT_CARDS.map((s, i) => (
-              <Card key={i} className="p-4">
-                <div className="flex items-center gap-2 text-muted-foreground text-xs"><s.i className="h-4 w-4" /> {s.t}</div>
-                <div className="font-heading text-xl font-bold mt-1">{s.v}</div>
-              </Card>
+            {STAT_CARDS.map((s) => (
+              <StatCard key={s.id} icon={s.i} label={s.t} value={s.v} onClick={s.go} testid={s.id} />
             ))}
           </div>
 

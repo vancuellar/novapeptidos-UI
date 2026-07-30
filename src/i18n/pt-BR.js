@@ -573,6 +573,9 @@ const ptBR = {
   'admin.order.deleted': 'Pedido {{n}} excluído',
   // Seleção múltipla em Pedidos: arquivar / desarquivar / excluir em lote.
   'admin.filter.allStatuses': 'Todos Os Status',
+  'admin.filter.allPayments': 'Pagos E Não Pagos',
+  'admin.filter.onlyPaid': 'Somente Pagos',
+  'admin.filter.onlyDebt': 'Somente A Receber',
   'admin.lote.active': 'Ativos',
   'admin.lote.archived': 'Arquivados',
   'admin.lote.selected': '{{n}} selecionado(s)',
@@ -1194,6 +1197,7 @@ const ptBR = {
   'dash.group.resources': 'Recursos',
   'dash.group.account': 'Minha Conta',
   'dash.difusionLink': 'Painel De Difusão',
+  'dash.card.open': 'Ver Detalhes',
   'account.pointsTab': 'Meus Pontos',
   'loyalty.historyTitle': 'Histórico De Pontos',
   'account.noOrders': 'Você ainda não tem pedidos.',

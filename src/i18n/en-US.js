@@ -559,6 +559,9 @@ const enUS = {
   'admin.order.deleted': 'Order {{n}} deleted',
   // Multi-select on Orders: archive / unarchive / delete in bulk.
   'admin.filter.allStatuses': 'All Statuses',
+  'admin.filter.allPayments': 'Paid And Unpaid',
+  'admin.filter.onlyPaid': 'Paid Only',
+  'admin.filter.onlyDebt': 'Unpaid Only',
   'admin.lote.active': 'Active',
   'admin.lote.archived': 'Archived',
   'admin.lote.selected': '{{n}} selected',
@@ -1199,6 +1202,7 @@ const enUS = {
   'dash.group.resources': 'Resources',
   'dash.group.account': 'My Account',
   'dash.difusionLink': 'Marketing Panel',
+  'dash.card.open': 'View Details',
   'account.pointsTab': 'My Points',
   'loyalty.historyTitle': 'Points History',
   'account.noOrders': 'You do not have any orders yet.',

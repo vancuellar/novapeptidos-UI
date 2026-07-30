@@ -519,6 +519,12 @@ const esMX = {
   'admin.order.deleted': 'Pedido {{n}} borrado',
   // Selección múltiple en Pedidos: archivar / desarchivar / borrar en lote.
   'admin.filter.allStatuses': 'Todos Los Estados',
+  // Filtro por DINERO, aparte del filtro por estado de la mercancía: entregado y
+  // pagado son cosas distintas. Las tarjetas "Cobrado" y "Por Cobrar" del tablero
+  // aterrizan aquí, ya puesto.
+  'admin.filter.allPayments': 'Pagados Y No',
+  'admin.filter.onlyPaid': 'Sólo Cobrados',
+  'admin.filter.onlyDebt': 'Sólo Por Cobrar',
   'admin.lote.active': 'Activos',
   'admin.lote.archived': 'Archivados',
   'admin.lote.selected': '{{n}} seleccionado(s)',
@@ -1201,6 +1207,10 @@ const esMX = {
   'dash.group.resources': 'Recursos',
   'dash.group.account': 'Mi Cuenta',
   'dash.difusionLink': 'Panel De Difusión',
+  // Las tarjetas de números de los tableros son accesos directos: se tocan y
+  // llevan a sus datos. Esto es lo que oye un lector de pantalla al final del
+  // nombre de la tarjeta, para que se sepa que ahí se puede tocar.
+  'dash.card.open': 'Ver Detalle',
   'account.pointsTab': 'Mis Puntos',
   'loyalty.historyTitle': 'Historial De Puntos',
   'account.noOrders': 'Aun no tienes pedidos.',

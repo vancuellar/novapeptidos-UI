@@ -16,6 +16,7 @@ import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent } from '@/components/ui/tabs';
 import DashboardSidebar, { alTope } from '@/components/layout/DashboardSidebar';
+import StatCard from '@/components/panels/StatCard';
 import GatewayCredentials from '@/components/GatewayCredentials';
 import FichaPedido from '@/components/FichaPedido';
 import AdminAnnouncements from '@/components/AdminAnnouncements';
@@ -43,6 +44,20 @@ const EMPTY = { name: '', slug: '', category: '', short_description: '', descrip
 // Las únicas pestañas del rol 'marketing' (difusión). El backend rechaza con
 // 403 cualquier otra ruta para ese rol, así que esta lista es solo la vista.
 const TABS_DIFUSION = ['funnel', 'marketing', 'meta'];
+
+// ¿Este pedido pasa los filtros de la tabla? UNA sola definición, que usan la
+// lista y la limpieza de la selección en lote. Si se separaran, la barra en lote
+// acabaría actuando sobre pedidos que ya no se ven.
+// ⛔ El estado cuenta el viaje de la MERCANCÍA; `pagado` cuenta el DINERO. Son
+// cosas distintas a propósito (ver cobrado.py en el backend): hay pedidos
+// ENTREGADOS y sin cobrar. Por eso son dos filtros, no uno.
+const pasaFiltros = (o, estado, pago) => {
+  if (estado !== 'todos' && o.status !== estado) return false;
+  if (pago === 'pagados') return !!o.pagado;
+  // "Por cobrar" = vivo y sin pagar. Un cancelado ya no se debe.
+  if (pago === 'deuda') return !o.pagado && o.status !== 'cancelado';
+  return true;
+};
 
 // Todas las presentaciones del catalogo curado (key = id::presentacion, igual que el carrito)
 const STOCK_VARIANTS = fallbackProducts.flatMap((p) => {
@@ -132,7 +147,6 @@ const Admin = () => {
   // aquí sólo se le da la cara: NUNCA se manda `forzar` sin que él lo pida.
   const [sel, setSel] = useState([]);                       // ids marcados en la tabla
   const [verArchivados, setVerArchivados] = useState(false);
-  const [filtroStatus, setFiltroStatus] = useState('todos'); // filtro por estado en la tabla de pedidos
   const [archivados, setArchivados] = useState([]);
   const [loteKill, setLoteKill] = useState(null);           // confirmación de borrado en lote
   const [loteBusy, setLoteBusy] = useState(false);
@@ -153,6 +167,39 @@ const Admin = () => {
   const tabPedida = params.get('tab') || (esMarketing ? 'funnel' : 'sales');
   const tab = esMarketing && !TABS_DIFUSION.includes(tabPedida) ? 'funnel' : tabPedida;
   useLayoutEffect(() => { alTope(); }, [tab]);
+
+  // ⛔ LOS FILTROS DE PEDIDOS VIVEN EN LA URL (2026-07-30). Antes eran estado local,
+  // y por eso una tarjeta del tablero no podía llevarte a "los que faltan por
+  // cobrar": sólo podía llevarte a la lista completa y tú le ponías el filtro a
+  // mano. Con el filtro en la dirección, la tarjeta aterriza YA FILTRADA y
+  // refrescar la página no lo pierde.
+  //   ?estado=pendiente   estado de la MERCANCÍA
+  //   ?pago=pagados|deuda estado del DINERO (son cosas distintas: ver cobrado.py)
+  const filtroStatus = params.get('estado') || 'todos';
+  const filtroPago = params.get('pago') || 'todos';
+  // Cambia un filtro dejando el resto como está.
+  const setFiltroPedidos = (patch) => {
+    const next = new URLSearchParams(params);
+    next.set('tab', 'orders');
+    Object.entries(patch).forEach(([k, v]) => {
+      if (!v || v === 'todos') next.delete(k); else next.set(k, v);
+    });
+    setParams(next, { replace: true });
+  };
+  // Tarjeta → Pedidos con el filtro puesto. Siempre sobre los ACTIVOS y sin
+  // arrastrar filtros viejos: quien toca "Por Cobrar" quiere ver eso, no eso
+  // cruzado con lo que traía puesto de antes.
+  const irAPedidos = (patch = {}) => {
+    setVerArchivados(false);
+    setSel([]);
+    const next = new URLSearchParams({ tab: 'orders' });
+    if (patch.estado) next.set('estado', patch.estado);
+    if (patch.pago) next.set('pago', patch.pago);
+    setParams(next, { replace: true });
+    alTope();
+  };
+  // Tarjeta → otra pestaña, sin filtros que poner.
+  const irAPestana = (v) => { setParams(v === 'sales' ? {} : { tab: v }, { replace: true }); alTope(); };
   const [customerDetail, setCustomerDetail] = useState(null);   // ficha extendida del cliente abierto
   const [couponForm, setCouponForm] = useState({ pct: 10, days: 30, note: '' });
   const [giftForm, setGiftForm] = useState({ points: 100, note: '' });
@@ -225,9 +272,9 @@ const Admin = () => {
   // selección: la barra en lote no debe actuar sobre pedidos invisibles.
   useEffect(() => {
     const lista = verArchivados ? archivados : orders;
-    const visibles = new Set(lista.filter((o) => filtroStatus === 'todos' || o.status === filtroStatus).map((o) => o.id));
+    const visibles = new Set(lista.filter((o) => pasaFiltros(o, filtroStatus, filtroPago)).map((o) => o.id));
     setSel((s) => (s.every((id) => visibles.has(id)) ? s : s.filter((id) => visibles.has(id))));
-  }, [orders, archivados, filtroStatus, verArchivados]);
+  }, [orders, archivados, filtroStatus, filtroPago, verArchivados]);
 
   // La serie va aparte porque se recarga al cambiar de día/semana/mes, y no
   // tiene por qué volver a pedir todo el panel para eso. El rango se estira con
@@ -413,7 +460,7 @@ const Admin = () => {
   // reciente al más viejo, y con filtro por estado para limpiar por tandas.
   const fechaPedido = (o) => { const n = Date.parse(o.created_at); return Number.isNaN(n) ? 0 : n; };
   const pedidosVista = (verArchivados ? archivados : orders)
-    .filter((o) => filtroStatus === 'todos' || o.status === filtroStatus)
+    .filter((o) => pasaFiltros(o, filtroStatus, filtroPago))
     .slice()
     .sort((a, b) => fechaPedido(b) - fechaPedido(a));
   const toggleSel = (id) => setSel((s) => (s.includes(id) ? s.filter((x) => x !== id) : [...s, id]));
@@ -545,14 +592,23 @@ const Admin = () => {
   // la venta de Alanís —entregada y a deber— se veía como dinero en la cuenta. Las dos
   // cifras van juntas a propósito: si la deuda no se enseñara, un pedido fiado
   // desaparecería del tablero y nadie se acordaría de cobrarlo.
+  //
+  // Y cada una es un ACCESO DIRECTO a su propio dato (Christián, 2026-07-30): se
+  // toca y aterriza en la lista YA FILTRADA. Antes eran seis números muertos.
   const STAT_CARDS = stats ? [
-    { i: DollarSign, t: t('admin.stats.revenue'), v: formatMXN(stats.revenue) },
+    { i: DollarSign, t: t('admin.stats.revenue'), v: formatMXN(stats.revenue),
+      id: 'admin-stat-cobrado', go: () => irAPedidos({ pago: 'pagados' }) },
     { i: HandCoins, t: t('admin.stats.receivable'), v: formatMXN(stats.por_cobrar || 0),
-      alerta: (stats.por_cobrar || 0) > 0 },
-    { i: ShoppingBag, t: t('admin.stats.orders'), v: stats.total_orders },
-    { i: Clock, t: t('admin.stats.pending'), v: stats.pending_orders },
-    { i: Package, t: t('admin.stats.products'), v: stats.total_products },
-    { i: Users, t: t('admin.stats.customers'), v: stats.total_users },
+      alerta: (stats.por_cobrar || 0) > 0,
+      id: 'admin-stat-por-cobrar', go: () => irAPedidos({ pago: 'deuda' }) },
+    { i: ShoppingBag, t: t('admin.stats.orders'), v: stats.total_orders,
+      id: 'admin-stat-pedidos', go: () => irAPedidos() },
+    { i: Clock, t: t('admin.stats.pending'), v: stats.pending_orders,
+      id: 'admin-stat-pendientes', go: () => irAPedidos({ estado: 'pendiente' }) },
+    { i: Package, t: t('admin.stats.products'), v: stats.total_products,
+      id: 'admin-stat-productos', go: () => irAPestana('products') },
+    { i: Users, t: t('admin.stats.customers'), v: stats.total_users,
+      id: 'admin-stat-clientes', go: () => irAPestana('customers') },
   ] : [];
 
   const productosFiltrados = (() => {
@@ -642,13 +698,11 @@ const Admin = () => {
 
         {!esMarketing && (
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3 mb-8">
-          {STAT_CARDS.map((s, i) => (
-            <Card key={i} className="p-4" data-testid={s.alerta === undefined ? undefined : 'admin-stat-por-cobrar'}>
-              <div className="flex items-center gap-2 text-muted-foreground text-xs"><s.i className="h-4 w-4" /> {s.t}</div>
-              {/* La deuda se pinta en ámbar sólo cuando existe: en cero es un dato más,
-                  con saldo es un pendiente que hay que ver desde la puerta. */}
-              <div className={`font-heading text-xl font-bold mt-1${s.alerta ? ' text-[hsl(var(--warning-foreground))]' : ''}`}>{s.v}</div>
-            </Card>
+          {STAT_CARDS.map((s) => (
+            /* La deuda se pinta en ámbar sólo cuando existe: en cero es un dato más,
+               con saldo es un pendiente que hay que ver desde la puerta. */
+            <StatCard key={s.id} icon={s.i} label={s.t} value={s.v} onClick={s.go} testid={s.id}
+              valueClass={s.alerta ? 'text-[hsl(var(--warning-foreground))]' : ''} />
           ))}
         </div>
         )}
@@ -1034,16 +1088,14 @@ const Admin = () => {
             <Card className="p-10 text-center text-muted-foreground">{t('admin.sales.noData')}</Card>
           ) : (
             <div className="space-y-4" data-testid="admin-sales">
+              {/* También son accesos directos: el ticket promedio abre la lista de
+                  pedidos, y cada estado abre la lista YA FILTRADA por ese estado. */}
               <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-                <Card className="p-4">
-                  <div className="flex items-center gap-2 text-muted-foreground text-xs"><Receipt className="h-4 w-4" /> {t('admin.sales.avgTicket')}</div>
-                  <div className="font-heading text-xl font-bold mt-1">{formatMXN(analytics.avg_ticket)}</div>
-                </Card>
+                <StatCard icon={Receipt} label={t('admin.sales.avgTicket')} value={formatMXN(analytics.avg_ticket)}
+                  testid="admin-stat-ticket" onClick={() => irAPedidos()} />
                 {STATUSES.filter((s) => analytics.by_status[s]).slice(0, 3).map((s) => (
-                  <Card key={s} className="p-4">
-                    <div className="text-muted-foreground text-xs">{t(`status.${s}`)}</div>
-                    <div className="font-heading text-xl font-bold mt-1">{analytics.by_status[s]}</div>
-                  </Card>
+                  <StatCard key={s} label={t(`status.${s}`)} value={analytics.by_status[s]}
+                    testid={`admin-stat-estado-${s}`} onClick={() => irAPedidos({ estado: s })} />
                 ))}
               </div>
 
@@ -1359,11 +1411,21 @@ const Admin = () => {
                 onClick={() => { setVerArchivados(true); setSel([]); }} data-testid="admin-ver-archivados">
                 <Archive className="h-3.5 w-3.5 mr-1.5" /> {t('admin.lote.archived')}
               </Button>
-              <Select value={filtroStatus} onValueChange={(v) => { setFiltroStatus(v); setSel([]); }}>
+              <Select value={filtroStatus} onValueChange={(v) => { setFiltroPedidos({ estado: v }); setSel([]); }}>
                 <SelectTrigger className="w-40 h-8 ml-2" data-testid="admin-filtro-status"><SelectValue /></SelectTrigger>
                 <SelectContent>
                   <SelectItem value="todos">{t('admin.filter.allStatuses')}</SelectItem>
                   {STATUSES.map((s) => <SelectItem key={s} value={s}>{t(`status.${s}`)}</SelectItem>)}
+                </SelectContent>
+              </Select>
+              {/* El DINERO, aparte de la mercancía. Aquí aterrizan las tarjetas
+                  "Cobrado" y "Por Cobrar" del tablero, ya con el filtro puesto. */}
+              <Select value={filtroPago} onValueChange={(v) => { setFiltroPedidos({ pago: v }); setSel([]); }}>
+                <SelectTrigger className="w-44 h-8 ml-2" data-testid="admin-filtro-pago"><SelectValue /></SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="todos">{t('admin.filter.allPayments')}</SelectItem>
+                  <SelectItem value="pagados">{t('admin.filter.onlyPaid')}</SelectItem>
+                  <SelectItem value="deuda">{t('admin.filter.onlyDebt')}</SelectItem>
                 </SelectContent>
               </Select>
             </div>
