@@ -1,3 +1,63 @@
+# 🤝 HANDOFF — 2026-07-30 (tarde/noche) — LÉELO PRIMERO
+
+## ✅ HECHO hoy (todo EN VIVO y verificado)
+
+**Regla madre nueva de Christián: VENDER SIEMPRE — envío partido.** Ninguna venta se
+bloquea por inventario: lo disponible sale ya (2-5 días), el excedente se manda pedir
+(~1 semana), aviso al cliente ANTES de pagar (3 idiomas), panel con "Hay Que Mandar
+Pedir". Solo ocultos/vetados no se venden. (Memoria: exygen-vender-siempre-envio-partido)
+
+**Dinero/motor:** trinquete ya no anula el techo cruzado · vigía suma combos "10mg/10mg" ·
+alias ARA-290 vivo · candado anti-Certified corre siempre · combos BPC-157+TB-500: 20mg
+$2,399→$1,759 y 10mg $1,749→$1,669 (excepción declarada en excepciones_trinquete.json,
+mecanismo nuevo con precio autorizado) · checkout valida contra inventario REAL · cancelar
+devuelve lo APARTADO (no lo pedido) · catálogo igualado a bodega real (195 contadores,
+auditoría truena si se desfasan) · 291 pruebas motor, 513 backend, auditoría sitio 83/0,
+auditoría catálogo 0.
+
+**Cuentas:** admin@exygenlabs.com y exygenlabs@gmail.com FUSIONADAS — alt_emails en la
+cuenta admin ("Christian Cuellar"), duplicada estacionada bloqueada (respaldo en
+backups/respaldo-fusion-cuentas-2026-07-30.json). Cualquiera de los dos correos entra a
+la misma cuenta por contraseña/Google/Outlook.
+
+**Panel:** sidebar ÚNICO por rol (distribuidor y cliente) con pestañas catalogadas;
+Difusión solo María · "Mis Herramientas" de vuelta (distribuidor Y cliente) · invitados
+que usan código de distribuidor aparecen en Mis Clientes (Aidee → María, comisión $780) ·
+clic en nº de pedido = modal con detalle (403 si es ajeno) · footer con UN WhatsApp
+(Mónica) · chat IA rediseñado con sparkle ("Asistente Exygen").
+
+**Meta:** CAPI servidor EN VIVO (token existente; compras por WhatsApp cuentan) · Purchase
+solo al PAGAR · E2E ya no manda ventas falsas ni correos de aviso · PENDIENTE de Christián:
+verificación "Verificar cuenta" en Business Manager (cuenta correcta ya identificada, con
+acceso al píxel 2487053198462294) y luego ligar a act_1357297706382259.
+
+**Correo:** aviso interno por cada compra a exygenlabs@gmail.com vía Resend (qué empacar,
+qué mandar pedir, dirección, pagado o no). Pedidos E2E no avisan.
+
+**Blindaje (la caída de hoy no se repite):** deploy.sh con prueba de humo + arranque
+efímero ANTES del swap + rollback en un comando; ./actualizar-exygen-backend.sh desde la
+Mac (abre y CIERRA el 22). Frontend aguanta API caída: catálogo fallback, botones
+Google/Outlook con 3 respaldos, aviso de intermitencia, POSTs jamás se reintentan, y un
+timeout ya no cierra la sesión de todos.
+
+**Codex:** comandos fijos ./rompedor.sh ./auditor.sh ./vigia.sh (pricing-system);
+marcadores {{FECHA}}/{{PRUEBAS}} se inyectan solos; prompts actualizados al cierre de HOY
+(incluida la regla de envío partido como DELIBERADA). LUZ VERDE para correrlos.
+
+**Primera clienta por Meta/WhatsApp:** Aidee García (EX-20260730-2906, $2,830 PAGADO,
+código de María). Vitamina D3 10mL y B12 10mg OCULTAS (depuración de Christián).
+
+## ⏳ PENDIENTE
+1. Christián: verificación de Meta y ligar píxel (el agente retoma con "ya").
+2. Christián: Retatrutida 10mg $2,479 vs $2,439 aprobado — ¿se deja o se congela?
+3. Christián: ¿B12 1 mg/mL también se oculta? ¿Vigía con cron diario?
+4. 11 precios contradictorios de proveedor + 4 proveedores duplicados (decisión).
+5. «Te lo ofrecen y no lo vendes» no se limpia al dar de alta (bug conocido, sigue).
+6. Chips pendientes: mensajes del carrito con API caída y pantalla de pedido vacía.
+7. Cobrar deuda de Alanís ($3,857) y marcarla pagada.
+
+---
+
 # 🤝 HANDOFF — 2026-07-30 (madrugada) — LÉELO PRIMERO
 
 ## ✅ HECHO el 29-30 de julio (TODO en vivo, verificado, main limpio en ambos repos)
