@@ -27,7 +27,7 @@ const ICONS = { CreditCard, Landmark, Bitcoin, Store };
 // Pago, no aqui. Se borraron con el formulario (Christian, 2026-07-26).
 
 const Checkout = () => {
-  const { items, subtotal, discount, discountRate, discountSource, cappedItems, shipping, faltaParaEnvioGratis, envioGratisDesde, distCode, clearCart } = useCart();
+  const { items, subtotal, discount, discountRate, discountSource, cappedItems, regla5Items, shipping, faltaParaEnvioGratis, envioGratisDesde, distCode, clearCart } = useCart();
   const { user } = useAuth();
   const { t } = useLanguage();
   // El inventario REAL. El aviso de envío partido tiene que estar EN LA PANTALLA DE
@@ -528,6 +528,22 @@ const Checkout = () => {
                       <li key={i.product_id} className="flex justify-between gap-2">
                         <span className="truncate">{i.name}</span>
                         <span className="shrink-0 font-mono-tech">{i.applied > 0 ? `−${Math.round(i.applied * 100)}%` : t('discount.cappedNone')}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+              {/* Regla de 5: el mismo aviso del carrito, aquí también. Quien llega al
+                  checkout sin haberlo visto todavía está a tiempo de agregar piezas. */}
+              {regla5Items.length > 0 && (
+                <div className="rounded-lg border border-[hsl(var(--primary))]/30 bg-[hsl(var(--primary))]/5 px-3 py-2 text-[11px] leading-relaxed text-muted-foreground" data-testid="checkout-regla5-notice">
+                  <span className="font-medium text-[hsl(var(--primary))]">{t('regla5.title', { min: regla5Items[0].minimo })}</span>{' '}
+                  {t('regla5.body', { min: regla5Items[0].minimo })}
+                  <ul className="mt-1.5 space-y-0.5">
+                    {regla5Items.map((i) => (
+                      <li key={i.product_id} className="flex justify-between gap-2">
+                        <span className="truncate">{i.name}</span>
+                        <span className="shrink-0 font-mono-tech">{i.quantity}/{i.minimo} · {t('regla5.missing', { faltan: i.faltan })}</span>
                       </li>
                     ))}
                   </ul>

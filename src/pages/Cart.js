@@ -46,7 +46,11 @@ const buildBacPlan = (items) => {
 };
 
 const Cart = () => {
-  const { items, addItem, updateQty, removeItem, subtotal, discount, discountRate, discountSource, cappedItems, nextTier, shipping, faltaParaEnvioGratis, envioGratisDesde, distCode, distRate, codeMin, codeMinMet, applyDistCode, clearDistCode } = useCart();
+  const { items, addItem, updateQty, removeItem, subtotal, discount, discountRate, discountSource, cappedItems, lineDiscounts, regla5Items, compraPropia, nextTier, shipping, faltaParaEnvioGratis, envioGratisDesde, distCode, distRate, codeMin, codeMinMet, applyDistCode, clearDistCode } = useCart();
+  // Qué descuento lleva CADA renglón (regla de 5): con dos tasas en el mismo
+  // carrito, un porcentaje solo arriba ya no explica el total.
+  const porRenglon = Object.fromEntries((lineDiscounts || []).map((l) => [l.product_id, l]));
+  const faltantes = Object.fromEntries((regla5Items || []).map((r) => [r.product_id, r]));
   // El inventario REAL, para poder avisar del envío partido ANTES de pagar. Si no
   // contesta se queda en null y no se inventa ningún aviso: "no sé" no es "no hay".
   const [stockMap, setStockMap] = useState(null);
@@ -112,6 +116,23 @@ const Cart = () => {
                 {isNetPriceItem(item) && (
                   <div className="text-[11px] text-muted-foreground mt-0.5" data-testid="cart-net-price-note">{t('cart.netPrice')}</div>
                 )}
+                {/* REGLA DE 5: qué precio lleva ESTE renglón, y el empujón cuando le
+                    faltan piezas. Sólo se ve en compras propias de distribuidor. */}
+                {compraPropia && porRenglon[item.product_id]?.applied > 0 && (
+                  <div className={`text-[11px] mt-1 font-medium ${porRenglon[item.product_id].esPrecioDistribuidor ? 'text-[hsl(var(--success))]' : 'text-muted-foreground'}`} data-testid="cart-line-rate">
+                    {porRenglon[item.product_id].esPrecioDistribuidor
+                      ? t('regla5.distPrice', { rate: Math.round(porRenglon[item.product_id].applied * 100) })
+                      : t('regla5.clientPrice', { rate: Math.round(porRenglon[item.product_id].applied * 100) })}
+                  </div>
+                )}
+                {faltantes[item.product_id] && (
+                  <div className="mt-1.5 flex flex-wrap items-center gap-x-2 gap-y-1 rounded-lg border border-[hsl(var(--primary))]/30 bg-[hsl(var(--primary))]/5 px-2.5 py-1.5 text-[11px] leading-snug text-[hsl(var(--primary))]" data-testid="cart-regla5-nudge">
+                    <span>{t('regla5.nudge', { n: faltantes[item.product_id].quantity, min: faltantes[item.product_id].minimo, faltan: faltantes[item.product_id].faltan })}</span>
+                    <button type="button" onClick={() => updateQty(item.product_id, faltantes[item.product_id].minimo)} className="shrink-0 rounded-md border border-[hsl(var(--primary))]/40 px-2 py-0.5 font-medium transition-colors hover:bg-[hsl(var(--primary))] hover:text-white" data-testid="cart-regla5-add">
+                      {t('regla5.add', { faltan: faltantes[item.product_id].faltan })}
+                    </button>
+                  </div>
+                )}
               </div>
               <div className="flex flex-col items-end gap-2">
                 <div className="flex items-center border border-border rounded-lg">
@@ -150,6 +171,21 @@ const Cart = () => {
               <div className="flex justify-between"><span className="text-muted-foreground">{t('common.subtotal')}</span><span data-testid="cart-subtotal">{formatMXN(subtotal)}</span></div>
               {discount > 0 && <div className="flex justify-between text-[hsl(var(--success))]"><span>{discountSource === 'self' ? t('discount.lineSelf', { rate: Math.round(discountRate * 100) }) : discountSource === 'code' ? t('discount.lineCode', { code: distCode, rate: Math.round(discountRate * 100) }) : t('discount.line', { rate: Math.round(discountRate * 100) })}</span><span data-testid="cart-discount">− {formatMXN(discount)}</span></div>}
               {discountSource === 'auto' && nextTier && <p className="text-xs text-muted-foreground">{t('discount.nextTier', { amount: formatMXN(nextTier.min - subtotal), rate: Math.round(nextTier.rate * 100) })}</p>}
+              {/* Regla de 5, en el resumen: qué le falta al carrito para bajar de precio. */}
+              {regla5Items.length > 0 && (
+                <div className="rounded-lg border border-[hsl(var(--primary))]/30 bg-[hsl(var(--primary))]/5 px-3 py-2 text-[11px] leading-relaxed text-muted-foreground" data-testid="cart-regla5-summary">
+                  <span className="font-medium text-[hsl(var(--primary))]">{t('regla5.title', { min: regla5Items[0].minimo })}</span>{' '}
+                  {t('regla5.body', { min: regla5Items[0].minimo })}
+                  <ul className="mt-1.5 space-y-0.5">
+                    {regla5Items.map((i) => (
+                      <li key={i.product_id} className="flex justify-between gap-2">
+                        <span className="truncate">{i.name}</span>
+                        <span className="shrink-0 font-mono-tech">{i.quantity}/{i.minimo} · {t('regla5.missing', { faltan: i.faltan })}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
               {cappedItems.length > 0 && (
                 <div className="rounded-lg border border-border bg-[hsl(var(--secondary))] px-3 py-2 text-[11px] leading-relaxed text-muted-foreground" data-testid="cart-capped-notice">
                   <span className="font-medium text-foreground">{t('discount.cappedTitle')}</span>{' '}

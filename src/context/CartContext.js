@@ -15,6 +15,12 @@ export const useCart = () => useContext(CartContext);
 // NO_DISCOUNT_CATEGORIES en el backend.
 const NO_DISCOUNT_CATEGORIES = ['suministros', 'accesorios'];
 
+// LA REGLA DE 5 (Christián, 2026-07-30): piezas del MISMO producto que hacen falta
+// para que una compra propia de distribuidor pague precio de distribuidor. Debajo de
+// eso se paga precio de cliente. Mismo número que
+// `descuentos.MINIMO_PARA_PRECIO_DISTRIBUIDOR` en el backend, que es quien manda.
+export const MINIMO_PRECIO_DISTRIBUIDOR = 5;
+
 // Tope de comisión POR PRODUCTO: cuánto descuento aguanta sin comerse el ROI.
 // Se busca por id/SKU en el catálogo, no en lo que quedó guardado en el carrito,
 // para que un carrito viejo del navegador también calcule bien.
@@ -166,16 +172,48 @@ export const CartProvider = ({ children }) => {
   const codeMinMet = !codeMin || discountableSubtotal >= codeMin;
   const codeRate = items.length && distCode && codeMinMet ? distRate : 0;
   const ownRate = items.length ? selfRate : 0;
-  const discountRate = Math.max(autoRate, codeRate, ownRate);
-  const discountSource = ownRate >= discountRate && ownRate > 0 ? 'self'
-    : (codeRate > autoRate ? 'code' : 'auto');
+  // PRECIO DE CLIENTE de esta compra: la promo automática o su código, lo que sea
+  // mejor. Es lo que pagan los renglones que no llegan al mínimo de la regla de 5.
+  const baseRate = Math.max(autoRate, codeRate);
+  // LA REGLA DE 5 (Christián, 2026-07-30). En una COMPRA PROPIA de distribuidor, el
+  // precio de distribuidor sólo baja en los renglones con 5 o más piezas del MISMO
+  // producto; de 1 a 4 se paga precio de cliente. Es por producto, no por carrito:
+  // cinco de Retatrutida 20, no cinco surtidas. El servidor aplica exactamente lo
+  // mismo (descuentos.py) — esta pantalla sólo lo enseña antes de pagar.
+  const compraPropia = ownRate > baseRate + 1e-9;
+  const askedRateOf = (i) => (!compraPropia || i.quantity >= MINIMO_PRECIO_DISTRIBUIDOR)
+    ? Math.max(baseRate, ownRate) : baseRate;
   // Renglón por renglón: cada producto recibe lo que su tope aguanta, ni más.
   const discount = items.reduce(
-    (sum, i) => sum + Math.round(i.price * i.quantity * itemDiscountRate(i, discountRate)), 0);
+    (sum, i) => sum + Math.round(i.price * i.quantity * itemDiscountRate(i, askedRateOf(i))), 0);
+  // La MAYOR tasa del carrito — la que se enseña en el renglón del resumen. Con un
+  // carrito parejo (todo lo que existía antes de la regla) vale lo de siempre.
+  const discountRate = items.length ? Math.max(...items.map(askedRateOf)) : 0;
+  const discountSource = compraPropia && discountRate > baseRate + 1e-9 ? 'self'
+    : (codeRate > autoRate ? 'code' : 'auto');
+  // Qué descuento lleva CADA renglón. Con dos tasas en el mismo carrito, un solo
+  // porcentaje arriba ya no explica el total: el desglose tiene que verse.
+  const lineDiscounts = items.map((i) => {
+    const asked = askedRateOf(i);
+    return {
+      product_id: i.product_id, name: i.name, quantity: i.quantity,
+      asked, applied: itemDiscountRate(i, asked),
+      esPrecioDistribuidor: compraPropia && asked > baseRate + 1e-9,
+    };
+  });
   // Los que recibieron MENOS de lo pedido, para avisarle al cliente.
-  const cappedItems = items
-    .map((i) => ({ ...i, applied: itemDiscountRate(i, discountRate) }))
-    .filter((i) => i.applied < discountRate - 1e-9);
+  const cappedItems = lineDiscounts.filter((i) => i.applied < i.asked - 1e-9);
+  // EL EMPUJÓN, no el portazo: los productos a los que les faltan piezas para el
+  // precio de distribuidor. Fuera los que no cambiarían nada de todos modos (los
+  // insumos y el HGH nunca llevan descuento: ahí "agrega 2 más" sería una mentira).
+  const regla5Items = !compraPropia ? [] : items
+    .filter((i) => i.quantity < MINIMO_PRECIO_DISTRIBUIDOR
+      && itemDiscountRate(i, Math.max(baseRate, ownRate)) > itemDiscountRate(i, baseRate) + 1e-9)
+    .map((i) => ({
+      product_id: i.product_id, name: i.name, quantity: i.quantity,
+      faltan: MINIMO_PRECIO_DISTRIBUIDOR - i.quantity, minimo: MINIMO_PRECIO_DISTRIBUIDOR,
+    }))
+    .sort((a, b) => a.faltan - b.faltan);
   const nextTier = discountableSubtotal < 35000 ? { min: 35000, rate: 0.15 } : null;
 
   // ENVÍO. Hoy el pedido NO lo cobra: se cotiza por separado (Christian, 2026-07-28).
@@ -195,7 +233,7 @@ export const CartProvider = ({ children }) => {
   const faltaParaEnvioGratis = cobraEnvio && shipping > 0 ? envio.free_shipping_from - pagaMercancia : 0;
 
   return (
-    <CartContext.Provider value={{ items, addItem, updateQty, removeItem, clearCart, subtotal, count, discount, discountRate, discountSource, cappedItems, nextTier, shipping, faltaParaEnvioGratis, envioGratisDesde: envio.free_shipping_from, distCode, distRate, codeMin, codeMinMet, applyDistCode, clearDistCode }}>
+    <CartContext.Provider value={{ items, addItem, updateQty, removeItem, clearCart, subtotal, count, discount, discountRate, discountSource, cappedItems, lineDiscounts, regla5Items, compraPropia, baseRate, nextTier, shipping, faltaParaEnvioGratis, envioGratisDesde: envio.free_shipping_from, distCode, distRate, codeMin, codeMinMet, applyDistCode, clearDistCode }}>
       {children}
     </CartContext.Provider>
   );
