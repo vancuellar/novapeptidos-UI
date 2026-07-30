@@ -135,12 +135,26 @@ https://exygenlabs.com/pedido/*).
    las especificaciones. Si Christián no la ve: Cmd+Shift+R. Si aun así le
    parece escondida, subirla más arriba en la portada es una línea.
 
-4. **Pendiente de decisión de Christián** (de la auditoría de proveedores):
+4. **BUG que reportó Christián: «Te lo ofrecen y no lo vendes» no se limpia.**
+   Un producto que YA se dio de alta debe DESAPARECER de esa lista de
+   oportunidades, y no está pasando (lo notó con la Vitamina D3, que sigue
+   apareciendo ahí después de publicarse). Dónde mirar: `oportunidades.py`
+   (`calcular()` compara contra `nuestros(cx)`, que lee la tabla `producto` de
+   `exygen.db` + los alias) y `aplicar_aprobados.py` (marca `aplicado` en las
+   decisiones del Panel). Sospechas a revisar, en orden: (a) la base local no se
+   reconstruyó tras el alta, así que `nuestros()` no ve el producto nuevo;
+   (b) el nombre con que se dio de alta no empareja con el de la lista del
+   proveedor y hace falta un alias en `datos/alias_proveedores.csv`;
+   (c) la decisión quedó sin marcar como `aplicado` y la oportunidad revive.
+   Debe quedar con una PRUEBA: dar de alta un producto y comprobar que sale de
+   la lista de oportunidades.
+
+5. **Pendiente de decisión de Christián** (de la auditoría de proveedores):
    limpiar los **4 proveedores duplicados** (Lisa, Cell Peptides, Mia, US Lab) y
    marcar los **11 precios contradictorios** para que el comparador deje de
    coronarlos (el peor: Snap-8 de DT a $64.50 vs $365.40 en su misma lista).
 
-5. **Agente en vuelo al cierre de esta sesión**: el de precios, aplicando la
+6. **Agente en vuelo al cierre de esta sesión**: el de precios, aplicando la
    corrección de costos por toda la cadena + el reprecio aprobado + la prueba
    anti-desfase + el alta de **Retatrutida 120 mg** (li la, $40/vial; tope
    $9,215 para no romper la escalera). Su despliegue final del frontend lleva
