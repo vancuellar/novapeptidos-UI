@@ -36,7 +36,16 @@ export const AuthProvider = ({ children }) => {
           // guardan en su cuenta (PUT /auth/me/prefs).
           aplicarPrefsDeCuenta(res.data);
         })
-        .catch(() => localStorage.removeItem('np_token'))
+        .catch((err) => {
+          // OJO: solo se tira el token si el servidor DIJO que no sirve.
+          // Antes, cualquier fallo lo borraba — incluido un timeout o un 502.
+          // O sea que una intermitencia de la API cerraba la sesión de todo el
+          // que recargara la página, y encima para siempre: el token ya no
+          // estaba para reintentar. Un servidor que no contesta no sabe nada
+          // sobre la validez de tu sesión.
+          const estado = err?.response?.status;
+          if (estado === 401 || estado === 403) localStorage.removeItem('np_token');
+        })
         .finally(() => setLoading(false));
     } else {
       setLoading(false);

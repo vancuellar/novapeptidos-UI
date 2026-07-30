@@ -7,7 +7,7 @@ import { Label } from '@/components/ui/label';
 import { Card } from '@/components/ui/card';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { toast } from 'sonner';
-import api from '@/lib/api';
+import api, { esCaidaDeApi } from '@/lib/api';
 import { useAuth } from '@/context/AuthContext';
 import { useLanguage } from '@/context/LanguageContext';
 import { MoleculeMark } from '@/components/BrandLogo';
@@ -107,6 +107,7 @@ const Login = () => {
       navigate(['admin', 'marketing'].includes(result.role) ? '/admin' : '/cuenta');
     } catch (err) {
       if (err.response?.status === 403) setUnverified(email.trim());
+      else if (esCaidaDeApi(err)) toast.error(t('auth.toast.mantenimiento'));
       else toast.error(err.response?.data?.detail || t('auth.toast.loginError'));
     } finally { setLoading(false); }
   };
@@ -120,7 +121,9 @@ const Login = () => {
       toast.success(t('auth.toast.welcome'));
       navigate(['admin', 'marketing'].includes(res.data.user.role) ? '/admin' : '/cuenta');
     } catch (err) {
-      toast.error(err.response?.data?.detail || t('auth.toast.loginError'));
+      toast.error(esCaidaDeApi(err)
+        ? t('auth.toast.mantenimiento')
+        : (err.response?.data?.detail || t('auth.toast.loginError')));
       if (err.response?.status === 401 && /expiro|expired/i.test(err.response?.data?.detail || '')) setTotpToken('');
     } finally { setLoading(false); }
   };
@@ -166,7 +169,9 @@ const Login = () => {
       }
       setPendingEmail(regEmail.trim());
     } catch (err) {
-      toast.error(err.response?.data?.detail || t('auth.toast.registerError'));
+      toast.error(esCaidaDeApi(err)
+        ? t('auth.toast.mantenimiento')
+        : (err.response?.data?.detail || t('auth.toast.registerError')));
     } finally { setLoading(false); }
   };
 

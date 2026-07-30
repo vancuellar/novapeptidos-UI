@@ -17,6 +17,7 @@ import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent } from '@/components/ui/tabs';
 import DashboardSidebar, { alTope } from '@/components/layout/DashboardSidebar';
 import GatewayCredentials from '@/components/GatewayCredentials';
+import FichaPedido from '@/components/FichaPedido';
 import AdminAnnouncements from '@/components/AdminAnnouncements';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Checkbox } from '@/components/ui/checkbox';
@@ -122,6 +123,9 @@ const Admin = () => {
   const [serieBucket, setSerieBucket] = useState('day');
   const [funnel, setFunnel] = useState(null);
   const [orderOpen, setOrderOpen] = useState(null);   // pedido abierto para prepararlo
+  // La ficha de UN pedido, abierta desde el número dentro de la ficha de un cliente o de
+  // un distribuidor: qué compró y qué pasó con su dinero, sin salir de donde está.
+  const [fichaPedido, setFichaPedido] = useState(null);
   const [orderKill, setOrderKill] = useState(null);   // pedido que se va a BORRAR
   // Selección múltiple en Pedidos (Christián, 2026-07-29): limpiar las pruebas de
   // un golpe y archivar lo viejo. El candado de los pagados vive en el backend;
@@ -1607,7 +1611,11 @@ const Admin = () => {
                   ) : customerOpen.orders.map((o) => (
                     <div key={o.id} className="flex items-center justify-between gap-2 py-1.5 border-b border-border last:border-0">
                       <div>
-                        <div className="font-mono-tech text-xs">{o.order_number}</div>
+                        <button type="button" onClick={() => setFichaPedido(o.order_number)}
+                          data-testid="admin-ficha-open-order"
+                          className="font-mono-tech text-xs underline decoration-dotted underline-offset-4 hover:text-[hsl(var(--primary))] transition">
+                          {o.order_number}
+                        </button>
                         <div className="text-[11px] text-muted-foreground">{fmtDate(o.created_at)}</div>
                       </div>
                       <div className="flex items-center gap-2">
@@ -2179,6 +2187,8 @@ const Admin = () => {
           </DialogFooter>
         </DialogContent>
       </Dialog>
+      <FichaPedido orderNumber={fichaPedido} open={!!fichaPedido} admin
+        onClose={() => setFichaPedido(null)} />
     </div>
   );
 };

@@ -2,13 +2,16 @@ import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
-import api from '@/lib/api';
+import api, { esCaidaDeApi } from '@/lib/api';
+import { guardarConfig, configDeRespaldo } from '@/lib/authConfig';
 import { useAuth } from '@/context/AuthContext';
 import { useLanguage } from '@/context/LanguageContext';
 
 // Entrar con Outlook (cuenta Microsoft), calcado del flujo de Google:
-// el servidor dice si está encendido (y con qué client id público); si no,
-// el botón no existe. El navegador va a login.microsoftonline.com, regresa
+// el servidor dice si está encendido (y con qué client id público), y si el
+// servidor no contesta se usa el último client id bueno guardado en el
+// navegador (ver lib/authConfig.js), para que el botón NUNCA se esfume sin
+// explicación. El navegador va a login.microsoftonline.com, regresa
 // a /login con un ID token en el fragmento (#id_token=...), y ese token se
 // verifica EN EL SERVIDOR contra las llaves públicas de Microsoft.
 //
@@ -71,10 +74,17 @@ const MicrosoftSignInButton = () => {
   useEffect(() => {
     let cancelled = false;
     (async () => {
+      // El botón sobrevive a la caída del servidor: si no contesta, se usa el
+      // último client_id bueno (o el horneado en el build). Antes desaparecía
+      // sin explicación (caída del 30/07/2026).
       try {
-        const cfg = await api.get('/auth/microsoft/config');
-        if (!cancelled && cfg.data?.enabled && cfg.data?.client_id) setClientId(cfg.data.client_id);
-      } catch { /* sin config o sin red: el botón no se muestra */ }
+        const res = await api.get('/auth/microsoft/config');
+        if (res.data?.client_id) guardarConfig('microsoft', res.data);
+        if (!cancelled && res.data?.enabled && res.data?.client_id) setClientId(res.data.client_id);
+      } catch {
+        const respaldo = configDeRespaldo('microsoft');
+        if (!cancelled && respaldo?.enabled && respaldo?.client_id) setClientId(respaldo.client_id);
+      }
     })();
     return () => { cancelled = true; };
   }, []);
@@ -101,7 +111,9 @@ const MicrosoftSignInButton = () => {
         }
         finishLogin(res.data);
       } catch (err) {
-        toast.error(err.response?.data?.detail || t('auth.toast.loginError'));
+        toast.error(esCaidaDeApi(err)
+          ? t('auth.toast.mantenimiento')
+          : (err.response?.data?.detail || t('auth.toast.loginError')));
       }
     })();
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -131,7 +143,9 @@ const MicrosoftSignInButton = () => {
       setPendingCredential('');
       finishLogin(res.data);
     } catch (err) {
-      toast.error(err.response?.data?.detail || t('auth.toast.loginError'));
+      toast.error(esCaidaDeApi(err)
+          ? t('auth.toast.mantenimiento')
+          : (err.response?.data?.detail || t('auth.toast.loginError')));
     } finally { setSubmitting(false); }
   };
 

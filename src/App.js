@@ -13,6 +13,7 @@ import RuoGate from '@/components/RuoGate';
 import Home from '@/pages/Home';
 import NotFound from '@/pages/NotFound';
 import ViewAsBanner from '@/components/ViewAsBanner';
+import AvisoDeIntermitencia from '@/components/AvisoDeIntermitencia';
 import WhatsAppButton from '@/components/WhatsAppButton';
 import { track } from '@/lib/track';
 
@@ -192,7 +193,10 @@ function App() {
               <BrowserRouter basename={process.env.PUBLIC_URL || '/'}>
                 <ScrollToTop />
                 <TrackPageViews />
-                <SiteChrome><ViewAsBanner /><Header /></SiteChrome>
+                {/* El aviso va ANTES del header y NO es sticky: el header ya
+                    lo es (top-0, z-40) y ViewAsBanner también (top-0, z-50).
+                    Un tercer sticky en top-0 se encabalgaría con los otros. */}
+                <SiteChrome><AvisoDeIntermitencia /><ViewAsBanner /><Header /></SiteChrome>
                 <main className="min-h-[70vh] pb-24 sm:pb-0">
                   <ReintentoDeCarga>
                   <Suspense fallback={<PageSkeleton />}>

@@ -9,6 +9,7 @@ import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent } from '@/components/ui/tabs';
 import DashboardSidebar, { alTope } from '@/components/layout/DashboardSidebar';
 import CoaLibrary from '@/components/CoaLibrary';
+import FichaPedido from '@/components/FichaPedido';
 import FichaLibrary from '@/components/FichaLibrary';
 import LabReports from '@/components/LabReports';
 import NotificationsFeed from '@/components/NotificationsFeed';
@@ -62,6 +63,9 @@ const Distributor = () => {
   const [summary, setSummary] = useState(null);
   const [bestSellers, setBestSellers] = useState([]);
   const [clients, setClients] = useState([]);
+  // El número de pedido se puede abrir: la ficha la sirve el servidor, que valida que ese
+  // pedido sea SUYO (403 si no). Aquí solo se guarda cuál está abierto.
+  const [pedidoAbierto, setPedidoAbierto] = useState(null);
   const [sales, setSales] = useState([]);
   const [orders, setOrders] = useState([]);
   const [period, setPeriod] = useState('all');
@@ -451,7 +455,13 @@ const Distributor = () => {
                   <TableRow><TableCell colSpan={6} className="text-center text-muted-foreground py-8">{t('distributor.noSales')}</TableCell></TableRow>
                 ) : filteredSales.map((o) => (
                   <TableRow key={o.order_number}>
-                    <TableCell className="font-mono-tech text-xs">{o.order_number}</TableCell>
+                    <TableCell>
+                      <button type="button" onClick={() => setPedidoAbierto(o.order_number)}
+                        data-testid="dist-open-order"
+                        className="font-mono-tech text-xs underline decoration-dotted underline-offset-4 hover:text-[hsl(var(--primary))] transition">
+                        {o.order_number}
+                      </button>
+                    </TableCell>
                     <TableCell className="text-sm">{o.customer_name}</TableCell>
                     <TableCell className="text-xs text-muted-foreground">{fmtDate(o.created_at)}</TableCell>
                     <TableCell>{formatMXN(o.total)}</TableCell>
@@ -506,7 +516,11 @@ const Distributor = () => {
                 ) : filteredOrders.map((o) => (
                   <TableRow key={o.order_number}>
                     <TableCell>
-                      <div className="font-mono-tech text-xs">{o.order_number}</div>
+                      <button type="button" onClick={() => setPedidoAbierto(o.order_number)}
+                        data-testid="dist-open-order"
+                        className="font-mono-tech text-xs underline decoration-dotted underline-offset-4 hover:text-[hsl(var(--primary))] transition">
+                        {o.order_number}
+                      </button>
                       <div className="text-[11px] text-muted-foreground">{fmtDate(o.created_at)} · {formatMXN(o.total)}</div>
                     </TableCell>
                     <TableCell><div className="text-sm">{o.customer_name}</div></TableCell>
@@ -580,6 +594,8 @@ const Distributor = () => {
         </TabsContent>
         </div>
       </Tabs>
+      <FichaPedido orderNumber={pedidoAbierto} open={!!pedidoAbierto}
+        onClose={() => setPedidoAbierto(null)} />
     </div>
   );
 };

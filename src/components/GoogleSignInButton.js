@@ -3,7 +3,8 @@ import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
-import api from '@/lib/api';
+import api, { esCaidaDeApi } from '@/lib/api';
+import { guardarConfig, configDeRespaldo } from '@/lib/authConfig';
 import { useAuth } from '@/context/AuthContext';
 import { useLanguage } from '@/context/LanguageContext';
 import { useTheme } from '@/context/ThemeContext';
@@ -83,18 +84,33 @@ const GoogleSignInButton = () => {
         }
         finishLogin(res.data);
       } catch (err) {
-        toast.error(err.response?.data?.detail || t('auth.toast.loginError'));
+        // Con el servidor caído el mensaje tiene que decir la verdad: no es
+        // que la cuenta esté mal, es que no hay a quién preguntarle.
+        toast.error(esCaidaDeApi(err)
+          ? t('auth.toast.mantenimiento')
+          : (err.response?.data?.detail || t('auth.toast.loginError')));
       }
     };
 
     (async () => {
+      // El botón se dibuja aunque el servidor no conteste. Antes, un fallo de
+      // red lo hacía desaparecer sin explicación (caída del 30/07/2026).
+      let cfg = null;
       try {
-        const cfg = await api.get('/auth/google/config');
-        if (cancelled || !cfg.data?.enabled || !cfg.data?.client_id) return;
+        const res = await api.get('/auth/google/config');
+        if (res.data?.client_id) {
+          guardarConfig('google', res.data);
+          cfg = res.data;
+        }
+      } catch {
+        cfg = configDeRespaldo('google'); // lo último bueno, o lo horneado
+      }
+      try {
+        if (cancelled || !cfg?.enabled || !cfg?.client_id) return;
         await loadGsi();
         if (cancelled || !slotRef.current) return;
         window.google.accounts.id.initialize({
-          client_id: cfg.data.client_id,
+          client_id: cfg.client_id,
           callback: onCredential,
         });
         window.google.accounts.id.renderButton(slotRef.current, {
@@ -108,7 +124,8 @@ const GoogleSignInButton = () => {
         });
         setEnabled(true);
       } catch {
-        // Sin config o sin red: simplemente no se muestra el botón.
+        // El script de Google no cargó (bloqueador, sin internet): ahí sí no
+        // hay botón que dibujar, porque el botón ES un iframe de Google.
       }
     })();
 
@@ -124,7 +141,9 @@ const GoogleSignInButton = () => {
       setPendingCredential('');
       finishLogin(res.data);
     } catch (err) {
-      toast.error(err.response?.data?.detail || t('auth.toast.loginError'));
+      toast.error(esCaidaDeApi(err)
+        ? t('auth.toast.mantenimiento')
+        : (err.response?.data?.detail || t('auth.toast.loginError')));
     } finally { setSubmitting(false); }
   };
 
