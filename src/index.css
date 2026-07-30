@@ -665,10 +665,10 @@ img {
   width: 66px; height: 66px; flex: none;
   display: flex; flex-direction: column; align-items: center; justify-content: center;
   border-radius: 999px;
-  border: 2px dashed hsl(220 10% 38%);
-  background: radial-gradient(circle at 50% 32%, rgba(70,78,92,.24), rgba(70,78,92,.08));
+  border: 2px dashed hsl(225 55% 45%);
+  background: radial-gradient(circle at 50% 32%, rgba(79,99,229,.16), rgba(79,99,229,.05));
   transform: rotate(-9deg);
-  box-shadow: 0 6px 20px rgba(20,24,32,.13);
+  box-shadow: 0 6px 20px rgba(30,45,120,.15);
 }
 .dark .sello {
   border-color: #d4af37;
@@ -680,16 +680,16 @@ img {
    lo que hace mirar— pero no miente. */
 .sello-hasta {
   font-size: 7.5px; font-weight: 700; letter-spacing: .16em; text-transform: uppercase;
-  color: hsl(220 12% 24%); opacity: .9; margin-bottom: 1px;
+  color: hsl(225 55% 30%); opacity: .9; margin-bottom: 1px;
 }
 .sello-pct {
   font-family: var(--font-heading, Georgia, serif);
   font-size: 20px; font-weight: 700; line-height: 1;
-  color: hsl(220 20% 16%); letter-spacing: -.02em;
+  color: hsl(225 70% 22%); letter-spacing: -.02em;
 }
 .sello-off {
   font-size: 8.5px; font-weight: 700; letter-spacing: .18em;
-  color: hsl(220 12% 24%); opacity: .95; margin-top: 2px;
+  color: hsl(225 55% 30%); opacity: .95; margin-top: 2px;
 }
 .dark .sello-hasta,
 .dark .sello-pct,
