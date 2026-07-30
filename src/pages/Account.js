@@ -16,6 +16,7 @@ import DashboardSidebar, { alTope } from '@/components/layout/DashboardSidebar';
 import CoaLibrary from '@/components/CoaLibrary';
 import FichaLibrary from '@/components/FichaLibrary';
 import NotificationsFeed from '@/components/NotificationsFeed';
+import TrustBadges from '@/components/TrustBadges';
 import SecurityKeys from '@/components/SecurityKeys';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
@@ -401,6 +402,11 @@ const Account = () => {
               ))}
             </div>
           )}
+
+          {/* Va al pie de los pedidos, con o sin pedidos: al que ya compró le
+              recuerda qué recibe, y al que todavía no, le contesta las dudas
+              justo donde iba a irse. */}
+          <TrustBadges className="mt-6" />
         </TabsContent>
 
         <TabsContent value="coas" className="mt-5">

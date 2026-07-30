@@ -743,6 +743,24 @@ const esMX = {
   // EE. UU.". Nosotros ponemos lo que sí es nuestro: de dónde compramos.
   'home.trust.origin.title': 'Fabricado en EUA',
   'home.trust.origin.desc': 'En laboratorios de Estados Unidos',
+  // ===== Bloque "Tienda de confianza" (componente TrustBadges) =====
+  // Cada línea tiene que poder comprobarse. No hay devoluciones, ni garantía de
+  // meses, ni reenvíos gratis: las ventas son finales y el envío se cotiza aparte.
+  'trust.title': 'Tienda De Confianza',
+  'trust.subtitle': 'Lo que sí podemos comprobarte en cada pedido.',
+  'trust.purity.title': 'Pureza Verificada Por HPLC',
+  'trust.purity.desc': 'Cada lote se analiza por HPLC antes de salir.',
+  'trust.coa.title': 'Certificado De Tu Lote',
+  'trust.coa.desc': 'El certificado del lote que recibiste queda en tu cuenta, en la pestaña de certificados.',
+  'trust.origin.title': 'Fabricado En Estados Unidos',
+  'trust.origin.desc': 'En laboratorios de Estados Unidos.',
+  'trust.shipping.title': 'Envío Nacional En 2 A 5 Días',
+  'trust.shipping.desc': 'A todo México, con empaque discreto y número de rastreo.',
+  'trust.payment.title': 'Pago Seguro',
+  'trust.payment.desc': 'OXXO, SPEI, tarjeta y cripto. El monto lo confirma nuestro servidor en cada pedido.',
+  'trust.support.title': 'Soporte Por WhatsApp',
+  'trust.support.desc': 'Escríbenos al {{phone}}.',
+  'trust.ruo': 'Material exclusivamente para investigación (RUO). No es para consumo humano ni para uso diagnóstico o terapéutico.',
   'home.categoriesTitle': 'Explora por categoría',
   'home.categoriesSubtitle': 'Encuentra el péptido según tu objetivo de investigación',
   'home.featuredTitle': 'Productos destacados',

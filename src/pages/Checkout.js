@@ -14,6 +14,7 @@ import api, { formatMXN, PAYMENT_METHODS } from '@/lib/api';
 import { phoneValid } from '@/lib/utils';
 import { PhoneField, StateField, composePhone, parsePhone } from '@/components/CountryPhoneFields';
 import { ruoAcceptedAt } from '@/components/RuoGate';
+import TrustBadges from '@/components/TrustBadges';
 import { useCart } from '@/context/CartContext';
 import { useAuth } from '@/context/AuthContext';
 import { useLanguage } from '@/context/LanguageContext';
@@ -551,6 +552,11 @@ const Checkout = () => {
               <span className="flex items-center gap-1"><Package className="h-3.5 w-3.5" /> {t('checkout.coaByLot')}</span>
             </div>
           </Card>
+
+          {/* Versión corta debajo del resumen. En el teléfono esta columna cae
+              después del botón de pagar, que es justo donde al cliente le entra
+              la duda de si esto es una tienda seria. */}
+          <TrustBadges variant="compact" className="mt-4" />
         </div>
       </form>
     </div>
