@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
 import { toast } from 'sonner';
-import api, { formatMXN } from '@/lib/api';
+import api, { esCaidaDeApi, formatMXN } from '@/lib/api';
 import { useLanguage } from '@/context/LanguageContext';
 import AvisoSobrePedido from '@/components/AvisoSobrePedido';
 import { track } from '@/lib/track';
@@ -14,13 +14,19 @@ const OrderConfirmation = () => {
   const { orderNumber } = useParams();
   const { t } = useLanguage();
   const [order, setOrder] = useState(null);
+  // '' | 'caida' | 'error'. Antes el catch era silencioso y con la API caída la
+  // página enseñaba el check verde SIN monto, SIN instrucciones SPEI y sin decir
+  // nada: una confirmación vacía que parecía completa.
+  const [fallo, setFallo] = useState('');
   const [uploading, setUploading] = useState(false);
   const [receiptUp, setReceiptUp] = useState(false);
   const fileRef = useRef(null);
   const purchaseAvisado = useRef(false);
 
   useEffect(() => {
-    api.get(`/orders/${orderNumber}`).then((r) => { setOrder(r.data); setReceiptUp(!!r.data.spei_receipt_at); }).catch(() => {});
+    api.get(`/orders/${orderNumber}`)
+      .then((r) => { setOrder(r.data); setReceiptUp(!!r.data.spei_receipt_at); setFallo(''); })
+      .catch((err) => setFallo(esCaidaDeApi(err) ? 'caida' : 'error'));
   }, [orderNumber]);
 
   // ⛔ EL `Purchase` DE META SALE AQUÍ Y SOLO SI YA SE PAGÓ. Se disparaba al CREAR el
@@ -126,6 +132,11 @@ const OrderConfirmation = () => {
             <div className="mt-4 rounded-lg bg-[hsl(var(--warning))] border border-[hsl(var(--warning-border))] text-[hsl(var(--warning-foreground))] p-3 text-xs leading-relaxed">
               <strong>{t('order.noteTitle')}</strong> {t('order.noteBody')}
             </div>
+          </div>
+        )}
+        {!order && fallo && (
+          <div className="mt-6 rounded-lg bg-[hsl(var(--warning))] border border-[hsl(var(--warning-border))] text-[hsl(var(--warning-foreground))] p-3 text-sm leading-relaxed text-left" data-testid="order-load-error">
+            {t(fallo === 'caida' ? 'order.detalleCaida' : 'order.detalleError')}
           </div>
         )}
         <div className="mt-6 flex flex-col sm:flex-row gap-3 justify-center">

@@ -1068,6 +1068,8 @@ const ptBR = {
   'cart.plusShipping': 'Mais frete (cotado separadamente)',
   'cart.checkout': 'Finalizar compra',
   'cart.keepShopping': 'Continuar comprando',
+  'cart.codigo.invalido': 'Código inválido',
+  'cart.codigo.mantenimiento': 'Estamos Em Manutenção; Não Conseguimos Verificar Seu Código. Tente De Novo Em Alguns Minutos',
 
   'checkout.empty': 'Seu carrinho esta vazio.',
   'checkout.title': 'Finalizar compra',
@@ -1221,6 +1223,8 @@ const ptBR = {
 
   'order.received': 'Pedido recebido!',
   'order.receivedBody': 'Seu pedido {{number}} foi registrado corretamente.',
+  'order.detalleCaida': 'Estamos Em Manutenção; Não Conseguimos Carregar O Detalhe Do Seu Pedido. Recarregue Esta Página Em Alguns Minutos Para Ver As Instruções De Pagamento.',
+  'order.detalleError': 'Não conseguimos carregar o detalhe deste pedido. Se o problema continuar, escreva para nós com o número do seu pedido.',
   'order.paymentMethod': 'Metodo de pagamento',
   'order.noteTitle': 'Nota:',
   'order.noteBody': 'Os metodos de pagamento são mostrados como proposta. O pagamento online ainda não e processado; nossa equipe entrara em contato para coordenar o pagamento e o envio.',

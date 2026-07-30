@@ -1076,6 +1076,10 @@ const esMX = {
   'cart.plusShipping': 'Más envío (se cotiza por separado)',
   'cart.checkout': 'Finalizar compra',
   'cart.keepShopping': 'Seguir comprando',
+  'cart.codigo.invalido': 'Código no válido',
+  // El servidor no contestó: no sabemos si el código vale o no. Decirle
+  // "no válido" sería mentirle. Ver lib/api.js -> esCaidaDeApi.
+  'cart.codigo.mantenimiento': 'Estamos En Mantenimiento; No Pudimos Verificar Tu Código. Intenta De Nuevo En Unos Minutos',
 
   'checkout.empty': 'Tu carrito está vacío.',
   'checkout.title': 'Finalizar compra',
@@ -1242,6 +1246,10 @@ const esMX = {
   'spei.confirmNote': 'Usa el número de pedido como concepto. En cuanto se refleje el pago te confirmamos por correo.',
   'order.received': 'Pedido recibido!',
   'order.receivedBody': 'Tu pedido {{number}} fue registrado correctamente.',
+  // La confirmación no pudo traer el detalle del pedido. Se distingue la caída
+  // del servidor (esCaidaDeApi) de un pedido que de plano no se pudo abrir.
+  'order.detalleCaida': 'Estamos En Mantenimiento; No Pudimos Cargar El Detalle De Tu Pedido. Recarga Esta Página En Unos Minutos Para Ver Las Instrucciones De Pago.',
+  'order.detalleError': 'No pudimos cargar el detalle de este pedido. Si el problema sigue, escríbenos con tu número de pedido.',
   'order.paymentMethod': 'Método de pago',
   'order.noteTitle': 'Nota:',
   'order.noteBody': 'Los métodos de pago se muestran como propuesta. Aun no se procesa el cobro en linea; nuestro equipo te contactara para coordinar el pago y el envío.',
