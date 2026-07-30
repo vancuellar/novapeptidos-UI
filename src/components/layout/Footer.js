@@ -128,6 +128,28 @@ const Footer = () => {
                   ligado a él. Al tenerlo, restaurar aquí el <li> con formato
                   +52 (XXX) XXX-XXXX y liga tel:. */}
               <li className="flex items-center gap-2"><Mail className="h-4 w-4 text-[hsl(var(--primary))]" /> hola@exygenlabs.com</li>
+              {/* ===== Mónica Fuentes — la cara del negocio, en chiquito ===== */}
+              {/* Movida aquí, DEBAJO del correo (Christián, 2026-07-30): antes vivía
+                  suelta al final del home, sobre la sección B2B. Mónica es la
+                  representante de ventas REAL (Christián, 2026-07-28). Sin foto no se
+                  inventa una: iniciales y nombre de verdad. Se enseña el USUARIO
+                  (@exygenlabs), no el número — pero el enlace SÍ va al wa.me del
+                  número, que es lo único que abre la conversación en cualquier
+                  teléfono. */}
+              <li className="flex flex-wrap items-center gap-x-2 gap-y-1.5 text-sm" data-testid="home-representante">
+                <span className="inline-flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-[hsl(var(--primary))]/15 border border-[hsl(var(--primary))]/30 font-heading text-[11px] font-bold text-[hsl(var(--primary))]">
+                  MF
+                </span>
+                <span className="font-medium text-foreground">{t('home.rep.name')}</span>
+                <span>· {t('home.rep.role')} ·</span>
+                {WHATSAPP_URL && (
+                  <a href={`${WHATSAPP_URL}?text=${encodeURIComponent(t('home.rep.prefill'))}`}
+                    target="_blank" rel="noreferrer" data-testid="home-rep-whatsapp"
+                    className="inline-flex items-center gap-1.5 hover:text-foreground transition-colors">
+                    <WhatsAppIcon className="h-4 w-4 text-[#25D366]" /> {WHATSAPP_HANDLE}
+                  </a>
+                )}
+              </li>
               {/* WhatsApp debajo del correo (Christian, 2026-07-28): se enseña el
                   nombre de usuario, que es lo que él reparte, pero el enlace va al
                   wa.me del número — es el que abre la conversación en cualquier
