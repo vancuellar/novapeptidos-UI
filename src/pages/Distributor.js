@@ -21,6 +21,9 @@ import ProfilePanel from '@/components/panels/ProfilePanel';
 import TutorialsPanel from '@/components/panels/TutorialsPanel';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
 import { toast } from 'sonner';
 import api, { formatMXN } from '@/lib/api';
 import { tieneDifusion } from '@/lib/roles';
@@ -73,6 +76,10 @@ const Distributor = () => {
   const [statusFilter, setStatusFilter] = useState('all');
   const [orderPeriod, setOrderPeriod] = useState('all');
   const [orderStatus, setOrderStatus] = useState('all');
+  // Captura de guía de un pedido SUYO. Es el formulario que se abre; el permiso
+  // de tocar ESE pedido lo decide el servidor (403 si no trae su código).
+  const [guiaOpen, setGuiaOpen] = useState(null);
+  const [guardandoGuia, setGuardandoGuia] = useState(false);
   const [codes, setCodes] = useState([]);
   const [rotateDays, setRotateDays] = useState(30);
   const [notifUnread, setNotifUnread] = useState(0);
@@ -143,6 +150,34 @@ const Distributor = () => {
   const copyTracking = (n) => {
     navigator.clipboard?.writeText(n);
     toast.success(t('distributor.copyTracking'));
+  };
+
+  // ---------------------------------------------------------------------
+  //  Capturar la guía de un pedido suyo (Christián, 2026-07-30)
+  // ---------------------------------------------------------------------
+  // Antes sólo el admin podía teclear el número de guía, así que cada paquete
+  // que despachaba un distribuidor tenía que pasar por Christián para que el
+  // cliente recibiera su rastreo. Aquí sólo van los CAMPOS DE ENVÍO: ni precios,
+  // ni pagos, ni estatus. Cotizar y COMPRAR guía (dinero de la casa) se queda
+  // en el Panel de Administración.
+  const abrirGuia = (o) => setGuiaOpen({
+    order_number: o.order_number,
+    carrier: o.carrier || 'Estafeta',
+    tracking_number: o.tracking_number || '',
+    tracking_url: o.tracking_url || '',
+  });
+
+  const guardarGuia = async () => {
+    if (!guiaOpen?.tracking_number?.trim()) { toast.error(t('distributor.shipping.needNumber')); return; }
+    const { order_number: num, ...body } = guiaOpen;
+    setGuardandoGuia(true);
+    try {
+      await api.put(`/distributor/orders/${num}/shipping`, body);
+      toast.success(t('distributor.shipping.saved'));
+      setGuiaOpen(null);
+      loadAll();
+    } catch { toast.error(t('distributor.shipping.error')); }
+    finally { setGuardandoGuia(false); }
   };
   const filteredEarnings = filteredSales.filter((o) => o.status !== 'cancelado').reduce((s, o) => s + (o.commission || 0), 0);
 
@@ -569,6 +604,16 @@ const Distributor = () => {
                       ) : (
                         <span className="text-muted-foreground">{o.eta || t('distributor.noTracking')}</span>
                       )}
+                      {/* Él despachó el paquete: que capture él la guía. Un pedido
+                          cancelado ya no se manda a ningún lado. */}
+                      {o.status !== 'cancelado' && (
+                        <Button variant="outline" size="sm" data-testid="dist-shipping-open"
+                          className="mt-2 h-7 px-2 text-[11px] whitespace-nowrap"
+                          onClick={() => abrirGuia(o)}>
+                          <Truck className="h-3 w-3 mr-1" />
+                          {o.tracking_number ? t('distributor.shipping.edit') : t('distributor.shipping.add')}
+                        </Button>
+                      )}
                     </TableCell>
                   </TableRow>
                 ))}
@@ -616,6 +661,57 @@ const Distributor = () => {
       </Tabs>
       <FichaPedido orderNumber={pedidoAbierto} open={!!pedidoAbierto}
         onClose={() => setPedidoAbierto(null)} />
+
+      {/* Capturar la guía de un pedido suyo. SOLO envío: aquí no hay precios,
+          ni pagos, ni estatus, ni compra de guías (eso es dinero de la casa y
+          vive en el Panel de Administración). El servidor vuelve a revisar que
+          el pedido sea suyo: si no, contesta 403 y no se guarda nada. */}
+      <Dialog open={!!guiaOpen} onOpenChange={(v) => !v && setGuiaOpen(null)}>
+        <DialogContent className="max-w-md max-h-[85vh] overflow-y-auto">
+          {guiaOpen && (
+            <>
+              <DialogHeader>
+                <DialogTitle className="flex items-center gap-2">
+                  <Truck className="h-5 w-5" /> {t('distributor.shipping.title')}
+                </DialogTitle>
+              </DialogHeader>
+              <div className="space-y-4">
+                <div className="text-xs text-muted-foreground font-mono-tech">{guiaOpen.order_number}</div>
+                <div>
+                  <Label className="text-sm mb-1.5 block">{t('distributor.shipping.carrier')}</Label>
+                  <Select value={guiaOpen.carrier} onValueChange={(v) => setGuiaOpen({ ...guiaOpen, carrier: v })}>
+                    <SelectTrigger data-testid="dist-shipping-carrier"><SelectValue /></SelectTrigger>
+                    <SelectContent>
+                      {['Estafeta', 'Paquete Express', 'FedEx', 'DHL', 'UPS', 'Redpack', 'Correos de México'].map((c) => (
+                        <SelectItem key={c} value={c}>{c}</SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div>
+                  <Label className="text-sm mb-1.5 block">{t('distributor.shipping.number')}</Label>
+                  <Input value={guiaOpen.tracking_number} data-testid="dist-shipping-number"
+                    onChange={(e) => setGuiaOpen({ ...guiaOpen, tracking_number: e.target.value })} />
+                </div>
+                <div>
+                  <Label className="text-sm mb-1.5 block">{t('distributor.shipping.url')}</Label>
+                  <Input value={guiaOpen.tracking_url} data-testid="dist-shipping-url"
+                    placeholder="https://" inputMode="url"
+                    onChange={(e) => setGuiaOpen({ ...guiaOpen, tracking_url: e.target.value })} />
+                  <p className="text-[11px] text-muted-foreground mt-1">{t('distributor.shipping.autoUrl')}</p>
+                </div>
+                <p className="text-[11px] text-muted-foreground">{t('distributor.shipping.mailNote')}</p>
+              </div>
+              <DialogFooter>
+                <Button variant="outline" onClick={() => setGuiaOpen(null)}>{t('common.cancel')}</Button>
+                <Button onClick={guardarGuia} disabled={guardandoGuia} data-testid="dist-shipping-save">
+                  {t('common.saveChanges')}
+                </Button>
+              </DialogFooter>
+            </>
+          )}
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
