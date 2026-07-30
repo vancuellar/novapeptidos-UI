@@ -24,6 +24,7 @@ import FichaPedido from '@/components/FichaPedido';
 import FichaCliente from '@/components/FichaCliente';
 import AdminAnnouncements from '@/components/AdminAnnouncements';
 import NotificationsFeed from '@/components/NotificationsFeed';
+import HojaDeGuia from '@/components/HojaDeGuia';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog';
@@ -337,16 +338,6 @@ const Admin = () => {
     eta: order.eta || '',
   });
 
-  const saveShipping = async () => {
-    const { id, ...body } = shippingOpen;
-    delete body.order_number;
-    try {
-      await api.put(`/admin/orders/${id}/shipping`, body);
-      toast.success(t('admin.shipping.saved'));
-      setShippingOpen(null);
-      loadAll();
-    } catch { toast.error(t('admin.shipping.error')); }
-  };
 
   const updateStatus = async (order, status) => {
     try { await api.put(`/admin/orders/${order.id}/status`, { status }); toast.success(t('admin.toast.statusUpdated')); loadAll(); }
@@ -1566,7 +1557,7 @@ const Admin = () => {
                         </button>
                       ) : (
                         <Button variant="outline" size="sm" className="h-8 text-xs" onClick={() => openShipping(o)} data-testid="admin-add-tracking">
-                          <Truck className="h-3.5 w-3.5 mr-1.5" /> {t('admin.shipping.add')}
+                          <Truck className="h-3.5 w-3.5 mr-1.5" /> {t('guia.add')}
                         </Button>
                       )}
                     </TableCell>
@@ -1630,47 +1621,16 @@ const Admin = () => {
         </div>
       </Tabs>
 
-      <Dialog open={!!shippingOpen} onOpenChange={(v) => !v && setShippingOpen(null)}>
-        <DialogContent className="max-w-md max-h-[85vh] overflow-y-auto">
-          {shippingOpen && (
-            <>
-              <DialogHeader>
-                <DialogTitle className="flex items-center gap-2"><Truck className="h-5 w-5" /> {t('admin.shipping.title')}</DialogTitle>
-              </DialogHeader>
-              <div className="space-y-4">
-                <div className="text-xs text-muted-foreground font-mono-tech">{shippingOpen.order_number}</div>
-                {/* Cotizar con Skydropx y comprar la guía con un clic. Abajo siguen
-                    los campos de siempre, por si se compró en el mostrador. */}
-                <CotizarEnvio order={shippingOpen} onComprada={() => { setShippingOpen(null); loadAll(); }} />
-                <div>
-                  <Label className="text-sm mb-1.5 block">{t('admin.shipping.carrier')}</Label>
-                  <Select value={shippingOpen.carrier} onValueChange={(v) => setShippingOpen({ ...shippingOpen, carrier: v })}>
-                    <SelectTrigger data-testid="admin-shipping-carrier"><SelectValue /></SelectTrigger>
-                    <SelectContent>
-                      {['FedEx', 'DHL', 'Estafeta', 'UPS', 'Paquete Express', 'Redpack', 'Correos de México'].map((c) => <SelectItem key={c} value={c}>{c}</SelectItem>)}
-                    </SelectContent>
-                  </Select>
-                </div>
-                <div>
-                  <Label className="text-sm mb-1.5 block">{t('admin.shipping.number')}</Label>
-                  <Input value={shippingOpen.tracking_number} data-testid="admin-shipping-number"
-                    onChange={(e) => setShippingOpen({ ...shippingOpen, tracking_number: e.target.value })} />
-                  <p className="text-[11px] text-muted-foreground mt-1">{t('admin.shipping.autoUrl')}</p>
-                </div>
-                <div>
-                  <Label className="text-sm mb-1.5 block">{t('admin.shipping.eta')}</Label>
-                  <Input value={shippingOpen.eta} placeholder="2-5 días hábiles" data-testid="admin-shipping-eta"
-                    onChange={(e) => setShippingOpen({ ...shippingOpen, eta: e.target.value })} />
-                </div>
-              </div>
-              <DialogFooter>
-                <Button variant="outline" onClick={() => setShippingOpen(null)}>{t('common.cancel')}</Button>
-                <Button onClick={saveShipping} data-testid="admin-shipping-save">{t('common.saveChanges')}</Button>
-              </DialogFooter>
-            </>
-          )}
-        </DialogContent>
-      </Dialog>
+      {/* LA HOJA DE LA GUÍA — la MISMA que usan el distribuidor, la ficha del cliente
+          y la ficha del pedido. Aquí arriba se le cuelga lo que sólo es del admin:
+          cotizar con Skydropx y COMPRAR la guía (dinero de la casa). Los campos de
+          captura ya no se copian: si mañana se agrega uno, se agrega en un solo lado. */}
+      <HojaDeGuia pedido={shippingOpen} open={!!shippingOpen}
+        onClose={() => setShippingOpen(null)} onGuardada={loadAll}>
+        {shippingOpen && (
+          <CotizarEnvio order={shippingOpen} onComprada={() => { setShippingOpen(null); loadAll(); }} />
+        )}
+      </HojaDeGuia>
 
 
       <Dialog open={!!orderKill} onOpenChange={(v) => !v && setOrderKill(null)}>
@@ -1877,7 +1837,7 @@ const Admin = () => {
                 )}
                 <div className="flex flex-wrap gap-2">
                   <Button size="sm" onClick={() => { const o = orderOpen; setOrderOpen(null); openShipping(o); }} data-testid="admin-order-ship">
-                    <Truck className="h-4 w-4 mr-1.5" /> {orderOpen.tracking_number ? t('admin.shipping.edit') : t('admin.shipping.add')}
+                    <Truck className="h-4 w-4 mr-1.5" /> {orderOpen.tracking_number ? t('guia.edit') : t('guia.add')}
                   </Button>
                   {orderOpen.label_url && (
                     <Button variant="outline" size="sm" asChild data-testid="admin-order-label">

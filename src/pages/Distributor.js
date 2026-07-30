@@ -1,6 +1,6 @@
 import React, { useEffect, useLayoutEffect, useState, useCallback } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import { Store, Users, DollarSign, TrendingUp, ShoppingBag, Copy, Percent, Truck, ExternalLink, BookOpen, Award, Ticket, RefreshCw, Bell, Syringe, Package, Coins, User, GraduationCap, FlaskConical, Megaphone, ChevronRight } from 'lucide-react';
+import { Store, Users, DollarSign, TrendingUp, ShoppingBag, Copy, Percent, Truck, ExternalLink, BookOpen, Award, Ticket, RefreshCw, Bell, Syringe, Package, Coins, User, GraduationCap, FlaskConical, Megaphone, ChevronRight, Calculator } from 'lucide-react';
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip } from 'recharts';
 import GraficaInteractiva from '@/components/charts/GraficaInteractiva';
 import { Button } from '@/components/ui/button';
@@ -11,10 +11,12 @@ import DashboardSidebar, { alTope } from '@/components/layout/DashboardSidebar';
 import CoaLibrary from '@/components/CoaLibrary';
 import FichaPedido from '@/components/FichaPedido';
 import FichaCliente from '@/components/FichaCliente';
+import HojaDeGuia from '@/components/HojaDeGuia';
 import FichaLibrary from '@/components/FichaLibrary';
 import LabReports from '@/components/LabReports';
 import NotificationsFeed from '@/components/NotificationsFeed';
 import ToolsPanel, { herramientasDesbloqueadas } from '@/components/ToolsPanel';
+import CotizadorDistribuidor from '@/components/CotizadorDistribuidor';
 import OrdersPanel from '@/components/panels/OrdersPanel';
 import StatCard from '@/components/panels/StatCard';
 import PointsPanel from '@/components/panels/PointsPanel';
@@ -27,6 +29,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { toast } from 'sonner';
 import api, { formatMXN } from '@/lib/api';
+import { useDatosDelCotizador } from '@/lib/cotizador';
 import { tieneDifusion } from '@/lib/roles';
 import { useAuth } from '@/context/AuthContext';
 import { useLanguage } from '@/context/LanguageContext';
@@ -96,11 +99,14 @@ const Distributor = () => {
   // Captura de guía de un pedido SUYO. Es el formulario que se abre; el permiso
   // de tocar ESE pedido lo decide el servidor (403 si no trae su código).
   const [guiaOpen, setGuiaOpen] = useState(null);
-  const [guardandoGuia, setGuardandoGuia] = useState(false);
   const [codes, setCodes] = useState([]);
   const [rotateDays, setRotateDays] = useState(30);
   const [notifUnread, setNotifUnread] = useState(0);
   const [loyalty, setLoyalty] = useState({ eligible: false, balance: 0, ledger: [] });
+  // Catálogo y tope de descuento del Cotizador — su propia pestaña en Mi Negocio
+  // (Christián, 2026-07-30: antes vivía adentro de "Mis Herramientas", pero es
+  // herramienta de VENTA, no de consumo propio).
+  const { catalogo: catalogoCotizador, tasaMaxima: tasaMaximaCotizador } = useDatosDelCotizador();
   // Los pedidos que ÉL compró (no los de sus clientes): con ellos la calculadora
   // de "Mis Herramientas" pre-carga sus propios péptidos, y son los que ve en
   // su pestaña "Mis Pedidos".
@@ -177,25 +183,17 @@ const Distributor = () => {
   // cliente recibiera su rastreo. Aquí sólo van los CAMPOS DE ENVÍO: ni precios,
   // ni pagos, ni estatus. Cotizar y COMPRAR guía (dinero de la casa) se queda
   // en el Panel de Administración.
+  //
+  // La captura en sí vive en <HojaDeGuia>, compartida con el Panel: aquí sólo se dice
+  // CUÁL pedido. La paquetería ya no se pre-elige a mano ('Estafeta' de cajón hacía que
+  // media plataforma guardara Estafeta sin mirar): la adivina el número que se pega.
   const abrirGuia = (o) => setGuiaOpen({
     order_number: o.order_number,
-    carrier: o.carrier || 'Estafeta',
+    carrier: o.carrier || '',
     tracking_number: o.tracking_number || '',
     tracking_url: o.tracking_url || '',
   });
 
-  const guardarGuia = async () => {
-    if (!guiaOpen?.tracking_number?.trim()) { toast.error(t('distributor.shipping.needNumber')); return; }
-    const { order_number: num, ...body } = guiaOpen;
-    setGuardandoGuia(true);
-    try {
-      await api.put(`/distributor/orders/${num}/shipping`, body);
-      toast.success(t('distributor.shipping.saved'));
-      setGuiaOpen(null);
-      loadAll();
-    } catch { toast.error(t('distributor.shipping.error')); }
-    finally { setGuardandoGuia(false); }
-  };
   const filteredEarnings = filteredSales.filter((o) => o.status !== 'cancelado').reduce((s, o) => s + (o.commission || 0), 0);
 
   // Cambiar de pestaña desde una tarjeta. Las cifras del resumen son ACCESOS
@@ -236,6 +234,10 @@ const Distributor = () => {
     { grupo: t('dash.group.business') },
     { value: 'codes', icon: Ticket, label: t('distributor.codesTab') },
     { value: 'clients', icon: Users, label: t('distributor.clientsTab') },
+    // El Cotizador es herramienta de VENTA (Christián, 2026-07-30): arma el
+    // presupuesto que le manda a SU cliente. Antes vivía adentro de "Mis
+    // Herramientas"; aquí tiene más lógica, junto a Clientes y Ventas.
+    { value: 'cotizador', icon: Calculator, label: t('distributor.cotizadorTab') },
     { value: 'sales', icon: ShoppingBag, label: t('distributor.salesTab') },
     { value: 'envios', icon: Truck, label: t('distributor.ordersTab') },
     { grupo: t('dash.group.purchases') },
@@ -490,6 +492,14 @@ const Distributor = () => {
           </Card>
         </TabsContent>
 
+        {/* Cotizador: su herramienta de venta, en Mi Negocio junto a Clientes y
+            Ventas — no en "Mis Herramientas", que es para su propio consumo.
+            El componente no cambió, sólo se re-monta aquí (Christián, 2026-07-30). */}
+        <TabsContent value="cotizador" className="mt-5">
+          <CotizadorDistribuidor catalogo={catalogoCotizador} tasaMaxima={tasaMaximaCotizador}
+            codigo={summary?.distributor_code || user.distributor_code || ''} />
+        </TabsContent>
+
         <TabsContent value="sales" className="mt-5 space-y-4">
           <div className="flex flex-wrap items-center gap-3" data-testid="distributor-sales-filters">
             <Select value={period} onValueChange={setPeriod}>
@@ -521,11 +531,12 @@ const Distributor = () => {
                   <TableHead>{t('distributor.table.order')}</TableHead><TableHead>{t('distributor.table.client')}</TableHead>
                   <TableHead>{t('distributor.table.date')}</TableHead><TableHead>{t('common.total')}</TableHead>
                   <TableHead>{t('distributor.table.commission')}</TableHead><TableHead>{t('admin.table.status')}</TableHead>
+                  <TableHead>{t('distributor.table.shipping')}</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
                 {filteredSales.length === 0 ? (
-                  <TableRow><TableCell colSpan={6} className="text-center text-muted-foreground py-8">{t('distributor.noSales')}</TableCell></TableRow>
+                  <TableRow><TableCell colSpan={7} className="text-center text-muted-foreground py-8">{t('distributor.noSales')}</TableCell></TableRow>
                 ) : filteredSales.map((o) => (
                   <TableRow key={o.order_number}>
                     <TableCell>
@@ -543,6 +554,15 @@ const Distributor = () => {
                     <TableCell>{formatMXN(o.total)}</TableCell>
                     <TableCell className="font-medium text-[hsl(var(--primary))]">{formatMXN(o.commission)}</TableCell>
                     <TableCell><Badge className={`${STATUS_COLORS[o.status]} text-[10px]`}>{t(`status.${o.status}`)}</Badge></TableCell>
+                    {/* La guía también desde Ventas: es la lista que más mira, y hasta
+                        hoy había que cambiarse a Envíos sólo para teclear el número. */}
+                    <TableCell>
+                      <Button variant={o.tracking_number ? 'ghost' : 'outline'} size="sm" className="h-8 text-xs"
+                        onClick={() => abrirGuia(o)} data-testid="dist-shipping-open">
+                        <Truck className="h-3.5 w-3.5 mr-1.5" />
+                        {o.tracking_number ? t('guia.edit') : t('guia.add')}
+                      </Button>
+                    </TableCell>
                   </TableRow>
                 ))}
               </TableBody>
@@ -635,7 +655,7 @@ const Distributor = () => {
                           className="mt-2 h-7 px-2 text-[11px] whitespace-nowrap"
                           onClick={() => abrirGuia(o)}>
                           <Truck className="h-3 w-3 mr-1" />
-                          {o.tracking_number ? t('distributor.shipping.edit') : t('distributor.shipping.add')}
+                          {o.tracking_number ? t('guia.edit') : t('guia.add')}
                         </Button>
                       )}
                     </TableCell>
@@ -656,11 +676,7 @@ const Distributor = () => {
         </TabsContent>
 
         <TabsContent value="tools" className="mt-5 space-y-8">
-          {/* `cotizador` enciende la sección "Cotizador", que sólo tiene sentido
-              aquí: es la herramienta con la que le arma un presupuesto a su
-              cliente. En Mi cuenta (clientes) no se pinta. */}
-          <ToolsPanel unlocked={herramientasDesbloqueadas(user, misPedidos)} orders={misPedidos}
-            cotizador codigo={summary?.distributor_code || user.distributor_code || ''} />
+          <ToolsPanel unlocked={herramientasDesbloqueadas(user, misPedidos)} orders={misPedidos} />
         </TabsContent>
 
         {/* Certificados: la entrada del menú está OCULTA por orden de Christián
@@ -692,56 +708,12 @@ const Distributor = () => {
       <FichaCliente clientId={clienteAbierto} open={!!clienteAbierto}
         onClose={() => setClienteAbierto(null)} />
 
-      {/* Capturar la guía de un pedido suyo. SOLO envío: aquí no hay precios,
-          ni pagos, ni estatus, ni compra de guías (eso es dinero de la casa y
-          vive en el Panel de Administración). El servidor vuelve a revisar que
-          el pedido sea suyo: si no, contesta 403 y no se guarda nada. */}
-      <Dialog open={!!guiaOpen} onOpenChange={(v) => !v && setGuiaOpen(null)}>
-        <DialogContent className="max-w-md max-h-[85vh] overflow-y-auto">
-          {guiaOpen && (
-            <>
-              <DialogHeader>
-                <DialogTitle className="flex items-center gap-2">
-                  <Truck className="h-5 w-5" /> {t('distributor.shipping.title')}
-                </DialogTitle>
-              </DialogHeader>
-              <div className="space-y-4">
-                <div className="text-xs text-muted-foreground font-mono-tech">{guiaOpen.order_number}</div>
-                <div>
-                  <Label className="text-sm mb-1.5 block">{t('distributor.shipping.carrier')}</Label>
-                  <Select value={guiaOpen.carrier} onValueChange={(v) => setGuiaOpen({ ...guiaOpen, carrier: v })}>
-                    <SelectTrigger data-testid="dist-shipping-carrier"><SelectValue /></SelectTrigger>
-                    <SelectContent>
-                      {['Estafeta', 'Paquete Express', 'FedEx', 'DHL', 'UPS', 'Redpack', 'Correos de México'].map((c) => (
-                        <SelectItem key={c} value={c}>{c}</SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </div>
-                <div>
-                  <Label className="text-sm mb-1.5 block">{t('distributor.shipping.number')}</Label>
-                  <Input value={guiaOpen.tracking_number} data-testid="dist-shipping-number"
-                    onChange={(e) => setGuiaOpen({ ...guiaOpen, tracking_number: e.target.value })} />
-                </div>
-                <div>
-                  <Label className="text-sm mb-1.5 block">{t('distributor.shipping.url')}</Label>
-                  <Input value={guiaOpen.tracking_url} data-testid="dist-shipping-url"
-                    placeholder="https://" inputMode="url"
-                    onChange={(e) => setGuiaOpen({ ...guiaOpen, tracking_url: e.target.value })} />
-                  <p className="text-[11px] text-muted-foreground mt-1">{t('distributor.shipping.autoUrl')}</p>
-                </div>
-                <p className="text-[11px] text-muted-foreground">{t('distributor.shipping.mailNote')}</p>
-              </div>
-              <DialogFooter>
-                <Button variant="outline" onClick={() => setGuiaOpen(null)}>{t('common.cancel')}</Button>
-                <Button onClick={guardarGuia} disabled={guardandoGuia} data-testid="dist-shipping-save">
-                  {t('common.saveChanges')}
-                </Button>
-              </DialogFooter>
-            </>
-          )}
-        </DialogContent>
-      </Dialog>
+      {/* LA HOJA DE LA GUÍA — la misma que usan el Panel, la ficha del cliente y la
+          ficha del pedido. SOLO envío: aquí no hay precios, ni pagos, ni estatus, ni
+          compra de guías (eso es dinero de la casa y vive en el Panel). El servidor
+          vuelve a revisar que el pedido sea suyo: si no, contesta 403. */}
+      <HojaDeGuia pedido={guiaOpen} open={!!guiaOpen}
+        onClose={() => setGuiaOpen(null)} onGuardada={loadAll} />
     </div>
   );
 };

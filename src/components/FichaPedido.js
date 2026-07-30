@@ -1,11 +1,14 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
+import { Truck } from 'lucide-react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import { Skeleton } from '@/components/ui/skeleton';
 import api, { formatMXN } from '@/lib/api';
 import { useLanguage } from '@/context/LanguageContext';
 import AvisoSobrePedido from '@/components/AvisoSobrePedido';
+import HojaDeGuia from '@/components/HojaDeGuia';
 
 /**
  * LA FICHA DE UN PEDIDO — qué compró y qué pasó con su dinero.
@@ -22,11 +25,12 @@ const FichaPedido = ({ orderNumber, open, onClose, admin = false }) => {
   const { t, language } = useLanguage();
   const [pedido, setPedido] = useState(null);
   const [error, setError] = useState(null);
+  // Poner la guía SIN salir de aquí: esta ficha se abre desde la campanita, desde la
+  // ficha del cliente y desde las listas, así que es el único lugar por donde pasan
+  // todos los caminos que llevan a un pedido (Christián, 2026-07-30).
+  const [guiaAbierta, setGuiaAbierta] = useState(false);
 
-  useEffect(() => {
-    if (!open || !orderNumber) return;
-    setPedido(null);
-    setError(null);
+  const cargar = useCallback(() => {
     const ruta = admin
       ? `/admin/orders/${orderNumber}/detalle`
       : `/distributor/orders/${orderNumber}`;
@@ -35,7 +39,14 @@ const FichaPedido = ({ orderNumber, open, onClose, admin = false }) => {
       .catch((e) => setError(e.response?.status === 403
         ? t('order.detail.forbidden')
         : t('order.detail.error')));
-  }, [open, orderNumber, admin, t]);
+  }, [orderNumber, admin, t]);
+
+  useEffect(() => {
+    if (!open || !orderNumber) return;
+    setPedido(null);
+    setError(null);
+    cargar();
+  }, [open, orderNumber, cargar]);
 
   const fecha = (v) => (v ? new Date(v).toLocaleString(language) : '—');
   const fila = (etiqueta, valor, fuerte = false) => (
@@ -117,10 +128,20 @@ const FichaPedido = ({ orderNumber, open, onClose, admin = false }) => {
                   ? <a href={pedido.tracking_url} target="_blank" rel="noreferrer" className="text-[hsl(var(--primary))] underline">{pedido.tracking_number}</a>
                   : <span className="font-mono-tech">{pedido.tracking_number}</span>)}
               {pedido.delivered_at && fila(t('order.detail.delivered'), fecha(pedido.delivered_at))}
+              {/* Un toque y sube la hoja de la guía. El mismo botón para el admin y para
+                  el distribuidor; cada quien guarda por la ruta que le toca. */}
+              <Button variant="outline" size="sm" className="w-full mt-3"
+                onClick={() => setGuiaAbierta(true)} data-testid="ficha-pedido-guia">
+                <Truck className="h-4 w-4 mr-1.5" />
+                {pedido.tracking_number ? t('guia.edit') : t('guia.add')}
+              </Button>
             </div>
           </div>
         )}
       </DialogContent>
+
+      <HojaDeGuia pedido={pedido} open={guiaAbierta} onClose={() => setGuiaAbierta(false)}
+        onGuardada={cargar} />
     </Dialog>
   );
 };

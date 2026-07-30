@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { Phone, MapPin, Mail, Ban, UserCheck } from 'lucide-react';
+import { Phone, MapPin, Mail, Ban, UserCheck, Truck } from 'lucide-react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -12,6 +12,7 @@ import api, { formatMXN } from '@/lib/api';
 import { useAuth } from '@/context/AuthContext';
 import { useLanguage } from '@/context/LanguageContext';
 import FichaPedido from '@/components/FichaPedido';
+import HojaDeGuia from '@/components/HojaDeGuia';
 
 /**
  * LA FICHA DE UN CLIENTE — la misma, se abra desde donde se abra.
@@ -47,6 +48,8 @@ const FichaCliente = ({ clientId, open, onClose }) => {
   const [error, setError] = useState(null);
   // Un pedido abierto DESDE la ficha: el mismo modal de siempre (clic en el número).
   const [pedidoAbierto, setPedidoAbierto] = useState(null);
+  // Y la guía se pone SIN salir del cliente: un toque en el camión de su renglón.
+  const [guiaDe, setGuiaDe] = useState(null);
 
   // Cajas del admin. El distribuidor nunca las recibe del servidor, así que ni se pintan.
   const [cuponForm, setCuponForm] = useState({ pct: 10, days: 30, note: '' });
@@ -250,6 +253,14 @@ const FichaCliente = ({ clientId, open, onClose }) => {
                       {o.my_commission != null && (
                         <span className="font-medium text-xs text-[hsl(var(--primary))]">+{formatMXN(o.my_commission)}</span>
                       )}
+                      {/* Poner la guía desde aquí mismo. Estando en el cliente, ir a
+                          buscar el pedido a otra lista para teclear un número era el
+                          camino largo a la única cosa que hay que hacer con él. */}
+                      <button type="button" onClick={() => setGuiaDe(o)} title={t('guia.add')}
+                        aria-label={t('guia.add')} data-testid="ficha-cliente-guia"
+                        className="shrink-0 rounded-md p-1 -m-1 text-muted-foreground hover:text-[hsl(var(--primary))] transition">
+                        <Truck className="h-4 w-4" />
+                      </button>
                     </div>
                   </div>
                 ))}
@@ -339,6 +350,8 @@ const FichaCliente = ({ clientId, open, onClose }) => {
       {/* El detalle del pedido, con la ruta que le toca a quien mira. */}
       <FichaPedido orderNumber={pedidoAbierto} open={!!pedidoAbierto} admin={esAdmin}
         onClose={() => setPedidoAbierto(null)} />
+      <HojaDeGuia pedido={guiaDe} open={!!guiaDe} onClose={() => setGuiaDe(null)}
+        onGuardada={cargar} />
     </>
   );
 };
