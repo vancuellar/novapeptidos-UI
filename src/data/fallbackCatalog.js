@@ -4001,6 +4001,16 @@ export const fallbackProducts = [
         "sku": "RETATRUTIDA-100MG",
         "commission_cap": 0.4,
         "distributor_eligible": true
+      },
+      {
+        "presentation": "120 mg",
+        "price": 7899,
+        "stock": 0,
+        "batch_number": "",
+        "id": "dd7edd66-8bc2-48d7-af12-1e854685cab1",
+        "sku": "RETATRUTIDA-120MG",
+        "commission_cap": 0.35,
+        "distributor_eligible": true
       }
     ],
     "tiers": [],
