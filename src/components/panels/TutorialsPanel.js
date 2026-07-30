@@ -24,7 +24,20 @@ const videoFileFor = (v, language) => {
   return v.file.replace(/\.mp4$/, `${suffix}.mp4`);
 };
 
+const BASE = process.env.PUBLIC_URL || '';
+
 const VIDEOS = [
+  {
+    // Video de INVITACIÓN para prospectos. Es público (vive en public/videos,
+    // no detrás del login) porque su público aún no tiene cuenta; se lista
+    // aquí para que el distribuidor lo comparta con su red al reclutar.
+    file: 'conviertete-en-distribuidor.mp4',
+    localized: true, // hay versión -en y -pt en public/videos
+    publico: true,   // se sirve estático desde el sitio, sin token
+    title: 'Conviértete en distribuidor: comparte esta invitación con tu red',
+    duration: '1:30',
+    audience: 'Distribuidores', role: 'dist',
+  },
   {
     file: 'tutorial-1-panel-distribuidor.mp4',
     localized: true, // hay versión -en y -pt en el backend
@@ -241,7 +254,11 @@ const TutorialsPanel = () => {
   const videos = VIDEOS.filter((v) => v.role !== 'dist' || isDist);
   // La etiqueta <video> no manda headers: el token de sesión viaja como query.
   // El archivo depende del idioma del sitio (es → original, en → -en, pt → -pt).
-  const videoSrc = (v) => `${API}/tutorials/${videoFileFor(v, language)}?token=${encodeURIComponent(localStorage.getItem('np_token') || '')}`;
+  // Los videos `publico` (la invitación a distribuidores) no van al backend:
+  // son archivos estáticos del propio sitio, sin token.
+  const videoSrc = (v) => (v.publico
+    ? `${BASE}/videos/${videoFileFor(v, language)}`
+    : `${API}/tutorials/${videoFileFor(v, language)}?token=${encodeURIComponent(localStorage.getItem('np_token') || '')}`);
 
   return (
     <div data-testid="tutorials-panel">
