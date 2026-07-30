@@ -53,8 +53,11 @@ const TABS_DIFUSION = ['funnel', 'marketing', 'meta'];
 // ⛔ El estado cuenta el viaje de la MERCANCÍA; `pagado` cuenta el DINERO. Son
 // cosas distintas a propósito (ver cobrado.py en el backend): hay pedidos
 // ENTREGADOS y sin cobrar. Por eso son dos filtros, no uno.
-const pasaFiltros = (o, estado, pago) => {
+const pasaFiltros = (o, estado, pago, surtir) => {
   if (estado !== 'todos' && o.status !== estado) return false;
+  // "Por surtir": los pedidos que esperan mercancía que hay que mandar pedir. Un
+  // cancelado ya no espera nada, así que no cuenta.
+  if (surtir && (!o.backorder_items?.length || o.status === 'cancelado')) return false;
   if (pago === 'pagados') return !!o.pagado;
   // "Por cobrar" = vivo y sin pagar. Un cancelado ya no se debe.
   if (pago === 'deuda') return !o.pagado && o.status !== 'cancelado';
@@ -179,6 +182,8 @@ const Admin = () => {
   //   ?pago=pagados|deuda estado del DINERO (son cosas distintas: ver cobrado.py)
   const filtroStatus = params.get('estado') || 'todos';
   const filtroPago = params.get('pago') || 'todos';
+  // Pedidos que esperan mercancía por mandar pedir (tarjeta "Por Surtir").
+  const filtroSurtir = params.get('surtir') === '1';
   // Cambia un filtro dejando el resto como está.
   const setFiltroPedidos = (patch) => {
     const next = new URLSearchParams(params);
@@ -197,6 +202,7 @@ const Admin = () => {
     const next = new URLSearchParams({ tab: 'orders' });
     if (patch.estado) next.set('estado', patch.estado);
     if (patch.pago) next.set('pago', patch.pago);
+    if (patch.surtir) next.set('surtir', '1');
     setParams(next, { replace: true });
     alTope();
   };
@@ -274,9 +280,9 @@ const Admin = () => {
   // selección: la barra en lote no debe actuar sobre pedidos invisibles.
   useEffect(() => {
     const lista = verArchivados ? archivados : orders;
-    const visibles = new Set(lista.filter((o) => pasaFiltros(o, filtroStatus, filtroPago)).map((o) => o.id));
+    const visibles = new Set(lista.filter((o) => pasaFiltros(o, filtroStatus, filtroPago, filtroSurtir)).map((o) => o.id));
     setSel((s) => (s.every((id) => visibles.has(id)) ? s : s.filter((id) => visibles.has(id))));
-  }, [orders, archivados, filtroStatus, filtroPago, verArchivados]);
+  }, [orders, archivados, filtroStatus, filtroPago, filtroSurtir, verArchivados]);
 
   // La serie va aparte porque se recarga al cambiar de día/semana/mes, y no
   // tiene por qué volver a pedir todo el panel para eso. El rango se estira con
@@ -462,7 +468,7 @@ const Admin = () => {
   // reciente al más viejo, y con filtro por estado para limpiar por tandas.
   const fechaPedido = (o) => { const n = Date.parse(o.created_at); return Number.isNaN(n) ? 0 : n; };
   const pedidosVista = (verArchivados ? archivados : orders)
-    .filter((o) => pasaFiltros(o, filtroStatus, filtroPago))
+    .filter((o) => pasaFiltros(o, filtroStatus, filtroPago, filtroSurtir))
     .slice()
     .sort((a, b) => fechaPedido(b) - fechaPedido(a));
   const toggleSel = (id) => setSel((s) => (s.includes(id) ? s.filter((x) => x !== id) : [...s, id]));
@@ -607,6 +613,14 @@ const Admin = () => {
       id: 'admin-stat-pedidos', go: () => irAPedidos() },
     { i: Clock, t: t('admin.stats.pending'), v: stats.pending_orders,
       id: 'admin-stat-pendientes', go: () => irAPedidos({ estado: 'pendiente' }) },
+    // ⛔ LO QUE HAY QUE MANDAR PEDIR, EN LA PORTADA (Christián, 2026-07-30): «quiero
+    // poder entrar a mi Admin Panel y ahí tener todo lo que necesito». Vivía sólo en
+    // el correo y dentro de cada ficha: para enterarse había que abrir pedido por
+    // pedido. Se toca y aterriza en la lista ya filtrada, con el proveedor a la vista.
+    { i: Boxes, t: t('admin.stats.toOrder'),
+      v: `${stats.pedidos_por_surtir || 0} · ${stats.piezas_por_pedir || 0}`,
+      alerta: (stats.pedidos_por_surtir || 0) > 0,
+      id: 'admin-stat-por-surtir', go: () => irAPedidos({ surtir: true }) },
     { i: Package, t: t('admin.stats.products'), v: stats.total_products,
       id: 'admin-stat-productos', go: () => irAPestana('products') },
     { i: Users, t: t('admin.stats.customers'), v: stats.total_users,
@@ -1873,8 +1887,26 @@ const Admin = () => {
                     <div className="text-xs font-semibold mb-2">{t('admin.order.backorderTitle')}</div>
                     <div className="space-y-1.5">
                       {orderOpen.backorder_items.map((b, i) => (
-                        <div key={i} className="flex items-center justify-between gap-3">
-                          <div className="min-w-0 truncate">{b.name}</div>
+                        <div key={i} className="flex items-start justify-between gap-3">
+                          <div className="min-w-0">
+                            <div className="truncate">{b.name}</div>
+                            {/* A QUIÉN COMPRARLE. Sin esto la tarjeta decía QUÉ mandar
+                                pedir y había que ir a buscar el proveedor a otra parte,
+                                con el pedido ya vendido. */}
+                            {b.proveedor ? (
+                              <div className="text-[11px] opacity-90 break-words" data-testid="admin-order-proveedor">
+                                {t('admin.order.buyFrom', { proveedor: b.proveedor })}
+                                {b.telefono
+                                  ? <> · <a href={b.whatsapp || `tel:${b.telefono}`} className="underline">{b.telefono}</a></>
+                                  : <> · {t('admin.order.noPhone')}</>}
+                                {b.costo_vial_usd ? ` · $${Number(b.costo_vial_usd).toFixed(2)} USD/${t('admin.order.perVial')}` : ''}
+                              </div>
+                            ) : (
+                              <div className="text-[11px] font-medium" data-testid="admin-order-sin-proveedor">
+                                {t('admin.order.noSupplier')}
+                              </div>
+                            )}
+                          </div>
                           <div className="shrink-0 text-right text-xs">
                             <div>{t('admin.order.backorderNow', { n: b.en_mano })}</div>
                             <div className="font-bold">{t('admin.order.backorderOrder', { n: b.por_surtir })}</div>
