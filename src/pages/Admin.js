@@ -1,6 +1,6 @@
 import React, { useEffect, useLayoutEffect, useState, useCallback } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import { Filter, Eye, LayoutDashboard, Package, ShoppingBag, Plus, Pencil, Trash2, DollarSign, Users, Clock, TrendingUp, MapPin, Phone, Receipt, Store, Copy, Boxes, Truck, RefreshCw, MailCheck, Ban, Megaphone, BarChart3, Upload, ShoppingCart, Target, KeyRound, Gauge, Search, Archive, ArchiveRestore } from 'lucide-react';
+import { Filter, Eye, LayoutDashboard, Package, ShoppingBag, Plus, Pencil, Trash2, DollarSign, Users, Clock, TrendingUp, MapPin, Phone, Receipt, Store, Copy, Boxes, Truck, RefreshCw, MailCheck, Ban, Megaphone, BarChart3, Upload, ShoppingCart, Target, KeyRound, Gauge, Search, Archive, ArchiveRestore, HandCoins, CircleCheck, CircleAlert } from 'lucide-react';
 import Marketing from '@/components/admin/Marketing';
 import VideoComoLeerDifusion from '@/components/admin/VideoComoLeerDifusion';
 import MotorPrecios from '@/components/admin/MotorPrecios';
@@ -264,6 +264,18 @@ const Admin = () => {
     catch { toast.error(t('admin.toast.statusError')); }
   };
 
+  // ⛔ PAGADO ≠ ENTREGADO. Christián entrega en persona y a veces cobra después, así que
+  // el estado de la mercancía y el del dinero se marcan por separado. Sin este botón la
+  // separación no serviría de nada: no habría manera de decirle al sistema que ya
+  // cobraste, y todo lo nuevo se quedaría eternamente en "por cobrar".
+  const marcarPago = async (order, pagado) => {
+    try {
+      await api.put(`/admin/orders/${order.id}/pago`, { pagado });
+      toast.success(pagado ? t('admin.toast.markedPaid') : t('admin.toast.markedUnpaid'));
+      loadAll();
+    } catch { toast.error(t('admin.toast.statusError')); }
+  };
+
   const createDistributor = async () => {
     if (!distForm.name || !distForm.email) { toast.error(t('admin.toast.required')); return; }
     try {
@@ -497,8 +509,14 @@ const Admin = () => {
   const fmtDate = (iso) => (iso ? new Date(iso).toLocaleDateString(language) : '—');
   const fmtMonth = (m) => new Date(`${m}-02T00:00:00`).toLocaleDateString(language, { month: 'short', year: '2-digit' });
 
+  // ⛔ COBRADO Y POR COBRAR, LADO A LADO. "Ingresos" era todo lo no cancelado, así que
+  // la venta de Alanís —entregada y a deber— se veía como dinero en la cuenta. Las dos
+  // cifras van juntas a propósito: si la deuda no se enseñara, un pedido fiado
+  // desaparecería del tablero y nadie se acordaría de cobrarlo.
   const STAT_CARDS = stats ? [
     { i: DollarSign, t: t('admin.stats.revenue'), v: formatMXN(stats.revenue) },
+    { i: HandCoins, t: t('admin.stats.receivable'), v: formatMXN(stats.por_cobrar || 0),
+      alerta: (stats.por_cobrar || 0) > 0 },
     { i: ShoppingBag, t: t('admin.stats.orders'), v: stats.total_orders },
     { i: Clock, t: t('admin.stats.pending'), v: stats.pending_orders },
     { i: Package, t: t('admin.stats.products'), v: stats.total_products },
@@ -560,11 +578,13 @@ const Admin = () => {
         <div className="min-w-0 flex-1">
 
         {!esMarketing && (
-        <div className="grid grid-cols-2 md:grid-cols-5 gap-3 mb-8">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3 mb-8">
           {STAT_CARDS.map((s, i) => (
-            <Card key={i} className="p-4">
+            <Card key={i} className="p-4" data-testid={s.alerta === undefined ? undefined : 'admin-stat-por-cobrar'}>
               <div className="flex items-center gap-2 text-muted-foreground text-xs"><s.i className="h-4 w-4" /> {s.t}</div>
-              <div className="font-heading text-xl font-bold mt-1">{s.v}</div>
+              {/* La deuda se pinta en ámbar sólo cuando existe: en cero es un dato más,
+                  con saldo es un pendiente que hay que ver desde la puerta. */}
+              <div className={`font-heading text-xl font-bold mt-1${s.alerta ? ' text-[hsl(var(--warning-foreground))]' : ''}`}>{s.v}</div>
             </Card>
           ))}
         </div>
@@ -856,13 +876,23 @@ const Admin = () => {
 
           {funnel && !funnel.sin_datos && (
             <>
-              <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
                 <Card className="p-4"><div className="text-xs text-muted-foreground">{t('admin.funnel.visits')}</div>
                   <div className="font-heading text-xl font-bold mt-1">{funnel.embudo[0]?.sesiones || 0}</div></Card>
                 <Card className="p-4"><div className="text-xs text-muted-foreground">{t('admin.funnel.conversion')}</div>
                   <div className="font-heading text-xl font-bold mt-1">{funnel.conversion_total}%</div></Card>
                 <Card className="p-4"><div className="text-xs text-muted-foreground">{t('admin.funnel.revenue')}</div>
-                  <div className="font-heading text-xl font-bold mt-1">{formatMXN(funnel.ingreso)}</div></Card>
+                  <div className="font-heading text-xl font-bold mt-1">{formatMXN(funnel.ingreso)}</div>
+                  {/* Compras cuyo pedido ya se borró (los 12 de prueba). Si no se dijera,
+                      el embudo enseñaría compras con $0 de ingreso y parecería un error. */}
+                  {(funnel.ingreso_sin_pedido || 0) > 0 && (
+                    <div className="text-[11px] text-muted-foreground mt-1" data-testid="funnel-sin-pedido">
+                      {t('admin.funnel.noOrder', { monto: formatMXN(funnel.ingreso_sin_pedido) })}
+                    </div>
+                  )}
+                </Card>
+                <Card className="p-4"><div className="text-xs text-muted-foreground">{t('admin.stats.receivable')}</div>
+                  <div className={`font-heading text-xl font-bold mt-1${(funnel.por_cobrar || 0) > 0 ? ' text-[hsl(var(--warning-foreground))]' : ''}`}>{formatMXN(funnel.por_cobrar || 0)}</div></Card>
               </div>
 
               <Card className="p-5" data-testid="funnel-steps">
@@ -985,7 +1015,7 @@ const Admin = () => {
                   <div className="py-10 text-center text-sm text-muted-foreground">{t('admin.sales.noData')}</div>
                 ) : (
                   <>
-                    <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-5">
+                    <div className="grid grid-cols-2 md:grid-cols-5 gap-3 mb-5">
                       <div>
                         <div className="text-muted-foreground text-xs">{t('admin.series.sessions')}</div>
                         <div className="font-heading text-xl font-bold mt-0.5">{serie.totales.sesiones}</div>
@@ -997,6 +1027,12 @@ const Admin = () => {
                       <div>
                         <div className="text-muted-foreground text-xs">{t('admin.series.revenue')}</div>
                         <div className="font-heading text-xl font-bold mt-0.5">{formatMXN(serie.totales.ingreso)}</div>
+                      </div>
+                      {/* La deuda al lado del ingreso: son las dos mitades de la misma
+                          venta y sumarlas sería volver al número que engañaba. */}
+                      <div data-testid="admin-serie-por-cobrar">
+                        <div className="text-muted-foreground text-xs">{t('admin.stats.receivable')}</div>
+                        <div className={`font-heading text-xl font-bold mt-0.5${(serie.totales.por_cobrar || 0) > 0 ? ' text-[hsl(var(--warning-foreground))]' : ''}`}>{formatMXN(serie.totales.por_cobrar || 0)}</div>
                       </div>
                       <div>
                         <div className="text-muted-foreground text-xs">{t('admin.series.conversion')}</div>
@@ -1016,11 +1052,13 @@ const Admin = () => {
                           tick={{ fontSize: 11, fill: 'hsl(var(--muted-foreground))' }} />
                         <Tooltip
                           contentStyle={{ background: 'hsl(var(--popover))', border: '1px solid hsl(var(--border))', borderRadius: 12, fontSize: 12 }}
-                          formatter={(v, n) => (n === t('admin.series.revenue') ? formatMXN(v) : v)} />
+                          formatter={(v, n) => ((n === t('admin.series.revenue') || n === t('admin.stats.receivable')) ? formatMXN(v) : v)} />
                         <Legend wrapperStyle={{ fontSize: 12 }} />
                         <Bar yAxisId="izq" dataKey="sesiones" name={t('admin.series.sessions')} fill="hsl(var(--primary))" fillOpacity={0.35} radius={[4, 4, 0, 0]} />
                         <Bar yAxisId="izq" dataKey="pedidos" name={t('admin.series.orders')} fill="hsl(var(--primary))" radius={[4, 4, 0, 0]} />
                         <Line yAxisId="der" type="monotone" dataKey="ingreso" name={t('admin.series.revenue')} stroke="hsl(var(--info))" strokeWidth={2} dot={false} />
+                        {/* Punteada, para que se lea distinto: es dinero prometido, no cobrado. */}
+                        <Line yAxisId="der" type="monotone" dataKey="por_cobrar" name={t('admin.stats.receivable')} stroke="hsl(var(--warning-foreground))" strokeWidth={2} strokeDasharray="4 3" dot={false} />
                       </ComposedChart>
                     </GraficaInteractiva>
                   </>
@@ -1040,8 +1078,15 @@ const Admin = () => {
                     <CartesianGrid vertical={false} stroke="hsl(var(--border))" strokeOpacity={0.5} />
                     <XAxis dataKey="month" tickFormatter={fmtMonth} tickLine={false} axisLine={false} tick={{ fontSize: 11, fill: 'hsl(var(--muted-foreground))' }} />
                     <YAxis tickFormatter={(v) => `$${(v / 1000).toFixed(0)}k`} tickLine={false} axisLine={false} width={44} tick={{ fontSize: 11, fill: 'hsl(var(--muted-foreground))' }} />
-                    <Tooltip contentStyle={CHART_TOOLTIP_STYLE} labelFormatter={fmtMonth} formatter={(v, name) => (name === 'revenue' ? [formatMXN(v), t('admin.stats.revenue')] : [v, t('admin.stats.orders')])} />
+                    <Tooltip contentStyle={CHART_TOOLTIP_STYLE} labelFormatter={fmtMonth} formatter={(v, name) => {
+                      if (name === 'revenue') return [formatMXN(v), t('admin.stats.revenue')];
+                      if (name === 'por_cobrar') return [formatMXN(v), t('admin.stats.receivable')];
+                      return [v, t('admin.stats.orders')];
+                    }} />
                     <Area type="monotone" dataKey="revenue" stroke="hsl(var(--primary))" strokeWidth={2} fill="url(#rev)" activeDot={{ r: 4 }} />
+                    {/* Lo entregado y sin cobrar, en su propia línea. Antes iba sumado
+                        dentro de `revenue` y por eso julio decía $7,204 en vez de $3,347. */}
+                    <Area type="monotone" dataKey="por_cobrar" stroke="hsl(var(--warning-foreground))" strokeWidth={2} strokeDasharray="4 3" fill="none" activeDot={{ r: 4 }} />
                   </AreaChart>
                 </GraficaInteractiva>
               </Card>
@@ -1090,13 +1135,13 @@ const Admin = () => {
               <TableHeader>
                 <TableRow>
                   <TableHead>{t('admin.table.customer')}</TableHead><TableHead>{t('admin.table.phone')}</TableHead>
-                  <TableHead>{t('admin.table.ordersCount')}</TableHead><TableHead>{t('admin.table.totalSpent')}</TableHead>
+                  <TableHead>{t('admin.table.ordersCount')}</TableHead><TableHead>{t('admin.table.totalSpent')}</TableHead><TableHead>{t('admin.stats.receivable')}</TableHead>
                   <TableHead>{t('admin.table.lastOrder')}</TableHead><TableHead>{t('admin.table.registered')}</TableHead><TableHead></TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
                 {customers.length === 0 ? (
-                  <TableRow><TableCell colSpan={7} className="text-center text-muted-foreground py-8">{t('admin.noCustomers')}</TableCell></TableRow>
+                  <TableRow><TableCell colSpan={8} className="text-center text-muted-foreground py-8">{t('admin.noCustomers')}</TableCell></TableRow>
                 ) : customers.map((c) => (
                   <TableRow key={c.id} className={c.blocked ? 'opacity-60' : ''}>
                     <TableCell>
@@ -1109,6 +1154,11 @@ const Admin = () => {
                     <TableCell className="text-xs">{c.phones?.[0] || '—'}</TableCell>
                     <TableCell>{c.orders_count}</TableCell>
                     <TableCell className="font-medium">{formatMXN(c.total_spent)}</TableCell>
+                    {/* "Gastado" es lo que PAGÓ. Lo que debe va aparte: antes iba sumado
+                        y un cliente fiado se veía como el que mejor paga. */}
+                    <TableCell className={(c.por_cobrar || 0) > 0 ? 'font-medium text-[hsl(var(--warning-foreground))]' : 'text-muted-foreground'} data-testid="admin-cliente-por-cobrar">
+                      {(c.por_cobrar || 0) > 0 ? formatMXN(c.por_cobrar) : '—'}
+                    </TableCell>
                     <TableCell className="text-xs text-muted-foreground">{fmtDate(c.last_order_at)}</TableCell>
                     <TableCell className="text-xs text-muted-foreground">{fmtDate(c.created_at)}</TableCell>
                     <TableCell className="text-right whitespace-nowrap">
@@ -1283,7 +1333,7 @@ const Admin = () => {
                       aria-label={t('admin.lote.selectAll')} data-testid="admin-sel-todo" />
                   </TableHead>
                   <TableHead>{t('admin.table.order')}</TableHead><TableHead>{t('admin.table.customer')}</TableHead><TableHead>{t('common.total')}</TableHead>
-                  <TableHead>{t('admin.table.payment')}</TableHead><TableHead>{t('admin.table.date')}</TableHead><TableHead>{t('admin.table.status')}</TableHead>
+                  <TableHead>{t('admin.table.payment')}</TableHead><TableHead>{t('admin.table.paid')}</TableHead><TableHead>{t('admin.table.date')}</TableHead><TableHead>{t('admin.table.status')}</TableHead>
                   <TableHead>{t('admin.table.receipt')}</TableHead>
                   <TableHead>{t('admin.table.tracking')}</TableHead>
                   <TableHead className="w-12"></TableHead>
@@ -1291,7 +1341,7 @@ const Admin = () => {
               </TableHeader>
               <TableBody>
                 {pedidosVista.length === 0 ? (
-                  <TableRow><TableCell colSpan={10} className="text-center text-muted-foreground py-8">{t('admin.noOrders')}</TableCell></TableRow>
+                  <TableRow><TableCell colSpan={11} className="text-center text-muted-foreground py-8">{t('admin.noOrders')}</TableCell></TableRow>
                 ) : pedidosVista.map((o) => (
                   <TableRow key={o.id} data-state={sel.includes(o.id) ? 'selected' : undefined}>
                     <TableCell>
@@ -1307,6 +1357,21 @@ const Admin = () => {
                     <TableCell><div className="text-sm">{o.customer.full_name}</div><div className="text-xs text-muted-foreground">{o.customer.email}</div></TableCell>
                     <TableCell className="font-medium">{formatMXN(o.total)}</TableCell>
                     <TableCell className="text-xs">{t(`payment.${o.payment_method}.label`) || o.payment_method}</TableCell>
+                    {/* El servidor manda `pagado` ya resuelto (los pedidos viejos no
+                        traen el campo `paid` y se infiere allá, no aquí). Un clic lo
+                        cambia: es el único lugar donde se dice "ya me pagó". */}
+                    <TableCell>
+                      <button type="button" onClick={() => marcarPago(o, !o.pagado)}
+                        data-testid="admin-toggle-pago"
+                        title={o.pagado ? t('admin.pay.markUnpaid') : t('admin.pay.markPaid')}
+                        className="inline-flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-[11px] font-medium transition hover:opacity-80"
+                        style={o.pagado
+                          ? { background: 'hsl(var(--success) / 0.12)', borderColor: 'hsl(var(--success))', color: 'hsl(var(--success))' }
+                          : { background: 'hsl(var(--warning) / 0.15)', borderColor: 'hsl(var(--warning-border))', color: 'hsl(var(--warning-foreground))' }}>
+                        {o.pagado ? <CircleCheck className="h-3.5 w-3.5" /> : <CircleAlert className="h-3.5 w-3.5" />}
+                        {o.pagado ? t('admin.pay.paid') : t('admin.pay.unpaid')}
+                      </button>
+                    </TableCell>
                     <TableCell className="text-xs text-muted-foreground">{new Date(o.created_at).toLocaleDateString(language)}</TableCell>
                     <TableCell>
                       {o.spei_receipt_at ? (
@@ -1473,6 +1538,13 @@ const Admin = () => {
                       </div>
                       <div className="flex items-center gap-2">
                         <Badge className={`${STATUS_COLORS[o.status]} text-[10px]`}>{t(`status.${o.status}`)}</Badge>
+                        {/* Entregado y a deber tiene que verse de un golpe: es la
+                            diferencia entre una venta cerrada y una cuenta por cobrar. */}
+                        {o.pagado === false && (
+                          <Badge variant="outline" className="text-[10px] text-[hsl(var(--warning-foreground))] border-[hsl(var(--warning-border))]">
+                            {t('admin.pay.unpaid')}
+                          </Badge>
+                        )}
                         <span className="font-medium text-xs">{formatMXN(o.total)}</span>
                       </div>
                     </div>
@@ -1481,10 +1553,14 @@ const Admin = () => {
                 {customerDetail && (
                   <>
                     <Separator />
-                    <div className="grid grid-cols-3 gap-2 text-center">
+                    <div className="grid grid-cols-4 gap-2 text-center">
                       <div className="rounded-lg border border-border p-2">
                         <div className="text-[11px] text-muted-foreground">{t('admin.ficha.paid')}</div>
                         <div className="font-semibold">{formatMXN(customerDetail.paid_total)}</div>
+                      </div>
+                      <div className="rounded-lg border border-border p-2" data-testid="admin-ficha-por-cobrar">
+                        <div className="text-[11px] text-muted-foreground">{t('admin.stats.receivable')}</div>
+                        <div className={`font-semibold${(customerDetail.por_cobrar || 0) > 0 ? ' text-[hsl(var(--warning-foreground))]' : ''}`}>{formatMXN(customerDetail.por_cobrar || 0)}</div>
                       </div>
                       <div className="rounded-lg border border-border p-2">
                         <div className="text-[11px] text-muted-foreground">{t('admin.ficha.paidOrders')}</div>

@@ -1175,7 +1175,11 @@ const esMX = {
 
   'admin.title': 'Panel De Administración',
   'admin.subtitle': 'Gestiona productos, inventario y pedidos de Exygen Labs',
-  'admin.stats.revenue': 'Ingresos',
+  'admin.stats.revenue': 'Cobrado',
+  // ⛔ "Ingresos" decía que habías cobrado lo que no cobraste: sumaba todo lo
+  // entregado. Ahora son dos cifras, y por eso la primera se llama COBRADO.
+  'admin.stats.receivable': 'Por cobrar',
+  'admin.funnel.noOrder': '+{{monto}} de compras cuyo pedido ya se borró',
   'admin.stats.orders': 'Pedidos',
   'admin.stats.pending': 'Pendientes',
   'admin.stats.products': 'Productos',
@@ -1194,7 +1198,12 @@ const esMX = {
   'admin.featured': 'Destacado',
   'admin.table.order': 'Pedido',
   'admin.table.customer': 'Cliente',
-  'admin.table.payment': 'Pago',
+  'admin.table.payment': 'Método',
+  'admin.table.paid': 'Pago',
+  'admin.pay.paid': 'Pagado',
+  'admin.pay.unpaid': 'Sin pagar',
+  'admin.pay.markPaid': 'Marcar como pagado',
+  'admin.pay.markUnpaid': 'Marcar como NO pagado',
   'admin.table.date': 'Fecha',
   'admin.table.status': 'Estado',
   'admin.noOrders': 'Sin pedidos aun',
@@ -1217,6 +1226,8 @@ const esMX = {
   'admin.toast.deleted': 'Producto eliminado',
   'admin.toast.deleteError': 'Error al eliminar',
   'admin.toast.statusUpdated': 'Estado actualizado',
+  'admin.toast.markedPaid': 'Pedido marcado como pagado',
+  'admin.toast.markedUnpaid': 'Pedido marcado como NO pagado',
   'admin.toast.statusError': 'Error al actualizar',
   'admin.salesTab': 'Ventas',
   'admin.funnelTab': 'Embudo',
@@ -1239,7 +1250,9 @@ const esMX = {
   'admin.customersCount': '{{count}} clientes',
   'admin.table.phone': 'Teléfono',
   'admin.table.ordersCount': 'Pedidos',
-  'admin.table.totalSpent': 'Total comprado',
+  // Ya no es "todo lo que compró": es lo que de verdad PAGÓ. Lo que debe va en su
+  // propia columna (`admin.stats.receivable`).
+  'admin.table.totalSpent': 'Total pagado',
   'admin.table.lastOrder': 'Ultima compra',
   'admin.table.registered': 'Registro',
   'admin.noCustomers': 'Sin clientes aun',
