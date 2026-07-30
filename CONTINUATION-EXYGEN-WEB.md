@@ -111,6 +111,43 @@ de sitio roto: si se repite la ola, usar worktrees o serializar los deploys.
 ⚠️ Google Reviews: la página de confirmación es /pedido/<numero> (patrón
 https://exygenlabs.com/pedido/*).
 
+## 🔜 LO PRIMERO PARA EL PRÓXIMO CHAT (2026-07-30)
+
+1. **Christián pide los PROMPTS ACTUALIZADOS PARA CODEX**, dos: (a) *Rompedor
+   del Motor de Precios* y (b) *Auditor de Precios*. Las plantillas viejas están
+   en `pricing-system/PROMPT-ROMPEDOR.md` y `PROMPT-AUDITORIA.md`; hay que
+   ponerlas al día con lo de hoy: los dos costos que no se hablaban entre sí, el
+   `import` que rompía `reprecio --aplicar`, el conteo de viales por caja, el
+   TC 17.50, los proveedores nuevos P36/P37 y los 11 precios contradictorios.
+   Entregárselos EN EL CHAT para que él los pegue en Codex.
+
+2. **WhatsApp duplicado en el footer — YA DIAGNOSTICADO, falta arreglarlo.**
+   Hay DOS enlaces de WhatsApp pegados: el que ya existía desde el 28-jul
+   (`data-testid="footer-whatsapp"`, en el bloque de Contacto bajo el correo) y
+   el que llegó al mover a Mónica Fuentes ahí mismo
+   (`data-testid="home-rep-whatsapp"`, en `Footer.js` ~línea 147). Los dos
+   enseñan `@exygenlabs` y van al mismo `wa.me`. Arreglo: dejar UNO — lo natural
+   es conservar el de Mónica (trae nombre y rol) y quitar el suelto, o al revés,
+   pero no los dos.
+
+3. **"Tienda de Confianza": SÍ está en vivo, verificado.** En la portada vive a
+   ~1,814 px de scroll (hay que bajar bastante) y en la ficha de producto bajo
+   las especificaciones. Si Christián no la ve: Cmd+Shift+R. Si aun así le
+   parece escondida, subirla más arriba en la portada es una línea.
+
+4. **Pendiente de decisión de Christián** (de la auditoría de proveedores):
+   limpiar los **4 proveedores duplicados** (Lisa, Cell Peptides, Mia, US Lab) y
+   marcar los **11 precios contradictorios** para que el comparador deje de
+   coronarlos (el peor: Snap-8 de DT a $64.50 vs $365.40 en su misma lista).
+
+5. **Agente en vuelo al cierre de esta sesión**: el de precios, aplicando la
+   corrección de costos por toda la cadena + el reprecio aprobado + la prueba
+   anti-desfase + el alta de **Retatrutida 120 mg** (li la, $40/vial; tope
+   $9,215 para no romper la escalera). Su despliegue final del frontend lleva
+   también el footer de Mónica (commit `236b21b`, ya en main, sin desplegar).
+   VERIFICAR al retomar: `npm run auditoria` en 83/0 y pytest del repo de
+   precios en verde.
+
 ## 📌 2026-07-30 (madrugada) — proveedores, costos y ROI
 
 **El hallazgo grande: el ROI que veías estaba mal.** La base guarda DOS costos
