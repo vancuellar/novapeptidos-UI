@@ -3894,12 +3894,12 @@ export const fallbackProducts = [
       },
       {
         "presentation": "40 mg",
-        "price": 2799,
+        "price": 2309,
         "stock": 40,
         "batch_number": "NP-MOTS40-2601",
         "id": "befcc9bf-0e3d-4a19-a5ca-9ec4512d1a16",
         "sku": "MOTSC-40MG",
-        "commission_cap": 0.4,
+        "commission_cap": 0.35,
         "distributor_eligible": true
       }
     ],
