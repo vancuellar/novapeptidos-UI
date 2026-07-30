@@ -111,6 +111,20 @@ de sitio roto: si se repite la ola, usar worktrees o serializar los deploys.
 ⚠️ Google Reviews: la página de confirmación es /pedido/<numero> (patrón
 https://exygenlabs.com/pedido/*).
 
+## ⚠️ DOS COSAS DE DINERO AL CIERRE (2026-07-30, madrugada)
+
+**A. La Retatrutida 10 mg quedó en $2,479, no en los $2,439 que Christián
+aprobó.** Entre su visto bueno y la corrida, el vigía detectó otra bajada de
+Exoma y la escalera pidió $40 más. Está así en la maestra Y en el sitio en
+vivo. Siempre fue subida, nunca bajada, pero **es $40 arriba de lo aprobado**:
+preguntarle si lo deja o lo congela en $2,439 (congelarlo es a mano).
+
+**B. Vitamina D3: tenía stock 40 sin renglón en el inventario vivo.** El
+producto decía 40 piezas pero `/api/stock` no lo conocía — el checkout descuenta
+de ahí, así que se podía vender algo que no existe. **Ya se puso en stock 0**
+desde esta sesión para que nadie lo compre. Falta crearle su renglón de
+inventario cuando llegue la primera compra a Lumi, y ahí sí ponerle piezas.
+
 ## 🔜 LO PRIMERO PARA EL PRÓXIMO CHAT (2026-07-30)
 
 1. **Christián pide los PROMPTS ACTUALIZADOS PARA CODEX**, dos: (a) *Rompedor
