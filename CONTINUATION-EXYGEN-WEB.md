@@ -135,14 +135,13 @@ inventario cuando llegue la primera compra a Lumi, y ahí sí ponerle piezas.
    TC 17.50, los proveedores nuevos P36/P37 y los 11 precios contradictorios.
    Entregárselos EN EL CHAT para que él los pegue en Codex.
 
-2. **WhatsApp duplicado en el footer — YA DIAGNOSTICADO, falta arreglarlo.**
-   Hay DOS enlaces de WhatsApp pegados: el que ya existía desde el 28-jul
-   (`data-testid="footer-whatsapp"`, en el bloque de Contacto bajo el correo) y
-   el que llegó al mover a Mónica Fuentes ahí mismo
-   (`data-testid="home-rep-whatsapp"`, en `Footer.js` ~línea 147). Los dos
-   enseñan `@exygenlabs` y van al mismo `wa.me`. Arreglo: dejar UNO — lo natural
-   es conservar el de Mónica (trae nombre y rol) y quitar el suelto, o al revés,
-   pero no los dos.
+2. **WhatsApp duplicado en el footer — ✅ ARREGLADO Y EN VIVO (2026-07-30).**
+   Había DOS enlaces pegados: el suelto del 28-jul (`footer-whatsapp`) y el de
+   Mónica Fuentes (`home-rep-whatsapp`), los dos con `@exygenlabs` y el mismo
+   `wa.me`. Se quitó el suelto y quedó el de Mónica, que trae nombre y rol.
+   Verificado en el navegador contra exygenlabs.com: el footer tiene UN solo
+   enlace de WhatsApp. Ningún test ni la auditoría usaban el testid retirado, y
+   no cambió texto visible, así que no tocó es/en/pt.
 
 3. **"Tienda de Confianza": SÍ está en vivo, verificado.** En la portada vive a
    ~1,814 px de scroll (hay que bajar bastante) y en la ficha de producto bajo
