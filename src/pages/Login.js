@@ -20,7 +20,7 @@ import { passkeysSupported, loginWithPasskey } from '@/lib/webauthn';
 const Consent = ({ checked, onChange, testid, children }) => (
   <label className="flex items-start gap-3 cursor-pointer">
     <input type="checkbox" checked={checked} onChange={onChange} data-testid={testid}
-      className="h-5 w-5 mt-0.5 shrink-0 accent-white cursor-pointer" />
+      className="h-5 w-5 mt-0.5 shrink-0 accent-black dark:accent-white cursor-pointer" />
     <span className="text-sm leading-relaxed">{children}</span>
   </label>
 );
@@ -38,13 +38,19 @@ const BrandTitle = ({ text }) => {
   );
 };
 
-// Enlace monocromo estilo Resend: texto claro, subrayado tenue.
-const monoLink = 'text-foreground underline underline-offset-4 decoration-white/25 hover:decoration-white transition-colors';
-// CTA monocromo estilo Resend: gris oscuro con borde tenue, nada de color.
-const monoCta = 'w-full h-12 rounded-xl bg-[#1e1f22] border border-white/10 text-white text-sm font-semibold hover:bg-[#2a2b2f] transition-colors disabled:opacity-40 disabled:pointer-events-none';
+// Enlace monocromo estilo Resend: subrayado tenue del mismo color del texto.
+const monoLink = 'text-foreground underline underline-offset-4 decoration-black/25 hover:decoration-black dark:decoration-white/25 dark:hover:decoration-white transition-colors';
+// CTA monocromo estilo Resend, en los dos temas: en oscuro es el gris carbón de
+// siempre; en claro se invierte (botón casi negro con texto marfil), que es el
+// equivalente limpio y deja jerarquía frente a los botones sociales claros.
+const monoCta = 'w-full h-12 rounded-xl text-sm font-semibold transition-colors border border-transparent bg-foreground text-background hover:bg-foreground/85 dark:border-white/10 dark:bg-[#1e1f22] dark:text-white dark:hover:bg-[#2a2b2f] disabled:opacity-40 disabled:pointer-events-none';
+// Botón secundario (llave de acceso, sociales): superficie clara con borde en
+// tema claro; el mismo gris carbón de siempre en oscuro.
+const monoSecondary = 'flex h-12 w-full items-center justify-center gap-3 rounded-xl text-sm font-semibold transition-colors border border-border bg-card text-foreground hover:bg-secondary dark:border-white/10 dark:bg-[#1e1f22] dark:text-white dark:hover:bg-[#2a2b2f]';
 
 // Pantallas de entrada y registro al estilo Resend (gusto explícito de
-// Christian): SIEMPRE oscuras, monocromas y extremadamente minimalistas.
+// Christian): monocromas y extremadamente minimalistas, respetando el tema
+// activo del sitio (en oscuro se ven igual que siempre).
 // El registro pide solo nombre/correo/contraseña; los consentimientos son el
 // PASO SIGUIENTE (diálogo), no un formulario kilométrico.
 const Login = () => {
@@ -192,13 +198,15 @@ const Login = () => {
   );
 
   return (
-    // Pantalla independiente SIEMPRE oscura, como el alta de Resend (orden de
-    // Christian): clase `dark` propia para que todos los tokens del tema se
-    // resuelvan en oscuro aunque el sitio esté en claro, lienzo negro y un
-    // resplandor suave arriba a la derecha.
-    <div className="dark min-h-screen flex items-center justify-center px-4 py-14 relative overflow-hidden bg-[#020204] text-foreground">
-      <div aria-hidden className="pointer-events-none absolute -top-40 right-[-15%] h-[560px] w-[560px] rounded-full opacity-20"
+    // Pantalla independiente estilo alta de Resend, ahora en los dos temas: en
+    // oscuro el lienzo casi negro de siempre, en claro el marfil de la marca.
+    // Arriba a la derecha, un resplandor suave (claro sobre negro, tenue sobre
+    // marfil).
+    <div className="min-h-screen flex items-center justify-center px-4 py-14 relative overflow-hidden bg-background dark:bg-[#020204] text-foreground">
+      <div aria-hidden className="pointer-events-none absolute -top-40 right-[-15%] h-[560px] w-[560px] rounded-full opacity-20 hidden dark:block"
         style={{ background: 'radial-gradient(circle at center, hsl(0 0% 85% / 0.35), transparent 65%)' }} />
+      <div aria-hidden className="pointer-events-none absolute -top-40 right-[-15%] h-[560px] w-[560px] rounded-full opacity-[0.12] dark:hidden"
+        style={{ background: 'radial-gradient(circle at center, hsl(225 68% 23% / 0.35), transparent 65%)' }} />
       {/* Vuelta al sitio arriba a la izquierda: aquí no hay barra superior. */}
       <Link to="/" data-testid="auth-back-home"
         className="absolute left-4 top-6 sm:left-8 inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors">
@@ -295,7 +303,7 @@ const Login = () => {
                 // Botón de verdad, al estilo JADA: mismo peso visual que los de
                 // Google/Outlook, debajo de "Iniciar sesión".
                 <button type="button" onClick={passkeyLogin} disabled={loading} data-testid="login-passkey-button"
-                  className="flex h-12 w-full items-center justify-center gap-3 rounded-xl border border-white/10 bg-[#1e1f22] text-sm font-semibold text-white hover:bg-[#2a2b2f] transition-colors disabled:opacity-40">
+                  className={`${monoSecondary} disabled:opacity-40`}>
                   <Fingerprint className="h-[18px] w-[18px]" /> {t('passkey.loginCta')}
                 </button>
               )}
@@ -327,9 +335,9 @@ const Login = () => {
       </div>
 
       {/* Paso 2 del registro: los consentimientos. El dialogo se monta en un
-          portal fuera de este arbol, por eso lleva su propia clase `dark`. */}
+          portal fuera de este arbol, y sigue el tema activo del sitio. */}
       <Dialog open={consentOpen} onOpenChange={setConsentOpen}>
-        <DialogContent className="dark max-w-md bg-[#0d0d0f] border-white/10 text-foreground" data-testid="register-consent-dialog">
+        <DialogContent className="max-w-md bg-popover dark:bg-[#0d0d0f] border-border dark:border-white/10 text-foreground" data-testid="register-consent-dialog">
           <DialogHeader><DialogTitle className="font-brand">{t('auth.google.consentTitle')}</DialogTitle></DialogHeader>
           <div className="space-y-3" data-testid="register-consents">
             <Consent checked={consents.age_confirmed} onChange={setConsent('age_confirmed')} testid="consent-age">

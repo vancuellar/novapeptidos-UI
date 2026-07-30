@@ -37,12 +37,12 @@ const EMPTY_CONSENTS = { age_confirmed: false, privacy_accepted: false, promos: 
 const ConsentBox = ({ checked, onChange, testid, children }) => (
   <label className="flex items-start gap-3 cursor-pointer">
     <input type="checkbox" checked={checked} onChange={onChange} data-testid={testid}
-      className="h-5 w-5 mt-0.5 shrink-0 accent-white cursor-pointer" />
+      className="h-5 w-5 mt-0.5 shrink-0 accent-black dark:accent-white cursor-pointer" />
     <span className="text-sm leading-relaxed">{children}</span>
   </label>
 );
 
-const monoLink = 'text-foreground underline underline-offset-4 decoration-white/25 hover:decoration-white transition-colors';
+const monoLink = 'text-foreground underline underline-offset-4 decoration-black/25 hover:decoration-black dark:decoration-white/25 dark:hover:decoration-white transition-colors';
 
 const MicrosoftSignInButton = () => {
   const { adoptSession } = useAuth();
@@ -141,7 +141,7 @@ const MicrosoftSignInButton = () => {
   return (
     <div className="flex-1 min-w-0" data-testid="microsoft-signin">
       <button type="button" onClick={irAMicrosoft} data-testid="microsoft-signin-button"
-        className="flex h-12 w-full items-center justify-center gap-3 rounded-xl border border-white/10 bg-[#1e1f22] text-sm font-semibold text-white hover:bg-[#2a2b2f] transition-colors whitespace-nowrap">
+        className="flex h-12 w-full items-center justify-center gap-3 rounded-xl text-sm font-semibold transition-colors border border-border bg-card text-foreground hover:bg-secondary dark:border-white/10 dark:bg-[#1e1f22] dark:text-white dark:hover:bg-[#2a2b2f] whitespace-nowrap">
         <svg viewBox="0 0 23 23" className="h-[18px] w-[18px]" aria-hidden fill="currentColor">
           <rect x="1" y="1" width="10" height="10" />
           <rect x="12" y="1" width="10" height="10" />
@@ -152,7 +152,7 @@ const MicrosoftSignInButton = () => {
       </button>
 
       <Dialog open={!!pendingCredential} onOpenChange={(open) => { if (!open) setPendingCredential(''); }}>
-        <DialogContent className="dark max-w-md bg-[#0d0d0f] border-white/10 text-foreground" data-testid="microsoft-consent-dialog">
+        <DialogContent className="max-w-md bg-popover dark:bg-[#0d0d0f] border-border dark:border-white/10 text-foreground" data-testid="microsoft-consent-dialog">
           <DialogHeader><DialogTitle className="font-brand">{t('auth.google.consentTitle')}</DialogTitle></DialogHeader>
           <p className="text-sm text-muted-foreground leading-relaxed">{t('auth.microsoft.consentNote')}</p>
           <div className="space-y-3">
@@ -172,7 +172,7 @@ const MicrosoftSignInButton = () => {
             </ConsentBox>
           </div>
           <button type="button" onClick={submitConsents} disabled={submitting || !canCreate} data-testid="microsoft-consent-submit"
-            className="w-full h-12 rounded-xl bg-[#1e1f22] border border-white/10 text-white text-sm font-semibold hover:bg-[#2a2b2f] transition-colors disabled:opacity-40 disabled:pointer-events-none">
+            className="w-full h-12 rounded-xl text-sm font-semibold transition-colors border border-transparent bg-foreground text-background hover:bg-foreground/85 dark:border-white/10 dark:bg-[#1e1f22] dark:text-white dark:hover:bg-[#2a2b2f] disabled:opacity-40 disabled:pointer-events-none">
             {submitting ? t('auth.register.loading') : t('auth.consent.submit')}
           </button>
           {!canCreate && <p className="text-xs text-muted-foreground text-center">{t('auth.consent.required')}</p>}
