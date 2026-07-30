@@ -12,9 +12,37 @@
  * avisar.
  */
 
-/** La llave con la que `/api/stock` guarda una presentación. Igual que en ProductDetail. */
-export const llaveDeStock = (item) =>
-  item.presentation ? `${item.product_id}::${item.presentation}` : item.product_id;
+/** El slug del producto PADRE: el del renglón sin su presentación pegada.
+ *  'orexin-a-10-mg' + '10 mg' -> 'orexin-a'   (igual que `_familia_del_slug` del servidor) */
+const familiaDelSlug = (slug, presentacion) => {
+  const s = (slug || '').trim().toLowerCase();
+  const cola = (presentacion || '').trim().toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+  return cola && s.endsWith(`-${cola}`) ? s.slice(0, -(cola.length + 1)) : s;
+};
+
+/**
+ * TODAS las formas en que `/api/stock` puede tener guardada esta presentación.
+ *
+ * ⛔ NO ES UNA SOLA. El Panel guarda el inventario con la llave del producto AGRUPADO
+ * (`fallback-orexin-a::10 mg`), pero el carrito guarda el id de la PRESENTACIÓN (un UUID)
+ * y a veces el SKU. Probar una sola llave es lo que hacía que el aviso no apareciera
+ * nunca: `662781a5-...::10 mg` no existe en el mapa y el renglón se veía como "no sé".
+ * Es el mismo resolvedor que `llaves_de_inventario_vivo` en el servidor, y tienen que
+ * seguir siendo el mismo: si cada lado busca distinto, el aviso y el cobro se separan.
+ */
+export const llavesDeStock = (item) => {
+  const pres = (item.presentation || '').trim();
+  const llaves = [];
+  if (pres) {
+    const familia = familiaDelSlug(item.slug, pres);
+    for (const base of [familia ? `fallback-${familia}` : '', familia, (item.slug || '').trim(), item.product_id]) {
+      if (base) llaves.push(`${base}::${pres}`);
+    }
+  }
+  if (item.product_id) llaves.push(item.product_id);
+  if (item.sku) llaves.push(item.sku);
+  return llaves;
+};
 
 /**
  * Las piezas EN MANO de un renglón del carrito.
@@ -25,13 +53,9 @@ export const llaveDeStock = (item) =>
 export const enManoDe = (item, stockMap) => {
   const delCatalogo = Number.isFinite(Number(item.stock)) ? Math.max(0, Number(item.stock)) : null;
   if (!stockMap) return null;
-  // El carrito manda a veces el id de la presentación y a veces su SKU: se prueban las
-  // dos llaves, igual que el servidor.
-  const fila = stockMap[llaveDeStock(item)]
-    || (item.sku ? stockMap[item.sku] : null)
-    || stockMap[item.product_id];
-  if (!fila) return delCatalogo;
-  const real = Math.max(0, Number(fila.qty) || 0);
+  const llave = llavesDeStock(item).find((k) => stockMap[k]);
+  if (!llave) return delCatalogo;
+  const real = Math.max(0, Number(stockMap[llave].qty) || 0);
   return delCatalogo === null ? real : Math.min(delCatalogo, real);
 };
 
