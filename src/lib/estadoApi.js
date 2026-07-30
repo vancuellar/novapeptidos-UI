@@ -9,9 +9,17 @@
 // interceptor de `api.js` le avisa cuando una llamada muere por red y cuando
 // vuelve a haber respuesta. El aviso global escucha aquí.
 
-// Cuántos fallos seguidos de red hacen falta para dar la alarma. Uno solo no:
-// una petición perdida en un túnel del metro no es "la API está caída".
-const FALLOS_PARA_LA_ALARMA = 2;
+// Cuántos fallos seguidos hacen falta para dar la alarma.
+//
+// Uno basta, y no es precipitado: `registrarFallo` NO se llama al primer
+// tropiezo. Las lecturas (GET) ya se reintentaron tres veces a lo largo de
+// dos segundos antes de llegar aquí (ver el interceptor de api.js). O sea que
+// un solo "fallo" registrado ya son tres intentos fallidos seguidos.
+//
+// Se probó con 2 y estaba mal: en el catálogo la única llamada que se hace es
+// /payments/config, así que con la API caída nunca se llegaba a dos y el aviso
+// no salía jamás — justo en la página donde más gente iba a estar.
+const FALLOS_PARA_LA_ALARMA = 1;
 
 let fallosSeguidos = 0;
 let caida = false;
