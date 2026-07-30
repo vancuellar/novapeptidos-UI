@@ -120,7 +120,16 @@ const avisarAMeta = (type, extra) => {
     if (extra.value) { datos.value = Number(extra.value) || 0; datos.currency = 'MXN'; }
     if (extra.product) datos.content_ids = [String(extra.product)];
     if (type === 'product_view' || type === 'add_to_cart') datos.content_type = 'product';
-    window.fbq('track', nombre, datos);
+    // ⚠️ DEDUPLICACIÓN. La misma compra se le avisa a Meta DOS veces: aquí desde
+    // el navegador, y desde el servidor cuando la pasarela confirma el pago
+    // (meta_capi.py). Meta las une en UNA sola si las dos traen el mismo id.
+    // Sin esto, cada venta contaría doble y el ROAS saldría inflado al doble.
+    // El id tiene que ser IDÉNTICO al del backend: `purchase-<número de pedido>`.
+    const opciones = {};
+    if (type === 'purchase' && extra.order_number) {
+      opciones.eventID = `purchase-${extra.order_number}`;
+    }
+    window.fbq('track', nombre, datos, opciones);
     // El checkout no tiene evento propio: la visita a /checkout lo es.
     if (type === 'visit' && window.location.pathname === '/checkout') {
       window.fbq('track', 'InitiateCheckout');
