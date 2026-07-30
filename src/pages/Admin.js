@@ -1412,6 +1412,17 @@ const Admin = () => {
                         className="font-mono-tech text-xs underline decoration-dotted underline-offset-4 hover:text-[hsl(var(--primary))] transition">
                         {o.order_number}
                       </button>
+                      {/* ENVÍO PARTIDO: este pedido no sale completo de la bodega. Se
+                          marca en la LISTA, no solo adentro, porque si hay que comprarle
+                          al proveedor eso se decide viendo los pedidos del día. */}
+                      {o.backorder && (
+                        <div className="mt-1">
+                          <Badge variant="outline" data-testid="admin-order-backorder-badge"
+                            className="text-[10px] border-[hsl(var(--warning-border))] bg-[hsl(var(--warning))] text-[hsl(var(--warning-foreground))]">
+                            {t('admin.order.backorderBadge')}
+                          </Badge>
+                        </div>
+                      )}
                     </TableCell>
                     <TableCell><div className="text-sm">{o.customer.full_name}</div><div className="text-xs text-muted-foreground">{o.customer.email}</div></TableCell>
                     <TableCell className="font-medium">{formatMXN(o.total)}</TableCell>
@@ -1772,6 +1783,27 @@ const Admin = () => {
                 </DialogTitle>
               </DialogHeader>
               <div className="space-y-4 text-sm">
+                {/* ⛔ LO QUE HAY QUE MANDAR PEDIR. Va ARRIBA de la lista de empaque: si
+                    quien prepara no lo ve primero, manda el paquete incompleto sin saberlo
+                    y nadie le compra al proveedor lo que falta. */}
+                {orderOpen.backorder_items?.length > 0 && (
+                  <Card className="p-3 border-[hsl(var(--warning-border))] bg-[hsl(var(--warning))] text-[hsl(var(--warning-foreground))]"
+                    data-testid="admin-order-backorder">
+                    <div className="text-xs font-semibold mb-2">{t('admin.order.backorderTitle')}</div>
+                    <div className="space-y-1.5">
+                      {orderOpen.backorder_items.map((b, i) => (
+                        <div key={i} className="flex items-center justify-between gap-3">
+                          <div className="min-w-0 truncate">{b.name}</div>
+                          <div className="shrink-0 text-right text-xs">
+                            <div>{t('admin.order.backorderNow', { n: b.en_mano })}</div>
+                            <div className="font-bold">{t('admin.order.backorderOrder', { n: b.por_surtir })}</div>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                    <div className="mt-2 text-[11px] opacity-80">{t('admin.order.backorderHint')}</div>
+                  </Card>
+                )}
                 <div>
                   <div className="text-xs font-semibold mb-2">{t('admin.order.pack')}</div>
                   <Card className="divide-y divide-border" data-testid="admin-order-items">

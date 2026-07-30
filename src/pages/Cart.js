@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Trash2, Minus, Plus, ShoppingBag, ArrowRight, BadgePercent, Tag, X, Droplet } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -7,7 +7,9 @@ import { Card } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { useCart, isNetPriceItem } from '@/context/CartContext';
-import { formatMXN } from '@/lib/api';
+import api, { formatMXN } from '@/lib/api';
+import AvisoSobrePedido from '@/components/AvisoSobrePedido';
+import { desgloseSobrePedido } from '@/lib/sobrePedido';
 import { fallbackProducts } from '@/data/fallbackCatalog';
 import { useLanguage } from '@/context/LanguageContext';
 
@@ -45,6 +47,12 @@ const buildBacPlan = (items) => {
 
 const Cart = () => {
   const { items, addItem, updateQty, removeItem, subtotal, discount, discountRate, discountSource, cappedItems, nextTier, shipping, faltaParaEnvioGratis, envioGratisDesde, distCode, distRate, codeMin, codeMinMet, applyDistCode, clearDistCode } = useCart();
+  // El inventario REAL, para poder avisar del envío partido ANTES de pagar. Si no
+  // contesta se queda en null y no se inventa ningún aviso: "no sé" no es "no hay".
+  const [stockMap, setStockMap] = useState(null);
+  useEffect(() => {
+    api.get('/stock').then((r) => setStockMap(r.data || null)).catch(() => setStockMap(null));
+  }, []);
   const { t } = useLanguage();
   const navigate = useNavigate();
   const [code, setCode] = useState('');
@@ -93,6 +101,7 @@ const Cart = () => {
       </div>
       <div className="grid lg:grid-cols-12 gap-6">
         <div className="lg:col-span-8 space-y-3" data-testid="cart-items-table">
+          <AvisoSobrePedido lineas={desgloseSobrePedido(items, stockMap)} testid="cart-aviso-sobre-pedido" />
           {items.map((item) => (
             <Card key={item.product_id} className="p-4 flex gap-4 items-center">
               <img src={item.image_url || null} alt={item.name} className="h-20 w-20 rounded-lg object-cover border border-border bg-[hsl(var(--secondary))]" />

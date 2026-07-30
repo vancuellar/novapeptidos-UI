@@ -15,6 +15,8 @@ import { phoneValid } from '@/lib/utils';
 import { PhoneField, StateField, composePhone, parsePhone } from '@/components/CountryPhoneFields';
 import { ruoAcceptedAt } from '@/components/RuoGate';
 import TrustBadges from '@/components/TrustBadges';
+import AvisoSobrePedido from '@/components/AvisoSobrePedido';
+import { desgloseSobrePedido } from '@/lib/sobrePedido';
 import { useCart } from '@/context/CartContext';
 import { useAuth } from '@/context/AuthContext';
 import { useLanguage } from '@/context/LanguageContext';
@@ -28,6 +30,14 @@ const Checkout = () => {
   const { items, subtotal, discount, discountRate, discountSource, cappedItems, shipping, faltaParaEnvioGratis, envioGratisDesde, distCode, clearCart } = useCart();
   const { user } = useAuth();
   const { t } = useLanguage();
+  // El inventario REAL. El aviso de envío partido tiene que estar EN LA PANTALLA DE
+  // PAGAR, no solo en el carrito: mucha gente llega al checkout desde el botón de la
+  // ficha sin pasar por el carrito, y ahí se decide la compra.
+  const [stockMap, setStockMap] = useState(null);
+  useEffect(() => {
+    api.get('/stock').then((r) => setStockMap(r.data || null)).catch(() => setStockMap(null));
+  }, []);
+  const sobrePedido = desgloseSobrePedido(items, stockMap);
   const navigate = useNavigate();
   const [payment, setPayment] = useState('spei');
   const [submitting, setSubmitting] = useState(false);
@@ -473,7 +483,8 @@ const Checkout = () => {
         </div>
 
         <div className="lg:col-span-4">
-          <Card className="p-5 sticky top-32" data-testid="checkout-order-summary">
+          <AvisoSobrePedido lineas={sobrePedido} testid="checkout-aviso-sobre-pedido" />
+          <Card className={`p-5 sticky top-32${sobrePedido.length ? ' mt-4' : ''}`} data-testid="checkout-order-summary">
             <button type="button" onClick={() => setSummaryOpen((v) => !v)} className="w-full flex items-center justify-between mb-4" data-testid="checkout-summary-toggle">
               <h3 className="font-heading font-semibold">{t('common.items', { count: items.length })}</h3>
               <span className="inline-flex items-center gap-1 text-xs text-[hsl(var(--primary))] font-medium">{summaryOpen ? t('checkout.hideDetail') : t('checkout.viewDetail')} <ChevronDown className={`h-3.5 w-3.5 transition-transform ${summaryOpen ? 'rotate-180' : ''}`} /></span>

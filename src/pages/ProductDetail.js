@@ -113,6 +113,10 @@ const ProductDetail = () => {
   const stockEntry = stockMap ? stockMap[stockKey] : null;
   // Siempre se puede comprar: en mano = inmediato; si no, ~1 semana (Christian resurte expres).
   const inHand = !!(stockEntry && stockEntry.in_hand && stockEntry.qty > 0);
+  // ⛔ Y EN CERO TAMBIÉN SE VENDE, sobre pedido (Christián, 2026-07-30). Lo que cambia es
+  // la leyenda, nunca el botón: Retatrutida 120 mg y Vitamina D3 llegaron a estar en el
+  // catálogo sin poder comprarse porque su contador decía 0.
+  const enCero = (stockEntry ? Number(stockEntry.qty) || 0 : Number(active.stock) || 0) <= 0;
   const specs = [
     { label: t('common.purity'), value: localizedProduct.purity, testid: 'pdp-purity' },
     { label: t('common.presentation'), value: active.presentation },
@@ -211,7 +215,7 @@ const ProductDetail = () => {
           <div className="mt-5" data-testid="pdp-availability">
             {inHand
               ? <span className="text-sm text-[hsl(var(--success))]">✓ {t('product.inHandStock', { stock: stockEntry.qty })}</span>
-              : <Badge variant="outline" className="border-[hsl(var(--warning-border))] bg-[hsl(var(--warning))] text-[hsl(var(--warning-foreground))]">{t('product.oneWeekShip')}</Badge>}
+              : <Badge variant="outline" className="border-[hsl(var(--warning-border))] bg-[hsl(var(--warning))] text-[hsl(var(--warning-foreground))]" data-testid="pdp-sobre-pedido">{enCero ? t('backorder.badge') : t('product.oneWeekShip')}</Badge>}
           </div>
 
           <div className="mt-5 flex items-center gap-3">

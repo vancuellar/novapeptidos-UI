@@ -15,7 +15,11 @@ const ProductCard = ({ product }) => {
   const { addItem } = useCart();
   const { t } = useLanguage();
   const navigate = useNavigate();
-  const out = product.stock <= 0;
+  // ⛔ SIN INVENTARIO SE VENDE IGUAL, SOBRE PEDIDO (Christián, 2026-07-30): ninguna
+  // venta se bloquea por falta de piezas. Esto decía "Agotado" y DESHABILITABA el botón,
+  // así que Retatrutida 120 mg y Vitamina D3 estaban en el catálogo sin poder comprarse.
+  // Hoy el contador solo cambia la leyenda; el botón nunca se apaga.
+  const sobrePedido = product.stock <= 0;
   const variants = product.variants || [];
   const hasVariants = variants.length > 0;       // al menos una presentación con precio propio
   const showSelector = variants.length > 1;      // dropdown solo si hay varias
@@ -81,12 +85,12 @@ const ProductCard = ({ product }) => {
 
         <div className="mt-3 flex items-center justify-between">
           <span className="font-heading text-lg font-bold" data-testid="product-card-price">{formatMXN(price)} <span className="text-[11px] font-mono-tech font-normal text-muted-foreground">MXN</span></span>
-          {out
-            ? <span className="text-xs text-muted-foreground">{t('product.outOfStock')}</span>
+          {sobrePedido
+            ? <span className="text-xs text-[hsl(var(--warning-foreground))]" data-testid="product-card-sobre-pedido">{t('backorder.cardNote')}</span>
             : <span className="inline-flex items-center gap-1.5 text-xs text-[hsl(var(--success))]"><span className="h-1.5 w-1.5 rounded-full bg-[hsl(var(--success))]" /> {t('product.card.inStock')}</span>}
         </div>
         <div className="mt-3 flex gap-2">
-          <Button className="flex-1" disabled={out} onClick={add} data-testid="product-card-add-to-cart-button">
+          <Button className="flex-1" onClick={add} data-testid="product-card-add-to-cart-button">
             <ShoppingCart className="h-4 w-4 mr-1.5" /> {t('product.card.add')}
           </Button>
           <Button variant="outline" onClick={() => navigate(`/producto/${product.slug}`)} data-testid="product-card-view-details-link" aria-label={t('product.card.view')}>

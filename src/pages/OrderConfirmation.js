@@ -7,6 +7,7 @@ import { Separator } from '@/components/ui/separator';
 import { toast } from 'sonner';
 import api, { formatMXN } from '@/lib/api';
 import { useLanguage } from '@/context/LanguageContext';
+import AvisoSobrePedido from '@/components/AvisoSobrePedido';
 
 const OrderConfirmation = () => {
   const { orderNumber } = useParams();
@@ -43,6 +44,13 @@ const OrderConfirmation = () => {
         <p className="text-muted-foreground mt-2">{t('order.receivedBody', { number: orderNumber })}</p>
         {order && (
           <div className="mt-6 text-left">
+            {/* El aviso se repite aquí: lo vio en el checkout, pero ésta es la pantalla
+                que la gente deja abierta y le manda a alguien más. */}
+            {order.backorder_items?.length > 0 && (
+              <div className="mb-4">
+                <AvisoSobrePedido lineas={order.backorder_items} testid="order-aviso-sobre-pedido" />
+              </div>
+            )}
             <div className="rounded-lg border border-border p-4 space-y-2 text-sm">
               {order.items.map((it) => (
                 <div key={it.product_id} className="flex justify-between"><span className="text-muted-foreground">{it.quantity} × {it.name}</span><span>{formatMXN(it.price * it.quantity)}</span></div>
