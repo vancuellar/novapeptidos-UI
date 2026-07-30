@@ -1,8 +1,8 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { FlagUS, WhatsAppIcon } from '@/components/Flags';
+import { FlagUS } from '@/components/Flags';
 import {
-  ShieldCheck, FlaskConical, Truck, BadgeCheck, ArrowRight, HeartPulse, Activity, Flame, Hourglass,
+  ShieldCheck, FlaskConical, ArrowRight, HeartPulse, Activity, Flame, Hourglass,
   Brain, Sparkles, Layers, CheckCircle2, MinusCircle, FileCheck2, ScanSearch, Landmark, CreditCard,
   ChevronLeft, ChevronRight, Building2, Mail, Bitcoin, Globe, Store,
 } from 'lucide-react';
@@ -15,7 +15,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { toast } from 'sonner';
 import ProductCard from '@/components/ProductCard';
-import { WHATSAPP_URL, WHATSAPP_HANDLE } from '@/lib/contact';
+import TrustBadges from '@/components/TrustBadges';
 import api from '@/lib/api';
 import { VISIBLE_CATEGORIES, fallbackProducts } from '@/data/fallbackCatalog';
 import { FEATURED_TABS, getTabProducts } from '@/data/featured';
@@ -436,19 +436,18 @@ const Home = () => {
         </div>
       </section>
 
-      {/* ===== Trust strip ===== */}
-      {/* Son CINCO sellos desde el 2026-07-28: entró el del origen en Estados Unidos.
-          La rejilla pasa de 4 a 5 columnas en pantalla grande y se queda en 2 y 3 en
-          las chicas — con cinco, el último renglón deja un hueco, que es preferible a
-          apretar cinco tarjetas en una fila de teléfono. */}
+      {/* ===== Tienda de confianza ===== */}
+      {/* Era una franja suelta de cinco sellos escritos aquí a mano. Ahora es el
+          MISMO componente que ya usaban la cuenta y el checkout (TrustBadges), en
+          su variante `strip`: una sola fuente de verdad para lo que prometemos.
+          Cambia poco de aspecto — sigue siendo una banda discreta, no una sección
+          nueva — pero ahora trae los seis sellos (entró "pago seguro"), el título
+          "Tienda de Confianza" y el aviso RUO, que en la portada no estaba.
+          ⛔ Ni una promesa que no se pueda cumplir: no hay devoluciones, ni
+          reembolsos, ni reenvíos, ni garantías de meses. */}
       <section className="border-b border-border bg-card">
-        <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 py-6 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
-          {[{ i: ShieldCheck, t: t('home.trust.coa.title'), d: t('home.trust.coa.desc') }, { i: BadgeCheck, t: t('home.trust.purity.title'), d: t('home.trust.purity.desc') }, { i: Globe, t: t('home.trust.origin.title'), d: t('home.trust.origin.desc') }, { i: Truck, t: t('home.trust.shipping.title'), d: t('home.trust.shipping.desc') }, { i: FlaskConical, t: t('home.trust.support.title'), d: t('home.trust.support.desc') }].map((b, idx) => (
-            <div key={idx} className="flex items-center gap-3">
-              <div className="h-10 w-10 rounded-lg bg-[hsl(var(--accent))] flex items-center justify-center shrink-0"><b.i className="h-5 w-5 text-[hsl(var(--primary))]" /></div>
-              <div><div className="font-semibold text-sm">{b.t}</div><div className="text-xs text-muted-foreground">{b.d}</div></div>
-            </div>
-          ))}
+        <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 py-6">
+          <TrustBadges variant="strip" />
         </div>
       </section>
 
@@ -742,30 +741,6 @@ const Home = () => {
               <Link to="/catalogo">{t('home.b2bCta2')}</Link>
             </Button>
           </div>
-        </div>
-
-        {/* ===== Mónica Fuentes — la cara del negocio, en chiquito ===== */}
-        {/* La revisión de Fable lo dijo sin rodeos: "cero rostros, cero nombres, un
-            catálogo sin dueño". Mónica es la representante de ventas REAL (Christián,
-            2026-07-28). Sin foto no se inventa una: iniciales y nombre de verdad.
-            Va DISCRETA, del tamaño del contacto del pie (Christián, 2026-07-29): una
-            tarjeta grande con botón verde parecía anuncio y competía con "Ver catálogo".
-            ⛔ Se enseña el USUARIO (@exygenlabs), no el número — pero el enlace SÍ va al
-            wa.me del número, que es lo único que abre la conversación en cualquier
-            teléfono. Mismo patrón que el pie de página. */}
-        <div className="mt-6 flex flex-wrap items-center justify-center gap-x-3 gap-y-1.5 text-sm" data-testid="home-representante">
-          <span className="inline-flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-[hsl(var(--primary))]/15 border border-[hsl(var(--primary))]/30 font-heading text-[11px] font-bold text-[hsl(var(--primary))]">
-            MF
-          </span>
-          <span className="font-medium">Mónica Fuentes</span>
-          <span className="text-muted-foreground">· {t('home.rep.role')} ·</span>
-          {WHATSAPP_URL && (
-            <a href={`${WHATSAPP_URL}?text=${encodeURIComponent(t('home.rep.prefill'))}`}
-              target="_blank" rel="noreferrer" data-testid="home-rep-whatsapp"
-              className="inline-flex items-center gap-1.5 text-muted-foreground hover:text-foreground transition-colors">
-              <WhatsAppIcon className="h-4 w-4 text-[#25D366]" /> {WHATSAPP_HANDLE}
-            </a>
-          )}
         </div>
 
         {/* Solicitud de distribuidor: llega al Admin de Christian, nada se aprueba solo. */}

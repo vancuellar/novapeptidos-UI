@@ -716,6 +716,7 @@ const esMX = {
   'home.edu2.body': 'Tu reporte documenta la identidad y pureza del compuesto medidas por HPLC y espectrometría de masas.',
   'home.edu3.title': 'Verifica tu lote',
   'home.edu3.body': 'Cada vial lleva su número de lote impreso. Así mantienes trazabilidad total en tu investigación.',
+  'home.rep.name': 'Mónica Fuentes',
   'home.rep.role': 'Representante de ventas',
   'home.rep.body': 'Una persona real del otro lado: Mónica te ayuda a armar tu pedido, resuelve dudas de envío y pago, y te da seguimiento hasta que llega. Lunes a sábado.',
   'home.rep.cta': 'Escribirle a Mónica',
@@ -730,19 +731,26 @@ const esMX = {
   'home.typicalPurity': 'Pureza típica',
   'home.products': 'Productos',
   'home.nationalShipping': 'Envío nacional',
-  'home.trust.coa.title': 'Trazabilidad por lote',
-  'home.trust.coa.desc': 'Número de lote en cada vial',
+  // Textos CORTOS de la franja "Tienda de Confianza" de la portada (variante
+  // `strip` de TrustBadges). Son de un renglón a propósito: en pantalla grande la
+  // franja son seis columnas. Las versiones largas viven abajo, en `trust.*`.
+  'home.trust.coa.title': 'Certificado De Tu Lote',
+  'home.trust.coa.desc': 'En tu cuenta al comprar',
   'home.trust.purity.title': 'Pureza ≥ 99%',
   'home.trust.purity.desc': 'Verificada por HPLC',
-  'home.trust.shipping.title': 'Envío nacional',
-  'home.trust.shipping.desc': 'Cotizado según tu zona',
-  'home.trust.support.title': 'Soporte experto',
-  'home.trust.support.desc': 'Asistente de IA 24/7',
+  'home.trust.shipping.title': 'Envío Nacional',
+  'home.trust.shipping.desc': '2 a 5 días, empaque discreto',
+  'home.trust.support.title': 'Soporte Por WhatsApp',
+  'home.trust.support.desc': 'Te contestamos en español',
   // Quinto sello de la barra de confianza: es el lugar donde el visitante compara
   // garantías de un vistazo, y es justo ahí donde Certified pone su "fabricado en
   // EE. UU.". Nosotros ponemos lo que sí es nuestro: de dónde compramos.
-  'home.trust.origin.title': 'Fabricado en EUA',
+  'home.trust.origin.title': 'Fabricado En EUA',
   'home.trust.origin.desc': 'En laboratorios de Estados Unidos',
+  // Sexto sello (2026-07-29): el visitante que nunca nos compró quiere saber CÓMO
+  // paga antes de meter nada al carrito. Es un hecho comprobable, no una promesa.
+  'home.trust.payment.title': 'Pago Seguro',
+  'home.trust.payment.desc': 'OXXO, SPEI, tarjeta y cripto',
   // ===== Bloque "Tienda de confianza" (componente TrustBadges) =====
   // Cada línea tiene que poder comprobarse. No hay devoluciones, ni garantía de
   // meses, ni reenvíos gratis: las ventas son finales y el envío se cotiza aparte.
@@ -1170,7 +1178,7 @@ const esMX = {
   'order.viewMyOrders': 'Ver mis pedidos',
 
   'info.envios.title': 'Envíos y entregas',
-  'info.envios.body': ['Enviamos a todo el territorio de la Republica Mexicana por FedEx aereo.', 'Despacho el mismo día: los pedidos realizados antes de las 5:00 pm se envian ese mismo día habil; después, al siguiente día habil.', 'Tiempo de entrega estimado: 3 a 5 días habiles (lunes a viernes, sin contar festivos). Algunas zonas pueden variar.', 'Recibiras el número de rastreo por correo automaticamente en cuanto se genere la guia.', 'No realizamos envíos internacionales ni usamos servicios de reenvio.', 'Verifica cuidadosamente tu dirección al finalizar la compra. Los cambios de dirección solo se pueden solicitar antes de que el pedido sea enviado.'],
+  'info.envios.body': ['Enviamos a todo el territorio de la Republica Mexicana por FedEx aereo.', 'Despacho el mismo día: los pedidos realizados antes de las 5:00 pm se envian ese mismo día habil; después, al siguiente día habil.', 'Tiempo de entrega estimado: 2 a 5 días habiles (lunes a viernes, sin contar festivos). Algunas zonas pueden variar.', 'Recibiras el número de rastreo por correo automaticamente en cuanto se genere la guia.', 'No realizamos envíos internacionales ni usamos servicios de reenvio.', 'Verifica cuidadosamente tu dirección al finalizar la compra. Los cambios de dirección solo se pueden solicitar antes de que el pedido sea enviado.'],
   'info.devoluciones.title': 'Devoluciones',
   'info.devoluciones.body': ['Por la naturaleza de los productos (uso exclusivo en investigación), todas las ventas son finales.', 'Si tu producto llega danado, contactanos lo antes posible con tu número de pedido y fotos claras del empaque y del producto para poder ayudarte.', 'Escribenos a hola@exygenlabs.com para cualquier incidencia con tu envío.'],
   'info.calidad.title': 'Calidad',

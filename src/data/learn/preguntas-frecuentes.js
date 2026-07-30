@@ -165,7 +165,7 @@ const page = {
         },
         {
           q: '¿Cuánto tarda en llegar?',
-          a: 'De 3 a 5 días hábiles después de que el paquete sale. Si tu pedido entra pagado antes de las 5 pm, sale el mismo día; después de esa hora, sale el siguiente día hábil.',
+          a: 'De 2 a 5 días hábiles después de que el paquete sale. Si tu pedido entra pagado antes de las 5 pm, sale el mismo día; después de esa hora, sale el siguiente día hábil.',
         },
         {
           q: '¿Cómo rastreo mi paquete?',
@@ -173,7 +173,7 @@ const page = {
         },
         {
           q: '¿Los fines de semana y días festivos cuentan?',
-          a: 'No. Tanto el corte de las 5 pm como los 3 a 5 días son en días hábiles. Un pedido pagado el sábado sale el lunes.',
+          a: 'No. Tanto el corte de las 5 pm como los 2 a 5 días son en días hábiles. Un pedido pagado el sábado sale el lunes.',
         },
         {
           q: '¿Cómo viaja el material, necesita refrigeración?',

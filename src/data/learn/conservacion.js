@@ -308,7 +308,7 @@ const page = {
         {
           q: 'Mi envío llegó a temperatura ambiente. ¿Está echado a perder?',
           a:
-            'Casi con seguridad no, si llegó liofilizado. El polvo tolera de 2 a 4 semanas a 20–25 °C sin pérdida apreciable, y nuestros envíos nacionales llegan en 3 a 5 días hábiles. Guárdalo en frío al recibirlo, revisa que la torta se vea normal y anota la fecha de recepción. Si el paquete estuvo expuesto a calor extremo, documenta la excepción antes de usarlo.',
+            'Casi con seguridad no, si llegó liofilizado. El polvo tolera de 2 a 4 semanas a 20–25 °C sin pérdida apreciable, y nuestros envíos nacionales llegan en 2 a 5 días hábiles. Guárdalo en frío al recibirlo, revisa que la torta se vea normal y anota la fecha de recepción. Si el paquete estuvo expuesto a calor extremo, documenta la excepción antes de usarlo.',
         },
         {
           q: '¿Puedo congelar la solución reconstituida?',

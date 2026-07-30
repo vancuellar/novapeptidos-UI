@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
-import { ShieldCheck, Minus, Plus, ShoppingCart, FileText, Truck, Package, FlaskConical, ChevronRight } from 'lucide-react';
+import { ShieldCheck, Minus, Plus, ShoppingCart, FlaskConical } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Card } from '@/components/ui/card';
@@ -10,6 +10,7 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { track } from '@/lib/track';
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from '@/components/ui/breadcrumb';
 import ProductCard from '@/components/ProductCard';
+import TrustBadges from '@/components/TrustBadges';
 import api, { formatMXN } from '@/lib/api';
 import { useCart } from '@/context/CartContext';
 import { getFallbackProductBySlug, getFallbackProductsByCategory } from '@/data/fallbackCatalog';
@@ -258,12 +259,17 @@ const ProductDetail = () => {
             ))}
           </div>
 
-          <p className="mt-4 text-xs text-muted-foreground flex items-center gap-1.5"><FileText className="h-3.5 w-3.5" /> {t('product.viewCoa')}</p>
-
-          <div className="mt-4 flex items-center gap-4 text-xs text-muted-foreground">
-            <span className="flex items-center gap-1.5"><Truck className="h-4 w-4" /> {t('product.fastShipping')}</span>
-            <span className="flex items-center gap-1.5"><Package className="h-4 w-4" /> {t('product.discreetPackaging')}</span>
-          </div>
+          {/* TIENDA DE CONFIANZA, JUSTO DONDE SE DUDA. (Fable 5, 2026-07-29)
+              Aquí había tres señales sueltas y minúsculas — "certificado en tu
+              cuenta", "envío 2–5 días", "empaque discreto" — en letra de 12 px que
+              nadie lee. Se sustituyen por el bloque completo, que dice esas mismas
+              tres cosas y además las que faltaban: pureza por HPLC, origen EUA,
+              formas de pago y WhatsApp. No se duplica nada: lo que se ve arriba
+              (pureza, lote, presentación) son DATOS de este vial; esto son las
+              condiciones de la tienda.
+              Sin RUO propio: en esta página ya va en recuadro ámbar a la izquierda
+              y en la etiqueta junto al título. */}
+          <TrustBadges className="mt-6" showRuo={false} />
         </div>
       </div>
 

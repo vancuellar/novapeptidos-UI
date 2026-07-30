@@ -11,7 +11,7 @@ const page = {
       tone: 'info',
       title: 'Lo esencial en cinco líneas',
       body:
-        'Enviamos a toda la República Mexicana por paquetería aérea. Los pedidos pagados y confirmados antes de las 5:00 pm (hora del centro de México) salen ese mismo día hábil. La entrega tarda de 3 a 5 días hábiles. El número de guía te llega por correo en cuanto se genera. No hacemos envíos internacionales.',
+        'Enviamos a toda la República Mexicana por paquetería aérea. Los pedidos pagados y confirmados antes de las 5:00 pm (hora del centro de México) salen ese mismo día hábil. La entrega tarda de 2 a 5 días hábiles. El número de guía te llega por correo en cuanto se genera. No hacemos envíos internacionales.',
     },
     {
       type: 'steps',
@@ -57,7 +57,7 @@ const page = {
       rows: [
         ['Ciudad de México y área metropolitana', '2 a 3 días hábiles', 'La zona más rápida y predecible.'],
         ['Capitales y ciudades grandes', '3 a 4 días hábiles', 'Guadalajara, Monterrey, Puebla, Querétaro, Mérida y similares.'],
-        ['Resto del país', '3 a 5 días hábiles', 'Ciudades medianas con cobertura regular de paquetería.'],
+        ['Resto del país', '2 a 5 días hábiles', 'Ciudades medianas con cobertura regular de paquetería.'],
         ['Zonas extendidas o de difícil acceso', '5 a 7 días hábiles', 'Localidades rurales, sierra y algunas zonas de la península.'],
       ],
       note:

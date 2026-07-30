@@ -1552,7 +1552,7 @@ const Admin = () => {
                 </div>
                 <div>
                   <Label className="text-sm mb-1.5 block">{t('admin.shipping.eta')}</Label>
-                  <Input value={shippingOpen.eta} placeholder="3-5 días hábiles" data-testid="admin-shipping-eta"
+                  <Input value={shippingOpen.eta} placeholder="2-5 días hábiles" data-testid="admin-shipping-eta"
                     onChange={(e) => setShippingOpen({ ...shippingOpen, eta: e.target.value })} />
                 </div>
               </div>
