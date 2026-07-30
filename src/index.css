@@ -649,14 +649,26 @@ img {
    Se pidió "como un sello", sin recuadro alrededor y el sello en DORADO.
    El dorado es el único color cálido del sitio: por eso funciona como sello
    —destaca sin competir con el azul de la marca— y por eso no se usa en nada
-   más. Solo el sello va dorado; el texto de al lado se queda neutro. */
+   más. Solo el sello va dorado; el texto de al lado se queda neutro.
+
+   GRIS EN CLARO (Christian, 2026-07-29): el dorado claro (#e8c25a) sobre el
+   marfil del light theme casi desaparecía —amarillo claro sobre crema, sin
+   contraste—. En claro el sello va GRIS neutro (tinta oscura sobre relleno
+   gris tenue) y en oscuro se queda EXACTAMENTE el dorado de siempre: el
+   default es el gris y `.dark` restaura el oro. Ojo al tocar esto: las
+   opacidades viven en las reglas base y las comparten los dos temas. */
 .sello {
   width: 66px; height: 66px; flex: none;
   display: flex; flex-direction: column; align-items: center; justify-content: center;
   border-radius: 999px;
-  border: 2px dashed #d4af37;
-  background: radial-gradient(circle at 50% 32%, rgba(212,175,55,.30), rgba(212,175,55,.10));
+  border: 2px dashed hsl(220 10% 58%);
+  background: radial-gradient(circle at 50% 32%, rgba(96,104,120,.18), rgba(96,104,120,.05));
   transform: rotate(-9deg);
+  box-shadow: 0 6px 20px rgba(20,24,32,.13);
+}
+.dark .sello {
+  border-color: #d4af37;
+  background: radial-gradient(circle at 50% 32%, rgba(212,175,55,.30), rgba(212,175,55,.10));
   box-shadow: 0 6px 24px rgba(212,175,55,.28);
 }
 /* El "hasta" va chiquito arriba del número: sin él, un 15% a secas promete un
@@ -664,14 +676,17 @@ img {
    lo que hace mirar— pero no miente. */
 .sello-hasta {
   font-size: 7.5px; font-weight: 700; letter-spacing: .16em; text-transform: uppercase;
-  color: #e8c25a; opacity: .85; margin-bottom: 1px;
+  color: hsl(220 12% 34%); opacity: .85; margin-bottom: 1px;
 }
 .sello-pct {
   font-family: var(--font-heading, Georgia, serif);
   font-size: 20px; font-weight: 700; line-height: 1;
-  color: #e8c25a; letter-spacing: -.02em;
+  color: hsl(220 20% 16%); letter-spacing: -.02em;
 }
 .sello-off {
   font-size: 8.5px; font-weight: 700; letter-spacing: .18em;
-  color: #e8c25a; opacity: .9; margin-top: 2px;
+  color: hsl(220 12% 34%); opacity: .9; margin-top: 2px;
 }
+.dark .sello-hasta,
+.dark .sello-pct,
+.dark .sello-off { color: #e8c25a; }
