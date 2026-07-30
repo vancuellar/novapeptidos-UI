@@ -3937,21 +3937,11 @@ export const fallbackProducts = [
     ],
     "short_description": "Triple agonista GIP/GLP-1/glucagón, de investigación metabólica.",
     "description": "Retatrutida es un péptido de investigación estudiado como triple agonista de los receptores GIP, GLP-1 y glucagón en modelos de metabolismo y composición corporal. Solo para uso en investigación (RUO).",
-    "presentation": "5 mg – 100 mg",
+    "presentation": "10 mg – 100 mg",
     "form": "Liofilizado",
     "purity": "99.1%",
-    "price": 1189,
+    "price": 2369,
     "variants": [
-      {
-        "presentation": "5 mg",
-        "price": 1189,
-        "stock": 40,
-        "batch_number": "NP-RETA5-2601",
-        "id": "a01642f8-e679-4f22-a8d9-f182542f1df2",
-        "sku": "RETATRUTIDA-5MG",
-        "commission_cap": 0.4,
-        "distributor_eligible": true
-      },
       {
         "presentation": "10 mg",
         "price": 2369,
@@ -3959,16 +3949,6 @@ export const fallbackProducts = [
         "batch_number": "NP-RETA10-2601",
         "id": "3562d760-400f-43a3-aab3-7244a0e7c9e3",
         "sku": "RETATRUTIDA-10MG",
-        "commission_cap": 0.4,
-        "distributor_eligible": true
-      },
-      {
-        "presentation": "15 mg",
-        "price": 2639,
-        "stock": 40,
-        "batch_number": "NP-RETA15-2601",
-        "id": "e08dbda4-8c2a-43ba-a5c7-d800bee95cb1",
-        "sku": "RETATRUTIDA-15MG",
         "commission_cap": 0.4,
         "distributor_eligible": true
       },
@@ -4027,7 +4007,7 @@ export const fallbackProducts = [
     "stock": 40,
     "image_url": "https://images.pexels.com/photos/9259977/pexels-photo-9259977.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
     "coa_url": "https://exygenlabs.com/coa/retatrutida.pdf",
-    "batch_number": "NP-RETA5-2601",
+    "batch_number": "NP-RETA10-2601",
     "storage": "Conservar a -20 °C, protegido de la luz. Reconstituido: 2–8 °C.",
     "start_dose": 2,
     "start_unit": "mg",
