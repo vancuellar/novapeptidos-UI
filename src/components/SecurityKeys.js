@@ -94,7 +94,7 @@ const SecurityKeys = ({ user, onUserChange }) => {
                   <div className="font-medium">{k.name}</div>
                   <div className="text-xs text-muted-foreground">{(k.created_at || '').slice(0, 10)}</div>
                 </div>
-                <Button variant="ghost" size="sm" onClick={() => removeKey(k.id)} aria-label={t('passkey.remove')}>
+                <Button variant="ghost" size="sm" onClick={() => removeKey(k.id)} aria-label={t('passkey.remove')} className="hover:bg-destructive hover:text-white">
                   <Trash2 className="h-4 w-4" />
                 </Button>
               </div>

@@ -85,7 +85,7 @@ const ProtocolTracker = ({ protocols, onChange }) => {
                   <AlertTriangle className="h-3 w-3 mr-1" /> {t('track.reorderSoon')}
                 </Badge>
               )}
-              <Button variant="ghost" size="icon" onClick={() => remove(p)} disabled={busy} data-testid="track-remove">
+              <Button variant="ghost" size="icon" onClick={() => remove(p)} disabled={busy} className="hover:bg-destructive hover:text-white" data-testid="track-remove">
                 <Trash2 className="h-4 w-4" />
               </Button>
             </div>

@@ -256,7 +256,7 @@ const LabReports = () => {
                 {busy ? <Loader2 className="h-4 w-4 mr-1.5 animate-spin" /> : <Sparkles className="h-4 w-4 mr-1.5" />}
                 Explicar mis resultados
               </Button>
-              <Button variant="ghost" size="icon" onClick={() => remove(r.id)} disabled={busy} data-testid="labs-delete">
+              <Button variant="ghost" size="icon" onClick={() => remove(r.id)} disabled={busy} className="hover:bg-destructive hover:text-white" data-testid="labs-delete">
                 <Trash2 className="h-4 w-4" />
               </Button>
             </div>

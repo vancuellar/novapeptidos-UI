@@ -78,7 +78,7 @@ const AdminAnnouncements = () => {
               </div>
               {a.body && <div className="text-sm text-muted-foreground mt-1">{a.body}</div>}
             </div>
-            <Button variant="ghost" size="sm" onClick={() => remove(a.id)} className="text-[hsl(var(--destructive))] shrink-0" title={t('adminNews.delete')}><Trash2 className="h-4 w-4" /></Button>
+            <Button variant="ghost" size="sm" onClick={() => remove(a.id)} className="text-[hsl(var(--destructive))] shrink-0 hover:bg-destructive hover:text-white" title={t('adminNews.delete')}><Trash2 className="h-4 w-4" /></Button>
           </Card>
         ))}
       </div>

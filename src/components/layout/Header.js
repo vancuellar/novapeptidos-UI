@@ -479,7 +479,7 @@ const Header = () => {
                   </DropdownMenuItem>
                   <DropdownMenuItem onClick={() => navigate('/tutoriales')} data-testid="header-tutorials-link"><GraduationCap className="h-4 w-4 mr-2" /> {t('header.tutorials')}</DropdownMenuItem>
                   <DropdownMenuSeparator />
-                  <DropdownMenuItem onClick={() => { logout(); navigate('/'); }} data-testid="header-logout-button" className="text-destructive focus:text-destructive [&_svg]:text-destructive"><LogOut className="h-4 w-4 mr-2" /> {t('header.logout')}</DropdownMenuItem>
+                  <DropdownMenuItem onClick={() => { logout(); navigate('/'); }} data-testid="header-logout-button" className="text-destructive hover:bg-destructive hover:text-white focus:bg-destructive focus:text-white"><LogOut className="h-4 w-4 mr-2" /> {t('header.logout')}</DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
             ) : (

@@ -63,7 +63,7 @@ const NotificationsFeed = ({ onSeen }) => {
     <div className="space-y-2" data-testid="news-feed">
       {items.length > 0 && (
         <div className="flex justify-end">
-          <Button variant="ghost" size="sm" className="text-xs text-muted-foreground" onClick={dismissAll} data-testid="news-clear-all">
+          <Button variant="ghost" size="sm" className="text-xs text-muted-foreground hover:bg-destructive hover:text-white" onClick={dismissAll} data-testid="news-clear-all">
             <Trash2 className="h-3.5 w-3.5 mr-1.5" /> {t('news.clearAll')}
           </Button>
         </div>
@@ -82,7 +82,7 @@ const NotificationsFeed = ({ onSeen }) => {
               {n.link && <a href={n.link} className="text-xs text-[hsl(var(--primary))] hover:underline mt-1 inline-block">{t('news.view')}</a>}
             </div>
             <button type="button" onClick={() => dismiss(n.id)} aria-label={t('news.delete')} title={t('news.delete')}
-              className="shrink-0 text-muted-foreground hover:text-foreground transition-colors" data-testid={`news-dismiss-${n.id}`}>
+              className="shrink-0 rounded-md p-1 -m-1 text-muted-foreground hover:bg-destructive hover:text-white transition-colors" data-testid={`news-dismiss-${n.id}`}>
               <X className="h-4 w-4" />
             </button>
           </Card>
