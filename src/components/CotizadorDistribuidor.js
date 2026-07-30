@@ -173,7 +173,7 @@ export default function CotizadorDistribuidor({
                   <Button variant="outline" size="icon" className="h-7 w-7" onClick={() => cambiarQty(f.id, 1)} aria-label="+"><Plus className="h-3.5 w-3.5" /></Button>
                 </div>
                 <span className="w-20 text-right text-sm font-medium tabular-nums">{money(f.importe)}</span>
-                <Button variant="ghost" size="icon" className="h-7 w-7 text-muted-foreground hover:text-destructive" onClick={() => quitar(f.id)} aria-label={t('cotizador.quitar')}>
+                <Button variant="ghost" size="icon" className="h-7 w-7 text-muted-foreground hover:text-destructive" onClick={() => quitar(f.id)} aria-label={t('common.remove')}>
                   <Trash2 className="h-3.5 w-3.5" />
                 </Button>
               </div>

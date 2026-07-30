@@ -374,33 +374,6 @@ const esMX = {
   'distributor.codes.deactivated': 'Código desactivado',
   'distributor.codes.copied': 'Código copiado',
   'distributor.codes.error': 'No se pudo. Intenta de nuevo.',
-  // ---------------------------------------------------------------------------
-  //  Cotizador del distribuidor ("Mis Herramientas" → Cotizador)
-  // ---------------------------------------------------------------------------
-  //  ⛔ Aquí NO se nombra el costo, el proveedor ni el ROI: esta pantalla la ve el
-  //  distribuidor y el documento lo ve su cliente. Sólo precio público, descuento
-  //  y totales.
-  'cotizador.titulo': 'Cotizador Para Clientes',
-  'cotizador.subtitulo': 'Arma la cotización, elige el descuento que das y compártela.',
-  'cotizador.buscar': 'Buscar producto...',
-  'cotizador.vacio': 'Busca un producto arriba para empezar la cotización.',
-  'cotizador.cadaUno': 'c/u',
-  'cotizador.quitar': 'Quitar',
-  'cotizador.descuento': 'Descuento Que Otorgas',
-  'cotizador.topeNota': 'Hay productos que aguantan menos descuento y los insumos no llevan: cada renglón se ajusta solo.',
-  'cotizador.precioLista': 'Precio de lista',
-  'cotizador.ahorro': 'Ahorro del cliente',
-  'cotizador.total': 'Total',
-  'cotizador.nombreCliente': 'Nombre del cliente (opcional)',
-  'cotizador.generar': 'Generar Cotización',
-  'cotizador.docTitulo': 'Cotización',
-  'cotizador.docPara': 'Para:',
-  'cotizador.docAhorro': 'Tu ahorro',
-  'cotizador.docCodigo': 'Código:',
-  'cotizador.docLeyenda': 'Productos para uso en investigación (RUO). Cotización informativa, vigencia de 7 días. Precios en MXN.',
-  'cotizador.waEnlace': 'Ver el catálogo:',
-  'cotizador.compartir': 'Compartir Por WhatsApp',
-  'cotizador.imprimir': 'Imprimir',
   'distributor.commissionNote': 'Ganas el {{rate}}% de cada venta de tus clientes.',
   'distributor.level.title': 'Tu nivel',
   'distributor.level.tier.junior0': 'Junior 0',
@@ -748,17 +721,17 @@ const esMX = {
   'common.total': 'Total',
   'common.payment': 'Pago',
   'common.required': '*',
-  // ---- Cotizador del distribuidor (componente F5, 2026-07-30) ----
-  // Los textos faltaban y la auditoría los marcaba como "clave cruda": en pantalla
-  // habrían salido literalmente 'cotizador.titulo'. Se dejan aquí para que el
-  // componente ya se pueda montar en cuanto se cablee su lógica.
+  // ---- Cotizador del distribuidor ("Mis Herramientas" → Cotizador) ----
+  // ⛔ Aquí NO se nombra el costo, el proveedor ni el ROI: esta pantalla la ve el
+  // distribuidor y el documento lo ve su cliente. Sólo precio público, el
+  // descuento que él puede otorgar, y totales.
   'cotizador.titulo': 'Cotizador Para Tus Clientes',
-  'cotizador.subtitulo': 'Arma una cotización con tu descuento y compártela.',
+  'cotizador.subtitulo': 'Arma la cotización, elige el descuento que das y compártela.',
   'cotizador.buscar': 'Busca un producto…',
   'cotizador.vacio': 'Agrega productos para armar la cotización.',
   'cotizador.cadaUno': 'c/u',
   'cotizador.descuento': 'Descuento Que Le Das',
-  'cotizador.topeNota': 'El tope es tu tasa máxima; cada producto puede tener el suyo.',
+  'cotizador.topeNota': 'Hay productos que aguantan menos descuento y los insumos no llevan: cada renglón se ajusta solo.',
   'cotizador.precioLista': 'Precio de lista',
   'cotizador.ahorro': 'Se ahorra',
   'cotizador.total': 'Total',
@@ -767,9 +740,10 @@ const esMX = {
   'cotizador.docTitulo': 'Cotización',
   'cotizador.docPara': 'Para:',
   'cotizador.docAhorro': 'Ahorro',
-  'cotizador.docLeyenda': 'Solo para uso en investigación. Precios sujetos a cambio y a existencias.',
+  'cotizador.docLeyenda': 'Productos para uso en investigación (RUO). Cotización informativa, vigencia de 7 días. Precios en MXN.',
   'cotizador.docCodigo': 'Código:',
-  'cotizador.compartir': 'Compartir',
+  'cotizador.waEnlace': 'Ver el catálogo:',
+  'cotizador.compartir': 'Compartir Por WhatsApp',
   'cotizador.imprimir': 'Imprimir',
   'common.remove': 'Quitar',
   'common.cancel': 'Cancelar',
@@ -1470,6 +1444,19 @@ const esMX = {
   'admin.customer.addresses': 'Direcciones de envío',
   'admin.customer.orders': 'Historial de pedidos',
   'admin.customer.noOrders': 'Sin pedidos',
+
+  // LA FICHA DEL CLIENTE — la misma desde cualquier lista (Christián, 2026-07-30).
+  'ficha.title': 'Ficha Del Cliente',
+  'ficha.open': 'Abrir Ficha Del Cliente',
+  'ficha.forbidden': 'Ese cliente no es tuyo.',
+  'ficha.notFound': 'No encontramos a esa persona.',
+  'ficha.error': 'No se pudo abrir la ficha.',
+  'ficha.blocked': 'Cuenta Bloqueada',
+  'ficha.referredBy': 'Referido De',
+  'ficha.myEarnings': 'Mi Comisión',
+  'ficha.ordersWithMe': 'Sus Pedidos Contigo',
+  'news.openOrder': 'Ver El Pedido',
+  'news.openClient': 'Ver Al Cliente',
   'admin.sales.noData': 'Aun no hay ventas que graficar',
   'admin.sales.avgTicket': 'Ticket promedio',
   'admin.sales.monthly': 'Ingresos por mes',
