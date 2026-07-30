@@ -430,6 +430,8 @@ const esMX = {
   'account.tools.lockedPending': 'Tu pedido todavía está pendiente de que confirmemos el pago. En cuanto lo verifiquemos, tus herramientas se activan aquí.',
   'account.tools.publicCalc': 'Usar la calculadora básica',
   'account.tools.calcHint': 'Versión completa. Elige uno de tus péptidos y calcula en un clic.',
+  'account.tools.habitsTitle': 'Cuestionario De Hábitos',
+  'account.tools.habitsHint': 'Dieta y hábitos básicos que acompañan tu rutina: agua, sueño, ejercicio y comida real.',
   'account.tools.trackTitle': 'Seguimiento y recompra',
   'account.tools.trackHint': 'Con tu dosis y frecuencia calculamos cuándo se te acaba el vial y te avisamos a tiempo.',
   'track.empty': 'Aún no registras ningún seguimiento. Usa el botón "Registrar seguimiento" en la calculadora.',

@@ -3,6 +3,8 @@ import { useNavigate, useSearchParams, Link } from 'react-router-dom';
 import { Package, User, LogOut, ShoppingBag, DollarSign, MapPin, CreditCard, LockKeyhole, Eye, EyeOff, Syringe, Truck, ExternalLink, Lock, FlaskConical, FileText, BookOpen, Coins, Bell } from 'lucide-react';
 import ReconstitutionCalculator, { mgProducts } from '@/components/ReconstitutionCalculator';
 import ProtocolTracker from '@/components/ProtocolTracker';
+import HabitsQuiz from '@/components/HabitsQuiz';
+import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from '@/components/ui/accordion';
 import LabReports from '@/components/LabReports';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
@@ -301,19 +303,32 @@ const Account = () => {
               </div>
             </Card>
           ) : (
-            <>
-              <section>
-                <h3 className="font-heading font-semibold text-lg mb-1">{t('calc.title')}</h3>
-                <p className="text-sm text-muted-foreground mb-4">{t('account.tools.calcHint')}</p>
-                <ReconstitutionCalculator variant="full" purchased={purchased} onTrack={trackProtocol} syncUrl={false} />
-              </section>
-
-              <section>
-                <h3 className="font-heading font-semibold text-lg mb-1">{t('account.tools.trackTitle')}</h3>
-                <p className="text-sm text-muted-foreground mb-4">{t('account.tools.trackHint')}</p>
-                <ProtocolTracker protocols={protocols} onChange={loadProtocols} />
-              </section>
-            </>
+            // Las herramientas viven MINIMIZADAS (pedido de Christián,
+            // 2026-07-30): solo el título a la vista, y cada una se expande
+            // cuando el cliente la abre.
+            <Accordion type="multiple" className="space-y-3">
+              <AccordionItem value="calc" className="border rounded-xl px-4">
+                <AccordionTrigger className="font-heading font-semibold text-base hover:no-underline" data-testid="tool-calc-toggle">{t('calc.title')}</AccordionTrigger>
+                <AccordionContent>
+                  <p className="text-sm text-muted-foreground mb-4">{t('account.tools.calcHint')}</p>
+                  <ReconstitutionCalculator variant="full" purchased={purchased} onTrack={trackProtocol} syncUrl={false} />
+                </AccordionContent>
+              </AccordionItem>
+              <AccordionItem value="track" className="border rounded-xl px-4">
+                <AccordionTrigger className="font-heading font-semibold text-base hover:no-underline" data-testid="tool-track-toggle">{t('account.tools.trackTitle')}</AccordionTrigger>
+                <AccordionContent>
+                  <p className="text-sm text-muted-foreground mb-4">{t('account.tools.trackHint')}</p>
+                  <ProtocolTracker protocols={protocols} onChange={loadProtocols} />
+                </AccordionContent>
+              </AccordionItem>
+              <AccordionItem value="habits" className="border rounded-xl px-4">
+                <AccordionTrigger className="font-heading font-semibold text-base hover:no-underline" data-testid="tool-habits-toggle">{t('account.tools.habitsTitle')}</AccordionTrigger>
+                <AccordionContent>
+                  <p className="text-sm text-muted-foreground mb-4">{t('account.tools.habitsHint')}</p>
+                  <HabitsQuiz />
+                </AccordionContent>
+              </AccordionItem>
+            </Accordion>
           )}
         </TabsContent>
 

@@ -490,6 +490,8 @@ const ptBR = {
   'account.tools.lockedPending': 'Seu pedido ainda aguarda a confirmação do pagamento. Assim que verificarmos, suas ferramentas são ativadas aqui.',
   'account.tools.publicCalc': 'Usar a calculadora básica',
   'account.tools.calcHint': 'Versao completa. Escolha um dos seus peptídeos e calcule em um clique.',
+  'account.tools.habitsTitle': 'Questionário De Hábitos',
+  'account.tools.habitsHint': 'Dieta e hábitos básicos que acompanham sua rotina: água, sono, exercício e comida de verdade.',
   'account.tools.trackTitle': 'Acompanhamento e recompra',
   'account.tools.trackHint': 'Com sua dose e frequencia calculamos quando o frasco acaba e avisamos a tempo.',
   'track.empty': 'Nenhum acompanhamento ainda. Use o botao "Registrar acompanhamento" na calculadora.',

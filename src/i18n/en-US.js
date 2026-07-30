@@ -476,6 +476,8 @@ const enUS = {
   'account.tools.lockedPending': 'Your order is still waiting for us to confirm payment. Once we verify it, your tools turn on here.',
   'account.tools.publicCalc': 'Use the basic calculator',
   'account.tools.calcHint': 'Full version. Pick one of your peptides and calculate in one click.',
+  'account.tools.habitsTitle': 'Habits Questionnaire',
+  'account.tools.habitsHint': 'Basic diet and habits that support your routine: water, sleep, exercise and real food.',
   'account.tools.trackTitle': 'Tracking and repurchase',
   'account.tools.trackHint': 'From your dose and frequency we work out when the vial runs out and tell you in time.',
   'track.empty': 'No tracking yet. Use the "Track this" button in the calculator.',
