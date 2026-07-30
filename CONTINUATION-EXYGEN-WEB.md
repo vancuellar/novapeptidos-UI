@@ -111,6 +111,59 @@ de sitio roto: si se repite la ola, usar worktrees o serializar los deploys.
 ⚠️ Google Reviews: la página de confirmación es /pedido/<numero> (patrón
 https://exygenlabs.com/pedido/*).
 
+## 📌 2026-07-30 (madrugada) — proveedores, costos y ROI
+
+**El hallazgo grande: el ROI que veías estaba mal.** La base guarda DOS costos
+(`costo_lista`, que sí conoce las listas, y una COPIA pegada en la maestra) y
+nada obligaba a que coincidieran. Resultado: 113 productos con el costo
+inflado, ~$59,000 MXN de más por caja. La TR 120mg decía 10.0x y deja 13.8x.
+Christián eligió la "opción 3": costos reales + que la comisión se recalcule
+sola con las reglas que YA existen (tope 40%, y si al pagarla el ROI cae abajo
+de 5x el producto sale a venta directa). Herramienta: `refrescar_costos.py`
+(simulacro por omisión; usa el emparejador del sistema, NO uno casero — con
+uno casero el KLOW no hallaba su oferta y el costo parecía subir).
+
+**Bugs encontrados de paso:**
+- `reprecio.py --aplicar` estaba ROTO: un `import db as D` dentro de main()
+  convertía D en local y tronaba al escribir el ROI. El motor no podía aplicar
+  NADA. Arreglado.
+- El importador daba por hecho 10 viales por caja cuando el conteo venía dentro
+  de la presentación (EPO 5, Insulin 1, Oxitocina 9): el costo por vial salía
+  hasta 10 veces más barato. Arreglado y reimportado; el histórico no estaba
+  afectado.
+- El tipo de cambio de la casa es **17.50**, no 19.50 (build_pricing_final,
+  auditar_catalogo, reprecio). Con 19.50 el costo salía 11% más alto.
+
+**Proveedores nuevos:** Cell Peptides (P36, 241 precios — solo gana en 4 de 166
+comparables, sin COA de EUA) y **li la (P37, 164 precios)**, que trae la
+**Retatrutida 120 mg a $40/vial** — la más barata (DT cobraba $59.10). La RT
+120mg NO estaba en el catálogo; se está dando de alta (tope $9,215 para no
+romper la escalera: su $/mg debe quedar por debajo del de la 100mg).
+
+**Auditoría de la base de precios (Codex + verificación):** en
+`pricing-system/AUDITORIA-CODEX-PRECIOS-PROVEEDORES.md`.
+🔴 URGENTE: 11 productos donde el comparador corona un precio que el propio
+proveedor desmiente en otro renglón de su misma lista (DT: Snap-8 100mg a
+$64.50 y también a $365.40 — comprar con el bajo puede costar 5x). Además: no
+son 37 proveedores con precios sino **17** (20 registros vacíos, 4 duplicados:
+Lisa, Cell Peptides, Mia, US Lab); 259 de 509 productos los vende un solo
+proveedor; 55 renglones sin cantidad ni unidad. Se tumbaron 6 hallazgos falsos
+de Codex (entre ellos su "más grave", que no lo era). Base y CSV: sin
+diferencias.
+
+**Herramienta nueva `pricing-system/x.py`** — preguntar y que conteste en un
+segundo: `x.py rt 40` (costo, quién es el más barato, a cuánto lo vendes y el
+múltiplo), `x.py lucy` (teléfono y en qué gana), `x.py proveedores`, `x.py roi`,
+`x.py ventas`, `x.py distribuidores`, `x.py clientes`. Entiende sus apodos.
+
+**Sitio:** Vitamina D3 publicada ($4,199, categoría `suministros` — `accesorios`
+NO tiene página visible; stock 0 hasta la primera compra a Lumi) · Tienda de
+Confianza ahora en portada y ficha de producto (antes solo tras iniciar sesión)
+· envíos emparejados a "2 a 5 días" en los 7 lugares donde decía 3 a 5 ·
+Mónica Fuentes al footer bajo el correo · hover rojo en acciones destructivas ·
+ordenar productos por nombre y categoría (Admin y catálogo público) ·
+pestaña Certificados OCULTA a propósito para clientes y distribuidores.
+
 ## ⛔ LECCIÓN CLAVE 2026-07-29: el push NO despliega el frontend
 
 GitHub Actions dice success pero publica al GitHub Pages viejo. El sitio real
