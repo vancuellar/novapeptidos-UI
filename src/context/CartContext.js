@@ -1,8 +1,9 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { toast } from 'sonner';
 import { track } from '@/lib/track';
-import api from '@/lib/api';
+import api, { esCaidaDeApi } from '@/lib/api';
 import { useAuth } from '@/context/AuthContext';
+import { useLanguage } from '@/context/LanguageContext';
 import { productImage } from '@/data/productImages';
 import { fallbackProducts } from '@/data/fallbackCatalog';
 
@@ -126,6 +127,7 @@ export const CartProvider = ({ children }) => {
   // como descuento (Christian, 2026-07-25). Ese descuento ES su comisión, cobrada
   // por adelantado — no gana comisión encima. Sigue acotado al tope de cada producto.
   const { user } = useAuth();
+  const { t } = useLanguage();
   const [selfRate, setSelfRate] = useState(0);
   useEffect(() => {
     if (!user || user.role !== 'distributor') { setSelfRate(0); return; }
@@ -160,8 +162,10 @@ export const CartProvider = ({ children }) => {
           : `${Math.round((r.data.discount_rate || 0) * 100)}% de descuento`,
       });
       return true;
-    } catch {
-      toast.error('Código no válido');
+    } catch (err) {
+      // Si el servidor NO contestó, no se sabe si el código vale: decirle
+      // "no válido" al cliente sería mentirle y quemar el cupón.
+      toast.error(esCaidaDeApi(err) ? t('cart.codigo.mantenimiento') : t('cart.codigo.invalido'));
       return false;
     }
   };

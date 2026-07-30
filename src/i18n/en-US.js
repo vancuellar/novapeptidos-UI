@@ -1073,6 +1073,8 @@ const enUS = {
   'cart.plusShipping': 'Plus shipping (quoted separately)',
   'cart.checkout': 'Checkout',
   'cart.keepShopping': 'Keep shopping',
+  'cart.codigo.invalido': 'Invalid code',
+  'cart.codigo.mantenimiento': 'We Are Under Maintenance; We Could Not Verify Your Code. Please Try Again In A Few Minutes',
 
   'checkout.empty': 'Your cart is empty.',
   'checkout.title': 'Checkout',
@@ -1226,6 +1228,8 @@ const enUS = {
 
   'order.received': 'Order received!',
   'order.receivedBody': 'Your order {{number}} was registered successfully.',
+  'order.detalleCaida': 'We Are Under Maintenance; We Could Not Load Your Order Details. Reload This Page In A Few Minutes To See The Payment Instructions.',
+  'order.detalleError': 'We could not load the details for this order. If the problem persists, write to us with your order number.',
   'order.paymentMethod': 'Payment method',
   'order.noteTitle': 'Note:',
   'order.noteBody': 'Payment methods are shown as a proposal. Online payment is not processed yet; our team will contact you to coordinate payment and shipping.',
