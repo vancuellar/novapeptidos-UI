@@ -1,4 +1,5 @@
 import React, { useMemo, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { ChevronDown, ChevronRight, PanelLeftClose, PanelLeftOpen } from 'lucide-react';
 import { TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useLanguage } from '@/context/LanguageContext';
@@ -38,6 +39,29 @@ const leerGrupos = () => {
 
 // `activeTab` viene de la página (ella sabe cuál es la pestaña por omisión; la URL
 // no la trae). Solo se usa para resaltar el encabezado de un grupo cerrado.
+// Una entrada del menú. Casi todas son pestañas (`value`), pero una puede ser un
+// ENLACE a otra página (`to`): es el caso de Difusión, que vive en el Panel de
+// Administración y sólo le sale a quien tiene ese permiso. Se pinta igual que
+// una pestaña para que el menú se lea parejo.
+const Entrada = ({ item, className }) => {
+  const navigate = useNavigate();
+  const { icon: Icon, label, to, value } = item;
+  if (to) {
+    return (
+      <button type="button" onClick={() => { navigate(to); alTope(); }}
+        data-testid={`dash-link-${value}`}
+        className={`inline-flex items-center whitespace-nowrap text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-muted transition-colors px-3 py-1.5 ${className}`}>
+        <Icon className="h-4 w-4 shrink-0" /> <span className="truncate">{label}</span>
+      </button>
+    );
+  }
+  return (
+    <TabsTrigger value={value} onClick={alTope} className={className}>
+      <Icon className="h-4 w-4 shrink-0" /> <span className="truncate">{label}</span>
+    </TabsTrigger>
+  );
+};
+
 const DashboardSidebar = ({ items, activeTab }) => {
   const { t } = useLanguage();
   const activo = activeTab;
@@ -72,13 +96,23 @@ const DashboardSidebar = ({ items, activeTab }) => {
 
   return (
     <>
-      {/* Móvil: barra horizontal arriba del contenido */}
-      <TabsList className="lg:hidden h-auto w-full flex flex-row items-stretch justify-start gap-1 bg-transparent p-0 overflow-x-auto mb-4">
-        {items.filter((i) => !i.grupo).map(({ value, icon: Icon, label }) => (
-          <TabsTrigger key={value} value={value} onClick={alTope}
-            className="justify-start gap-2 rounded-lg shrink-0">
-            <Icon className="h-4 w-4" /> {label}
-          </TabsTrigger>
+      {/* Móvil: barra horizontal arriba del contenido. Las mismas categorías que
+          en escritorio, pero escritas al vuelo entre las pestañas: en el celular
+          no hay sitio para encabezados con su propio renglón, y sin ellas trece
+          entradas seguidas se leen como una lista de nada.
+          El `overflow-x` es de ESTA barra, nunca del body (mata el header). */}
+      <TabsList className="lg:hidden h-auto w-full flex flex-row items-stretch justify-start gap-1 bg-transparent p-0 overflow-x-auto mb-4" data-testid="dash-sidebar-movil">
+        {secciones.map(({ grupo, hijos }) => (
+          <React.Fragment key={grupo || 'libres'}>
+            {grupo && (
+              <span className="shrink-0 self-center ml-1.5 pl-3 border-l border-border text-[10px] font-medium uppercase tracking-wider text-muted-foreground/70">
+                {grupo}
+              </span>
+            )}
+            {hijos.map((it) => (
+              <Entrada key={it.value} item={it} className="justify-start gap-2 rounded-lg shrink-0" />
+            ))}
+          </React.Fragment>
         ))}
       </TabsList>
 
@@ -119,11 +153,8 @@ const DashboardSidebar = ({ items, activeTab }) => {
                         {grupo}
                       </button>
                     )}
-                    {!cerrado && hijos.map(({ value, icon: Icon, label }) => (
-                      <TabsTrigger key={value} value={value} onClick={alTope}
-                        className="justify-start w-full gap-2.5 rounded-lg py-2">
-                        <Icon className="h-4 w-4 shrink-0" /> <span className="truncate">{label}</span>
-                      </TabsTrigger>
+                    {!cerrado && hijos.map((it) => (
+                      <Entrada key={it.value} item={it} className="justify-start w-full gap-2.5 rounded-lg py-2" />
                     ))}
                   </React.Fragment>
                 );

@@ -85,6 +85,15 @@ const Header = () => {
   const [unread, setUnread] = useState(0);
   const [scrolled, setScrolled] = useState(false);
 
+  // Un menú por rol (2026-07-30). Toda la información de una persona cuelga de
+  // UN solo tablero: el distribuidor del suyo, el cliente de Mi cuenta. Desde
+  // aquí se apunta siempre al que le toca, para que no acabe en el otro y tenga
+  // que rebotar. (El admin conserva Mi cuenta como cliente que también es.)
+  const miPanel = user && user.role === 'distributor' ? '/distribuidor' : '/cuenta';
+  const miPanelDeTutoriales = user
+    ? `${['distributor', 'admin'].includes(user.role) ? '/distribuidor' : '/cuenta'}?tab=tutoriales`
+    : '/tutoriales';
+
   // Como Resend: la barra nace transparente y fundida con el hero; solo al
   // hacer scroll gana fondo con blur para que el contenido no se le encime.
   useEffect(() => {
@@ -235,7 +244,7 @@ const Header = () => {
                     Se quitó "Inicio": el logo de arriba ya lleva a la portada. */}
                 <div className="mt-4 grid grid-cols-3 gap-2">
                   {[
-                    { to: user ? '/cuenta' : '/login', icon: User, label: t('header.account') },
+                    { to: user ? miPanel : '/login', icon: User, label: t('header.account') },
                     { to: '/catalogo', icon: LayoutGrid, label: t('nav.catalog') },
                     { to: '/asesor', icon: Sparkles, label: t('nav.advisor') },
                     { seccion: 'mob-recursos', icon: FlaskConical, label: t('nav.tools') },
@@ -459,7 +468,7 @@ const Header = () => {
                 <DropdownMenuContent align="end" className="w-52">
                   <DropdownMenuLabel className="truncate">{user.name}</DropdownMenuLabel>
                   <DropdownMenuSeparator />
-                  <DropdownMenuItem onClick={() => navigate('/cuenta')}><User className="h-4 w-4 mr-2" /> {t('header.account')}</DropdownMenuItem>
+                  <DropdownMenuItem onClick={() => navigate(miPanel)}><User className="h-4 w-4 mr-2" /> {t('header.account')}</DropdownMenuItem>
                   {/* Difusión (rol propio o extra, p. ej. María) también entra al
                       panel: adentro solo ve sus tres pestañas y el backend le
                       niega el resto. */}
@@ -477,7 +486,7 @@ const Header = () => {
                       </span>
                     )}
                   </DropdownMenuItem>
-                  <DropdownMenuItem onClick={() => navigate('/tutoriales')} data-testid="header-tutorials-link"><GraduationCap className="h-4 w-4 mr-2" /> {t('header.tutorials')}</DropdownMenuItem>
+                  <DropdownMenuItem onClick={() => navigate(miPanelDeTutoriales)} data-testid="header-tutorials-link"><GraduationCap className="h-4 w-4 mr-2" /> {t('header.tutorials')}</DropdownMenuItem>
                   <DropdownMenuSeparator />
                   <DropdownMenuItem onClick={() => { logout(); navigate('/'); }} data-testid="header-logout-button" className="text-destructive hover:bg-destructive hover:text-white focus:bg-destructive focus:text-white"><LogOut className="h-4 w-4 mr-2" /> {t('header.logout')}</DropdownMenuItem>
                 </DropdownMenuContent>

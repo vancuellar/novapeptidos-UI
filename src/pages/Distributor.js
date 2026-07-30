@@ -1,6 +1,6 @@
 import React, { useEffect, useLayoutEffect, useState, useCallback } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import { Store, Users, DollarSign, TrendingUp, ShoppingBag, Copy, Percent, Truck, ExternalLink, FileText, BookOpen, Award, Ticket, RefreshCw, Bell, Syringe } from 'lucide-react';
+import { Store, Users, DollarSign, TrendingUp, ShoppingBag, Copy, Percent, Truck, ExternalLink, BookOpen, Award, Ticket, RefreshCw, Bell, Syringe, Package, Coins, User, GraduationCap, FlaskConical, Megaphone } from 'lucide-react';
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip } from 'recharts';
 import GraficaInteractiva from '@/components/charts/GraficaInteractiva';
 import { Button } from '@/components/ui/button';
@@ -10,15 +10,35 @@ import { Tabs, TabsContent } from '@/components/ui/tabs';
 import DashboardSidebar, { alTope } from '@/components/layout/DashboardSidebar';
 import CoaLibrary from '@/components/CoaLibrary';
 import FichaLibrary from '@/components/FichaLibrary';
+import LabReports from '@/components/LabReports';
 import NotificationsFeed from '@/components/NotificationsFeed';
 import ToolsPanel, { herramientasDesbloqueadas } from '@/components/ToolsPanel';
+import OrdersPanel from '@/components/panels/OrdersPanel';
+import PointsPanel from '@/components/panels/PointsPanel';
+import ProfilePanel from '@/components/panels/ProfilePanel';
+import TutorialsPanel from '@/components/panels/TutorialsPanel';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { toast } from 'sonner';
 import api, { formatMXN } from '@/lib/api';
+import { tieneDifusion } from '@/lib/roles';
 import { useAuth } from '@/context/AuthContext';
 import { useLanguage } from '@/context/LanguageContext';
 
+// ---------------------------------------------------------------------------
+//  El panel del distribuidor = SU único menú (2026-07-30)
+// ---------------------------------------------------------------------------
+// Antes su información vivía en dos sitios: el negocio aquí y lo suyo propio
+// (sus pedidos, sus puntos, su perfil) en /cuenta, más los tutoriales en una
+// tercera página. Ahora todo cuelga de este menú, catalogado por temas, y
+// /cuenta lo manda para acá. Los bloques compartidos con el cliente son
+// literalmente los mismos componentes, para que nunca se separen.
+//
+// ⚠️ DIFUSIÓN: el apartado de publicidad NO es del canal de distribución. Sólo
+// se pinta —y sólo como enlace al Panel de Administración, que es donde vive—
+// cuando `tieneDifusion(user)` dice que sí: hoy eso es el admin y María, que lo
+// tiene por `extra_roles`. Ningún otro distribuidor lo ve, y el backend le
+// contesta 403 aunque escriba la dirección a mano.
 const STATUS_COLORS = {
   pendiente: 'bg-[hsl(var(--warning))] text-[hsl(var(--warning-foreground))] border border-[hsl(var(--warning-border))]',
   confirmado: 'bg-[hsl(var(--accent))] text-[hsl(var(--accent-foreground))] border border-border',
@@ -36,7 +56,7 @@ const CHART_TOOLTIP_STYLE = {
 };
 
 const Distributor = () => {
-  const { user, loading } = useAuth();
+  const { user, loading, refreshUser } = useAuth();
   const { language, t } = useLanguage();
   const navigate = useNavigate();
   const [summary, setSummary] = useState(null);
@@ -49,11 +69,12 @@ const Distributor = () => {
   const [orderPeriod, setOrderPeriod] = useState('all');
   const [orderStatus, setOrderStatus] = useState('all');
   const [codes, setCodes] = useState([]);
-  const [maxDiscount, setMaxDiscount] = useState(0);
   const [rotateDays, setRotateDays] = useState(30);
   const [notifUnread, setNotifUnread] = useState(0);
+  const [loyalty, setLoyalty] = useState({ eligible: false, balance: 0, ledger: [] });
   // Los pedidos que ÉL compró (no los de sus clientes): con ellos la calculadora
-  // de "Mis Herramientas" pre-carga sus propios péptidos.
+  // de "Mis Herramientas" pre-carga sus propios péptidos, y son los que ve en
+  // su pestaña "Mis Pedidos".
   const [misPedidos, setMisPedidos] = useState([]);
   const [params, setParams] = useSearchParams();
   // Abrir ARRIBA al cambiar de pestaña, venga el cambio de donde venga (sidebar,
@@ -66,7 +87,7 @@ const Distributor = () => {
   }, [user, loading, navigate]);
 
   const loadCodes = useCallback(() => {
-    api.get('/distributor/codes').then((r) => { setCodes(r.data.codes || []); setMaxDiscount(r.data.max_discount || 0); setRotateDays(r.data.rotate_days || 30); }).catch(() => {});
+    api.get('/distributor/codes').then((r) => { setCodes(r.data.codes || []); setRotateDays(r.data.rotate_days || 30); }).catch(() => {});
   }, []);
 
   const loadAll = useCallback(() => {
@@ -76,6 +97,7 @@ const Distributor = () => {
     api.get('/distributor/sales').then((r) => setSales(r.data)).catch(() => {});
     api.get('/distributor/orders').then((r) => setOrders(r.data)).catch(() => {});
     api.get('/me/notifications').then((r) => setNotifUnread(r.data.unread || 0)).catch(() => {});
+    api.get('/me/points').then((r) => setLoyalty(r.data)).catch(() => {});
     api.get('/orders/me').then((r) => setMisPedidos(r.data)).catch(() => {});
     loadCodes();
   }, [loadCodes]);
@@ -135,6 +157,40 @@ const Distributor = () => {
     </div>
   );
 
+  // El menú, catalogado por lo que uno viene a hacer: primero lo del día a día,
+  // luego su negocio, luego sus propias compras, luego lo que consulta, y al
+  // final su cuenta. Difusión sólo existe para quien la lleva.
+  const menu = [
+    { value: 'overview', icon: TrendingUp, label: t('distributor.overviewTab') },
+    { value: 'news', icon: Bell, label: t('news.tab') + (notifUnread ? ` (${notifUnread})` : '') },
+    { grupo: t('dash.group.business') },
+    { value: 'codes', icon: Ticket, label: t('distributor.codesTab') },
+    { value: 'clients', icon: Users, label: t('distributor.clientsTab') },
+    { value: 'sales', icon: ShoppingBag, label: t('distributor.salesTab') },
+    { value: 'envios', icon: Truck, label: t('distributor.ordersTab') },
+    { grupo: t('dash.group.purchases') },
+    { value: 'orders', icon: Package, label: t('account.ordersTab') },
+    ...(loyalty.eligible ? [{ value: 'points', icon: Coins, label: t('account.pointsTab') }] : []),
+    { grupo: t('dash.group.resources') },
+    // Mismas herramientas que en Mi cuenta (calculadora completa, seguimiento y
+    // cuestionario de hábitos): el distribuidor las tiene aquí sin salir de su
+    // tablero. Es el mismo componente, no una copia.
+    { value: 'tools', icon: Syringe, label: t('account.toolsTab') },
+    // OCULTO por orden de Christián (2026-07-30) hasta nuevo aviso — no borrar:
+    // { value: 'coas', icon: FileText, label: t('account.coasTab') },
+    { value: 'fichas', icon: BookOpen, label: t('account.fichasTab') },
+    { value: 'labs', icon: FlaskConical, label: t('account.labsTab') },
+    { value: 'tutoriales', icon: GraduationCap, label: t('header.tutorials') },
+    { grupo: t('dash.group.account') },
+    { value: 'profile', icon: User, label: t('account.profileTab') },
+    // ⚠️ SÓLO quien lleva la difusión (hoy: el admin y María). Es un enlace al
+    // Panel de Administración, no una pestaña de este tablero.
+    ...(tieneDifusion(user) ? [
+      { grupo: t('header.difusion') },
+      { value: 'difusion', icon: Megaphone, label: t('dash.difusionLink'), to: '/admin' },
+    ] : []),
+  ];
+
   return (
     <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 py-8">
       <div className="flex flex-wrap items-start justify-between gap-4 mb-6">
@@ -153,88 +209,77 @@ const Distributor = () => {
         )}
       </div>
 
-      <Tabs value={params.get('tab') || 'overview'} onValueChange={(v) => setParams(v === 'overview' ? {} : { tab: v }, { replace: true })}
+      <Tabs value={tabActiva} onValueChange={(v) => setParams(v === 'overview' ? {} : { tab: v }, { replace: true })}
         className="lg:flex lg:gap-8 lg:items-start">
-        <DashboardSidebar activeTab={tabActiva} items={[
-          { value: 'overview', icon: TrendingUp, label: t('distributor.overviewTab') },
-          { value: 'news', icon: Bell, label: t('news.tab') + (notifUnread ? ` (${notifUnread})` : '') },
-          { value: 'codes', icon: Ticket, label: t('distributor.codesTab') },
-          { value: 'clients', icon: Users, label: t('distributor.clientsTab') },
-          { value: 'orders', icon: Truck, label: t('distributor.ordersTab') },
-          { value: 'sales', icon: ShoppingBag, label: t('distributor.salesTab') },
-          // Mismas herramientas que en Mi cuenta (calculadora completa,
-          // seguimiento y cuestionario de hábitos): el distribuidor las tiene
-          // aquí sin salir de su tablero.
-          { value: 'tools', icon: Syringe, label: t('account.toolsTab') },
-          // OCULTO por orden de Christián (2026-07-30) hasta nuevo aviso — no borrar:
-          // { value: 'coas', icon: FileText, label: t('account.coasTab') },
-          { value: 'fichas', icon: BookOpen, label: t('account.fichasTab') },
-        ]} />
+        <DashboardSidebar activeTab={tabActiva} items={menu} />
         <div className="min-w-0 flex-1">
 
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-4">
-          {STAT_CARDS.map((s, i) => (
-            <Card key={i} className="p-4">
-              <div className="flex items-center gap-2 text-muted-foreground text-xs"><s.i className="h-4 w-4" /> {s.t}</div>
-              <div className="font-heading text-xl font-bold mt-1">{s.v}</div>
-            </Card>
-          ))}
-        </div>
-
-        {level && (
-          <Card className="p-5 mb-4" data-testid="distributor-level-card">
-            <div className="flex items-center gap-2 mb-4 flex-wrap">
-              <Award className="h-5 w-5 text-[hsl(var(--primary))]" />
-              <span className="text-xs text-muted-foreground">{t('distributor.level.title')}</span>
-              <Badge className="bg-[hsl(var(--primary))] text-[hsl(var(--primary-foreground))] text-xs px-2.5 py-0.5">{tierName(level.current)}</Badge>
-              <span className="text-xs text-muted-foreground">{t('distributor.level.rate', { rate: Math.round((summary.commission_rate || 0) * 100) })}</span>
-            </div>
-
-            {level.kind === 'top' ? (
-              <p className="text-sm">{t('distributor.level.top', { tier: tierName(level.current), rate: Math.round((level.rate || 0) * 100) })}</p>
-            ) : (
-              <>
-                <p className="text-sm font-medium mb-3">{t('distributor.level.toNextTitle', { next: tierName(level.next) })}</p>
-                {/* Meta 1: ventas */}
-                <div className="mb-4">
-                  <div className="flex items-center justify-between text-xs mb-1.5">
-                    <span className="text-muted-foreground">{t('distributor.level.salesLabel', { basis: t(level.sales.basis === 'team' ? 'distributor.level.basisTeam' : 'distributor.level.basisPersonal') })}</span>
-                    <span className="font-mono-tech text-muted-foreground">{t('distributor.level.progressOf', { current: formatMXN(level.sales.value), target: formatMXN(level.sales.target) })}</span>
-                  </div>
-                  <ProgressBar pct={level.sales.progress} />
-                </div>
-                {/* Meta 2: reclutas activos */}
-                <div className="mb-3">
-                  <div className="flex items-center justify-between text-xs mb-1.5">
-                    <span className="text-muted-foreground">{t('distributor.level.recruitsLabel')}</span>
-                    <span className="font-mono-tech text-muted-foreground">{t('distributor.level.progressOf', { current: level.recruits.value, target: level.recruits.target })}</span>
-                  </div>
-                  <ProgressBar pct={level.recruits.progress} />
-                </div>
-                <p className="text-[11px] text-muted-foreground">
-                  {level.qualifies ? t('distributor.level.qualifies') : t('distributor.level.approve')}
-                  {level.manual && <> · {t('distributor.level.manual')}</>}
-                </p>
-              </>
-            )}
-
-            {(summary.override_earnings > 0 || summary.own_earnings > 0) && (
-              <div className="flex flex-wrap gap-x-6 gap-y-1 mt-4 pt-3 border-t border-[hsl(var(--border))] text-sm">
-                <span className="text-muted-foreground">{t('distributor.level.ownEarnings')}: <span className="font-semibold text-foreground">{formatMXN(summary.own_earnings)}</span></span>
-                <span className="text-muted-foreground">{t('distributor.level.overrideEarnings')}: <span className="font-semibold text-foreground">{formatMXN(summary.override_earnings)}</span></span>
-              </div>
-            )}
-          </Card>
-        )}
-
-        {summary && (
-          <Card className="p-4 mb-6 flex items-center gap-2 text-sm text-muted-foreground">
-            <Percent className="h-4 w-4 text-[hsl(var(--primary))]" />
-            {t('distributor.commissionNote', { rate: Math.round((summary.commission_rate || 0) * 100) })}{summary.customer_discount_rate > 0 && <> · {t('distributor.customerDiscountNote', { rate: Math.round(summary.customer_discount_rate * 100) })}</>}
-          </Card>
-        )}
-
+        {/* Los números, el nivel y la nota de comisión son el RESUMEN: viven en
+            su pestaña y no encima de todas las demás. Antes se repetían aunque
+            estuvieras editando tu dirección. */}
         <TabsContent value="overview" className="mt-5">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-4">
+            {STAT_CARDS.map((s, i) => (
+              <Card key={i} className="p-4">
+                <div className="flex items-center gap-2 text-muted-foreground text-xs"><s.i className="h-4 w-4" /> {s.t}</div>
+                <div className="font-heading text-xl font-bold mt-1">{s.v}</div>
+              </Card>
+            ))}
+          </div>
+
+          {level && (
+            <Card className="p-5 mb-4" data-testid="distributor-level-card">
+              <div className="flex items-center gap-2 mb-4 flex-wrap">
+                <Award className="h-5 w-5 text-[hsl(var(--primary))]" />
+                <span className="text-xs text-muted-foreground">{t('distributor.level.title')}</span>
+                <Badge className="bg-[hsl(var(--primary))] text-[hsl(var(--primary-foreground))] text-xs px-2.5 py-0.5">{tierName(level.current)}</Badge>
+                <span className="text-xs text-muted-foreground">{t('distributor.level.rate', { rate: Math.round((summary.commission_rate || 0) * 100) })}</span>
+              </div>
+
+              {level.kind === 'top' ? (
+                <p className="text-sm">{t('distributor.level.top', { tier: tierName(level.current), rate: Math.round((level.rate || 0) * 100) })}</p>
+              ) : (
+                <>
+                  <p className="text-sm font-medium mb-3">{t('distributor.level.toNextTitle', { next: tierName(level.next) })}</p>
+                  {/* Meta 1: ventas */}
+                  <div className="mb-4">
+                    <div className="flex items-center justify-between text-xs mb-1.5">
+                      <span className="text-muted-foreground">{t('distributor.level.salesLabel', { basis: t(level.sales.basis === 'team' ? 'distributor.level.basisTeam' : 'distributor.level.basisPersonal') })}</span>
+                      <span className="font-mono-tech text-muted-foreground">{t('distributor.level.progressOf', { current: formatMXN(level.sales.value), target: formatMXN(level.sales.target) })}</span>
+                    </div>
+                    <ProgressBar pct={level.sales.progress} />
+                  </div>
+                  {/* Meta 2: reclutas activos */}
+                  <div className="mb-3">
+                    <div className="flex items-center justify-between text-xs mb-1.5">
+                      <span className="text-muted-foreground">{t('distributor.level.recruitsLabel')}</span>
+                      <span className="font-mono-tech text-muted-foreground">{t('distributor.level.progressOf', { current: level.recruits.value, target: level.recruits.target })}</span>
+                    </div>
+                    <ProgressBar pct={level.recruits.progress} />
+                  </div>
+                  <p className="text-[11px] text-muted-foreground">
+                    {level.qualifies ? t('distributor.level.qualifies') : t('distributor.level.approve')}
+                    {level.manual && <> · {t('distributor.level.manual')}</>}
+                  </p>
+                </>
+              )}
+
+              {(summary.override_earnings > 0 || summary.own_earnings > 0) && (
+                <div className="flex flex-wrap gap-x-6 gap-y-1 mt-4 pt-3 border-t border-[hsl(var(--border))] text-sm">
+                  <span className="text-muted-foreground">{t('distributor.level.ownEarnings')}: <span className="font-semibold text-foreground">{formatMXN(summary.own_earnings)}</span></span>
+                  <span className="text-muted-foreground">{t('distributor.level.overrideEarnings')}: <span className="font-semibold text-foreground">{formatMXN(summary.override_earnings)}</span></span>
+                </div>
+              )}
+            </Card>
+          )}
+
+          {summary && (
+            <Card className="p-4 mb-6 flex items-center gap-2 text-sm text-muted-foreground">
+              <Percent className="h-4 w-4 text-[hsl(var(--primary))]" />
+              {t('distributor.commissionNote', { rate: Math.round((summary.commission_rate || 0) * 100) })}{summary.customer_discount_rate > 0 && <> · {t('distributor.customerDiscountNote', { rate: Math.round(summary.customer_discount_rate * 100) })}</>}
+            </Card>
+          )}
+
           {!summary || summary.monthly.length === 0 ? (
             <Card className="p-10 text-center text-muted-foreground">{t('distributor.noData')}</Card>
           ) : (
@@ -287,34 +332,6 @@ const Distributor = () => {
           )}
         </TabsContent>
 
-        <TabsContent value="clients" className="mt-5">
-          <h3 className="font-heading font-semibold mb-4">{t('distributor.clientsCount', { count: clients.length })}</h3>
-          <Card className="overflow-x-auto">
-            <Table data-testid="distributor-clients-table">
-              <TableHeader>
-                <TableRow>
-                  <TableHead>{t('distributor.table.client')}</TableHead><TableHead>{t('distributor.table.orders')}</TableHead>
-                  <TableHead>{t('distributor.table.spent')}</TableHead><TableHead>{t('distributor.table.myEarnings')}</TableHead>
-                  <TableHead>{t('distributor.table.since')}</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {clients.length === 0 ? (
-                  <TableRow><TableCell colSpan={5} className="text-center text-muted-foreground py-8">{t('distributor.noClients')}</TableCell></TableRow>
-                ) : clients.map((c) => (
-                  <TableRow key={c.id}>
-                    <TableCell><div className="text-sm font-medium">{c.name}</div></TableCell>
-                    <TableCell>{c.orders_count}</TableCell>
-                    <TableCell>{formatMXN(c.total_spent)}</TableCell>
-                    <TableCell className="font-medium text-[hsl(var(--primary))]">{formatMXN(c.my_earnings)}</TableCell>
-                    <TableCell className="text-xs text-muted-foreground">{fmtDate(c.created_at)}</TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </Card>
-        </TabsContent>
-
         <TabsContent value="news" className="mt-5">
           <h3 className="font-heading font-semibold mb-4">{t('news.tab')}</h3>
           <NotificationsFeed onSeen={() => setNotifUnread(0)} />
@@ -358,7 +375,90 @@ const Distributor = () => {
           </Card>
         </TabsContent>
 
-        <TabsContent value="orders" className="mt-5 space-y-4">
+        <TabsContent value="clients" className="mt-5">
+          <h3 className="font-heading font-semibold mb-4">{t('distributor.clientsCount', { count: clients.length })}</h3>
+          <Card className="overflow-x-auto">
+            <Table data-testid="distributor-clients-table">
+              <TableHeader>
+                <TableRow>
+                  <TableHead>{t('distributor.table.client')}</TableHead><TableHead>{t('distributor.table.orders')}</TableHead>
+                  <TableHead>{t('distributor.table.spent')}</TableHead><TableHead>{t('distributor.table.myEarnings')}</TableHead>
+                  <TableHead>{t('distributor.table.since')}</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {clients.length === 0 ? (
+                  <TableRow><TableCell colSpan={5} className="text-center text-muted-foreground py-8">{t('distributor.noClients')}</TableCell></TableRow>
+                ) : clients.map((c) => (
+                  <TableRow key={c.id}>
+                    <TableCell><div className="text-sm font-medium">{c.name}</div></TableCell>
+                    <TableCell>{c.orders_count}</TableCell>
+                    <TableCell>{formatMXN(c.total_spent)}</TableCell>
+                    <TableCell className="font-medium text-[hsl(var(--primary))]">{formatMXN(c.my_earnings)}</TableCell>
+                    <TableCell className="text-xs text-muted-foreground">{fmtDate(c.created_at)}</TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </Card>
+        </TabsContent>
+
+        <TabsContent value="sales" className="mt-5 space-y-4">
+          <div className="flex flex-wrap items-center gap-3" data-testid="distributor-sales-filters">
+            <Select value={period} onValueChange={setPeriod}>
+              <SelectTrigger className="w-44 h-9" data-testid="distributor-period-filter"><SelectValue /></SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">{t('distributor.filter.allTime')}</SelectItem>
+                <SelectItem value="month">{t('distributor.filter.thisMonth')}</SelectItem>
+                <SelectItem value="90d">{t('distributor.filter.last90')}</SelectItem>
+                <SelectItem value="year">{t('distributor.filter.thisYear')}</SelectItem>
+              </SelectContent>
+            </Select>
+            <Select value={statusFilter} onValueChange={setStatusFilter}>
+              <SelectTrigger className="w-40 h-9" data-testid="distributor-status-filter"><SelectValue /></SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">{t('distributor.filter.allStatus')}</SelectItem>
+                {['pendiente', 'confirmado', 'enviado', 'entregado', 'cancelado'].map((s) => <SelectItem key={s} value={s}>{t(`status.${s}`)}</SelectItem>)}
+              </SelectContent>
+            </Select>
+            <div className="ml-auto text-sm">
+              <span className="text-muted-foreground">{t('distributor.filter.earnedInPeriod')} </span>
+              <span className="font-heading font-bold text-[hsl(var(--primary))]" data-testid="distributor-filtered-earnings">{formatMXN(filteredEarnings)}</span>
+              <span className="text-muted-foreground"> · {t('common.items', { count: filteredSales.length })}</span>
+            </div>
+          </div>
+          <Card className="overflow-x-auto">
+            <Table data-testid="distributor-sales-table">
+              <TableHeader>
+                <TableRow>
+                  <TableHead>{t('distributor.table.order')}</TableHead><TableHead>{t('distributor.table.client')}</TableHead>
+                  <TableHead>{t('distributor.table.date')}</TableHead><TableHead>{t('common.total')}</TableHead>
+                  <TableHead>{t('distributor.table.commission')}</TableHead><TableHead>{t('admin.table.status')}</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {filteredSales.length === 0 ? (
+                  <TableRow><TableCell colSpan={6} className="text-center text-muted-foreground py-8">{t('distributor.noSales')}</TableCell></TableRow>
+                ) : filteredSales.map((o) => (
+                  <TableRow key={o.order_number}>
+                    <TableCell className="font-mono-tech text-xs">{o.order_number}</TableCell>
+                    <TableCell className="text-sm">{o.customer_name}</TableCell>
+                    <TableCell className="text-xs text-muted-foreground">{fmtDate(o.created_at)}</TableCell>
+                    <TableCell>{formatMXN(o.total)}</TableCell>
+                    <TableCell className="font-medium text-[hsl(var(--primary))]">{formatMXN(o.commission)}</TableCell>
+                    <TableCell><Badge className={`${STATUS_COLORS[o.status]} text-[10px]`}>{t(`status.${o.status}`)}</Badge></TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </Card>
+        </TabsContent>
+
+        {/* Pedidos de SUS CLIENTES. Se llama `envios` desde el 2026-07-30 porque
+            `orders` pasó a ser lo mismo que en Mi cuenta —los pedidos que él
+            compró— y así una misma dirección significa lo mismo en los dos
+            tableros. */}
+        <TabsContent value="envios" className="mt-5 space-y-4">
           <p className="text-sm text-muted-foreground">{t('distributor.ordersHint')}</p>
           <div className="flex flex-wrap items-center gap-3" data-testid="distributor-orders-filters">
             <Select value={orderPeriod} onValueChange={setOrderPeriod}>
@@ -433,10 +533,22 @@ const Distributor = () => {
           </Card>
         </TabsContent>
 
+        {/* Lo suyo propio: el mismo bloque que ve el cliente en Mi cuenta. */}
+        <TabsContent value="orders" className="mt-5">
+          <OrdersPanel orders={misPedidos} />
+        </TabsContent>
+
+        <TabsContent value="points" className="mt-5">
+          <PointsPanel loyalty={loyalty} />
+        </TabsContent>
+
         <TabsContent value="tools" className="mt-5 space-y-8">
           <ToolsPanel unlocked={herramientasDesbloqueadas(user, misPedidos)} orders={misPedidos} />
         </TabsContent>
 
+        {/* Certificados: la entrada del menú está OCULTA por orden de Christián
+            (2026-07-30), pero la pestaña sigue viva y accesible por URL para
+            poder devolverla en cuanto avise. No borrar. */}
         <TabsContent value="coas" className="mt-5">
           <CoaLibrary />
         </TabsContent>
@@ -445,55 +557,16 @@ const Distributor = () => {
           <FichaLibrary catalogoCompleto />
         </TabsContent>
 
-        <TabsContent value="sales" className="mt-5 space-y-4">
-          <div className="flex flex-wrap items-center gap-3" data-testid="distributor-sales-filters">
-            <Select value={period} onValueChange={setPeriod}>
-              <SelectTrigger className="w-44 h-9" data-testid="distributor-period-filter"><SelectValue /></SelectTrigger>
-              <SelectContent>
-                <SelectItem value="all">{t('distributor.filter.allTime')}</SelectItem>
-                <SelectItem value="month">{t('distributor.filter.thisMonth')}</SelectItem>
-                <SelectItem value="90d">{t('distributor.filter.last90')}</SelectItem>
-                <SelectItem value="year">{t('distributor.filter.thisYear')}</SelectItem>
-              </SelectContent>
-            </Select>
-            <Select value={statusFilter} onValueChange={setStatusFilter}>
-              <SelectTrigger className="w-40 h-9" data-testid="distributor-status-filter"><SelectValue /></SelectTrigger>
-              <SelectContent>
-                <SelectItem value="all">{t('distributor.filter.allStatus')}</SelectItem>
-                {['pendiente', 'confirmado', 'enviado', 'entregado', 'cancelado'].map((s) => <SelectItem key={s} value={s}>{t(`status.${s}`)}</SelectItem>)}
-              </SelectContent>
-            </Select>
-            <div className="ml-auto text-sm">
-              <span className="text-muted-foreground">{t('distributor.filter.earnedInPeriod')} </span>
-              <span className="font-heading font-bold text-[hsl(var(--primary))]" data-testid="distributor-filtered-earnings">{formatMXN(filteredEarnings)}</span>
-              <span className="text-muted-foreground"> · {t('common.items', { count: filteredSales.length })}</span>
-            </div>
-          </div>
-          <Card className="overflow-x-auto">
-            <Table data-testid="distributor-sales-table">
-              <TableHeader>
-                <TableRow>
-                  <TableHead>{t('distributor.table.order')}</TableHead><TableHead>{t('distributor.table.client')}</TableHead>
-                  <TableHead>{t('distributor.table.date')}</TableHead><TableHead>{t('common.total')}</TableHead>
-                  <TableHead>{t('distributor.table.commission')}</TableHead><TableHead>{t('admin.table.status')}</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {filteredSales.length === 0 ? (
-                  <TableRow><TableCell colSpan={6} className="text-center text-muted-foreground py-8">{t('distributor.noSales')}</TableCell></TableRow>
-                ) : filteredSales.map((o) => (
-                  <TableRow key={o.order_number}>
-                    <TableCell className="font-mono-tech text-xs">{o.order_number}</TableCell>
-                    <TableCell className="text-sm">{o.customer_name}</TableCell>
-                    <TableCell className="text-xs text-muted-foreground">{fmtDate(o.created_at)}</TableCell>
-                    <TableCell>{formatMXN(o.total)}</TableCell>
-                    <TableCell className="font-medium text-[hsl(var(--primary))]">{formatMXN(o.commission)}</TableCell>
-                    <TableCell><Badge className={`${STATUS_COLORS[o.status]} text-[10px]`}>{t(`status.${o.status}`)}</Badge></TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </Card>
+        <TabsContent value="labs" className="mt-5">
+          <LabReports />
+        </TabsContent>
+
+        <TabsContent value="tutoriales" className="mt-5">
+          <TutorialsPanel />
+        </TabsContent>
+
+        <TabsContent value="profile" className="mt-5">
+          <ProfilePanel user={user} onUserChange={refreshUser} />
         </TabsContent>
         </div>
       </Tabs>
