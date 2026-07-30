@@ -10,6 +10,7 @@ import { Tabs, TabsContent } from '@/components/ui/tabs';
 import DashboardSidebar, { alTope } from '@/components/layout/DashboardSidebar';
 import CoaLibrary from '@/components/CoaLibrary';
 import FichaPedido from '@/components/FichaPedido';
+import FichaCliente from '@/components/FichaCliente';
 import FichaLibrary from '@/components/FichaLibrary';
 import LabReports from '@/components/LabReports';
 import NotificationsFeed from '@/components/NotificationsFeed';
@@ -52,6 +53,18 @@ const STATUS_COLORS = {
   cancelado: 'bg-[hsl(var(--muted))] text-[hsl(var(--muted-foreground))] border border-border',
 };
 
+// El nombre del cliente, en cualquier lista, abre SU ficha. Un solo botón para las
+// tres tablas (Mis Clientes, Ventas y Envíos) para que las tres se comporten igual;
+// si el renglón no trae `id` —un pedido viejo sin correo— se pinta como texto y ya.
+const NombreDeCliente = ({ id, name, titulo, onOpen, children }) => (
+  id ? (
+    <button type="button" onClick={() => onOpen(id)} title={titulo} data-testid="dist-open-client"
+      className="text-left text-sm font-medium underline decoration-dotted underline-offset-4 hover:text-[hsl(var(--primary))] transition">
+      {name || '—'}{children}
+    </button>
+  ) : <span className="text-sm">{name || '—'}{children}</span>
+);
+
 const CHART_TOOLTIP_STYLE = {
   backgroundColor: 'hsl(var(--card))',
   border: '1px solid hsl(var(--border))',
@@ -70,6 +83,10 @@ const Distributor = () => {
   // El número de pedido se puede abrir: la ficha la sirve el servidor, que valida que ese
   // pedido sea SUYO (403 si no). Aquí solo se guarda cuál está abierto.
   const [pedidoAbierto, setPedidoAbierto] = useState(null);
+  // Y el nombre del cliente abre SU ficha — la misma que ve el admin, recortada por el
+  // servidor a lo que a un distribuidor le toca (Christián, 2026-07-30). Antes el nombre
+  // era texto muerto en tres listas distintas.
+  const [clienteAbierto, setClienteAbierto] = useState(null);
   const [sales, setSales] = useState([]);
   const [orders, setOrders] = useState([]);
   const [period, setPeriod] = useState('all');
@@ -451,7 +468,8 @@ const Distributor = () => {
                 ) : clients.map((c) => (
                   <TableRow key={c.id}>
                     <TableCell>
-                      <div className="text-sm font-medium">{c.name}</div>
+                      <NombreDeCliente id={c.id} name={c.name} titulo={t('ficha.open')}
+                        onOpen={setClienteAbierto} />
                       {/* Compró con SU código pero sin cuenta. Sigue siendo su cliente
                           (Christián, 2026-07-30): la comisión ya se le pagó. Se marca para
                           que sepa que a esa persona hay que contactarla por fuera. */}
@@ -517,7 +535,10 @@ const Distributor = () => {
                         {o.order_number}
                       </button>
                     </TableCell>
-                    <TableCell className="text-sm">{o.customer_name}</TableCell>
+                    <TableCell>
+                      <NombreDeCliente id={o.client_id} name={o.customer_name} titulo={t('ficha.open')}
+                        onOpen={setClienteAbierto} />
+                    </TableCell>
                     <TableCell className="text-xs text-muted-foreground">{fmtDate(o.created_at)}</TableCell>
                     <TableCell>{formatMXN(o.total)}</TableCell>
                     <TableCell className="font-medium text-[hsl(var(--primary))]">{formatMXN(o.commission)}</TableCell>
@@ -578,7 +599,10 @@ const Distributor = () => {
                       </button>
                       <div className="text-[11px] text-muted-foreground">{fmtDate(o.created_at)} · {formatMXN(o.total)}</div>
                     </TableCell>
-                    <TableCell><div className="text-sm">{o.customer_name}</div></TableCell>
+                    <TableCell>
+                      <NombreDeCliente id={o.client_id} name={o.customer_name} titulo={t('ficha.open')}
+                        onOpen={setClienteAbierto} />
+                    </TableCell>
                     <TableCell className="text-xs text-muted-foreground">{t('common.items', { count: o.items_count || 0 })}</TableCell>
                     <TableCell>
                       <Badge className={`${STATUS_COLORS[o.status]} text-[10px]`}>{t(`status.${o.status}`)}</Badge>
@@ -665,6 +689,8 @@ const Distributor = () => {
       </Tabs>
       <FichaPedido orderNumber={pedidoAbierto} open={!!pedidoAbierto}
         onClose={() => setPedidoAbierto(null)} />
+      <FichaCliente clientId={clienteAbierto} open={!!clienteAbierto}
+        onClose={() => setClienteAbierto(null)} />
 
       {/* Capturar la guía de un pedido suyo. SOLO envío: aquí no hay precios,
           ni pagos, ni estatus, ni compra de guías (eso es dinero de la casa y

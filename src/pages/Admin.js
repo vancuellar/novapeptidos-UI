@@ -1,6 +1,6 @@
 import React, { useEffect, useLayoutEffect, useState, useCallback } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import { Filter, Eye, LayoutDashboard, Package, ShoppingBag, Plus, Pencil, Trash2, DollarSign, Users, Clock, TrendingUp, MapPin, Phone, Receipt, Store, Copy, Boxes, Truck, RefreshCw, MailCheck, Ban, Megaphone, BarChart3, Upload, ShoppingCart, Target, KeyRound, Gauge, Search, Archive, ArchiveRestore, HandCoins, CircleCheck, CircleAlert, ArrowUp, ArrowDown, ArrowUpDown } from 'lucide-react';
+import { Filter, Eye, LayoutDashboard, Package, ShoppingBag, Plus, Pencil, Trash2, DollarSign, Users, Clock, TrendingUp, Phone, Receipt, Store, Copy, Boxes, Truck, RefreshCw, MailCheck, Ban, Megaphone, BarChart3, Upload, ShoppingCart, Target, KeyRound, Gauge, Search, Archive, ArchiveRestore, HandCoins, CircleCheck, CircleAlert, ArrowUp, ArrowDown, ArrowUpDown } from 'lucide-react';
 import Marketing from '@/components/admin/Marketing';
 import VideoComoLeerDifusion from '@/components/admin/VideoComoLeerDifusion';
 import MotorPrecios from '@/components/admin/MotorPrecios';
@@ -21,7 +21,9 @@ import GatewayCredentials from '@/components/GatewayCredentials';
 import AjustesEnvio from '@/components/AjustesEnvio';
 import CotizarEnvio from '@/components/CotizarEnvio';
 import FichaPedido from '@/components/FichaPedido';
+import FichaCliente from '@/components/FichaCliente';
 import AdminAnnouncements from '@/components/AdminAnnouncements';
+import NotificationsFeed from '@/components/NotificationsFeed';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog';
@@ -159,7 +161,11 @@ const Admin = () => {
   const [meta, setMeta] = useState(null);
   const [metaBusy, setMetaBusy] = useState(false);
   const [funnelDays, setFunnelDays] = useState(30);
-  const [customerOpen, setCustomerOpen] = useState(null);
+  // LA FICHA DEL CLIENTE. Sólo se guarda su id: el contenido lo arma el servidor y lo
+  // pinta <FichaCliente>, el MISMO componente que usa el panel del distribuidor
+  // (Christián, 2026-07-30). Antes esta pantalla tenía su propia copia de la ficha y
+  // enseñaba cosas distintas a las que enseñaba el distribuidor sobre la misma persona.
+  const [clienteAbierto, setClienteAbierto] = useState(null);
   const [params, setParams] = useSearchParams();
   // Abrir ARRIBA al cambiar de pestaña, venga el cambio de donde venga: del sidebar,
   // de un link dentro del contenido o de la URL directa. El onClick del sidebar no
@@ -208,10 +214,6 @@ const Admin = () => {
   };
   // Tarjeta → otra pestaña, sin filtros que poner.
   const irAPestana = (v) => { setParams(v === 'sales' ? {} : { tab: v }, { replace: true }); alTope(); };
-  const [customerDetail, setCustomerDetail] = useState(null);   // ficha extendida del cliente abierto
-  const [couponForm, setCouponForm] = useState({ pct: 10, days: 30, note: '' });
-  const [giftForm, setGiftForm] = useState({ points: 100, note: '' });
-  const [personalPct, setPersonalPct] = useState(0);
   const [distOpen, setDistOpen] = useState(null);               // ficha del distribuidor {detalle}
   const [shippingOpen, setShippingOpen] = useState(null);
   const [repurchase, setRepurchase] = useState([]);
@@ -404,41 +406,12 @@ const Admin = () => {
     try { const r = await api.get(`/admin/distributors/${d.id}/detail`); setDistOpen(r.data); }
     catch { toast.error(t('admin.ficha.loadError')); }
   };
-  const openCustomerProfile = async (c) => {
-    setCustomerOpen(c); setCustomerDetail(null);
-    setCouponForm({ pct: 10, days: 30, note: '' }); setGiftForm({ points: 100, note: '' });
-    try {
-      const r = await api.get(`/admin/customers/${c.id}/detail`);
-      setCustomerDetail(r.data);
-      setPersonalPct(Math.round((r.data.customer?.personal_discount_rate || 0) * 100));
-    } catch {}
-  };
-  const sendCoupon = async () => {
-    try {
-      const r = await api.post(`/admin/customers/${customerOpen.id}/coupon`,
-        { discount_rate: (Number(couponForm.pct) || 10) / 100, expires_days: Number(couponForm.days) || 30, note: couponForm.note });
-      toast.success(t('admin.ficha.couponSent', { code: r.data.code }));
-      const d = await api.get(`/admin/customers/${customerOpen.id}/detail`); setCustomerDetail(d.data);
-    } catch (e) { toast.error(e.response?.data?.detail || 'Error'); }
-  };
-  const sendGiftPoints = async () => {
-    try {
-      const r = await api.post(`/admin/customers/${customerOpen.id}/gift-points`,
-        { points: Number(giftForm.points) || 0, note: giftForm.note });
-      toast.success(t('admin.ficha.pointsSent', { balance: r.data.points_balance }));
-      const d = await api.get(`/admin/customers/${customerOpen.id}/detail`); setCustomerDetail(d.data);
-    } catch (e) { toast.error(e.response?.data?.detail || 'Error'); }
-  };
-  const savePersonalDiscount = async () => {
-    try {
-      const r = await api.put(`/admin/customers/${customerOpen.id}/personal-discount`,
-        { rate: (Number(personalPct) || 0) / 100 });
-      toast.success(r.data.personal_discount_rate > 0
-        ? `${customerOpen.name}: ${Math.round(r.data.personal_discount_rate * 100)}% permanente`
-        : `${customerOpen.name}: trato especial quitado`);
-      const d = await api.get(`/admin/customers/${customerOpen.id}/detail`); setCustomerDetail(d.data);
-    } catch (e) { toast.error(e.response?.data?.detail || 'Error'); }
-  };
+  // Abrir la ficha de un cliente es SÓLO recordar a quién: cupones, puntos, descuento
+  // permanente y notas viven dentro de <FichaCliente> para no tener dos versiones.
+  // `invitado:<correo>` es la llave del que compró sin cuenta (el caso de Aidee).
+  const abrirCliente = (idOCorreo) => setClienteAbierto(idOCorreo || null);
+  const clienteDelPedido = (o) => o?.user_id
+    || (o?.customer?.email ? `invitado:${String(o.customer.email).trim().toLowerCase()}` : null);
   // Sube el CSV del Administrador de Anuncios. Cuando Christian consiga el token
   // de Meta, el panel cambia solo de fuente y esto queda como respaldo.
   const subirMetaCsv = async (file) => {
@@ -726,7 +699,14 @@ const Admin = () => {
         </div>
         )}
 
-        <TabsContent value="news" className="mt-5">
+        <TabsContent value="news" className="mt-5 space-y-8">
+          {/* ⛔ LOS AVISOS DEL ADMIN NO SE VEÍAN EN NINGÚN LADO. La campanita del
+              encabezado le contaba las no leídas —«Entró Un Pedido EX-…»— pero lo mandaba
+              a esta pestaña, que sólo tenía el formulario para MANDAR avisos a los demás.
+              Sus propias novedades vivían únicamente en la base. Aquí está su feed, el
+              mismo componente que ven el cliente y el distribuidor, y desde él se abre el
+              pedido y la ficha de quien compró (Christián, 2026-07-30). */}
+          <NotificationsFeed />
           <AdminAnnouncements />
         </TabsContent>
 
@@ -1284,8 +1264,16 @@ const Admin = () => {
                 ) : customers.map((c) => (
                   <TableRow key={c.id} className={c.blocked ? 'opacity-60' : ''}>
                     <TableCell>
-                      <div className="text-sm font-medium">{c.name}{c.blocked && <Badge variant="outline" className="ml-2 text-[10px] text-destructive border-destructive/40">{t('admin.block.badge')}</Badge>}</div>
-                      <div className="text-xs text-muted-foreground">{c.email}</div>
+                      {/* El nombre Y el correo abren la ficha: es el gesto natural y el
+                          que ya existe en las otras listas. El botón "Detalle" se queda
+                          para quien lo busca donde siempre estuvo. */}
+                      <button type="button" onClick={() => abrirCliente(c.id)} title={t('ficha.open')}
+                        data-testid="admin-open-client" className="text-left">
+                        <div className="text-sm font-medium underline decoration-dotted underline-offset-4 hover:text-[hsl(var(--primary))] transition">
+                          {c.name}{c.blocked && <Badge variant="outline" className="ml-2 text-[10px] text-destructive border-destructive/40">{t('admin.block.badge')}</Badge>}
+                        </div>
+                        <div className="text-xs text-muted-foreground break-all">{c.email}</div>
+                      </button>
                       <Badge variant="outline" className={`mt-1 text-[10px] ${c.email_verified ? 'text-[hsl(var(--success))]' : 'text-[hsl(var(--warning-foreground))]'}`} data-testid="customer-invite-status">
                         {c.email_verified ? t('admin.ficha.inviteOk') : t('admin.ficha.invitePending')}
                       </Badge>
@@ -1314,7 +1302,7 @@ const Admin = () => {
                       <Button variant="ghost" size="sm" className="mr-1" onClick={() => viewAs(c)} data-testid="admin-view-as-customer">
                         <Eye className="h-3.5 w-3.5" />
                       </Button>
-                      <Button variant="outline" size="sm" onClick={() => openCustomerProfile(c)} data-testid="admin-open-customer-button">{t('account.detail')}</Button>
+                      <Button variant="outline" size="sm" onClick={() => abrirCliente(c.id)} data-testid="admin-open-customer-button">{t('account.detail')}</Button>
                     </TableCell>
                   </TableRow>
                 ))}
@@ -1345,7 +1333,13 @@ const Admin = () => {
                   <TableRow><TableCell colSpan={4} className="text-center text-muted-foreground py-8">{t('admin.repurchase.empty')}</TableCell></TableRow>
                 ) : repurchase.map((r, i) => (
                   <TableRow key={i} className={r.needs_repurchase ? 'bg-[hsl(var(--warning))]/10' : ''}>
-                    <TableCell><div className="text-sm">{r.customer_name}</div><div className="text-xs text-muted-foreground">{r.customer_email}</div></TableCell>
+                    <TableCell>
+                      <button type="button" onClick={() => abrirCliente(r.user_id)} title={t('ficha.open')}
+                        data-testid="admin-open-client" className="text-left">
+                        <div className="text-sm underline decoration-dotted underline-offset-4 hover:text-[hsl(var(--primary))] transition">{r.customer_name}</div>
+                        <div className="text-xs text-muted-foreground break-all">{r.customer_email}</div>
+                      </button>
+                    </TableCell>
                     <TableCell className="text-sm">{r.product_name}</TableCell>
                     <TableCell className={r.needs_repurchase ? 'font-semibold text-[hsl(var(--primary))]' : ''}>
                       {t('admin.repurchase.days', { count: r.days_left })}
@@ -1514,7 +1508,16 @@ const Admin = () => {
                         </div>
                       )}
                     </TableCell>
-                    <TableCell><div className="text-sm">{o.customer.full_name}</div><div className="text-xs text-muted-foreground">{o.customer.email}</div></TableCell>
+                    {/* La columna Cliente de PEDIDOS abre la misma ficha que la lista de
+                        Clientes. Incluidos los que compraron sin cuenta: ahí el nombre
+                        era texto muerto y no había forma de llegar a esa persona. */}
+                    <TableCell>
+                      <button type="button" onClick={() => abrirCliente(clienteDelPedido(o))} title={t('ficha.open')}
+                        data-testid="admin-open-client" className="text-left">
+                        <div className="text-sm underline decoration-dotted underline-offset-4 hover:text-[hsl(var(--primary))] transition">{o.customer.full_name}</div>
+                        <div className="text-xs text-muted-foreground break-all">{o.customer.email}</div>
+                      </button>
+                    </TableCell>
                     <TableCell className="font-medium">{formatMXN(o.total)}</TableCell>
                     <TableCell className="text-xs">{t(`payment.${o.payment_method}.label`) || o.payment_method}</TableCell>
                     {/* El servidor manda `pagado` ya resuelto (los pedidos viejos no
@@ -1669,127 +1672,6 @@ const Admin = () => {
         </DialogContent>
       </Dialog>
 
-      <Dialog open={!!customerOpen} onOpenChange={(v) => !v && setCustomerOpen(null)}>
-        <DialogContent className="max-w-lg max-h-[85vh] overflow-y-auto">
-          {customerOpen && (
-            <>
-              <DialogHeader><DialogTitle>{customerOpen.name}</DialogTitle></DialogHeader>
-              <div className="space-y-4 text-sm">
-                <div>
-                  <div className="text-xs text-muted-foreground">{t('account.email')}</div>
-                  <div className="font-medium">{customerOpen.email}</div>
-                  <div className="text-xs text-muted-foreground mt-1">{t('admin.customer.since', { date: fmtDate(customerOpen.created_at) })}</div>
-                </div>
-                {customerOpen.phones?.length > 0 && (
-                  <div>
-                    <div className="text-xs text-muted-foreground flex items-center gap-1 mb-1"><Phone className="h-3 w-3" /> {t('admin.customer.phones')}</div>
-                    {customerOpen.phones.map((p) => <div key={p} className="font-mono-tech text-xs">{p}</div>)}
-                  </div>
-                )}
-                {customerOpen.addresses?.length > 0 && (
-                  <div>
-                    <div className="text-xs text-muted-foreground flex items-center gap-1 mb-1"><MapPin className="h-3 w-3" /> {t('admin.customer.addresses')}</div>
-                    {customerOpen.addresses.map((a) => <div key={a} className="text-xs mb-1">{a}</div>)}
-                  </div>
-                )}
-                <Separator />
-                <div>
-                  <div className="text-xs text-muted-foreground mb-2">{t('admin.customer.orders')} · {formatMXN(customerOpen.total_spent)}</div>
-                  {customerOpen.orders?.length === 0 ? (
-                    <div className="text-muted-foreground text-xs">{t('admin.customer.noOrders')}</div>
-                  ) : customerOpen.orders.map((o) => (
-                    <div key={o.id} className="flex items-center justify-between gap-2 py-1.5 border-b border-border last:border-0">
-                      <div>
-                        <button type="button" onClick={() => setFichaPedido(o.order_number)}
-                          data-testid="admin-ficha-open-order"
-                          className="font-mono-tech text-xs underline decoration-dotted underline-offset-4 hover:text-[hsl(var(--primary))] transition">
-                          {o.order_number}
-                        </button>
-                        <div className="text-[11px] text-muted-foreground">{fmtDate(o.created_at)}</div>
-                      </div>
-                      <div className="flex items-center gap-2">
-                        <Badge className={`${STATUS_COLORS[o.status]} text-[10px]`}>{t(`status.${o.status}`)}</Badge>
-                        {/* Entregado y a deber tiene que verse de un golpe: es la
-                            diferencia entre una venta cerrada y una cuenta por cobrar. */}
-                        {o.pagado === false && (
-                          <Badge variant="outline" className="text-[10px] text-[hsl(var(--warning-foreground))] border-[hsl(var(--warning-border))]">
-                            {t('admin.pay.unpaid')}
-                          </Badge>
-                        )}
-                        <span className="font-medium text-xs">{formatMXN(o.total)}</span>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-                {customerDetail && (
-                  <>
-                    <Separator />
-                    <div className="grid grid-cols-4 gap-2 text-center">
-                      <div className="rounded-lg border border-border p-2">
-                        <div className="text-[11px] text-muted-foreground">{t('admin.ficha.paid')}</div>
-                        <div className="font-semibold">{formatMXN(customerDetail.paid_total)}</div>
-                      </div>
-                      <div className="rounded-lg border border-border p-2" data-testid="admin-ficha-por-cobrar">
-                        <div className="text-[11px] text-muted-foreground">{t('admin.stats.receivable')}</div>
-                        <div className={`font-semibold${(customerDetail.por_cobrar || 0) > 0 ? ' text-[hsl(var(--warning-foreground))]' : ''}`}>{formatMXN(customerDetail.por_cobrar || 0)}</div>
-                      </div>
-                      <div className="rounded-lg border border-border p-2">
-                        <div className="text-[11px] text-muted-foreground">{t('admin.ficha.paidOrders')}</div>
-                        <div className="font-semibold">{customerDetail.paid_count}</div>
-                      </div>
-                      <div className="rounded-lg border border-border p-2">
-                        <div className="text-[11px] text-muted-foreground">{t('admin.ficha.points')}</div>
-                        <div className="font-semibold">{customerDetail.customer.points_balance}</div>
-                      </div>
-                    </div>
-                    {customerDetail.coupons.length > 0 && (
-                      <div>
-                        <div className="text-xs text-muted-foreground mb-1">{t('admin.ficha.coupons')}</div>
-                        {customerDetail.coupons.map((cp) => (
-                          <div key={cp.code} className="flex items-center justify-between text-xs py-1 border-b border-border last:border-0">
-                            <span className="font-mono-tech">{cp.code}</span>
-                            <span>{Math.round(cp.discount_rate * 100)}%</span>
-                            <Badge variant="outline" className="text-[10px]">{cp.used ? t('admin.ficha.couponUsed') : (cp.active ? t('admin.ficha.couponActive') : t('admin.ficha.couponExpired'))}</Badge>
-                          </div>
-                        ))}
-                      </div>
-                    )}
-                    <Separator />
-                    <div className="rounded-xl border border-border p-3 space-y-2" data-testid="admin-send-coupon-box">
-                      <div className="text-xs font-semibold">{t('admin.ficha.sendCoupon')}</div>
-                      <div className="flex items-center gap-2">
-                        <Input type="number" min="5" max="50" className="h-8 w-20" value={couponForm.pct} onChange={(e) => setCouponForm((f) => ({ ...f, pct: e.target.value }))} data-testid="admin-coupon-pct" />
-                        <span className="text-xs text-muted-foreground">% ·</span>
-                        <Input type="number" min="1" className="h-8 w-20" value={couponForm.days} onChange={(e) => setCouponForm((f) => ({ ...f, days: e.target.value }))} data-testid="admin-coupon-days" />
-                        <span className="text-xs text-muted-foreground">{t('admin.ficha.days')}</span>
-                      </div>
-                      <Input className="h-8" placeholder={t('admin.ficha.noteOptional')} value={couponForm.note} onChange={(e) => setCouponForm((f) => ({ ...f, note: e.target.value }))} data-testid="admin-coupon-note" />
-                      <Button size="sm" onClick={sendCoupon} data-testid="admin-coupon-send">{t('admin.ficha.sendCouponBtn')}</Button>
-                    </div>
-                    <div className="rounded-xl border border-border p-3 space-y-2" data-testid="admin-personal-discount-box">
-                      <div className="text-xs font-semibold">{t('admin.ficha.personalDiscount')}</div>
-                      <p className="text-[11px] text-muted-foreground">{t('admin.ficha.personalDiscountHint')}</p>
-                      <div className="flex items-center gap-2">
-                        <Input type="number" min="0" max="50" className="h-8 w-20" value={personalPct} onChange={(e) => setPersonalPct(e.target.value)} data-testid="admin-personal-discount-pct" />
-                        <span className="text-xs text-muted-foreground">%</span>
-                        <Button size="sm" onClick={savePersonalDiscount} data-testid="admin-personal-discount-save">{t('admin.ficha.personalDiscountBtn')}</Button>
-                      </div>
-                    </div>
-                    <div className="rounded-xl border border-border p-3 space-y-2" data-testid="admin-gift-points-box">
-                      <div className="text-xs font-semibold">{t('admin.ficha.giftPoints')}</div>
-                      <div className="flex items-center gap-2">
-                        <Input type="number" min="1" className="h-8 w-28" value={giftForm.points} onChange={(e) => setGiftForm((f) => ({ ...f, points: e.target.value }))} data-testid="admin-gift-points-amount" />
-                        <Input className="h-8 flex-1" placeholder={t('admin.ficha.noteOptional')} value={giftForm.note} onChange={(e) => setGiftForm((f) => ({ ...f, note: e.target.value }))} data-testid="admin-gift-points-note" />
-                      </div>
-                      <Button size="sm" onClick={sendGiftPoints} data-testid="admin-gift-points-send">{t('admin.ficha.giftPointsBtn')}</Button>
-                    </div>
-                  </>
-                )}
-              </div>
-            </>
-          )}
-        </DialogContent>
-      </Dialog>
 
       <Dialog open={!!orderKill} onOpenChange={(v) => !v && setOrderKill(null)}>
         <DialogContent className="max-w-md" data-testid="admin-delete-order-dialog">
@@ -2082,7 +1964,12 @@ const Admin = () => {
                   <div className="text-xs font-semibold mb-1">{t('admin.ficha.clients')}</div>
                   {distOpen.clients.length === 0 ? <div className="text-xs text-muted-foreground">{t('admin.customer.noOrders')}</div> : distOpen.clients.map((c) => (
                     <div key={c.id} className="flex items-center justify-between gap-2 text-xs py-1.5 border-b border-border last:border-0">
-                      <div><div className="font-medium">{c.name}</div><div className="text-muted-foreground">{c.email}</div></div>
+                      {/* También desde la ficha del distribuidor: sus clientes se abren. */}
+                      <button type="button" onClick={() => abrirCliente(c.id)} title={t('ficha.open')}
+                        data-testid="admin-open-client" className="text-left min-w-0">
+                        <div className="font-medium underline decoration-dotted underline-offset-4 hover:text-[hsl(var(--primary))] transition">{c.name}</div>
+                        <div className="text-muted-foreground break-all">{c.email}</div>
+                      </button>
                       <span>{c.orders} {t('admin.ficha.ordersShort')}</span>
                       <span>{formatMXN(c.total)}</span>
                       <span className="text-[hsl(var(--primary))]">{formatMXN(c.commission)}</span>
@@ -2093,7 +1980,13 @@ const Admin = () => {
                   <div className="text-xs font-semibold mb-1">{t('admin.ficha.recentSales')}</div>
                   {distOpen.sales.slice(0, 12).map((o) => (
                     <div key={o.order_number} className="flex items-center justify-between gap-2 text-xs py-1 border-b border-border last:border-0">
-                      <span className="font-mono-tech">{o.order_number}</span>
+                      {/* Aquí el número tampoco se podía abrir: mismo gesto que en todas
+                          las demás listas, mismo modal de detalle. */}
+                      <button type="button" onClick={() => setFichaPedido(o.order_number)}
+                        data-testid="admin-ficha-open-order"
+                        className="font-mono-tech underline decoration-dotted underline-offset-4 hover:text-[hsl(var(--primary))] transition">
+                        {o.order_number}
+                      </button>
                       <span className="text-muted-foreground">{fmtDate(o.created_at)}</span>
                       <Badge className={`${STATUS_COLORS[o.status]} text-[10px]`}>{t(`status.${o.status}`)}</Badge>
                       <span>{formatMXN(o.total)}</span>
@@ -2294,6 +2187,10 @@ const Admin = () => {
           </DialogFooter>
         </DialogContent>
       </Dialog>
+      {/* LA ficha del cliente: la misma que ve el distribuidor, con lo que a cada quien
+          le toca. Se abre desde Clientes, Pedidos, Recompra y la ficha del distribuidor. */}
+      <FichaCliente clientId={clienteAbierto} open={!!clienteAbierto}
+        onClose={() => setClienteAbierto(null)} />
       <FichaPedido orderNumber={fichaPedido} open={!!fichaPedido} admin
         onClose={() => setFichaPedido(null)} />
     </div>
