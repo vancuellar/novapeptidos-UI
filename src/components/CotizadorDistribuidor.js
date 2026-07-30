@@ -151,14 +151,18 @@ export default function CotizadorDistribuidor({
           )}
         </div>
 
-        {/* Renglones */}
+        {/* Renglones.
+            En un teléfono de 375 px al nombre le quedaban ~110 px entre los botones
+            y el importe: "Retatrutida 10 mg" salía como "Ret…". En móvil el nombre
+            se lleva su propio renglón (`basis-full`) y los controles bajan debajo;
+            de sm en adelante es la misma fila de siempre. */}
         {filas.length === 0 ? (
           <p className="text-sm text-muted-foreground text-center py-8">{t('cotizador.vacio')}</p>
         ) : (
           <div className="mt-4 divide-y divide-border">
             {filas.map((f) => (
-              <div key={f.id} className="py-3 flex items-center gap-3">
-                <div className="flex-1 min-w-0">
+              <div key={f.id} className="py-3 flex flex-wrap sm:flex-nowrap items-center gap-x-3 gap-y-1.5">
+                <div className="basis-full sm:basis-auto sm:flex-1 min-w-0">
                   <p className="text-sm font-medium truncate">{f.nombre}</p>
                   <p className="text-xs text-muted-foreground">
                     {money(f.unit)} {t('cotizador.cadaUno')}
@@ -172,7 +176,7 @@ export default function CotizadorDistribuidor({
                   <span className="w-7 text-center text-sm tabular-nums">{f.qty}</span>
                   <Button variant="outline" size="icon" className="h-7 w-7" onClick={() => cambiarQty(f.id, 1)} aria-label="+"><Plus className="h-3.5 w-3.5" /></Button>
                 </div>
-                <span className="w-20 text-right text-sm font-medium tabular-nums">{money(f.importe)}</span>
+                <span className="flex-1 sm:flex-none sm:w-20 text-right text-sm font-medium tabular-nums">{money(f.importe)}</span>
                 <Button variant="ghost" size="icon" className="h-7 w-7 text-muted-foreground hover:text-destructive" onClick={() => quitar(f.id)} aria-label={t('common.remove')}>
                   <Trash2 className="h-3.5 w-3.5" />
                 </Button>
