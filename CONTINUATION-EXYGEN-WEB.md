@@ -1,5 +1,28 @@
 # 🤝 HANDOFF — 2026-07-29 (tarde) — LÉELO PRIMERO
 
+## ✅ 2026-07-29 (madrugada del 30): ola de 6 agentes — todo aterrizó y verificado
+
+En vivo: hover de Google · badge 15% gris en claro/dorado intacto en oscuro ·
+Login con tema claro completo · frase del hero restaurada ("Ciencia y
+precisión, lote por lote"; la cambió el commit 983aaeb de la portada móvil) ·
+viales del hero rehechos (tenían el fondo negro APLANADO desde el commit del
+renglón "Research Peptides", + pixelación por will-change en la imagen; ahora
+RGBA 768px q92 con verificación automática de transparencia en el script) ·
+ingreso SOLO si está pagado (se sumaba mal en ~10 lugares; bug espejo: las
+pasarelas nunca marcaban paid=True — arreglado; tarjetas Cobrado/Por cobrar y
+marca de pago de un clic en el panel; 463 pytest, 24 nuevas) · portada con
+menos COAs (placa = "99.4% · Pureza por HPLC") · botón de llave de acceso
+estilo JADA con hints client-device · marca neutral "Exygen Labs" (sin Mexico)
+· Outlook EN VIVO (app Azure de Christián) · Google/Outlook 50/50 estilo Resend.
+
+⚠️ Pendientes visuales del arte a mano del hero: KLOW dice "FOR RESEARCH USF
+ONLY" y el renglón chico de varios dice "RESEARCH PEPLIDES" (así está en el
+arte original de Christián) — hay chip para arreglarlo.
+⚠️ Trabajar VARIOS agentes en la misma carpeta causó deploys pisados y un rato
+de sitio roto: si se repite la ola, usar worktrees o serializar los deploys.
+⚠️ Google Reviews: la página de confirmación es /pedido/<numero> (patrón
+https://exygenlabs.com/pedido/*).
+
 ## ⛔ LECCIÓN CLAVE 2026-07-29: el push NO despliega el frontend
 
 GitHub Actions dice success pero publica al GitHub Pages viejo. El sitio real
