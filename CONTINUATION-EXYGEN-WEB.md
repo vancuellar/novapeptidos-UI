@@ -1,3 +1,90 @@
+# 🤝 HANDOFF — 2026-07-30 (madrugada) — LÉELO PRIMERO
+
+## ✅ HECHO el 29-30 de julio (TODO en vivo, verificado, main limpio en ambos repos)
+
+**Dinero y pedidos**
+- Pagado ≠ entregado COMPLETO: `paid`/`paid_at` mandan en las ~10 vistas que
+  sumaban dinero (stats, analytics, series, funnel, Meta/ROAS, fichas,
+  distribuidores, comisiones y puntos). Bug espejo arreglado: las pasarelas
+  ahora marcan `paid: True` (antes NADA lo marcaba). Tarjetas Cobrado/Por
+  cobrar + marca de pago de un clic en el panel. Alanís (EX-20260729-9934,
+  $3,857) está NO pagada: es deuda, no ingreso. Cobrado real: $3,347 (Paz).
+- $11,027 de compras fantasma (eventos de pedidos de prueba borrados) fuera
+  del embudo. Pedidos: filtro por estado + orden fijo reciente→viejo; lote
+  (archivar/borrar) funcionando; los 11 cancelados de prueba ya borrados.
+- 463 pruebas backend en verde (test_cobrado.py +24).
+
+**Cuentas y acceso**
+- María: `extra_roles` SUMA — distribuidora + Difusión (menú "Difusão"),
+  resto del admin en 403, "ver como" no escribe. Su cuenta abre en pt-BR +
+  oscuro; las preferencias viajan con la CUENTA y se aplican también con
+  sesión ya abierta (no solo al login).
+- Entrar con Outlook EN VIVO: app Azure "Exygen Web" (cuenta
+  exygenlabs@gmail.com, client id 5350236e-16b4-4c04-9173-dd0d6b8a1ef0 en el
+  .env del EC2), verificado con clic real. Google y Outlook 50/50 estilo
+  Resend. Llave de acceso (passkey) como botón estilo JADA + hints
+  client-device (pide la huella local, no el QR); si no hay llave, orienta.
+- Login/Registro con TEMA CLARO completo (oscuro intacto pixel a pixel).
+
+**Contenido y arte**
+- Tutoriales 1-11 en ES/EN/PT servidos según el idioma del cliente (video 12
+  de difusión también en PT). Los 12 de distribuidor/cliente sin cuentas demo
+  se REDOBLARON (pipeline/redub.js — misma imagen, voz nueva ajustada).
+- Viales del catálogo: "Lyophilized" corregido (374 webp regenerados).
+- Viales del hero: rehechos de raíz — tenían fondo negro aplanado, pixelación
+  (will-change en la imagen) y un borrón de "10mg" atravesado en los 10
+  genéricos. Ahora RGBA 768px q92, defringe, verificación automática en el
+  script. Typos del arte: NAD+ "PEPLIDES"→PEPTIDES, KLOW "USF"→USE. 15 JPG
+  muertos borrados de public/images/products (queda _exygen-vial.jpg, que sí
+  se usa).
+- Portada: frase del hero restaurada ("Ciencia y precisión, lote por lote"),
+  menos menciones de COA (placa = "99.4% · Pureza por HPLC"), zoom al hover
+  en imágenes de producto, sello del 15% en claro AZUL de marca (era dorado
+  ilegible → gris → azul por pedido de Christián; el dorado del oscuro nunca
+  se tocó).
+- Mayúscula A Cada Palabra en dashboards y menús + regla dura: TODO texto va
+  en los 3 idiomas a la vez. Marca neutral "Exygen Labs" (sin "Mexico").
+
+**Infra y procesos**
+- ⛔ EL PUSH NO DESPLIEGA EL FRONTEND: GitHub Actions publica un GitHub Pages
+  viejo que ya no es el sitio. Producción = Cloudflare Pages, A MANO:
+  `npm run build && rm -f build/404.html && npx wrangler pages deploy build
+  --project-name exygenlabs --branch main --commit-dirty=true` (token en
+  ~/.config/exygen/cloudflare.env; NUNCA borrar public/404.html). Verificar
+  siempre el hash del bundle en vivo contra build/static/js/.
+- Firewall del EC2 sellado: se cerraron las 2 reglas fijas viejas del 22.
+- SES: solicitud de producción lista (exygenlabs.com, DKIM verificado) en
+  novapeptidos-RBAC/ses-production-request.md — Christián aún no aprueba
+  mandarla.
+- Página de confirmación de compra (para Google Reviews):
+  https://exygenlabs.com/pedido/* (p. ej. /pedido/EX-20260729-9934).
+- ⚠️ Varios agentes en la MISMA carpeta = deploys pisados y un rato de sitio
+  roto. Si se repite la ola: worktrees o serializar los deploys.
+
+## ⏳ PENDIENTE
+
+1. **Outlook**: publisher "no verificado" — las cuentas personales entran
+   bien; verificar el publisher en Azure solo si algún día estorba con
+   cuentas de trabajo ajenas.
+2. **SES**: cuando Christián apruebe, correr el comando de
+   ses-production-request.md (~24 h de respuesta de AWS).
+3. **Semaglutide** (vial a mano) dice "RESEARCH-PEPTIDES" con guion — bien
+   escrito, por si Christián quiere uniformarlo.
+4. **Vitamina D3**: aprobada, sin publicar — decidir si una vitamina entra al
+   catálogo RUO.
+5. **Video semanal de campañas**: el pipeline corre, falta el cron.
+6. **Envíos/Skydropx**: Estafeta por API, remitente de un trabajador, precio
+   real por peso/CP, envío gratis con tope del 10%.
+7. **EUA / exygenlabs.mx**: decisión de Christián de separar .com (US) y .mx
+   (México). NO mover dominios aún (el .com apenas re-indexó); comprar
+   exygenlabs.mx YA; migración con redirecciones + hreflang cuando el negocio
+   US sea real.
+8. **Auditoría ciega al sitio sin hidratar**: dio 83/0 con el sitio en blanco
+   — hay tarea corriendo/sugerida para agregarle esa prueba.
+9. Cobrar la deuda de Alanís ($3,857) y marcarla pagada con el botón nuevo.
+
+---
+
 # 🤝 HANDOFF — 2026-07-29 (tarde) — LÉELO PRIMERO
 
 ## ✅ 2026-07-29 (madrugada del 30): ola de 6 agentes — todo aterrizó y verificado
