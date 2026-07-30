@@ -374,8 +374,8 @@ const Home = () => {
               <div className="font-mono-tech text-[10.5px] uppercase tracking-[0.16em] text-muted-foreground mt-1.5">{t('home.nationalShipping')}</div>
             </div>
             <div>
-              <div className="font-heading text-3xl font-bold text-[hsl(var(--primary))]">COA</div>
-              <div className="font-mono-tech text-[10.5px] uppercase tracking-[0.16em] text-muted-foreground mt-1.5">{t('home.coa.batch')} NP-BPC5-2401 · 99.4%</div>
+              <div className="font-heading text-3xl font-bold text-[hsl(var(--primary))]">99.4%</div>
+              <div className="font-mono-tech text-[10.5px] uppercase tracking-[0.16em] text-muted-foreground mt-1.5">{t('home.purityHplc')} · {t('home.coa.batch')} NP-BPC5-2401</div>
             </div>
           </div>
         </div>
