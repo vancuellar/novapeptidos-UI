@@ -1,10 +1,7 @@
-import React, { useEffect, useLayoutEffect, useState, useCallback } from 'react';
-import { useNavigate, useSearchParams, Link } from 'react-router-dom';
+import React, { useEffect, useLayoutEffect, useState } from 'react';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { Package, User, LogOut, ShoppingBag, DollarSign, MapPin, CreditCard, LockKeyhole, Eye, EyeOff, Syringe, Truck, ExternalLink, Lock, FlaskConical, FileText, BookOpen, Coins, Bell } from 'lucide-react';
-import ReconstitutionCalculator, { mgProducts } from '@/components/ReconstitutionCalculator';
-import ProtocolTracker from '@/components/ProtocolTracker';
-import HabitsQuiz from '@/components/HabitsQuiz';
-import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from '@/components/ui/accordion';
+import ToolsPanel, { herramientasDesbloqueadas } from '@/components/ToolsPanel';
 import LabReports from '@/components/LabReports';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
@@ -65,7 +62,6 @@ const Account = () => {
   const { language, t } = useLanguage();
   const navigate = useNavigate();
   const [orders, setOrders] = useState([]);
-  const [protocols, setProtocols] = useState([]);
   const [notifUnread, setNotifUnread] = useState(0);
   const [loyalty, setLoyalty] = useState({ eligible: false, balance: 0, ledger: [] });
   const [saving, setSaving] = useState(false);
@@ -98,17 +94,11 @@ const Account = () => {
     if (!loading && !user) navigate('/login');
   }, [user, loading, navigate]);
 
-  const loadProtocols = useCallback(
-    () => api.get('/me/protocols').then((r) => setProtocols(r.data)).catch(() => {}),
-    [],
-  );
-
   useEffect(() => {
     if (user) {
       api.get('/orders/me').then((r) => setOrders(r.data)).catch(() => {});
       api.get('/me/points').then((r) => setLoyalty(r.data)).catch(() => {});
       api.get('/me/notifications').then((r) => setNotifUnread(r.data.unread || 0)).catch(() => {});
-      loadProtocols();
       setName(user.name || '');
       setEmail(user.email || '');
       const saved = parsePhone(user.phone);
@@ -119,7 +109,7 @@ const Account = () => {
       setSameBilling(!user.billing_address || !user.billing_address.address);
       setPreferredPayment(user.preferred_payment || '');
     }
-  }, [user, loadProtocols]);
+  }, [user]);
 
   if (!user) return null;
 
@@ -127,57 +117,11 @@ const Account = () => {
   const totalSpent = validOrders.reduce((sum, o) => sum + (o.total || 0), 0);
   const emailChanged = email.trim().toLowerCase() !== (user.email || '').toLowerCase();
 
-  // Las herramientas se desbloquean con la primera compra pagada. "Confirmado"
-  // es el momento en que se verifica el pago (tarjeta o SPEI), así que ese
-  // estado y los posteriores cuentan; "pendiente" y "cancelado" no.
-  const PAID_STATUSES = ['confirmado', 'enviado', 'entregado'];
-  const paidOrders = orders.filter((o) => PAID_STATUSES.includes(o.status));
-  // El admin (Christian) y los distribuidores ven todas las herramientas sin
-  // necesidad de compra (orden de Christian 2026-07-22: full access al canal).
-  const toolsUnlocked = paidOrders.length > 0 || user.role === 'admin' || user.role === 'distributor';
-
-  // Péptidos que este cliente ya compró, para pre-cargar la calculadora.
-  // Solo los que el catálogo maneja en mg (los únicos que se reconstituyen).
-  //
-  // ⚠️ El nombre NO se compara por igualdad. El pedido guarda el nombre PLANO del
-  // backend, que trae la presentación pegada ("NAD+ 500 mg"), mientras el catálogo
-  // se llama "NAD+". Con igualdad exacta nunca coincidía: Paz Cambray tenía dos
-  // péptidos comprados y la calculadora le mostraba el catálogo entero, sin sus
-  // atajos (encontrado el 2026-07-26 viendo su cuenta con "Ver como").
-  //
-  // Se compara por prefijo y gana el nombre MÁS LARGO, porque si no un combo
-  // ("BPC-157 5mg + TB-500 5mg") se confundiría con "BPC-157".
-  const matchCatalogo = (nombreItem) => {
-    const n = (nombreItem || '').toLowerCase().trim();
-    if (!n) return null;
-    const exacto = mgProducts.find((p) => p.name.toLowerCase() === n);
-    if (exacto) return exacto;
-    return mgProducts
-      .filter((p) => n.startsWith(p.name.toLowerCase()))
-      .sort((a, b) => b.name.length - a.name.length)[0] || null;
-  };
-
-  const purchased = (() => {
-    const seen = new Map();
-    for (const o of paidOrders) {
-      for (const it of o.items || []) {
-        const match = matchCatalogo(it.name);
-        if (!match) continue;
-        const mg = parseFloat(it.presentation) || (match.variants.length ? Math.min(...match.variants) : 0);
-        const key = `${match.name}::${mg}`;
-        if (!seen.has(key)) seen.set(key, { name: match.name, mg });
-      }
-    }
-    return [...seen.values()];
-  })();
-
-  const trackProtocol = async (payload) => {
-    try {
-      await api.post('/me/protocols', { ...payload, doses_per_week: 7, vials: 1 });
-      await loadProtocols();
-      toast.success(t('track.added'));
-    } catch { toast.error(t('track.error')); }
-  };
+  // Las herramientas (calculadora completa, seguimiento, hábitos) y las
+  // bibliotecas se desbloquean con la primera compra pagada; admin y
+  // distribuidores entran sin comprar. La regla vive en ToolsPanel porque el
+  // mismo bloque se muestra también en el tablero de distribuidor.
+  const toolsUnlocked = herramientasDesbloqueadas(user, orders);
 
   const saveProfile = async () => {
     if (!name.trim()) { toast.error(t('profile.toast.nameRequired')); return; }
@@ -291,46 +235,7 @@ const Account = () => {
         </TabsContent>
 
         <TabsContent value="tools" className="mt-5 space-y-8">
-          {!toolsUnlocked ? (
-            <Card className="p-10 text-center" data-testid="tools-locked">
-              <Lock className="h-8 w-8 mx-auto mb-4 text-muted-foreground opacity-50" />
-              <h3 className="font-heading font-semibold text-lg mb-2">{t('account.tools.lockedTitle')}</h3>
-              <p className="text-sm text-muted-foreground max-w-md mx-auto leading-relaxed">
-                {orders.length === 0 ? t('account.tools.lockedNoOrders') : t('account.tools.lockedPending')}
-              </p>
-              <div className="flex flex-wrap gap-2 justify-center mt-5">
-                <Link to="/calculadora"><Button variant="outline">{t('account.tools.publicCalc')}</Button></Link>
-                <Link to="/catalogo"><Button>{t('account.exploreCatalog')}</Button></Link>
-              </div>
-            </Card>
-          ) : (
-            // Las herramientas viven MINIMIZADAS (pedido de Christián,
-            // 2026-07-30): solo el título a la vista, y cada una se expande
-            // cuando el cliente la abre.
-            <Accordion type="multiple" className="space-y-3">
-              <AccordionItem value="calc" className="border rounded-xl px-4">
-                <AccordionTrigger className="font-heading font-semibold text-base hover:no-underline" data-testid="tool-calc-toggle">{t('calc.title')}</AccordionTrigger>
-                <AccordionContent>
-                  <p className="text-sm text-muted-foreground mb-4">{t('account.tools.calcHint')}</p>
-                  <ReconstitutionCalculator variant="full" purchased={purchased} onTrack={trackProtocol} syncUrl={false} />
-                </AccordionContent>
-              </AccordionItem>
-              <AccordionItem value="track" className="border rounded-xl px-4">
-                <AccordionTrigger className="font-heading font-semibold text-base hover:no-underline" data-testid="tool-track-toggle">{t('account.tools.trackTitle')}</AccordionTrigger>
-                <AccordionContent>
-                  <p className="text-sm text-muted-foreground mb-4">{t('account.tools.trackHint')}</p>
-                  <ProtocolTracker protocols={protocols} onChange={loadProtocols} />
-                </AccordionContent>
-              </AccordionItem>
-              <AccordionItem value="habits" className="border rounded-xl px-4">
-                <AccordionTrigger className="font-heading font-semibold text-base hover:no-underline" data-testid="tool-habits-toggle">{t('account.tools.habitsTitle')}</AccordionTrigger>
-                <AccordionContent>
-                  <p className="text-sm text-muted-foreground mb-4">{t('account.tools.habitsHint')}</p>
-                  <HabitsQuiz />
-                </AccordionContent>
-              </AccordionItem>
-            </Accordion>
-          )}
+          <ToolsPanel unlocked={toolsUnlocked} orders={orders} />
         </TabsContent>
 
         <TabsContent value="orders" className="mt-5">

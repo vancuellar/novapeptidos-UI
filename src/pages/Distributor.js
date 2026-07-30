@@ -1,6 +1,6 @@
 import React, { useEffect, useLayoutEffect, useState, useCallback } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import { Store, Users, DollarSign, TrendingUp, ShoppingBag, Copy, Percent, Truck, ExternalLink, FileText, BookOpen, Award, Ticket, RefreshCw, Bell } from 'lucide-react';
+import { Store, Users, DollarSign, TrendingUp, ShoppingBag, Copy, Percent, Truck, ExternalLink, FileText, BookOpen, Award, Ticket, RefreshCw, Bell, Syringe } from 'lucide-react';
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip } from 'recharts';
 import GraficaInteractiva from '@/components/charts/GraficaInteractiva';
 import { Button } from '@/components/ui/button';
@@ -11,6 +11,7 @@ import DashboardSidebar, { alTope } from '@/components/layout/DashboardSidebar';
 import CoaLibrary from '@/components/CoaLibrary';
 import FichaLibrary from '@/components/FichaLibrary';
 import NotificationsFeed from '@/components/NotificationsFeed';
+import ToolsPanel, { herramientasDesbloqueadas } from '@/components/ToolsPanel';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { toast } from 'sonner';
@@ -51,6 +52,9 @@ const Distributor = () => {
   const [maxDiscount, setMaxDiscount] = useState(0);
   const [rotateDays, setRotateDays] = useState(30);
   const [notifUnread, setNotifUnread] = useState(0);
+  // Los pedidos que ÉL compró (no los de sus clientes): con ellos la calculadora
+  // de "Mis Herramientas" pre-carga sus propios péptidos.
+  const [misPedidos, setMisPedidos] = useState([]);
   const [params, setParams] = useSearchParams();
   // Abrir ARRIBA al cambiar de pestaña, venga el cambio de donde venga (sidebar,
   // link interno o URL directa). ScrollToTop no ve cambios que son sólo de query.
@@ -72,6 +76,7 @@ const Distributor = () => {
     api.get('/distributor/sales').then((r) => setSales(r.data)).catch(() => {});
     api.get('/distributor/orders').then((r) => setOrders(r.data)).catch(() => {});
     api.get('/me/notifications').then((r) => setNotifUnread(r.data.unread || 0)).catch(() => {});
+    api.get('/orders/me').then((r) => setMisPedidos(r.data)).catch(() => {});
     loadCodes();
   }, [loadCodes]);
 
@@ -157,6 +162,10 @@ const Distributor = () => {
           { value: 'clients', icon: Users, label: t('distributor.clientsTab') },
           { value: 'orders', icon: Truck, label: t('distributor.ordersTab') },
           { value: 'sales', icon: ShoppingBag, label: t('distributor.salesTab') },
+          // Mismas herramientas que en Mi cuenta (calculadora completa,
+          // seguimiento y cuestionario de hábitos): el distribuidor las tiene
+          // aquí sin salir de su tablero.
+          { value: 'tools', icon: Syringe, label: t('account.toolsTab') },
           // OCULTO por orden de Christián (2026-07-30) hasta nuevo aviso — no borrar:
           // { value: 'coas', icon: FileText, label: t('account.coasTab') },
           { value: 'fichas', icon: BookOpen, label: t('account.fichasTab') },
@@ -422,6 +431,10 @@ const Distributor = () => {
               </TableBody>
             </Table>
           </Card>
+        </TabsContent>
+
+        <TabsContent value="tools" className="mt-5 space-y-8">
+          <ToolsPanel unlocked={herramientasDesbloqueadas(user, misPedidos)} orders={misPedidos} />
         </TabsContent>
 
         <TabsContent value="coas" className="mt-5">
