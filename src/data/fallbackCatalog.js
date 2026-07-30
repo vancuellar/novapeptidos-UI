@@ -450,7 +450,7 @@ export const fallbackProducts = [
         "batch_number": "NP-THYM5-2601",
         "id": "473b201b-96e4-45c1-b35b-b096b39a1d2d",
         "sku": "THYMOSINALPHA1-5MG",
-        "commission_cap": 0.35,
+        "commission_cap": 0.4,
         "distributor_eligible": true
       },
       {
@@ -509,7 +509,7 @@ export const fallbackProducts = [
         "batch_number": "NP-AHKC50-2601",
         "id": "3e2d78c8-408f-4298-b3c8-02ade1ac012a",
         "sku": "AHKCU-50MG",
-        "commission_cap": 0.3,
+        "commission_cap": 0.4,
         "distributor_eligible": true
       },
       {
@@ -519,7 +519,7 @@ export const fallbackProducts = [
         "batch_number": "NP-AHKC100-2601",
         "id": "e315152d-e416-444a-b3f8-52b3d7163fbe",
         "sku": "AHKCU-100MG",
-        "commission_cap": 0.35,
+        "commission_cap": 0.4,
         "distributor_eligible": true
       }
     ],
@@ -749,7 +749,7 @@ export const fallbackProducts = [
         "batch_number": "NP-SNAP100-2601",
         "id": "ad15b37a-da23-4135-b754-593de64b2582",
         "sku": "SNAP8-100MG",
-        "commission_cap": 0.3,
+        "commission_cap": 0.4,
         "distributor_eligible": true
       }
     ],
@@ -962,7 +962,7 @@ export const fallbackProducts = [
         "batch_number": "NP-GHRP10-2601",
         "id": "50ce374a-42c5-4f02-bb9d-a2a83c757567",
         "sku": "GHRP6ACETATE-10MG",
-        "commission_cap": 0.35,
+        "commission_cap": 0.4,
         "distributor_eligible": true
       }
     ],
@@ -1011,7 +1011,7 @@ export const fallbackProducts = [
         "batch_number": "NP-HEXA2-2601",
         "id": "099ad50d-fe25-4b3f-babf-c1711ebfc03f",
         "sku": "HEXARELINACETA-2MG",
-        "commission_cap": 0.3,
+        "commission_cap": 0.35,
         "distributor_eligible": true
       },
       {
@@ -1021,7 +1021,7 @@ export const fallbackProducts = [
         "batch_number": "NP-HEXA5-2601",
         "id": "57b96b3d-d265-48e5-b52d-f2893b2e9e3d",
         "sku": "HEXARELINACETA-5MG",
-        "commission_cap": 0.35,
+        "commission_cap": 0.4,
         "distributor_eligible": true
       }
     ],
@@ -1238,7 +1238,7 @@ export const fallbackProducts = [
         "batch_number": "NP-IGF101-2601",
         "id": "adc6f9d6-6c27-4485-a728-f1f758f362a1",
         "sku": "IGF1LR3-01MG",
-        "commission_cap": 0.3,
+        "commission_cap": 0.35,
         "distributor_eligible": true
       },
       {
@@ -1316,7 +1316,7 @@ export const fallbackProducts = [
         "batch_number": "NP-IPA10-2601",
         "id": "f88df19e-5dd5-4bd3-8e1e-348a1297b91d",
         "sku": "IPAMORELIN-10MG",
-        "commission_cap": 0.35,
+        "commission_cap": 0.4,
         "distributor_eligible": true
       }
     ],
@@ -1458,7 +1458,7 @@ export const fallbackProducts = [
         "batch_number": "NP-SERM2-2601",
         "id": "706d7fd6-ca0f-47df-96be-3b1da80d32ec",
         "sku": "SERMORELINA-2MG",
-        "commission_cap": 0.3,
+        "commission_cap": 0.35,
         "distributor_eligible": true
       },
       {
@@ -1643,7 +1643,7 @@ export const fallbackProducts = [
         "batch_number": "NP-FOXO10-2601",
         "id": "39be60d1-8886-4c73-b1b4-d9c093390e9b",
         "sku": "FOXO4-10MG",
-        "commission_cap": 0.35,
+        "commission_cap": 0.4,
         "distributor_eligible": true
       }
     ],
@@ -1691,7 +1691,7 @@ export const fallbackProducts = [
         "batch_number": "NP-GLUT600-2601",
         "id": "696c2182-2d39-4dde-9544-a34b50b64009",
         "sku": "GLUTATION-600MG",
-        "commission_cap": 0.35,
+        "commission_cap": 0.4,
         "distributor_eligible": true
       },
       {
@@ -1750,7 +1750,7 @@ export const fallbackProducts = [
         "batch_number": "NP-HUMA10-2601",
         "id": "e54657a8-f41e-407e-a1c6-df56fbb25ca4",
         "sku": "HUMANIN-10MG",
-        "commission_cap": 0.3,
+        "commission_cap": 0.4,
         "distributor_eligible": true
       },
       {
@@ -1816,7 +1816,7 @@ export const fallbackProducts = [
         "batch_number": "NP-NAD500-2601",
         "id": "58c98a1f-e090-49f4-8067-0a75904d9ca7",
         "sku": "NAD-500MG",
-        "commission_cap": 0.35,
+        "commission_cap": 0.4,
         "distributor_eligible": true
       },
       {
@@ -1896,7 +1896,7 @@ export const fallbackProducts = [
         "batch_number": "NP-SS3150-2601",
         "id": "6e0c7e19-f32d-474b-be5c-fb897273182f",
         "sku": "SS31-50MG",
-        "commission_cap": 0.35,
+        "commission_cap": 0.4,
         "distributor_eligible": true
       }
     ],
@@ -1993,7 +1993,7 @@ export const fallbackProducts = [
         "batch_number": "NP-DSIP2-2601",
         "id": "2f65fb25-e630-4b39-88cb-ae6e8cc71117",
         "sku": "DSIP-2MG",
-        "commission_cap": 0.3,
+        "commission_cap": 0.35,
         "distributor_eligible": true
       },
       {
@@ -2013,7 +2013,7 @@ export const fallbackProducts = [
         "batch_number": "NP-DSIP10-2601",
         "id": "949505ed-8adb-440a-aa46-d6a3f12dbf55",
         "sku": "DSIP-10MG",
-        "commission_cap": 0.35,
+        "commission_cap": 0.4,
         "distributor_eligible": true
       }
     ],
@@ -2209,7 +2209,7 @@ export const fallbackProducts = [
         "batch_number": "NP-PE2210-2601",
         "id": "09745c57-4a6c-4749-813e-cfbe6be283af",
         "sku": "PE2228-10MG",
-        "commission_cap": 0.35,
+        "commission_cap": 0.4,
         "distributor_eligible": true
       }
     ],
@@ -2301,7 +2301,7 @@ export const fallbackProducts = [
         "batch_number": "NP-SLK5-2601",
         "id": "211469df-0397-4498-892d-6360dfc87788",
         "sku": "SELANK-5MG",
-        "commission_cap": 0.35,
+        "commission_cap": 0.4,
         "distributor_eligible": true
       },
       {
@@ -2311,7 +2311,7 @@ export const fallbackProducts = [
         "batch_number": "NP-SLK10-2601",
         "id": "767a631b-3c6c-4f25-9a75-915860bef1ca",
         "sku": "SELANK-10MG",
-        "commission_cap": 0.3,
+        "commission_cap": 0.35,
         "distributor_eligible": true
       }
     ],
@@ -2359,7 +2359,7 @@ export const fallbackProducts = [
         "batch_number": "NP-SMX5-2601",
         "id": "87f77e62-1545-4bc3-9e43-41bd95d340a2",
         "sku": "SEMAX-5MG",
-        "commission_cap": 0.3,
+        "commission_cap": 0.4,
         "distributor_eligible": true
       },
       {
@@ -2369,7 +2369,7 @@ export const fallbackProducts = [
         "batch_number": "NP-SMX10-2601",
         "id": "95ce366e-56b3-4c8f-862f-9fc7176f3240",
         "sku": "SEMAX-10MG",
-        "commission_cap": 0.35,
+        "commission_cap": 0.4,
         "distributor_eligible": true
       }
     ],
@@ -2417,7 +2417,7 @@ export const fallbackProducts = [
         "batch_number": "NP-ACTH5-2601",
         "id": "f9b7b446-9009-41c8-a73d-2ebed37ba522",
         "sku": "ACTH139-5MG",
-        "commission_cap": 0.35,
+        "commission_cap": 0.4,
         "distributor_eligible": true
       }
     ],
@@ -2521,7 +2521,7 @@ export const fallbackProducts = [
         "batch_number": "NP-B7332-2601",
         "id": "22716315-e599-4b50-aa8e-4ee383b8f056",
         "sku": "B733-2MG",
-        "commission_cap": 0.3,
+        "commission_cap": 0.4,
         "distributor_eligible": true
       },
       {
@@ -2577,7 +2577,7 @@ export const fallbackProducts = [
         "batch_number": "NP-CJCD2-2601",
         "id": "fcea43c2-0c8f-446e-9b5a-395bf7ab0944",
         "sku": "CJC1295CONDAC-2MG",
-        "commission_cap": 0.25,
+        "commission_cap": 0.4,
         "distributor_eligible": true
       },
       {
@@ -2587,7 +2587,7 @@ export const fallbackProducts = [
         "batch_number": "NP-CJCD5-2601",
         "id": "da9906d3-487d-49d3-b2ee-017e427c2f54",
         "sku": "CJC1295CONDAC-5MG",
-        "commission_cap": 0.3,
+        "commission_cap": 0.4,
         "distributor_eligible": true
       }
     ],
@@ -2636,7 +2636,7 @@ export const fallbackProducts = [
         "batch_number": "NP-CJCN2-2601",
         "id": "2c72debf-df0d-4769-ade0-0c974ad0dee7",
         "sku": "CJC1295SINDAC-2MG",
-        "commission_cap": 0.3,
+        "commission_cap": 0.4,
         "distributor_eligible": true
       },
       {
@@ -2646,7 +2646,7 @@ export const fallbackProducts = [
         "batch_number": "NP-CJCN5-2601",
         "id": "5ab62375-3a75-4e76-9296-722a63ad9eec",
         "sku": "CJC1295SINDAC-5MG",
-        "commission_cap": 0.35,
+        "commission_cap": 0.4,
         "distributor_eligible": true
       },
       {
@@ -2656,7 +2656,7 @@ export const fallbackProducts = [
         "batch_number": "NP-CJCN10-2601",
         "id": "1d795150-41ef-4f8f-a099-5a456f56f1b4",
         "sku": "CJC1295SINDAC-10MG",
-        "commission_cap": 0.25,
+        "commission_cap": 0.3,
         "distributor_eligible": true
       }
     ],
@@ -2705,7 +2705,7 @@ export const fallbackProducts = [
         "batch_number": "NP-EPO3000-2601",
         "id": "a913a3ba-6d22-4276-acb3-61be1b703e70",
         "sku": "EPO-3000IU",
-        "commission_cap": 0.3,
+        "commission_cap": 0.35,
         "distributor_eligible": true
       }
     ],
@@ -2743,7 +2743,7 @@ export const fallbackProducts = [
         "batch_number": "NP-KISS5-2601",
         "id": "73cce571-2ac1-4026-9dc3-7a185b3cc7ea",
         "sku": "KISSPEPTINA10-5MG",
-        "commission_cap": 0.3,
+        "commission_cap": 0.35,
         "distributor_eligible": true
       },
       {
@@ -2753,7 +2753,7 @@ export const fallbackProducts = [
         "batch_number": "NP-KISS10-2601",
         "id": "655ba833-56e1-4ef5-9c9f-8e7c166b65b7",
         "sku": "KISSPEPTINA10-10MG",
-        "commission_cap": 0.35,
+        "commission_cap": 0.4,
         "distributor_eligible": true
       }
     ],
@@ -2812,7 +2812,7 @@ export const fallbackProducts = [
         "batch_number": "NP-MAZD10-2601",
         "id": "8aba4b0a-4097-4484-a92a-97ded13b8e45",
         "sku": "MAZDUTIDA-10MG",
-        "commission_cap": 0.3,
+        "commission_cap": 0.35,
         "distributor_eligible": true
       }
     ],
@@ -2957,7 +2957,7 @@ export const fallbackProducts = [
         "batch_number": "NP-MICL10-2601",
         "id": "391fa2fe-a5cf-413b-b16a-a14660de474a",
         "sku": "MICLIPOCB12-10MG",
-        "commission_cap": 0.35,
+        "commission_cap": 0.4,
         "distributor_eligible": true
       }
     ],
@@ -3012,7 +3012,7 @@ export const fallbackProducts = [
         "batch_number": "NP-OXY5-2601",
         "id": "17bc65bf-139d-40c8-86a5-acdce12edd60",
         "sku": "OXITOCINA-5MG",
-        "commission_cap": 0.35,
+        "commission_cap": 0.4,
         "distributor_eligible": true
       },
       {
@@ -3022,7 +3022,7 @@ export const fallbackProducts = [
         "batch_number": "NP-OXY10-2601",
         "id": "6f7eaffb-8997-4272-8178-04bc4efe13af",
         "sku": "OXITOCINA-10MG",
-        "commission_cap": 0.3,
+        "commission_cap": 0.35,
         "distributor_eligible": true
       }
     ],
@@ -3181,7 +3181,7 @@ export const fallbackProducts = [
         "batch_number": "NP-TESA2-2601",
         "id": "e4e46c55-b8da-4058-96e3-db76f99905d9",
         "sku": "TESAMORELINA-2MG",
-        "commission_cap": 0.3,
+        "commission_cap": 0.4,
         "distributor_eligible": true
       },
       {
@@ -3201,7 +3201,7 @@ export const fallbackProducts = [
         "batch_number": "NP-TESA10-2601",
         "id": "864667b7-3027-48f6-a393-d28f163e4fd6",
         "sku": "TESAMORELINA-10MG",
-        "commission_cap": 0.25,
+        "commission_cap": 0.4,
         "distributor_eligible": true
       },
       {
@@ -3270,7 +3270,7 @@ export const fallbackProducts = [
         "batch_number": "NP-VIP10-2601",
         "id": "982833c9-b7e9-4504-b2cb-5be84ae9e3e8",
         "sku": "VIP-10MG",
-        "commission_cap": 0.35,
+        "commission_cap": 0.4,
         "distributor_eligible": true
       }
     ],
@@ -3397,7 +3397,7 @@ export const fallbackProducts = [
         "batch_number": "NP-AICA100-2601",
         "id": "392e8fbc-cb08-4a63-bed4-b3b59711de9d",
         "sku": "AICAR-100MG",
-        "commission_cap": 0.35,
+        "commission_cap": 0.4,
         "distributor_eligible": true
       }
     ],
@@ -3463,7 +3463,7 @@ export const fallbackProducts = [
         "batch_number": "NP-AOD910-2601",
         "id": "ea123747-3255-47ab-8c5b-4e764d080dd4",
         "sku": "AOD9604-10MG",
-        "commission_cap": 0.25,
+        "commission_cap": 0.3,
         "distributor_eligible": true
       }
     ],
@@ -3570,7 +3570,7 @@ export const fallbackProducts = [
         "batch_number": "NP-CAGR5-2601",
         "id": "1e9b01d9-04f6-4a9d-9abd-41cd6e2da48a",
         "sku": "CAGRILINTIDA-5MG",
-        "commission_cap": 0.3,
+        "commission_cap": 0.4,
         "distributor_eligible": true
       },
       {
@@ -3580,7 +3580,7 @@ export const fallbackProducts = [
         "batch_number": "NP-CAGR10-2601",
         "id": "0a87407d-f81b-44d8-b5f1-c5a13fe06b87",
         "sku": "CAGRILINTIDA-10MG",
-        "commission_cap": 0.25,
+        "commission_cap": 0.3,
         "distributor_eligible": true
       }
     ],
@@ -3628,7 +3628,7 @@ export const fallbackProducts = [
         "batch_number": "NP-DULA10-2601",
         "id": "11daa5fa-ed8b-4393-9650-7eee681e952e",
         "sku": "DULAGLUTIDA-10MG",
-        "commission_cap": 0.35,
+        "commission_cap": 0.4,
         "distributor_eligible": true
       }
     ],
@@ -3697,7 +3697,7 @@ export const fallbackProducts = [
         "batch_number": "NP-LCAR600-2601",
         "id": "79ad3e2c-ff01-42ba-ab42-0b6d4c9444d9",
         "sku": "LCARNITINE-600MG",
-        "commission_cap": 0.3,
+        "commission_cap": 0.4,
         "distributor_eligible": true
       },
       {
@@ -3869,7 +3869,7 @@ export const fallbackProducts = [
         "batch_number": "NP-MOTS10-2601",
         "id": "de77919d-830a-4e45-abc2-0977f46b7d30",
         "sku": "MOTSC-10MG",
-        "commission_cap": 0.3,
+        "commission_cap": 0.4,
         "distributor_eligible": true
       },
       {
@@ -3889,8 +3889,8 @@ export const fallbackProducts = [
         "batch_number": "NP-MOTS20-2601",
         "id": "f878af32-45f7-4b6b-82da-52b985ac90ed",
         "sku": "MOTSC-20MG",
-        "commission_cap": 0.2,
-        "distributor_eligible": false
+        "commission_cap": 0.35,
+        "distributor_eligible": true
       },
       {
         "presentation": "40 mg",
@@ -3899,7 +3899,7 @@ export const fallbackProducts = [
         "batch_number": "NP-MOTS40-2601",
         "id": "befcc9bf-0e3d-4a19-a5ca-9ec4512d1a16",
         "sku": "MOTSC-40MG",
-        "commission_cap": 0.3,
+        "commission_cap": 0.4,
         "distributor_eligible": true
       }
     ],
@@ -3940,11 +3940,11 @@ export const fallbackProducts = [
     "presentation": "10 mg – 100 mg",
     "form": "Liofilizado",
     "purity": "99.1%",
-    "price": 2369,
+    "price": 2479,
     "variants": [
       {
         "presentation": "10 mg",
-        "price": 2369,
+        "price": 2479,
         "stock": 40,
         "batch_number": "NP-RETA10-2601",
         "id": "3562d760-400f-43a3-aab3-7244a0e7c9e3",
@@ -3979,7 +3979,7 @@ export const fallbackProducts = [
         "batch_number": "NP-RETA40-2601",
         "id": "cc984cce-c589-4e80-861a-ba6b98e7ad3e",
         "sku": "RETATRUTIDA-40MG",
-        "commission_cap": 0.35,
+        "commission_cap": 0.4,
         "distributor_eligible": true
       },
       {
@@ -3989,7 +3989,7 @@ export const fallbackProducts = [
         "batch_number": "NP-RETA60-2601",
         "id": "954a6dc4-dce9-4fdd-8581-e283ad37e6b5",
         "sku": "RETATRUTIDA-60MG",
-        "commission_cap": 0.3,
+        "commission_cap": 0.4,
         "distributor_eligible": true
       },
       {
@@ -3999,7 +3999,7 @@ export const fallbackProducts = [
         "batch_number": "NP-RETA100-2601",
         "id": "ee5729da-dadf-4ff2-aa0b-7e8abdb072b4",
         "sku": "RETATRUTIDA-100MG",
-        "commission_cap": 0.3,
+        "commission_cap": 0.4,
         "distributor_eligible": true
       }
     ],
@@ -4064,7 +4064,7 @@ export const fallbackProducts = [
         "batch_number": "NP-RETA60-2601",
         "id": "7efbf57b-7f8d-43c7-a058-8e07b0c64de1",
         "sku": "RETATRUTIDE20M-60MG",
-        "commission_cap": 0.35,
+        "commission_cap": 0.4,
         "distributor_eligible": true
       }
     ],
@@ -4162,7 +4162,7 @@ export const fallbackProducts = [
         "batch_number": "NP-SEMA30-2601",
         "id": "641f267f-9618-418f-90cc-2b2aa9932d2f",
         "sku": "SEMAGLUTIDA-30MG",
-        "commission_cap": 0.35,
+        "commission_cap": 0.4,
         "distributor_eligible": true
       },
       {
@@ -4172,7 +4172,7 @@ export const fallbackProducts = [
         "batch_number": "NP-SEMA50-2601",
         "id": "40e13576-9c1c-44bf-85bb-e6b9926bbbaf",
         "sku": "SEMAGLUTIDA-50MG",
-        "commission_cap": 0.35,
+        "commission_cap": 0.4,
         "distributor_eligible": true
       }
     ],
@@ -4269,7 +4269,7 @@ export const fallbackProducts = [
         "batch_number": "NP-SURV10-2601",
         "id": "25142e73-bfa6-4e85-bf86-da5251bc8d06",
         "sku": "SURVODUTIDE-10MG",
-        "commission_cap": 0.35,
+        "commission_cap": 0.4,
         "distributor_eligible": true
       }
     ],
@@ -4377,7 +4377,7 @@ export const fallbackProducts = [
         "batch_number": "NP-TIRZ100-2601",
         "id": "fcd44c95-cc87-439f-aa1c-daa14c7202cd",
         "sku": "TIRZEPATIDA-100MG",
-        "commission_cap": 0.35,
+        "commission_cap": 0.4,
         "distributor_eligible": true
       },
       {
@@ -4387,7 +4387,7 @@ export const fallbackProducts = [
         "batch_number": "NP-TIRZ120-2601",
         "id": "0f8e3f1e-8bc1-413e-aeca-07b16352410a",
         "sku": "TIRZEPATIDA-120MG",
-        "commission_cap": 0.3,
+        "commission_cap": 0.4,
         "distributor_eligible": true
       }
     ],
@@ -4447,7 +4447,7 @@ export const fallbackProducts = [
         "batch_number": "NP-ARA216-2601",
         "id": "582df66d-c396-44e1-994a-adf34e693203",
         "sku": "ARA290-16MG",
-        "commission_cap": 0.35,
+        "commission_cap": 0.4,
         "distributor_eligible": true
       }
     ],
@@ -4495,7 +4495,7 @@ export const fallbackProducts = [
         "batch_number": "NP-BPC2-2601",
         "id": "9ba48165-7a02-473c-a089-6a9a09af5da1",
         "sku": "BPC157-2MG",
-        "commission_cap": 0.3,
+        "commission_cap": 0.4,
         "distributor_eligible": true
       },
       {
@@ -4525,7 +4525,7 @@ export const fallbackProducts = [
         "batch_number": "NP-BPC20-2601",
         "id": "d390e21b-2ac7-45e9-9520-ae0d8e807527",
         "sku": "BPC157-20MG",
-        "commission_cap": 0.25,
+        "commission_cap": 0.35,
         "distributor_eligible": true
       }
     ],
@@ -4575,7 +4575,7 @@ export const fallbackProducts = [
         "batch_number": "NP-BPC120-2601",
         "id": "457f70ba-93dc-4290-982d-0ed4e679fb41",
         "sku": "BPC15710MGTB50-20MG",
-        "commission_cap": 0.35,
+        "commission_cap": 0.4,
         "distributor_eligible": true
       }
     ],
@@ -4672,7 +4672,7 @@ export const fallbackProducts = [
         "batch_number": "NP-FOLL1-2601",
         "id": "8361b994-45e4-488a-8ff3-110b5e24a031",
         "sku": "FOLLISTATIN-1MG",
-        "commission_cap": 0.35,
+        "commission_cap": 0.4,
         "distributor_eligible": true
       }
     ],
@@ -4765,7 +4765,7 @@ export const fallbackProducts = [
         "batch_number": "NP-GLOW70-2601",
         "id": "e1059e7b-e38e-4fd2-89f9-c0a5e6b7a0f1",
         "sku": "GLOWBPC15710MG-70MG",
-        "commission_cap": 0.3,
+        "commission_cap": 0.4,
         "distributor_eligible": true
       }
     ],
@@ -4814,7 +4814,7 @@ export const fallbackProducts = [
         "batch_number": "NP-KLOW80-2601",
         "id": "b09d7657-085a-4777-9271-dc440496fce9",
         "sku": "KLOWBPCGHKCUTB-80MG",
-        "commission_cap": 0.3,
+        "commission_cap": 0.4,
         "distributor_eligible": true
       }
     ],
@@ -5014,7 +5014,7 @@ export const fallbackProducts = [
         "batch_number": "NP-PTDD1-2601",
         "id": "81cc0bc4-a2f9-4a41-99f4-86ec46b7ed4a",
         "sku": "PTDDBM-1MG",
-        "commission_cap": 0.35,
+        "commission_cap": 0.4,
         "distributor_eligible": true
       }
     ],
@@ -5060,7 +5060,7 @@ export const fallbackProducts = [
         "batch_number": "NP-TB2-2601",
         "id": "a8c10f43-ab4d-4c85-9f2a-7eeae9fb9fe6",
         "sku": "TB500-2MG",
-        "commission_cap": 0.35,
+        "commission_cap": 0.4,
         "distributor_eligible": true
       },
       {
@@ -5080,7 +5080,7 @@ export const fallbackProducts = [
         "batch_number": "NP-TB10-2601",
         "id": "7ca299ad-2828-439e-92b7-0b77e280b6d4",
         "sku": "TB500-10MG",
-        "commission_cap": 0.25,
+        "commission_cap": 0.3,
         "distributor_eligible": true
       }
     ],
@@ -5128,7 +5128,7 @@ export const fallbackProducts = [
         "batch_number": "NP-GONA2-2601",
         "id": "3731505f-b8e0-4105-bf2c-c30b9bf73c78",
         "sku": "GONADORELINACE-2MG",
-        "commission_cap": 0.35,
+        "commission_cap": 0.4,
         "distributor_eligible": true
       },
       {
@@ -5265,7 +5265,7 @@ export const fallbackProducts = [
         "batch_number": "NP-HMG75-2601",
         "id": "aa391e71-680a-4ced-9103-c4c199b26111",
         "sku": "HMG-75IU",
-        "commission_cap": 0.35,
+        "commission_cap": 0.4,
         "distributor_eligible": true
       }
     ],
@@ -5303,7 +5303,7 @@ export const fallbackProducts = [
         "batch_number": "NP-PT10-2601",
         "id": "c2dfec75-f313-4f8b-aa37-8786a6259315",
         "sku": "PT141-10MG",
-        "commission_cap": 0.3,
+        "commission_cap": 0.35,
         "distributor_eligible": true
       }
     ],
@@ -5395,7 +5395,7 @@ export const fallbackProducts = [
         "batch_number": "NP-AGUA3-2601",
         "id": "7f2299c4-4d43-4f6c-a0c8-3e3ebb85c01e",
         "sku": "AGUABACTERIOST-3ML",
-        "commission_cap": 0.35,
+        "commission_cap": 0.4,
         "distributor_eligible": true
       },
       {
@@ -5405,7 +5405,7 @@ export const fallbackProducts = [
         "batch_number": "NP-AGUA10-2601",
         "id": "38e8b549-c62f-474d-8810-ad8e6de08c12",
         "sku": "AGUABACTERIOST-10ML",
-        "commission_cap": 0.35,
+        "commission_cap": 0.4,
         "distributor_eligible": true
       }
     ],
@@ -5536,7 +5536,7 @@ export const fallbackProducts = [
         "batch_number": "NP-CIDO3-2601",
         "id": "10072460-3496-4cac-9fb7-d98a2460699a",
         "sku": "ACIDOACETICO-3ML",
-        "commission_cap": 0.35,
+        "commission_cap": 0.4,
         "distributor_eligible": true
       },
       {
@@ -5556,7 +5556,7 @@ export const fallbackProducts = [
         "batch_number": "NP-CIDO10-2601",
         "id": "7aea7b2e-3d27-49f4-9d6a-54d4326e5496",
         "sku": "ACIDOACETICO-10ML",
-        "commission_cap": 0.35,
+        "commission_cap": 0.4,
         "distributor_eligible": true
       }
     ],
@@ -5566,6 +5566,44 @@ export const fallbackProducts = [
     "coa_url": "https://exygenlabs.com/coa/acido-acetico.pdf",
     "batch_number": "NP-CIDO3-2601",
     "storage": "Conservar a -20 °C, protegido de la luz. Reconstituido: 2–8 °C.",
+    "start_dose": null,
+    "start_unit": null,
+    "start_levels": null,
+    "featured": false,
+    "is_new": false
+  },
+  {
+    "id": "f3e86bf7-b65e-4732-a7d0-3b02fea213a5",
+    "name": "Vitamina D3 10 mL",
+    "slug": "vitamina-d3-10-ml",
+    "category": "suministros",
+    "categories": [
+      "suministros"
+    ],
+    "short_description": "Colecalciferol (vitamina D3) como reactivo de laboratorio.",
+    "description": "La vitamina D3 (colecalciferol) es un secosteroide liposoluble estudiado como reactivo de referencia en ensayos de homeostasis del calcio y metabolismo óseo. Material exclusivamente para uso en investigación (RUO): no es un medicamento ni un suplemento, y no está destinado a consumo humano ni animal.",
+    "presentation": "10 mL",
+    "form": "Solución",
+    "purity": "99%",
+    "price": 4199,
+    "variants": [
+      {
+        "presentation": "10 mL",
+        "price": 4199,
+        "stock": 0,
+        "batch_number": "",
+        "id": "f3e86bf7-b65e-4732-a7d0-3b02fea213a5",
+        "sku": "VITAMINAD3-10ML",
+        "commission_cap": 0.35,
+        "distributor_eligible": true
+      }
+    ],
+    "tiers": [],
+    "stock": 0,
+    "image_url": "",
+    "coa_url": "",
+    "batch_number": "",
+    "storage": "Conservar a 2–8 °C, protegido de la luz.",
     "start_dose": null,
     "start_unit": null,
     "start_levels": null,

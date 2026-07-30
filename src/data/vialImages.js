@@ -199,5 +199,6 @@ export const VIAL_SKUS = new Set([
   'VIP-10MG',
   'VIP-5MG',
   'VITAMINAB12-10MG',
+  'VITAMINAD3-10ML',
   'Viales genericos para fotos de contenido',
 ]);
