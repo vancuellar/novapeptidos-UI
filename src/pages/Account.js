@@ -227,7 +227,8 @@ const Account = () => {
           { value: 'news', icon: Bell, label: t('news.tab') + (notifUnread ? ` (${notifUnread})` : '') },
           { value: 'tools', icon: Syringe, label: t('account.toolsTab') },
           { value: 'labs', icon: FlaskConical, label: t('account.labsTab') },
-          { value: 'coas', icon: FileText, label: t('account.coasTab') },
+          // OCULTO por orden de Christián (2026-07-30) hasta nuevo aviso — no borrar:
+          // { value: 'coas', icon: FileText, label: t('account.coasTab') },
           { value: 'fichas', icon: BookOpen, label: t('account.fichasTab') },
           { value: 'profile', icon: User, label: t('account.profileTab') },
         ] : [

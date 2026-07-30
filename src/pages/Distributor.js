@@ -157,7 +157,8 @@ const Distributor = () => {
           { value: 'clients', icon: Users, label: t('distributor.clientsTab') },
           { value: 'orders', icon: Truck, label: t('distributor.ordersTab') },
           { value: 'sales', icon: ShoppingBag, label: t('distributor.salesTab') },
-          { value: 'coas', icon: FileText, label: t('account.coasTab') },
+          // OCULTO por orden de Christián (2026-07-30) hasta nuevo aviso — no borrar:
+          // { value: 'coas', icon: FileText, label: t('account.coasTab') },
           { value: 'fichas', icon: BookOpen, label: t('account.fichasTab') },
         ]} />
         <div className="min-w-0 flex-1">
