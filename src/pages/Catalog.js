@@ -14,7 +14,7 @@ import ProductCard from '@/components/ProductCard';
 import { formatMXN } from '@/lib/api';
 import { VISIBLE_CATEGORIES, fallbackProducts } from '@/data/fallbackCatalog';
 import { useLanguage } from '@/context/LanguageContext';
-import { localizeCategories, localizeProducts } from '@/i18n/catalog';
+import { localizeCategories, localizeProducts, localizeProduct } from '@/i18n/catalog';
 
 // Productos estrella: salen primero dentro de su categoría (orden de Christian).
 // Retatrutida es la número uno; NAD+ y KLOW la siguen.
@@ -113,14 +113,28 @@ const Catalog = () => {
     }
     if (inStock) list = list.filter((product) => product.stock > 0);
     list = list.filter((product) => product.price <= priceMax);
+    // El nombre en pantalla depende del idioma (catalog-en-US.js / catalog-pt-BR.js
+    // lo traducen); ordenar por nombre debe usar ESE nombre, no el crudo en español,
+    // o la lista quedaría "A-Z" en un idioma pero no en el que se está leyendo.
+    const nombreLocal = (p) => localizeProduct(p, language).name || p.name || '';
     // Relevancia = nuestros productos estrella primero, dentro de su categoría.
     // Con orden por precio manda el precio; el destacado solo desempata.
     if (sort === 'price_asc') list.sort((a, b) => a.price - b.price || flagshipRank(a) - flagshipRank(b));
     else if (sort === 'price_desc') list.sort((a, b) => b.price - a.price || flagshipRank(a) - flagshipRank(b));
+    else if (sort === 'name_asc') list.sort((a, b) => nombreLocal(a).localeCompare(nombreLocal(b), 'es', { sensitivity: 'base' }));
+    else if (sort === 'name_desc') list.sort((a, b) => nombreLocal(b).localeCompare(nombreLocal(a), 'es', { sensitivity: 'base' }));
+    else if (sort === 'category') {
+      // Por categoría A-Z (en el idioma que se está viendo) y, dentro de cada
+      // una, por nombre A-Z: mismo criterio predecible que en el panel de Admin.
+      const catsLocalizadas = localizeCategories(categories, language);
+      const nombreCat = (p) => catsLocalizadas.find((c) => c.slug === p.category)?.name || p.category || '';
+      list.sort((a, b) => nombreCat(a).localeCompare(nombreCat(b), 'es', { sensitivity: 'base' })
+        || nombreLocal(a).localeCompare(nombreLocal(b), 'es', { sensitivity: 'base' }));
+    }
     else list.sort((a, b) => flagshipRank(a) - flagshipRank(b));
     setProducts(list);
     setLoading(false);
-  }, [selectedCat, search, inStock, priceMax, sort]);
+  }, [selectedCat, search, inStock, priceMax, sort, categories, language]);
 
   useEffect(() => { fetchProducts(); }, [fetchProducts]);
 
@@ -154,6 +168,9 @@ const Catalog = () => {
             <SelectTrigger className="w-[180px]" data-testid="catalog-sort-select"><SelectValue /></SelectTrigger>
             <SelectContent>
               <SelectItem value="relevance">{t('catalog.sort.relevance')}</SelectItem>
+              <SelectItem value="name_asc">{t('catalog.sort.nameAsc')}</SelectItem>
+              <SelectItem value="name_desc">{t('catalog.sort.nameDesc')}</SelectItem>
+              <SelectItem value="category">{t('catalog.sort.category')}</SelectItem>
               <SelectItem value="price_asc">{t('catalog.sort.priceAsc')}</SelectItem>
               <SelectItem value="price_desc">{t('catalog.sort.priceDesc')}</SelectItem>
               <SelectItem value="newest">{t('catalog.sort.newest')}</SelectItem>

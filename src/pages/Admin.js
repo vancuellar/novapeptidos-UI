@@ -1,6 +1,6 @@
 import React, { useEffect, useLayoutEffect, useState, useCallback } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import { Filter, Eye, LayoutDashboard, Package, ShoppingBag, Plus, Pencil, Trash2, DollarSign, Users, Clock, TrendingUp, MapPin, Phone, Receipt, Store, Copy, Boxes, Truck, RefreshCw, MailCheck, Ban, Megaphone, BarChart3, Upload, ShoppingCart, Target, KeyRound, Gauge, Search, Archive, ArchiveRestore, HandCoins, CircleCheck, CircleAlert } from 'lucide-react';
+import { Filter, Eye, LayoutDashboard, Package, ShoppingBag, Plus, Pencil, Trash2, DollarSign, Users, Clock, TrendingUp, MapPin, Phone, Receipt, Store, Copy, Boxes, Truck, RefreshCw, MailCheck, Ban, Megaphone, BarChart3, Upload, ShoppingCart, Target, KeyRound, Gauge, Search, Archive, ArchiveRestore, HandCoins, CircleCheck, CircleAlert, ArrowUp, ArrowDown, ArrowUpDown } from 'lucide-react';
 import Marketing from '@/components/admin/Marketing';
 import VideoComoLeerDifusion from '@/components/admin/VideoComoLeerDifusion';
 import MotorPrecios from '@/components/admin/MotorPrecios';
@@ -59,6 +59,30 @@ const CHART_TOOLTIP_STYLE = {
   borderRadius: 8,
   fontSize: 12,
   color: 'hsl(var(--foreground))',
+};
+
+// Encabezado de columna que ordena al hacer clic (nombre, categoría, precio,
+// stock en la tabla de Productos del Admin). La flecha solo aparece en la
+// columna activa; el resto muestra un icono neutro para avisar que también
+// se puede tocar.
+const SortableTableHead = ({ campo, activo, dir, onClick, children, testId }) => {
+  const esActivo = activo === campo;
+  const Icono = esActivo ? (dir === 'asc' ? ArrowUp : ArrowDown) : ArrowUpDown;
+  return (
+    <TableHead
+      role="button"
+      tabIndex={0}
+      onClick={() => onClick(campo)}
+      onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onClick(campo); } }}
+      data-testid={testId}
+      className="cursor-pointer select-none hover:text-foreground"
+    >
+      <span className="inline-flex items-center gap-1">
+        {children}
+        <Icono className={`h-3.5 w-3.5 ${esActivo ? '' : 'opacity-40'}`} />
+      </span>
+    </TableHead>
+  );
 };
 
 // Resultado de una invitación. Con el correo saliente apagado el admin
@@ -139,6 +163,10 @@ const Admin = () => {
   // a ojo es imposible. Busca por nombre, categoría, SKU y lote: quien busca "reta"
   // quiere el producto, pero quien pega un número de lote está rastreando un pedido.
   const [productFilter, setProductFilter] = useState('');
+  // Orden de la tabla de Productos (Christián lo pidió: nombre, categoría, precio,
+  // stock). null = orden natural (como viene del backend). Un solo criterio a la
+  // vez; volver a tocar la misma columna alterna A-Z / Z-A.
+  const [productSort, setProductSort] = useState({ campo: null, dir: 'asc' });
   const [distForm, setDistForm] = useState({ name: '', email: '', commission: 25, customerDiscount: 10 });
   // Edición de tasas por distribuidor. Solo hacia adelante: lo ya vendido
   // conserva su comisión congelada en cada orden.
@@ -525,16 +553,47 @@ const Admin = () => {
 
   const productosFiltrados = (() => {
     const q = productFilter.trim().toLowerCase();
-    if (!q) return products;
-    // Cada palabra tiene que aparecer en ALGÚN campo: así "reta 40" encuentra
-    // "Retatrutida 40 mg" sin exigir que se escriba igualito.
-    const palabras = q.split(/\s+/);
-    return products.filter((p) => {
-      const heno = [p.name, p.category, p.sku, p.batch_number, p.presentation]
-        .filter(Boolean).join(' ').toLowerCase();
-      return palabras.every((w) => heno.includes(w));
+    let lista = products;
+    if (q) {
+      // Cada palabra tiene que aparecer en ALGÚN campo: así "reta 40" encuentra
+      // "Retatrutida 40 mg" sin exigir que se escriba igualito.
+      const palabras = q.split(/\s+/);
+      lista = products.filter((p) => {
+        const heno = [p.name, p.category, p.sku, p.batch_number, p.presentation]
+          .filter(Boolean).join(' ').toLowerCase();
+        return palabras.every((w) => heno.includes(w));
+      });
+    }
+    if (!productSort.campo) return lista;
+    const signo = productSort.dir === 'asc' ? 1 : -1;
+    const nombreDe = (p) => categories.find((c) => c.slug === p.category)?.name || p.category || '';
+    // Copia: nunca ordenar el arreglo original (products) in-place.
+    return [...lista].sort((a, b) => {
+      let cmp;
+      if (productSort.campo === 'name') {
+        cmp = (a.name || '').localeCompare(b.name || '', 'es', { sensitivity: 'base' });
+      } else if (productSort.campo === 'category') {
+        cmp = nombreDe(a).localeCompare(nombreDe(b), 'es', { sensitivity: 'base' });
+        // Empate en categoría: por nombre, para que el resultado sea estable y predecible.
+        if (cmp === 0) cmp = (a.name || '').localeCompare(b.name || '', 'es', { sensitivity: 'base' });
+      } else if (productSort.campo === 'price') {
+        cmp = (a.price || 0) - (b.price || 0);
+      } else if (productSort.campo === 'stock') {
+        cmp = (a.stock || 0) - (b.stock || 0);
+      } else {
+        cmp = 0;
+      }
+      return cmp * signo;
     });
   })();
+
+  // Al tocar un encabezado: si ya es el campo activo, alterna A-Z/Z-A; si es
+  // otro campo, empieza en A-Z (o menor-a-mayor para precio/stock).
+  const toggleProductSort = (campo) => {
+    setProductSort((prev) => prev.campo === campo
+      ? { campo, dir: prev.dir === 'asc' ? 'desc' : 'asc' }
+      : { campo, dir: 'asc' });
+  };
 
   const payMax = analytics?.by_payment?.[0]?.revenue || 1;
 
@@ -1168,7 +1227,7 @@ const Admin = () => {
                           <Store className="h-3.5 w-3.5 mr-1" /> {t('admin.convert.button')}
                         </Button>
                       )}
-                      <Button variant="ghost" size="sm" className={`mr-1 ${c.blocked ? 'text-[hsl(var(--success))]' : 'text-destructive hover:text-destructive'}`}
+                      <Button variant="ghost" size="sm" className={`mr-1 ${c.blocked ? 'text-[hsl(var(--success))]' : 'text-destructive hover:bg-destructive hover:text-white'}`}
                         onClick={() => toggleBlocked(c)} data-testid="admin-block-customer-button">
                         <Ban className="h-3.5 w-3.5 mr-1" /> {t(c.blocked ? 'admin.block.unblock' : 'admin.block.block')}
                       </Button>
@@ -1233,7 +1292,7 @@ const Admin = () => {
                     </div>
                     <div className="flex gap-2 shrink-0">
                       <Button size="sm" onClick={() => { setAppResult(null); setAppForm({ commission: 25, customerDiscount: 10 }); setAppTarget(a); }} data-testid="admin-app-approve">{t('admin.apps.approve')}</Button>
-                      <Button size="sm" variant="outline" className="text-destructive" onClick={() => resolveApplication(a, 'rechazar')} data-testid="admin-app-reject">{t('admin.apps.reject')}</Button>
+                      <Button size="sm" variant="outline" className="text-destructive hover:bg-destructive hover:text-white hover:border-destructive" onClick={() => resolveApplication(a, 'rechazar')} data-testid="admin-app-reject">{t('admin.apps.reject')}</Button>
                     </div>
                   </div>
                 ))}
@@ -1437,8 +1496,12 @@ const Admin = () => {
             <Table data-testid="admin-products-table">
               <TableHeader>
                 <TableRow>
-                  <TableHead>{t('admin.table.name')}</TableHead><TableHead>{t('admin.table.category')}</TableHead><TableHead>{t('admin.table.purity')}</TableHead>
-                  <TableHead>{t('admin.table.stock')}</TableHead><TableHead>{t('admin.table.price')}</TableHead><TableHead>{t('admin.table.batch')}</TableHead><TableHead></TableHead>
+                  <SortableTableHead campo="name" activo={productSort.campo} dir={productSort.dir} onClick={toggleProductSort} testId="admin-sort-name">{t('admin.table.name')}</SortableTableHead>
+                  <SortableTableHead campo="category" activo={productSort.campo} dir={productSort.dir} onClick={toggleProductSort} testId="admin-sort-category">{t('admin.table.category')}</SortableTableHead>
+                  <TableHead>{t('admin.table.purity')}</TableHead>
+                  <SortableTableHead campo="stock" activo={productSort.campo} dir={productSort.dir} onClick={toggleProductSort} testId="admin-sort-stock">{t('admin.table.stock')}</SortableTableHead>
+                  <SortableTableHead campo="price" activo={productSort.campo} dir={productSort.dir} onClick={toggleProductSort} testId="admin-sort-price">{t('admin.table.price')}</SortableTableHead>
+                  <TableHead>{t('admin.table.batch')}</TableHead><TableHead></TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
