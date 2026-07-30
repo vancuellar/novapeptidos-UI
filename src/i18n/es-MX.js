@@ -1199,9 +1199,37 @@ const esMX = {
   'chat.initial': 'Hola, soy Exygen, el asistente de Exygen Labs. Puedo ayudarte a encontrar un péptido segun tu objetivo de investigación y a ubicar COA/lotes. En que te apoyo?',
   'chat.error': 'Lo siento, ocurrio un error. Intenta de nuevo.',
   'chat.open': 'Abrir asistente',
+  'chat.close': 'Cerrar',
+  'chat.send': 'Enviar',
   'chat.title': 'Asistente Exygen',
   'chat.online': 'En linea · responde en segundos',
-  'chat.placeholder': 'Escribe tu pregunta...',
+  'chat.responds': 'Suele responder en unos segundos',
+
+  // Bienvenida del asistente: burbuja + píldoras + cuadrícula de opciones.
+  'chat.welcome.hi': '¡Hola! Soy el asistente de Exygen Labs.',
+  'chat.welcome.canHelp': 'Puedo ayudarte con:',
+  'chat.welcome.items': ['Información de productos', 'Precios', 'Envíos', 'Rastreo de pedidos', 'Pedidos'],
+  'chat.welcome.how': '¿Cómo puedo ayudarte hoy?',
+
+  'chat.opt.explore': 'Explorar Productos',
+  'chat.opt.popular': 'Más Solicitados',
+  'chat.opt.prices': 'Precios',
+  'chat.opt.shipping': 'Envíos',
+  'chat.opt.local': 'Entrega Local',
+  'chat.opt.track': 'Rastrear Mi Pedido',
+  'chat.opt.contact': 'Contactar Al Equipo',
+  'chat.opt.whatsapp': 'Pedir Por WhatsApp',
+
+  // Lo que cada botón le escribe al asistente.
+  'chat.ask.explore': '¿Qué productos tienen disponibles?',
+  'chat.ask.popular': '¿Cuáles son sus productos más solicitados?',
+  'chat.ask.prices': '¿Cuáles son sus precios?',
+  'chat.ask.shipping': '¿Cómo funcionan los envíos y cuánto tardan?',
+  'chat.ask.local': '¿Hacen entrega local?',
+  'chat.ask.track': 'Quiero rastrear mi pedido',
+  'chat.ask.contact': 'Quiero contactar al equipo',
+
+  'chat.placeholder': 'Pregunta sobre productos, precios o envíos...',
   'chat.disclaimer': 'Respuestas informativas. Solo uso en investigación (RUO).',
 
   'admin.title': 'Panel De Administración',
