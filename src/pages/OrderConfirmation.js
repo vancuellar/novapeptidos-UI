@@ -8,6 +8,7 @@ import { toast } from 'sonner';
 import api, { formatMXN } from '@/lib/api';
 import { useLanguage } from '@/context/LanguageContext';
 import AvisoSobrePedido from '@/components/AvisoSobrePedido';
+import { track } from '@/lib/track';
 
 const OrderConfirmation = () => {
   const { orderNumber } = useParams();
@@ -16,10 +17,30 @@ const OrderConfirmation = () => {
   const [uploading, setUploading] = useState(false);
   const [receiptUp, setReceiptUp] = useState(false);
   const fileRef = useRef(null);
+  const purchaseAvisado = useRef(false);
 
   useEffect(() => {
     api.get(`/orders/${orderNumber}`).then((r) => { setOrder(r.data); setReceiptUp(!!r.data.spei_receipt_at); }).catch(() => {});
   }, [orderNumber]);
+
+  // ⛔ EL `Purchase` DE META SALE AQUÍ Y SOLO SI YA SE PAGÓ. Se disparaba al CREAR el
+  // pedido, y un pedido creado no es una venta: SPEI, cripto y OXXO nacen pendientes y
+  // muchos no se pagan nunca. Así, cada carrito abandonado en la pasarela contaba como
+  // compra, el ROAS salía inflado y Meta aprendía a buscar gente que no paga.
+  //
+  // Para tarjeta el cliente vuelve a esta página ya aprobado y se dispara aquí. Para los
+  // asíncronos (cripto, OXXO, SPEI) puede que el dinero entre cuando ya cerró la pestaña:
+  // ésos los cubre el servidor por la Conversions API (`meta_capi.py`) en cuanto llega el
+  // webhook. Los DOS mandan el mismo `purchase-<número>` y Meta los une en uno solo — sin
+  // ese id compartido, la venta contaría doble.
+  //
+  // El `useRef` evita repetirlo si el componente se vuelve a renderizar: la deduplicación
+  // de Meta es por evento, no una licencia para gritar.
+  useEffect(() => {
+    if (!order || !order.paid || purchaseAvisado.current) return;
+    purchaseAvisado.current = true;
+    track('purchase', { value: order.total || 0, order_number: order.order_number || '' });
+  }, [order]);
 
   const uploadReceipt = async (e) => {
     const file = e.target.files?.[0];

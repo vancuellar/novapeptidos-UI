@@ -275,7 +275,20 @@ const Checkout = () => {
         // Seguridad: los datos de la tarjeta NUNCA se envian ni se guardan en nuestro servidor.
       };
       const res = await api.post('/orders', payload);
-      track('purchase', { value: res.data.total || 0, order_number: res.data.order_number || '' });
+      // ⛔ AQUÍ NO SE DISPARA `purchase`. Un pedido CREADO no es una venta: SPEI, cripto y
+      // OXXO nacen pendientes y muchos no se pagan nunca. Disparándolo aquí, cada carrito
+      // abandonado en la pasarela contaba como compra, el ROAS salía inflado y Meta
+      // aprendía a buscar gente que no paga — que es peor que no medir.
+      // El Purchase sale cuando el dinero está confirmado: en la página del pedido
+      // (`/pedido/*` con paid=true) desde el navegador, y desde el servidor por la
+      // Conversions API cuando el webhook confirma. Los dos llevan el MISMO
+      // `purchase-<número>` y Meta los une en uno solo.
+      //
+      // Y aquí NO se manda ningún otro evento: el `checkout_start` ya salió al abrir esta
+      // pantalla (arriba, al montar). Repetirlo le contaría a Meta DOS InitiateCheckout
+      // por la misma persona — el embudo propio no se movería, porque cuenta sesiones
+      // únicas, pero el de Meta sí. El pedido creado ya queda registrado donde importa:
+      // en `db.orders`.
       clearCart();
       toast.success(t('checkout.toast.success'));
       // El servidor devuelve el enlace de la pasarela y ahí paga el cliente:
