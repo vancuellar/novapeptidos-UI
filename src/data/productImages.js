@@ -13,14 +13,6 @@ import { VIAL_SKUS } from './vialImages';
 
 const BASE = process.env.PUBLIC_URL || '';
 
-// Fotos antiguas (JPG) de las tomas a mano. Se conservan como respaldo para los
-// productos cuyo SKU todavía no tenga vial generado.
-const WITH_PHOTO = new Set([
-  'bpc-157', 'tb-500', 'cjc-1295-sin-dac', 'cagrilintida', 'ghk-cu', 'ipamorelin',
-  'melanotan-2', 'nad-plus', 'pt-141', 'retatrutida', 'semaglutida', 'tesamorelina',
-  'tirzepatida', 'agua-bacteriostatica', 'klow-bpc-ghk-cu-tb-500-kpv',
-]);
-
 // Imagen de marca para el resto del catálogo: varios viales nuestros, no uno
 // solo, justo para que se lea como "así son nuestros viales" y no como si el
 // producto fuera el de la etiqueta que se alcanza a ver.
@@ -48,7 +40,6 @@ export const productImage = (product, variant, tarjeta = false) => {
   if (sku && VIAL_SKUS.has(sku)) {
     return `${BASE}/images/products/${sku}${tarjeta ? '-sm' : ''}.webp`;
   }
-  if (WITH_PHOTO.has(product.slug)) return `${BASE}/images/products/${product.slug}.jpg`;
   return BRAND_VIAL_IMAGE;
 };
 
@@ -56,7 +47,7 @@ export const productImage = (product, variant, tarjeta = false) => {
 export const hasProductPhoto = (product, variant) => {
   if (!product) return false;
   const sku = skuDe(product, variant);
-  return (!!sku && VIAL_SKUS.has(sku)) || WITH_PHOTO.has(product.slug);
+  return !!sku && VIAL_SKUS.has(sku);
 };
 
 // True cuando se está mostrando la imagen de marca y no la foto del producto.
