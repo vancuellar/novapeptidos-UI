@@ -449,7 +449,11 @@ html body[data-scroll-locked] {
     width: auto;
     filter: drop-shadow(0 18px 32px rgba(20, 24, 30, 0.16));
     transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1), filter 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-    will-change: transform;
+    /* ⚠️ NO poner `will-change: transform` aqui (Christian, 2026-07-29): por eso
+       se veian PIXELADOS. El transform vive en .hero-vial-link, el padre; esta
+       imagen nunca lo usa. Con el will-change el navegador le daba su propia capa
+       y la dibujaba al tamano de layout (191 px), y luego el scale(1.28) del padre
+       ESTIRABA ese mapa de bits en la GPU en vez de volver a dibujarlo nitido. */
 }
 
 .dark .hero-vial {
