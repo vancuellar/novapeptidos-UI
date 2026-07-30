@@ -1682,11 +1682,11 @@ export const fallbackProducts = [
     "presentation": "600 mg – 1500 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
-    "price": 579,
+    "price": 609,
     "variants": [
       {
         "presentation": "600 mg",
-        "price": 579,
+        "price": 609,
         "stock": 40,
         "batch_number": "NP-GLUT600-2601",
         "id": "696c2182-2d39-4dde-9544-a34b50b64009",
