@@ -374,6 +374,33 @@ const esMX = {
   'distributor.codes.deactivated': 'Código desactivado',
   'distributor.codes.copied': 'Código copiado',
   'distributor.codes.error': 'No se pudo. Intenta de nuevo.',
+  // ---------------------------------------------------------------------------
+  //  Cotizador del distribuidor ("Mis Herramientas" → Cotizador)
+  // ---------------------------------------------------------------------------
+  //  ⛔ Aquí NO se nombra el costo, el proveedor ni el ROI: esta pantalla la ve el
+  //  distribuidor y el documento lo ve su cliente. Sólo precio público, descuento
+  //  y totales.
+  'cotizador.titulo': 'Cotizador Para Clientes',
+  'cotizador.subtitulo': 'Arma la cotización, elige el descuento que das y compártela.',
+  'cotizador.buscar': 'Buscar producto...',
+  'cotizador.vacio': 'Busca un producto arriba para empezar la cotización.',
+  'cotizador.cadaUno': 'c/u',
+  'cotizador.quitar': 'Quitar',
+  'cotizador.descuento': 'Descuento Que Otorgas',
+  'cotizador.topeNota': 'Hay productos que aguantan menos descuento y los insumos no llevan: cada renglón se ajusta solo.',
+  'cotizador.precioLista': 'Precio de lista',
+  'cotizador.ahorro': 'Ahorro del cliente',
+  'cotizador.total': 'Total',
+  'cotizador.nombreCliente': 'Nombre del cliente (opcional)',
+  'cotizador.generar': 'Generar Cotización',
+  'cotizador.docTitulo': 'Cotización',
+  'cotizador.docPara': 'Para:',
+  'cotizador.docAhorro': 'Tu ahorro',
+  'cotizador.docCodigo': 'Código:',
+  'cotizador.docLeyenda': 'Productos para uso en investigación (RUO). Cotización informativa, vigencia de 7 días. Precios en MXN.',
+  'cotizador.waEnlace': 'Ver el catálogo:',
+  'cotizador.compartir': 'Compartir Por WhatsApp',
+  'cotizador.imprimir': 'Imprimir',
   'distributor.commissionNote': 'Ganas el {{rate}}% de cada venta de tus clientes.',
   'distributor.level.title': 'Tu nivel',
   'distributor.level.tier.junior0': 'Junior 0',

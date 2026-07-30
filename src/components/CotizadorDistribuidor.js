@@ -1,11 +1,12 @@
-import React, { useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import {
   Search, Plus, Minus, Trash2, FileText, Share2, Printer, Sparkles,
 } from 'lucide-react';
-import { useI18n } from '@/i18n';
+import { BrandMark } from '@/components/BrandLogo';
+import { useLanguage } from '@/context/LanguageContext';
 
 /* Cotizador del distribuidor — DISEÑO por F5 (2026-07-30).
    Genera una cotización presentable para el cliente final.
@@ -21,13 +22,31 @@ import { useI18n } from '@/i18n';
 
 const money = (n) => `$${(n || 0).toLocaleString('es-MX', { maximumFractionDigits: 0 })}`;
 
-export default function CotizadorDistribuidor({ catalogo = [], tasaMaxima = 0.15, codigo = '' }) {
-  const { t } = useI18n();
+// A dónde manda el enlace de la cotización: el catálogo, con el código del
+// distribuidor pegado. El sitio lo aplica solo al abrirlo (ver CartContext), así
+// que la venta se le atribuye aunque el cliente no escriba nada.
+const CATALOGO_URL = 'https://exygenlabs.com/catalogo';
+
+// `conEncabezado` en false quita el título de arriba: lo usa "Mis Herramientas",
+// donde el nombre de la sección ya lo pone el acordeón y repetirlo se lee como un
+// error. El diseño no cambia; sólo se apaga la parte que estorba ahí.
+export default function CotizadorDistribuidor({
+  catalogo = [], tasaMaxima = 0.15, codigo = '', conEncabezado = true,
+}) {
+  const { t } = useLanguage();
   const [busqueda, setBusqueda] = useState('');
   const [renglones, setRenglones] = useState([]); // {id, nombre, presentacion, precio, topePct, qty}
   const [descuento, setDescuento] = useState(Math.min(0.10, tasaMaxima));
   const [vistaPrevia, setVistaPrevia] = useState(false);
   const [nombreCliente, setNombreCliente] = useState('');
+
+  // La tasa la trae el servidor DESPUÉS del primer pintado. Sin esto el control
+  // se queda clavado en el 0% con el que arrancó, y el cotizador no descuenta
+  // nada por más que se mueva la barra.
+  useEffect(() => {
+    setDescuento((d) => (d > tasaMaxima ? tasaMaxima
+      : (d === 0 ? Math.min(0.10, tasaMaxima) : d)));
+  }, [tasaMaxima]);
 
   const sugerencias = useMemo(() => {
     const q = busqueda.trim().toLowerCase();
@@ -59,9 +78,49 @@ export default function CotizadorDistribuidor({ catalogo = [], tasaMaxima = 0.15
   const total = filas.reduce((s, f) => s + f.importe, 0);
   const ahorro = subtotalLista - total;
 
+  // El enlace del catálogo con SU código: es lo que convierte una cotización en
+  // una venta atribuida. Sin él, el cliente compra y la comisión no es de nadie.
+  const enlace = codigo
+    ? `${CATALOGO_URL}?ref=${encodeURIComponent(codigo)}`
+    : CATALOGO_URL;
+
+  // Compartir por WhatsApp SIN número fijo: wa.me sin destinatario abre la lista
+  // de contactos y el distribuidor elige a quién se la manda. Con un número
+  // pegado sólo serviría para mandársela a esa persona.
+  const compartir = () => {
+    const texto = [
+      `*EXYGEN LABS* — ${t('cotizador.docTitulo')}`,
+      nombreCliente ? `${t('cotizador.docPara')} ${nombreCliente}` : '',
+      '',
+      ...filas.map((f) => `• ${f.qty} × ${f.nombre} — ${money(f.importe)}`),
+      '',
+      ahorro > 0 ? `${t('cotizador.docAhorro')} −${money(ahorro)}` : '',
+      `*${t('cotizador.total')}: ${money(total)}*`,
+      '',
+      `${t('cotizador.waEnlace')} ${enlace}`,
+      codigo ? `${t('cotizador.docCodigo')} ${codigo}` : '',
+      '',
+      t('cotizador.docLeyenda'),
+    ].filter(Boolean).join('\n');
+    window.open(`https://wa.me/?text=${encodeURIComponent(texto)}`, '_blank', 'noopener,noreferrer');
+  };
+
+  // Imprimir SOLO la hoja de la cotización. La marca en el body es lo que enciende
+  // la hoja de estilos de abajo — y de paso apaga el resumen imprimible de la
+  // calculadora, que vive en la misma pantalla ("Mis Herramientas") y si no se
+  // apaga sale pegado en la misma hoja.
+  const imprimir = () => {
+    const quitar = () => document.body.classList.remove('imprimiendo-cotizacion');
+    document.body.classList.add('imprimiendo-cotizacion');
+    window.addEventListener('afterprint', quitar, { once: true });
+    window.print();
+    setTimeout(quitar, 1500);   // red: no todos los navegadores avisan al terminar
+  };
+
   return (
     <div className="space-y-6" data-testid="cotizador-distribuidor">
       {/* Encabezado */}
+      {conEncabezado && (
       <div className="flex items-center gap-3">
         <div className="h-10 w-10 rounded-xl bg-gradient-to-br from-primary to-primary/70 flex items-center justify-center shrink-0">
           <FileText className="h-5 w-5 text-primary-foreground" />
@@ -71,6 +130,7 @@ export default function CotizadorDistribuidor({ catalogo = [], tasaMaxima = 0.15
           <p className="text-sm text-muted-foreground">{t('cotizador.subtitulo')}</p>
         </div>
       </div>
+      )}
 
       {/* Buscador con sugerencias */}
       <Card className="p-4">
@@ -113,7 +173,7 @@ export default function CotizadorDistribuidor({ catalogo = [], tasaMaxima = 0.15
                   <Button variant="outline" size="icon" className="h-7 w-7" onClick={() => cambiarQty(f.id, 1)} aria-label="+"><Plus className="h-3.5 w-3.5" /></Button>
                 </div>
                 <span className="w-20 text-right text-sm font-medium tabular-nums">{money(f.importe)}</span>
-                <Button variant="ghost" size="icon" className="h-7 w-7 text-muted-foreground hover:text-destructive" onClick={() => quitar(f.id)} aria-label={t('common.remove')}>
+                <Button variant="ghost" size="icon" className="h-7 w-7 text-muted-foreground hover:text-destructive" onClick={() => quitar(f.id)} aria-label={t('cotizador.quitar')}>
                   <Trash2 className="h-3.5 w-3.5" />
                 </Button>
               </div>
@@ -162,13 +222,12 @@ export default function CotizadorDistribuidor({ catalogo = [], tasaMaxima = 0.15
 
       {/* Vista previa — el documento que ve el CLIENTE (sin costos, sin topes, sin nada interno) */}
       {vistaPrevia && (
-        <div className="fixed inset-0 z-50 bg-black/50 flex items-end sm:items-center justify-center p-0 sm:p-6" onClick={() => setVistaPrevia(false)}>
-          <Card className="w-full sm:max-w-md max-h-[90vh] overflow-y-auto rounded-t-2xl sm:rounded-2xl" onClick={(e) => e.stopPropagation()} data-testid="cotizador-preview">
+        <div className="cotizacion-capa fixed inset-0 z-50 bg-black/50 flex items-end sm:items-center justify-center p-0 sm:p-6" onClick={() => setVistaPrevia(false)}>
+          <Card className="cotizacion-hoja w-full sm:max-w-md max-h-[90vh] overflow-y-auto rounded-t-2xl sm:rounded-2xl" onClick={(e) => e.stopPropagation()} data-testid="cotizador-preview">
             <div id="cotizacion-imprimible" className="p-6 space-y-5">
               <div className="text-center space-y-1 border-b border-border pb-4">
-                {/* TODO(codex): logo real con la molécula (mismo asset del sitio) */}
-                <p className="font-heading tracking-[0.25em] text-lg">EXYGEN LABS</p>
-                <p className="text-[10px] tracking-[0.35em] text-muted-foreground">RESEARCH PEPTIDES</p>
+                {/* El logo REAL del sitio: molécula + wordmark + "RESEARCH PEPTIDES". */}
+                <BrandMark className="h-14 mx-auto" />
                 <p className="text-sm font-medium pt-2">{t('cotizador.docTitulo')}</p>
                 {nombreCliente && <p className="text-sm text-muted-foreground">{t('cotizador.docPara')} {nombreCliente}</p>}
                 <p className="text-xs text-muted-foreground">{new Date().toLocaleDateString()}</p>
@@ -196,13 +255,34 @@ export default function CotizadorDistribuidor({ catalogo = [], tasaMaxima = 0.15
                 {codigo && <> · {t('cotizador.docCodigo')} <b>{codigo}</b></>}
               </p>
             </div>
-            <div className="flex gap-2 p-4 pt-0">
-              {/* TODO(codex): compartir por WhatsApp con el texto de la cotización + enlace con ?ref=codigo */}
-              <Button className="flex-1 gap-2" data-testid="cotizador-whatsapp"><Share2 className="h-4 w-4" />{t('cotizador.compartir')}</Button>
-              {/* TODO(codex): window.print() con hoja de estilos de impresión solo para #cotizacion-imprimible */}
-              <Button variant="outline" className="flex-1 gap-2" data-testid="cotizador-imprimir"><Printer className="h-4 w-4" />{t('cotizador.imprimir')}</Button>
+            <div className="cotizacion-acciones flex gap-2 p-4 pt-0">
+              <Button className="flex-1 gap-2" onClick={compartir} data-testid="cotizador-whatsapp"><Share2 className="h-4 w-4" />{t('cotizador.compartir')}</Button>
+              <Button variant="outline" className="flex-1 gap-2" onClick={imprimir} data-testid="cotizador-imprimir"><Printer className="h-4 w-4" />{t('cotizador.imprimir')}</Button>
             </div>
           </Card>
+
+          {/* Impresión: SOLO la hoja de la cotización. Se enciende con la marca
+              que pone `imprimir()` en el body, para no pelearse con el resumen
+              imprimible de la calculadora, que está en la misma pantalla. */}
+          <style>{`
+            @media print{
+              body.imprimiendo-cotizacion *{visibility:hidden !important}
+              body.imprimiendo-cotizacion #cotizacion-imprimible,
+              body.imprimiendo-cotizacion #cotizacion-imprimible *{visibility:visible !important}
+              body.imprimiendo-cotizacion #calc-print{display:none !important}
+              body.imprimiendo-cotizacion .cotizacion-acciones{display:none !important}
+              body.imprimiendo-cotizacion .cotizacion-capa{
+                position:absolute !important;inset:auto !important;left:0;top:0;
+                display:block !important;width:100%;padding:0 !important;background:none !important}
+              body.imprimiendo-cotizacion .cotizacion-hoja{
+                width:100% !important;max-width:none !important;max-height:none !important;
+                overflow:visible !important;border:0 !important;box-shadow:none !important;
+                border-radius:0 !important;background:#fff !important}
+              body.imprimiendo-cotizacion #cotizacion-imprimible{color:#111 !important;padding:32px !important}
+              /* En tema oscuro el logo va invertido a blanco: en papel sería invisible. */
+              body.imprimiendo-cotizacion #cotizacion-imprimible img{filter:none !important}
+            }
+          `}</style>
         </div>
       )}
     </div>

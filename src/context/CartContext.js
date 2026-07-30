@@ -171,6 +171,27 @@ export const CartProvider = ({ children }) => {
   };
   const clearDistCode = () => { setDistCode(''); setDistRate(0); setCodeMin(0); };
 
+  // ENLACE CON CÓDIGO (?ref=): lo que reparte el distribuidor desde su cotizador.
+  // Sin esto el enlace sería adorno — el cliente entraría, compraría, y la venta
+  // no sería de nadie porque nunca escribió el código a mano.
+  //
+  // Se hace UNA vez por carga y sin ruido: si el código ya está puesto no se
+  // toca, y si el servidor no lo reconoce no se le grita nada al cliente (él no
+  // escribió ese código, llegó pegado en un enlace).
+  useEffect(() => {
+    const ref = new URLSearchParams(window.location.search).get('ref');
+    if (!ref || distCode) return;
+    api.get(`/discount-code/${encodeURIComponent(ref.trim().toUpperCase())}`)
+      .then((r) => {
+        setDistCode(r.data.code);
+        setDistRate(r.data.discount_rate || 0);
+        setCodeMin(Number(r.data.min_order) || 0);
+      })
+      .catch(() => {});
+    // Sólo al entrar: el código de un enlace no se vuelve a pedir en cada cambio.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   // Si el cupón exige un mínimo y el carrito no llega, NO se aplica — igual que
   // en el servidor, para que el total en pantalla sea el que se cobra.
   const codeMinMet = !codeMin || discountableSubtotal >= codeMin;

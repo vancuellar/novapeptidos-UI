@@ -632,7 +632,11 @@ const Distributor = () => {
         </TabsContent>
 
         <TabsContent value="tools" className="mt-5 space-y-8">
-          <ToolsPanel unlocked={herramientasDesbloqueadas(user, misPedidos)} orders={misPedidos} />
+          {/* `cotizador` enciende la sección "Cotizador", que sólo tiene sentido
+              aquí: es la herramienta con la que le arma un presupuesto a su
+              cliente. En Mi cuenta (clientes) no se pinta. */}
+          <ToolsPanel unlocked={herramientasDesbloqueadas(user, misPedidos)} orders={misPedidos}
+            cotizador codigo={summary?.distributor_code || user.distributor_code || ''} />
         </TabsContent>
 
         {/* Certificados: la entrada del menú está OCULTA por orden de Christián

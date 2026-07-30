@@ -7,8 +7,10 @@ import { Card } from '@/components/ui/card';
 import ReconstitutionCalculator, { mgProducts } from '@/components/ReconstitutionCalculator';
 import ProtocolTracker from '@/components/ProtocolTracker';
 import HabitsQuiz from '@/components/HabitsQuiz';
+import CotizadorDistribuidor from '@/components/CotizadorDistribuidor';
 import { toast } from 'sonner';
 import api from '@/lib/api';
+import { useDatosDelCotizador } from '@/lib/cotizador';
 import { useLanguage } from '@/context/LanguageContext';
 
 // "Mis Herramientas": la calculadora completa, el seguimiento de consumo y el
@@ -62,7 +64,30 @@ export const peptidosComprados = (orders = []) => {
   return [...seen.values()];
 };
 
-const ToolsPanel = ({ unlocked, orders = [] }) => {
+// El COTIZADOR sólo existe en el panel del DISTRIBUIDOR: es su herramienta de
+// venta, no la de un cliente. Vive en su propio componente —y no dentro de
+// ToolsPanel— para que la petición de topes, que es una ruta de distribuidor, no
+// salga JAMÁS desde la cuenta de un cliente (le contestaría 403 y ensuciaría la
+// consola de todo el mundo).
+//
+// ⛔ Aquí no hay costos: el cotizador maneja precio público, el descuento que el
+// distribuidor puede otorgar y los totales. El costo, el proveedor y el ROI son
+// del admin y de nadie más.
+const SeccionCotizador = ({ codigo }) => {
+  const { t } = useLanguage();
+  const { catalogo, tasaMaxima } = useDatosDelCotizador();
+  return (
+    <AccordionItem value="cotizador" className="border rounded-xl px-4">
+      <AccordionTrigger className="font-heading font-semibold text-base hover:no-underline" data-testid="tool-cotizador-toggle">{t('cotizador.titulo')}</AccordionTrigger>
+      <AccordionContent>
+        <p className="text-sm text-muted-foreground mb-4">{t('cotizador.subtitulo')}</p>
+        <CotizadorDistribuidor catalogo={catalogo} tasaMaxima={tasaMaxima} codigo={codigo} conEncabezado={false} />
+      </AccordionContent>
+    </AccordionItem>
+  );
+};
+
+const ToolsPanel = ({ unlocked, orders = [], cotizador = false, codigo = '' }) => {
   const { t } = useLanguage();
   const [protocols, setProtocols] = useState([]);
 
@@ -101,6 +126,7 @@ const ToolsPanel = ({ unlocked, orders = [] }) => {
   // el título a la vista, y cada una se expande cuando el cliente la abre.
   return (
     <Accordion type="multiple" className="space-y-3">
+      {cotizador && <SeccionCotizador codigo={codigo} />}
       <AccordionItem value="calc" className="border rounded-xl px-4">
         <AccordionTrigger className="font-heading font-semibold text-base hover:no-underline" data-testid="tool-calc-toggle">{t('calc.title')}</AccordionTrigger>
         <AccordionContent>
