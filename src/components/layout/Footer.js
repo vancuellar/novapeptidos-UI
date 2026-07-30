@@ -150,17 +150,12 @@ const Footer = () => {
                   </a>
                 )}
               </li>
-              {/* WhatsApp debajo del correo (Christian, 2026-07-28): se enseña el
-                  nombre de usuario, que es lo que él reparte, pero el enlace va al
-                  wa.me del número — es el que abre la conversación en cualquier
-                  teléfono, con o sin el usuario guardado. */}
-              <li>
-                <a href={WHATSAPP_URL} target="_blank" rel="noreferrer"
-                   className="flex items-center gap-2 hover:text-foreground transition-colors"
-                   data-testid="footer-whatsapp">
-                  <WhatsAppIcon className="h-4 w-4 text-[#25D366]" /> {WHATSAPP_HANDLE}
-                </a>
-              </li>
+              {/* ⛔ Aquí había un SEGUNDO enlace de WhatsApp suelto
+                  (data-testid="footer-whatsapp", Christian 2026-07-28). Al mover a
+                  Mónica Fuentes al footer (2026-07-30) quedaron dos ligas pegadas
+                  con el mismo @exygenlabs y el mismo wa.me. Se quitó el suelto y se
+                  conservó el de Mónica, que trae nombre y rol de la representante.
+                  NO volver a agregar un WhatsApp aparte en este bloque. */}
             </ul>
             {/* ⛔ Aquí estaban repetidos los cuatro métodos de pago (Christian,
                 2026-07-28): la portada ya los enseña justo arriba, en "Pagos
