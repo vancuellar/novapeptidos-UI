@@ -236,6 +236,74 @@ export const CartProvider = ({ children }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  // COTIZACIÓN → CARRITO (?pedido=): el enlace que arma el cotizador del
+  // distribuidor (y el correo del servidor) trae los renglones como
+  // `id:cantidad,id:cantidad`. Al abrirlo, el carrito se llena SOLO y el cliente
+  // aterriza a un paso de pagar, en vez de en el catálogo pelón.
+  //
+  // ⛔ Del enlace sólo se toman QUÉ producto y CUÁNTOS. Nombre, precio e imagen
+  // salen del catálogo real (el del servidor; el empacado si el servidor no
+  // contesta) — y al cobrar, el precio lo vuelve a poner el servidor de todos
+  // modos. Un enlace manipulado no puede ni inventar productos ni cambiar un peso.
+  //
+  // El carrito se REEMPLAZA, no se suma: el enlace es la cotización que el
+  // cliente ya leyó, y su carrito debe decir exactamente lo mismo que la hoja.
+  const [hidratando, setHidratando] = useState(
+    () => new URLSearchParams(window.location.search).has('pedido'),
+  );
+  useEffect(() => {
+    const crudo = new URLSearchParams(window.location.search).get('pedido');
+    if (!crudo) return;
+    // `id:qty` por renglón; cantidades 1–999 y máximo 40 renglones, como el cotizador.
+    const pedidos = [];
+    for (const parte of crudo.split(',').slice(0, 40)) {
+      const [id, q] = parte.split(':');
+      const qty = Math.min(999, Math.max(1, Math.round(Number(q)) || 1));
+      if (!id) continue;
+      const ya = pedidos.find((p) => p.id === id);
+      if (ya) ya.qty = Math.min(999, ya.qty + qty); else pedidos.push({ id, qty });
+    }
+    if (!pedidos.length) { setHidratando(false); return; }
+    (async () => {
+      let productos;
+      try {
+        const r = await api.get('/products');
+        productos = Array.isArray(r.data) && r.data.length ? r.data : fallbackProducts;
+      } catch { productos = fallbackProducts; }
+      // Una entrada por PRESENTACIÓN (que es lo que se vende), buscable por id y por SKU.
+      const porLlave = {};
+      for (const p of productos) {
+        const variantes = p.variants?.length ? p.variants
+          : [{ id: p.id, sku: p.sku, presentation: p.presentation, price: p.price, stock: p.stock }];
+        for (const v of variantes) {
+          const item = {
+            product_id: v.id || v.sku || p.id,
+            sku: v.sku || p.sku || '',
+            name: p.variants?.length && v.presentation ? `${p.name} ${v.presentation}` : p.name,
+            price: Number(v.price) || Number(p.price) || 0,
+            presentation: v.presentation || p.presentation,
+            slug: p.slug,
+            image_url: productImage(p) || p.image_url,
+            stock: v.stock ?? p.stock,
+          };
+          if (v.id) porLlave[v.id] = item;
+          if (v.sku) porLlave[v.sku] = item;
+        }
+      }
+      const renglones = pedidos
+        .map(({ id, qty }) => (porLlave[id] && porLlave[id].price > 0
+          ? { ...porLlave[id], quantity: qty } : null))
+        .filter(Boolean);
+      if (renglones.length) {
+        setItems(renglones);
+        toast.success(t('cart.cotizacionCargada'));
+      }
+      setHidratando(false);
+    })();
+    // Una vez por carga, igual que el ?ref= de arriba.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   // Si el cupón exige un mínimo y el carrito no llega, NO se aplica — igual que
   // en el servidor, para que el total en pantalla sea el que se cobra.
   const codeMinMet = !codeMin || discountableSubtotal >= codeMin;
@@ -302,7 +370,7 @@ export const CartProvider = ({ children }) => {
   const faltaParaEnvioGratis = cobraEnvio && shipping > 0 ? envio.free_shipping_from - pagaMercancia : 0;
 
   return (
-    <CartContext.Provider value={{ items, addItem, updateQty, removeItem, clearCart, subtotal, count, discount, discountRate, discountSource, cappedItems, lineDiscounts, regla5Items, compraPropia, baseRate, nextTier, shipping, faltaParaEnvioGratis, envioGratisDesde: envio.free_shipping_from, distCode, distRate, codeMin, codeMinMet, applyDistCode, clearDistCode }}>
+    <CartContext.Provider value={{ items, hidratando, addItem, updateQty, removeItem, clearCart, subtotal, count, discount, discountRate, discountSource, cappedItems, lineDiscounts, regla5Items, compraPropia, baseRate, nextTier, shipping, faltaParaEnvioGratis, envioGratisDesde: envio.free_shipping_from, distCode, distRate, codeMin, codeMinMet, applyDistCode, clearDistCode }}>
       {children}
     </CartContext.Provider>
   );

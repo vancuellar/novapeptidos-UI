@@ -57,9 +57,12 @@ export const fechaLarga = (fecha, idioma = 'es') => {
 };
 
 /* El CUERPO de la hoja. `datos`:
-     folio, fecha (Date), cliente, codigo, enlace, idioma,
+     folio, fecha (Date), cliente, clienteCorreo, clienteTel, clienteDir,
+     codigo, enlace, idioma,
      filas: [{nombre, qty, unit, importe, precio, pct}]
      subtotalLista, ahorro, total
+   Los datos del cliente son TODOS opcionales: los que existan se pintan bajo
+   "Para", los que no, simplemente no aparecen.
    `textos` son las cadenas ya traducidas (la hoja no sabe de i18n).           */
 export function hojaCotizacionHTML(datos, { tema = 'claro', origen = '' } = {}) {
   const c = tema === 'oscuro' ? OSCURO : CLARO;
@@ -164,7 +167,11 @@ export function hojaCotizacionHTML(datos, { tema = 'claro', origen = '' } = {}) 
   <table class="cot-partes"><tr>
     <td>
       <div class="cot-etiqueta">${esc(t.docPara || 'Para')}</div>
-      <div class="cot-valor">${esc(datos.cliente || t.docSinNombre || '—')}</div>
+      <div class="cot-valor">${esc(datos.cliente || t.docSinNombre || '—')}
+        ${[datos.clienteCorreo, datos.clienteTel, datos.clienteDir]
+    .filter((d) => (d || '').trim())
+    .map((d) => `<small>${esc(d.trim())}</small>`).join('')}
+      </div>
     </td>
     <td>
       <div class="cot-etiqueta">${esc(t.docDe || 'De')}</div>
@@ -195,7 +202,7 @@ export function hojaCotizacionHTML(datos, { tema = 'claro', origen = '' } = {}) 
 
   <div class="cot-pie">
     ${esc(t.docLeyenda || '')}<br>
-    ${datos.enlace ? `<b>${esc(t.docCatalogo || '')}</b> <a href="${esc(datos.enlace)}">${esc(datos.enlace)}</a>` : ''}
+    ${datos.enlace ? `<b>${esc(t.docPagar || t.docCatalogo || '')}</b> <a href="${esc(datos.enlace)}">${esc(datos.enlaceTexto || datos.enlace)}</a>` : ''}
   </div>
 </div>`;
 }

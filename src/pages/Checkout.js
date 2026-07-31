@@ -27,7 +27,7 @@ const ICONS = { CreditCard, Landmark, Bitcoin, Store };
 // Pago, no aqui. Se borraron con el formulario (Christian, 2026-07-26).
 
 const Checkout = () => {
-  const { items, subtotal, discount, discountRate, discountSource, cappedItems, regla5Items, shipping, faltaParaEnvioGratis, envioGratisDesde, distCode, clearCart } = useCart();
+  const { items, hidratando, subtotal, discount, discountRate, discountSource, cappedItems, regla5Items, shipping, faltaParaEnvioGratis, envioGratisDesde, distCode, clearCart } = useCart();
   const { user } = useAuth();
   const { t } = useLanguage();
   // El inventario REAL. El aviso de envío partido tiene que estar EN LA PANTALLA DE
@@ -219,6 +219,12 @@ const Checkout = () => {
   const diasTexto = (d) => (Number(d) === 1 ? t('checkout.shipping.dayOne') : t('checkout.shipping.days', { days: d }));
   const set = (k, v) => setForm((f) => ({ ...f, [k]: v }));
 
+  // Quien llega del enlace de una cotización (?pedido=) entra con el carrito
+  // vacío por un instante, mientras se hidrata contra el catálogo real. Ahí no se
+  // le puede decir "tu carrito está vacío": se le enseña que se está armando.
+  if (items.length === 0 && hidratando) {
+    return <div className="max-w-2xl mx-auto px-4 py-20 text-center"><p className="text-muted-foreground">{t('checkout.armandoCarrito')}</p></div>;
+  }
   if (items.length === 0) {
     return <div className="max-w-2xl mx-auto px-4 py-20 text-center"><p className="text-muted-foreground">{t('checkout.empty')}</p><Button className="mt-4" onClick={() => navigate('/catalogo')}>{t('home.viewCatalog')}</Button></div>;
   }

@@ -26,10 +26,14 @@ import {
    en papel. El correo lo arma el SERVIDOR con sus propios precios — ver
    `/distributor/quote/email`: si esta pantalla mintiera, el correo no la sigue. */
 
-// A dónde manda el enlace de la cotización: el catálogo, con el código del
-// distribuidor pegado. El sitio lo aplica solo al abrirlo (ver CartContext), así
-// que la venta se le atribuye aunque el cliente no escriba nada.
-const CATALOGO_URL = 'https://exygenlabs.com/catalogo';
+// A dónde manda el enlace de la cotización (Christián, 2026-07-30): al CHECKOUT,
+// con el carrito YA ARMADO — `?pedido=id:cantidad,...` — y el código del
+// distribuidor pegado. El sitio hidrata el carrito contra el catálogo real y
+// aplica el código solo (ver CartContext): el cliente aterriza a un paso de
+// pagar y la venta se le atribuye aunque no escriba nada. Sin renglones (no
+// debería pasar: la hoja se genera con productos) el enlace cae al catálogo.
+const SITIO_URL = 'https://exygenlabs.com';
+const CATALOGO_URL = `${SITIO_URL}/catalogo`;
 
 const CORREO_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 
@@ -45,7 +49,12 @@ export default function CotizadorDistribuidor({
   const [renglones, setRenglones] = useState([]); // {id, nombre, presentacion, precio, topePct, qty}
   const [descuento, setDescuento] = useState(Math.min(0.10, tasaMaxima));
   const [vistaPrevia, setVistaPrevia] = useState(false);
+  // Los datos del cliente: TODOS opcionales (Christián, 2026-07-30). Los que se
+  // tengan se pintan en la hoja y viajan al correo; los que no, no estorban.
   const [nombreCliente, setNombreCliente] = useState('');
+  const [correoCliente, setCorreoCliente] = useState('');
+  const [telCliente, setTelCliente] = useState('');
+  const [dirCliente, setDirCliente] = useState('');
   const [folio, setFolio] = useState(nuevoFolio);
   const [correoAbierto, setCorreoAbierto] = useState(false);
   const [correo, setCorreo] = useState('');
@@ -89,11 +98,16 @@ export default function CotizadorDistribuidor({
   const total = filas.reduce((s, f) => s + f.importe, 0);
   const ahorro = subtotalLista - total;
 
-  // El enlace del catálogo con SU código: es lo que convierte una cotización en
-  // una venta atribuida. Sin él, el cliente compra y la comisión no es de nadie.
-  const enlace = codigo
-    ? `${CATALOGO_URL}?ref=${encodeURIComponent(codigo)}`
-    : CATALOGO_URL;
+  // El enlace de la cotización: el checkout con estos MISMOS renglones y SU
+  // código. Es lo que convierte una cotización en una venta atribuida — sin el
+  // ?ref=, el cliente compra y la comisión no es de nadie.
+  const pedidoPayload = filas.map((f) => `${f.id}:${f.qty}`).join(',');
+  const enlace = filas.length
+    ? `${SITIO_URL}/checkout?pedido=${encodeURIComponent(pedidoPayload)}${codigo ? `&ref=${encodeURIComponent(codigo)}` : ''}`
+    : (codigo ? `${CATALOGO_URL}?ref=${encodeURIComponent(codigo)}` : CATALOGO_URL);
+  // En la hoja impresa la URL cruda (con sus ids) sería un ciempiés ilegible: se
+  // pinta un texto corto y el enlace vivo queda en el href.
+  const enlaceTexto = filas.length ? `${SITIO_URL.replace('https://', '')}/checkout` : enlace;
 
   // Las cadenas que necesita la hoja, ya traducidas. La hoja no sabe de i18n a
   // propósito: es un documento, no una pantalla.
@@ -117,10 +131,13 @@ export default function CotizadorDistribuidor({
     total: t('cotizador.total'),
     docLeyenda: t('cotizador.docLeyenda'),
     docCatalogo: t('cotizador.docCatalogo'),
+    docPagar: t('cotizador.docPagar'),
   }), [t]);
 
   const datosHoja = {
-    folio, fecha: new Date(), cliente: nombreCliente, codigo, enlace,
+    folio, fecha: new Date(), cliente: nombreCliente,
+    clienteCorreo: correoCliente, clienteTel: telCliente, clienteDir: dirCliente,
+    codigo, enlace, enlaceTexto,
     idioma: language, filas, subtotalLista, ahorro, total,
   };
 
@@ -135,12 +152,15 @@ export default function CotizadorDistribuidor({
       origen: process.env.PUBLIC_URL || '',
     }),
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [folio, nombreCliente, codigo, enlace, language, JSON.stringify(filas), total, esOscuro, textos],
+    [folio, nombreCliente, correoCliente, telCliente, dirCliente, codigo, enlace, language, JSON.stringify(filas), total, esOscuro, textos],
   );
 
   const abrirVistaPrevia = () => {
     setFolio(nuevoFolio());   // cada cotización que se genera es un documento nuevo
     setCorreoAbierto(false);
+    // Si ya se capturó el correo del cliente, el campo de "Enviar Por Correo"
+    // llega lleno — se puede corregir, pero no hay que teclearlo dos veces.
+    setCorreo((c) => c || correoCliente.trim());
     setVistaPrevia(true);
   };
 
@@ -157,7 +177,7 @@ export default function CotizadorDistribuidor({
       ahorro > 0 ? `${t('cotizador.docAhorro')} −${money(ahorro)}` : '',
       `*${t('cotizador.total')}: ${money(total)}*`,
       '',
-      `${t('cotizador.waEnlace')} ${enlace}`,
+      `${t('cotizador.waPagar')} ${enlace}`,
       codigo ? `${t('cotizador.docCodigo')} ${codigo}` : '',
       '',
       t('cotizador.docLeyenda'),
@@ -178,6 +198,9 @@ export default function CotizadorDistribuidor({
       await api.post('/distributor/quote/email', {
         email: destino,
         client_name: nombreCliente.trim(),
+        client_email: correoCliente.trim(),
+        client_phone: telCliente.trim(),
+        client_address: dirCliente.trim(),
         discount: descuento,
         language,
         folio,
@@ -291,13 +314,23 @@ export default function CotizadorDistribuidor({
               <span>{t('cotizador.total')}</span><span className="tabular-nums">{money(total)}</span>
             </div>
           </div>
-          <div className="flex flex-col sm:flex-row gap-2 pt-1">
+          {/* Datos del cliente: NINGUNO obligatorio. Los que existan se pintan
+              en la hoja y viajan en el correo; los vacíos no dejan hueco. */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 pt-1">
             <Input value={nombreCliente} onChange={(e) => setNombreCliente(e.target.value)}
-              placeholder={t('cotizador.nombreCliente')} className="sm:flex-1" />
-            <Button onClick={abrirVistaPrevia} className="gap-2" data-testid="cotizador-generar">
-              <FileText className="h-4 w-4" />{t('cotizador.generar')}
-            </Button>
+              placeholder={t('cotizador.nombreCliente')} data-testid="cotizador-cliente-nombre" />
+            <Input type="email" inputMode="email" value={correoCliente}
+              onChange={(e) => setCorreoCliente(e.target.value)}
+              placeholder={t('cotizador.correoCliente')} data-testid="cotizador-cliente-correo" />
+            <Input type="tel" inputMode="tel" value={telCliente}
+              onChange={(e) => setTelCliente(e.target.value)}
+              placeholder={t('cotizador.telCliente')} data-testid="cotizador-cliente-tel" />
+            <Input value={dirCliente} onChange={(e) => setDirCliente(e.target.value)}
+              placeholder={t('cotizador.dirCliente')} data-testid="cotizador-cliente-dir" />
           </div>
+          <Button onClick={abrirVistaPrevia} className="w-full gap-2" data-testid="cotizador-generar">
+            <FileText className="h-4 w-4" />{t('cotizador.generar')}
+          </Button>
         </Card>
       )}
 
