@@ -9,6 +9,34 @@ que lo dispara solo; si esa sesión ya murió, LA SESIÓN DE GUARDIA LO HACE A L
 4 PM. En cristiano — es para Christián. (Dato cultural: se despide con
 "Buenooooo", como los yucatecos al teléfono.)
 
+# 🤝 HANDOFF — 2026-07-31 (noche) — LA CARRERA DEL CUPÓN, Y 21 PRUEBAS ESCONDIDAS
+
+**Compuertas: backend 841/841 ✅ · motor 344/344 ✅ · auditoría 85/0 ✅.** Desplegado `e9773b7`.
+
+1. **El cupón de un solo uso se podía usar DOS veces.** El auditor de Codex lo reportó y
+   **era real** — reproducido antes de arreglar: con el código viejo dos canjes en
+   paralelo devolvían `[True, True]`. Se miraba el cupón al principio del checkout y se
+   marcaba usado al final; entre las dos líneas hay una docena de `await`.
+   ⚠️ **El auditor se quedó CORTO**: puso la pérdida en $2,303.70, pero el tope real es el
+   40% de lo que valga el segundo pedido, y aquí hay tickets de $177,650.
+   Es la **tercera vez** que aparece esta misma carrera (inventario → puntos → cupón).
+   Tapado con el mismo candado de siempre: la condición viaja DENTRO del update, se quema
+   ANTES de grabar el pedido, y si el insert truena el cupón revive.
+
+2. **`test_meta_capi.py` llevaba tiempo fuera de la suite** escondiendo una prueba en
+   rojo: la que garantiza que los pedidos de prueba (@example.com de la auditoría y los
+   E2E) **nunca lleguen a Meta**. De Meta no se pueden borrar e inflan el ROAS. Fallaba
+   porque el descarte del pedido de prueba iba DESPUÉS del «¿hay token?» — o sea que se
+   frenaba por casualidad, no por la regla. Ahora va primero. **21 pruebas que nadie
+   corría, ya en verde.**
+
+3. **La compuerta ahora se vigila a sí misma.** `pytest.ini` lista los archivos a mano
+   (tiene que hacerlo) y se quedó atrás DOS veces el mismo día. La prueba nueva
+   `test_todas_las_pruebas_del_repo_estan_en_pytest_ini` truena si agregas un `test_*.py`
+   y no lo registras. **Si creas pruebas nuevas, regístralas ahí.**
+
+---
+
 # 🤝 HANDOFF — 2026-07-31 (tarde) — PRIVACIDAD POR INTERRUPTOR + AUTOLLENADO
 
 ## ⛔ LO ÚNICO PENDIENTE: LA GUÍA DE BRENDA NO SE COMPRÓ
