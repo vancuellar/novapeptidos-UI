@@ -3831,7 +3831,7 @@ export const fallbackProducts = [
       },
       {
         "presentation": "30 mg",
-        "price": 4189,
+        "price": 4299,
         "stock": 40,
         "batch_number": "NP-RETA30-2601",
         "id": "bd812705-201e-4aef-ade6-af23d6116b36",
@@ -3996,7 +3996,7 @@ export const fallbackProducts = [
       },
       {
         "presentation": "10 mg",
-        "price": 1799,
+        "price": 1849,
         "stock": 40,
         "batch_number": "NP-SEMA10-2601",
         "id": "fa9def3b-7709-4b56-98f4-ffe83b0a58a9",

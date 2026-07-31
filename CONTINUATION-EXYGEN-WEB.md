@@ -9,6 +9,92 @@ que lo dispara solo; si esa sesión ya murió, LA SESIÓN DE GUARDIA LO HACE A L
 4 PM. En cristiano — es para Christián. (Dato cultural: se despide con
 "Buenooooo", como los yucatecos al teléfono.)
 
+# 🔒 2026-07-31 — EL CLIENTE YA NO SE ENTERA DE QUIÉN ES EL CÓDIGO
+
+Orden de Christián: **«los clientes no pueden ver que el código de descuento es de
+María»**. Ni su nombre, ni su correo, ni su id. Quien atiende al cliente es la
+atención de la casa: **Mónica Flores** (`emails.ATENCION_NOMBRE`).
+
+El rastro se asomaba en **cuatro** lugares, y tres de ellos eran datos que el
+servidor MANDABA sin que ninguna pantalla los pintara — invisibles salvo abriendo
+la consola del navegador:
+
+| Dónde | Qué se veía | Cómo quedó |
+|---|---|---|
+| Correo de cotización | «María preparó esta cotización para ti» y el `reply_to` al **correo personal** de la distribuidora | Lo firma Mónica Flores; la respuesta cae en `hola@exygenlabs.com`; a la distribuidora se le avisa por la campanita |
+| Respuesta del checkout (`POST /orders`) | `referred_by`, `commission` y el reparto completo de comisiones | Se filtran en el servidor (`pedido_para_el_cliente`) |
+| `GET /orders/me` | lo mismo | Igual |
+| `GET /orders/{numero}` — **sin sesión** | lo mismo, y ésta la abre cualquiera con el número | Igual |
+
+- El candado va en el **servidor**: lo que no viaja no se puede leer. Nada de CSS.
+- El validador público `/discount-code/{codigo}` **ya estaba limpio** (sólo el % y
+  el monto mínimo); ahora hay prueba que truena si alguien lo reexpone.
+- **El admin y la propia distribuidora siguen viendo TODO lo suyo**: sus rutas
+  (`/admin/...`, `/distributor/...`) no pasan por el filtro.
+- Pruebas nuevas: `test_privacidad_distribuidor.py` (19). Leen el sobre completo
+  —el JSON o el HTML como texto— y truenan si aparece el nombre, el correo o el id.
+- La auditoría en vivo (`npm run auditoria`) ahora saca los **códigos de verdad**
+  con la llave del admin y los consulta **sin sesión**, como los ve internet.
+
+## ⚠️ Dos cosas que decide Christián
+
+1. **El texto del código lo delata solito.** Los 10 códigos vivos llevan el nombre
+   pegado (`MARIAN-15-R4YV`, `ALANIS-20-FRUK`, `JAVIER-25-RHV4`), más 3 códigos
+   únicos viejos (`MARI-3537`, `ALAN-2292`, `JAVI-7116`). **No se tocaron**: el
+   cliente ya los tiene. Formato neutro propuesto para los NUEVOS: `EXY-15-R4YV`.
+   ¿Se rotan los vivos (se mueren los que andan sueltos) o se dejan morir solos a
+   los 90 días?
+2. **Había dos Mónicas.** La portada y el pie decían «Mónica **Fuentes**» (puesto
+   el 30-jul); la orden del 31-jul dice «Mónica **Flores**». Se unificó todo a
+   **Flores**. Si la buena era Fuentes, son 3 renglones de i18n para devolverlo.
+
+# 🆕 2026-07-31 — TRES PROVEEDORES NUEVOS DEL WHATSAPP (P40, P41, P42)
+
+Barrido completo de los chats de WhatsApp (24 activos + 18 archivados) contra los 39
+proveedores ya registrados. **Tres números nuevos mandaron lista**; el resto de los chats
+nuevos son saludos automáticos sin precios, o gente ya registrada con otro nombre
+(«Certiva Peptide RT40 - $179» es el **mismo** +852 9247 1518 = P10; la «Mia» archivada es
+el **mismo** +1 505 518 0805 = P18).
+
+| ID | Quién | Renglones | Moneda |
+|---|---|---:|---|
+| **P41** | **Chuangyan Biotech** (+852 9056 5942, Hong Kong / Guangzhou) | **233 de 237 (98%)** | USD, dicho por él: «US dollars per box» |
+| P40 | sin nombre (+44 7576 123262, Reino Unido) | 199 de 199 (100%) | ⚠️ **no la declaró**, se dedujo USD |
+| P42 | sin nombre (+44 7355 266554, Reino Unido) | 96 transcritos, **0 importados** | ⚠️ **no la declaró** |
+
+**P41 Chuangyan es el hallazgo.** Es el más barato del catálogo en **57 tamaños** (46 de
+ellos productos que vendemos hoy), quitando a Lucy que está vetada. Ejemplos por vial:
+Retatrutida 40 mg $14.90 (hoy el mejor no vetado es $16.00), Tirzepatida 10 mg $3.20
+(antes $4.00), BPC-157 2 mg $1.40 (antes $2.00), GHK-Cu 50 mg $1.50 (antes $2.30).
+
+**P40 no le gana a nadie** en ningún tamaño. **P42 no se importó a propósito**: su tabla no
+trae presentación (el tamaño sólo va en la clave) ni dice si el precio es por vial o por
+caja. Media lista guardada es peor que ninguna.
+
+⛔ **NO SE MOVIÓ NINGÚN PRECIO NUESTRO.** Por eso `test_precios.py::test_el_costo_de_la_maestra_es_el_del_proveedor_mas_barato`
+**está en rojo a propósito**: avisa que 46 costos de la MAESTRA ya no son los del proveedor
+más barato. Cerrarlo pide `refrescar_costos.py` + `reprecio.py`, que **mueve precios** —
+decisión de Christián. Además el 31-jul otra sesión estaba escribiendo `MAESTRA.xlsx` en ese
+mismo momento; tocarla habría pisado su trabajo.
+
+⚠️ Todo lo que prometen (fábrica más grande de Guangzhou, pureza 99.99%, COA por lote,
+mínimos flexibles) está **SIN COMPROBAR**. Ninguno declaró envío: se les puso el estimado
+de la casa ($60) con la bandera `envio_estimado`, y **un flete estimado no sustenta un
+cambio de precio**.
+
+**Falta que Christián mande 4 preguntas** (borradores en el reporte de la sesión): moneda de
+P40 y P42, por-vial-o-por-caja de P42, y los precios que cada uno se contradice a sí mismo.
+
+Fichas: `pricing-system.nosync/proveedores/md/P40-…`, `P41-chuangyan.md`, `P42-…`.
+Archivos originales: `proveedores/whatsapp/extraidos/{chuangyan-+85290565942, +447576123262, +447355266554}/`.
+
+**El lector tenía 3 huecos y ya están tapados** (`importar_proveedor.py`): no abría `.xls`
+de verdad (moría antes de leer los demás archivos), no reconocía el encabezado «US dollars
+per box» (237 precios perfectos = «no encontré una tabla»), y —el peor— **al reescribir
+`proveedores.csv` borraba en silencio las columnas que otro script había agregado**
+(`envio_estimado`, `vetado`, `motivo_veto`): se llevó el veto de Lucy y las 16 banderas de
+envío estimado. Restaurado y con candado.
+
 # 🤝 HANDOFF — 2026-07-31 — EL REGALO TOPADO EN 40%, Y DOS FALLAS DE CODEX QUE ERAN RUIDO
 
 **Compuertas: backend 848/848 ✅ · auditoría 85/0 ✅.** Desplegado `0869ad3` (azul/verde).
@@ -5697,3 +5783,43 @@ Para llegar de verdad a Certified habría que subir la escalera completa de cada
 (está retirada por seguridad desde el 23-jul). DT y otros la surten. Decisión de Christián.
 
 **Compuertas:** motor **348/348** ✅.
+
+---
+
+## 💵 DOS SUBIDAS MÁS, EN VIVO — 2026-07-31
+
+- **Retatrutida 30 mg: $4,189 → $4,299**
+- **Semaglutida 10 mg: $1,799 → $1,849**
+
+Verificado en el backend: los dos ya cobran el nuevo. No llegan al precio de Certified
+($4,800 y $2,300) porque **la escalera lo topa** — el vial grande no puede costar menos que
+el chico. Tirzepatida 60 mg quedó fuera: ya está en su tope.
+
+**Otras 5 se podrían acercar** (se proponen, no se aplicaron): Glutatión 1500 mg $1,499 →
+$1,519 · LL-37 5 mg $1,629 → $1,639 · Retatrutida 10 mg $2,479 → $2,489 · Tirzepatida
+10 mg $2,119 → $2,129 · Tirzepatida 30 mg $3,069 → $3,089. Entre $10 y $30 cada una.
+
+### ⚠️ Adipotida: el precio ya está, el alta NO
+
+Christián ordenó regresarla. El motor le puso **$3,089 el de 10 mg (ROI 22.9×)** y salió de
+la lista de no-vender, con la reversión declarada. **Pero sigue sin publicarse**, y no por
+descuido: no tiene SKU, ni arte de vial, ni ficha técnica — y su identidad química no está
+investigada, así que la ficha no se puede generar sin inventarla.
+
+⚠️ Y de paso apareció algo que sí era peligroso: su renglón se llama «Adipotide / FTTP» y el
+alias de Certified apuntaba sólo a «Adipotide», así que **su precio de $3,100 era invisible**.
+Publicarla sin verlo habría puesto $3,679 — $579 arriba de Certified. Ya corregido.
+
+### ⛔ `gen_catalog.py` está RETIRADO
+
+Al usarlo para dar de alta la Adipotida **regeneró `fallbackCatalog.js` desde cero y borró
+1,899 líneas**: SKUs, ids del backend, lotes, stock y todo el contenido curado. Se revirtió
+con git. Ahora truena al arrancar. **Nadie lo vuelve a correr.**
+
+### 🔒 Exoma: sólo por la puerta de enfrente
+
+Christián acepta la recomendación: **la anon key de Supabase de Exoma no se usa, nunca.**
+El camino oficial es `leer_exoma_publico.js`, que lee su catálogo público como cualquier
+cliente (108/108). Anotado en FUENTE-DE-VERDAD y en los tres prompts de Codex.
+
+**Compuertas:** motor **348/348** ✅, dos corridas en seco en cero.
