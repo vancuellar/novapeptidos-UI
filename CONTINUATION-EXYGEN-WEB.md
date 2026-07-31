@@ -476,6 +476,41 @@ Debe apuntar a `https://exygenlabs.com/pedido/{numero}`, que es nuestra página
 con el rastreo dentro. **No se tocó a propósito**: otro agente tenía `emails.py`
 en la mano ese mismo día (consolidación de correos + compra automática de guía).
 Es un cambio de una línea; hay que pasárselo a quien tenga ese archivo.
+---
+
+# 🔒 2026-07-31 — CANDADO CONTRA EL COMMIT A MEDIAS
+
+**El accidente.** Con varias sesiones de Claude sobre el mismo árbol, una hizo
+`git add -A` / `git commit -a` y se llevó las ediciones en curso de otra: mis
+cambios a `src/pages/OrderConfirmation.js` y a los tres `src/i18n/*.js` acabaron
+dentro del commit c691ae3 («El cliente elige cómo mandarle su pedido…»), pero el
+archivo NUEVO que esas ediciones importaban —`src/components/RastreoEnvio.js`—
+se quedó **sin versionar**. Durante varios minutos `main` tuvo
+`import RastreoEnvio from '@/components/RastreoEnvio'` apuntando a la nada:
+cualquier `npm run build` o despliegue en esa ventana habría tronado.
+
+**Lo que se puso.**
+
+1. `scripts/verificar-imports.js` — lee los `.js/.jsx` que van en el commit (la
+   versión del **índice**, no la del disco), les saca los imports internos
+   (`@/…`, `./…`, `../…`) y comprueba que el destino esté en el índice de git.
+   Existir en el disco no basta: eso es justo lo que falló. Ignora imports
+   comentados. Tarda ~0.3 s sobre el repo entero.
+2. `.githooks/pre-commit` — lo corre antes de cada commit. Activado con
+   `git config core.hooksPath .githooks` (config local, **hay que repetirlo tras
+   un clon nuevo**; los worktrees ya lo heredan). Se salta con `--no-verify`.
+   Si no hay `node`, el hook se hace a un lado en vez de bloquear.
+3. `CLAUDE.md` en la raíz — la regla que se lee sola en cada sesión: **nunca
+   `git add -A`, `git add .`, `git commit -a` ni `git stash` sin ruta**; siempre
+   pathspecs explícitos, porque el índice es compartido.
+4. `npm run verificar:imports` — la misma revisión a mano, sobre todo el repo.
+
+**Probado:** aborta el caso real (destino en disco pero sin versionar), aborta el
+destino inexistente, funciona desde subcarpeta, pasa con `--no-verify`, y el repo
+entero sale limpio hoy (cero falsos positivos en ~400 archivos).
+
+**Lo que este candado NO cubre:** que un commit se lleve ediciones ajenas sin
+romper ningún import. Contra eso sólo sirve la regla 3 — pathspecs explícitos.
 
 ---
 
