@@ -1,3 +1,82 @@
+# 🛡️ 2026-07-31 — EL BOTÓN NO ESTABA ROTO: LA PUERTA NO CABÍA EN EL TELÉFONO
+
+Christián reportó *"el botón de 'Empieza aquí' en el hero está roto"*. El botón
+estaba perfecto. Lo que estaba roto era lo que había **encima** de él.
+
+## Qué pasaba
+
+El aviso RUO del primer ingreso (`src/components/RuoGate.js`) mide unos **900 px
+de alto**. La capa que lo sostiene estaba `items-center` y **sin scroll propio**, y
+mientras está abierta bloquea el scroll del fondo. En una pantalla de 667 px o menos
+el recuadro se recortaba arriba **y** abajo: la casilla y el botón "Entiendo y
+acepto" quedaban **fuera de la pantalla**, sin forma de alcanzarlos.
+
+Medido con navegador de verdad, botón "Entiendo y acepto" contra el alto de pantalla:
+
+| Pantalla | Alto | Fondo del botón | ¿Se alcanzaba? |
+|---|---|---|---|
+| iPhone 5/SE1 | 568 px | 694 px | ❌ ni la casilla |
+| iPhone SE/8 | 667 px | 677 px | ❌ cortado |
+| iPhone 14 con barra | 750 px | 707 px | ⚠️ al filo |
+| iPhone 14 sin barra | 844 px | 754 px | ✅ |
+
+O sea: en esos teléfonos **el sitio entero estaba muerto** — ni catálogo, ni
+"Empieza aquí", ni comprar. Y como la puerta sólo sale la primera vez, quien ya la
+había aceptado en su computadora no lo veía nunca. Por eso nadie se enteró.
+
+**El arreglo:** la capa scrollea (`overflow-y-auto`), se alinea arriba
+(`items-start`) y el recuadro se centra sólo cuando sobra alto (`my-auto`). Tres
+clases. Ya está en vivo y verificado en 375×600.
+
+## Lo que no se puede volver a repetir: publicar a ciegas
+
+Ese mismo día el sitio se cayó varias veces **por nuestros propios despliegues**
+(diez en tres horas, desde varias sesiones a la vez). Nunca fue el servidor: fue
+publicar builds rotos. Un `git commit -a` de una sesión se llevó las ediciones de
+otra y dejó `main` con un import a un archivo sin subir.
+
+Defensas puestas hoy:
+
+1. **`scripts/verificar-en-vivo.js`** — abre la portada, el catálogo y una ficha en
+   Chromium y comprueba que **pintan** y que sus botones **se pueden picar**, en
+   escritorio y en teléfono chico. Un 200 no prueba nada: Cloudflare devuelve el
+   mismo `index.html` de 7 KB aunque el bundle truene.
+2. **`desplegar.sh` construye desde una copia limpia de git**, no desde tu
+   directorio: lo que otra sesión dejó a medias ya no puede salir a producción.
+3. **Marcha atrás automática.** Antes de publicar apunta el despliegue vivo; si la
+   verificación dice que quedó roto, vuelve solo a ese despliegue de Cloudflare
+   Pages y lo revalida. A mano: `./desplegar.sh --lista` y `--marcha-atras <id>`.
+4. **Vigilante** (`vigilante.py`, repo del backend, ya corriendo en el EC2 por cron
+   cada 3 minutos): revisa API, catálogo y portada, apunta todo en una bitácora y le
+   manda correo a Christián cuando algo se cae **y** cuando vuelve. Probado: detecta,
+   avisa y el correo llega.
+
+   ```bash
+   sudo python3 /opt/exygen/vigilante/vigilante.py --resumen 7
+   ```
+
+   Desde hoy el 99.99 % se puede **medir**; antes era una opinión.
+
+5. **⛔ REGLA: no se despliega sin avisarle a Christián.** Los cambios se acumulan y
+   salen juntos, uno a la vez, verificado antes y después. 99.99 % son 4 min 30 s de
+   caída AL MES: un despliegue de más se come el mes.
+
+## Lo que TODAVÍA no está cubierto (dicho sin adornos)
+
+El vigilante corre **dentro** del mismo EC2 que vigila. Si el EC2 entero se apaga,
+él se apaga también, y en la bitácora eso sale como un **hueco**, no como una caída
+(el resumen los cuenta aparte, como "sin dato", y nunca los da por buenos). Para
+vigilar la muerte del servidor hace falta un segundo ojo **fuera de AWS**.
+
+Y sobre el backend: el azul/verde está verificado en pie (`api-azul` sano, la puerta
+apuntándole, `api-verde` apagado con su imagen anterior y `.despliegue-anterior`
+apuntando al commit bueno). La marcha atrás está **lista para dispararse en
+segundos**, pero **no se probó a fuego esta noche**: hacerlo devuelve producción al
+commit anterior y obliga a un segundo despliegue del backend el mismo día en que el
+sitio no paró de caerse. Hay que probarla en una ventana tranquila.
+
+---
+
 # 🔜 PRÓXIMA TAREA #1 — ADELGAZAR EL HOME, SOBRE TODO EN MÓVIL
 
 Orden de Christián (2026-07-31). Feedback de **María (22 años)**: *"la página tiene
