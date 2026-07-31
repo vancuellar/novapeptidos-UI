@@ -444,7 +444,11 @@ const Home = () => {
           nueva — pero ahora trae los seis sellos (entró "pago seguro"), el título
           "Tienda de Confianza" y el aviso RUO, que en la portada no estaba.
           ⛔ Ni una promesa que no se pueda cumplir: no hay devoluciones, ni
-          reembolsos, ni reenvíos, ni garantías de meses. */}
+          reembolsos, ni reenvíos, ni garantías de meses.
+          Christian pidió subirla al hero como widget verde (2026-07-30) y
+          luego corrigió: el widget colapsable es SOLO para carrito, checkout
+          y ficha de producto — el hero se queda limpio y esta franja se queda
+          exactamente donde estaba. */}
       <section className="border-b border-border bg-card">
         <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 py-6">
           <TrustBadges variant="strip" />

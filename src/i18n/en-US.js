@@ -410,6 +410,7 @@ const enUS = {
   'acuerdo.acceptedOn': 'You accepted version {{version}} on {{fecha}}.',
   'acuerdo.pending': 'You have not accepted the current agreement yet.',
   'acuerdo.draftWarning': 'This text is still a draft with open points. It should not be asked for yet — please let us know.',
+
   'auth.consent.age': 'I am 18 or older, and I have read and accept the',
   'auth.consent.promos': 'I want to activate bonuses and take part in campaigns',
   'auth.consent.email': 'I want to receive marketing messages by email',
@@ -952,12 +953,6 @@ const enUS = {
   'trust.support.desc': 'Message us at {{phone}}.',
   'trust.ruo': 'Research use only (RUO). Not for human consumption, nor for diagnostic or therapeutic use.',
   // ===== Collapsible "Trusted Store" widget (TrustWidget component) =====
-  'trustWidget.col1.value': '>= 99%',
-  'trustWidget.col1.label': 'HPLC Purity',
-  'trustWidget.col2.value': '2–5 Days',
-  'trustWidget.col2.label': 'National Shipping',
-  'trustWidget.col3.value': 'Secure Payment',
-  'trustWidget.col3.label': 'OXXO · SPEI · Card',
   'trustWidget.panelTitle': 'This Store Holds The Following Certifications',
   'trustWidget.check.ssl': 'Secure Connection (SSL)',
   'trustWidget.check.privacy': 'Published Privacy Policy',

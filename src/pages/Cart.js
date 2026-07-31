@@ -9,6 +9,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/u
 import { useCart, isNetPriceItem } from '@/context/CartContext';
 import api, { formatMXN } from '@/lib/api';
 import AvisoSobrePedido from '@/components/AvisoSobrePedido';
+import TrustWidget from '@/components/TrustWidget';
 import { desgloseSobrePedido } from '@/lib/sobrePedido';
 import { fallbackProducts } from '@/data/fallbackCatalog';
 import { useLanguage } from '@/context/LanguageContext';
@@ -224,6 +225,10 @@ const Cart = () => {
             <Button className="w-full mt-5" size="lg" onClick={onCheckoutClick} data-testid="cart-go-to-checkout-button">{t('cart.checkout')} <ArrowRight className="h-4 w-4 ml-1.5" /></Button>
             <Button asChild variant="ghost" className="w-full mt-2"><Link to="/catalogo">{t('cart.keepShopping')}</Link></Button>
           </Card>
+          {/* Widget colapsable de confianza, junto al botón de pagar (Christian,
+              2026-07-30) — mismo componente que el checkout y la ficha de
+              producto. */}
+          <TrustWidget className="mt-4" />
         </div>
       </div>
 

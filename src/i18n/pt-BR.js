@@ -424,6 +424,7 @@ const ptBR = {
   'acuerdo.acceptedOn': 'Você aceitou a versão {{version}} em {{fecha}}.',
   'acuerdo.pending': 'Você ainda não aceitou o acordo vigente.',
   'acuerdo.draftWarning': 'Este texto ainda é um rascunho com pontos em aberto. Não deveria estar sendo pedido ainda — avise-nos.',
+
   'auth.consent.age': 'Tenho 18 anos ou mais, li e aceito os',
   'auth.consent.promos': 'Desejo ativar bônus e participar de campanhas',
   'auth.consent.email': 'Desejo receber mensagens de marketing por e-mail',
@@ -947,12 +948,6 @@ const ptBR = {
   'trust.support.desc': 'Fale conosco no {{phone}}.',
   'trust.ruo': 'Material exclusivamente para pesquisa (RUO). Não é para consumo humano nem para uso diagnóstico ou terapêutico.',
   // ===== Widget colapsável "Loja De Confiança" (componente TrustWidget) =====
-  'trustWidget.col1.value': '>= 99%',
-  'trustWidget.col1.label': 'Pureza HPLC',
-  'trustWidget.col2.value': '2 a 5 Dias',
-  'trustWidget.col2.label': 'Envio Nacional',
-  'trustWidget.col3.value': 'Pagamento Seguro',
-  'trustWidget.col3.label': 'OXXO · SPEI · Cartão',
   'trustWidget.panelTitle': 'Esta Loja Possui As Seguintes Certificações',
   'trustWidget.check.ssl': 'Conexão Segura (SSL)',
   'trustWidget.check.privacy': 'Política De Privacidade Publicada',

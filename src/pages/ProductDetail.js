@@ -285,9 +285,14 @@ const ProductDetail = () => {
       {/* ------------------------------------------------ todo lo demás, cerrado
           Tres renglones cerrados en vez de cuatro pestañas con una abierta de fábrica.
           La monografía —el bloque más largo de la ficha— ya no cae encima de nadie:
-          la abre quien la quiera leer. */}
-      <div className="mt-12 sm:mt-16 max-w-3xl">
-        <Accordion type="single" collapsible className="border-t border-border">
+          la abre quien la quiera leer.
+          Dos columnas en escritorio (Christian, 2026-07-30): IZQUIERDA la
+          Tienda de Confianza — colapsada es una sola línea discreta, nada de
+          bloque grande —, DERECHA los acordeones. En móvil se apilan, el
+          widget primero: es la señal de confianza antes del detalle técnico. */}
+      <div className="mt-12 sm:mt-16 grid lg:grid-cols-[280px_1fr] gap-8 items-start">
+        <TrustWidget />
+        <Accordion type="single" collapsible className="border-t border-border max-w-2xl">
           <AccordionItem value="desc">
             <AccordionTrigger className="text-[15px] font-semibold hover:no-underline">{t('product.tabs.description')}</AccordionTrigger>
             <AccordionContent>
@@ -338,14 +343,6 @@ const ProductDetail = () => {
           </AccordionItem>
         </Accordion>
       </div>
-
-      {/* TIENDA DE CONFIANZA. (Christian, 2026-07-30)
-          Mismo widget colapsable que la portada y el checkout — una sola
-          tarjeta verde, no un bloque distinto por página. Colapsada es
-          compacta (menos que los 477 px del bloque viejo en móvil); el RUO
-          vive dentro, al abrirla, y esta página ya lo trae dos veces arriba,
-          así que no se repite otra vez fuera del widget. */}
-      <TrustWidget className="mt-10 max-w-md" />
 
       {related.length > 0 && (
         <div className="mt-12 sm:mt-16">

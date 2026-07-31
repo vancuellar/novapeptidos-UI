@@ -334,6 +334,7 @@ const esMX = {
   'acuerdo.acceptedOn': 'Aceptaste la versión {{version}} el {{fecha}}.',
   'acuerdo.pending': 'Todavía no has aceptado el acuerdo vigente.',
   'acuerdo.draftWarning': 'Este texto todavía es un borrador y tiene puntos por definir. No debería estar pidiéndose todavía: avísanos.',
+
   'auth.consent.age': 'Tengo 18 años o más, he leído y acepto los',
   'auth.consent.promos': 'Deseo activar bonos y participar en campañas',
   'auth.consent.email': 'Deseo recibir mensajes de marketing por correo electrónico',
@@ -918,12 +919,6 @@ const esMX = {
   // trust.purity.title y trust.payment.title de arriba para dos renglones de
   // la lista — SSL y la política de privacidad son los únicos textos nuevos,
   // y los dos son verificables (candado del navegador, /info/privacidad).
-  'trustWidget.col1.value': '≥99%',
-  'trustWidget.col1.label': 'Pureza HPLC',
-  'trustWidget.col2.value': '2–5 Días',
-  'trustWidget.col2.label': 'Envío Nacional',
-  'trustWidget.col3.value': 'Pago Seguro',
-  'trustWidget.col3.label': 'OXXO · SPEI · Tarjeta',
   'trustWidget.panelTitle': 'Esta Tienda Cuenta Con Las Siguientes Certificaciones',
   'trustWidget.check.ssl': 'Conexión Segura (SSL)',
   'trustWidget.check.privacy': 'Política De Privacidad Publicada',

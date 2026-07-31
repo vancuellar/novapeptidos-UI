@@ -14,7 +14,7 @@ import api, { formatMXN, PAYMENT_METHODS } from '@/lib/api';
 import { phoneValid } from '@/lib/utils';
 import { PhoneField, StateField, composePhone, parsePhone } from '@/components/CountryPhoneFields';
 import { ruoAcceptedAt } from '@/components/RuoGate';
-import TrustBadges from '@/components/TrustBadges';
+import TrustWidget from '@/components/TrustWidget';
 import AvisoSobrePedido from '@/components/AvisoSobrePedido';
 import { desgloseSobrePedido } from '@/lib/sobrePedido';
 import { useCart } from '@/context/CartContext';
@@ -601,10 +601,11 @@ const Checkout = () => {
             </div>
           </Card>
 
-          {/* Versión corta debajo del resumen. En el teléfono esta columna cae
-              después del botón de pagar, que es justo donde al cliente le entra
-              la duda de si esto es una tienda seria. */}
-          <TrustBadges variant="compact" className="mt-4" />
+          {/* Widget colapsable, debajo del resumen. En el teléfono esta columna
+              cae después del botón de pagar, que es justo donde al cliente le
+              entra la duda de si esto es una tienda seria. Mismo componente
+              que la portada y la ficha de producto (Christian, 2026-07-30). */}
+          <TrustWidget className="mt-4" />
         </div>
       </form>
     </div>
