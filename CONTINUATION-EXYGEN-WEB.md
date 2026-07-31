@@ -1,3 +1,95 @@
+# 🧪 2026-07-31 — LA ADIPOTIDA YA SE VENDE, Y EL ALTA DE UN PRODUCTO NUEVO YA TIENE CANDADO
+
+Orden de Christián: «Para Adipotida o cualquier otro item que adoptemos nuevo, tienes
+que generarlo E2E, con SKU, fotos, comisión, escalera de precios, etc. **Tiene que
+quedar listo para comercializarse.**»
+
+## El problema no era el precio
+
+La Adipotida llevaba días «regresada al catálogo»: el motor ya le había puesto precio
+($3,089 el de 10 mg, ROI 22.9×) y ya había salido de la lista de no-vender. Aun así los
+tres renglones seguían en `vender=No`, porque **le faltaba todo lo demás**: SKU, arte de
+vial, ficha técnica e identidad química investigada. Un producto así no se puede vender
+aunque el precio esté perfecto — y nadie chilló, porque **ninguna compuerta miraba
+producto por producto**.
+
+## Identidad química: investigada, con fuente, y con una errata del mercado corregida
+
+| Dato | Valor | Fuente |
+|---|---|---|
+| CAS | **859216-15-2** | PubChem CID 163360068 |
+| Fórmula | C₁₁₁H₂₀₆N₃₆O₂₈S₂ · 2557.2 g/mol | PubChem CID 163360068 |
+| Secuencia | CKGGRAKDC-GG-D(KLAKLAK)₂ (26 residuos) | Wikipedia «Prohibitin-targeting peptide 1» + literatura primaria |
+| Sinónimos | FTPP, prohibitin-targeting peptide 1, TP01 | PubChem + Wikipedia |
+
+**«Adipotide» y «FTPP» SÍ son el mismo compuesto.** FTPP = *fat-targeted proapoptotic
+peptide*. La grafía **«FTTP»** que traen casi todas las listas de proveedor (y que tenía
+nuestra propia maestra en el renglón de 10 mg) es una **errata copiada por todo el
+mercado**. También circula un segundo CAS, 1401066-79-2, que **no está verificado** en
+PubChem ni en la literatura primaria: la ficha no lo reconoce y lo dice en su nota de
+nomenclatura. Es exactamente la lección del «10-amino-1MQ», que resultó no existir.
+
+El nombre público va **en español — Adipotida** — porque así lo listan los dos
+competidores (Certified: «ADIPOTIDA 10MG»; Exoma: «Adipotida») y así lo busca el cliente.
+La maestra lo sigue llamando «Adipotide»; el puente son los tres mapas `ALIAS_SITIO`.
+
+## Qué se publicó
+
+| SKU | Precio | ROI | Comisión | Competencia |
+|---|---|---|---|---|
+| ADIPOTIDA-2MG | $1,559 | 31.1× | 40% | Exoma $1,130 (piso) |
+| ADIPOTIDA-5MG | $2,879 | 33.9× | 40% | Exoma $2,399 (piso) |
+| ADIPOTIDA-10MG | **$3,089** | 22.9× | 40% | **Certified $3,100** |
+
+Las tres, elegibles para distribuidores. **Se publicaron las tres**, no sólo el 10 mg: la
+escalera las sostiene y la ficha las ordena por precio **por mg** ($780 → $576 → **$309**),
+así que el 10 mg sale marcado «MEJOR VALOR» y el cliente ve por qué. El 5 mg es además el
+de mejor ROI (33.9×) y el que más proveedores surten.
+
+## El camino repetible: `alta_producto.py`
+
+`dar_de_alta.py` es la orquesta; **`alta_producto.py` es la lista de verificación**, y
+truena si falta cualquiera de **once puntos**: maestra y veto · vender=Sí · precio del
+motor · comisión y elegibilidad · categoría · SKU y renglón del catálogo con el `id` del
+backend · monografía · **identidad química con fuente** · arte del vial · ficha técnica ·
+vivo en el backend **con renglón de inventario**.
+
+```
+python3 alta_producto.py "Adipotide"             # revisa; sale 1 si falta algo
+python3 alta_producto.py "Adipotide" --aplicar   # hace lo automatizable
+python3 alta_producto.py --todos                 # revisa todo lo que está a la venta
+```
+
+`--aplicar` **se para en seco** si falta identidad, monografía, categoría o precio del
+motor: esas cuatro no se inventan. Los textos curados van a mano en
+`datos/altas_nuevas.json`. Documentado en FUENTE-DE-VERDAD y en los tres prompts de Codex.
+
+## Dos cosas que estorbaban de verdad
+
+- **`publicar_viales_web.py` re-exportaba los 200 viales cada vez** aunque sólo hubiera
+  uno nuevo: ~35 s por vial, o sea **dos horas de reloj** por dar de alta un producto.
+  Ahora sólo rehace lo que cambió (`--rehacer` fuerza todo): **0.19 s**.
+- **`consolidar.py` leía un archivo suelto del `/tmp` de una sesión vieja de Claude** que
+  ya no existe. Llevaba días tronando con `FileNotFoundError`, así que nadie podía
+  reconsolidar identidades. Ahora el mapa slug→nombre sale del catálogo del sitio.
+
+## Verificado EN VIVO
+
+Catálogo (buscando «adipotida»), ficha `/producto/adipotida`, agregar al carrito y compra
+real por API: el servidor cobra **$3,089** de subtotal y **ignora** un `price: 1` mandado
+desde el cliente. Auditoría del sitio **86/86**, E2E tarjeta **15/15**, E2E cripto
+**21/21**, backend **1037/1037**, motor **347 de 348**.
+
+⚠️ **La que falta y NO es mía:** `test_el_costo_de_la_maestra_es_el_del_proveedor_mas_barato`
+falla en `main` desde el commit `3feeb2d` (la lista de **Jess / Peptide Makers**), que
+entró **sin refrescar los costos de la maestra**: 23 renglones cargan un costo más alto
+del que hoy cobra el proveedor más barato. Corregirlo es `refrescar_costos.py --aplicar` +
+`reprecio.py` + `sincronizar_historial.py`, **pero destapa una decisión de Christián**: con
+el costo nuevo, la HGH de 40 IU pasa de «escalón sin arreglo» a «arreglable», y arreglarlo
+significaría bajarla de **$3,869 a ~$1,719**. Eso no lo decide un script. Se deja reportado.
+
+---
+
 # 📼 2026-07-31 — EL REPORTE DE PUBLICIDAD SE **ARCHIVA SOLO**, SEMANA CON SEMANA
 
 Christián: «este video de publicidad debe estar en mi página de Marketing e irse
