@@ -1576,6 +1576,8 @@ const enUS = {
   'admin.reportes.empty': 'No reports archived yet. The first one lands here on its own when the weekly report runs.',
   'admin.reportes.readText': 'Read The Written Report',
   'admin.reportes.download': 'Download Video',
+  'admin.reportes.downloadText': 'Download The Text',
+  'admin.reportes.errorTexto': "That week's written report could not be opened.",
   'admin.reportes.watch': 'Watch',
   'admin.reportes.noVideo': 'This week was archived with its numbers, but without a video.',
   'admin.reportes.noVideoShort': 'no video',

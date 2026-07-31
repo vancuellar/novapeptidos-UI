@@ -16,12 +16,25 @@
 // servidor y sale por una ruta que exige sesión de admin o de difusión. La
 // etiqueta <video> no manda headers, así que el token va en la URL — el candado
 // real es el rol, que el servidor revisa en cada petición.
+//
+// ⛔ EL REPORTE ESCRITO SE ABRE EN UNA VENTANA, NO DEBAJO DEL VIDEO (Christián,
+// 2026-07-31): «el botón de Leer El Reporte Escrito no hace nada al picarlo».
+// Sí hacía: pedía el texto, contestaba 200 y lo pintaba... 500 px MÁS ABAJO, al
+// pie del reproductor, o sea fuera de la pantalla. Desde el botón no se movía un
+// solo pixel y el resultado era exactamente el de un botón muerto. Y aunque se
+// alcanzara a ver, salía en Markdown crudo: `# Reporte`, `|---|---|`.
+//
+// Ahora abre un diálogo —aparece encima, no hay forma de no verlo— y el texto se
+// pinta con `RespuestaIA`, el mismo renderizador que ya limpia el Markdown del
+// chat: títulos, negritas y las tablas de verdad. Sin librerías nuevas.
 import React, { useCallback, useEffect, useState } from 'react';
 import { BarChart, Bar, ComposedChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts';
 import GraficaInteractiva from '@/components/charts/GraficaInteractiva';
-import { PlayCircle, Download, FileText, Archive, HardDrive, AlertTriangle, Clock } from 'lucide-react';
+import { PlayCircle, Download, FileText, Archive, HardDrive, AlertTriangle, Clock, Loader2 } from 'lucide-react';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import RespuestaIA from '@/components/RespuestaIA';
 import api, { API } from '@/lib/api';
 import { useLanguage } from '@/context/LanguageContext';
 import { toast } from 'sonner';
@@ -45,7 +58,8 @@ const ReportesSemanales = () => {
   const { t } = useLanguage();
   const [d, setD] = useState(null);
   const [viendo, setViendo] = useState('');      // qué semana está en el reproductor
-  const [texto, setTexto] = useState(null);      // el reporte escrito, si lo abrió
+  const [texto, setTexto] = useState(null);      // el reporte escrito ya abierto
+  const [pidiendo, setPidiendo] = useState('');  // la semana que se está trayendo
 
   const cargar = useCallback(() => {
     api.get('/admin/marketing/reportes')
@@ -58,11 +72,29 @@ const ReportesSemanales = () => {
 
   useEffect(() => { cargar(); }, [cargar]);
 
+  // El botón tiene que ACUSAR RECIBO aunque el texto tarde: mientras viaja se
+  // pone a girar. Un botón que no cambia mientras espera se lee como muerto, que
+  // es justo lo que pasó aquí.
   const abrirTexto = (semana) => {
-    if (texto?.semana === semana) { setTexto(null); return; }
+    setPidiendo(semana);
     api.get(`/admin/marketing/reportes/${semana}/texto`)
-      .then((r) => setTexto(r.data))
-      .catch(() => toast.error(t('admin.reportes.error')));
+      .then((r) => {
+        if (!r.data?.markdown) throw new Error('vacio');
+        setTexto({ ...r.data, semana });
+      })
+      .catch(() => toast.error(t('admin.reportes.errorTexto')))
+      .finally(() => setPidiendo(''));
+  };
+
+  // Descargar el .md, por si lo quiere fuera del panel. Sin pedirlo otra vez:
+  // el texto ya está en memoria.
+  const descargarTexto = () => {
+    const url = URL.createObjectURL(new Blob([texto.markdown], { type: 'text/markdown' }));
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `Reporte-Publicidad-${texto.semana}.md`;
+    a.click();
+    URL.revokeObjectURL(url);
   };
 
   if (!d) return <Card className="p-6 text-sm text-muted-foreground">{t('admin.reportes.loading')}</Card>;
@@ -102,8 +134,12 @@ const ReportesSemanales = () => {
           </div>
           <div className="flex gap-2">
             {actual.tiene_texto && (
-              <Button size="sm" variant="outline" onClick={() => abrirTexto(actual.semana)} data-testid="reportes-texto">
-                <FileText className="h-3.5 w-3.5 mr-1.5" /> {t('admin.reportes.readText')}
+              <Button size="sm" variant="outline" onClick={() => abrirTexto(actual.semana)}
+                      disabled={pidiendo === actual.semana} data-testid="reportes-texto">
+                {pidiendo === actual.semana
+                  ? <Loader2 className="h-3.5 w-3.5 mr-1.5 animate-spin" />
+                  : <FileText className="h-3.5 w-3.5 mr-1.5" />}
+                {t('admin.reportes.readText')}
               </Button>
             )}
             {actual.tiene_video && (
@@ -126,11 +162,6 @@ const ReportesSemanales = () => {
           <p className="text-xs text-muted-foreground">{t('admin.reportes.noVideo')}</p>
         )}
 
-        {texto?.semana === actual.semana && (
-          <pre className="mt-4 max-h-96 overflow-auto rounded-lg bg-[hsl(var(--secondary))] p-3 text-[11px] whitespace-pre-wrap font-mono-tech">
-            {texto.markdown}
-          </pre>
-        )}
       </Card>
 
       {/* --------------------------------------------- la evolución semana a semana */}
@@ -214,9 +245,21 @@ const ReportesSemanales = () => {
                 </div>
                 <div className="flex gap-2">
                   {r.tiene_video && (
-                    <Button size="sm" variant="outline" onClick={() => { setViendo(r.semana); setTexto(null); }}
+                    <Button size="sm" variant="outline" onClick={() => setViendo(r.semana)}
                             data-testid={`reportes-ver-${r.semana}`}>
                       <PlayCircle className="h-3.5 w-3.5 mr-1.5" /> {t('admin.reportes.watch')}
+                    </Button>
+                  )}
+                  {/* El escrito de una semana vieja se lee SIN tener que ponerla
+                      primero en el reproductor: abre la misma ventana. */}
+                  {r.tiene_texto && (
+                    <Button size="sm" variant="ghost" onClick={() => abrirTexto(r.semana)}
+                            disabled={pidiendo === r.semana}
+                            title={t('admin.reportes.readText')}
+                            data-testid={`reportes-texto-${r.semana}`}>
+                      {pidiendo === r.semana
+                        ? <Loader2 className="h-3.5 w-3.5 animate-spin" />
+                        : <FileText className="h-3.5 w-3.5" />}
                     </Button>
                   )}
                   {r.tiene_video && (
@@ -252,6 +295,36 @@ const ReportesSemanales = () => {
           </div>
         )}
       </Card>
+
+      {/* ------------------------------------------- el reporte escrito, en grande */}
+      <Dialog open={!!texto} onOpenChange={(v) => !v && setTexto(null)}>
+        {/* `overflow-x-hidden` + el `min-w-0` de abajo: sin los dos, la tabla más
+            ancha del reporte estira la ventana entera y en el teléfono el texto se
+            sale de la pantalla en vez de que la tabla se deslice sola. */}
+        <DialogContent className="max-w-3xl w-[calc(100vw-2rem)] max-h-[85vh] overflow-y-auto overflow-x-hidden"
+                       data-testid="reportes-texto-ventana">
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2 text-left pr-8">
+              <FileText className="h-4 w-4 text-[hsl(var(--primary))] shrink-0" />
+              <span className="min-w-0 break-words">
+                {reportes.find((r) => r.semana === texto?.semana)?.titulo || texto?.semana}
+              </span>
+            </DialogTitle>
+          </DialogHeader>
+          {/* El botón va en su propio renglón, no pegado al título: en el teléfono
+              el título no rompe línea y el botón se salía de la pantalla. */}
+          <div className="flex justify-end -mt-2">
+            <Button size="sm" variant="outline" onClick={descargarTexto}
+                    data-testid="reportes-texto-descargar">
+              <Download className="h-3.5 w-3.5 mr-1.5" /> {t('admin.reportes.downloadText')}
+            </Button>
+          </div>
+          {/* El mismo renderizador que limpia el Markdown del chat: aquí evita que
+              Christián vea `##` y `|---|` donde debería haber títulos y tablas. */}
+          <RespuestaIA texto={texto?.markdown || ''} className="text-sm min-w-0"
+                       testId="reportes-texto-cuerpo" />
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };

@@ -1665,6 +1665,8 @@ const esMX = {
   'admin.reportes.empty': 'Todavía no hay ningún reporte archivado. El primero se deposita solo cuando corra el reporte de la semana.',
   'admin.reportes.readText': 'Leer El Reporte Escrito',
   'admin.reportes.download': 'Descargar Video',
+  'admin.reportes.downloadText': 'Descargar El Texto',
+  'admin.reportes.errorTexto': 'No se pudo abrir el reporte escrito de esa semana.',
   'admin.reportes.watch': 'Ver',
   'admin.reportes.noVideo': 'Esta semana quedó archivada con sus cifras, pero sin video.',
   'admin.reportes.noVideoShort': 'sin video',

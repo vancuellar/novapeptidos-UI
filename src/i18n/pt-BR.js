@@ -1571,6 +1571,8 @@ const ptBR = {
   'admin.reportes.empty': 'Ainda não há nenhum relatório arquivado. O primeiro entra sozinho quando o relatório da semana rodar.',
   'admin.reportes.readText': 'Ler O Relatório Escrito',
   'admin.reportes.download': 'Baixar Vídeo',
+  'admin.reportes.downloadText': 'Baixar O Texto',
+  'admin.reportes.errorTexto': 'Não foi possível abrir o relatório escrito dessa semana.',
   'admin.reportes.watch': 'Ver',
   'admin.reportes.noVideo': 'Esta semana ficou arquivada com os números, mas sem vídeo.',
   'admin.reportes.noVideoShort': 'sem vídeo',
