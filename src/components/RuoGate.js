@@ -79,15 +79,23 @@ const RuoGate = () => {
   ];
 
   return (
+    // El aviso es MÁS ALTO que la pantalla de un teléfono (≈900 px de contenido
+    // contra los 667 de un iPhone SE). Con `items-center` y sin scroll propio,
+    // el recuadro se recortaba por arriba Y por abajo: la casilla y el botón de
+    // aceptar quedaban FUERA de la pantalla, y como el aviso bloquea el scroll
+    // del fondo no había forma de bajar. En esos teléfonos no se podía entrar al
+    // sitio — ni al catálogo, ni a "Empieza aquí", ni a comprar (2026-07-31).
+    // Por eso: la capa scrollea (`overflow-y-auto`), se alinea arriba
+    // (`items-start`) y el recuadro se centra solo cuando SOBRA alto (`my-auto`).
     <div
-      className="fixed inset-0 z-[100] flex items-center justify-center px-4 py-8 bg-background/80 backdrop-blur-md"
+      className="fixed inset-0 z-[100] overflow-y-auto flex items-start justify-center px-4 py-6 sm:py-8 bg-background/80 backdrop-blur-md"
       role="dialog"
       aria-modal="true"
       aria-labelledby="ruo-gate-title"
       data-testid="ruo-gate"
     >
-      <div className="w-full max-w-lg rounded-2xl border border-border bg-card shadow-[var(--shadow-md)] p-7 sm:p-9">
-        <BrandMark className="h-8 mx-auto mb-7" noMolecule />
+      <div className="w-full max-w-lg my-auto rounded-2xl border border-border bg-card shadow-[var(--shadow-md)] p-5 sm:p-9">
+        <BrandMark className="h-8 mx-auto mb-6 sm:mb-7" noMolecule />
 
         <span className="inline-flex items-center gap-1.5 rounded-full border border-[hsl(var(--primary))]/30 bg-[hsl(var(--primary))]/10 px-3 py-1 font-mono-tech text-[10px] uppercase tracking-[0.18em] text-[hsl(var(--primary))]">
           {t('ruo.gate.badge')}
@@ -100,7 +108,7 @@ const RuoGate = () => {
           {t('ruo.gate.intro')}
         </p>
 
-        <ul className="mt-6 space-y-3">
+        <ul className="mt-5 sm:mt-6 space-y-3">
           {points.map(({ icon: Icon, text }) => (
             <li key={text} className="flex gap-3 text-sm leading-relaxed">
               <Icon className="h-4 w-4 mt-0.5 shrink-0 text-[hsl(var(--primary))]" />
@@ -111,7 +119,7 @@ const RuoGate = () => {
 
         {/* Aceptar es un acto, no un clic de paso: la casilla deja constancia
             de que la persona afirmó los tres puntos. */}
-        <label className="mt-7 flex items-start gap-3 cursor-pointer rounded-xl border border-border bg-secondary/40 p-4" data-testid="ruo-gate-checkbox">
+        <label className="mt-5 sm:mt-7 flex items-start gap-3 cursor-pointer rounded-xl border border-border bg-secondary/40 p-3.5 sm:p-4" data-testid="ruo-gate-checkbox">
           <input type="checkbox" checked={checked} onChange={(e) => setChecked(e.target.checked)}
             className="h-5 w-5 mt-0.5 shrink-0 accent-[hsl(var(--primary))] cursor-pointer" />
           <span className="text-sm leading-relaxed font-medium">{t('ruo.gate.checkbox')}</span>
