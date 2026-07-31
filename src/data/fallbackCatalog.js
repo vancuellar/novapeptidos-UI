@@ -3809,11 +3809,11 @@ export const fallbackProducts = [
     "presentation": "10 mg – 100 mg",
     "form": "Liofilizado",
     "purity": "99.1%",
-    "price": 2479,
+    "price": 2489,
     "variants": [
       {
         "presentation": "10 mg",
-        "price": 2479,
+        "price": 2489,
         "stock": 40,
         "batch_number": "NP-RETA10-2601",
         "id": "3562d760-400f-43a3-aab3-7244a0e7c9e3",
@@ -4170,11 +4170,11 @@ export const fallbackProducts = [
     "presentation": "10 mg – 120 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
-    "price": 2119,
+    "price": 2129,
     "variants": [
       {
         "presentation": "10 mg",
-        "price": 2119,
+        "price": 2129,
         "stock": 40,
         "batch_number": "NP-TIRZ10-2601",
         "id": "289d914f-67f2-472d-83c1-3809dc0ee225",
@@ -4192,7 +4192,7 @@ export const fallbackProducts = [
       },
       {
         "presentation": "30 mg",
-        "price": 3069,
+        "price": 3089,
         "stock": 40,
         "batch_number": "NP-TIRZ30-2601",
         "id": "e5c68138-7652-4036-91c9-8c51f8c379f6",
