@@ -95,6 +95,51 @@ per box» (237 precios perfectos = «no encontré una tabla»), y —el peor— 
 (`envio_estimado`, `vetado`, `motivo_veto`): se llevó el veto de Lucy y las 16 banderas de
 envío estimado. Restaurado y con candado.
 
+# 🤝 HANDOFF — 2026-07-31 — 📦 LA PRIMERA GUÍA REAL, COMPRADA
+
+**Pedido EX-20260730-5930 (Brenda) — rastreo FedEx `875164874865`.**
+Comprada por **Envíos Internacionales** (la plataforma que tenía saldo; Skydropx estaba
+en $0), FedEx Standard Overnight 3 días, **$192.90**. Saldo de EI: $2,500 → **$2,307.10**.
+La clienta **no pagó envío** ($0, total $4,827 intacto): lo absorbió la casa.
+**Sin recolección** — Christián la deja en un mostrador FedEx.
+
+⚠️ **COSTO REAL vs EL SUPUESTO DEL MOTOR.** El motor mide el piso de 5× con
+`envio_costo_real_mxn = $165`, y la primera guía real costó **$192.90** — **$27.90 más**.
+Un solo dato no mueve una regla (por eso `actualizar_costo_envio.py` pide **≥8 guías**
+antes de recalcular), así que **NO se cambió nada**. Queda reportado: si las siguientes
+guías rondan los $190, el piso de 5× se está midiendo optimista y hay que subir esa cifra.
+
+## ⛔ TRES LÍMITES SIN DOCUMENTAR QUE SÓLO APARECEN AL COMPRAR
+
+Cotizar es gratis y nunca se queja; es la COMPRA la que rebota, con el pedido **ya
+pagado** y la clienta esperando. Salieron de uno en uno, en dos intentos:
+
+| Campo | Tope real | Documentado |
+|---|---|---|
+| nombre del destinatario | **30** | no |
+| referencia | **40** | no |
+| calle (`street1`) | **45** | no |
+
+Su OpenAPI declara **un solo** `maxLength`, y es de otro campo. Los tres se recortan ya
+en `skydropx._direccion_envio`, que **comparten las dos plataformas**. El recorte no es a
+lo bruto: el nombre pierde los nombres de en medio («Brenda Iliana Oseguera Gonzalez» →
+«Brenda Oseguera Gonzalez») y la calle suelta el interior antes que el número.
+
+## Lo demás que salió de esta primera compra
+
+- **El PDF no viene en la respuesta de compra.** Llega el rastreo al instante y el
+  `label_url` VACÍO — el PDF se genera segundos después. Nuevo
+  `POST /admin/orders/{id}/rescatar-etiqueta` lo trae sin volver a comprar, y la ficha
+  del admin ya lo muestra (**sólo admin**: comprar guías es dinero de la casa).
+- **Saldo a la vista antes de despachar:** `GET /admin/envios/saldo`. Existe porque la
+  primera compra rebotó con «créditos insuficientes» sin que nada avisara.
+- **El origen NO se puede mover desde el panel**: está fijado por variable de entorno del
+  servidor (Playa del Carmen 77710). Cambiarlo afecta TODAS las guías futuras.
+- La venta es de **María**, y con su interruptor encendido ve el contacto de Brenda y el
+  rastreo — pero **no** el PDF ni el costo de la guía.
+
+---
+
 # 🤝 HANDOFF — 2026-07-31 — EL REGALO TOPADO EN 40%, Y DOS FALLAS DE CODEX QUE ERAN RUIDO
 
 **Compuertas: backend 848/848 ✅ · auditoría 85/0 ✅.** Desplegado `0869ad3` (azul/verde).
