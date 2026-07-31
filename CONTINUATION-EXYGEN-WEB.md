@@ -1,3 +1,67 @@
+# 🤝 HANDOFF — 2026-07-30 (noche, cierre) — LÉELO PRIMERO
+
+## ✅ NOCHE del 30-jul (todo EN VIVO, E2E completo en verde al cierre)
+
+**E2E de cierre:** backend 728/728 · motor 314/314 · auditoría 83/0 · E2E cripto
+21/0 · E2E tarjeta 15/0 · carrito probado de punta a punta en vivo · 3 repos
+limpios en origin/main.
+
+**Nuevo esta noche:** Cotizador de distribuidores EN VIVO (pestaña propia en Mi
+Negocio; documento tipo factura con logo/molécula; imprime perfecto vía iframe;
+"Enviar Por Correo" con precios que pone el BACKEND — nadie puede falsificar
+totales; freno 20/h; sin PDF adjunto para no meter librerías pesadas — decisión
+anotada) · commission_cap y distributor_eligible FUERA de todo lo público
+(prueba-candado; cliente anónimo usa `descuentable`/`max_descuento_cliente`
+recortado a 15%) · widget "Tienda De Confianza" VERDE colapsable de UNA línea
+bajo el botón de pagar en carrito/checkout y en ficha (2 columnas: widget izq,
+acordeones der; portada limpia — iteró 3 veces hasta como lo quiso Christián) ·
+fichas de producto A DIETA (lote fuera, specs sin duplicar, acordeones; móvil a
+la MITAD: 4,365→2,130px) · aviso sobre pedido ahora es nota fina "Se surte
+desde EUA…" (fuera el letrero de dos entregas) · ficha de cliente unificada
+(mismo clic desde 8 lugares; guía en un toque con paquetería AUTODETECTADA del
+número) · María guías + **override 30% de descuento SOLO ella**
+(max_discount_override, pyramid.discount_tiers_de) · acuerdo de distribuidor:
+maquinaria de aceptación electrónica COMPLETA y APAGADA
+(ACUERDO_DISTRIBUIDOR_ACTIVO=false; registra versión+hash+IP+casilla; falta
+que Christián llene [corchetes] del texto v2) · blue/green REAL en el backend
+(puerta nginx; 3,117 requests durante deploy+rollback con CERO fallos; deploy
+malo se aborta solo — atrapó 2 hoy) · desplegar.sh del frontend (no publica
+builds sin la URL del backend) · P38 Rita Birrell importada (124/124 renglones,
+MXN; NO es la más barata en NADA; alias somatropina/HGH tapado; verificación
+ciega de Codex en curso) · Skydropx: llaves y remitente instalados (Alanís,
+Playa del Carmen), cotización real $139 PdC→NL, TODAS las paqueterías compiten,
+cotizar/comprar guía desde el pedido en admin · propuesta "Envíos
+Internacionales" = REVENDEDOR de Skydropx con términos malos (análisis hecho,
+recomendación: no cambiarse) · cotización COT-20260730-01 entregada a Christián
+(PDF sin COA + correo): 50 viales $124,355 con 30%.
+
+**Reglas de negocio nuevas (memorias creadas):** vender SIEMPRE (envío partido)
+· comisión base 30% compartida con el descuento (María/Alanís/Javier bajaron de
+40/40/35; respaldo para revertir) · regla de 5 piezas por producto para precio
+de distribuidor · WhatsApp: SOLO Christián envía (Claude deja borradores).
+
+## ⏳ PENDIENTE (además de lo del handoff anterior)
+1. Christián: llenar [corchetes] del ACUERDO-DISTRIBUIDOR-BORRADOR.md (razón
+   social/RFC, fuero, plazos) y ordenar encender ACUERDO_DISTRIBUIDOR_ACTIVO.
+2. Christián: servidor de respaldo en JADA — ordenado, bloqueado esperando que
+   dé host/acceso SSH del servidor de JADA a usar (el clasificador no deja
+   esculcar la infra del despacho solo).
+3. Christián decidió NO responder aún: HGH 40 IU ($2,029 vs quedarse en
+   $3,869), escalera de comisiones 30/30/35/40/43 vs escalonada, códigos
+   viejos 30/35% desactivados (confirmar), ¿B12 1mg/mL se oculta?, ¿vigía con
+   cron diario?, política envío gratis X=$3,000 con tope $150/guía (propuesta).
+4. P38: preguntarle a Rita si su precio MXN incluye envío; aclarar su NAD+ "UI"
+   vs mg. Verificación ciega de Codex del import: en curso al cierre.
+5. Pedidos por surtir: preparar los de Aidee ($2,830) y Brenda ($4,827) — HAY
+   stock (8 RT20, 25 NAD tras ambas); NO se compró a Lucy (Christián borró el
+   mensaje; regla nueva: él envía). Cobrar deuda Alanís $3,857.
+6. PDF adjunto en el correo de cotizaciones: requiere librería pesada
+   (WeasyPrint/ReportLab) — pendiente de que Christián lo pida.
+7. Pie del sitio pesa 1,700px — dieta pendiente si Christián quiere.
+8. Meta: categoría sensible (salud) — pedir revisión en Events Manager (él).
+
+---
+
 # 🤝 HANDOFF — 2026-07-30 (tarde/noche) — LÉELO PRIMERO
 
 ## ✅ HECHO hoy (todo EN VIVO y verificado)
