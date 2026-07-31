@@ -94,7 +94,7 @@ tipo factura). Debe incluir:
    viejos 30/35% desactivados (confirmar), ¿B12 1mg/mL se oculta?, ¿vigía con
    cron diario?, política envío gratis X=$3,000 con tope $150/guía (propuesta).
 4. P38: preguntarle a Rita si su precio MXN incluye envío; aclarar su NAD+ "UI"
-   vs mg. Verificación ciega de Codex del import: en curso al cierre.
+   vs mg. Verificación ciega de Codex del import: la cola de Codex la PERDIÓ dos veces — RELANZARLA en el próximo chat (fotos en proveedores/whatsapp/extraidos/325-232-9811/). Su E2E general sí corrió: todo verde en su copia local; sus 'fallas' eran código viejo sin red (ya verificado en vivo por F5: 728/314/83/21/15).
 5. Pedidos por surtir: preparar los de Aidee ($2,830) y Brenda ($4,827) — HAY
    stock (8 RT20, 25 NAD tras ambas); NO se compró a Lucy (Christián borró el
    mensaje; regla nueva: él envía). Cobrar deuda Alanís $3,857.
