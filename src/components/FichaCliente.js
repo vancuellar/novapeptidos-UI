@@ -112,7 +112,7 @@ const FichaCliente = ({ clientId, open, onClose }) => {
   const guardarDescuentoPersonal = async () => {
     try {
       await api.put(`/admin/customers/${cliente.id}/personal-discount`,
-        { rate: Math.max(0, Math.min(50, Number(pctPersonal) || 0)) / 100 });
+        { rate: Math.max(0, Math.min(40, Number(pctPersonal) || 0)) / 100 });
       toast.success(t('admin.ficha.personalDiscountBtn'));
       cargar();
     } catch (e) { toast.error(e.response?.data?.detail || t('ficha.error')); }
@@ -322,7 +322,7 @@ const FichaCliente = ({ clientId, open, onClose }) => {
                     <div className="text-xs font-semibold">{t('admin.ficha.personalDiscount')}</div>
                     <p className="text-[11px] text-muted-foreground">{t('admin.ficha.personalDiscountHint')}</p>
                     <div className="flex items-center gap-2">
-                      <Input type="number" min="0" max="50" className="h-8 w-20" value={pctPersonal}
+                      <Input type="number" min="0" max="40" className="h-8 w-20" value={pctPersonal}
                         onChange={(e) => setPctPersonal(e.target.value)} />
                       <span className="text-xs text-muted-foreground">%</span>
                       <Button size="sm" onClick={guardarDescuentoPersonal} data-testid="ficha-cliente-descuento-guardar">
