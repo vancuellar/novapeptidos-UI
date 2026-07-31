@@ -56,6 +56,20 @@ tipo factura). Debe incluir:
    CartContext hidrate al abrir, validada contra el catálogo real.
 3. Mismas compuertas de siempre; el precio lo sigue poniendo el backend.
 
+**TAMBIÉN ORDENADO por Christián (2026-07-30 noche, prioridad alta):**
+- **Doble cotizador de envíos**: explorar enviosinternacionales.com (el
+  revendedor de Skydropx — Christián QUIERE usarlo aunque el análisis lo
+  desaconsejó: decisión suya) y programar SUS DOS APIs — al despachar se cotiza
+  en AMBAS (interno), se contrata la MÁS BARATA, y al cliente se le cobra
+  tarifa fija. Nota: hará falta que Christián abra la cuenta ahí (no crear
+  cuentas por él) y pegue las llaves en Admin → Cobros.
+- **Respuestas de negocio en 1-2 segundos**: Christián exige que preguntas tipo
+  "¿en qué es más barata Lucy?" se contesten al instante. Hoy `x.py` existe
+  pero: `x.py lucy` recorta la lista (mostrar TODO), `x.py rt 60`/`x.py klow
+  80` TRUENAN (bug de sort con dicts en x.py:152 — arreglarlo), y falta que el
+  Admin tenga esta vista completa (el bloque "a quién le compro" ya existe;
+  hacerla buscable/instantánea). Objetivo: una sola fuente instantánea.
+
 ## ⏳ PENDIENTE (además de lo del handoff anterior)
 1. Christián: llenar [corchetes] del ACUERDO-DISTRIBUIDOR-BORRADOR.md (razón
    social/RFC, fuero, plazos) y ordenar encender ACUERDO_DISTRIBUIDOR_ACTIVO.
