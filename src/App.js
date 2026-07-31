@@ -43,6 +43,7 @@ const Login = lazy(() => import(/* webpackChunkName: "login" */ '@/pages/Login')
 const Account = lazy(() => import(/* webpackChunkName: "cuenta" */ '@/pages/Account'));
 const Distributor = lazy(() => import(/* webpackChunkName: "distribuidor" */ '@/pages/Distributor'));
 const Tutorials = lazy(() => import(/* webpackChunkName: "tutoriales" */ '@/pages/Tutorials'));
+const Invitacion = lazy(() => import(/* webpackChunkName: "invitacion" */ '@/pages/Invitacion'));
 const ForgotPassword = lazy(() => import(/* webpackChunkName: "recuperar" */ '@/pages/ForgotPassword'));
 const ResetPassword = lazy(() => import(/* webpackChunkName: "restablecer" */ '@/pages/ResetPassword'));
 const ConfirmEmail = lazy(() => import(/* webpackChunkName: "confirmar" */ '@/pages/ConfirmEmail'));
@@ -222,6 +223,9 @@ function App() {
                     <Route path="/cuenta" element={<Account />} />
                     <Route path="/distribuidor" element={<Distributor />} />
                     <Route path="/tutoriales" element={<Tutorials />} />
+                    {/* Página ESCONDIDA: no se enlaza desde ningún lado y no sale
+                        en Google. El enlace lo reparte Christián a mano. */}
+                    <Route path="/invitacion" element={<Invitacion />} />
                     <Route path="/admin" element={<Admin />} />
                     <Route path="/info/:page" element={<InfoPage />} />
                     <Route path="*" element={<NotFound />} />

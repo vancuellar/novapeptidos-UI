@@ -49,6 +49,10 @@ const STATIC_ROUTES = [
   // pero NO entran al mapa del sitio (ver NO_INDEXAR).
   ['carrito', 'Tu carrito', 'Revisa tu pedido antes de finalizar la compra.'],
   ['checkout', 'Finalizar compra', 'Completa tu pedido de forma segura.'],
+  // Página ESCONDIDA del video de invitación a distribuidores: se genera para
+  // que el enlace que reparte Christián por WhatsApp/correo no dé 404, pero NO
+  // sale en el mapa del sitio ni en Google (está en NO_INDEXAR).
+  ['invitacion', 'Conviértete en distribuidor', 'Una invitación de Exygen Labs.'],
   ['cuenta', 'Mi cuenta', 'Tus pedidos, certificados y herramientas de cliente.'],
   ['recuperar', 'Recuperar contraseña', 'Te mandamos un enlace para restablecer tu contraseña.'],
   ['restablecer', 'Restablecer contraseña', 'Elige una contraseña nueva.'],
@@ -59,7 +63,7 @@ const STATIC_ROUTES = [
 // Lo que no debe salir en buscadores: carrito, pago y todo lo de la cuenta.
 // Esta misma lista alimenta el `Disallow` de robots.txt, así que el mapa del
 // sitio y robots.txt nunca se pueden contradecir.
-const NO_INDEXAR = ['carrito', 'checkout', 'cuenta', 'recuperar', 'restablecer', 'confirmar', 'activar', 'admin'];
+const NO_INDEXAR = ['carrito', 'checkout', 'cuenta', 'recuperar', 'restablecer', 'confirmar', 'activar', 'admin', 'invitacion'];
 
 // Lee slug / título / subtítulo de cada archivo de `src/data/<carpeta>/`.
 // Se hace con expresiones regulares en vez de `import` porque estos archivos
