@@ -1,3 +1,79 @@
+# 📦 2026-07-31 — EL RASTREO TAMBIÉN PARA AIDEE (guías compradas fuera del sistema)
+
+Orden de Christián: «El rastreo también debe aplicar para Aidee y para todos los
+futuros clientes».
+
+## Qué le faltaba
+
+Su pedido `EX-20260730-2906` tenía guía de FedEx (`875122824121`) y **`label_provider`
+vacío**: esa guía se compró a mano, en el mostrador, fuera del sistema. El rastreo
+decidía a quién preguntarle SÓLO por ese campo, así que no le preguntaba a nadie y la
+línea de tiempo se quedaba muda.
+
+Barrido de la base: de **2 pedidos con guía**, ése era **el único** sin proveedor. El de
+Brenda ya traía `enviosinternacionales` y funcionaba.
+
+## Qué cambió
+
+1. **Sin `label_provider` ya no se rinde**: le pregunta por número de guía a TODOS los
+   proveedores encendidos y gana el primero que conteste. Y **se aprende**: en cuanto
+   alguien contesta, queda escrito en el pedido y la próxima consulta es tiro directo.
+   El pedido se repara solo, sin que nadie tenga que acordarse.
+2. **La caché pasó a ser por GUÍA** (antes por proveedor) para que esa vuelta a todas
+   las plataformas se haga UNA vez y no en cada recarga. El tope de 2 peticiones por
+   segundo lo comparte la compra de guías, que es la que vende.
+3. **Una guía capturada sin paquetería ya no queda coja**: el servidor la deduce del
+   propio número (`guias.py`, gemelo de `src/lib/paqueteria.js`). Lo que sí venga
+   capturado a mano manda siempre; esto sólo rellena el hueco.
+4. **Y cuando nadie la conoce, se dice la verdad.**
+
+## ⚠️ La guía de Aidee NO está en ninguna plataforma — y no va a estarlo
+
+Comprobado el 2026-07-31 preguntándole a las dos APIs con las credenciales de
+producción:
+
+| Guía | Skydropx | Envíos Internacionales |
+|---|---|---|
+| `875122824121` (Aidee) | 0 eventos | 0 eventos |
+| `875164874865` (Brenda) | 0 eventos | **3 eventos** ✅ |
+
+Se compró directo en el mostrador de FedEx. Y del sitio público de FedEx no se puede
+sacar nada: bloquea a todo lo que no sea un navegador de verdad (503 de Akamai, ver la
+entrada del iframe más abajo). **No hay a quién más preguntarle.**
+
+Por eso la respuesta trae `detalle_disponible: false` y la pantalla enseña la guía, la
+paquetería y la liga con un mensaje honesto —«El detalle del rastreo aún no está
+disponible para esta guía»— en los tres idiomas, en vez de un hueco que parece falla.
+
+**Para que esto no vuelva a pasar**: toda guía que se compre POR el sistema queda con su
+`label_provider`. Las que se peguen a mano seguirán sin detalle — es una limitación de
+FedEx, no nuestra. Si algún día se quiere el detalle de ésas, hay que abrir cuenta de
+API con FedEx.
+
+## De paso
+
+`eta` puede venir como **texto libre** (el de Aidee es «2 - 5 dias habiles», capturado a
+mano). Tratarlo como fecha dejaba en pantalla «Llegada estimada:» seguido de NADA. Ahora
+si parece fecha se formatea y si no se enseña tal cual.
+
+## Verificado en vivo
+
+| | Aidee `EX-20260730-2906` | Brenda `EX-20260730-5930` |
+|---|---|---|
+| Guía y paquetería | FedEx · 875122824121 ✅ | FedEx · 875164874865 ✅ |
+| Línea de tiempo | 2 pasos prendidos ✅ | 2 pasos prendidos ✅ |
+| Historial | mensaje honesto ✅ | 3 eventos reales ✅ |
+| Liga a la paquetería | ✅ | ✅ |
+
+**1061 pruebas backend, 0 fallas · auditoría 86, 0 fallas.**
+
+⚠️ Nota de método: la verificación visual se hizo con **Playwright**, no con el navegador
+automatizado del asistente — ése daba falsos negativos (páginas en blanco que en un
+Chromium de verdad se pintan bien). Si alguien ve la página vacía desde una herramienta
+automatizada, que compruebe con Playwright antes de gritar «se cayó el sitio».
+
+---
+
 # 🤝 HANDOFF — 2026-07-31 (tarde-noche) — LÉELO PRIMERO
 
 ## ✅ EN VIVO hoy
