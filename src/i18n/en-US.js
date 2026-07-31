@@ -50,6 +50,16 @@ const enUS = {
   'ficha.referredBy': 'Referred By',
   'ficha.myEarnings': 'My Commission',
   'ficha.ordersWithMe': 'Their Orders With You',
+  // EVERYONE WHO BUYS IS A CUSTOMER, account or not (Christián, 2026-07-31).
+  'ficha.account': 'Has Account',
+  'ficha.firstOrder': 'First Order',
+  'ficha.topProducts': 'What They Usually Buy',
+  'ficha.units': '{{units}} units · {{orders}} orders',
+  'admin.customers.search': 'Search by name, email or phone',
+  'admin.customers.noMatch': 'Nobody matches that search.',
+  'admin.customers.guestHint': 'Bought without opening an account. Their card lives in their orders.',
+  'admin.customers.duplicateOf': 'Possible duplicate of {{name}}',
+  'admin.customers.showing': '{{shown}} of {{count}} customers',
   'news.openOrder': 'View The Order',
   'news.openClient': 'View The Customer',
 

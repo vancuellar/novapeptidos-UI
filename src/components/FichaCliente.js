@@ -178,7 +178,18 @@ const FichaCliente = ({ clientId, open, onClose }) => {
                 ))}
                 {cliente.created_at && (
                   <div className="text-xs text-muted-foreground pt-1">
+                    {/* Del que tiene cuenta, su registro; del invitado, su PRIMERA
+                        compra — no hay fecha de alta porque no hay alta. */}
                     {t('admin.customer.since', { date: fmtFecha(cliente.created_at) })}
+                  </div>
+                )}
+                {/* Primera y última compra: «desde cuándo es cliente» y «hace cuánto no
+                    vuelve» son dos preguntas distintas, y las dos se ven aquí. */}
+                {totales.first_order_at && (
+                  <div className="text-xs text-muted-foreground" data-testid="ficha-cliente-primera">
+                    {t('ficha.firstOrder')}: {fmtFecha(totales.first_order_at)}
+                    {totales.last_order_at && totales.last_order_at !== totales.first_order_at
+                      && ` · ${t('admin.table.lastOrder')}: ${fmtFecha(totales.last_order_at)}`}
                   </div>
                 )}
                 {/* Sólo el admin sabe de quién es referido: al distribuidor no le toca
@@ -226,6 +237,26 @@ const FichaCliente = ({ clientId, open, onClose }) => {
                   </div>
                 )}
               </div>
+
+              {/* ---------- lo que suele llevar ----------
+                  La respuesta a «¿qué le ofrezco?» sin abrir pedido por pedido. Llega
+                  vacío cuando quien mira no puede verlo (distribuidor sin el
+                  interruptor): el recorte lo hace el servidor, aquí sólo no se pinta. */}
+              {ficha.top_products?.length > 0 && (
+                <div data-testid="ficha-cliente-suele-llevar">
+                  <div className="text-xs text-muted-foreground mb-2">{t('ficha.topProducts')}</div>
+                  <div className="flex flex-wrap gap-1.5">
+                    {ficha.top_products.map((p) => (
+                      <Badge key={p.name} variant="outline" className="text-[10px] font-normal">
+                        <span className="font-medium">{p.name}</span>
+                        <span className="ml-1.5 text-muted-foreground">
+                          {t('ficha.units', { units: p.units, orders: p.orders })}
+                        </span>
+                      </Badge>
+                    ))}
+                  </div>
+                </div>
+              )}
 
               {/* ---------- sus pedidos ---------- */}
               <div>

@@ -45,6 +45,16 @@ const ptBR = {
   'ficha.referredBy': 'Indicado Por',
   'ficha.myEarnings': 'Minha Comissão',
   'ficha.ordersWithMe': 'Os Pedidos Dele Com Você',
+  // TODO MUNDO QUE COMPRA É CLIENTE, com conta ou sem (Christián, 2026-07-31).
+  'ficha.account': 'Com Conta',
+  'ficha.firstOrder': 'Primeira Compra',
+  'ficha.topProducts': 'O Que Ele Costuma Levar',
+  'ficha.units': '{{units}} un. · {{orders}} pedidos',
+  'admin.customers.search': 'Buscar por nome, e-mail ou telefone',
+  'admin.customers.noMatch': 'Ninguém corresponde a essa busca.',
+  'admin.customers.guestHint': 'Comprou sem abrir conta. A ficha dele vive nos pedidos.',
+  'admin.customers.duplicateOf': 'Possível duplicata de {{name}}',
+  'admin.customers.showing': '{{shown}} de {{count}} clientes',
   'news.openOrder': 'Ver O Pedido',
   'news.openClient': 'Ver O Cliente',
 

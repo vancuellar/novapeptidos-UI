@@ -143,6 +143,9 @@ const Admin = () => {
   const [categories, setCategories] = useState([]);
   const [orders, setOrders] = useState([]);
   const [customers, setCustomers] = useState([]);
+  // Buscar por nombre, correo o teléfono. Con los invitados adentro la lista crece
+  // sola (todo el que compra entra), y sin buscador hay que bajar hasta encontrarlo.
+  const [buscaCliente, setBuscaCliente] = useState('');
   const [analytics, setAnalytics] = useState(null);
   // Tráfico y ventas a lo largo del tiempo (Christian): el panel tenía totales
   // pero no series, así que no se veía si algo sube o baja.
@@ -405,6 +408,18 @@ const Admin = () => {
   // permanente y notas viven dentro de <FichaCliente> para no tener dos versiones.
   // `invitado:<correo>` es la llave del que compró sin cuenta (el caso de Aidee).
   const abrirCliente = (idOCorreo) => setClienteAbierto(idOCorreo || null);
+  // ⛔ TODO EL QUE COMPRA ES CLIENTE (Christián, 2026-07-31). La lista ya trae a los
+  // que compraron SIN cuenta, así que se busca por lo que se tiene de ellos: nombre,
+  // correo y teléfono. Sin acentos y sin mayúsculas, que es como la gente teclea.
+  //
+  // Sin `useMemo` a prop\u00f3sito: arriba de esta l\u00ednea hay salidas tempranas, y un hook
+  // despu\u00e9s de un `return` condicional rompe el orden de los hooks. Filtrar unos
+  // cientos de renglones en cada tecla no se nota; un hook condicional s\u00ed.
+  const sinAcentos = (s) => String(s || '')
+    .normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
+  const buscaClienteNorm = sinAcentos(buscaCliente).trim();
+  const clientesFiltrados = !buscaClienteNorm ? customers : customers.filter(
+    (c) => sinAcentos([c.name, c.email, ...(c.phones || [])].join(' ')).includes(buscaClienteNorm));
   const clienteDelPedido = (o) => o?.user_id
     || (o?.customer?.email ? `invitado:${String(o.customer.email).trim().toLowerCase()}` : null);
   // Sube el CSV del Administrador de Anuncios. Cuando Christian consiga el token
@@ -1255,9 +1270,19 @@ const Admin = () => {
         </TabsContent>
 
         <TabsContent value="customers" className="mt-5">
-          <div className="flex justify-between items-center mb-4">
-            <h3 className="font-heading font-semibold">{t('admin.customersCount', { count: customers.length })}</h3>
+          <div className="flex justify-between items-center gap-3 mb-4 flex-wrap">
+            <h3 className="font-heading font-semibold">
+              {buscaCliente
+                ? t('admin.customers.showing', { shown: clientesFiltrados.length, count: customers.length })
+                : t('admin.customersCount', { count: customers.length })}
+            </h3>
             <Button onClick={() => { setInviteCreated(null); setInviteDialogOpen(true); }} data-testid="admin-invite-customer-button"><Plus className="h-4 w-4 mr-1.5" /> {t('admin.inviteCustomer')}</Button>
+          </div>
+          <div className="relative mb-4">
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+            <Input value={buscaCliente} onChange={(e) => setBuscaCliente(e.target.value)}
+              placeholder={t('admin.customers.search')} className="pl-9"
+              data-testid="admin-customers-search" />
           </div>
           <Card className="overflow-x-auto">
             <Table data-testid="admin-customers-table">
@@ -1269,9 +1294,11 @@ const Admin = () => {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {customers.length === 0 ? (
-                  <TableRow><TableCell colSpan={8} className="text-center text-muted-foreground py-8">{t('admin.noCustomers')}</TableCell></TableRow>
-                ) : customers.map((c) => (
+                {clientesFiltrados.length === 0 ? (
+                  <TableRow><TableCell colSpan={8} className="text-center text-muted-foreground py-8">
+                    {customers.length === 0 ? t('admin.noCustomers') : t('admin.customers.noMatch')}
+                  </TableCell></TableRow>
+                ) : clientesFiltrados.map((c) => (
                   <TableRow key={c.id} className={c.blocked ? 'opacity-60' : ''}>
                     <TableCell>
                       {/* El nombre Y el correo abren la ficha: es el gesto natural y el
@@ -1284,9 +1311,25 @@ const Admin = () => {
                         </div>
                         <div className="text-xs text-muted-foreground break-all">{c.email}</div>
                       </button>
-                      <Badge variant="outline" className={`mt-1 text-[10px] ${c.email_verified ? 'text-[hsl(var(--success))]' : 'text-[hsl(var(--warning-foreground))]'}`} data-testid="customer-invite-status">
-                        {c.email_verified ? t('admin.ficha.inviteOk') : t('admin.ficha.invitePending')}
-                      </Badge>
+                      {/* ⛔ CON CUENTA O INVITADO, dicho con todas sus letras. Los dos son
+                          clientes; lo que cambia es que del invitado no hay perfil que
+                          bloquear, invitar ni convertir — sólo lo que dejó al comprar. */}
+                      {c.guest ? (
+                        <Badge variant="outline" className="mt-1 text-[10px]" title={t('admin.customers.guestHint')}
+                          data-testid="admin-customer-guest">{t('distributor.client.guest')}</Badge>
+                      ) : (
+                        <Badge variant="outline" className={`mt-1 text-[10px] ${c.email_verified ? 'text-[hsl(var(--success))]' : 'text-[hsl(var(--warning-foreground))]'}`} data-testid="customer-invite-status">
+                          {c.email_verified ? t('admin.ficha.inviteOk') : t('admin.ficha.invitePending')}
+                        </Badge>
+                      )}
+                      {/* Compró como invitado con un correo que YA tiene cuenta. NO se
+                          fusiona a ciegas: se avisa y Christián decide. */}
+                      {c.posible_duplicado_de && (
+                        <div className="mt-1 text-[10px] text-[hsl(var(--warning-foreground))]"
+                          data-testid="admin-customer-duplicado">
+                          {t('admin.customers.duplicateOf', { name: c.posible_duplicado_de.name })}
+                        </div>
+                      )}
                     </TableCell>
                     <TableCell className="text-xs">{c.phones?.[0] || '—'}</TableCell>
                     <TableCell>{c.orders_count}</TableCell>
@@ -1299,19 +1342,26 @@ const Admin = () => {
                     <TableCell className="text-xs text-muted-foreground">{fmtDate(c.last_order_at)}</TableCell>
                     <TableCell className="text-xs text-muted-foreground">{fmtDate(c.created_at)}</TableCell>
                     <TableCell className="text-right whitespace-nowrap">
-                      {c.role !== 'distributor' && (
+                      {/* Sin cuenta no hay nada que convertir, bloquear ni "ver como":
+                          esos botones necesitan un usuario detrás. La FICHA sí, siempre:
+                          es justo lo que el invitado no tenía. */}
+                      {!c.guest && c.role !== 'distributor' && (
                         <Button variant="ghost" size="sm" className="mr-1" data-testid="admin-convert-distributor-button"
                           onClick={() => { setConvertDone(null); setConvertForm({ commission: 25, customerDiscount: 10 }); setConvertTarget(c); }}>
                           <Store className="h-3.5 w-3.5 mr-1" /> {t('admin.convert.button')}
                         </Button>
                       )}
-                      <Button variant="ghost" size="sm" className={`mr-1 ${c.blocked ? 'text-[hsl(var(--success))]' : 'text-destructive hover:bg-destructive hover:text-white'}`}
-                        onClick={() => toggleBlocked(c)} data-testid="admin-block-customer-button">
-                        <Ban className="h-3.5 w-3.5 mr-1" /> {t(c.blocked ? 'admin.block.unblock' : 'admin.block.block')}
-                      </Button>
-                      <Button variant="ghost" size="sm" className="mr-1" onClick={() => viewAs(c)} data-testid="admin-view-as-customer">
-                        <Eye className="h-3.5 w-3.5" />
-                      </Button>
+                      {!c.guest && (
+                        <>
+                          <Button variant="ghost" size="sm" className={`mr-1 ${c.blocked ? 'text-[hsl(var(--success))]' : 'text-destructive hover:bg-destructive hover:text-white'}`}
+                            onClick={() => toggleBlocked(c)} data-testid="admin-block-customer-button">
+                            <Ban className="h-3.5 w-3.5 mr-1" /> {t(c.blocked ? 'admin.block.unblock' : 'admin.block.block')}
+                          </Button>
+                          <Button variant="ghost" size="sm" className="mr-1" onClick={() => viewAs(c)} data-testid="admin-view-as-customer">
+                            <Eye className="h-3.5 w-3.5" />
+                          </Button>
+                        </>
+                      )}
                       <Button variant="outline" size="sm" onClick={() => abrirCliente(c.id)} data-testid="admin-open-customer-button">{t('account.detail')}</Button>
                     </TableCell>
                   </TableRow>

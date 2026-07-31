@@ -1598,6 +1598,16 @@ const esMX = {
   'ficha.referredBy': 'Referido De',
   'ficha.myEarnings': 'Mi Comisión',
   'ficha.ordersWithMe': 'Sus Pedidos Contigo',
+  // TODO EL QUE COMPRA ES CLIENTE, tenga cuenta o no (Christián, 2026-07-31).
+  'ficha.account': 'Con Cuenta',
+  'ficha.firstOrder': 'Primera Compra',
+  'ficha.topProducts': 'Lo Que Suele Llevar',
+  'ficha.units': '{{units}} pzas · {{orders}} pedidos',
+  'admin.customers.search': 'Buscar por nombre, correo o teléfono',
+  'admin.customers.noMatch': 'Nadie coincide con esa búsqueda.',
+  'admin.customers.guestHint': 'Compró sin abrir cuenta. Su ficha vive en sus pedidos.',
+  'admin.customers.duplicateOf': 'Posible duplicado de {{name}}',
+  'admin.customers.showing': '{{shown}} de {{count}} clientes',
   'news.openOrder': 'Ver El Pedido',
   'news.openClient': 'Ver Al Cliente',
 
