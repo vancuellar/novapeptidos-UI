@@ -91,8 +91,8 @@ export const fallbackProducts = [
     "categories": [
       "bioreguladores"
     ],
-    "short_description": "Péptido corto explorado en tejido bronquial.",
-    "description": "Bronchogen es un péptido corto de la serie Khavinson explorado en modelos de epitelio bronquial y pulmonar; su literatura es limitada y mayormente de origen ruso. Solo para uso en investigación (RUO).",
+    "short_description": "Se estudia por su efecto en el tejido de los bronquios.",
+    "description": "Bronchogen es un péptido muy corto: una cadena de apenas unos cuantos aminoácidos, que son las piezas con las que se arman las proteínas. Se ha estudiado sobre todo en laboratorio, mirando el tejido que recubre los bronquios y el pulmón. Buena parte de esa investigación viene de grupos rusos que trabajan con esta familia de péptidos cortos. Uso exclusivo en investigación (RUO).",
     "presentation": "10 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
@@ -138,8 +138,8 @@ export const fallbackProducts = [
     "categories": [
       "bioreguladores"
     ],
-    "short_description": "Péptido corto explorado en tejido cardiaco.",
-    "description": "Cardiogen es un péptido corto de la serie Khavinson explorado en modelos de miocardio y tejido cardiovascular; la evidencia disponible es limitada y preliminar. Solo para uso en investigación (RUO).",
+    "short_description": "Se estudia por su efecto en el tejido del corazón.",
+    "description": "Cardiogen es un péptido muy corto, de la misma familia rusa que Bronchogen y Cortagen. La investigación se ha hecho sobre todo en laboratorio y con animales, mirando el músculo del corazón y los vasos sanguíneos. Es de los compuestos que se han trabajado más en el laboratorio que en otro lado. Uso exclusivo en investigación (RUO).",
     "presentation": "20 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
@@ -185,8 +185,8 @@ export const fallbackProducts = [
     "categories": [
       "bioreguladores"
     ],
-    "short_description": "Tripéptido explorado en cartílago y tejido conectivo.",
-    "description": "Cartalax es un tripéptido de la serie Khavinson explorado en modelos de condrocitos, cartílago y tejido conectivo; su literatura publicada es limitada. Solo para uso en investigación (RUO).",
+    "short_description": "Se estudia por su efecto en el cartílago y las articulaciones.",
+    "description": "Cartalax es un péptido de apenas tres aminoácidos, las piezas más pequeñas con las que se arman las proteínas. Se ha estudiado en laboratorio con las células que fabrican el cartílago y con el tejido que une y sostiene las articulaciones. Pertenece a la misma familia rusa de péptidos cortos que Pinealon y Cortagen. Uso exclusivo en investigación (RUO).",
     "presentation": "20 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
@@ -232,8 +232,8 @@ export const fallbackProducts = [
     "categories": [
       "bioreguladores"
     ],
-    "short_description": "Péptido corto explorado en tejido nervioso.",
-    "description": "Cortagen es un péptido corto de la serie Khavinson explorado en modelos de corteza cerebral y nervio periférico; la evidencia publicada es limitada. Solo para uso en investigación (RUO).",
+    "short_description": "Se estudia por su efecto en el tejido de los nervios.",
+    "description": "Cortagen es un péptido muy corto de la familia rusa de bioreguladores. Se ha estudiado en laboratorio y con animales, mirando la corteza del cerebro y los nervios del resto del cuerpo. Es de los que se han trabajado principalmente en el laboratorio. Uso exclusivo en investigación (RUO).",
     "presentation": "20 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
@@ -277,8 +277,8 @@ export const fallbackProducts = [
     "categories": [
       "bioreguladores"
     ],
-    "short_description": "Péptido corto explorado en respuesta inmune.",
-    "description": "Crystagen es un péptido de la serie Khavinson explorado en modelos de regulación inmunitaria y función de linfocitos; su respaldo experimental es limitado. Solo para uso en investigación (RUO).",
+    "short_description": "Se estudia por su efecto en las defensas del cuerpo.",
+    "description": "Crystagen es un péptido corto de la familia rusa de bioreguladores. Se ha estudiado en laboratorio con los linfocitos, que son los glóbulos blancos encargados de defender al cuerpo. El trabajo publicado se ha hecho sobre todo en cultivos de células. Uso exclusivo en investigación (RUO).",
     "presentation": "20 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
@@ -324,8 +324,8 @@ export const fallbackProducts = [
     "categories": [
       "bioreguladores"
     ],
-    "short_description": "Tripéptido corto explorado en tejido neuronal.",
-    "description": "Pinealon es un tripéptido de la serie Khavinson explorado en modelos de neuronas, estrés oxidativo y regulación de la expresión génica; su evidencia es limitada. Solo para uso en investigación (RUO).",
+    "short_description": "Se estudia por su efecto en las neuronas y el desgaste celular.",
+    "description": "Pinealon es un péptido de tres aminoácidos, de la familia rusa de bioreguladores. Se ha estudiado en laboratorio y con animales, mirando las neuronas y el desgaste que sufren las células cuando trabajan bajo estrés. También se ha visto cómo influye en qué genes se encienden dentro de la célula. Uso exclusivo en investigación (RUO).",
     "presentation": "5 mg – 10 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
@@ -381,8 +381,8 @@ export const fallbackProducts = [
     "categories": [
       "bioreguladores"
     ],
-    "short_description": "Complejo peptídico tímico explorado en inmunidad.",
-    "description": "Thymalin es un complejo de péptidos obtenido de timo, explorado en modelos de maduración de linfocitos T y regulación inmunitaria; buena parte de su literatura es antigua. Solo para uso en investigación (RUO).",
+    "short_description": "Se estudia por su efecto en las defensas del cuerpo.",
+    "description": "Thymalin es una mezcla de péptidos que se obtiene del timo, la glándula donde maduran las células de defensa del cuerpo. Se ha estudiado por su efecto sobre esas células, en laboratorio y con animales, y hay también trabajos antiguos en personas. Es uno de los compuestos con más años de historia en esta familia. Uso exclusivo en investigación (RUO).",
     "presentation": "10 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
@@ -428,8 +428,8 @@ export const fallbackProducts = [
     "categories": [
       "bioreguladores"
     ],
-    "short_description": "Péptido tímico estudiado en modulación inmunitaria.",
-    "description": "Timosina alfa-1 es un péptido de 28 aminoácidos de origen tímico, investigado en modelos de receptores tipo Toll, maduración de células dendríticas y respuesta inmune celular. Solo para uso en investigación (RUO).",
+    "short_description": "Se estudia por su papel en las defensas del cuerpo.",
+    "description": "La timosina alfa-1 es un péptido de 28 aminoácidos que el propio cuerpo produce en el timo, la glándula donde maduran las células de defensa. Se ha estudiado bastante: en laboratorio, en animales y también en personas. La investigación se centra en cómo despierta a las células que avisan al organismo de que hay algo extraño. Uso exclusivo en investigación (RUO).",
     "presentation": "5 mg – 10 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
@@ -485,8 +485,8 @@ export const fallbackProducts = [
     "categories": [
       "estetica"
     ],
-    "short_description": "Tripéptido de cobre estudiado en folículo y vasos.",
-    "description": "AHK-Cu es un complejo de cobre investigado en modelos de angiogénesis, papila dérmica y folículo piloso, así como en estudios de matriz extracelular cutánea. Solo para uso en investigación (RUO).",
+    "short_description": "Se estudia por su efecto en el folículo del pelo y la piel.",
+    "description": "AHK-Cu es un péptido pequeño unido a cobre. Se ha estudiado en laboratorio con la raíz del pelo y con las células que forman vasos sanguíneos nuevos. También aparece en trabajos sobre la estructura que sostiene la piel por dentro. Uso exclusivo en investigación (RUO).",
     "presentation": "50 mg – 100 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
@@ -539,8 +539,8 @@ export const fallbackProducts = [
     "categories": [
       "estetica"
     ],
-    "short_description": "Neurotoxina de laboratorio medida en unidades biológicas.",
-    "description": "La toxina botulínica es una proteína neurotóxica estudiada por su bloqueo de la liberación de acetilcolina en la unión neuromuscular; se cuantifica en unidades biológicas, no en miligramos. Solo para uso en investigación (RUO).",
+    "short_description": "Proteína de laboratorio que se mide en unidades, no en miligramos.",
+    "description": "La toxina botulínica es una proteína muy conocida y muy estudiada, en laboratorio, en animales y en personas. La investigación se centra en cómo frena la señal que va del nervio al músculo. Se mide en unidades biológicas, no en miligramos: por eso el vial dice IU y no mg. Uso exclusivo en investigación (RUO).",
     "presentation": "100 IU",
     "form": "Liofilizado",
     "purity": "99.0%",
@@ -577,8 +577,8 @@ export const fallbackProducts = [
       "estetica",
       "recuperacion"
     ],
-    "short_description": "Tripéptido de cobre estudiado en piel y remodelación.",
-    "description": "GHK-Cu es un complejo de cobre investigado en modelos de remodelación de matriz extracelular, piel y cabello. Solo para uso en investigación (RUO).",
+    "short_description": "Se estudia por su efecto en la piel y en el cabello.",
+    "description": "GHK-Cu es un péptido de tres aminoácidos unido a cobre; el cuerpo lo produce de forma natural y va bajando con la edad. Es de los más estudiados en laboratorio dentro de la cosmética experimental. La investigación mira cómo actúa sobre la estructura que da firmeza a la piel y sobre el folículo del cabello. Uso exclusivo en investigación (RUO).",
     "presentation": "50 mg – 100 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
@@ -634,8 +634,8 @@ export const fallbackProducts = [
     "categories": [
       "estetica"
     ],
-    "short_description": "Solución lipolítica con riboflavina, lecitina y bromelina.",
-    "description": "Lemon Bottle es una solución que combina riboflavina, lecitina y bromelina, estudiada en modelos de adipocitos y de degradación de tejido graso. Solo para uso en investigación (RUO).",
+    "short_description": "Solución con riboflavina, lecitina y bromelina, estudiada en grasa.",
+    "description": "Lemon Bottle no es un péptido: es una solución que mezcla tres ingredientes conocidos, riboflavina (vitamina B2), lecitina y bromelina (una enzima de la piña). Se ha estudiado en laboratorio con las células que guardan la grasa. Viene lista en frasco de 10 mL, no en polvo. Uso exclusivo en investigación (RUO).",
     "presentation": "10 mL",
     "form": "Liofilizado",
     "purity": "99.0%",
@@ -671,8 +671,8 @@ export const fallbackProducts = [
     "categories": [
       "estetica"
     ],
-    "short_description": "Pentapéptido cosmético estudiado en síntesis de colágeno.",
-    "description": "Matrixyl (palmitoil pentapéptido-4) es un péptido señal investigado en fibroblastos dérmicos por su efecto sobre la síntesis de colágeno y componentes de la matriz extracelular. Solo para uso en investigación (RUO).",
+    "short_description": "Se estudia por su efecto en el colágeno de la piel.",
+    "description": "Matrixyl es un péptido corto muy usado en cosmética; su nombre técnico es palmitoil pentapéptido-4. Se ha estudiado en laboratorio con las células de la piel que fabrican colágeno, que es lo que le da firmeza. Es de los péptidos cosméticos con más trabajo publicado. Uso exclusivo en investigación (RUO).",
     "presentation": "10 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
@@ -708,8 +708,8 @@ export const fallbackProducts = [
     "categories": [
       "estetica"
     ],
-    "short_description": "Octapéptido cosmético estudiado en el complejo SNARE.",
-    "description": "SNAP-8 es un octapéptido derivado de SNAP-25 investigado en cosmética experimental por su interferencia con el complejo SNARE y la liberación de neurotransmisores en modelos in vitro. Solo para uso en investigación (RUO).",
+    "short_description": "Péptido cosmético estudiado en la señal del nervio al músculo.",
+    "description": "SNAP-8 es un péptido de ocho aminoácidos usado en cosmética. Se ha estudiado en laboratorio por cómo interfiere con el mecanismo que suelta la señal desde el nervio hacia el músculo. El trabajo publicado se ha hecho sobre todo en cultivos de células. Uso exclusivo en investigación (RUO).",
     "presentation": "10 mg – 100 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
@@ -755,8 +755,8 @@ export const fallbackProducts = [
       "hormona-crecimiento",
       "stacks"
     ],
-    "short_description": "Análogo de GHRH combinado con secretagogo selectivo.",
-    "description": "Une CJC-1295 sin DAC, análogo de GHRH de vida media corta, con Ipamorelin; la combinación se estudia por la señalización complementaria de las vías GHRH y grelina. Solo para uso en investigación (RUO).",
+    "short_description": "Dos péptidos de hormona de crecimiento en un mismo vial.",
+    "description": "Este vial trae dos péptidos juntos: CJC-1295 sin DAC e Ipamorelin. Los dos se estudian por su efecto sobre la hormona de crecimiento, pero cada uno la empuja por un camino distinto, y por eso se investigan en pareja. El trabajo se ha hecho sobre todo en laboratorio y con animales. Uso exclusivo en investigación (RUO).",
     "presentation": "10 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
@@ -802,8 +802,8 @@ export const fallbackProducts = [
     "categories": [
       "hormona-crecimiento"
     ],
-    "short_description": "Heptapéptido central de TB-500 estudiado en reparación.",
-    "description": "Fragment 17-23 (Ac-LKKTETQ) es el heptapéptido central de la timosina beta-4 con el dominio de unión a actina, estudiado en migración celular y angiogénesis. Solo para uso en investigación (RUO).",
+    "short_description": "Es el pedazo central del TB-500, estudiado en reparación.",
+    "description": "Fragment 17-23 es el trocito central del TB-500: siete aminoácidos, justo la parte que se engancha a la actina, una proteína que las células usan para moverse. Se ha estudiado en laboratorio por el movimiento de las células y la formación de vasos nuevos. Uso exclusivo en investigación (RUO).",
     "presentation": "10 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
@@ -847,8 +847,8 @@ export const fallbackProducts = [
     "categories": [
       "hormona-crecimiento"
     ],
-    "short_description": "Secretagogo peptídico de hormona de crecimiento.",
-    "description": "GHRP-2 es un hexapéptido investigado por su acción sobre el receptor de secretagogos de hormona de crecimiento y por la señalización del eje somatotrópico. Solo para uso en investigación (RUO).",
+    "short_description": "Se estudia porque hace que el cuerpo suelte hormona de crecimiento.",
+    "description": "GHRP-2 es un péptido corto, de seis aminoácidos. Se estudia porque le da al cuerpo la señal de soltar su propia hormona de crecimiento, en lugar de aportarla desde fuera. Hay trabajo en laboratorio, en animales y también en personas. Es uno de los más veteranos de su familia. Uso exclusivo en investigación (RUO).",
     "presentation": "5 mg – 15 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
@@ -914,8 +914,8 @@ export const fallbackProducts = [
     "categories": [
       "hormona-crecimiento"
     ],
-    "short_description": "Secretagogo estudiado en GH y señalización de grelina.",
-    "description": "GHRP-6 es un hexapéptido que actúa sobre el receptor de grelina, estudiado en modelos de liberación de hormona de crecimiento y de regulación del apetito. Solo para uso en investigación (RUO).",
+    "short_description": "Se estudia en hormona de crecimiento y en el apetito.",
+    "description": "GHRP-6 es un péptido de seis aminoácidos, hermano del GHRP-2. Actúa sobre el mismo interruptor que usa la grelina, la hormona que avisa al cerebro que hay hambre. Por eso se estudia en dos frentes: la liberación de hormona de crecimiento y el apetito. Hay trabajo en laboratorio, en animales y en personas. Uso exclusivo en investigación (RUO).",
     "presentation": "5 mg – 10 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
@@ -971,8 +971,8 @@ export const fallbackProducts = [
     "categories": [
       "hormona-crecimiento"
     ],
-    "short_description": "Hexapéptido secretagogo estudiado en GH y corazón.",
-    "description": "Hexarelin es un hexapéptido sintético investigado por su acción sobre receptores de grelina y CD36, en modelos de liberación de hormona de crecimiento y de tejido cardiaco. Solo para uso en investigación (RUO).",
+    "short_description": "Se estudia en hormona de crecimiento y en tejido del corazón.",
+    "description": "Hexarelin es un péptido de seis aminoácidos hecho en laboratorio. Se estudia por dos cosas: la señal que hace soltar hormona de crecimiento y su efecto sobre el tejido del corazón. Hay trabajo en laboratorio, en animales y algunos estudios en personas. Uso exclusivo en investigación (RUO).",
     "presentation": "2 mg – 5 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
@@ -1028,8 +1028,8 @@ export const fallbackProducts = [
     "categories": [
       "hormona-crecimiento"
     ],
-    "short_description": "Hormona de crecimiento recombinante, ampliamente estudiada.",
-    "description": "HGH es hormona de crecimiento humana recombinante, investigada en modelos de señalización del receptor de GH, producción hepática de IGF-1 y metabolismo de proteínas y lípidos. Solo para uso en investigación (RUO).",
+    "short_description": "Hormona de crecimiento humana, de las más estudiadas que existen.",
+    "description": "HGH es la hormona de crecimiento humana, hecha en laboratorio pero igual a la que produce el cuerpo. Es de los compuestos con más investigación publicada: en laboratorio, en animales y en personas, desde hace décadas. Se estudia por cómo actúa sobre el crecimiento, el manejo de las proteínas y el de las grasas. Se mide en unidades (IU), no en miligramos. Uso exclusivo en investigación (RUO).",
     "presentation": "24 IU – 40 IU",
     "form": "Liofilizado",
     "purity": "99.0%",
@@ -1090,8 +1090,8 @@ export const fallbackProducts = [
     "categories": [
       "hormona-crecimiento"
     ],
-    "short_description": "Fragmento C-terminal de GH estudiado en lipólisis.",
-    "description": "Corresponde a la región 176-191 de la hormona de crecimiento, investigada en modelos de adipocitos y movilización de lípidos sin los efectos somatotrópicos de la molécula completa. Solo para uso en investigación (RUO).",
+    "short_description": "Es un pedazo de la hormona de crecimiento, estudiado en la grasa.",
+    "description": "Este compuesto es sólo un trocito de la hormona de crecimiento: la parte 176-191 de la molécula entera. Se estudia porque en laboratorio y en animales se ha mirado su efecto sobre las células que guardan la grasa, sin arrastrar los demás efectos de la hormona completa. La investigación se ha hecho sobre todo fuera del ser humano. Uso exclusivo en investigación (RUO).",
     "presentation": "1 mg – 15 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
@@ -1187,8 +1187,8 @@ export const fallbackProducts = [
     "categories": [
       "hormona-crecimiento"
     ],
-    "short_description": "Análogo de IGF-1 de vida media prolongada.",
-    "description": "IGF-1 LR3 es un análogo con baja afinidad por las proteínas de unión a IGF, estudiado en cultivos celulares por su señalización sostenida sobre el receptor de IGF-1. Solo para uso en investigación (RUO).",
+    "short_description": "Versión de larga duración de un factor de crecimiento.",
+    "description": "IGF-1 LR3 es una versión modificada del IGF-1, un factor de crecimiento que el cuerpo fabrica en el hígado. El cambio hace que dure más tiempo activo, porque se le pegan menos las proteínas que normalmente lo frenan. Se ha estudiado sobre todo en cultivos de células. Uso exclusivo en investigación (RUO).",
     "presentation": "0.1 mg – 1 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
@@ -1243,8 +1243,8 @@ export const fallbackProducts = [
     "categories": [
       "hormona-crecimiento"
     ],
-    "short_description": "Secretagogo selectivo de GH, ampliamente estudiado.",
-    "description": "Ipamorelin es un péptido de investigación estudiado por su señalización selectiva de hormona de crecimiento. Solo para uso en investigación (RUO).",
+    "short_description": "Se estudia porque pide hormona de crecimiento sin tocar otras.",
+    "description": "Ipamorelin es un péptido corto muy conocido dentro de este grupo. Se estudia porque da la señal de soltar hormona de crecimiento de forma bastante limpia: casi no mueve otras hormonas del cuerpo. El trabajo publicado viene sobre todo de laboratorio y de animales. Uso exclusivo en investigación (RUO).",
     "presentation": "2 mg – 10 mg",
     "form": "Liofilizado",
     "purity": "99.3%",
@@ -1310,8 +1310,8 @@ export const fallbackProducts = [
     "categories": [
       "hormona-crecimiento"
     ],
-    "short_description": "Variante de IGF-1 estudiada en reparación muscular.",
-    "description": "MGF es una variante de splicing del IGF-1 asociada al estímulo mecánico, investigada en modelos de células satélite, regeneración de fibra muscular y respuesta al daño. Solo para uso en investigación (RUO).",
+    "short_description": "Se estudia en la reparación del músculo tras el esfuerzo.",
+    "description": "MGF es una variante del IGF-1 que el músculo produce cuando se le exige un esfuerzo. Se ha estudiado en laboratorio y en animales, mirando las células que reparan la fibra del músculo después de un daño. Es un compuesto que se ha trabajado principalmente fuera del ser humano. Uso exclusivo en investigación (RUO).",
     "presentation": "2 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
@@ -1355,8 +1355,8 @@ export const fallbackProducts = [
     "categories": [
       "hormona-crecimiento"
     ],
-    "short_description": "MGF pegilado con mayor estabilidad en circulación.",
-    "description": "PEG-MGF es la versión pegilada del factor mecano-crecimiento, con vida media más larga, estudiada en modelos de activación de células satélite y reparación de músculo esquelético. Solo para uso en investigación (RUO).",
+    "short_description": "El mismo MGF, con un recubrimiento que lo hace durar más.",
+    "description": "PEG-MGF es el MGF con un recubrimiento añadido (el PEG) que hace que aguante más tiempo antes de deshacerse. Se estudia por lo mismo que el MGF: las células que reparan la fibra del músculo. La investigación se ha hecho sobre todo en laboratorio y en animales. Uso exclusivo en investigación (RUO).",
     "presentation": "2 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
@@ -1400,8 +1400,8 @@ export const fallbackProducts = [
     "categories": [
       "hormona-crecimiento"
     ],
-    "short_description": "Fragmento de GHRH (1-29), de investigación.",
-    "description": "Sermorelina es un fragmento de GHRH investigado en modelos de secreción de hormona de crecimiento. Solo para uso en investigación (RUO).",
+    "short_description": "Se estudia porque pide al cuerpo su propia hormona de crecimiento.",
+    "description": "Sermorelina es el trozo activo de la señal natural que el cerebro manda para que se suelte hormona de crecimiento. Al ser sólo ese trozo, dura poco y su efecto es breve. Es de los más estudiados de su grupo: hay trabajo en laboratorio, en animales y en personas. Uso exclusivo en investigación (RUO).",
     "presentation": "2 mg – 10 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
@@ -1466,8 +1466,8 @@ export const fallbackProducts = [
       "hormona-crecimiento",
       "stacks"
     ],
-    "short_description": "Análogo de GHRH junto a secretagogo selectivo.",
-    "description": "Combina tesamorelina, análogo estabilizado de GHRH, con ipamorelina; la mezcla se estudia por la señalización complementaria de los receptores de GHRH y de grelina en el eje somatotrópico. Solo para uso en investigación (RUO).",
+    "short_description": "Tesamorelina e Ipamorelina juntas en un mismo vial.",
+    "description": "Este vial trae dos péptidos juntos: tesamorelina e ipamorelina. Los dos se estudian por su efecto sobre la hormona de crecimiento, y cada uno la empuja por un camino distinto; de ahí que se investiguen en pareja. Cada uno por separado tiene su propia literatura; la combinación se ha estudiado menos. Uso exclusivo en investigación (RUO).",
     "presentation": "15 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
@@ -1513,8 +1513,8 @@ export const fallbackProducts = [
     "categories": [
       "longevidad"
     ],
-    "short_description": "Tetrapéptido estudiado en telómeros y ritmos circadianos.",
-    "description": "Epithalon es un tetrapéptido investigado en modelos de actividad de telomerasa y regulación circadiana. Solo para uso en investigación (RUO).",
+    "short_description": "Se estudia en el envejecimiento de la célula y el reloj del sueño.",
+    "description": "Epithalon es un péptido de cuatro aminoácidos. Se estudia por dos cosas: la enzima que cuida las puntas de los cromosomas —que se acortan con la edad— y el reloj interno que marca el día y la noche. Hay trabajo en laboratorio, en animales y también algunos estudios en personas, la mayoría de grupos rusos. Uso exclusivo en investigación (RUO).",
     "presentation": "10 mg – 50 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
@@ -1569,8 +1569,8 @@ export const fallbackProducts = [
     "categories": [
       "longevidad"
     ],
-    "short_description": "Péptido senolítico explorado en células senescentes.",
-    "description": "FOXO4 (FOXO4-DRI) es un péptido diseñado para interferir con la interacción FOXO4-p53, explorado en modelos de senescencia celular y depuración selectiva de células senescentes. Solo para uso en investigación (RUO).",
+    "short_description": "Se estudia en las células viejas que el cuerpo ya no renueva.",
+    "description": "FOXO4-DRI es un péptido diseñado en laboratorio para meterse entre dos proteínas que trabajan juntas dentro de la célula. Se estudia en el campo de las células senescentes, que son células que dejaron de dividirse pero siguen ahí. Todo el trabajo publicado es de laboratorio y de animales. Uso exclusivo en investigación (RUO).",
     "presentation": "2 mg – 10 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
@@ -1625,8 +1625,8 @@ export const fallbackProducts = [
     "categories": [
       "longevidad"
     ],
-    "short_description": "Antioxidante tripeptídico, de investigación.",
-    "description": "Glutatión es un tripéptido antioxidante investigado en modelos de estrés oxidativo. Solo para uso en investigación (RUO).",
+    "short_description": "Antioxidante que el propio cuerpo fabrica, muy estudiado.",
+    "description": "El glutatión es un antioxidante que el cuerpo produce por su cuenta; está en todas las células. Se estudia por su papel cuando la célula trabaja bajo tensión y se desgasta. Es de los compuestos con más investigación acumulada: en laboratorio, en animales y en personas. Uso exclusivo en investigación (RUO).",
     "presentation": "600 mg – 1500 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
@@ -1682,8 +1682,8 @@ export const fallbackProducts = [
     "categories": [
       "longevidad"
     ],
-    "short_description": "Péptido mitocondrial explorado en citoprotección celular.",
-    "description": "Humanin es un péptido codificado en el ADN mitocondrial, investigado en modelos de estrés celular, apoptosis y neuroprotección, dentro del campo de los péptidos derivados de mitocondria. Solo para uso en investigación (RUO).",
+    "short_description": "Se estudia por cómo protege a la célula cuando está bajo tensión.",
+    "description": "Humanin es un péptido curioso: no viene del ADN del núcleo, sino del de las mitocondrias, que son las pequeñas centrales de energía dentro de cada célula. Se estudia por cómo protege a la célula cuando está bajo tensión, incluidas las neuronas. Hay bastante trabajo en laboratorio y en animales. Uso exclusivo en investigación (RUO).",
     "presentation": "10 mg – 20 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
@@ -1736,8 +1736,8 @@ export const fallbackProducts = [
     "categories": [
       "longevidad"
     ],
-    "short_description": "Coenzima estudiada en metabolismo celular y longevidad. El vial de 500 mg rinde 5 semanas en esquema de mantenimiento.",
-    "description": "NAD+ es una coenzima investigada en modelos de metabolismo energético y envejecimiento celular. Solo para uso en investigación (RUO).",
+    "short_description": "Se estudia por su papel en la energía de la célula. El vial de 500 mg rinde 5 semanas.",
+    "description": "El NAD+ es una molécula que todas las células usan para producir energía; la cantidad va bajando con la edad. Es de los compuestos más estudiados en el campo del envejecimiento celular: hay trabajo en laboratorio, en animales y en personas. No es un péptido, es una coenzima. Uso exclusivo en investigación (RUO).",
     "presentation": "100 mg – 1000 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
@@ -1813,8 +1813,8 @@ export const fallbackProducts = [
     "categories": [
       "longevidad"
     ],
-    "short_description": "Péptido mitocondrial que se une a cardiolipina.",
-    "description": "SS-31 (elamipretida) es un tetrapéptido con afinidad por la cardiolipina de la membrana mitocondrial interna, estudiado en modelos de función mitocondrial y estrés oxidativo. Solo para uso en investigación (RUO).",
+    "short_description": "Se estudia en las centrales de energía de la célula.",
+    "description": "SS-31 (también llamado elamipretida) es un péptido de cuatro aminoácidos que se acomoda dentro de la mitocondria, la parte de la célula que fabrica la energía. Se estudia por cómo se porta esa mitocondria cuando está desgastada. Hay trabajo en laboratorio, en animales y también estudios en personas. Uso exclusivo en investigación (RUO).",
     "presentation": "10 mg – 50 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
@@ -1870,8 +1870,8 @@ export const fallbackProducts = [
     "categories": [
       "nootropicos"
     ],
-    "short_description": "Mezcla de péptidos estudiada en modelos neuronales.",
-    "description": "Cerebrolysin es una mezcla de péptidos de bajo peso molecular de origen porcino, investigada en modelos de neuroprotección, plasticidad sináptica y daño cerebral isquémico. Solo para uso en investigación (RUO).",
+    "short_description": "Mezcla de péptidos estudiada en las células del cerebro.",
+    "description": "Cerebrolysin no es un solo péptido: es una mezcla de péptidos pequeños obtenida de tejido de cerdo. Se estudia en el campo de la protección de las neuronas y de cómo se recuperan las conexiones del cerebro. Tiene décadas de literatura, sobre todo europea y asiática, con trabajo en laboratorio, en animales y en personas. Uso exclusivo en investigación (RUO).",
     "presentation": "60 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
@@ -1917,8 +1917,8 @@ export const fallbackProducts = [
     "categories": [
       "nootropicos"
     ],
-    "short_description": "Péptido inductor de sueño delta, de investigación.",
-    "description": "DSIP es un péptido investigado en modelos de regulación del sueño. Solo para uso en investigación (RUO).",
+    "short_description": "Se estudia por su relación con el sueño profundo.",
+    "description": "DSIP debe su nombre al sueño: las siglas quieren decir péptido inductor del sueño delta, que es la fase más profunda de la noche. Se descubrió en los años setenta y desde entonces se ha estudiado en laboratorio, en animales y en personas. Uso exclusivo en investigación (RUO).",
     "presentation": "2 mg – 10 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
@@ -1982,8 +1982,8 @@ export const fallbackProducts = [
     "categories": [
       "nootropicos"
     ],
-    "short_description": "Hormona pineal estudiada en ritmos circadianos.",
-    "description": "La melatonina es una indolamina producida por la glándula pineal, investigada en modelos de ritmo circadiano, receptores MT1 y MT2 y actividad antioxidante celular. Solo para uso en investigación (RUO).",
+    "short_description": "Hormona del reloj interno, de las más estudiadas que hay.",
+    "description": "La melatonina es la hormona que el cuerpo fabrica al oscurecer y que marca la hora de dormir; la produce una glándula pequeñita en el cerebro. Es de los compuestos con más investigación publicada: en laboratorio, en animales y en muchísimas personas. También se estudia por su papel como antioxidante dentro de la célula. Uso exclusivo en investigación (RUO).",
     "presentation": "10 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
@@ -2027,8 +2027,8 @@ export const fallbackProducts = [
     "categories": [
       "nootropicos"
     ],
-    "short_description": "Neuropéptido hipotalámico estudiado en vigilia y apetito.",
-    "description": "Orexina A es un neuropéptido hipotalámico que actúa sobre los receptores OX1R y OX2R, investigado en modelos de vigilia, ritmo sueño-vigilia y conducta alimentaria. Solo para uso en investigación (RUO).",
+    "short_description": "Se estudia por su papel en estar despierto y en el apetito.",
+    "description": "La orexina A es una señal que fabrica el cerebro y que ayuda a mantener el cuerpo despierto y alerta. También participa en el hambre. Se estudia sobre todo en laboratorio y en animales, con algunos trabajos en personas, y es una pieza clave para entender el ciclo de sueño y vigilia. Uso exclusivo en investigación (RUO).",
     "presentation": "10 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
@@ -2072,8 +2072,8 @@ export const fallbackProducts = [
     "categories": [
       "nootropicos"
     ],
-    "short_description": "Neuropéptido con preferencia por el receptor OX2R.",
-    "description": "Orexina B es la segunda forma del sistema orexinérgico, con preferencia por el receptor OX2R, estudiada en modelos de regulación del sueño, alerta y balance energético. Solo para uso en investigación (RUO).",
+    "short_description": "La otra orexina, estudiada en el sueño y la alerta.",
+    "description": "La orexina B es la segunda de las dos señales orexinas que fabrica el cerebro. Se parece a la orexina A pero prefiere uno de los dos interruptores donde éstas actúan. Se estudia en el sueño, la alerta y el gasto de energía, con trabajo hecho sobre todo en laboratorio y en animales. Uso exclusivo en investigación (RUO).",
     "presentation": "5 mg – 10 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
@@ -2126,8 +2126,8 @@ export const fallbackProducts = [
     "categories": [
       "nootropicos"
     ],
-    "short_description": "Análogo de spadina explorado en modelos de ánimo.",
-    "description": "PE-22-28 es un análogo corto de spadina que bloquea el canal TREK-1, explorado en modelos animales de conducta tipo depresiva y de plasticidad neuronal. Solo para uso en investigación (RUO).",
+    "short_description": "Se estudia en el ánimo y en las conexiones del cerebro.",
+    "description": "PE-22-28 es una versión corta de la spadina, un péptido que el propio cuerpo produce. Actúa sobre una compuerta de las neuronas llamada TREK-1. Se ha estudiado en laboratorio y en animales, en el campo del ánimo y de cómo se forman conexiones nuevas en el cerebro. Uso exclusivo en investigación (RUO).",
     "presentation": "10 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
@@ -2171,8 +2171,8 @@ export const fallbackProducts = [
     "categories": [
       "nootropicos"
     ],
-    "short_description": "Péptido derivado de p53 estudiado en células tumorales.",
-    "description": "PNC-27 une una secuencia derivada de p53 a un dominio de penetración celular, investigado in vitro por su interacción con HDM-2 en membranas de líneas tumorales. Solo para uso en investigación (RUO).",
+    "short_description": "Se estudia en laboratorio con líneas de células tumorales.",
+    "description": "PNC-27 junta dos partes: un trozo de la proteína p53, que es la que vigila el estado de la célula, y una cola que le permite atravesar la membrana. Se ha estudiado en laboratorio, en cultivos de células tumorales, mirando cómo se comporta al llegar a la membrana. Todo el trabajo publicado se ha hecho en cultivos de células. Uso exclusivo en investigación (RUO).",
     "presentation": "5 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
@@ -2216,8 +2216,8 @@ export const fallbackProducts = [
     "categories": [
       "nootropicos"
     ],
-    "short_description": "Péptido ansiolítico de investigación.",
-    "description": "Selank es un péptido investigado en modelos de ansiedad y modulación inmune. Solo para uso en investigación (RUO).",
+    "short_description": "Se estudia en la ansiedad y en las defensas del cuerpo.",
+    "description": "Selank es un péptido corto desarrollado en Rusia a partir de una molécula que el cuerpo ya produce. Se estudia en dos frentes: la ansiedad y la respuesta de las defensas. Hay trabajo en laboratorio, en animales y también estudios en personas, la mayoría publicados en ruso. Uso exclusivo en investigación (RUO).",
     "presentation": "5 mg – 10 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
@@ -2272,8 +2272,8 @@ export const fallbackProducts = [
     "categories": [
       "nootropicos"
     ],
-    "short_description": "Péptido nootrópico de investigación.",
-    "description": "Semax es un péptido investigado en modelos de función cognitiva y neuroprotección. Solo para uso en investigación (RUO).",
+    "short_description": "Se estudia en la memoria y en la protección de las neuronas.",
+    "description": "Semax es un péptido corto desarrollado en Rusia, derivado de una hormona que el cuerpo ya produce. Se estudia en la memoria, la atención y la protección de las neuronas. Es de los más trabajados de su familia: hay estudios en laboratorio, en animales y en personas, casi todos publicados en ruso. Uso exclusivo en investigación (RUO).",
     "presentation": "5 mg – 10 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
@@ -2328,8 +2328,8 @@ export const fallbackProducts = [
     "categories": [
       "otros"
     ],
-    "short_description": "Corticotropina completa estudiada en el eje suprarrenal.",
-    "description": "ACTH 1-39 es la secuencia completa de la hormona adrenocorticotrópica, investigada en modelos del eje hipotálamo-hipófisis-suprarrenal y en la esteroidogénesis de células adrenocorticales. Solo para uso en investigación (RUO).",
+    "short_description": "Hormona completa que se estudia en las glándulas suprarrenales.",
+    "description": "ACTH 1-39 es la hormona entera que la hipófisis manda para despertar a las glándulas suprarrenales, las que están encima de los riñones. Se estudia por esa comunicación y por cómo esas glándulas fabrican sus hormonas. Es una molécula muy conocida, con trabajo en laboratorio, en animales y en personas. Uso exclusivo en investigación (RUO).",
     "presentation": "5 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
@@ -2373,8 +2373,8 @@ export const fallbackProducts = [
     "categories": [
       "otros"
     ],
-    "short_description": "Derivado de Semax explorado en neuroplasticidad.",
-    "description": "ADMAX (Adamax) es un análogo modificado de Semax, derivado de ACTH 4-10, explorado en modelos neuronales de expresión de BDNF y NGF. Su literatura es limitada. Solo para uso en investigación (RUO).",
+    "short_description": "Pariente del Semax, estudiado en las conexiones del cerebro.",
+    "description": "ADMAX es una versión modificada del Semax, así que viene de la misma familia rusa de péptidos cortos. Se ha estudiado en laboratorio con neuronas, mirando dos sustancias que el cerebro usa para mantener y formar conexiones. Es de los que se han trabajado principalmente en laboratorio. Uso exclusivo en investigación (RUO).",
     "presentation": "5 mg – 10 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
@@ -2429,8 +2429,8 @@ export const fallbackProducts = [
     "categories": [
       "otros"
     ],
-    "short_description": "Análogo de relaxina explorado en fibrosis.",
-    "description": "B7-33 es un péptido monomérico derivado de la relaxina H2 que actúa sobre el receptor RXFP1, investigado en modelos preclínicos de fibrosis cardiaca, renal y pulmonar. Solo para uso en investigación (RUO).",
+    "short_description": "Se estudia en el endurecimiento de tejidos por cicatriz interna.",
+    "description": "B7-33 es una versión simplificada de la relaxina, una hormona que el cuerpo produce. Se estudia en la fibrosis, que es cuando un tejido se endurece porque se llena de cicatriz por dentro; se ha mirado en corazón, riñón y pulmón. El trabajo publicado es de laboratorio y de animales. Uso exclusivo en investigación (RUO).",
     "presentation": "2 mg – 10 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
@@ -2483,8 +2483,8 @@ export const fallbackProducts = [
     "categories": [
       "hormona-crecimiento"
     ],
-    "short_description": "Análogo de GHRH con DAC, acción prolongada.",
-    "description": "CJC-1295 con DAC es un análogo de GHRH de acción prolongada investigado en modelos de señalización de GH. Solo para uso en investigación (RUO).",
+    "short_description": "Versión de larga duración: se queda días en circulación.",
+    "description": "CJC-1295 con DAC pide al cuerpo que suelte su propia hormona de crecimiento. El añadido DAC hace que se agarre a una proteína de la sangre y aguante varios días, en vez de horas. Hay trabajo en laboratorio, en animales y estudios en personas. Uso exclusivo en investigación (RUO).",
     "presentation": "2 mg – 5 mg",
     "form": "Liofilizado",
     "purity": "99.1%",
@@ -2540,8 +2540,8 @@ export const fallbackProducts = [
     "categories": [
       "hormona-crecimiento"
     ],
-    "short_description": "Análogo de GHRH sin DAC, de investigación.",
-    "description": "CJC-1295 sin DAC es un análogo de GHRH investigado en modelos de señalización de hormona de crecimiento. Solo para uso en investigación (RUO).",
+    "short_description": "Versión corta: hace su trabajo y se va rápido.",
+    "description": "CJC-1295 sin DAC pide al cuerpo que suelte su propia hormona de crecimiento, igual que la versión con DAC, pero sin el añadido que la hace durar días: ésta actúa y se va en poco tiempo. Se estudia sobre todo en laboratorio y en animales. Uso exclusivo en investigación (RUO).",
     "presentation": "2 mg – 10 mg",
     "form": "Liofilizado",
     "purity": "99.1%",
@@ -2606,8 +2606,8 @@ export const fallbackProducts = [
     "categories": [
       "otros"
     ],
-    "short_description": "Eritropoyetina estudiada en producción de glóbulos rojos.",
-    "description": "La eritropoyetina es una glicoproteína investigada por su papel en la eritropoyesis y en modelos de hipoxia, progenitores eritroides y señalización del receptor de EPO. Solo para uso en investigación (RUO).",
+    "short_description": "Hormona que ordena fabricar glóbulos rojos.",
+    "description": "La eritropoyetina, o EPO, es la hormona que el riñón manda para que la médula fabrique glóbulos rojos. Se estudia por esa orden y por lo que pasa cuando falta oxígeno. Es una molécula muy conocida y muy investigada: en laboratorio, en animales y en personas. Se mide en unidades (IU). Uso exclusivo en investigación (RUO).",
     "presentation": "3000 IU",
     "form": "Liofilizado",
     "purity": "99.0%",
@@ -2643,8 +2643,8 @@ export const fallbackProducts = [
     "categories": [
       "sexual-hormonal"
     ],
-    "short_description": "Péptido de investigación del eje reproductivo.",
-    "description": "Kisspeptina-10 es un péptido investigado en modelos de regulación del eje hipotálamo-hipófisis-gonadal. Solo para uso en investigación (RUO).",
+    "short_description": "Se estudia por su papel en las hormonas reproductivas.",
+    "description": "La kisspeptina-10 es la señal con la que el cerebro pone en marcha la cadena de hormonas reproductivas. Se estudia justamente por eso: es la pieza que arranca el sistema. Hay trabajo en laboratorio, en animales y también estudios en personas. Uso exclusivo en investigación (RUO).",
     "presentation": "5 mg – 10 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
@@ -2700,8 +2700,8 @@ export const fallbackProducts = [
     "categories": [
       "perdida-peso"
     ],
-    "short_description": "Doble agonista GLP-1/glucagón, de investigación.",
-    "description": "Mazdutida es un péptido doble agonista GLP-1/glucagón investigado en modelos metabólicos. Solo para uso en investigación (RUO).",
+    "short_description": "Se estudia en el manejo del azúcar y del gasto de energía.",
+    "description": "Mazdutida es un péptido que imita a la vez dos señales que el cuerpo ya usa para avisar de que comió y para mover sus reservas. Se estudia en el manejo del azúcar en sangre y en el gasto de energía. Tiene trabajo en laboratorio, en animales y estudios en personas, sobre todo en China. Uso exclusivo en investigación (RUO).",
     "presentation": "5 mg – 10 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
@@ -2757,8 +2757,8 @@ export const fallbackProducts = [
       "estetica",
       "sexual-hormonal"
     ],
-    "short_description": "Análogo de alfa-MSH estudiado en pigmentación.",
-    "description": "Melanotan I (afamelanotida) es un análogo de la hormona alfa-MSH investigado en modelos de melanocitos, receptor MC1R y regulación de la pigmentación cutánea. Solo para uso en investigación (RUO).",
+    "short_description": "Se estudia por su efecto sobre el pigmento de la piel.",
+    "description": "Melanotan I, también llamado afamelanotida, imita una hormona que el cuerpo produce y que le indica a la piel que fabrique pigmento. Se estudia justamente en las células que hacen ese pigmento. Hay trabajo en laboratorio, en animales y también estudios en personas. Uso exclusivo en investigación (RUO).",
     "presentation": "10 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
@@ -2803,8 +2803,8 @@ export const fallbackProducts = [
       "estetica",
       "sexual-hormonal"
     ],
-    "short_description": "Análogo de melanocortina para investigación de pigmentación.",
-    "description": "Melanotan II es un análogo de melanocortina investigado en modelos de pigmentación. Solo para uso en investigación (RUO).",
+    "short_description": "Se estudia por su efecto sobre el pigmento de la piel.",
+    "description": "Melanotan II es pariente cercano del Melanotan I y también imita la hormona que le pide a la piel fabricar pigmento, aunque toca más interruptores que aquél. Se estudia en las células del pigmento. Hay trabajo en laboratorio, en animales y estudios en personas. Uso exclusivo en investigación (RUO).",
     "presentation": "10 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
@@ -2851,8 +2851,8 @@ export const fallbackProducts = [
       "perdida-peso",
       "stacks"
     ],
-    "short_description": "Mezcla lipotrópica con vitamina B12 añadida.",
-    "description": "MIC combina metionina, inositol y colina con vitamina B12, usada en estudios de metabolismo hepático de lípidos y de vías dependientes de grupos metilo. Solo para uso en investigación (RUO).",
+    "short_description": "Mezcla de metionina, inositol, colina y vitamina B12.",
+    "description": "MIC no es un péptido: es una mezcla de tres sustancias muy conocidas —metionina, inositol y colina— a las que se añade vitamina B12. Se estudia en el manejo de las grasas por parte del hígado. Los tres primeros ingredientes están en la comida de todos los días. Uso exclusivo en investigación (RUO).",
     "presentation": "10 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
@@ -2895,8 +2895,8 @@ export const fallbackProducts = [
     "categories": [
       "sexual-hormonal"
     ],
-    "short_description": "Nonapéptido de investigación.",
-    "description": "Oxitocina es un nonapéptido investigado en modelos de conducta social y señalización. Solo para uso en investigación (RUO).",
+    "short_description": "Hormona muy conocida, estudiada en el vínculo y la confianza.",
+    "description": "La oxitocina es una hormona pequeña, de nueve aminoácidos, que el propio cuerpo fabrica. Se le conoce por su papel en el vínculo entre las personas y en el parto. Se estudia en laboratorio, en animales y en personas; es de las hormonas con más literatura publicada. Uso exclusivo en investigación (RUO).",
     "presentation": "2 mg – 10 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
@@ -2960,8 +2960,8 @@ export const fallbackProducts = [
     "categories": [
       "nootropicos"
     ],
-    "short_description": "Péptido derivado de CNTF explorado en neurogénesis.",
-    "description": "P21 es un péptido derivado del factor neurotrófico ciliar, explorado en modelos de neurogénesis del hipocampo y plasticidad sináptica; su literatura es todavía limitada. Solo para uso en investigación (RUO).",
+    "short_description": "Se estudia en la formación de neuronas nuevas.",
+    "description": "P21 viene de un factor que el cuerpo usa para cuidar a las neuronas. Se estudia en el hipocampo, la zona del cerebro donde se forman neuronas nuevas y se guarda la memoria. El trabajo publicado es de laboratorio y de animales. Uso exclusivo en investigación (RUO).",
     "presentation": "5 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
@@ -3005,8 +3005,8 @@ export const fallbackProducts = [
     "categories": [
       "hormona-crecimiento"
     ],
-    "short_description": "Hormona de crecimiento recombinante de 191 aminoácidos.",
-    "description": "Somatropina es hormona de crecimiento humana recombinante de secuencia completa de 191 aminoácidos, investigada en modelos de señalización del receptor de GH y de producción de IGF-1. Solo para uso en investigación (RUO).",
+    "short_description": "Hormona de crecimiento humana completa, de 191 aminoácidos.",
+    "description": "La somatropina es la hormona de crecimiento humana con su cadena completa de 191 aminoácidos, hecha en laboratorio pero idéntica a la del cuerpo. Es de los compuestos con más investigación publicada, en laboratorio, en animales y en personas. Se mide en unidades (IU), no en miligramos. Uso exclusivo en investigación (RUO).",
     "presentation": "10 IU – 15 IU",
     "form": "Liofilizado",
     "purity": "99.0%",
@@ -3067,8 +3067,8 @@ export const fallbackProducts = [
     "categories": [
       "hormona-crecimiento"
     ],
-    "short_description": "Análogo estabilizado de GHRH, de investigación.",
-    "description": "Tesamorelina es un análogo estabilizado de GHRH investigado en modelos metabólicos y de composición corporal. Solo para uso en investigación (RUO).",
+    "short_description": "Se estudia en la grasa del abdomen y la hormona de crecimiento.",
+    "description": "Tesamorelina es una versión reforzada de la señal natural que pide hormona de crecimiento; el refuerzo la hace aguantar más antes de deshacerse. Se estudia en el manejo de las grasas y en la composición del cuerpo. Hay trabajo en laboratorio, en animales y estudios en personas. Uso exclusivo en investigación (RUO).",
     "presentation": "2 mg – 20 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
@@ -3142,8 +3142,8 @@ export const fallbackProducts = [
     "categories": [
       "otros"
     ],
-    "short_description": "Neuropéptido estudiado en vasodilatación e inflamación.",
-    "description": "El péptido intestinal vasoactivo es un neuropéptido de 28 aminoácidos investigado en modelos de vasodilatación, regulación inmunitaria y señalización de los receptores VPAC1 y VPAC2. Solo para uso en investigación (RUO).",
+    "short_description": "Se estudia en los vasos sanguíneos y en la inflamación.",
+    "description": "VIP es un péptido de 28 aminoácidos que el cuerpo fabrica y que ayuda a que los vasos sanguíneos se abran. También participa en la respuesta de las defensas cuando hay inflamación. Se estudia en laboratorio, en animales y en personas; es una molécula bien conocida. Uso exclusivo en investigación (RUO).",
     "presentation": "5 mg – 10 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
@@ -3198,8 +3198,8 @@ export const fallbackProducts = [
     "categories": [
       "perdida-peso"
     ],
-    "short_description": "Inhibidor de NNMT explorado en adipocitos.",
-    "description": "5-amino-1MQ es un inhibidor de la nicotinamida N-metiltransferasa estudiado en líneas de adipocitos y en modelos preclínicos de metabolismo lipídico y regulación de NAD+. Solo para uso en investigación (RUO).",
+    "short_description": "Se estudia por su efecto en las células que almacenan grasa.",
+    "description": "5-Amino-1MQ es una molécula pequeña, no un péptido. Se estudia porque frena una enzima que trabaja dentro de las células que almacenan grasa, y de paso influye en el NAD+, que es lo que la célula usa para producir energía. La investigación se ha hecho en laboratorio y en animales. Uso exclusivo en investigación (RUO).",
     "presentation": "5 mg – 50 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
@@ -3264,8 +3264,8 @@ export const fallbackProducts = [
     "categories": [
       "perdida-peso"
     ],
-    "short_description": "Activador de AMPK estudiado en metabolismo energético.",
-    "description": "AICAR es un análogo de AMP investigado como activador de la vía AMPK en modelos de músculo esquelético, oxidación de glucosa y metabolismo mitocondrial. Solo para uso en investigación (RUO).",
+    "short_description": "Se estudia en cómo el músculo produce y gasta energía.",
+    "description": "AICAR es una molécula pequeña, no un péptido. Se estudia porque enciende un interruptor que la célula usa cuando le falta energía, el mismo que se activa con el ejercicio. El trabajo se ha hecho en laboratorio y en animales, sobre todo en músculo. Uso exclusivo en investigación (RUO).",
     "presentation": "50 mg – 100 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
@@ -3318,8 +3318,8 @@ export const fallbackProducts = [
     "categories": [
       "perdida-peso"
     ],
-    "short_description": "Fragmento de HGH estudiado en metabolismo lipídico.",
-    "description": "AOD-9604 es un fragmento modificado de la región 176-191 de la hormona de crecimiento, investigado en modelos de lipólisis y adipocitos sin la actividad somatotrópica clásica. Solo para uso en investigación (RUO).",
+    "short_description": "Trozo modificado de la hormona de crecimiento, visto en la grasa.",
+    "description": "AOD-9604 es un pedacito de la hormona de crecimiento al que se le hizo un cambio en laboratorio. Se estudia por su efecto sobre las células que guardan la grasa, sin arrastrar los demás efectos de la hormona entera. Hay trabajo en laboratorio, en animales y también estudios en personas. Uso exclusivo en investigación (RUO).",
     "presentation": "2 mg – 10 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
@@ -3384,8 +3384,8 @@ export const fallbackProducts = [
       "perdida-peso",
       "stacks"
     ],
-    "short_description": "Análogo de amilina junto a agonista GLP-1.",
-    "description": "Combina cagrilintida, análogo de amilina, con semaglutida, agonista del receptor GLP-1; se investiga la señalización conjunta de ambas vías en modelos de regulación metabólica. Solo para uso en investigación (RUO).",
+    "short_description": "Cagrilintida y semaglutida juntas en un mismo vial.",
+    "description": "Este vial trae dos péptidos juntos: cagrilintida y semaglutida. Cada uno imita una señal distinta de las que el cuerpo usa para avisar que ya comió, y por eso se estudian en pareja. Los dos por separado tienen estudios en laboratorio, en animales y en personas. Uso exclusivo en investigación (RUO).",
     "presentation": "5 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
@@ -3431,8 +3431,8 @@ export const fallbackProducts = [
     "categories": [
       "perdida-peso"
     ],
-    "short_description": "Análogo de amilina, de investigación metabólica.",
-    "description": "Cagrilintida es un análogo de amilina de acción prolongada investigado en modelos de saciedad y composición corporal. Solo para uso en investigación (RUO).",
+    "short_description": "Se estudia por la señal de saciedad que imita.",
+    "description": "Cagrilintida imita a la amilina, una hormona que el páncreas suelta junto con la insulina para avisar de que ya se comió. Está hecha para durar más que la original. Se estudia en la saciedad y en la composición del cuerpo, con trabajo en laboratorio, en animales y en personas. Uso exclusivo en investigación (RUO).",
     "presentation": "2 mg – 10 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
@@ -3496,8 +3496,8 @@ export const fallbackProducts = [
     "categories": [
       "perdida-peso"
     ],
-    "short_description": "Agonista GLP-1 de acción prolongada, ampliamente estudiado.",
-    "description": "Dulaglutida es una proteína de fusión que une un análogo de GLP-1 a un fragmento Fc, investigada en modelos de señalización incretínica y regulación de glucosa. Solo para uso en investigación (RUO).",
+    "short_description": "Imita la señal de saciedad y dura una semana entera.",
+    "description": "Dulaglutida imita el GLP-1, la señal que el intestino manda al cerebro cuando se ha comido. Va pegada a un trozo de anticuerpo, y eso hace que aguante toda una semana. Se estudia en el manejo del azúcar en sangre; es de los compuestos más investigados de su grupo, también en personas. Uso exclusivo en investigación (RUO).",
     "presentation": "10 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
@@ -3544,8 +3544,8 @@ export const fallbackProducts = [
     "categories": [
       "perdida-peso"
     ],
-    "short_description": "Compuesto estudiado en transporte de ácidos grasos.",
-    "description": "La L-carnitina es un compuesto que participa en el transporte de ácidos grasos hacia la mitocondria, investigado en modelos de oxidación lipídica y metabolismo energético celular. Solo para uso en investigación (RUO).",
+    "short_description": "Lleva las grasas hasta donde la célula las quema.",
+    "description": "La L-carnitina es una sustancia muy conocida que el cuerpo fabrica y que también está en la carne. Su trabajo es llevar las grasas hasta la mitocondria, la parte de la célula donde se queman para dar energía. Se ha estudiado muchísimo, en laboratorio, en animales y en personas. Uso exclusivo en investigación (RUO).",
     "presentation": "2 mg – 1200 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
@@ -3618,8 +3618,8 @@ export const fallbackProducts = [
     "categories": [
       "perdida-peso"
     ],
-    "short_description": "Solución lipotrópica estudiada en metabolismo de grasas.",
-    "description": "LIPO-C es una formulación lipotrópica con metionina, inositol y colina, usada en estudios de metabolismo hepático de lípidos y de movilización de grasa en modelos experimentales. Solo para uso en investigación (RUO).",
+    "short_description": "Solución con metionina, inositol y colina, lista para usar.",
+    "description": "LIPO-C no es un péptido: es una solución que mezcla metionina, inositol y colina, tres sustancias que están en la comida de todos los días. Se estudia en el manejo de las grasas por parte del hígado. Viene lista en frasco de 10 mL, no en polvo. Uso exclusivo en investigación (RUO).",
     "presentation": "10 mL",
     "form": "Liofilizado",
     "purity": "99.0%",
@@ -3662,8 +3662,8 @@ export const fallbackProducts = [
     "categories": [
       "perdida-peso"
     ],
-    "short_description": "Agonista del receptor GLP-1, ampliamente estudiado.",
-    "description": "Liraglutida es un análogo acilado de GLP-1 con unión a albúmina, investigado en modelos de señalización incretínica, células beta pancreáticas y regulación del apetito. Solo para uso en investigación (RUO).",
+    "short_description": "Imita la señal de saciedad; se estudia desde hace muchos años.",
+    "description": "Liraglutida imita el GLP-1, la señal que el intestino manda al cerebro cuando ya se comió. Lleva un ácido graso pegado que la hace agarrarse a una proteína de la sangre y durar cerca de un día. Es de las más estudiadas de su grupo: laboratorio, animales y muchas personas. Uso exclusivo en investigación (RUO).",
     "presentation": "5 mg – 30 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
@@ -3728,8 +3728,8 @@ export const fallbackProducts = [
     "categories": [
       "perdida-peso"
     ],
-    "short_description": "Péptido mitocondrial de investigación metabólica.",
-    "description": "MOTS-c es un péptido de origen mitocondrial investigado en modelos de metabolismo y homeostasis energética. Solo para uso en investigación (RUO).",
+    "short_description": "Se estudia por su papel en la energía del cuerpo.",
+    "description": "MOTS-c es un péptido poco común: no viene del ADN del núcleo, sino del de las mitocondrias, que son las centrales de energía de la célula. Se estudia por cómo el cuerpo administra esa energía. Hay bastante trabajo en laboratorio y en animales, y estudios más recientes en personas. Uso exclusivo en investigación (RUO).",
     "presentation": "10 mg – 40 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
@@ -3804,8 +3804,8 @@ export const fallbackProducts = [
     "categories": [
       "perdida-peso"
     ],
-    "short_description": "Triple agonista GIP/GLP-1/glucagón, de investigación metabólica.",
-    "description": "Retatrutida es un péptido de investigación estudiado como triple agonista de los receptores GIP, GLP-1 y glucagón en modelos de metabolismo y composición corporal. Solo para uso en investigación (RUO).",
+    "short_description": "Imita tres señales del cuerpo a la vez; muy estudiada hoy.",
+    "description": "Retatrutida es un péptido que imita al mismo tiempo tres señales que el cuerpo usa para avisar que comió y para mover sus reservas. Es de los compuestos que más se están investigando ahora mismo en el terreno del metabolismo, con estudios en laboratorio, en animales y en personas. Uso exclusivo en investigación (RUO).",
     "presentation": "10 mg – 100 mg",
     "form": "Liofilizado",
     "purity": "99.1%",
@@ -3922,8 +3922,8 @@ export const fallbackProducts = [
       "perdida-peso",
       "stacks"
     ],
-    "short_description": "Combinación de agonistas incretínicos triple y dual.",
-    "description": "Une retatrutida, agonista triple de GLP-1, GIP y glucagón, con tirzepatida, agonista dual GLP-1/GIP; se investiga la superposición de estas vías en modelos metabólicos. Solo para uso en investigación (RUO).",
+    "short_description": "Retatrutida y tirzepatida juntas en un mismo vial.",
+    "description": "Este vial trae dos péptidos juntos: retatrutida y tirzepatida. Los dos imitan señales que el cuerpo usa para avisar que ya comió, sólo que la retatrutida cubre tres y la tirzepatida dos. Cada uno por separado tiene estudios en personas; la combinación en un mismo vial se ha estudiado poco. Uso exclusivo en investigación (RUO).",
     "presentation": "60 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
@@ -3969,8 +3969,8 @@ export const fallbackProducts = [
     "categories": [
       "perdida-peso"
     ],
-    "short_description": "Agonista GLP-1 para investigación metabólica.",
-    "description": "Semaglutida es un péptido agonista del receptor GLP-1 investigado en modelos de metabolismo de la glucosa y el apetito. Solo para uso en investigación (RUO).",
+    "short_description": "Imita la señal que avisa al cerebro de que ya se comió.",
+    "description": "Semaglutida imita el GLP-1, una señal que el intestino manda al cerebro cuando ya se comió. Está hecha para durar cerca de una semana, en vez de los minutos que dura la señal original. Es de los péptidos más estudiados que hay: laboratorio, animales y muchísimas personas. Uso exclusivo en investigación (RUO).",
     "presentation": "2 mg – 50 mg",
     "form": "Liofilizado",
     "purity": "99.1%",
@@ -4071,8 +4071,8 @@ export const fallbackProducts = [
     "categories": [
       "perdida-peso"
     ],
-    "short_description": "Agonista de ERR explorado como mimético del ejercicio.",
-    "description": "SLU-PP-332 es una molécula pequeña agonista de los receptores relacionados con estrógenos, explorada en modelos de metabolismo oxidativo y de respuesta muscular tipo ejercicio. Solo para uso en investigación (RUO).",
+    "short_description": "Se estudia como si imitara el efecto del ejercicio.",
+    "description": "SLU-PP-332 es una molécula pequeña, no un péptido. Se estudia porque enciende en el músculo unos interruptores parecidos a los que activa el ejercicio, y por eso se le llama mimético del ejercicio. Los trabajos publicados son de laboratorio y de animales. Uso exclusivo en investigación (RUO).",
     "presentation": "5 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
@@ -4118,8 +4118,8 @@ export const fallbackProducts = [
     "categories": [
       "perdida-peso"
     ],
-    "short_description": "Agonista dual de GLP-1 y glucagón.",
-    "description": "Survodutide es un péptido agonista dual de los receptores de GLP-1 y glucagón, investigado en modelos de gasto energético, metabolismo hepático y regulación del peso corporal. Solo para uso en investigación (RUO).",
+    "short_description": "Imita dos señales del cuerpo a la vez.",
+    "description": "Survodutide es un péptido que imita dos señales que el cuerpo usa: la que avisa que ya comió y la que manda sacar reservas de energía. Se estudia en el gasto de energía, en el hígado y en la composición del cuerpo, con trabajo en laboratorio, en animales y en personas. Uso exclusivo en investigación (RUO).",
     "presentation": "10 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
@@ -4165,8 +4165,8 @@ export const fallbackProducts = [
     "categories": [
       "perdida-peso"
     ],
-    "short_description": "Doble agonista GIP/GLP-1 para investigación.",
-    "description": "Tirzepatida es un péptido doble agonista GIP/GLP-1 investigado en modelos de control glucémico y composición corporal. Solo para uso en investigación (RUO).",
+    "short_description": "Imita dos señales de saciedad en lugar de una.",
+    "description": "Tirzepatida imita dos señales que el intestino manda al cerebro después de comer, no una sola. Está hecha para durar cerca de una semana. Se estudia en el manejo del azúcar en sangre y en la composición del cuerpo; hay muchísimos estudios en laboratorio, en animales y en personas. Uso exclusivo en investigación (RUO).",
     "presentation": "10 mg – 120 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
@@ -4277,8 +4277,8 @@ export const fallbackProducts = [
     "categories": [
       "recuperacion"
     ],
-    "short_description": "Péptido derivado de EPO explorado en nervio periférico.",
-    "description": "ARA-290 (cibinetide) es un péptido derivado de la eritropoyetina que actúa sobre el receptor innato de reparación, estudiado en modelos de neuropatía e inflamación tisular. Solo para uso en investigación (RUO).",
+    "short_description": "Se estudia en los nervios pequeños y en la inflamación.",
+    "description": "ARA-290, también llamado cibinetide, es un trocito de la eritropoyetina al que se le quitó la parte que fabrica glóbulos rojos: queda sólo la que se relaciona con la reparación. Se estudia en los nervios pequeños y en la inflamación de los tejidos, con trabajo en laboratorio, en animales y en personas. Uso exclusivo en investigación (RUO).",
     "presentation": "10 mg – 16 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
@@ -4333,8 +4333,8 @@ export const fallbackProducts = [
     "categories": [
       "recuperacion"
     ],
-    "short_description": "Péptido estudiado en reparación de tejidos y mucosa gástrica.",
-    "description": "BPC-157 es un péptido de investigación ampliamente estudiado por su rol en la reparación de tejidos, tendones e integridad gastrointestinal. Solo para uso en investigación (RUO).",
+    "short_description": "Se estudia en la reparación de tejidos y del estómago.",
+    "description": "BPC-157 es un péptido corto que viene de una proteína del jugo gástrico. Es de los más estudiados de todo el catálogo: hay cientos de trabajos, sobre todo en animales, mirando tendones, músculo, intestino y estómago. La investigación en personas es mucho menor. Uso exclusivo en investigación (RUO).",
     "presentation": "2 mg – 20 mg",
     "form": "Liofilizado",
     "purity": "99.4%",
@@ -4409,8 +4409,8 @@ export const fallbackProducts = [
       "recuperacion",
       "stacks"
     ],
-    "short_description": "Combinación clásica estudiada en reparación de tejidos.",
-    "description": "Combina BPC-157, péptido gástrico estable, con TB-500, fragmento de timosina beta-4; ambos se investigan en modelos de angiogénesis, migración celular y remodelación de tejido conectivo. Solo para uso en investigación (RUO).",
+    "short_description": "BPC-157 y TB-500 juntos, la pareja clásica de reparación.",
+    "description": "Este vial trae los dos péptidos que más se estudian juntos en reparación de tejidos: BPC-157 y TB-500. Los dos aparecen en trabajos sobre formación de vasos nuevos, movimiento de las células y remodelado del tejido. La mayor parte de esa investigación es en laboratorio y en animales. Uso exclusivo en investigación (RUO).",
     "presentation": "20 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
@@ -4457,8 +4457,8 @@ export const fallbackProducts = [
       "recuperacion",
       "stacks"
     ],
-    "short_description": "Combinación de BPC-157 y TB-500 en reparación tisular.",
-    "description": "Presentación de menor gramaje de la combinación BPC-157 y TB-500, estudiada en modelos de cicatrización, angiogénesis y remodelación de tendón, músculo y mucosa intestinal. Solo para uso en investigación (RUO).",
+    "short_description": "La misma pareja BPC-157 y TB-500, en tamaño menor.",
+    "description": "Es la presentación más pequeña de la pareja clásica: BPC-157 y TB-500 en un mismo vial. Los dos se estudian en cicatrización, formación de vasos nuevos y remodelado de tendón, músculo y mucosa del intestino. La mayor parte del trabajo publicado es en laboratorio y en animales. Uso exclusivo en investigación (RUO).",
     "presentation": "10 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
@@ -4504,8 +4504,8 @@ export const fallbackProducts = [
     "categories": [
       "recuperacion"
     ],
-    "short_description": "Glicoproteína estudiada como antagonista de miostatina.",
-    "description": "La folistatina es una glicoproteína que une activinas y miostatina, investigada en modelos de músculo esquelético, señalización TGF-beta y regulación de la masa muscular. Solo para uso en investigación (RUO).",
+    "short_description": "Se estudia porque frena al freno natural del músculo.",
+    "description": "La folistatina es una proteína que el cuerpo fabrica y que se engancha a la miostatina, que es la señal encargada de frenar el crecimiento del músculo. Por eso se estudia en el músculo esquelético. Hay bastante trabajo en laboratorio y en animales. Uso exclusivo en investigación (RUO).",
     "presentation": "1 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
@@ -4549,8 +4549,8 @@ export const fallbackProducts = [
     "categories": [
       "recuperacion"
     ],
-    "short_description": "Miostatina estudiada como regulador de masa muscular.",
-    "description": "GDF-8, conocida como miostatina, es un factor de la familia TGF-beta investigado como regulador negativo del crecimiento muscular en modelos de miocitos y músculo esquelético. Solo para uso en investigación (RUO).",
+    "short_description": "Es la miostatina, el freno natural del crecimiento muscular.",
+    "description": "GDF-8 es el nombre técnico de la miostatina, la señal que el propio cuerpo usa para frenar el crecimiento del músculo. Se estudia justo por eso: para entender cómo el organismo pone ese límite. El trabajo publicado es de laboratorio y de animales. Uso exclusivo en investigación (RUO).",
     "presentation": "1 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
@@ -4595,8 +4595,8 @@ export const fallbackProducts = [
       "recuperacion",
       "stacks"
     ],
-    "short_description": "Mezcla de reparación tisular con tripéptido de cobre.",
-    "description": "GLOW combina BPC-157, GHK-Cu y TB-500; la mezcla se investiga por la superposición de vías de angiogénesis, migración celular y remodelación de matriz en piel y tejido conectivo. Solo para uso en investigación (RUO).",
+    "short_description": "Tres péptidos de reparación y piel en un mismo vial.",
+    "description": "GLOW junta tres péptidos en un solo vial: BPC-157, GHK-Cu y TB-500. Los tres aparecen en trabajos sobre reparación de tejido, formación de vasos nuevos y la estructura que sostiene la piel. Cada uno tiene su propia literatura, casi toda de laboratorio y de animales. Uso exclusivo en investigación (RUO).",
     "presentation": "70 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
@@ -4643,8 +4643,8 @@ export const fallbackProducts = [
       "recuperacion",
       "stacks"
     ],
-    "short_description": "Mezcla de cuatro péptidos de reparación y matriz.",
-    "description": "KLOW combina BPC-157, GHK-Cu, TB-500 y KPV; se investiga por la suma de vías de reparación tisular, remodelación de matriz y modulación de la respuesta inflamatoria. Solo para uso en investigación (RUO).",
+    "short_description": "Cuatro péptidos de reparación en un mismo vial.",
+    "description": "KLOW junta cuatro péptidos: BPC-157, GHK-Cu, TB-500 y KPV. Los tres primeros aparecen en trabajos de reparación de tejido y de la estructura que sostiene la piel; el KPV se estudia en la respuesta inflamatoria. Cada uno tiene su propia literatura, casi toda de laboratorio y de animales. Uso exclusivo en investigación (RUO).",
     "presentation": "80 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
@@ -4690,8 +4690,8 @@ export const fallbackProducts = [
     "categories": [
       "recuperacion"
     ],
-    "short_description": "Tripéptido derivado de α-MSH, de investigación.",
-    "description": "KPV es un tripéptido investigado en modelos de respuesta inflamatoria y mucosa. Solo para uso en investigación (RUO).",
+    "short_description": "Se estudia en la inflamación del intestino y de la piel.",
+    "description": "KPV es un péptido de apenas tres aminoácidos: es el trocito final de una hormona que el cuerpo ya produce. Se estudia en la respuesta inflamatoria, sobre todo en el intestino y en la piel. El trabajo publicado es de laboratorio y de animales. Uso exclusivo en investigación (RUO).",
     "presentation": "5 mg – 10 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
@@ -4746,8 +4746,8 @@ export const fallbackProducts = [
     "categories": [
       "recuperacion"
     ],
-    "short_description": "Péptido antimicrobiano humano de la familia catelicidina.",
-    "description": "LL-37 es la única catelicidina humana, investigada en modelos de inmunidad innata, actividad antimicrobiana de amplio espectro, angiogénesis y cicatrización de heridas. Solo para uso en investigación (RUO).",
+    "short_description": "Es la defensa natural del cuerpo contra microbios.",
+    "description": "LL-37 es el único péptido de su clase que fabrica el ser humano: forma parte de la primera línea de defensa contra los microbios. Se estudia en esa defensa natural, en la formación de vasos nuevos y en el cierre de heridas. Es de los más investigados en su campo, sobre todo en laboratorio. Uso exclusivo en investigación (RUO).",
     "presentation": "5 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
@@ -4793,8 +4793,8 @@ export const fallbackProducts = [
     "categories": [
       "recuperacion"
     ],
-    "short_description": "Dominio de transducción explorado como vehículo intracelular.",
-    "description": "PTD-1 es un péptido de penetración celular de la familia de dominios de transducción de proteínas, explorado como vehículo de entrega intracelular; su literatura pública es limitada. Solo para uso en investigación (RUO).",
+    "short_description": "Se estudia como vehículo para meter cosas dentro de la célula.",
+    "description": "PTD-1 no se estudia por lo que hace, sino por a dónde llega: pertenece a un grupo de péptidos capaces de atravesar la membrana de la célula, y por eso se investigan como vehículo para llevar otras moléculas adentro. El trabajo publicado es de laboratorio. Uso exclusivo en investigación (RUO).",
     "presentation": "5 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
@@ -4838,8 +4838,8 @@ export const fallbackProducts = [
     "categories": [
       "recuperacion"
     ],
-    "short_description": "Péptido que modula la vía Wnt en folículo.",
-    "description": "PTD-DBM es un péptido diseñado para interrumpir la interacción CXXC5-Dishevelled y liberar la señalización Wnt, investigado en modelos murinos de folículo piloso y cicatrización. Solo para uso en investigación (RUO).",
+    "short_description": "Se estudia en el folículo del pelo y el cierre de heridas.",
+    "description": "PTD-DBM es un péptido diseñado en laboratorio para soltar una vía de señales que la célula usa cuando se está regenerando. Se ha estudiado en ratones, mirando el folículo del pelo y el cierre de heridas. Todo el trabajo publicado es de laboratorio y de animales. Uso exclusivo en investigación (RUO).",
     "presentation": "1 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
@@ -4883,8 +4883,8 @@ export const fallbackProducts = [
     "categories": [
       "recuperacion"
     ],
-    "short_description": "Fracción de timosina beta-4 estudiada en movilidad celular.",
-    "description": "TB-500 es investigado por su papel en la migración celular y recuperación tisular amplia. Solo para uso en investigación (RUO).",
+    "short_description": "Se estudia en el movimiento de las células y la reparación.",
+    "description": "TB-500 es la parte activa de la timosina beta-4, una proteína que el cuerpo produce. Se estudia porque tiene que ver con cómo se mueven las células cuando un tejido se está reparando. Es de los péptidos más conocidos en recuperación, con trabajo hecho sobre todo en laboratorio y en animales. Uso exclusivo en investigación (RUO).",
     "presentation": "2 mg – 10 mg",
     "form": "Liofilizado",
     "purity": "99.1%",
@@ -4948,8 +4948,8 @@ export const fallbackProducts = [
     "categories": [
       "sexual-hormonal"
     ],
-    "short_description": "GnRH sintética estudiada en el eje reproductivo.",
-    "description": "Gonadorelina es la forma sintética de la hormona liberadora de gonadotropinas, investigada en modelos del eje hipotálamo-hipófisis-gónada y de liberación pulsátil de LH y FSH. Solo para uso en investigación (RUO).",
+    "short_description": "Es la señal que pone en marcha las hormonas reproductivas.",
+    "description": "La gonadorelina es la versión hecha en laboratorio de la señal que el cerebro manda para poner en marcha las hormonas reproductivas. Lo característico es que el cuerpo la manda a pulsos, no de forma continua, y eso mismo se estudia. Hay trabajo en laboratorio, en animales y en personas. Uso exclusivo en investigación (RUO).",
     "presentation": "2 mg – 5 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
@@ -5005,8 +5005,8 @@ export const fallbackProducts = [
     "categories": [
       "sexual-hormonal"
     ],
-    "short_description": "Gonadotropina que actúa sobre el receptor de LH.",
-    "description": "La gonadotropina coriónica humana es una hormona glicoproteica investigada por su actividad sobre el receptor de LH en células de Leydig y en modelos de esteroidogénesis gonadal. Solo para uso en investigación (RUO).",
+    "short_description": "Hormona del embarazo, muy estudiada en el eje hormonal.",
+    "description": "La HCG es la hormona que aparece durante el embarazo y que detectan las pruebas caseras. Se estudia porque actúa sobre el mismo interruptor que usa la hormona LH, la que da la orden de fabricar hormonas sexuales. Es una molécula muy conocida, con trabajo en laboratorio, en animales y en personas. Se mide en unidades (IU). Uso exclusivo en investigación (RUO).",
     "presentation": "2,000IU – 10,000IU",
     "form": "Liofilizado",
     "purity": "99.0%",
@@ -5079,8 +5079,8 @@ export const fallbackProducts = [
     "categories": [
       "sexual-hormonal"
     ],
-    "short_description": "Gonadotropinas menopáusicas estudiadas en foliculogénesis.",
-    "description": "HMG (menotropinas) es una preparación con actividad FSH y LH, investigada en modelos de foliculogénesis, esteroidogénesis ovárica y estimulación gonadal. Solo para uso en investigación (RUO).",
+    "short_description": "Mezcla de dos hormonas que trabajan sobre los ovarios.",
+    "description": "HMG, también llamada menotropina, trae juntas las dos hormonas que el cuerpo usa para hacer trabajar a los ovarios y a los testículos. Se estudia en la maduración de los folículos y en la producción de hormonas sexuales. Es un preparado con décadas de literatura, también en personas. Se mide en unidades (IU). Uso exclusivo en investigación (RUO).",
     "presentation": "75 IU",
     "form": "Liofilizado",
     "purity": "99.0%",
@@ -5116,8 +5116,8 @@ export const fallbackProducts = [
     "categories": [
       "sexual-hormonal"
     ],
-    "short_description": "Análogo de melanocortina, de investigación.",
-    "description": "PT-141 (Bremelanotida) es un péptido investigado en modelos de señalización de melanocortina. Solo para uso en investigación (RUO).",
+    "short_description": "Se estudia en el deseo, desde el cerebro y no desde el vaso.",
+    "description": "PT-141, también llamado bremelanotida, es pariente de los Melanotan pero se estudia por otra cosa: actúa en el cerebro, no en los vasos sanguíneos. Ese es el ángulo que se investiga en el deseo sexual. Hay trabajo en laboratorio, en animales y también estudios en personas. Uso exclusivo en investigación (RUO).",
     "presentation": "10 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
@@ -5163,8 +5163,8 @@ export const fallbackProducts = [
     "categories": [
       "sexual-hormonal"
     ],
-    "short_description": "Agonista de GnRH estudiado en el eje gonadal.",
-    "description": "Triptorelina es un análogo agonista de GnRH investigado en modelos del eje hipotálamo-hipófisis-gónada, donde la estimulación sostenida produce desensibilización de los receptores hipofisarios. Solo para uso en investigación (RUO).",
+    "short_description": "Se estudia en el eje hormonal reproductivo.",
+    "description": "Triptorelina imita la señal que pone en marcha las hormonas reproductivas, pero de forma continua en lugar de a pulsos. Lo curioso es que, al mantenerse encendida, la hipófisis termina por dejar de responder; ese comportamiento es lo que se estudia. Hay trabajo en laboratorio, en animales y en personas. Uso exclusivo en investigación (RUO).",
     "presentation": "2 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
@@ -5206,8 +5206,8 @@ export const fallbackProducts = [
     "categories": [
       "suministros"
     ],
-    "short_description": "Diluyente estéril de laboratorio con conservador.",
-    "description": "Insumo de laboratorio: agua estéril con alcohol bencílico como conservador, utilizada para reconstituir compuestos liofilizados en trabajo experimental. No es un péptido. Solo para uso en investigación (RUO).",
+    "short_description": "Es el agua con la que se disuelve el polvo del vial.",
+    "description": "No es un péptido: es un insumo de laboratorio. Es agua estéril con un conservador (alcohol bencílico) que impide que crezcan bacterias, y sirve para disolver los compuestos que vienen en polvo. Es lo que se usa en el trabajo de laboratorio del día a día. Uso exclusivo en investigación (RUO).",
     "presentation": "3 mL – 10 mL",
     "form": "Solución",
     "purity": "99.0%",
@@ -5252,8 +5252,8 @@ export const fallbackProducts = [
     "categories": [
       "suministros"
     ],
-    "short_description": "Solución de cianocobalamina para uso en laboratorio.",
-    "description": "Solución de vitamina B12 (cianocobalamina) a 1 mg/mL, utilizada como reactivo y control en estudios de metabolismo de un carbono y en ensayos bioquímicos. Solo para uso en investigación (RUO).",
+    "short_description": "Solución de vitamina B12 para trabajo de laboratorio.",
+    "description": "Es vitamina B12 (cianocobalamina) en solución, a 1 mg por mililitro. No es un péptido: se usa como reactivo y como referencia en pruebas de laboratorio. Viene lista en frasco de 10 mL. Uso exclusivo en investigación (RUO).",
     "presentation": "1 mg",
     "form": "Solución",
     "purity": "99.0%",
@@ -5299,8 +5299,8 @@ export const fallbackProducts = [
     "categories": [
       "suministros"
     ],
-    "short_description": "Disolvente de laboratorio para péptidos poco solubles.",
-    "description": "Insumo de laboratorio: solución diluida de ácido acético utilizada como disolvente para reconstituir péptidos de baja solubilidad en agua. No es un péptido. Solo para uso en investigación (RUO).",
+    "short_description": "Disolvente de laboratorio para los polvos que cuestan más.",
+    "description": "No es un péptido: es un insumo de laboratorio. Es una solución diluida de ácido acético —el mismo ácido del vinagre— que se usa para disolver polvos que no se van bien sólo con agua. Uso exclusivo en investigación (RUO).",
     "presentation": "3 mL – 10 mL",
     "form": "Solución",
     "purity": "99.0%",
@@ -5354,8 +5354,8 @@ export const fallbackProducts = [
     "categories": [
       "perdida-peso"
     ],
-    "short_description": "Péptido quimérico dirigido a la vasculatura del tejido adiposo.",
-    "description": "Adipotida (FTPP) es un péptido quimérico que une una secuencia de direccionamiento a prohibitina con un dominio proapoptótico, investigado en modelos de biología vascular del tejido adiposo y de apoptosis dirigida. Solo para uso en investigación (RUO).",
+    "short_description": "Se estudia en los vasos que alimentan el tejido graso.",
+    "description": "Adipotida es un péptido de dos partes: una que busca los vasos sanguíneos del tejido graso y otra que actúa una vez que llegó ahí. Se estudia por ese ángulo poco común: no la grasa en sí, sino los vasos que la alimentan. El trabajo publicado es de laboratorio y de animales. Uso exclusivo en investigación (RUO).",
     "presentation": "2 mg – 10 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
