@@ -27,7 +27,7 @@ const ICONS = { CreditCard, Landmark, Bitcoin, Store };
 // Pago, no aqui. Se borraron con el formulario (Christian, 2026-07-26).
 
 const Checkout = () => {
-  const { items, hidratando, subtotal, discount, discountRate, discountSource, cappedItems, regla5Items, shipping, faltaParaEnvioGratis, envioGratisDesde, distCode, clearCart } = useCart();
+  const { items, hidratando, subtotal, discount, discountRate, discountSource, cappedItems, regla5Items, calcularEnvio, cobraEnvio, envioGratisDesde, envioGratisDeVerdadDesde, topeEnvio, distCode, clearCart } = useCart();
   const { user } = useAuth();
   const { t } = useLanguage();
   // El inventario REAL. El aviso de envío partido tiene que estar EN LA PANTALLA DE
@@ -208,13 +208,34 @@ const Checkout = () => {
   // camino de siempre (`shipping` del carrito, que hoy vale 0).
   const opcionEnvio = envio.options.find((o) => o.id === envioElegido) || null;
   const envioCotizado = quoteOn && opcionEnvio ? Number(opcionEnvio.price || 0) : 0;
-  // La casa absorbe el envío arriba del umbral mientras no pase del 10% del pedido.
+  // Los dos candados de la política, EN ORDEN: primero la compra mínima, después el
+  // tope (5% desde el 2026-07-31; el número viaja del servidor, ya no se escribe
+  // aquí — escrito dos veces se desalinea en silencio). Y cuando la guía pasa del
+  // tope, la casa pone su parte y el cliente la diferencia.
+  //
   // Es una PISTA para la pantalla: el número que se cobra lo decide el servidor al
   // crear el pedido, con su propia cotización guardada.
+  // ⛔ SOBRE LO QUE DE VERDAD PAGA, PUNTOS INCLUIDOS. El servidor cobra el envío
+  // sobre la mercancía que quedó después del descuento Y después de los puntos; el
+  // carrito no sabe de puntos, así que aquí se vuelve a pedir la cuenta con la cifra
+  // buena. Si no, un pedido que baja de la mínima al canjear puntos enseñaba envío
+  // gratis mientras la caja lo cobraba. (2026-07-31)
   const pagaMercancia = afterDiscount - pointsApplied;
-  const envioGratis = quoteOn && envioCotizado > 0
-    && pagaMercancia >= envioGratisDesde && envioCotizado <= pagaMercancia * 0.10;
-  const envioACobrar = quoteOn ? (envioGratis ? 0 : envioCotizado) : shipping;
+  const cumpleMinima = pagaMercancia >= envioGratisDesde;
+  // Sin tope del servidor (versión anterior del backend) no se adivina: cruzar la
+  // mínima vuelve a valer envío gratis, que es como se comportaba hasta hoy.
+  const topeCasa = cumpleMinima ? pagaMercancia * topeEnvio : 0;
+  const envioCotizadoACobrar = !(quoteOn && envioCotizado > 0) ? envioCotizado
+    : cumpleMinima && topeEnvio <= 0 ? 0
+      : Math.max(0, Math.round(envioCotizado - topeCasa));
+  const envioACobrar = quoteOn ? envioCotizadoACobrar : calcularEnvio(pagaMercancia);
+  // "Gratis" es un envío que SE GANÓ, no un envío que no se cobra: con el cobro
+  // apagado el renglón dice "se cotiza por separado", que es otra cosa.
+  const envioGratis = envioACobrar === 0
+    && (quoteOn ? envioCotizado > 0 : cobraEnvio && items.length > 0);
+  // El empujón, también sobre la cifra con puntos ya restados.
+  const faltaAquiParaEnvioGratis = envioACobrar > 0 && envioGratisDeVerdadDesde > 0
+    ? Math.max(0, envioGratisDeVerdadDesde - pagaMercancia) : 0;
   const total = pagaMercancia + envioACobrar;
   const diasTexto = (d) => (Number(d) === 1 ? t('checkout.shipping.dayOne') : t('checkout.shipping.days', { days: d }));
   const set = (k, v) => setForm((f) => ({ ...f, [k]: v }));
@@ -268,7 +289,7 @@ const Checkout = () => {
         // el estorbo no.
         terms_accepted_at: ruoAcceptedAt(),
         payment_method: payment,
-        shipping,
+        shipping: envioACobrar,
         // ⛔ Viaja el ID de la cotización, NUNCA su precio. El servidor va por el
         // monto a la cotización que él mismo guardó, y la revalida contra este CP y
         // este peso antes de cobrar. Lo que mande esta pantalla en `shipping` lo
@@ -572,18 +593,22 @@ const Checkout = () => {
                 <span className="text-muted-foreground">{t('common.shipping')}</span>
                 {/* Tres formas de pintar el mismo renglón, y las tres las decide el
                     servidor: cotizado (precio real), regalado (la casa lo absorbe)
-                    o "se cotiza aparte" — que es lo que se ve HOY, sin cambios. */}
-                {quoteOn && envioGratis
+                    o "se cotiza aparte" cuando el pedido no cobra envío. Hasta el
+                    2026-07-31 el "gratis" sólo se pintaba con la cotización de
+                    Skydropx encendida: por el camino de la tarifa plana, que es el
+                    que se usa HOY, el envío ganado se enseñaba como "se cotiza
+                    aparte" — o sea, el cliente no se enteraba de lo que se ganó. */}
+                {envioGratis
                   ? <span className="text-[hsl(var(--success))]" data-testid="checkout-shipping-total">{t('checkout.shipping.free')}</span>
                   : envioACobrar > 0
                     ? <span data-testid="checkout-shipping-total">{formatMXN(envioACobrar)}</span>
                     : <span className="text-muted-foreground text-xs text-right" data-testid="checkout-shipping-total">{t('cart.shippingQuoted')}</span>}
               </div>
-              {quoteOn && envioGratis && (
+              {envioGratis && (
                 <p className="text-xs text-[hsl(var(--success))]" data-testid="checkout-shipping-free-note">{t('checkout.shipping.freeNote')}</p>
               )}
-              {faltaParaEnvioGratis > 0 && (
-                <p className="text-xs text-[hsl(var(--primary))]">{t('cart.freeShippingAt', { amount: formatMXN(faltaParaEnvioGratis) })}</p>
+              {faltaAquiParaEnvioGratis > 0 && (
+                <p className="text-xs text-[hsl(var(--primary))]">{t('cart.freeShippingAt', { amount: formatMXN(faltaAquiParaEnvioGratis) })}</p>
               )}
             </div>
             {loyalty.eligible && loyalty.balance > 0 && (

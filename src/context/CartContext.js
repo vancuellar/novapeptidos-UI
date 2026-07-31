@@ -353,11 +353,16 @@ export const CartProvider = ({ children }) => {
     .sort((a, b) => a.faltan - b.faltan);
   const nextTier = discountableSubtotal < 35000 ? { min: 35000, rate: 0.15 } : null;
 
-  // ENVÍO. Hoy el pedido NO lo cobra: se cotiza por separado (Christian, 2026-07-28).
-  // Quién manda es `shipping_charged` del servidor — nunca esta pantalla. Es la
-  // misma lección de siempre: cuando el sitio calcula el dinero por su cuenta,
-  // tarde o temprano enseña un total distinto del que se cobra. Por eso el default
-  // mientras carga la configuración es "no se cobra": es lo que hace el servidor.
+  // ENVÍO — LA POLÍTICA DE CHRISTIÁN DEL 2026-07-31, en sus palabras: «gratis siempre
+  // y cuando el ticket supere los $2,500 de compra mínima y/o [el envío] no sea mayor
+  // a 5% del total de la compra. Primero se debe cumplir la compra mínima».
+  //
+  // ⛔ ESTA PANTALLA NO DECIDE NADA. El número que se cobra lo pone el servidor al
+  // crear el pedido; aquí se REPITE la cuenta con los parámetros que el propio
+  // servidor manda en /payments/config. Es la misma lección de siempre: cuando el
+  // sitio calcula el dinero por su cuenta, tarde o temprano enseña un total distinto
+  // del que se cobra, y eso ya costó dinero. Por eso el default mientras carga la
+  // configuración es "no se cobra": es el estado en el que nada se promete de más.
   const [envio, setEnvio] = useState({ shipping_charged: false, shipping_flat: 250, free_shipping_from: 2500 });
   useEffect(() => {
     api.get('/payments/config')
@@ -366,11 +371,47 @@ export const CartProvider = ({ children }) => {
   }, []);
   const pagaMercancia = subtotal - discount;
   const cobraEnvio = envio.shipping_charged === true;
-  const shipping = cobraEnvio && items.length && pagaMercancia < envio.free_shipping_from ? envio.shipping_flat : 0;
-  const faltaParaEnvioGratis = cobraEnvio && shipping > 0 ? envio.free_shipping_from - pagaMercancia : 0;
+  // ⛔ EL TOPE NO SE INVENTA AQUÍ. Si el servidor no lo manda —porque todavía trae la
+  // versión anterior—, esta pantalla NO se pone creativa: se comporta como antes,
+  // gratis al cruzar la compra mínima. Adivinar el 5% contra un servidor que sigue
+  // regalando el envío arriba de $2,500 haría que el carrito cobrara $100 que la caja
+  // no cobra, que es justo la clase de mentira que ya costó dinero. El día que el
+  // backend despliegue, el número llega solo y la pantalla se alinea sin tocar nada.
+  const topeCrudo = Number(envio.shipping_cap_rate);
+  const topeEnvio = Number.isFinite(topeCrudo) && topeCrudo > 0 ? topeCrudo : 0;
+  const costoGuia = Number(envio.shipping_cost_estimate) || Number(envio.shipping_flat) || 0;
+  // Los dos candados, EN ORDEN: 1º la compra mínima —abajo de ella se paga la tarifa
+  // plana por barata que salga la guía—; 2º el tope —la casa absorbe hasta el 5% de
+  // lo que el cliente paga y él pone la diferencia—.
+  //
+  // Se dejó como FUNCIÓN y no como número suelto porque el checkout mide sobre una
+  // cifra distinta: ahí el cliente puede pagar parte con puntos, y el servidor cobra
+  // el envío sobre lo que quedó DESPUÉS de los puntos. Con un número fijo desde el
+  // carrito, un pedido que baja de la mínima al canjear puntos seguía enseñando
+  // envío gratis mientras la caja lo cobraba. (2026-07-31)
+  const calcularEnvio = React.useCallback((paga) => {
+    if (!cobraEnvio || !items.length) return 0;
+    if (paga < envio.free_shipping_from) return envio.shipping_flat;
+    if (topeEnvio <= 0) return 0;                    // servidor sin tope: regla de antes
+    return Math.max(0, Math.round(costoGuia - paga * topeEnvio));
+  }, [cobraEnvio, items.length, envio.free_shipping_from, envio.shipping_flat, costoGuia, topeEnvio]);
+  const shipping = calcularEnvio(pagaMercancia);
+  // DÓNDE EL ENVÍO LLEGA A $0 DE VERDAD. No basta con cruzar la mínima: el tope tiene
+  // que alcanzar a tapar la guía completa. Con $250 de guía y 5%, eso pasa hasta los
+  // $5,000. Decirle al cliente "te faltan $X para envío gratis" apuntando a $2,500,
+  // cuando la caja le va a cobrar $100, es exactamente la mentira que no se hace aquí.
+  const envioGratisDeVerdadDesde = topeEnvio > 0
+    ? Math.max(envio.free_shipping_from, Math.ceil(costoGuia / topeEnvio))
+    : envio.free_shipping_from;
+  const faltaParaEnvioGratis = cobraEnvio && shipping > 0 && envioGratisDeVerdadDesde > 0
+    ? Math.max(0, envioGratisDeVerdadDesde - pagaMercancia)
+    : 0;
+  // Envío en cero PORQUE se ganó, no porque el cobro esté apagado. Son dos cosas muy
+  // distintas en pantalla: una dice "Gratis" y la otra "Se cotiza por separado".
+  const envioGratis = cobraEnvio && items.length > 0 && shipping === 0;
 
   return (
-    <CartContext.Provider value={{ items, hidratando, addItem, updateQty, removeItem, clearCart, subtotal, count, discount, discountRate, discountSource, cappedItems, lineDiscounts, regla5Items, compraPropia, baseRate, nextTier, shipping, faltaParaEnvioGratis, envioGratisDesde: envio.free_shipping_from, distCode, distRate, codeMin, codeMinMet, applyDistCode, clearDistCode }}>
+    <CartContext.Provider value={{ items, hidratando, addItem, updateQty, removeItem, clearCart, subtotal, count, discount, discountRate, discountSource, cappedItems, lineDiscounts, regla5Items, compraPropia, baseRate, nextTier, shipping, calcularEnvio, cobraEnvio, envioGratis, faltaParaEnvioGratis, envioGratisDesde: envio.free_shipping_from, envioGratisDeVerdadDesde, topeEnvio, distCode, distRate, codeMin, codeMinMet, applyDistCode, clearDistCode }}>
       {children}
     </CartContext.Provider>
   );

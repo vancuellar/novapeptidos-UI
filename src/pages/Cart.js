@@ -47,7 +47,7 @@ const buildBacPlan = (items) => {
 };
 
 const Cart = () => {
-  const { items, addItem, updateQty, removeItem, subtotal, discount, discountRate, discountSource, cappedItems, lineDiscounts, regla5Items, compraPropia, nextTier, shipping, faltaParaEnvioGratis, envioGratisDesde, distCode, distRate, codeMin, codeMinMet, applyDistCode, clearDistCode } = useCart();
+  const { items, addItem, updateQty, removeItem, subtotal, discount, discountRate, discountSource, cappedItems, lineDiscounts, regla5Items, compraPropia, nextTier, shipping, envioGratis, faltaParaEnvioGratis, envioGratisDesde, distCode, distRate, codeMin, codeMinMet, applyDistCode, clearDistCode } = useCart();
   // Qué descuento lleva CADA renglón (regla de 5): con dos tasas en el mismo
   // carrito, un porcentaje solo arriba ya no explica el total.
   const porRenglon = Object.fromEntries((lineDiscounts || []).map((l) => [l.product_id, l]));
@@ -206,13 +206,18 @@ const Cart = () => {
                   </ul>
                 </div>
               )}
-              {/* Ya no se cobra envío en el pedido: se cotiza aparte (Christian,
-                  2026-07-28). El renglón sigue ahí para que no parezca un olvido. */}
+              {/* Envío en cero puede querer decir DOS cosas y el cliente tiene
+                  derecho a saber cuál: que se lo ganó (mínima cumplida y el tope del
+                  5% tapa la guía) o que el pedido no cobra envío y se cotiza aparte.
+                  Antes las dos decían "Se cotiza por separado" — y arriba de la
+                  mínima eso era falso: el envío iba gratis. (2026-07-31) */}
               <div className="flex justify-between">
                 <span className="text-muted-foreground">{t('common.shipping')}</span>
                 {shipping > 0
                   ? <span data-testid="cart-shipping">{formatMXN(shipping)}</span>
-                  : <span className="text-muted-foreground text-xs text-right" data-testid="cart-shipping">{t('cart.shippingQuoted')}</span>}
+                  : envioGratis
+                    ? <span className="text-[hsl(var(--success))] font-medium" data-testid="cart-shipping">{t('checkout.shipping.free')}</span>
+                    : <span className="text-muted-foreground text-xs text-right" data-testid="cart-shipping">{t('cart.shippingQuoted')}</span>}
               </div>
               {faltaParaEnvioGratis > 0 && (
                 <p className="text-xs text-[hsl(var(--primary))]" data-testid="cart-free-shipping-hint">
