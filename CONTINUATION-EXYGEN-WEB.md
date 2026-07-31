@@ -23,6 +23,21 @@ Cuando lo confirme, todo está listo y verificado para ejecutarlo:
    panel: para la de Brenda hay que fijarlo aparte. Si se quiere que sea el de siempre,
    eso sí es cambiar el `.env` del EC2 — y afectaría a TODAS las guías futuras.
 
+## ⛔ HALLAZGO GORDO DEL CIERRE: el subidor de topes llevaba días mintiendo
+
+`subir_distribuidor_backend.js` —el que sube al backend la comisión y la elegibilidad
+de distribuidor— **decía «0 variantes a actualizar» pasara lo que pasara**. Leía las
+dos puntas de la comparación en lugares donde esos campos ya no existen: el catálogo
+público (de donde se sacaron a propósito el 30-jul, porque viaja en el bundle y
+delataba el margen) y la ruta pública `/api/products` (que tampoco los expone). Comparaba
+`undefined === undefined` y salía en verde.
+
+**Había 21 productos desalineados**, entre ellos los tres que ya debían estar en el canal.
+Ya está arreglado (lee de `maestra.csv` y de `/admin/products`, con candado del 80% de
+emparejamiento por SKU) y **aplicado en vivo**: correrlo otra vez da 0. Ningún precio
+público se movió. ⚠️ Si vuelves a ver «0 a actualizar» en cualquier script de estos,
+desconfía: en esta casa el emparejamiento ya falló en silencio varias veces.
+
 ## ✅ HECHO Y EN VIVO (31-jul tarde)
 
 **Compuertas: backend 807/807 ✅ · motor 344/344 ✅ · auditoría 85/0 ✅.**

@@ -451,7 +451,7 @@ export const fallbackProducts = [
         "batch_number": "NP-THYM10-2601",
         "id": "17c3f0ff-a6d0-45a1-b35c-d5e620780829",
         "sku": "THYMOSINALPHA1-10MG",
-        "descuentable": false
+        "descuentable": true
       }
     ],
     "tiers": [],
@@ -1210,7 +1210,7 @@ export const fallbackProducts = [
         "batch_number": "NP-IGF11-2601",
         "id": "1932037e-9657-4f4f-b832-4ed7a469ed04",
         "sku": "IGF1LR3-1MG",
-        "descuentable": false
+        "descuentable": true
       }
     ],
     "tiers": [],
@@ -3694,7 +3694,7 @@ export const fallbackProducts = [
         "batch_number": "NP-LIRA30-2601",
         "id": "2587dfe1-7cc1-4939-9edd-a3f6e83231e7",
         "sku": "LIRAGLUTIDA-30MG",
-        "descuentable": false
+        "descuentable": true
       }
     ],
     "tiers": [],

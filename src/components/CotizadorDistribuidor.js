@@ -55,6 +55,10 @@ export default function CotizadorDistribuidor({
   const [correoCliente, setCorreoCliente] = useState('');
   const [telCliente, setTelCliente] = useState('');
   const [dirCliente, setDirCliente] = useState('');
+  // Autollenado: los clientes ya registrados que ESTE usuario puede ver. Lo que trae
+  // cada uno lo decide el servidor según su rol (ver /cotizador/clientes).
+  const [clientes, setClientes] = useState([]);
+  const [sugerenciasAbiertas, setSugerenciasAbiertas] = useState(false);
   const [folio, setFolio] = useState(nuevoFolio);
   const [correoAbierto, setCorreoAbierto] = useState(false);
   const [correo, setCorreo] = useState('');
@@ -75,6 +79,39 @@ export default function CotizadorDistribuidor({
       .filter((p) => `${p.name} ${p.presentation || ''}`.toLowerCase().includes(q))
       .slice(0, 6);
   }, [busqueda, catalogo]);
+
+  // Los clientes registrados, para el autollenado. Se piden UNA vez al abrir.
+  // Si la ruta falla (sesión vencida, red), se sigue sin autollenado: cotizar a mano
+  // tiene que funcionar siempre — es lo que se hacía hasta hoy.
+  useEffect(() => {
+    let vivo = true;
+    api.get('/cotizador/clientes')
+      .then((r) => { if (vivo) setClientes(r.data?.clientes || []); })
+      .catch(() => { if (vivo) setClientes([]); });
+    return () => { vivo = false; };
+  }, []);
+
+  const sugerenciasClientes = useMemo(() => {
+    const q = nombreCliente.trim().toLowerCase();
+    if (q.length < 2) return [];
+    // Se busca por nombre Y por correo: a veces uno se acuerda del correo y no del
+    // apellido. El correo sólo existe aquí si el servidor lo mandó.
+    const hay = clientes.filter((c) => `${c.name || ''} ${c.email || ''}`
+      .toLowerCase().includes(q));
+    // Si ya coincide exacto con el único resultado, la lista estorba.
+    if (hay.length === 1 && (hay[0].name || '').toLowerCase() === q) return [];
+    return hay.slice(0, 6);
+  }, [nombreCliente, clientes]);
+
+  // Rellena con lo que el servidor haya mandado de ese cliente. Los campos que no
+  // vinieron se dejan EN BLANCO a propósito: no se inventa lo que no se puede ver.
+  const elegirCliente = (c) => {
+    setNombreCliente(c.name || '');
+    setCorreoCliente(c.email || '');
+    setTelCliente(c.phone || '');
+    setDirCliente(c.address || '');
+    setSugerenciasAbiertas(false);
+  };
 
   const agregar = (p) => {
     setRenglones((r) => {
@@ -315,10 +352,37 @@ export default function CotizadorDistribuidor({
             </div>
           </div>
           {/* Datos del cliente: NINGUNO obligatorio. Los que existan se pintan
-              en la hoja y viajan en el correo; los vacíos no dejan hueco. */}
+              en la hoja y viajan en el correo; los vacíos no dejan hueco.
+
+              AUTOLLENADO: al teclear el nombre se sugieren los clientes YA
+              REGISTRADOS y al elegir uno se rellena lo que se tenga de él.
+              ⛔ Lo que se rellena es lo que el SERVIDOR mandó, ni un campo más: a un
+              distribuidor sin visibilidad completa no le llegan correo, teléfono ni
+              domicilio, así que aquí no hay nada que pintar aunque se quisiera. El
+              candado no está en esta pantalla — está en /cotizador/clientes. */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 pt-1">
-            <Input value={nombreCliente} onChange={(e) => setNombreCliente(e.target.value)}
-              placeholder={t('cotizador.nombreCliente')} data-testid="cotizador-cliente-nombre" />
+            <div className="relative">
+              <Input value={nombreCliente} autoComplete="off"
+                onChange={(e) => { setNombreCliente(e.target.value); setSugerenciasAbiertas(true); }}
+                onFocus={() => setSugerenciasAbiertas(true)}
+                onBlur={() => setTimeout(() => setSugerenciasAbiertas(false), 150)}
+                placeholder={t('cotizador.nombreCliente')} data-testid="cotizador-cliente-nombre" />
+              {sugerenciasAbiertas && sugerenciasClientes.length > 0 && (
+                <ul className="absolute z-20 left-0 right-0 mt-1 max-h-56 overflow-auto rounded-md border border-[hsl(var(--border))] bg-[hsl(var(--background))] shadow-lg"
+                  data-testid="cotizador-sugerencias-cliente">
+                  {sugerenciasClientes.map((c) => (
+                    <li key={c.id}>
+                      <button type="button" onMouseDown={() => elegirCliente(c)}
+                        className="w-full text-left px-3 py-2 text-xs hover:bg-[hsl(var(--muted))]"
+                        data-testid={`cotizador-sugerencia-${c.id}`}>
+                        <span className="font-medium">{c.name}</span>
+                        {c.email && <span className="text-muted-foreground"> · {c.email}</span>}
+                      </button>
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </div>
             <Input type="email" inputMode="email" value={correoCliente}
               onChange={(e) => setCorreoCliente(e.target.value)}
               placeholder={t('cotizador.correoCliente')} data-testid="cotizador-cliente-correo" />
