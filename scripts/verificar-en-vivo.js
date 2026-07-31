@@ -47,9 +47,11 @@ const notas = [];
 const mal = (q) => fallas.push(q);
 const bien = (q) => notas.push(q);
 
-// Alto útil de un iPhone SE con la barra del navegador puesta. Si la puerta RUO
-// no se puede aceptar aquí, hay teléfonos reales que no pueden entrar.
-const MOVIL = { width: 375, height: 600 };
+// El teléfono más apretado que hay que aguantar: 320 px de ancho y 480 de alto
+// útil (un iPhone 5/SE con la barra del navegador puesta). Se prueba el caso
+// PEOR a propósito — el 2026-07-31 la puerta RUO no se podía aceptar aquí y el
+// sitio entero estaba muerto para esos teléfonos, sin que nadie se enterara.
+const MOVIL = { width: 320, height: 480 };
 const ESCRITORIO = { width: 1280, height: 800 };
 
 let chromium;
@@ -250,7 +252,7 @@ async function revisarCatalogoYFicha(browser) {
 
   try {
     await revisarPortada(browser, ESCRITORIO, 'escritorio');
-    await revisarPortada(browser, MOVIL, 'teléfono 375×600');
+    await revisarPortada(browser, MOVIL, 'teléfono 320×480');
     await revisarCatalogoYFicha(browser);
   } finally {
     await browser.close();
