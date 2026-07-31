@@ -151,16 +151,24 @@ const AGUA_MAX_ML = 5;
 // la inyección se vuelve enorme.
 //
 // La regla buena: elegir el agua para que la dosis de referencia caiga cerca de
-// **0.3 mL (30 rayitas)** — cómodo de inyectar y fácil de leer. Para NAD+ 500 mg
-// con dosis de 50 mg eso da exactamente **3 mL**, que es lo que publica la
-// literatura de ese vial (166.7 mg/mL, 50 mg = 30 unidades).
+// **0.3 mL (30 rayitas)** — cómodo de inyectar y fácil de leer.
+//
+// OJO (corregido 2026-07-31): esta regla es el PLAN B, para los viales donde
+// nadie publicó cuánta agua lleva. Cuando la fuente sí lo dice, manda la fuente
+// (ver paso 1 de `aguaSugerida`). El NAD+ 500 mg estuvo en 3 mL justificado
+// aquí como "lo que publica la literatura", y era falso: la propia hoja de
+// paciente que cita el producto (Extension Health) dice **"500 mg / 5 mL"** por
+// escrito, o sea 100 mg/mL. Los 3 mL daban 166.7 mg/mL, una concentración que
+// no usa nadie en el mercado, y hacían que 50 mg fueran 30 rayitas — quien
+// jalara 50 se ponía 83 mg (67% de más). Ya está en 5 mL en el catálogo.
 const DRAW_OBJETIVO_ML = 0.3;
 
 const aguaSugerida = (vialMg, p) => {
   // 1) Si la fuente dice cuánta agua lleva ESTE vial, esa manda. La fórmula de
   //    abajo es una aproximación razonable; una cifra investigada no se pisa con
-  //    una aproximación. (NAD+ 500 mg: la fuente dice 3 mL. La fórmula pediría 5,
-  //    y con 5 el nivel avanzado se come la jeringa entera — 100 rayitas.)
+  //    una aproximación. (NAD+ 500 mg: la fuente dice **5 mL** = 100 mg/mL, así
+  //    los mg son las rayitas directo. El "se come la jeringa entera" ya no
+  //    aplica: el nivel avanzado topa en 50 mg = 0.5 mL, media jeringa.)
   const dicha = p?.startLevels?.agua_ml?.[String(vialMg)];
   if (dicha) return dicha;
 

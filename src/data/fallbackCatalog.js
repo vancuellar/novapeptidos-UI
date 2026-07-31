@@ -1779,20 +1779,20 @@ export const fallbackProducts = [
     "storage": "Conservar a -20 °C, protegido de la luz. Reconstituido: 2–8 °C.",
     "start_dose": 50,
     "start_unit": "mg",
-    "start_freq": "3x_week",
+    "start_freq": "2x_week",
     "start_levels": {
-      "inicial": 30,
+      "inicial": 25,
       "tipica": 50,
-      "avanzada": 100,
+      "avanzada": 50,
       "unit": "mg",
       "freq": {
-        "inicial": "daily",
+        "inicial": "2x_week",
         "tipica": "2x_week",
         "avanzada": "3x_week"
       },
       "agua_ml": {
         "100": 1,
-        "500": 3,
+        "500": 5,
         "1000": 5
       },
       "fase": {
@@ -1800,7 +1800,7 @@ export const fallbackProducts = [
         "tipica": "mantenimiento",
         "avanzada": "mantenimiento"
       },
-      "fuente": "olympiapharmacy.com/blog/nad-dosage-chart-nad-dosage-per-day + peptidedosages.com (vial 500 mg) + extension.health NAD-500mg Patient Information"
+      "fuente": "⚠️ ORIENTATIVA. No existe pauta de NAD+ inyectable respaldada por ensayo clínico; no hay producto aprobado por la FDA y todo lo del mercado es de farmacia de compounding (off-label). Nivel típico = hoja de paciente de Extension Health para el vial de 500 mg (50 mg, 2 inyecciones/semana, 500 mg en 5 mL = 100 mg/mL). Nivel avanzado = tope IM de 150 mg/semana de Olympia Pharmacy (farmacia de compounding 503A). Nivel inicial = mitad del protocolo típico, arranque prudente nuestro. Todo a 100 mg/mL, que es la concentración que usan ambas fuentes: así 1 mg = 1 rayita en jeringa U-100. Revisado 2026-07-31."
     },
     "featured": true,
     "is_new": false
