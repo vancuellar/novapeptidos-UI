@@ -1,3 +1,102 @@
+# 🤝 CIERRE — 2026-07-31 (noche cerrada) — LÉELO PRIMERO
+
+## 🔴 LA REGLA QUE MANDA: NO SE DESPLIEGA SIN AVISARLE A CHRISTIÁN
+Hoy hubo **10 despliegues en 3 horas** desde varias sesiones y el sitio se cayó
+varias veces. Su exigencia: **99.99% en pie = 4 min 30 s de caída AL MES**.
+Escrita en el `CLAUDE.md` del repo UI. La causa NUNCA fue el servidor (el EC2
+lleva 12 días arriba, el azul/verde jamás falló): fue **publicar builds rotos**.
+Defensas puestas hoy: candado de imports (`.githooks/pre-commit`), `desplegar.sh`
+construye desde copia limpia + verifica con navegador real que las páginas
+PINTAN + marcha atrás automática, y `vigilante.py` en el EC2 (cron 3 min) que
+mide y avisa. Disponibilidad real: `sudo python3 /opt/exygen/vigilante/vigilante.py --resumen 7`.
+
+## 🔴 EL HALLAZGO DEL DÍA: EL SITIO ESTABA MUERTO EN TELÉFONOS CHICOS
+El aviso RUO de bienvenida (`RuoGate.js`) mide ~900 px, no tenía scroll propio y
+bloqueaba el del fondo: en iPhone SE/8 **el botón de "Entiendo y acepto" quedaba
+FUERA de la pantalla**. No se podía entrar al sitio. Nadie lo vio porque el aviso
+solo sale la primera vez y ellos ya lo habían aceptado en la compu. **Arreglado y
+verificado** en 320×568, 375×667 y 390×844. ⚠️ Esto reinterpreta el embudo: parte
+del 8.7% no era diseño, era gente que no pudo pasar de la puerta.
+
+## 🔜 EN CURSO (todo commiteado, NADA desplegado — espera visto bueno)
+1. **Descripciones en cristiano** de los ~191 productos, 3 idiomas. Vara: "la
+   señora de 65 años". Ejemplo del enojo: 5-Amino-1MQ decía *"Inhibidor de NNMT
+   explorado en adipocitos"*. ⛔ Corrección de tono: **NADA que espante** — fuera
+   "no hay ensayo clínico", "no aprobado por FDA", "evidencia limitada". Se copia
+   el equilibrio de Certified: compuesto en positivo y simple; la advertencia
+   vive en el pie y en Términos. Christián quiere ver 10 antes/después.
+2. **Home móvil adelgazado** — el diseño NO cambia (le gusta el actual), solo se
+   quita peso: fuera fotos de laboratorio (1,896 px / 402 KB), trazabilidad,
+   comparativa, educación y mayoreo (cada uno a su página); pie compacto;
+   "Tienda De Confianza" con el widget verde colapsable de UNA línea del
+   checkout; y lo de "distribuidor más grande de México" reducido a UNA mención
+   sin datos de respaldo. Hoy: 10,566 px = 13 pantallas, 11 bloques antes del
+   primer producto.
+3. **Botón del hero al ASESOR** — decisión de Christián: *"está muy escondido"*.
+   Cambia el secundario ("Empieza aquí") por el Asesor **por su ATAJO** (2 toques
+   / 2.1 s → 3 productos con precio y "Agregar todo al carrito"; la ruta larga
+   son 67 opciones y perdería gente). "Ver Catálogo" se queda como principal. El
+   texto y diseño del hero NO se tocan. Ojo: el globo de WhatsApp tapa ese botón.
+4. **Video de `/aprende/empieza-aqui`** (4:05, 3 idiomas) — REGRABÁNDOSE: decía
+   dos mentiras que cachó Christián: que la etiqueta trae número de lote (no lo
+   trae) y que el COA viaja en el paquete (**el COA se manda DIGITAL después de
+   la compra**).
+5. **Métricas de visita** (autorizadas hoy): dispositivo, ancho de pantalla y de
+   dónde vino + embudo partido por dispositivo en el panel de Marketing.
+6. **Atribución de WhatsApp**: código por conversación para saber si las 110
+   conversaciones ($39 c/u) venden. Hoy nadie lo sabe.
+7. **8 dosis imposibles** (piden más de lo que trae el vial): L-Carnitine (100×
+   su vial), CJC-1295 con DAC, TB-500, Cagrilintida, Mazdutida, Thymalin.
+   Autorizadas por Christián "con el mismo cuidado" que el NAD+.
+8. **HGH solo HACIA ARRIBA** (orden textual) — la escalera se arregla subiendo el
+   escalón de abajo, nunca bajando el 40 IU. Queda escrito para que ningún
+   auditor lo vuelva a proponer. + jubilar los MONICAF de Alanís y Javier.
+
+## ✅ CERRADO HOY
+NAD+ corregido en vivo (25/50/50 mg a 2×/2×/3× semana; 500 mg con **5 mL** =
+100 mg/mL, los mg SON las rayitas) con 0 fallas en 378 sondeos · base de dosis de
+Codex (96 compuestos, 240 fuentes calificadas; contra la calculadora: 🔴5 🟡51
+✅30 ⚪10) · barrido grande (backend 1088/1088, auditoría 86/0, E2E cripto 21/21 y
+tarjeta 15/15, 68 páginas y 160 enlaces sin uno roto) · Adipotida a la venta
+(2/5/10 mg, CAS 859216-15-2, "FTTP" era errata de FTPP) + `alta_producto.py` ·
+clientes invitados con ficha (Brenda y Aidee eran invisibles con $7,657 cobrados)
+· rastreo propio en `/pedido/{num}` también para guías compradas a mano · página
+Marketing con archivo semanal de videos.
+
+## ⏳ DECISIONES DE CHRISTIÁN
+1. 🔴 **El domicilio del cliente sale con solo el número de pedido, sin
+   contraseña** (y los números son adivinables). Opciones: quitar los datos de
+   ahí (recomendado), pedir el correo como segunda llave, o dejarlo.
+2. **Las 5 dosis 🔴 de Codex**: ACTH 1-39 (8× el techo del estudio), Epithalon
+   (10 mg vs 0.5 mg publicado), PNC-27, PE-22-28 + 4 productos con dosis SIN
+   fuente.
+3. **23 costos de la maestra desfasados** por proveedores nuevos NO comprobados.
+   Recomendación: esperar a una compra real.
+4. **Prueba a Chuangyan** (gana en 57 tamaños): Cagrisema 10mg + LIPO-C + GHK-Cu
+   o BPC-157.
+5. Gemini en plan gratis (20/día) — prender billing o pegar llave de OpenAI.
+6. Servidor de JADA: hace falta host, usuario y acceso. **No habría evitado las
+   caídas de hoy** (fueron builds rotos); sirve si el EC2 muere. Alternativa más
+   barata: un Worker de Cloudflare con cron (gratis) vigilando desde fuera de AWS
+   — hace falta un token con permiso de Workers.
+7. Skydropx sin saldo ni verificación (Envíos Internacionales sí compra).
+8. **NADA de WhatsApp hasta nuevo aviso** — hay borradores para Chuangyan, Jess,
+   Bjvvb, Peptideals, DT y los 2 ingleses.
+
+## 📣 MARKETING — la semana que empieza
+Del reporte semanal: **$237 USD gastados, 0 compras atribuidas por Meta, 110
+conversaciones de WhatsApp a $39**. Las 3 ventas reales entraron por otro lado.
+Ganancia real de lo cobrado: **$4,644.59 (60.7%)**; caja $4,279 contra $4,268 de
+publicidad = **empate técnico de $11**.
+Plan: (1) medir si las conversaciones venden — en construcción; (2) mandar los
+anuncios a la **ficha de Retatrutida** (58% de las vistas), no a la portada — los
+enlaces se le dejan listos para pegar; (3) concentrar WhatsApp en **Facebook
+Reels** ($0.53/conv, el más barato); (4) dejar $8-10/día de tráfico web vivo (hoy
+quedó en cero); (5) **no tocar nada 7 días** — esta semana hubo 18 campañas
+nuevas y 12 cambios de presupuesto en 3 días. **Todavía no subir el presupuesto.**
+
+---
+
 # 🤝 CIERRE — 2026-07-31 (noche) — LÉELO PRIMERO
 
 ## 🔴 REGLA NUEVA E INNEGOCIABLE: NO SE DESPLIEGA SIN AVISARLE A CHRISTIÁN
