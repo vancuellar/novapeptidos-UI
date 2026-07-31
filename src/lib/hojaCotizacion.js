@@ -135,11 +135,19 @@ export function hojaCotizacionHTML(datos, { tema = 'claro', origen = '' } = {}) 
     font-size:9.5px;line-height:1.6;color:${c.muted};}
   .cot-pie b{color:${c.body};font-weight:600;}
   .cot-pie a{color:${c.muted};text-decoration:none;}
+  /* En un teléfono el encabezado a dos columnas se encima: el logo y la palabra
+     "Cotización" se pisan y el folio se parte a la mitad. Ahí se apila. Y la
+     columna del precio unitario se va: el importe ya lleva la cuenta hecha. */
   @media (max-width:520px){
     .cot-hoja{padding:22px 18px 20px;font-size:12.5px;}
-    .cot-doc{font-size:19px;}
-    .cot-logo{height:38px;}
+    .cot-cab td{display:block;width:100% !important;text-align:left !important;}
+    .cot-cab td+td{padding-top:14px;}
+    .cot-doc{font-size:20px;}
+    .cot-meta{white-space:nowrap;}
+    .cot-logo{height:36px;}
+    .cot-partes td,.cot-partes td+td{padding-left:0;padding-right:8px;}
     .cot-tabla th:nth-child(3),.cot-td:nth-child(3){display:none;}
+    .cot-dinero{min-width:0;width:100%;}
   }
 </style>
 <div class="cot-hoja">
