@@ -1,3 +1,102 @@
+# 📼 2026-07-31 — EL REPORTE DE PUBLICIDAD SE **ARCHIVA SOLO**, SEMANA CON SEMANA
+
+Christián: «este video de publicidad debe estar en mi página de Marketing e irse
+archivando por fecha, semana con semana».
+
+El MP4 de la semana (`REPORTE-ADS-SEMANA-2026-07-31.mp4`, 4:39, 16 MB) quedaba
+suelto en la carpeta del proyecto. A la semana siguiente nadie volvía a
+encontrarlo, y comparar dos semanas era imposible.
+
+**Dónde se ve ahora:** `https://exygenlabs.com/admin?tab=marketing` — arriba de
+todo, antes del video de «cómo leer estas métricas». Lo ve el admin y también
+María (rol de difusión).
+
+## Lo que hay en esa pestaña
+
+1. **El video de la semana**, con su reproductor, su resumen de una línea y
+   botones de *Descargar Video* y *Leer El Reporte Escrito* (el `.md` completo).
+2. **Cómo va semana con semana**: gráfica y tabla con gasto, clics,
+   conversaciones de WhatsApp, costo por conversación, compras atribuidas por
+   Meta, visitas y compras del sitio. **Ese es el valor real del archivo**: nadie
+   va a ver 52 videos de cinco minutos, pero la evolución sí se lee de un vistazo.
+   Una cifra que no se midió sale con raya, nunca en cero.
+3. **Semanas anteriores**, de la más nueva a la más vieja, con fechas, duración y
+   tamaño. Se ven ahí mismo sin salir de la página.
+4. **Disco y retención**: cuánto ocupa, cuánto va a ocupar al año y qué se pasó
+   de la raya.
+
+## Dónde viven los videos — y por qué NO en git
+
+15 MB × 52 semanas = **780 MB al año**, y git no olvida: una vez dentro, cada
+clon carga ese peso para siempre. Viven en **disco del servidor**, igual que los
+COA y las fichas técnicas:
+
+```
+/opt/exygen/reportes-ads/<año>/<semana>/{video.mp4, resumen.md, datos.json}
+```
+
+Montado en el contenedor como `/data/reportes-ads` (`docker-compose.yml`,
+`REPORTES_ADS_DIR`). **De lectura y escritura**, a diferencia de los COA, porque
+aquí el pipeline deposita. Los dos colores del azul/verde ven la MISMA carpeta,
+así que un despliegue no se lleva nada por delante. Hoy: **16 MB**, disco al 38%
+con 13 G libres.
+
+## El candado
+
+Nada de URL pública adivinable: son gasto, ventas y embudo. Las cuatro rutas
+cuelgan de `get_current_marketing` (admin o difusión) y la del MP4 revalida el
+rol a mano, porque el `<video>` del navegador no manda headers y el token viaja
+en la URL. Probado **en vivo** contra `api.exygenlabs.com`: sin sesión 401, con
+token inventado 401. Y en `test_reportes_ads.py` (32 pruebas): un **cliente** con
+sesión válida y un **distribuidor** con sesión válida reciben **403** al pedir el
+video, aunque le peguen a la API directo.
+
+## Retención — **la decisión es de Christián**
+
+`retencion.json` dice cuántas semanas conservar (**52** por omisión, cambiable
+desde `PUT /api/admin/marketing/reportes/retencion`). **NO se borra nada solo, ni
+hay temporizador que lo haga.** Lo que se pasa de la raya sale marcado como *por
+vencer* en el panel y se borra con `DELETE`, a mano. Si dentro de un año quiere
+conservar más, sube el número y ya.
+
+## Cómo se archiva el de la próxima semana
+
+En `Media/Videos/pipeline/record-reporte-ads.js` sólo se tocan **dos bloques**:
+`SEMANA` (fechas, título, resumen de una línea) y `CIFRAS`. Después:
+
+```bash
+PUBLICAR=1 node record-reporte-ads.js
+```
+
+Graba el video, calcula la semana ISO y la duración reales, escribe
+`datos-reporte-ads-<semana>.json` y lo sube todo con
+`./publicar-reporte-ads.sh`. Sin `PUBLICAR=1` sólo imprime el comando: subir
+16 MB no debe pasar por accidente al reencodear.
+
+A mano, o desde cualquier otro pipeline:
+
+```bash
+./publicar-reporte-ads.sh datos.json video.mp4 resumen.md   # sube por SSH
+./publicar-reporte-ads.sh --listar                          # qué hay archivado
+```
+
+Sube por SSH (Instance Connect, sin `.pem`) porque no necesita guardar la
+contraseña del admin en ningún archivo. Publicar dos veces la misma semana la
+**reemplaza**, así una corrida repetida no llena el archivo de duplicados.
+También existe el camino por HTTPS: `POST /api/admin/marketing/reportes`
+(multipart, sólo admin), para cuando haya un token a la mano.
+
+## Marketing y Anuncios **no** se fusionaron
+
+Ya existían las dos pestañas y son dos preguntas distintas: **Anuncios** es el
+panel en vivo de Meta (lo que cobró hoy), **Marketing** es el cruce contra ventas
+reales y ahora el archivo semanal. El reporte se metió en Marketing sin duplicar
+nada. Si Christián prefiere una sola, se puede juntar después — hoy conviven.
+
+**Compuertas:** backend `1037 passed, 0 fallas`. Auditoría del frontend en verde.
+
+---
+
 # 🕵️ 2026-07-31 — LOS CÓDIGOS DE DESCUENTO YA NO DELATAN A NADIE: **MonicaF**
 
 Christián: «a María tiene prendidos sus códigos de descuento, pero creo que

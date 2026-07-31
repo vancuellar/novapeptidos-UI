@@ -2,6 +2,7 @@ import React, { useEffect, useLayoutEffect, useState, useCallback } from 'react'
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { Filter, Eye, LayoutDashboard, Package, ShoppingBag, Plus, Pencil, Trash2, DollarSign, Users, Clock, TrendingUp, Phone, Receipt, Store, Copy, Boxes, Truck, RefreshCw, MailCheck, Ban, Megaphone, BarChart3, Upload, ShoppingCart, Target, KeyRound, Gauge, Search, Archive, ArchiveRestore, HandCoins, CircleCheck, CircleAlert, ArrowUp, ArrowDown, ArrowUpDown, Sparkles } from 'lucide-react';
 import Marketing from '@/components/admin/Marketing';
+import ReportesSemanales from '@/components/admin/ReportesSemanales';
 import VideoComoLeerDifusion from '@/components/admin/VideoComoLeerDifusion';
 import MotorPrecios from '@/components/admin/MotorPrecios';
 import SurtirCatalogo from '@/components/admin/SurtirCatalogo';
@@ -854,8 +855,13 @@ const Admin = () => {
             radiografía por campaña y el director, y aquí adentro Admin.js ya
             pasaba de 1700 líneas. */}
         <TabsContent value="marketing" className="mt-5">
-          {/* El video que explica cómo leer Embudo, Marketing y Anuncios va
-              ARRIBA: es la puerta de entrada para quien no vive en estos números. */}
+          {/* EL REPORTE DE LA SEMANA VA PRIMERO (Christián, 2026-07-31): "este
+              video de publicidad debe estar en mi página de Marketing e irse
+              archivando por fecha, semana con semana". Arriba el video de esta
+              semana, y abajo la evolución y el archivo de las anteriores. */}
+          <ReportesSemanales />
+          {/* El video que explica cómo leer Embudo, Marketing y Anuncios: es la
+              puerta de entrada para quien no vive en estos números. */}
           <VideoComoLeerDifusion />
           <Marketing />
         </TabsContent>
