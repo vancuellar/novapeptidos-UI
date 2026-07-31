@@ -23,6 +23,12 @@ const ETIQUETAS = {
   // Son DOS porque la API de Skydropx PRO usa OAuth2: se cambian por un token.
   SKYDROPX_CLIENT_ID: { grupo: 'Skydropx PRO (envíos)', label: 'Client ID', pista: 'Skydropx PRO → Conexiones → API' },
   SKYDROPX_CLIENT_SECRET: { grupo: 'Skydropx PRO (envíos)', label: 'Client secret', pista: 'La pareja del Client ID, en la misma pantalla' },
+  // El segundo cotizador de envíos (revendedor de Skydropx). Con las dos llaves
+  // puestas, cada despacho se cotiza en AMBOS y se contrata el más barato; sin
+  // ellas, todo sigue solo con Skydropx. El backend ya las acepta (secretos.py);
+  // esta etiqueta es lo que las hace aparecer en la pantalla.
+  ENVIOSINT_CLIENT_ID: { grupo: 'Envíos Internacionales (envíos)', label: 'Client ID', pista: 'app.enviosinternacionales.com → Configuración → API ("Clave del Cliente")' },
+  ENVIOSINT_CLIENT_SECRET: { grupo: 'Envíos Internacionales (envíos)', label: 'Client secret', pista: 'La "Clave Secreta del Cliente", en la misma pantalla' },
 };
 
 const GatewayCredentials = () => {
