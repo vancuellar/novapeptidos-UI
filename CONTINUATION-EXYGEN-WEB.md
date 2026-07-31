@@ -1,3 +1,86 @@
+# 🕵️ 2026-07-31 — LOS CÓDIGOS DE DESCUENTO YA NO DELATAN A NADIE: **MonicaF**
+
+Christián: «a María tiene prendidos sus códigos de descuento, pero creo que
+vamos a rotarlos a que digan MonicaF mejor jeje». El texto del propio código era
+la última rendija de su orden del 31-jul —«los clientes no pueden ver que el
+código de descuento es de María»—: los correos y las rutas ya estaban tapados,
+pero `MARIAN-15-R4YV`, `ALANIS-20-FRUK` y `JAVIER-25-RHV4` los **teclea el
+cliente** y los ve completos.
+
+Ahora **todos** los distribuidores emiten con el mismo prefijo, el de quien
+atiende de cara al cliente (Mónica Flores): **`MONICAF-15-XXXX`**. Con uno solo
+para todos, el texto ya no distingue a nadie ni comparando dos códigos entre sí.
+
+## Eran DOS familias, y por eso la mitad pasaba desapercibida
+
+| | dónde vive | ejemplo viejo | ejemplo nuevo |
+|---|---|---|---|
+| AUTO, uno por nivel | `discount_codes` | `MARIAN-15-R4YV` | `MONICAF-15-Q5QK` |
+| ÚNICO legacy | `users.distributor_code` | `MARI-3537` | `MONICAF-7451` |
+
+Cambiar sólo `gen_discount_code` habría dejado el legacy en pie. Las dos cambian.
+
+## Lo que preguntó Christián justo antes de rotar
+
+«¿los códigos que María ya repartió siguen funcionando?». La respuesta era **NO**
+y nadie lo había notado: rotar reescribía el texto **dentro del mismo
+documento**, así que el código circulando dejaba de existir en el acto y el
+cliente se quedaba sin descuento, sin aviso. Su orden: **no matarlos**.
+
+Ahora el viejo se **jubila** (`superseded_at`, conserva **su** caducidad) y el
+nuevo nace a su lado. Los dos dan el mismo descuento y atribuyen al mismo
+distribuidor. El legacy, que sólo cabe uno por ficha, se **muda** a
+`discount_codes` antes de que la ficha estrene texto. Gracia real: hasta el
+**21–29 de octubre**, que es lo que les quedaba de vida.
+
+De paso: `resolve_distributor` sólo miraba `users.distributor_code`, así que un
+registro con `?ref=` de un código AUTO —o de un legacy jubilado— entraba
+**huérfano y sin comisión**, callado. Ahora cae por `_resolve_code`, el mismo
+camino que usa el checkout.
+
+`test_gracia_de_codigos.py` (11 pruebas) guarda la promesa, con un guardia tosco
+que cuenta los textos vivos antes y después.
+
+---
+
+# 💰 2026-07-31 — TRES PRECIOS SE ACERCAN A CERTIFIED, Y EL **ROI NETO DE VERDAD**
+
+Christián: «si es subirlos, súbelos pero quédate 11 pesos debajo o incluso 21 si
+es que aún siguen las reglas del ROI 5x después de descontar comisiones, costos
+directos, costos fijos, etc.».
+
+**Cómo se implementó:** el precio nuevo es el mayor terminado en 9 que quede al
+menos **$11** abajo de Certified; si con $11 no cabe, se prueba **$21**; si
+tampoco, **no se mueve y se reporta**. Certified se leyó **EN VIVO** el 31-jul a
+las **15:03 EST**, tamaño contra tamaño.
+
+| producto | Certified | antes | después | ROI neto |
+|---|---:|---:|---:|---:|
+| Retatrutida 10 mg | 2,500 | 2,479 | **2,489** | 12.27× |
+| Tirzepatida 10 mg | 2,140 | 2,119 | **2,129** | 13.79× |
+| Tirzepatida 30 mg | 3,100 | 3,069 | **3,089** | 12.17× |
+| Glutatión 1500 mg | 1,580 | 1,499 | *no se mueve* | 9.12× |
+| LL-37 5 mg | 1,648 | 1,629 | *no se mueve* | 7.91× |
+
+**Los dos que no se pueden, y por qué no se fuerzan.** El Glutatión 1500 mg lo
+topa la **escalera**: a $1,569 saldría a $1.046/mg contra $1.015/mg del de 600
+mg, y a $1,559 tampoco cabe; arreglarlo exige subir **también el chico**, que es
+otra decisión de Christián. El LL-37 5 mg **ya está donde la regla lo pondría**:
+$1,648 − 11 = 1,637 y el mayor terminado en 9 abajo de eso es $1,629, su precio
+de hoy.
+
+**`reprecio.roi_neto`** es la vara nueva: costo + flete del proveedor en partes
+iguales por caja + comisión + puntos + **guía Y EMPAQUE ($189.39** medido con
+recibos, no los $165 de la guía sola**)** + gasto fijo prorrateado ($341.63 al
+mes entre **10** pedidos — el lado conservador; con 20 ningún veredicto cambia).
+Vive **aparte** de `roi_real` a propósito: mover el ROI de la maestra en silencio
+cambiaría la comisión de 191 productos de golpe.
+
+Escalera, trinquete, techo cruzado y «nunca arriba de Certified»: los cuatro se
+respetan. Dos corridas en seco limpias, certeza en verde, auditoría 86/0.
+
+---
+
 # 🧹 2026-07-31 — LAS RESPUESTAS DE LA IA SALEN LIMPIAS (se veían los asteriscos)
 
 Orden de Christián: «las respuestas de la AI no están limpias, dejan código,
