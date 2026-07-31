@@ -43,7 +43,14 @@ const TrustWidget = ({ className = '', defaultOpen = false }) => {
 
   return (
     <div
-      className={`rounded-lg border border-green-600/25 border-l-4 border-l-green-600 bg-green-600/[0.05] dark:bg-green-500/[0.07] dark:border-green-500/30 dark:border-l-green-500 overflow-hidden ${className}`}
+      // `relative z-10`: el checkout trae una tarjeta `position: sticky` justo
+      // ARRIBA de este widget (el resumen del pedido). Un elemento con
+      // position lo pinta SIEMPRE encima de uno sin position, sin importar
+      // el orden del HTML — así que cerca del punto donde esa tarjeta se
+      // "despega", tapaba este widget por completo (se veía un hueco negro
+      // en vez del widget). Con `relative` este div también entra al carril
+      // de elementos posicionados, y por orden en el DOM pinta encima.
+      className={`relative z-10 rounded-lg border border-green-600/25 border-l-4 border-l-green-600 bg-green-600/[0.05] dark:bg-green-500/[0.07] dark:border-green-500/30 dark:border-l-green-500 overflow-hidden ${className}`}
       data-testid="trust-widget"
     >
       {/* Colapsada, esto es TODO lo que se ve: un renglón, nada más — sin la
