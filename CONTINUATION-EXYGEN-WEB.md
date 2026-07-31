@@ -1,3 +1,169 @@
+# 🤝 HANDOFF — 2026-07-31 — DOBLE COTIZADOR DE ENVÍOS + ENVÍO REAL EN EL ROI
+
+## ⛔ EL BACKEND ESTÁ EMPUJADO PERO **NO DESPLEGADO**
+
+El código está en `main` (backend `9d85f35`, motor `3afd35c`), pero **el despliegue
+del backend queda pendiente**: el disco del EC2 está al **99%** y Christián tiene que
+disparar la limpieza antes. El `deploy.sh` nuevo ya recoge basura al final de cada
+despliegue futuro, así que esto no se vuelve a acumular. Nada de lo de esta tanda
+está en vivo todavía — y no hace falta que lo esté: nace apagado.
+
+## ✅ HECHO el 31-jul (probado y empujado)
+
+**Compuertas al cierre: backend 760/760 ✅ · motor 344/344 ✅** (cero fallas en los
+dos). El motor quedó además en punto fijo: dos corridas en seco de `reprecio.py` dan
+**0 cambian de precio**, y `--solo-derivadas` dice «nada que corregir».
+
+1. **Doble cotizador de envíos.** Cada pedido se cotiza en **Skydropx Y en
+   enviosinternacionales.com**, se juntan todas las tarifas, se ordenan por precio
+   y se contrata la más barata. Piezas nuevas:
+   - `enviosinternacionales.py` (backend) — espejo de `skydropx.py`. Reutiliza a
+     propósito sus traductores de direcciones/bultos/tarifas: si es la misma API,
+     tiene que ser la misma traducción y un solo lugar donde arreglarla.
+   - `paqueterias.py` (backend) — el comparador. Junta tarifas, mide el ahorro, y
+     **compra la guía con el proveedor que la cotizó** (un `rate_id` sólo vale en
+     la casa que lo emitió). Un proveedor caído NO tumba el despacho.
+   - `test_paqueterias.py` — 15 pruebas. La que más importa: **sin llaves del
+     segundo proveedor, todo se comporta EXACTAMENTE como hoy**.
+   - `CotizarEnvio.js` (UI) — enseña la comparación por proveedor, el ahorro, y de
+     qué casa sale cada tarifa. Es pantalla **interna**: el cliente nunca la ve.
+   - ⛔ **NACE APAGADO.** Christián todavía no abre la cuenta. `enabled()` es False
+     sin llaves y el sitio cotiza y compra sólo con Skydropx, igual que hoy.
+
+2. **El ROI ya usa el envío REAL, no la tarifa plana.** El piso de 5× restaba $250,
+   que NO es lo que cuesta una guía: es la política de cobro al cliente. Una guía
+   real anda en **$139–$165** (medido en vivo, Playa del Carmen → Nuevo León).
+   Ahora hay **una sola fuente**: la regla `envio_costo_real_mxn` en
+   `datos/reglas.csv` (hoy $165, el extremo alto, porque equivocarse hacia arriba
+   deja el piso MÁS exigente). La leen `reprecio.costo_real_del_envio()` y la vista
+   `v_roi_real`. `actualizar_costo_envio.py` la reescribe con el p75 de las guías
+   REALES en cuanto haya ≥8; el backend las exporta en
+   `GET /api/admin/envios/costo-real?csv=1` (sólo admin — son costos de la casa).
+   - **Efecto medido: CERO productos cambian de canal.** Lo único que se mueve es
+     el suelo del HGH 40 IU: de $2,029 a $2,019. Ningún precio se aplicó.
+
+3. **Línea ORAL de Exoma** anotada en `auditar_cobertura.RESUELTOS` (cápsulas y
+   tabletas; nosotros vendemos vial inyectable y cero orales). Otra vía = otro
+   producto. ⚠️ Que Exoma abriera esa categoría es decisión de negocio pendiente.
+
+4. Prompts de Codex (ROMPEDOR y AUDITORIA) al día con las dos reglas deliberadas.
+
+## 🔜 LO QUE FALTA
+
+- **DESPLEGAR EL BACKEND** cuando Christián corra la limpieza de disco del EC2
+  (hoy al 99%). Es lo único que falta para que esto exista en vivo.
+- ~~Motor en rojo~~ **RESUELTO.** Las 5 notas con la cifra vieja (HGH 24iu, HGH
+  36iu, HGH 191AA 15iu, IGF-1 LR3 1mg, Liraglutida 30mg) ya están al día, con
+  **cero precios movidos**. Y de paso se cerró la causa raíz: la nota vive en DOS
+  lados —la maestra y el renglón vigente de `datos/historial_precios.csv`— y el
+  **historial MANDA** sobre la maestra al construir la base (`db.py`), así que
+  refrescar sólo la maestra dejaba la base enseñando la cifra vieja. Ahora
+  `reprecio.py --solo-derivadas --aplicar` refresca **los dos** con la misma
+  función, así que no pueden discrepar. Respaldos:
+  `backup_maestra_pre_envio_real_2026-07-31.xlsx` y `historial_precios.csv.bak`
+  (los `*.bak` ya están en `.gitignore`).
+- **Llaves de enviosinternacionales.com** cuando Christián abra la cuenta: se pegan
+  en **Admin → Cobros** como `ENVIOSINT_CLIENT_ID` y `ENVIOSINT_CLIENT_SECRET` (o
+  en `~/.config/exygen/enviosinternacionales.env`). Es lo ÚNICO que falta para
+  encenderlo. Lo que ya NO falta: su API quedó verificada contra su **OpenAPI 3.0.1
+  público** (`https://app.enviosinternacionales.com/es-MX/api-docs.json`, 45 rutas) y
+  es en efecto **white-label de Skydropx** — mismos esquemas, OAuth2
+  `client_credentials` con cuerpo JSON, cotización en diferido con polling, y compra
+  en `POST /api/v1/shipments/` **con diagonal final** (sin ella la ruta sólo acepta
+  GET; hay una prueba que congela ese detalle). Se pide además `unique_shipment` para
+  que un reintento no compre una segunda guía. Falta sólo probarlo con llaves reales;
+  para eso está el sandbox `sb-app.enviosinternacionales.com` (se apunta con
+  `ENVIOSINT_API_URL`, sin tocar código).
+
+---
+
+# 🤝 HANDOFF — 2026-07-31 — POLÍTICA DE ENVÍO NUEVA (mínima $2,500 + tope 5%)
+
+## La regla, en palabras de Christián
+
+> «La política de envío será gratis siempre y cuando el ticket supere los $2,500 de
+> compra mínima y/o no sea mayor a 5% del total de la compra. Primero se debe cumplir
+> la compra mínima. De otra manera, se cobra un flat fee que aún tenemos que
+> determinar. Creo que Certified cobra $250 flat; si es cierto, nosotros debemos
+> cobrar menos, quizás $200 o $219.»
+
+**Son DOS candados y el orden es la regla:**
+
+1. **La compra mínima ($2,500).** Abajo de ella se cobra la tarifa plana, por barata
+   que salga la guía. El 5% ni se mira.
+2. **El tope del 5%** (era 10% hasta hoy). Cumplida la mínima, la casa absorbe la
+   guía hasta ese 5% y el cliente pone la diferencia.
+
+## ⚠️ LO QUE ESTO CAMBIA EN LA CAJA — leerlo antes de opinar
+
+Con una guía de **$250**, el 5% no alcanza a taparla hasta los **$5,000**. O sea que
+el "envío gratis desde $2,500" ya **no es $0** en esa franja:
+
+| Compra | Antes (tope 10%) | Ahora (tope 5%) | Lo que pone la casa |
+|---|---|---|---|
+| $1,000 | $250 | $250 | $0 |
+| $2,500 | $0 | **$125** | $125 |
+| $3,000 | $0 | **$100** | $150 |
+| $4,000 | $0 | **$50** | $200 |
+| $5,000 | $0 | **$0** | $250 |
+
+Es exactamente la regla que pidió el dueño y es la que protege el margen, pero
+**cambia lo que ve y paga un cliente entre $2,500 y $5,000**. No es un error.
+
+## Qué se tocó
+
+**Backend** (`novapeptidos-RBAC`, commit «Envio: politica nueva…»):
+- `envios.py` — `TOPE_ENVIO_SOBRE_COMPRA` 0.10 → **0.05**, y `COMPRA_MINIMA_ENVIO_GRATIS
+  = 2500` **nueva**. `cobro_de_envio_al_cliente` acepta `tarifa_plana`.
+- `server.py` — **la mínima dejó de derivarse** del costo de la guía. Antes era
+  `SHIPPING_FLAT / TOPE` (250/10% = 2,500); con el 5% esa cuenta la habría movido sola
+  a **$5,000** sin que nadie lo pidiera. Ahora son números independientes.
+- `server.py` — se separó lo que se **COBRA** (`SHIPPING_FLAT`, un precio) de lo que la
+  guía **CUESTA** (`COSTO_GUIA_ESTIMADO`). Mezclados, bajar el precio al cliente movía
+  solo y en silencio el punto donde el envío sale gratis.
+- Los tres números salen del **`.env` del servidor** (`SHIPPING_FLAT`,
+  `COSTO_GUIA_ESTIMADO`, `FREE_SHIPPING_FROM`): el flat se mueve **sin desplegar**.
+- `/payments/config` ahora manda `shipping_cap_rate` y `shipping_cost_estimate`.
+- Pruebas: **759 en verde**, 0 fallas.
+
+**Frontend** (commit «Carrito y checkout: el espejo…», **YA EN VIVO**, auditoría
+**85 bien / 0 fallas**):
+- `CartContext.js` — el espejo del cálculo, con los tres números del servidor.
+- **Compatible hacia atrás a propósito**: si el servidor no manda el tope, la pantalla
+  NO adivina el 5% — se comporta como antes. Por eso este despliegue pudo ir **antes**
+  que el del backend sin enseñar un cargo que la caja no cobra.
+- `Checkout.js` — el envío se recalcula sobre la mercancía **con los puntos ya
+  restados** (el carrito no sabe de puntos; el servidor sí). Y se borró el `0.10`
+  escrito a mano.
+- El renglón de envío en cero ya dice **"Gratis"** cuando se ganó, en vez de "Se
+  cotiza por separado".
+
+## ⛔ PENDIENTES — los dos, para Christián
+
+**1. El flat se quedó en $250.** «Quizás $200 o $219» es un quizás, no una orden.
+Cuando decida: se cambia `SHIPPING_FLAT` en el `.env` del servidor, sin desplegar.
+
+**2. EL BACKEND NO ESTÁ DESPLEGADO.** El código está en `main` y en verde, pero el
+despliegue **falló por disco lleno en el EC2** (20 GB al 100%). `/opt/exygen/app/deploy.sh`
+**no limpia imágenes viejas**: hay ~11 GB de capas colgando y 2.5 GB de caché de build.
+Hasta que se limpie, **ningún despliegue de backend puede subir** — ni éste ni los de
+nadie más. Mientras tanto el sitio sigue con la regla del 10%, y la pantalla también
+(por el compatible-hacia-atrás de arriba): están alineados, no hay mentira en el carrito.
+
+## 🔍 Qué cobra la competencia de envío — VERIFICADO HOY
+
+- **Exoma: $200 fijos, gratis desde $2,000.** VERIFICADO en `exomapeptides.mx/envios`
+  y en su FAQ. (El repo decía "gratis ≥$3,000" — desactualizado, era del 2 de julio.)
+- **Certified: NO PUBLICA su costo de envío.** Su `/shipping-policy/` y su FAQ no traen
+  ni un importe; sólo aparece al llegar al checkout con producto en el carrito.
+- ⚠️ **El "Certified cobra $250 fijos SIEMPRE" que estaba en este archivo y en
+  `server.py` NO tenía fuente** — y coincidía al peso con nuestro propio
+  `SHIPPING_FLAT`. Muy probablemente alguien escribió nuestro número como si fuera de
+  ellos. Se quitó del código. No se usa para decidir nada hasta que haya evidencia.
+- Y bajarle a Exoma **no aplica**: rige el trinquete (sólo bajamos si baja Certified).
+
+---
+
 # 🤝 HANDOFF — 2026-07-30 (noche 3) — ASESOR DE NEGOCIO (chat IA del panel)
 
 ## ✅ EN VIVO Y VERIFICADO
@@ -73,7 +239,7 @@ prende cobro sin su visto bueno).
 
 ---
 
-# 🤝 HANDOFF — 2026-07-30 (noche 2) — LÉELO PRIMERO
+# 🤝 HANDOFF — 2026-07-30 (noche 2)
 
 ## ✅ HECHO el 30-jul noche 2 (EN VIVO, E2E completo en verde al cierre)
 

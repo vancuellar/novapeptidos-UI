@@ -11,8 +11,13 @@ import { toast } from 'sonner';
 // código postal contra varias paqueterías; el problema era que no había dónde verlo
 // ni con qué comprarla. Esto es ese "dónde".
 //
-// Lo que se enseña aquí es lo que le cuesta A LA CASA. Lo que paga el cliente no se
-// toca: sigue con sus $250 parejos y su envío gratis arriba de $2,500 con tope del 10%.
+// ⛔ DOBLE COTIZADOR (Christián, 2026-07-31). Se pregunta en Skydropx Y en
+// enviosinternacionales.com y se contrata la más barata, venga de quien venga. Cada
+// renglón dice de qué proveedor es, porque la guía se compra en la casa que la cotizó.
+// Mientras el segundo no tenga llaves, esto se ve y funciona exactamente como antes.
+//
+// ⛔ ESTA PANTALLA ES INTERNA. Lo que se enseña aquí es lo que le cuesta A LA CASA y no
+// lo ve ningún cliente. Lo que paga el cliente lo decide la política de cobro, aparte.
 
 const pesos = (n) => `$${Number(n || 0).toLocaleString('es-MX', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
 const dias = (d) => (Number(d) > 0 ? `${d} día${Number(d) === 1 ? '' : 's'}` : 'sin plazo');
@@ -39,7 +44,7 @@ const CotizarEnvio = ({ order, onComprada }) => {
     // Cuesta dinero de verdad: se pregunta antes, con el precio a la vista.
     const ok = window.confirm(
       `Comprar la guía de ${opcion.carrier} ${opcion.service} por ${pesos(opcion.price)}.\n\n`
-      + 'Esto se cobra de tu cuenta de Skydropx. ¿Seguimos?');
+      + `Se cobra de tu cuenta de ${opcion.provider_name || 'Skydropx'}. ¿Seguimos?`);
     if (!ok) return;
     setComprando(opcion.id);
     try {
@@ -70,8 +75,9 @@ const CotizarEnvio = ({ order, onComprada }) => {
 
       {!cot && (
         <p className="text-[11px] text-muted-foreground leading-relaxed">
-          Cotiza este pedido con Skydropx por su peso y su código postal reales. Lo que
-          se muestra es lo que le cuesta a la casa, no lo que paga el cliente.
+          Cotiza este pedido en Skydropx y en Envíos Internacionales por su peso y su
+          código postal reales, y te deja contratar la más barata. Lo que se muestra es
+          lo que le cuesta a la casa, no lo que paga el cliente.
         </p>
       )}
 
@@ -96,6 +102,29 @@ const CotizarEnvio = ({ order, onComprada }) => {
         </p>
       )}
 
+      {/* La comparación entre proveedores: qué dio cada uno y cuánto se ahorra por
+          haber preguntado en dos lados. Si sólo hay uno encendido se dice también,
+          para que se vea que falta prender el otro y no parezca que ya se comparó. */}
+      {cot?.proveedores?.length > 0 && (
+        <div className="rounded-md bg-[hsl(var(--muted))]/40 p-2 space-y-1">
+          {cot.proveedores.map((p) => (
+            <div key={p.clave} className="flex items-center justify-between gap-2 text-[11px]">
+              <span className={p.activo ? '' : 'text-muted-foreground'}>{p.nombre}</span>
+              <span className="text-muted-foreground">
+                {!p.activo && 'sin llaves'}
+                {p.activo && p.mejor != null && `${p.tarifas} tarifas · desde ${pesos(p.mejor)}`}
+                {p.activo && p.mejor == null && (p.detalle || 'sin tarifas')}
+              </span>
+            </div>
+          ))}
+          {cot.ahorro?.comparados > 1 && cot.ahorro.ahorro_mxn > 0 && (
+            <div className="text-[11px] font-semibold text-[hsl(var(--primary))] pt-1">
+              Se ahorran {pesos(cot.ahorro.ahorro_mxn)} por cotizar en los dos.
+            </div>
+          )}
+        </div>
+      )}
+
       {cot?.options?.map((o) => (
         <div key={o.id} className="flex items-center gap-2 text-xs border-t border-[hsl(var(--border))] pt-2">
           <div className="min-w-0 flex-1">
@@ -104,6 +133,8 @@ const CotizarEnvio = ({ order, onComprada }) => {
             </div>
             <div className="text-muted-foreground">
               {dias(o.days)}
+              {/* De qué proveedor sale esta tarifa: es con quien se compra la guía. */}
+              {o.provider_name && ` · vía ${o.provider_name}`}
               {!o.para_el_cliente && ' · fuera de lo que se le prometió al cliente'}
             </div>
           </div>
