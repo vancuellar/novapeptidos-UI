@@ -12,7 +12,7 @@ const page = {
       tone: 'warn',
       title: 'Antes de nada: qué es esto y qué no es',
       body:
-        'Todo lo que vendemos es material de investigación (RUO, Research Use Only). Se usa en laboratorio, en experimentos in vitro o en modelos, y no está aprobado ni destinado a consumo humano ni animal. En esta guía te explicamos el manejo del material en la mesa de trabajo: reconstituir, medir, guardar y desechar. No vas a encontrar aquí dosis para personas, protocolos de administración ni promesas de resultados, porque eso sería consejo médico y no lo damos.',
+        'Todo lo que vendemos es material de investigación (RUO, Research Use Only). Se usa en laboratorio, en experimentos in vitro o en modelos; no es un medicamento ni un suplemento. En esta guía te explicamos el manejo del material en la mesa de trabajo: reconstituir, medir, guardar y desechar. No vas a encontrar aquí dosis para personas, protocolos de administración ni promesas de resultados, porque eso sería consejo médico y no lo damos.',
     },
     {
       type: 'prose',
@@ -205,7 +205,7 @@ const page = {
         },
         {
           q: '¿Esto lo puedo usar en mí o en una mascota?',
-          a: 'No. Es material de investigación, no está aprobado para consumo humano ni animal y nosotros no damos orientación de administración ni consejo médico. Para cualquier tema de salud, consulta a un profesional certificado.',
+          a: 'No. Es material de investigación de laboratorio, no un medicamento, y nosotros no damos orientación de administración ni consejo médico. Para cualquier tema de salud, consulta a un profesional certificado.',
         },
       ],
     },

@@ -11,7 +11,7 @@ const page = {
       tone: 'warn',
       title: 'Uso exclusivo en investigación (RUO)',
       body:
-        'Todo el material descrito aquí es para investigación in vitro y uso analítico de laboratorio. No es para consumo humano ni animal, no es un medicamento y esta guía no contiene ni sustituye indicaciones de administración ni consejo médico. Los procedimientos son de manejo de material en banco de trabajo.',
+        'Todo el material descrito aquí es para investigación in vitro y uso analítico de laboratorio. No es un medicamento ni un suplemento, y esta guía no contiene ni sustituye indicaciones de administración ni consejo médico. Los procedimientos son de manejo de material en banco de trabajo.',
     },
     {
       type: 'prose',

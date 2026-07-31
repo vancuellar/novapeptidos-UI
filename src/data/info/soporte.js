@@ -142,7 +142,7 @@ const page = {
       tone: 'warn',
       title: 'Soporte técnico, no médico',
       body:
-        'Ayudamos con pedidos, envíos, pagos, accesos, análisis de lote y manejo de material en laboratorio. No damos dosis, protocolos de administración ni consejo médico: todos los productos son de uso exclusivo en investigación y no son para consumo humano ni animal.',
+        'Ayudamos con pedidos, envíos, pagos, accesos, análisis de lote y manejo de material en laboratorio. No damos dosis, protocolos de administración ni consejo médico: todos los productos son de uso exclusivo en investigación de laboratorio.',
     },
   ],
   related: [

@@ -166,7 +166,7 @@ const page = {
       tone: 'warn',
       title: 'Material de investigación',
       body:
-        'Todo lo descrito aquí se refiere a la caracterización química de insumos de investigación (RUO). Los productos de Exygen Labs no son medicamentos, no están destinados a consumo humano ni animal y no deben usarse con fines diagnósticos o terapéuticos.',
+        'Todo lo descrito aquí se refiere a la caracterización química de insumos de investigación (RUO). Los productos de Exygen Labs no son medicamentos ni suplementos y no deben usarse con fines diagnósticos o terapéuticos.',
     },
     {
       type: 'faq',

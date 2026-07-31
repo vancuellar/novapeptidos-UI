@@ -314,9 +314,9 @@ const ProductDetail = () => {
                     </section>
                   ))}
                   <p className="text-xs leading-relaxed text-muted-foreground border-t border-border pt-4">
-                    Uso exclusivo en investigación (RUO). No es un medicamento ni un suplemento, no está
-                    destinado a consumo humano ni animal, y esta ficha no contiene indicaciones de dosis
-                    ni de administración.
+                    Uso exclusivo en investigación (RUO), en laboratorio y ensayos in vitro. No es un
+                    medicamento ni un suplemento, y esta ficha no contiene indicaciones de dosis ni de
+                    administración.
                   </p>
                 </div>
               )}

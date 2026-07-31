@@ -64,7 +64,7 @@ const page = {
         { term: 'Sinergia', plain: 'Cuando dos compuestos combinados producen un efecto mayor que la suma de sus efectos por separado, normalmente por actuar en vías complementarias.', example: 'BPC-157 y TB-500 se estudian juntos porque uno se asocia a angiogénesis y el otro a migración celular.' },
         { term: 'In vitro / in vivo', plain: 'In vitro es en cultivo celular o en tubo; in vivo es en un organismo vivo. Un resultado in vitro no predice automáticamente el otro.', example: 'Muchos compuestos con datos in vitro prometedores no han mostrado el mismo efecto en modelos in vivo.' },
         { term: 'Preclínico', plain: 'Etapa de investigación anterior a los ensayos en humanos: modelos celulares y animales.', example: 'La mayoría de los péptidos de este catálogo tienen evidencia preclínica, no ensayos clínicos de fase III.' },
-        { term: 'RUO', plain: 'Research Use Only. La etiqueta que indica que el material es exclusivamente para investigación: no para consumo humano ni animal, ni para diagnóstico o tratamiento.', example: 'Todo lo que vende Exygen Labs es RUO, sin excepción.' },
+        { term: 'RUO', plain: 'Research Use Only. La etiqueta que indica que el material es exclusivamente para investigación de laboratorio: no es medicamento ni suplemento, ni sirve para diagnóstico o tratamiento.', example: 'Todo lo que vende Exygen Labs es RUO, sin excepción.' },
       ],
     },
     {

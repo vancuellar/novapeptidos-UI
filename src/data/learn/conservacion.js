@@ -11,7 +11,7 @@ const page = {
       tone: 'warn',
       title: 'Uso exclusivo en investigación (RUO)',
       body:
-        'Los compuestos mencionados son para investigación in vitro y uso analítico de laboratorio. No son para consumo humano ni animal, no son medicamentos y nada de lo aquí escrito constituye indicación de administración ni consejo médico. Se habla de manejo, almacenamiento y estabilidad química del material.',
+        'Los compuestos mencionados son para investigación in vitro y uso analítico de laboratorio. No son medicamentos ni suplementos, y nada de lo aquí escrito constituye indicación de administración ni consejo médico. Se habla de manejo, almacenamiento y estabilidad química del material.',
     },
     {
       type: 'prose',

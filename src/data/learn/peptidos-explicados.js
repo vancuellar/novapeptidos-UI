@@ -21,7 +21,7 @@ const page = {
       tone: 'warn',
       title: 'Marco de uso',
       body:
-        'Todo el material del catálogo es de uso exclusivo en investigación (RUO). No está aprobado ni destinado para consumo humano ni animal. Esta página explica química y mecanismos según la literatura publicada; no es orientación médica ni una recomendación de uso.',
+        'Todo el material del catálogo es de uso exclusivo en investigación (RUO), en laboratorio y ensayos in vitro. No es medicamento ni suplemento. Esta página explica química y mecanismos según la literatura publicada; no es orientación médica ni una recomendación de uso.',
     },
     {
       type: 'steps',
@@ -209,7 +209,7 @@ const page = {
         },
         {
           q: '¿Los péptidos del catálogo se pueden consumir?',
-          a: 'No. Son materiales de investigación (RUO), no aprobados ni destinados a consumo humano ni animal. No proporcionamos protocolos de administración ni consejo médico de ningún tipo. Para cualquier tema de salud, consulta a un profesional certificado.',
+          a: 'No. Son materiales de investigación (RUO), no medicamentos ni suplementos. No proporcionamos protocolos de administración ni consejo médico de ningún tipo. Para cualquier tema de salud, consulta a un profesional certificado.',
         },
       ],
     },

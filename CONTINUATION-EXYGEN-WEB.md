@@ -1,3 +1,81 @@
+# ⚖️ 2026-07-31 — FUERA LA FRASE DE "CONSUMO HUMANO NI ANIMAL"
+
+Orden de Christián: «Me llegan muchos reclamos por esa frase. Quitemos eso y
+dejemos únicamente lo de péptidos para research only. Checa cómo lo tiene
+Certified y manéjalo similar.»
+
+## Qué se investigó primero (Certified, leído en vivo el 2026-07-31)
+
+Certified **sí trae la exclusión**, pero repartida distinto que nosotros:
+
+| Dónde | Qué dice literal |
+|---|---|
+| Pie de página (todo el sitio) | «Los productos ofrecidos son solo para uso de investigación in vitro y no están destinados a diagnosticar, tratar, curar ni prevenir ninguna enfermedad.» — **sin** mención al consumo |
+| Fichas de producto (26 de 47) | «No apto para uso humano ni veterinario» — nunca «consumo… ni animal» |
+| Banner de entrada | «…no están destinados al consumo humano ni a uso médico. Debes tener 18 años…» |
+| Preguntas frecuentes | «…no son para consumo humano.» |
+| Aviso legal | «No apto para consumo humano o animal, inyección, inhalación… uso clínico o diagnóstico…» |
+| Términos y condiciones, cl. 3 | «Todos los productos son exclusivamente para uso de investigación y laboratorio. No son para consumo humano o animal.» |
+| Página dedicada `/research-purposes-only/` | Explica *por qué* se etiqueta «No apto para consumo humano» (costos FDA, escala de estudios, patentabilidad) |
+
+Lectura: Certified **no** la pone donde el cliente compra (pie, carrito, tarjetas
+de producto). La deja en la **capa legal** y usa la fórmula más suave —«uso humano
+ni veterinario»— en la ficha.
+
+## Cómo quedó el nuestro
+
+Se queda el marco de investigación, se va la fórmula de consumo. Los tres idiomas:
+
+- **es-MX** — «Uso exclusivo en investigación (RUO), en laboratorio y ensayos in vitro. No es un medicamento ni un suplemento.»
+- **en-US** — «Research use only (RUO), for laboratory and in vitro work. Not a medicine or a supplement.»
+- **pt-BR** — «Uso exclusivo em pesquisa (RUO), em laboratório e ensaios in vitro. Não é medicamento nem suplemento.»
+
+Donde había promesa terapéutica de por medio se usa el cierre de Certified: «no
+están destinados a diagnosticar, tratar, curar ni prevenir ninguna enfermedad».
+
+## Dónde se cambió
+
+| Repo | Archivos |
+|---|---|
+| UI | los tres i18n (`ruo.gate.point2`, `trust.ruo`, `home.ruoNotice`, `edu.ruoBody`), `ProductDetail.js`, `LearnPage.js`, `productMonographs.js`, 12 páginas de `/aprende`, `contacto.js`, `soporte.js`, el resumen de `terminos.js` |
+| RBAC | `emails.py` (los 6 textos RUO: confirmación de pedido y cotización × es/en/pt), las 3 `templates/welcome_email.*.html`, `seed_data.py`, y los prompts de las dos IAs (`ai_assistant.py`, `chat_negocio.py`) |
+
+La hoja de cotización (`src/lib/hojaCotizacion.js` → `cotizador.docLeyenda`) **ya
+estaba limpia**: sólo decía «Productos para uso en investigación (RUO)».
+
+El pie del sitio ya se había arreglado el 2026-07-28, con este mismo criterio.
+
+## ⚠️ DÓNDE SE CONSERVÓ, Y POR QUÉ
+
+**Se queda sólo en la capa legal**, exactamente como Certified:
+
+- `src/data/info/terminos.js`, cláusula 2 — «Ningún producto está destinado ni
+  autorizado para consumo humano o animal…» y la prohibición de reetiquetar.
+- `info.terminos.body` en los tres i18n.
+- `acuerdo.py`, cláusulas 2 y 13 del Acuerdo de Distribuidor.
+
+Esa frase es el respaldo frente a COFEPRIS y frente a un cliente que alegue uso
+indebido. Sacarla de las fichas y los correos quita el susto sin quitar el
+respaldo; sacarla **también** de los Términos dejaría el marco RUO sin diente.
+Christián decide: una palabra suya y sale también de ahí.
+
+## La cadena que queda en pie al comprar
+
+1. **Puerta de entrada** (`RuoGate`) — tres puntos: RUO, «no es medicamento ni
+   suplemento», y 18+ con fines de investigación. Hay que palomear para entrar.
+2. **Casilla del checkout** — «Confirmo que soy mayor de 18 años y entiendo que
+   los productos son exclusivamente para investigación (RUO). Acepto:» + liga a
+   Términos. **Esa casilla nunca mencionó el consumo**, así que no perdió nada.
+3. **Términos y Condiciones** — ahí sigue la cláusula completa, y es lo que el
+   comprador acepta al palomear.
+
+## Prohibición en los prompts
+
+`ai_assistant.py` y `chat_negocio.py` traen escrito, con fecha, que NO vuelvan a
+usar la fórmula. Si no, la IA la reintroduce sola en cada respuesta.
+
+---
+
 # 🖨️ 2026-07-31 — IMPRIMIR LA GUÍA DESDE EL PANEL (admin y distribuidor)
 
 Orden de Christián: «¿Puedes hacer que recibamos la guía para imprimir en nuestro

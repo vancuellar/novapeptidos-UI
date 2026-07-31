@@ -59,8 +59,8 @@ const LearnPage = () => {
         </Card>
 
         <p className="text-xs text-muted-foreground leading-relaxed">
-          Contenido educativo. Todos los productos de Exygen Labs son exclusivamente para uso en investigación (RUO):
-          no son para consumo humano ni animal, ni para diagnóstico o tratamiento. Nada de esto es consejo médico.
+          Contenido educativo. Todos los productos de Exygen Labs son exclusivamente para uso en investigación (RUO),
+          en laboratorio y ensayos in vitro, no para diagnóstico ni tratamiento. Nada de esto es consejo médico.
         </p>
       </div>
     </div>

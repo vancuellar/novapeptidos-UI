@@ -20,7 +20,7 @@ const page = {
       tone: 'warn',
       title: 'Nota de cumplimiento',
       body:
-        'Varios términos de esta lista (dosis, titulación, protocolo, ciclo, subcutáneo, intramuscular) aparecen porque los vas a leer en la literatura científica y necesitas entenderlos. Definirlos no es recomendarlos. Todo el material del catálogo es de uso exclusivo en investigación (RUO), no está aprobado para consumo humano ni animal, y aquí no damos protocolos de administración ni consejo médico.',
+        'Varios términos de esta lista (dosis, titulación, protocolo, ciclo, subcutáneo, intramuscular) aparecen porque los vas a leer en la literatura científica y necesitas entenderlos. Definirlos no es recomendarlos. Todo el material del catálogo es de uso exclusivo en investigación (RUO), no es medicamento ni suplemento, y aquí no damos protocolos de administración ni consejo médico.',
     },
     {
       type: 'glossary',
@@ -188,7 +188,7 @@ const page = {
         },
         {
           term: 'RUO',
-          plain: 'Research Use Only: uso exclusivo en investigación. Significa que el material no está aprobado ni destinado a consumo humano ni animal.',
+          plain: 'Research Use Only: uso exclusivo en investigación. Significa que el material se surte para trabajo de laboratorio y ensayos in vitro, no como medicamento ni suplemento.',
           example: 'La leyenda va impresa en cada etiqueta. Ningún producto RUO cuenta con aprobación de COFEPRIS o FDA para uso terapéutico.',
         },
         {

@@ -1865,7 +1865,7 @@ const monographs = {
     sections: [
       {
         title: 'Qué es',
-        paragraphs: ['Cortagen es un tetrapéptido sintético con secuencia alanina, ácido glutámico, ácido aspártico y prolina (Ala-Glu-Asp-Pro, AEDP). Fue desarrollado en San Petersburgo como análogo sintético de fracciones peptídicas obtenidas de corteza cerebral bovina, dentro del programa de bioreguladores peptídicos cortos. Al igual que sus compañeros de serie, es una molécula pequeña, hidrosoluble y de estructura simple, sin actividad de neurotransmisor ni afinidad conocida por receptores clásicos. Se comercializa como polvo liofilizado de grado reactivo, con pureza analítica declarada, únicamente como material de investigación y nunca para consumo humano.'],
+        paragraphs: ['Cortagen es un tetrapéptido sintético con secuencia alanina, ácido glutámico, ácido aspártico y prolina (Ala-Glu-Asp-Pro, AEDP). Fue desarrollado en San Petersburgo como análogo sintético de fracciones peptídicas obtenidas de corteza cerebral bovina, dentro del programa de bioreguladores peptídicos cortos. Al igual que sus compañeros de serie, es una molécula pequeña, hidrosoluble y de estructura simple, sin actividad de neurotransmisor ni afinidad conocida por receptores clásicos. Se comercializa como polvo liofilizado de grado reactivo, con pureza analítica declarada, únicamente como material de investigación de laboratorio.'],
       },
       {
         title: 'Qué se estudia con él',

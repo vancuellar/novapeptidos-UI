@@ -208,7 +208,7 @@ const page = {
       tone: 'danger',
       title: 'Solo para investigación',
       body:
-        'Los productos de Exygen Labs son reactivos de investigación (RUO). No son medicamentos, no están aprobados para consumo humano ni animal, y esta página describe únicamente manejo de material en laboratorio. Nada de lo aquí escrito es consejo médico.',
+        'Los productos de Exygen Labs son reactivos de investigación (RUO). No son medicamentos ni suplementos, y esta página describe únicamente manejo de material en laboratorio. Nada de lo aquí escrito es consejo médico.',
     },
     {
       type: 'cards',

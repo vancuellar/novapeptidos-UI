@@ -13,8 +13,13 @@ const page = {
       tone: 'warn',
       title: 'Lo esencial antes de seguir',
       body:
-        'Todo lo que vendemos es material para investigación (RUO). No es medicamento, no es suplemento y no está destinado a consumo humano ni animal. Para comprar debes ser mayor de edad y adquirirlo con fines de investigación. Al usar el sitio o comprar, aceptas estos términos.',
+        'Todo lo que vendemos es material para investigación (RUO), destinado a trabajo de laboratorio y ensayos in vitro. No es medicamento ni suplemento. Para comprar debes ser mayor de edad y adquirirlo con fines de investigación. Al usar el sitio o comprar, aceptas estos términos.',
     },
+    // 2026-07-31 — Christian ordenó sacar la frase "no para consumo humano ni
+    // animal" de fichas, correos, pie, /aprende y /info porque generaba
+    // reclamos. SE QUEDA aquí, en la cláusula 2, que es el respaldo defensivo
+    // (mismo patrón que Certified: su tienda no la trae, su "Aviso legal" y su
+    // cláusula 3 de T&C sí). No la quites de esta sección sin orden expresa.
     {
       type: 'prose',
       title: '1. Quiénes somos y qué alcance tienen estos términos',

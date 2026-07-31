@@ -11,7 +11,7 @@ const page = {
       title: 'Cómo usar esta página',
       paragraphs: [
         'Aquí están las respuestas concretas a lo que la gente nos pregunta todos los días por correo y por WhatsApp. Está ordenada por bloques: primero los productos, luego el proceso de compra, después pagos, envíos, garantías y por último la parte legal.',
-        'Todo lo que vendemos es material de investigación (RUO, research use only). No es medicamento, no está aprobado para consumo humano ni animal, y no damos indicaciones de dosificación en personas. Si buscas la parte científica y de manejo en laboratorio, esa vive en /aprende.',
+        'Todo lo que vendemos es material de investigación (RUO, research use only). No es medicamento ni suplemento, y no damos indicaciones de dosificación en personas. Si buscas la parte científica y de manejo en laboratorio, esa vive en /aprende.',
         'Si no encuentras tu respuesta, escríbenos a hola@exygenlabs.com. El chat de IA del sitio también puede consultar el estatus de un pedido si le das tu número de orden.',
       ],
     },
@@ -254,7 +254,7 @@ const page = {
       tone: 'warn',
       title: 'Recordatorio RUO',
       body:
-        'Todo lo que vende Exygen Labs es material para investigación de laboratorio. No es medicamento, no está aprobado para consumo humano ni animal, y esta página no constituye consejo médico. Si tienes una duda de salud, consúltala con un profesional.',
+        'Todo lo que vende Exygen Labs es material para investigación de laboratorio. No es medicamento ni suplemento, y esta página no constituye consejo médico. Si tienes una duda de salud, consúltala con un profesional.',
     },
     {
       type: 'cards',

@@ -321,7 +321,7 @@ const page = {
       tone: 'danger',
       title: 'Solo para investigación (RUO)',
       body:
-        'Los compuestos descritos aquí son reactivos de investigación. No son medicamentos, no están aprobados para consumo humano ni animal y esta página no contiene ni contendrá pautas de administración en personas. Todo lo anterior describe mecanismos y lógica de diseño experimental, no tratamiento. Cualquier decisión clínica corresponde a un profesional de la salud.',
+        'Los compuestos descritos aquí son reactivos de investigación. No son medicamentos ni suplementos y esta página no contiene ni contendrá pautas de administración en personas. Todo lo anterior describe mecanismos y lógica de diseño experimental, no tratamiento. Cualquier decisión clínica corresponde a un profesional de la salud.',
     },
     {
       type: 'cards',

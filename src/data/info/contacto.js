@@ -75,7 +75,7 @@ const page = {
       tone: 'warn',
       title: 'Lo que no podemos responder',
       body:
-        'No damos dosis, protocolos de administración, indicaciones médicas ni consejo clínico de ningún tipo, ni por WhatsApp ni por correo. Todos nuestros productos son de uso exclusivo en investigación y no son para consumo humano ni animal. Si tu pregunta es de salud, la respuesta correcta es un profesional médico, no nosotros.',
+        'No damos dosis, protocolos de administración, indicaciones médicas ni consejo clínico de ningún tipo, ni por WhatsApp ni por correo. Todos nuestros productos son de uso exclusivo en investigación de laboratorio. Si tu pregunta es de salud, la respuesta correcta es un profesional médico, no nosotros.',
     },
     {
       type: 'faq',

@@ -18,7 +18,7 @@ const page = {
         // Solo se afirma lo comprobable: a quién se le compra y desde dónde se
         // despacha. ⛔ Nunca se menciona Asia, en ningún idioma (orden de Christian).
         'El recorrido empieza antes del primer análisis, en la compra: nuestros péptidos se fabrican en laboratorios de Estados Unidos. Eso no sustituye a nada de lo que viene después —el lote se verifica igual, y la procedencia nunca es motivo para saltarse un paso—, pero sí explica de dónde sale el polvo que entra a control.',
-        'Aquí explicamos, paso a paso, qué le pasa a un lote antes de que se pueda vender, qué documentos lo respaldan y cómo interpretarlos. Todo el material descrito es de uso exclusivo en investigación (RUO): no es para consumo humano ni animal, ni para uso diagnóstico o terapéutico.',
+        'Aquí explicamos, paso a paso, qué le pasa a un lote antes de que se pueda vender, qué documentos lo respaldan y cómo interpretarlos. Todo el material descrito es de uso exclusivo en investigación (RUO), en laboratorio y ensayos in vitro: no es para uso diagnóstico ni terapéutico.',
       ],
     },
     {
@@ -198,7 +198,7 @@ const page = {
       tone: 'warn',
       title: 'Uso exclusivo en investigación',
       body:
-        'Todos los materiales de Exygen Labs son insumos de investigación (RUO). No son medicamentos, no están destinados a consumo humano ni animal, y no deben usarse con fines diagnósticos o terapéuticos. El COA documenta la caracterización química de un lote; no autoriza ni sugiere ningún uso en organismos vivos.',
+        'Todos los materiales de Exygen Labs son insumos de investigación (RUO). No son medicamentos ni suplementos, y no deben usarse con fines diagnósticos o terapéuticos. El COA documenta la caracterización química de un lote; no autoriza ni sugiere ningún uso en organismos vivos.',
     },
     {
       type: 'faq',
