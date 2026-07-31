@@ -1,3 +1,14 @@
+# 📹 CITA HOY VIERNES 2026-07-31, 4:00 PM (hora de Cancún) — VIDEO SEMANAL DE ADS
+Orden de Christián: video de 1-2 min explicando la semana de publicidad de Meta
+(gasto, clics, WhatsApps, compras del píxel/CAPI, embudo, mejor anuncio y UNA
+recomendación), con datos EN VIVO de la API (act_1357297706382259, llaves en
+~/.config/exygen/meta.env) y el pipeline local (Media/Videos/pipeline:
+Playwright + edge-tts + ffmpeg). Guardar como REPORTE-ADS-SEMANA-2026-07-31.mp4
+y entregárselo con SendUserFile. Hay un cron en la sesión de la noche del 30-jul
+que lo dispara solo; si esa sesión ya murió, LA SESIÓN DE GUARDIA LO HACE A LAS
+4 PM. En cristiano — es para Christián. (Dato cultural: se despide con
+"Buenooooo", como los yucatecos al teléfono.)
+
 # 🤝 HANDOFF — 2026-07-31 (tarde) — PRIVACIDAD POR INTERRUPTOR + AUTOLLENADO
 
 ## ⛔ LO ÚNICO PENDIENTE: LA GUÍA DE BRENDA NO SE COMPRÓ
