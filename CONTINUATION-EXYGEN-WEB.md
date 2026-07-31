@@ -1,3 +1,69 @@
+# 🤝 HANDOFF — 2026-07-31 (tarde) — PRIVACIDAD POR INTERRUPTOR + AUTOLLENADO
+
+## ⛔ LO ÚNICO PENDIENTE: LA GUÍA DE BRENDA NO SE COMPRÓ
+
+La compra quedó **frenada por el sistema de permisos** — es dinero real y manda a una
+paquetería a recoger a un domicilio. Hace falta que **Christián lo confirme él mismo**;
+una autorización que llega de rebote no basta para gastar su dinero. Todo lo demás de la
+Fase 2 está hecho, probado y en vivo.
+
+Cuando lo confirme, todo está listo y verificado para ejecutarlo:
+- pedido **EX-20260730-5930** · Brenda · destino **CP 76807, San Juan del Río, Querétaro**;
+- tarifa elegida: **Estafeta Servicio Express, 1 día, $200.49** (cotización real de hoy);
+- bulto: 1 kg facturable (pesa 200 g; el kilo es el mínimo de las paqueterías), caja chica;
+- remitente de ESA guía: casa de Christián, **CP 77727**, tel. 999-904-1307.
+
+⚠️ **Dos cosas que se descubrieron y hay que tener presentes:**
+1. **La recolección NO se puede pedir en otra dirección por API.** El endpoint de
+   recolección sólo recibe el id del envío — no hay campo de domicilio. Recogen donde
+   diga el remitente del envío, punto. Para que pasen por casa de Christián, el
+   remitente de la guía TIENE que ser su casa.
+2. **El remitente del servidor manda sobre el del panel** (por variable de entorno) y
+   es uno solo para todas las guías. No hay «remitente de esta guía» en el flujo del
+   panel: para la de Brenda hay que fijarlo aparte. Si se quiere que sea el de siempre,
+   eso sí es cambiar el `.env` del EC2 — y afectaría a TODAS las guías futuras.
+
+## ✅ HECHO Y EN VIVO (31-jul tarde)
+
+**Compuertas: backend 807/807 ✅ · motor 344/344 ✅ · auditoría 85/0 ✅.**
+Desplegado `177a9f7`, disco al 37%.
+
+1. **Datos del cliente: interruptor POR DISTRIBUIDOR.** El 23-jul Christián cerró el
+   correo/teléfono/domicilio a los distribuidores; el 31-jul lo abrió **sólo para
+   María**. Por eso es un interruptor por persona y no una regla nueva: los demás siguen
+   igual, y encender a otro es **un clic del admin**, no un despliegue.
+   - Ya está **prendido en vivo para María** y **apagado** para Alanís y Javier
+     (verificado contra el servidor de producción).
+   - Ruta: `PUT /admin/distributors/{id}/ve-datos-cliente`. El estado se ve en la lista
+     de distribuidores del panel.
+   - **Lo que el interruptor NO afloja** (con prueba cada uno): el candado de «sólo SUS
+     clientes» (el pedido de otro sigue dando 403), el margen de la casa (costo,
+     proveedor y ROI no viajan ni encendido), y el «ver como» sigue de sólo lectura.
+   - El **admin** ve el contacto siempre, sin depender de nada.
+
+2. **Autollenado del Cotizador.** Al teclear el nombre se sugieren los clientes ya
+   registrados y al elegir uno se rellenan sus datos. Ruta nueva
+   `GET /cotizador/clientes` (admin y distribuidor).
+   ⛔ **El candado está en el SERVIDOR**: a quien no tiene visibilidad completa NO LE
+   VIAJAN correo/teléfono/domicilio — no es que la pantalla no los pinte, es que no
+   están. Así el autollenado sólo rellena el nombre. Esconderlos en el navegador no
+   esconde nada: la respuesta se lee en la consola con la sesión abierta.
+
+3. **Stress test del doble cotizador — encontró un agujero de verdad.** Las dos
+   paqueterías topan en **2 peticiones por segundo** y nadie llevaba la cuenta: el único
+   freno era el `sleep` DENTRO de una cotización. Dos o tres despachos simultáneos
+   mandaban el doble o el triple y la paquetería contesta **429** — a media compra de
+   guía, eso es un pedido que no sale. `ritmo.py`: ventana deslizante con candado de
+   hilos (FastAPI corre esas rutas en su pool de HILOS, no en corrutinas). Cada
+   proveedor lleva su propia cuenta.
+
+4. ⚠️ **Un agujero en la propia compuerta:** `pytest.ini` lista los archivos de prueba
+   A MANO, así que mis 43 pruebas nuevas **no se estaban corriendo** en la suite
+   completa. Ya están registradas (760 → 807). **Si agregas un `test_*.py` nuevo,
+   añádelo a `pytest.ini` o no lo corre nadie.**
+
+---
+
 # 🤝 HANDOFF — 2026-07-31 — DOBLE COTIZADOR DE ENVÍOS + ENVÍO REAL EN EL ROI
 
 ## ⛔ EL BACKEND ESTÁ EMPUJADO PERO **NO DESPLEGADO**
@@ -5390,3 +5456,36 @@ Christian pidió (2026-07-28) analizar ésta y ver qué conviene copiar a la nue
 La nuestra vive en `/calculadora` (`src/pages/`). Comparar: qué preguntan y en qué orden,
 qué enseñan del resultado, si dibujan la jeringa, si guardan lo calculado, y si sirve en
 teléfono con una mano. Anotar qué se adopta y qué no, con el porqué.
+
+---
+
+## 🏷️ MOTOR DE PRECIOS — 2026-07-30 (noche): proveedor 39 y dos listas que faltaban
+
+Todo esto pasó en `pricing-system.nosync` (commit `0fae52e`), **sin tocar el sitio**. Se
+anota aquí porque cambia lo que el Panel enseña de ROI y comisión.
+
+**Proveedor nuevo: P39 «Bjvvb»**, número de Hong Kong **+852 4452 8163**, llegó por un
+anuncio de Instagram. Mandó un PDF de 10 páginas en USD: **228 renglones, 220 capturados**.
+Le gana al más barato en 8 productos que vendemos (Melatonina 10 mg −26%, Cerebrolysin
+60 mg −12%, GDF-8 1 mg −10%, Semaglutida 2 mg, DSIP 10 mg, LL-37 5 mg, Sermorelina 5 mg,
+Pinealon 5 mg). **Nada de lo que promete está comprobado** — no se le ha comprado.
+
+**Los dos faltantes que reportó el Capturista quedaron cerrados:**
+- **P28 Lee Factory: de CERO a 184 de 187 precios.** Su lista siempre estuvo bien; el
+  lector no sabía leer una tabla numerada ni una que pone la moneda en el encabezado.
+- **P29 Mia: de 73 a 157 de 157.** Y es la noticia de dinero: **Mia es ahora el más barato
+  en 70 productos que vendemos**, en varios a menos de la mitad del anterior (Liraglutida
+  30 mg −70%, Humanin 10 mg −66%, ARA-290 16 mg −63%, Adipotide 5 mg −61%).
+
+**Qué cambió en las cifras del Panel:** bajaron **45 costos** de la maestra, con su ROI,
+su comisión y su precio de distribuidor recalculados. **NINGÚN precio público se movió.**
+Tres productos entran al canal de distribuidores porque su ROI ya aguanta la comisión:
+**IGF-1 LR3 1 mg, Liraglutida 30 mg y Thymosin Alpha-1 10 mg**. Si el sitio lleva su
+propia copia de `distribuidor_maestra.json`, hay que volver a aplicarla: los topes de
+comisión de esos tres y de una docena más cambiaron.
+
+**Duplicados de proveedor marcados** (no borrados, para no perder el rastro del chat):
+P06=P01 Lisa, P16=P29 Mia, P22=P30 US Lab RT40-275, P27=P36 Cell Peptides. Sus notas
+empiezan con «DUPLICADO de Pxx» y no tienen precios propios.
+
+**Compuertas:** motor **344/344** ✅.
