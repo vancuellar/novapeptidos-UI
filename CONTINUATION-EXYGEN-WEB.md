@@ -1,4 +1,51 @@
-# 🤝 HANDOFF — 2026-07-30 (noche, cierre) — LÉELO PRIMERO
+# 🤝 HANDOFF — 2026-07-31 — LÉELO PRIMERO
+
+## ✅ HECHO el 31-jul (EN VIVO, E2E completo en verde al cierre)
+
+**E2E de cierre:** backend 733/733 · motor 344/344 · auditoría 83/0 · E2E cripto
+21/0 · E2E tarjeta 15/0 · desplegado backend (azul/verde, ebac539) y frontend
+(desplegar.sh, hash verificado) · 3 repos limpios en origin/main.
+
+**TAREA #1 del handoff anterior: HECHA y EN VIVO.**
+1. **Datos del cliente en la cotización** — el Cotizador ya pide nombre, correo,
+   teléfono y dirección (NINGUNO obligatorio); se pintan bajo "Para" en la hoja
+   clara, viajan al correo del servidor (tarjetita "Cotización para", escapados,
+   con prueba anti-XSS) y el campo de "Enviar Por Correo" llega prellenado.
+2. **Enlace directo al CHECKOUT** — en hoja, WhatsApp y correo: el enlace ya es
+   `/checkout?pedido=id:cantidad,...&ref=CODIGO`. CartContext hidrata el carrito
+   contra el catálogo REAL (lo oculto se descarta, cantidades 1–999, máx. 40
+   renglones, REEMPLAZA el carrito), el checkout enseña "Armando tu carrito…"
+   mientras carga, y el cliente aterriza a un paso de pagar con el ?ref=
+   aplicado. El precio lo sigue poniendo el servidor al cobrar. Verificado en
+   local Y en vivo (exygenlabs.com). En la hoja impresa el enlace se pinta como
+   texto corto (la URL cruda con ids era un ciempiés).
+   Correo del servidor: botón "Pagar En Línea" + nota, solo con los renglones
+   que sobrevivieron la validación (6 pruebas nuevas en test_cotizador.py).
+3. Textos nuevos en es/en/pt · prompts de Codex (ROMPEDOR y AUDITORIA) al día
+   con la regla deliberada del ?pedido= para que no lo reporten como falla.
+
+**También cerrado:** el crash de `x.py` con ofertas empatadas (`x.py rt 60`,
+`x.py klow 80` tronaban por sort de tuplas con dicts; ya ordena por precio) —
+era parte de la orden "respuestas de negocio". Pregunta de Christián contestada
+en vivo: el proveedor con "bodega en México y entrega en días" es **Lumi (P31)**,
+sí tiene NAD+ 1000mg a $9.90 USD/vial (caja de 10 en $99; promesa de bodega SIN
+comprobar, nunca se le ha comprado; llegó por WhatsApp el 28-jul).
+
+**⏳ SIGUE PENDIENTE de la orden del 30-jul (para el próximo chat):**
+- `x.py lucy` recorta la lista (mostrar TODO) y la vista instantánea "a quién le
+  compro" buscable en el Admin (el crash ya quedó arreglado).
+- Doble cotizador de envíos (enviosinternacionales.com + Skydropx) — bloqueado:
+  Christián debe abrir la cuenta y pegar llaves en Admin → Cobros.
+- Búsqueda por abreviatura (RT/TZ/Sema/BPC…) en catálogo y Cotizador — el
+  diccionario de apodos ya vive en x.py/alias, reutilizarlo.
+- Chat IA de NEGOCIO solo admin+distribuidores (candado de rol en el SERVIDOR).
+- Los pendientes de decisión del handoff anterior siguen igual (contrato,
+  servidor JADA, HGH 40 IU, códigos viejos, envío gratis, Rita/P38, pedidos de
+  Aidee y Brenda, deuda de Alanís).
+
+---
+
+# 🤝 HANDOFF — 2026-07-30 (noche, cierre)
 
 ## ✅ NOCHE del 30-jul (todo EN VIVO, E2E completo en verde al cierre)
 
