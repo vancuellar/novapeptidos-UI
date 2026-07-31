@@ -17,7 +17,9 @@
 #
 #  Los candados, en orden:
 #    1. El build DEBE traer horneada la URL del backend.
-#    2. Los imports deben apuntar a archivos que existan en git.
+#    2. Se construye desde una COPIA LIMPIA de git, no desde tu directorio: en
+#       este árbol trabajan varias sesiones y lo que otro dejó a medias no sale
+#       a producción. Y los imports deben apuntar a archivos que existan en git.
 #    3. 404.html no viaja (rompe /admin en Cloudflare); public/404.html no se toca.
 #    4. El hash del bundle se confirma EN VIVO.
 #    5. La portada, el catálogo y una ficha se abren en un navegador de verdad y
@@ -89,17 +91,40 @@ fi
 
 git pull --rebase --autostash
 
-# ---------------------------------------------------------------- candado 2
-# El mismo candado del pre-commit, pero sobre TODO el árbol: si otra sesión dejó
-# un import huérfano en main, se para aquí y no en la cara del cliente.
-if ! npm run --silent verificar:imports; then
-  echo "⛔ Hay imports que apuntan a archivos que no existen. NO se publica."
+# ------------------------------------------------- candado 2: copia limpia
+# EN ESTE ÁRBOL TRABAJAN VARIAS SESIONES A LA VEZ. Construir desde el
+# directorio de trabajo publica lo que OTRO dejó a medias en su archivo, sin
+# que nadie lo note. Así que no se construye aquí: se saca una copia limpia de
+# git (worktree desechable en el último commit) y se construye ALLÁ.
+#
+# Lo que sale a producción es, por definición, lo que está commiteado.
+if [ -n "$(git status --porcelain --untracked-files=no)" ]; then
+  echo "ℹ️  Hay cambios sin commitear en este árbol (tuyos o de otra sesión)."
+  echo "    NO van a salir: se publica el último commit, $(git rev-parse --short HEAD)."
+fi
+if ! git merge-base --is-ancestor HEAD origin/main 2>/dev/null; then
+  echo "⚠️  Tu último commit NO está en origin/main todavía. Se va a publicar igual,"
+  echo "    pero súbelo (git push) o nadie más podrá reproducir lo que hay en vivo."
+fi
+
+LIMPIO=$(mktemp -d "${TMPDIR:-/tmp}/exygen-build-XXXXXX")
+limpiar() { git worktree remove --force "$LIMPIO" >/dev/null 2>&1 || rm -rf "$LIMPIO"; }
+trap limpiar EXIT
+git worktree add --detach "$LIMPIO" HEAD >/dev/null
+cp .env.local "$LIMPIO/.env.local"
+ln -s "$PWD/node_modules" "$LIMPIO/node_modules"
+
+# El mismo candado del pre-commit, pero sobre TODO el árbol y sobre la copia
+# limpia: si alguien commiteó un import a un archivo que no subió, se para aquí
+# y no en la cara del cliente.
+if ! (cd "$LIMPIO" && npm run --silent verificar:imports); then
+  echo "⛔ Hay imports que apuntan a archivos que no existen en git. NO se publica."
   exit 1
 fi
 
-npm run build
+(cd "$LIMPIO" && npm run build)
 
-BUNDLE=$(ls build/static/js/main.*.js)
+BUNDLE=$(ls "$LIMPIO"/build/static/js/main.*.js)
 if ! grep -q "api.exygenlabs.com" "$BUNDLE"; then
   echo "⛔ El bundle NO trae la URL del backend (saldría con 'undefined'). NO se publica."
   exit 1
@@ -107,7 +132,7 @@ fi
 HASH=$(basename "$BUNDLE")
 
 # ---------------------------------------------------------------- candado 3
-rm -f build/404.html
+rm -f "$LIMPIO/build/404.html"
 
 set -a; . "$CF_ENV"; set +a
 
@@ -123,7 +148,7 @@ else
 fi
 
 # ------------------------------------------------------------------ publicar
-npx wrangler pages deploy build --project-name "$PROYECTO" --branch main --commit-dirty=true
+npx wrangler pages deploy "$LIMPIO/build" --project-name "$PROYECTO" --branch main --commit-dirty=true
 
 # ---------------------------------------------------------------- candado 4
 echo "Esperando propagación de $HASH…"
