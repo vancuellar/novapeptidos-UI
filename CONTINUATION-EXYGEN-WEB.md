@@ -119,8 +119,19 @@ están destinados a diagnosticar, tratar, curar ni prevenir ninguna enfermedad»
 
 | Repo | Archivos |
 |---|---|
-| UI | los tres i18n (`ruo.gate.point2`, `trust.ruo`, `home.ruoNotice`, `edu.ruoBody`), `ProductDetail.js`, `LearnPage.js`, `productMonographs.js`, 12 páginas de `/aprende`, `contacto.js`, `soporte.js`, el resumen de `terminos.js` |
-| RBAC | `emails.py` (los 6 textos RUO: confirmación de pedido y cotización × es/en/pt), las 3 `templates/welcome_email.*.html`, `seed_data.py`, y los prompts de las dos IAs (`ai_assistant.py`, `chat_negocio.py`) |
+| UI | los tres i18n (`ruo.gate.point2`, `trust.ruo`, `home.ruoNotice`, `edu.ruoBody`), `ProductDetail.js`, `LearnPage.js`, `InfoPage.js`, `Advisor.js`, `productMonographs.js`, 12 páginas de `/aprende`, `contacto.js`, `soporte.js`, el resumen de `terminos.js` |
+| RBAC | `emails.py` (los 6 textos RUO: confirmación de pedido y cotización × es/en/pt), las 3 `templates/welcome_email.*.html`, `seed_data.py`, `compendio.json` (regenerado) y los prompts de las dos IAs (`ai_assistant.py`, `chat_negocio.py`) |
+
+**Dos avisos casi se escapan** (`Advisor.js` y `InfoPage.js`): la frase estaba
+partida en dos renglones —`consumo\n humano`— y ningún `grep` de texto la veía.
+Aparecieron al revisar el **bundle ya publicado**, no el código. Regla que deja:
+la prueba de que una leyenda se fue es lo que sirve el sitio, no lo que dice el
+grep. El barrido final del `build/` da **5 ocurrencias, las 5 en Términos**.
+
+**`compendio.json` también traía la versión vieja.** Es el volcado de `/aprende`
+que viaja con el backend y alimenta al Asesor de Negocio: el sitio ya no lo decía
+pero el asesor sí. Se regenera con `node exportar_compendio.mjs` desde el repo
+RBAC. **Si vuelves a tocar textos de `/aprende`, hay que correrlo.**
 
 La hoja de cotización (`src/lib/hojaCotizacion.js` → `cotizador.docLeyenda`) **ya
 estaba limpia**: sólo decía «Productos para uso en investigación (RUO)».
