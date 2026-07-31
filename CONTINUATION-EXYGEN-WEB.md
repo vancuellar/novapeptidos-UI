@@ -1,3 +1,96 @@
+# 🏷️ 2026-07-31 — EL PREFIJO MONICAF ES DE MARÍA, NO DE TODOS
+
+Christián lo aclaró la misma noche: la orden de privacidad de la mañana —«los clientes no
+pueden ver que el código de descuento es de María»— era **sobre ella**. La rotación de
+unas horas antes la tomó como regla de la casa y se la aplicó a los tres distribuidores.
+Alanís y Javier terminaron con `MONICAF-15-UTNG` y `MONICAF-25-PDV9` sin que nadie lo
+hubiera pedido, y sin su nombre un cliente no tiene cómo saber de quién es el código que
+le pasaron.
+
+## El arreglo no fue cambiar la constante otra vez
+
+Fue que **dejara de ser una regla global**. El prefijo ahora es una marca **por persona**:
+`users.code_prefix`. Si la ficha la trae, sus códigos salen con ella; si no, salen de su
+nombre, como toda la vida. Lo pregunta `server.prefijo_de`, y lo preguntan **las dos**
+familias de códigos —el AUTO por nivel y el ÚNICO legacy— porque la lección de la mañana
+fue exactamente ésa: cambiar sólo una deja la mitad de la regla en pie y nadie lo nota.
+Por eso `_new_code_string` y `gen_distributor_code` reciben ahora la **ficha completa** y
+no el nombre suelto: un nombre no puede ver la marca.
+
+Sólo la ficha de María trae `code_prefix = MONICAF`. Comprobado contra la base en vivo:
+
+    Maria Neunfeld            code_prefix 'MONICAF'  → el próximo 15% saldría MONICAF-15-…
+    Alanis Fernanda Mendoza   code_prefix None       → el próximo 15% saldría ALANIS-15-…
+    Javier Rojo Mortera       code_prefix None       → el próximo 15% saldría JAVIER-15-…
+
+## No se mató ni un código
+
+Eso costó trabajo lograrlo por la mañana y habría sido absurdo tirarlo para arreglar otra
+cosa. Lo que se hizo fue **intercambiar cuál se reparte y cuál está jubilado**: los
+`MONICAF-*` de Alanís y Javier quedaron jubilados (siguen cobrando, con su mismo descuento
+y atribuyendo al mismo distribuidor, hasta el 29 de octubre) y sus códigos de siempre
+volvieron a ser los vigentes con su caducidad original. El código único hizo la mudanza al
+revés: `ALAN-2292` y `JAVI-7116` regresaron a la ficha y los `MONICAF-NNNN` se guardaron
+jubilados. Ninguno de los `MONICAF-*` había tenido movimiento — no hubo un solo pedido
+después de que nacieran, así que no se pisó nada de nadie.
+
+Lo hace `arreglar_codigos_monicaf.py` (repo del backend) y es idempotente: la segunda
+corrida dice «nada que hacer».
+
+## Cómo quedó, verificado en vivo código por código
+
+Los 26 se consultaron **sin sesión**, como los teclea un cliente
+(`GET /api/discount-code/…`), y los 26 contestaron 200 con su descuento y atribuyendo a
+quien debe. `npm run auditoria`: **147 bien, 0 fallas**.
+
+| | Los que se reparten | Los previos (cobran hasta el 29-oct) |
+|---|---|---|
+| **María** | MONICAF-15-Q5QK · MONICAF-20-GY5G · MONICAF-25-0ZA7 · MONICAF-30-IMGI · **MONICAF-7451** | MARIAN-15-R4YV · MARIAN-20-WS8J · MARIAN-25-OJWQ · MARIAN-30-SE4U · MARI-3537 |
+| **Alanís** | ALANIS-15-MBET · ALANIS-20-FRUK · ALANIS-25-GC4L · **ALAN-2292** | MONICAF-15-UTNG · MONICAF-20-UEQZ · MONICAF-25-7Y4S · MONICAF-5313 |
+| **Javier** | JAVIER-15-E0LU · JAVIER-20-JJXU · JAVIER-25-RHV4 · **JAVI-7116** | MONICAF-15-CDSB · MONICAF-20-1XYE · MONICAF-25-PDV9 · MONICAF-5659 |
+
+En negritas, el código único de cada quien. Abrir el panel del distribuidor **no crea ni
+borra nada**: se corrió `_ensure_distributor_codes` contra la base en vivo y la lista de
+códigos quedó idéntica.
+
+---
+
+# 📄 2026-07-31 — "LEER EL REPORTE ESCRITO" SÍ HACÍA ALGO: LO PINTABA FUERA DE LA PANTALLA
+
+Christián: «el botón de Leer El Reporte Escrito no hace nada al picarlo».
+
+## Qué era
+
+El botón **no estaba muerto**. Se probó en vivo: pedía el texto, el servidor contestaba
+200 con el reporte completo (4,382 caracteres) y React lo pintaba… **al pie del
+reproductor de video, en el pixel 931**. Con la ventana de 720 px de alto, nunca entró en
+pantalla. Desde el botón no se movía nada: exactamente lo que se ve cuando un botón no
+sirve. Y aun alcanzándolo, salía en Markdown crudo dentro de un `<pre>`: `# Reporte`,
+`|---|---|`, `**negritas**`.
+
+Ni la ruta ni el `.md` tenían nada: los dos estaban bien desde el principio.
+
+## Cómo quedó
+
+Abre un **diálogo**. Aparece encima de todo —no hay forma de no verlo— y el texto se pinta
+con `RespuestaIA`, el mismo renderizador que se hizo hoy para quitarle los asteriscos al
+chat: títulos, negritas y las tablas de verdad. Sin librerías nuevas (`react-markdown` son
+14 dependencias y 120 KB para esto).
+
+De pasada, tres cosas que hacían falta: el botón **gira mientras el texto viaja** (un botón
+que no cambia mientras espera se lee como muerto, que es justo lo que pasó), las **semanas
+archivadas** también tienen su botón de leer sin tener que ponerlas primero en el
+reproductor, y se puede **descargar el .md** desde la ventana.
+
+`overflow-x-hidden` + `min-w-0` no son adorno: sin los dos, la tabla más ancha del reporte
+estira el diálogo entero y en el teléfono el texto se sale de la pantalla en vez de que la
+tabla se deslice sola. Probado en 1280 y en 375.
+
+Verificado **en vivo** con un navegador de verdad contra exygenlabs.com: la ventana abre en
+`y=82`, con 3,747 caracteres, la tabla pintada como tabla y sin una sola almohadilla.
+
+---
+
 # 📦 2026-07-31 — TODO EL QUE COMPRA ES CLIENTE (tenga cuenta o no)
 
 Orden de Christián: «Todas las personas que nos compran se vuelven Clientes,
