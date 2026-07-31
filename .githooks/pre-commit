@@ -1,0 +1,11 @@
+#!/bin/sh
+# Candado de imports rotos. Se activa con:  git config core.hooksPath .githooks
+# (ya está puesto en este repo; hay que repetirlo tras un clon nuevo).
+#
+# Tarda décimas de segundo. Para saltárselo:  git commit --no-verify
+command -v node >/dev/null 2>&1 || exit 0
+
+RAIZ=$(git rev-parse --show-toplevel) || exit 0
+[ -f "$RAIZ/scripts/verificar-imports.js" ] || exit 0
+
+exec node "$RAIZ/scripts/verificar-imports.js" --staged
