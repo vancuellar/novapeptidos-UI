@@ -58,8 +58,8 @@ el **mismo** +1 505 518 0805 = P18).
 
 | ID | Quién | Renglones | Moneda |
 |---|---|---:|---|
-| **P41** | **Chuangyan Biotech** (+852 9056 5942, Hong Kong / Guangzhou) | **233 de 237 (98%)** | USD, dicho por él: «US dollars per box» |
-| P40 | sin nombre (+44 7576 123262, Reino Unido) | 199 de 199 (100%) | ⚠️ **no la declaró**, se dedujo USD |
+| **P41** | **Chuangyan Biotech** (+852 9056 5942, Hong Kong / Guangzhou) | **233 de 233 con precio (100%)**, 231 en la base | USD, dicho por él: «US dollars per box» |
+| P40 | sin nombre (+44 7576 123262, Reino Unido) | 199 de 199 (100%), 193 en la base | ⚠️ **no la declaró**, se dedujo USD |
 | P42 | sin nombre (+44 7355 266554, Reino Unido) | 96 transcritos, **0 importados** | ⚠️ **no la declaró** |
 
 **P41 Chuangyan es el hallazgo.** Es el más barato del catálogo en **57 tamaños** (46 de
