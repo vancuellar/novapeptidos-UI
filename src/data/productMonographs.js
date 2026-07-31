@@ -428,12 +428,13 @@ const monographs = {
     ],
   },
 
-  adipotide: {
-    tagline: 'Péptido proapoptótico dirigido a vasculatura adiposa (FTPP)',
+  adipotida: {
+    tagline: 'Péptido quimérico dirigido a vasculatura adiposa (FTPP, CAS 859216-15-2)',
     sections: [
       { title: 'Qué es', paragraphs: [
-        'Adipotide, también documentado como FTPP (Fat Targeted Proapoptotic Peptide), es un péptido quimérico de dos módulos: una secuencia de direccionamiento que reconoce la prohibitina, una proteína enriquecida en el endotelio de la vasculatura del tejido adiposo blanco, y un dominio proapoptótico que desestabiliza membranas mitocondriales.',
-        'Es un diseño de "misil dirigido": el primer módulo decide dónde, el segundo qué ocurre al llegar. Ese esquema modular es lo que lo hace interesante más allá del tejido concreto al que apunta.' ] },
+        'Adipotida, también documentada como FTPP (fat-targeted proapoptotic peptide), es un péptido quimérico de dos módulos: una secuencia de direccionamiento que reconoce la prohibitina, una proteína enriquecida en el endotelio de la vasculatura del tejido adiposo blanco, y un dominio proapoptótico que desestabiliza membranas mitocondriales. Su secuencia es CKGGRAKDC-GG-D(KLAKLAK)2 y en la literatura aparece además como prohibitin-targeting peptide 1 o TP01.',
+        'Es un diseño de "misil dirigido": el primer módulo decide dónde, el segundo qué ocurre al llegar. Ese esquema modular es lo que lo hace interesante más allá del tejido concreto al que apunta.',
+        'Una nota de nomenclatura, porque en el mercado circula confusión: muchas listas la escriben «FTTP». El acrónimo correcto es FTPP, y las dos grafías designan el mismo compuesto. Circula también un segundo número CAS que no está verificado en PubChem; el único que esta ficha reconoce es 859216-15-2.' ] },
       { title: 'Qué se estudia con él', paragraphs: [
         'Aparece en modelos de biología vascular del tejido adiposo, apoptosis dirigida y, sobre todo, como caso de estudio de péptidos de direccionamiento: cómo se diseña una secuencia que reconoce un marcador de superficie específico y cómo se acopla a un efector.',
         'La literatura publicada sobre este tipo de moléculas presta especial atención a la selectividad: cuánto del efecto ocurre en el tejido diana y cuánto fuera de él.' ] },

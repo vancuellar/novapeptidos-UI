@@ -1734,5 +1734,36 @@
     "fuentes": {},
     "nota_nomenclatura": "Es una presentación comercial que reúne varios componentes. Como mezcla no tiene número CAS, fórmula molecular ni peso molecular propios: la identidad corresponde a cada componente por separado. Cualquier caracterización analítica debe hacerse componente por componente."
   },
-  "_comentario": "Consolidado de datos_identidad_manual.json (verificado a mano), cosecha_pubchem.json (API de PubChem) y datos_identidad_lote2.json (Codex, solo relleno de huecos). Los matches falsos de PubChem estan en la clave 'descartados' de cosecha_pubchem.json y NO entran aqui. Un campo en null NO se imprime en la ficha."
+  "_comentario": "Consolidado de datos_identidad_manual.json (verificado a mano), cosecha_pubchem.json (API de PubChem) y datos_identidad_lote2.json (Codex, solo relleno de huecos). Los matches falsos de PubChem estan en la clave 'descartados' de cosecha_pubchem.json y NO entran aqui. Un campo en null NO se imprime en la ficha.",
+  "adipotida": {
+    "nombre": "Adipotida",
+    "nombre_quimico": "Péptido quimérico CKGGRAKDC-GG-D(KLAKLAK)2",
+    "sinonimos": [
+      "Adipotide (grafía en inglés)",
+      "FTPP (fat-targeted proapoptotic peptide)",
+      "Prohibitin-targeting peptide 1",
+      "TP01",
+      "FTTP (grafía frecuente en listas de proveedor; es el mismo compuesto)"
+    ],
+    "cas_complejo": "859216-15-2",
+    "cas_peptido_libre": null,
+    "formula": "C111H206N36O28S2",
+    "peso_molecular": "2557.2 g/mol",
+    "formula_peptido_libre": null,
+    "peso_peptido_libre": null,
+    "secuencia": "CKGGRAKDC-GG-D(KLAKLAK)2",
+    "residuos": 26,
+    "apariencia": null,
+    "solubilidad": null,
+    "categoria": "Péptido quimérico sintético (peptidomimético)",
+    "etiqueta_forma_libre": null,
+    "nota_nomenclatura": "En las listas de proveedor aparece indistintamente como «Adipotide», «Adipotide / FTTP» y «FTPP Adipotide». Es el mismo compuesto: el acrónimo correcto es FTPP (fat-targeted proapoptotic peptide) y «FTTP» es una errata que se copió por todo el mercado. Circula además un segundo número CAS (1401066-79-2) que no está verificado en PubChem ni en la literatura primaria; hasta comprobarlo, el único CAS que esta ficha reconoce es 859216-15-2.",
+    "fuentes": {
+      "cas_complejo": "PubChem CID 163360068 (sinónimo 859216-15-2)",
+      "formula": "PubChem CID 163360068",
+      "peso_molecular": "PubChem CID 163360068",
+      "secuencia": "Wikipedia «Prohibitin-targeting peptide 1» y literatura primaria (Kolonin et al., Nat Med 2004; Barnhart et al., Sci Transl Med 2011)",
+      "sinonimos": "PubChem CID 163360068; Wikipedia «Prohibitin-targeting peptide 1» (Adipotide, TP01)"
+    }
+  }
 }

@@ -20,6 +20,15 @@ codex = {k: v for k, v in J("datos_identidad_lote2.json").items() if not k.start
 manual = {k: v for k, v in J("datos_identidad_manual.json").items()
           if not k.startswith("_")}
 
+
+def productos_del_catalogo():
+    """slug + nombre de TODO el catálogo del sitio, leído de fallbackCatalog.js."""
+    import re
+    src = open(os.path.join(os.path.dirname(BASE), "src/data/fallbackCatalog.js"),
+               encoding="utf-8").read()
+    m = re.search(r"export const fallbackProducts = (\[[\s\S]*?\n\]);", src)
+    return json.loads(m.group(1))
+
 # El nombre IUPAC de un peptido largo es una cadena ilegible: solo se conserva
 # para moleculas pequenas, donde si aporta.
 LIMITE_IUPAC = 160
@@ -79,11 +88,12 @@ def main():
                                        ("cas_complejo", r["cas"])) if val}
         final[slug] = e
 
-    # mezclas, extractos, material celular y los de identidad no resuelta
-    todos = {s: n for s, n in (l.split("|") for l in open(
-        "/private/tmp/claude-501/-Users-christian-Documents-Exygen-Peptides/"
-        "9d8b0320-1b99-49ec-999d-2fd648f3ee19/scratchpad/pendientes.txt"
-    ).read().split("\n") if l.strip())}
+    # mezclas, extractos, material celular y los de identidad no resuelta.
+    # ⛔ Esto leía un archivo suelto del /tmp de una sesión vieja de Claude, que ya no
+    # existe: el script llevaba días tronando con FileNotFoundError y nadie podía
+    # reconsolidar identidades (lo cazó el alta de Adipotida, 2026-07-31). El mapa
+    # slug -> nombre sale del catálogo del sitio, que es donde de verdad vive.
+    todos = {p["slug"]: p["name"] for p in productos_del_catalogo()}
     for slug, nota in CLASIF.items():
         if slug not in todos:
             continue

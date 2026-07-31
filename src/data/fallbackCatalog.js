@@ -5345,6 +5345,58 @@ export const fallbackProducts = [
     "start_levels": null,
     "featured": false,
     "is_new": false
+  },
+  {
+    "id": "fallback-adipotida",
+    "name": "Adipotida",
+    "slug": "adipotida",
+    "category": "perdida-peso",
+    "categories": [
+      "perdida-peso"
+    ],
+    "short_description": "Péptido quimérico dirigido a la vasculatura del tejido adiposo.",
+    "description": "Adipotida (FTPP) es un péptido quimérico que une una secuencia de direccionamiento a prohibitina con un dominio proapoptótico, investigado en modelos de biología vascular del tejido adiposo y de apoptosis dirigida. Solo para uso en investigación (RUO).",
+    "presentation": "2 mg – 10 mg",
+    "form": "Liofilizado",
+    "purity": "99.0%",
+    "price": 1559,
+    "variants": [
+      {
+        "presentation": "2 mg",
+        "price": 1559,
+        "stock": 40,
+        "batch_number": "NP-ADIP2-2601",
+        "id": "1a3db90a-1274-4ec0-a0c8-183f27d3093e",
+        "sku": "ADIPOTIDA-2MG",
+        "descuentable": true
+      },
+      {
+        "presentation": "5 mg",
+        "price": 2879,
+        "stock": 40,
+        "batch_number": "NP-ADIP5-2601",
+        "id": "0dd704b1-6159-4900-9986-fa4458be3543",
+        "sku": "ADIPOTIDA-5MG",
+        "descuentable": true
+      },
+      {
+        "presentation": "10 mg",
+        "price": 3089,
+        "stock": 40,
+        "batch_number": "NP-ADIP10-2601",
+        "id": "a44c51d5-5770-4dee-872d-e3fe2b1028f0",
+        "sku": "ADIPOTIDA-10MG",
+        "descuentable": true
+      }
+    ],
+    "tiers": [],
+    "stock": 40,
+    "image_url": "https://images.pexels.com/photos/9259977/pexels-photo-9259977.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
+    "coa_url": "https://exygenlabs.com/coa/adipotida.pdf",
+    "batch_number": "NP-ADIP2-2601",
+    "storage": "Conservar a -20 °C, protegido de la luz. Reconstituido: 2–8 °C.",
+    "featured": false,
+    "is_new": true
   }
 ];
 
