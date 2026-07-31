@@ -76,6 +76,8 @@ const esMX = {
   'tutorials.prospect.body': 'Conoce el programa en minuto y medio: tu panel, tus comisiones y tus herramientas. Luego, agenda una llamada con nuestro equipo.',
   'tutorials.prospect.cta': 'Escríbenos por WhatsApp',
   'tutorials.prospect.wa': 'Hola, me interesa ser distribuidor de Exygen Labs. Quiero agendar una llamada.',
+  'learn.video.title': 'Míralo En Video',
+  'learn.video.sub': 'Menos de cuatro minutos con todo lo que dice esta página.',
   'discount.launchBanner': 'Precio de lanzamiento: 10% de descuento en tu primer pedido',
   'discount.volumeTitle': 'Descuento por volumen automático',
   'discount.appliedInCart': 'Se aplica solo en el carrito, sin código.',

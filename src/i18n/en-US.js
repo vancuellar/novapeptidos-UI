@@ -174,6 +174,8 @@ const enUS = {
   'tutorials.prospect.body': 'Learn the program in a minute and a half: your panel, your commissions and your tools. Then schedule a call with our team.',
   'tutorials.prospect.cta': 'Message us on WhatsApp',
   'tutorials.prospect.wa': 'Hi, I am interested in becoming an Exygen Labs distributor. I would like to schedule a call.',
+  'learn.video.title': 'Watch It On Video',
+  'learn.video.sub': 'Under four minutes with everything this page covers.',
   'discount.launchBanner': 'Launch price: 10% off your first order',
   'discount.volumeTitle': 'Automatic volume discount',
   'discount.appliedInCart': 'Applied in the cart, no code needed.',

@@ -6,6 +6,10 @@ const page = {
     'Qué te va a llegar, qué material necesitas y cómo se maneja un vial de principio a fin. Escrito para quien nunca ha abierto uno.',
   badge: 'Empieza aquí',
   updated: '19 de julio de 2026',
+  // Video de cabecera. `LearnPage` le pega el sufijo del idioma y lo busca en
+  // public/videos/: empieza-aqui.mp4, -en.mp4, -pt.mp4. Es el único campo que
+  // hay que poner para que una guía estrene video.
+  video: 'empieza-aqui',
   sections: [
     {
       type: 'callout',

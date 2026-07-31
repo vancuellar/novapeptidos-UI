@@ -188,6 +188,8 @@ const ptBR = {
   'tutorials.prospect.body': 'Conheça o programa em um minuto e meio: seu painel, suas comissões e suas ferramentas. Depois, agende uma chamada com a nossa equipe.',
   'tutorials.prospect.cta': 'Fale com a gente pelo WhatsApp',
   'tutorials.prospect.wa': 'Olá, tenho interesse em ser distribuidor da Exygen Labs. Quero agendar uma chamada.',
+  'learn.video.title': 'Veja Em Vídeo',
+  'learn.video.sub': 'Menos de quatro minutos com tudo o que esta página diz.',
   'discount.launchBanner': 'Preco de lancamento: 10% de desconto no seu primeiro pedido',
   'discount.volumeTitle': 'Desconto por volume automático',
   'discount.appliedInCart': 'Aplicado no carrinho, sem código.',

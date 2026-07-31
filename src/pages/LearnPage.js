@@ -6,9 +6,19 @@ import { Button } from '@/components/ui/button';
 import { ChevronRight } from 'lucide-react';
 import SectionRenderer from '@/components/SectionRenderer';
 import { LEARN_PAGES } from '@/data/learn';
+import { useLanguage } from '@/context/LanguageContext';
+
+// Mismo criterio que Invitacion.js: el archivo base es el español y los otros
+// dos idiomas llevan sufijo. Una guía estrena video poniendo `video: '<nombre>'`
+// en su archivo de src/data/learn/, y los TRES doblajes tienen que existir en
+// public/videos/ antes de ponerlo: si falta uno, ese idioma ve un reproductor roto.
+const BASE = process.env.PUBLIC_URL || '';
+const SUFIJO = { 'en-US': '-en', 'pt-BR': '-pt' };
+const urlVideo = (nombre, language) => `${BASE}/videos/${nombre}${SUFIJO[language] || ''}.mp4`;
 
 const LearnPage = () => {
   const { slug } = useParams();
+  const { t, language } = useLanguage();
   const page = LEARN_PAGES[slug];
   if (!page) return <Navigate to="/aprende" replace />;
 
@@ -28,6 +38,25 @@ const LearnPage = () => {
         {page.subtitle && <p className="text-base text-muted-foreground mt-3 max-w-3xl leading-relaxed">{page.subtitle}</p>}
         {page.updated && <p className="text-xs text-muted-foreground mt-3">Última revisión: {page.updated}</p>}
       </header>
+
+      {page.video && (
+        <Card className="overflow-hidden mb-8 max-w-3xl" data-testid="learn-video-card">
+          {/* key = src: al cambiar de idioma el <video> se vuelve a montar con el archivo correcto */}
+          <video
+            key={urlVideo(page.video, language)}
+            controls
+            preload="metadata"
+            playsInline
+            className="w-full aspect-video bg-black"
+            src={urlVideo(page.video, language)}
+            data-testid="learn-video"
+          />
+          <div className="p-4 sm:p-5">
+            <h2 className="font-heading text-base font-semibold">{t('learn.video.title')}</h2>
+            <p className="text-sm text-muted-foreground mt-1 leading-relaxed">{t('learn.video.sub')}</p>
+          </div>
+        </Card>
+      )}
 
       <SectionRenderer sections={page.sections} />
 
