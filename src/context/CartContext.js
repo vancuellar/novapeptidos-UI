@@ -22,9 +22,21 @@ const NO_DISCOUNT_CATEGORIES = ['suministros', 'accesorios'];
 // `descuentos.MINIMO_PARA_PRECIO_DISTRIBUIDOR` en el backend, que es quien manda.
 export const MINIMO_PRECIO_DISTRIBUIDOR = 5;
 
-// Tope de comisión POR PRODUCTO: cuánto descuento aguanta sin comerse el ROI.
-// Se busca por id/SKU en el catálogo, no en lo que quedó guardado en el carrito,
-// para que un carrito viejo del navegador también calcule bien.
+// Lo que el catálogo PÚBLICO dice de cada producto sobre descuentos.
+//
+// ⛔ Ya NO trae el tope de comisión (Christián, 2026-07-30): ese número dice cuánto
+// margen aguanta el producto y no tiene por qué viajar en el bundle que baja
+// cualquier visitante. Lo que queda es lo justo para que el carrito no le prometa
+// al cliente un total que la caja no le va a cobrar:
+//   · `descuentable: false` — aquí no hay descuento (insumos, HGH neto, lo que no
+//     participa del canal). Eso el cliente lo ve igual en su carrito.
+//   · `max_descuento_cliente` — sólo aparece si el producto aguanta MENOS que el
+//     techo de cliente (15%). Con el catálogo de hoy no aparece en ninguno.
+//
+// El tope de verdad lo sirve el servidor a quien tiene descuento propio
+// (`/distributor/quote-caps`), y la caja lo recalcula siempre: ella es la verdad.
+const TOPE_SI_NO_SE_SABE = 0.5;
+
 const CAPS = (() => {
   const map = {};
   for (const p of fallbackProducts) {
@@ -32,8 +44,8 @@ const CAPS = (() => {
     const blocked = cats.some((c) => NO_DISCOUNT_CATEGORIES.includes(c));
     for (const v of p.variants || []) {
       const info = {
-        cap: v.commission_cap == null ? 0.5 : v.commission_cap,
-        eligible: v.distributor_eligible !== false && !blocked,
+        cap: v.max_descuento_cliente == null ? TOPE_SI_NO_SE_SABE : v.max_descuento_cliente,
+        eligible: v.descuentable !== false && !blocked,
       };
       if (v.id) map[v.id] = info;
       if (v.sku) map[v.sku] = info;
@@ -43,10 +55,20 @@ const CAPS = (() => {
 })();
 
 /** Descuento REAL de un renglón: el menor entre el pedido y el tope del producto.
- *  0 si el producto no participa (insumos, HGH neto, no elegibles). */
-export const itemDiscountRate = (item, rate) => {
+ *  0 si el producto no participa (insumos, HGH neto, no elegibles).
+ *
+ *  `topesReales` es opcional: el mapa {product_id: tope} que el servidor le da a
+ *  quien compra con su propia tasa. Cuando viene, MANDA — es el mismo número que
+ *  va a usar la caja. Sin él se usa lo que dice el catálogo público, que alcanza
+ *  de sobra para cualquier descuento de cliente. */
+export const itemDiscountRate = (item, rate, topesReales = null) => {
   if (isNetPriceItem(item)) return 0;
-  const info = CAPS[item.product_id] || CAPS[item.sku] || { cap: 0.5, eligible: true };
+  if (topesReales) {
+    const real = topesReales[item.product_id] ?? topesReales[item.sku];
+    if (real != null) return Math.min(rate || 0, real);
+  }
+  const info = CAPS[item.product_id] || CAPS[item.sku]
+    || { cap: TOPE_SI_NO_SE_SABE, eligible: true };
   if (!info.eligible) return 0;
   return Math.min(rate || 0, info.cap);
 };
@@ -136,6 +158,28 @@ export const CartProvider = ({ children }) => {
     api.get('/auth/me').then((r) => setSelfRate(r.data.self_discount_rate || 0)).catch(() => {});
   }, [user]);
 
+  // Los topes REALES por producto, para quien compra con su propia tasa.
+  //
+  // El catálogo público ya no los trae (dicen cuánto margen aguanta cada producto).
+  // A un cliente no le hacen falta: su descuento nunca pasa del techo de 15% y
+  // ningún producto descuentable aguanta menos que eso. Pero un distribuidor compra
+  // al 30% o más, y ahí sí hay productos que topan antes — sin este dato su carrito
+  // le enseñaría un total más barato del que la caja le va a cobrar.
+  const [topesReales, setTopesReales] = useState(null);
+  useEffect(() => {
+    if (!user || !['distributor', 'admin'].includes(user.role)) { setTopesReales(null); return; }
+    api.get('/distributor/quote-caps')
+      .then((r) => {
+        const mapa = {};
+        for (const f of r.data?.caps || []) mapa[f.product_id] = f.discount_cap;
+        setTopesReales(mapa);
+      })
+      .catch(() => {});   // sin ellos el carrito sigue calculando con lo público
+  }, [user]);
+
+  // Atajo para no repetir `topesReales` en cada cuenta de abajo.
+  const tasaDeRenglon = (item, rate) => itemDiscountRate(item, rate, topesReales);
+
   const [distCode, setDistCode] = useState(() => localStorage.getItem('np_dist_code') || '');
   const [distRate, setDistRate] = useState(() => Number(localStorage.getItem('np_dist_rate')) || 0);
   // Monto mínimo del cupón (los de recuperación de carrito exigen comprar lo mismo
@@ -210,7 +254,7 @@ export const CartProvider = ({ children }) => {
     ? Math.max(baseRate, ownRate) : baseRate;
   // Renglón por renglón: cada producto recibe lo que su tope aguanta, ni más.
   const discount = items.reduce(
-    (sum, i) => sum + Math.round(i.price * i.quantity * itemDiscountRate(i, askedRateOf(i))), 0);
+    (sum, i) => sum + Math.round(i.price * i.quantity * tasaDeRenglon(i, askedRateOf(i))), 0);
   // La MAYOR tasa del carrito — la que se enseña en el renglón del resumen. Con un
   // carrito parejo (todo lo que existía antes de la regla) vale lo de siempre.
   const discountRate = items.length ? Math.max(...items.map(askedRateOf)) : 0;
@@ -222,7 +266,7 @@ export const CartProvider = ({ children }) => {
     const asked = askedRateOf(i);
     return {
       product_id: i.product_id, name: i.name, quantity: i.quantity,
-      asked, applied: itemDiscountRate(i, asked),
+      asked, applied: tasaDeRenglon(i, asked),
       esPrecioDistribuidor: compraPropia && asked > baseRate + 1e-9,
     };
   });
@@ -233,7 +277,7 @@ export const CartProvider = ({ children }) => {
   // insumos y el HGH nunca llevan descuento: ahí "agrega 2 más" sería una mentira).
   const regla5Items = !compraPropia ? [] : items
     .filter((i) => i.quantity < MINIMO_PRECIO_DISTRIBUIDOR
-      && itemDiscountRate(i, Math.max(baseRate, ownRate)) > itemDiscountRate(i, baseRate) + 1e-9)
+      && tasaDeRenglon(i, Math.max(baseRate, ownRate)) > tasaDeRenglon(i, baseRate) + 1e-9)
     .map((i) => ({
       product_id: i.product_id, name: i.name, quantity: i.quantity,
       faltan: MINIMO_PRECIO_DISTRIBUIDOR - i.quantity, minimo: MINIMO_PRECIO_DISTRIBUIDOR,

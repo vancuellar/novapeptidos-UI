@@ -12,7 +12,12 @@ import api from '@/lib/api';
 // Insumos (agua bacteriostática, viales, jeringas): NUNCA llevan descuento. Es la
 // misma lista que `NO_DISCOUNT_CATEGORIES` en el backend.
 const CATEGORIAS_SIN_DESCUENTO = new Set(['suministros', 'accesorios']);
-const TOPE_DURO = 0.50;
+
+// Techo del descuento que recibe un CLIENTE. Es a lo más que llega el respaldo
+// local, porque el catálogo público ya no dice cuánto aguanta de verdad cada
+// producto (Christián, 2026-07-30): eso sólo lo sabe el servidor. Quedarse corto
+// es lo correcto — el cotizador nunca promete de más.
+const TECHO_DESCUENTO_CLIENTE = 0.15;
 
 // Con la base del canal en 30% (BASE_RATE), el descuento máximo de cualquier
 // distribuidor es 25%. Es el PISO del esquema, no una adivinanza: sólo se usa si
@@ -27,14 +32,21 @@ export const esHghNeto = (id, nombre) => {
   return k.includes('hgh') && !k.includes('fragment');
 };
 
-// Tope de UN producto leído del catálogo que ya viaja en el navegador. Sólo se
-// usa como red: manda lo que diga el servidor.
+// Tope de UN producto según el catálogo PÚBLICO que ya viaja en el navegador.
+//
+// Es sólo la red por si el servidor no contesta, y a propósito se queda CORTA: el
+// catálogo público ya no publica el tope real (dice cuánto margen aguanta cada
+// producto), así que aquí lo máximo es el techo de cliente. Sin servidor el
+// distribuidor cotiza hasta 15% en vez de 25% — molesto, pero jamás promete un
+// descuento que la caja no le vaya a respetar.
 export const topeLocal = (producto, variante) => {
   if (CATEGORIAS_SIN_DESCUENTO.has(producto.category)) return 0;
-  if (variante.distributor_eligible === false) return 0;
+  if (variante.descuentable === false) return 0;
   if (esHghNeto(variante.id || variante.sku, `${producto.name} ${variante.presentation || ''}`)) return 0;
-  const cap = Number(variante.commission_cap);
-  return Number.isFinite(cap) ? Math.max(0, Math.min(TOPE_DURO, cap)) : TOPE_DURO;
+  const publicado = Number(variante.max_descuento_cliente);
+  return Number.isFinite(publicado)
+    ? Math.max(0, Math.min(TECHO_DESCUENTO_CLIENTE, publicado))
+    : TECHO_DESCUENTO_CLIENTE;
 };
 
 // El catálogo aplanado que necesita el cotizador: una línea por PRESENTACIÓN,
