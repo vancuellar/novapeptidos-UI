@@ -40,6 +40,22 @@ recomendación: no cambiarse) · cotización COT-20260730-01 entregada a Christi
 40/40/35; respaldo para revertir) · regla de 5 piezas por producto para precio
 de distribuidor · WhatsApp: SOLO Christián envía (Claude deja borradores).
 
+## 🔜 LO PRIMERO PARA EL PRÓXIMO CHAT (orden directa de Christián, 2026-07-30 noche)
+
+**Mejorar la cotización del Cotizador al formato que más le gustó** (la "hoja
+clara" v2 que el agente dejó en el preview local hoja-claro.html — el documento
+tipo factura). Debe incluir:
+1. **Datos del cliente**: nombre, email, teléfono, dirección — los que se
+   tengan; NINGUNO obligatorio, pero se pintan bonito si existen. (El Cotizador
+   hoy solo pide nombre; agregar los campos opcionales.)
+2. **Un enlace directo al CHECKOUT** en la cotización (documento, correo y
+   WhatsApp): que al abrirlo el carrito llegue YA ARMADO con los renglones y
+   cantidades de la cotización + el ?ref= del distribuidor aplicado — el
+   cliente aterriza a un paso de pagar. (Hoy el enlace va al catálogo pelón.)
+   Implementación sugerida: URL con payload de renglones (ids+qty) que
+   CartContext hidrate al abrir, validada contra el catálogo real.
+3. Mismas compuertas de siempre; el precio lo sigue poniendo el backend.
+
 ## ⏳ PENDIENTE (además de lo del handoff anterior)
 1. Christián: llenar [corchetes] del ACUERDO-DISTRIBUIDOR-BORRADOR.md (razón
    social/RFC, fuero, plazos) y ordenar encender ACUERDO_DISTRIBUIDOR_ACTIVO.
