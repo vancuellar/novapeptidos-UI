@@ -1,16 +1,14 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { useParams, Link, useNavigate } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 import { ShieldCheck, Minus, Plus, ShoppingCart, FlaskConical } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Card } from '@/components/ui/card';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import { Skeleton } from '@/components/ui/skeleton';
 import { track } from '@/lib/track';
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from '@/components/ui/breadcrumb';
 import ProductCard from '@/components/ProductCard';
-import TrustBadges from '@/components/TrustBadges';
+import TrustWidget from '@/components/TrustWidget';
 import api, { formatMXN } from '@/lib/api';
 import { useCart } from '@/context/CartContext';
 import { getFallbackProductBySlug, getFallbackProductsByCategory } from '@/data/fallbackCatalog';
@@ -18,11 +16,32 @@ import { productImage, hasProductPhoto, isBrandImage } from '@/data/productImage
 import { useLanguage } from '@/context/LanguageContext';
 import { localizeProduct, localizeProducts } from '@/i18n/catalog';
 
+// FICHA DE PRODUCTO — SIMPLIFICADA. (Fable 5, 2026-07-30)
+//
+// Christián: "Simplifica todo. Me da miedo de tanta información. Hay muchísimo
+// ruido en las páginas individuales de los productos. Muchísimo."
+//
+// Qué se hizo, con la vara de Apple (aire, jerarquía, lo esencial primero):
+//
+//   ARRIBA sólo lo que hace falta para decidir y comprar — foto, nombre,
+//   presentación, pureza, precio, disponibilidad, botón. Nada más.
+//
+//   ABAJO, en tres acordeones CERRADOS: Descripción (con la monografía larga
+//   dentro, que sola medía 1,300 px en móvil y salía ABIERTA de fábrica),
+//   Especificaciones y Envíos.
+//
+//   FUERA lo repetido: la tarjeta de especificaciones vivía DOS veces en la misma
+//   pantalla (rejilla arriba + pestaña abajo) — ahora vive una sola vez. Y el
+//   "Número de lote" se quitó por orden de Christián: era un valor decorativo
+//   (NP-…) que no corresponde a ningún lote real; los lotes reales van en el COA.
+//
+//   El aviso RUO NO se toca: sigue visible arriba (etiqueta junto al título y
+//   recuadro ámbar bajo el botón de comprar), sólo que compactado.
+
 const ProductDetail = () => {
   const { slug } = useParams();
   const { addItem } = useCart();
   const { language, t } = useLanguage();
-  const navigate = useNavigate();
   const [product, setProduct] = useState(null);
   const [related, setRelated] = useState([]);
   const [qty, setQty] = useState(1);
@@ -30,7 +49,7 @@ const ProductDetail = () => {
   const [loading, setLoading] = useState(true);
   const [stockMap, setStockMap] = useState(null);
   // La monografía larga son 212 kB de texto para los ~75 productos que la tienen
-  // escrita, y vive MUY abajo en la ficha (dentro de la pestaña "Descripción").
+  // escrita, y vive MUY abajo en la ficha (dentro del acordeón "Descripción").
   // Si viaja con la página, el precio y el botón de comprar esperan por ella. Se
   // pide aparte: la ficha pinta de inmediato y el texto entra en cuanto llega.
   const [monograph, setMonograph] = useState(null);
@@ -97,13 +116,13 @@ const ProductDetail = () => {
     return () => { vigente = false; };
   }, [product?.slug]);
 
-  if (loading) return <div className="max-w-[1280px] mx-auto px-4 py-10"><Skeleton className="h-96 rounded-xl" /></div>;
-  if (!product) return <div className="max-w-[1280px] mx-auto px-4 py-20 text-center">{t('product.notFound')} <Link to="/catalogo" className="text-[hsl(var(--primary))]">{t('product.backToCatalog')}</Link></div>;
+  if (loading) return <div className="max-w-[1180px] mx-auto px-4 py-10"><Skeleton className="h-96 rounded-xl" /></div>;
+  if (!product) return <div className="max-w-[1180px] mx-auto px-4 py-20 text-center">{t('product.notFound')} <Link to="/catalogo" className="text-[hsl(var(--primary))]">{t('product.backToCatalog')}</Link></div>;
 
   const localizedProduct = localizeProduct(product, language);
   const localizedRelated = localizeProducts(related, language);
   const variants = product.variants || [];
-  const active = variants[variantIdx] || { price: localizedProduct.price, presentation: localizedProduct.presentation, stock: localizedProduct.stock, batch_number: localizedProduct.batch_number };
+  const active = variants[variantIdx] || { price: localizedProduct.price, presentation: localizedProduct.presentation, stock: localizedProduct.stock };
   // Los insumos y la calculadora solo tienen sentido en lo que llega en polvo y se
   // dosifica por mg. El agua bacteriostática no se ofrece a sí misma.
   const esLiofilizado = /liofiliz/i.test(localizedProduct.form || '')
@@ -117,12 +136,15 @@ const ProductDetail = () => {
   // la leyenda, nunca el botón: Retatrutida 120 mg y Vitamina D3 llegaron a estar en el
   // catálogo sin poder comprarse porque su contador decía 0.
   const enCero = (stockEntry ? Number(stockEntry.qty) || 0 : Number(active.stock) || 0) <= 0;
+  // UNA sola tabla de especificaciones, y vive dentro del acordeón. Antes se pintaba
+  // dos veces en la misma pantalla (rejilla de tarjetas + pestaña) con los mismos
+  // cuatro datos. El "Número de lote" salió por completo (ver el comentario de arriba).
   const specs = [
-    { label: t('common.purity'), value: localizedProduct.purity, testid: 'pdp-purity' },
-    { label: t('common.presentation'), value: active.presentation },
-    { label: t('common.form'), value: localizedProduct.form },
-    { label: t('common.batchNumber'), value: active.batch_number, testid: 'pdp-lot-number' },
-  ];
+    { label: t('common.purity'), value: localizedProduct.purity, testid: 'pdp-purity', mono: true },
+    { label: t('common.presentation'), value: active.presentation, mono: true },
+    { label: t('common.form'), value: localizedProduct.form, mono: true },
+    { label: t('product.tabs.storage'), value: localizedProduct.storage },
+  ].filter((s) => s.value);
   // El id que va al carrito DEBE existir en el catalogo real: usamos el id o el
   // SKU de la presentacion. Antes se inventaba "id::5 mg" y el backend no lo
   // encontraba al cobrar (bug de checkout, 2026-07-25).
@@ -137,8 +159,8 @@ const ProductDetail = () => {
   }, qty);
 
   return (
-    <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 py-8">
-      <Breadcrumb className="mb-6">
+    <div className="max-w-[1180px] mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-10">
+      <Breadcrumb className="mb-6 sm:mb-8">
         <BreadcrumbList>
           <BreadcrumbItem><BreadcrumbLink asChild><Link to="/">{t('common.home')}</Link></BreadcrumbLink></BreadcrumbItem>
           <BreadcrumbSeparator />
@@ -148,39 +170,40 @@ const ProductDetail = () => {
         </BreadcrumbList>
       </Breadcrumb>
 
-      <div className="grid lg:grid-cols-2 gap-8">
-        <div>
-          <div className="rounded-2xl border border-border bg-[hsl(var(--secondary))] overflow-hidden">
-            <img src={productImage(localizedProduct, active)} alt={`${localizedProduct.name} ${active.presentation || ''}`.trim()} className="w-full object-cover aspect-square transition-transform duration-300 ease-out hover:scale-110" />
+      <div className="grid lg:grid-cols-2 gap-8 lg:gap-14 items-start">
+        {/* ------------------------------------------------------------- foto */}
+        <div className="lg:sticky lg:top-24">
+          <div className="rounded-3xl border border-border bg-[hsl(var(--secondary))] overflow-hidden">
+            <img src={productImage(localizedProduct, active)} alt={`${localizedProduct.name} ${active.presentation || ''}`.trim()} className="w-full object-cover aspect-square transition-transform duration-300 ease-out hover:scale-105" />
           </div>
           {isBrandImage(localizedProduct, active) && (
-            <p className="mt-2 text-[11px] leading-relaxed text-muted-foreground text-center">{t('product.brandPhotoNote')}</p>
+            <p className="mt-3 text-[11px] leading-relaxed text-muted-foreground text-center">{t('product.brandPhotoNote')}</p>
           )}
           {hasProductPhoto(localizedProduct, active) && (
-            <p className="mt-2 text-[11px] leading-relaxed text-muted-foreground text-center">{t('product.photoNote')}</p>
+            <p className="mt-3 text-[11px] leading-relaxed text-muted-foreground text-center">{t('product.photoNote')}</p>
           )}
-          <div className="mt-4 rounded-xl border border-[hsl(var(--warning-border))] bg-[hsl(var(--warning))] text-[hsl(var(--warning-foreground))] p-3 flex items-start gap-2 text-xs leading-relaxed">
-            <FlaskConical className="h-4 w-4 shrink-0 mt-0.5" />
-            <span>{t('product.ruoWarning')}</span>
-          </div>
         </div>
 
+        {/* --------------------------------------------------- caja de compra */}
         <div>
-          <div className="flex flex-wrap gap-2 mb-3">
+          <div className="flex flex-wrap items-center gap-2">
             <Badge variant="secondary" className="gap-1"><ShieldCheck className="h-3 w-3" /> {t('product.coaVerified')}</Badge>
             <Badge variant="outline" className="border-[hsl(var(--warning-border))] bg-[hsl(var(--warning))] text-[hsl(var(--warning-foreground))]">RUO</Badge>
             {localizedProduct.is_new && <Badge className="bg-[hsl(var(--info))] text-[hsl(var(--info-foreground))]">{t('product.new')}</Badge>}
           </div>
-          <h1 className="font-heading text-3xl font-bold tracking-tight" data-testid="pdp-title">{localizedProduct.name}</h1>
-          <p className="mt-2 text-muted-foreground font-mono-tech text-sm">{active.presentation} · {t('product.purityLine', { purity: localizedProduct.purity })}</p>
+
+          <h1 className="mt-4 font-heading text-3xl sm:text-4xl font-bold tracking-tight leading-tight" data-testid="pdp-title">{localizedProduct.name}</h1>
+          <p className="mt-2 text-sm text-muted-foreground font-mono-tech">{active.presentation} · {t('product.purityLine', { purity: localizedProduct.purity })}</p>
+          <p className="mt-4 text-[15px] leading-relaxed text-muted-foreground">{localizedProduct.short_description}</p>
+
           {/* PRECIO POR MG EN CADA BOTÓN. (Fable 5, 2026-07-27)
               El cliente veía tres botones que solo cambiaban el precio total, así que
               elegía el más barato de etiqueta — que casi siempre es el PEOR valor.
               Caso medido: NAD+ 100 mg sale a $8.39/mg y el de 500 mg a $2.52/mg.
               Poner la cifra al lado no cambia ni un precio y sube el ticket solo. */}
           {variants.length > 1 && (
-            <div className="mt-4">
-              <div className="text-xs font-medium text-muted-foreground mb-2">Presentación</div>
+            <div className="mt-7">
+              <div className="text-xs font-medium text-muted-foreground mb-2">{t('common.presentation')}</div>
               <div className="flex flex-wrap gap-2" data-testid="pdp-variant-selector">
                 {variants.map((v, i) => {
                   const mg = parseFloat(v.presentation);
@@ -189,7 +212,7 @@ const ProductDetail = () => {
                     .map((x) => (parseFloat(x.presentation) > 0 ? x.price / parseFloat(x.presentation) : Infinity)));
                   return (
                     <button key={v.presentation} type="button" onClick={() => setVariantIdx(i)} data-testid="pdp-variant-option"
-                      className={`px-3.5 py-2 rounded-lg border text-sm font-medium transition-colors text-left ${i === variantIdx ? 'border-[hsl(var(--primary))] bg-[hsl(var(--primary))]/10 text-[hsl(var(--primary))]' : 'border-border text-foreground hover:border-[hsl(var(--primary))]/50'}`}>
+                      className={`px-3.5 py-2 rounded-xl border text-sm font-medium transition-colors text-left ${i === variantIdx ? 'border-[hsl(var(--primary))] bg-[hsl(var(--primary))]/10 text-[hsl(var(--primary))]' : 'border-border text-foreground hover:border-[hsl(var(--primary))]/50'}`}>
                       <div className="flex items-center gap-1.5">
                         {v.presentation}
                         {mejor && <span className="text-[10px] uppercase tracking-wide font-semibold text-[hsl(var(--success))]">mejor valor</span>}
@@ -205,124 +228,135 @@ const ProductDetail = () => {
               </div>
             </div>
           )}
-          <div className="mt-4 font-heading text-3xl font-bold" data-testid="pdp-price">{formatMXN(active.price)}</div>
+
+          <div className="mt-7 font-heading text-3xl font-bold tabular-nums" data-testid="pdp-price">{formatMXN(active.price)}</div>
           {localizedProduct.tiers?.length > 0 && (
-            <div className="mt-2 text-xs text-muted-foreground">{t('product.volumePricing', { tiers: localizedProduct.tiers.map((tier) => t('common.piecesFrom', { price: formatMXN(tier.price), qty: tier.min_qty })).join(' · ') })}</div>
+            <div className="mt-1.5 text-xs text-muted-foreground">{t('product.volumePricing', { tiers: localizedProduct.tiers.map((tier) => t('common.piecesFrom', { price: formatMXN(tier.price), qty: tier.min_qty })).join(' · ') })}</div>
           )}
 
-          <p className="mt-4 text-sm leading-relaxed text-muted-foreground">{localizedProduct.short_description}</p>
-
-          <div className="mt-5" data-testid="pdp-availability">
+          <div className="mt-3" data-testid="pdp-availability">
             {inHand
               ? <span className="text-sm text-[hsl(var(--success))]">✓ {t('product.inHandStock', { stock: stockEntry.qty })}</span>
               : <Badge variant="outline" className="border-[hsl(var(--warning-border))] bg-[hsl(var(--warning))] text-[hsl(var(--warning-foreground))]" data-testid="pdp-sobre-pedido">{enCero ? t('backorder.badge') : t('product.oneWeekShip')}</Badge>}
           </div>
 
-          <div className="mt-5 flex items-center gap-3">
-            <div className="flex items-center border border-border rounded-lg">
+          <div className="mt-6 flex items-center gap-3">
+            <div className="flex items-center border border-border rounded-xl">
               <Button variant="ghost" size="icon" onClick={() => setQty(Math.max(1, qty - 1))} data-testid="pdp-qty-decrease"><Minus className="h-4 w-4" /></Button>
               <span className="w-10 text-center font-medium" data-testid="pdp-qty">{qty}</span>
               <Button variant="ghost" size="icon" onClick={() => setQty(qty + 1)} data-testid="pdp-qty-increase"><Plus className="h-4 w-4" /></Button>
             </div>
-            <Button className="flex-1" size="lg" onClick={addToCart} data-testid="pdp-add-to-cart-button"><ShoppingCart className="h-4 w-4 mr-2" /> {t('product.addToCart')}</Button>
+            <Button className="flex-1 rounded-xl" size="lg" onClick={addToCart} data-testid="pdp-add-to-cart-button"><ShoppingCart className="h-4 w-4 mr-2" /> {t('product.addToCart')}</Button>
           </div>
+
+          {/* RUO COMPACTO, PERO ARRIBA Y VISIBLE. (Fable 5, 2026-07-30)
+              Era un recuadro de 85 px en la columna de la foto. Ahora es una franja
+              de dos renglones justo bajo el botón de comprar: el mismo texto legal,
+              en el momento exacto en que se decide. No se toca ni una palabra. */}
+          <p className="mt-4 flex items-start gap-2 rounded-xl border border-[hsl(var(--warning-border))] bg-[hsl(var(--warning))] text-[hsl(var(--warning-foreground))] px-3 py-2 text-[11px] leading-relaxed">
+            <FlaskConical className="h-3.5 w-3.5 shrink-0 mt-0.5" />
+            <span>{t('product.ruoWarning')}</span>
+          </p>
 
           {/* LO QUE HACE FALTA PARA USAR ESTE VIAL. (Fable 5, 2026-07-27)
               Vendemos el agua bacteriostática a $179 y no la ofrecíamos en la ficha del
-              péptido que la necesita: "Productos relacionados" enseñaba otros péptidos
-              caros, no lo que hace falta para usar el que está viendo. Y la calculadora
-              existía sin estar enlazada desde el único momento en que sirve. */}
+              péptido que la necesita. Se conserva, ya sin el párrafo que explicaba lo
+              mismo que dice la etiqueta "Forma: Liofilizado" en Especificaciones. */}
           {esLiofilizado && (
-            <div className="mt-5 rounded-xl border border-border bg-[hsl(var(--secondary))]/50 p-4" data-testid="pdp-insumos">
-              <div className="text-sm font-medium mb-1">Para usar este vial vas a necesitar</div>
-              <p className="text-xs text-muted-foreground leading-relaxed">
-                Llega liofilizado (en polvo): hay que reconstituirlo con agua bacteriostática
-                antes de poder medir una dosis.
-              </p>
-              <div className="mt-3 flex flex-wrap gap-2">
+            <div className="mt-6" data-testid="pdp-insumos">
+              <div className="text-xs font-medium text-muted-foreground mb-2">Para usar este vial vas a necesitar</div>
+              <div className="flex flex-wrap gap-2">
                 <Link to="/producto/agua-bacteriostatica">
-                  <Button variant="outline" size="sm" data-testid="pdp-insumo-agua">
+                  <Button variant="outline" size="sm" className="rounded-xl" data-testid="pdp-insumo-agua">
                     <FlaskConical className="h-3.5 w-3.5 mr-1.5" /> Agua bacteriostática
                   </Button>
                 </Link>
                 <Link to={`/calculadora?p=${encodeURIComponent(product.name)}&v=${parseFloat(active.presentation) || ''}`}>
-                  <Button variant="outline" size="sm" data-testid="pdp-calculadora">
+                  <Button variant="outline" size="sm" className="rounded-xl" data-testid="pdp-calculadora">
                     ¿Cuánto te rinde? Calcúlalo →
                   </Button>
                 </Link>
               </div>
             </div>
           )}
-
-          <div className="mt-5 grid grid-cols-2 gap-3">
-            {specs.map((s) => (
-              <div key={s.label} className="rounded-lg border border-border bg-[hsl(var(--secondary))] p-3">
-                <div className="text-xs text-muted-foreground">{s.label}</div>
-                <div className="font-mono-tech text-sm font-medium" data-testid={s.testid}>{s.value}</div>
-              </div>
-            ))}
-          </div>
-
-          {/* TIENDA DE CONFIANZA, JUSTO DONDE SE DUDA. (Fable 5, 2026-07-29)
-              Aquí había tres señales sueltas y minúsculas — "certificado en tu
-              cuenta", "envío 2–5 días", "empaque discreto" — en letra de 12 px que
-              nadie lee. Se sustituyen por el bloque completo, que dice esas mismas
-              tres cosas y además las que faltaban: pureza por HPLC, origen EUA,
-              formas de pago y WhatsApp. No se duplica nada: lo que se ve arriba
-              (pureza, lote, presentación) son DATOS de este vial; esto son las
-              condiciones de la tienda.
-              Sin RUO propio: en esta página ya va en recuadro ámbar a la izquierda
-              y en la etiqueta junto al título. */}
-          <TrustBadges className="mt-6" showRuo={false} />
         </div>
       </div>
 
-      <div className="mt-12">
-        <Tabs defaultValue="desc">
-          <TabsList>
-            <TabsTrigger value="desc">{t('product.tabs.description')}</TabsTrigger>
-            <TabsTrigger value="specs">{t('product.tabs.specs')}</TabsTrigger>
-            <TabsTrigger value="storage">{t('product.tabs.storage')}</TabsTrigger>
-            <TabsTrigger value="shipping">{t('product.tabs.shipping')}</TabsTrigger>
-          </TabsList>
-          <TabsContent value="desc" className="mt-4 max-w-3xl">
-            <p className="text-sm leading-relaxed text-muted-foreground">{localizedProduct.description}</p>
-            {/* Monografía larga: solo la tienen los productos que la tienen escrita.
-                Vive en productMonographs.js porque el catálogo se regenera. */}
-            {monograph && (
-              <div className="mt-8 space-y-7" data-testid="product-monograph">
-                {monograph.sections.map((sec) => (
-                  <section key={sec.title}>
-                    <h3 className="font-heading text-base font-semibold mb-2">{sec.title}</h3>
-                    <div className="space-y-3">
-                      {sec.paragraphs.map((par, i) => (
-                        <p key={i} className="text-sm leading-relaxed text-muted-foreground">{par}</p>
-                      ))}
-                    </div>
-                  </section>
+      {/* ------------------------------------------------ todo lo demás, cerrado
+          Tres renglones cerrados en vez de cuatro pestañas con una abierta de fábrica.
+          La monografía —el bloque más largo de la ficha— ya no cae encima de nadie:
+          la abre quien la quiera leer. */}
+      <div className="mt-12 sm:mt-16 max-w-3xl">
+        <Accordion type="single" collapsible className="border-t border-border">
+          <AccordionItem value="desc">
+            <AccordionTrigger className="text-[15px] font-semibold hover:no-underline">{t('product.tabs.description')}</AccordionTrigger>
+            <AccordionContent>
+              <p className="text-sm leading-relaxed text-muted-foreground">{localizedProduct.description}</p>
+              {/* Monografía larga: solo la tienen los productos que la tienen escrita.
+                  Vive en productMonographs.js porque el catálogo se regenera. Va DENTRO
+                  de "Descripción" y no en un renglón propio para no volver a llenar la
+                  ficha de encabezados: es el mismo tema, sólo que largo. */}
+              {monograph && (
+                <div className="mt-8 space-y-7" data-testid="product-monograph">
+                  {monograph.sections.map((sec) => (
+                    <section key={sec.title}>
+                      <h3 className="font-heading text-base font-semibold mb-2">{sec.title}</h3>
+                      <div className="space-y-3">
+                        {sec.paragraphs.map((par, i) => (
+                          <p key={i} className="text-sm leading-relaxed text-muted-foreground">{par}</p>
+                        ))}
+                      </div>
+                    </section>
+                  ))}
+                  <p className="text-xs leading-relaxed text-muted-foreground border-t border-border pt-4">
+                    Uso exclusivo en investigación (RUO). No es un medicamento ni un suplemento, no está
+                    destinado a consumo humano ni animal, y esta ficha no contiene indicaciones de dosis
+                    ni de administración.
+                  </p>
+                </div>
+              )}
+            </AccordionContent>
+          </AccordionItem>
+
+          <AccordionItem value="specs">
+            <AccordionTrigger className="text-[15px] font-semibold hover:no-underline">{t('product.tabs.specs')}</AccordionTrigger>
+            <AccordionContent>
+              <dl className="divide-y divide-border">
+                {specs.map((s) => (
+                  <div key={s.label} className="flex justify-between gap-6 py-2.5 text-sm">
+                    <dt className="text-muted-foreground shrink-0">{s.label}</dt>
+                    <dd className={`text-right ${s.mono ? 'font-mono-tech' : 'text-muted-foreground'}`} data-testid={s.testid}>{s.value}</dd>
+                  </div>
                 ))}
-                <p className="text-xs leading-relaxed text-muted-foreground border-t border-border pt-4">
-                  Uso exclusivo en investigación (RUO). No es un medicamento ni un suplemento, no está
-                  destinado a consumo humano ni animal, y esta ficha no contiene indicaciones de dosis
-                  ni de administración.
-                </p>
-              </div>
-            )}
-          </TabsContent>
-          <TabsContent value="specs" className="mt-4">
-            <div className="max-w-xl divide-y divide-border border border-border rounded-lg">
-              {specs.map((s) => <div key={s.label} className="flex justify-between px-4 py-2.5 text-sm"><span className="text-muted-foreground">{s.label}</span><span className="font-mono-tech">{s.value}</span></div>)}
-            </div>
-          </TabsContent>
-          <TabsContent value="storage" className="mt-4 text-sm leading-relaxed text-muted-foreground max-w-3xl">{localizedProduct.storage}</TabsContent>
-          <TabsContent value="shipping" className="mt-4 text-sm leading-relaxed text-muted-foreground max-w-3xl">{t('product.shippingText')}</TabsContent>
-        </Tabs>
+              </dl>
+            </AccordionContent>
+          </AccordionItem>
+
+          <AccordionItem value="shipping">
+            <AccordionTrigger className="text-[15px] font-semibold hover:no-underline">{t('product.tabs.shipping')}</AccordionTrigger>
+            <AccordionContent className="text-sm leading-relaxed text-muted-foreground">{t('product.shippingText')}</AccordionContent>
+          </AccordionItem>
+        </Accordion>
       </div>
 
+      {/* TIENDA DE CONFIANZA. (Christian, 2026-07-30)
+          Mismo widget colapsable que la portada y el checkout — una sola
+          tarjeta verde, no un bloque distinto por página. Colapsada es
+          compacta (menos que los 477 px del bloque viejo en móvil); el RUO
+          vive dentro, al abrirla, y esta página ya lo trae dos veces arriba,
+          así que no se repite otra vez fuera del widget. */}
+      <TrustWidget className="mt-10 max-w-md" />
+
       {related.length > 0 && (
-        <div className="mt-14">
+        <div className="mt-12 sm:mt-16">
           <h2 className="font-heading text-xl font-bold mb-5">{t('product.related')}</h2>
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">{localizedRelated.map((p) => <ProductCard key={p.id} product={p} />)}</div>
+          {/* En móvil dos, no cuatro: las otras dos añadían ~450 px de scroll a una
+              página que ya venía larguísima. En escritorio se ven las cuatro. */}
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+            {localizedRelated.map((p, i) => (
+              <div key={p.id} className={i >= 2 ? 'hidden lg:block' : ''}><ProductCard product={p} /></div>
+            ))}
+          </div>
         </div>
       )}
     </div>
