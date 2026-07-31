@@ -5550,3 +5550,31 @@ Tesamorelin 20 mg $240, NAD+ 1000 mg $55 + $75 de envío). Lucy ya cuenta como p
 **Si suben esos 11 precios, el sitio sí se toca** (precios públicos). Hoy no: nada se movió.
 
 **Compuertas:** motor **346/346** ✅.
+
+---
+
+## ⛔ LUCY VETADA + FLETE ESTIMADO — 2026-07-31 (madrugada)
+
+**Lucy (P12) queda VETADA por Christián.** Cobró arriba de su lista en los 3 productos de
+la compra real y, al reclamarle, **mandó una lista NUEVA 31% más cara** para que lo ya
+cobrado pareciera «descuento» (Epithalon $100→$130 cobrando $120; NAD+ $44→$66 cobrando
+$55). De 125 productos, **116 subieron**, +36% promedio, el agua bacteriostática +500%. Su
+lista vieja se retiró del comparador —ella misma dice que a esos precios no vende— y **39
+costos de la maestra subieron** al costo real. **Ningún precio público se movió.**
+
+**Y la sospecha sobre los otros tres chinos NO se cumple:** Lisa cobró ABAJO de su lista
+(−11%), Bainuo y Lily exactamente su lista. Sólo Lucy cobró arriba.
+
+**Envío estimado $60** a los 16 proveedores con lista que nunca lo declararon, marcados
+como estimado. Con el flete puesto, **la corona cambia en 32 productos**: Lucy pierde 22 y
+Lily gana 18. Mia aguanta con 78 de 204.
+
+### ⛔ SIGUE PENDIENTE: las 11 subidas de precio
+
+Christián las autorizó, pero **no se aplicaron**: rompen la escalera (el vial grande sale
+más caro por unidad que el chico) en 3 lugares nuevos, y arreglarla exige subir TAMBIÉN el
+HGH 24 iu (≈$1,439), el HGH 191AA 10 iu (≈$799) y el ácido acético 3 ml (≈$309) — que él
+no autorizó. Están listas en `subidas_autorizadas.json` del motor. **Cuando decida, el
+sitio sí se toca** (son precios públicos).
+
+**Compuertas:** motor **346/346** ✅, dos corridas en seco en cero.
