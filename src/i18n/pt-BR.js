@@ -1397,6 +1397,20 @@ const ptBR = {
   'tracking.history': 'Histórico do envio',
   'tracking.issue': 'A transportadora relatou um problema com este envio. Escreva para nós com o número do seu pedido e vamos verificar junto com você.',
   'tracking.carrierSite': 'Ver No Site Da Transportadora',
+  // A transportadora reporta com as palavras dela. Como o servidor já normaliza o
+  // código do evento, preferimos O NOSSO texto e só caímos no da transportadora
+  // quando o código é desconhecido. Ver RastreoEnvio.js.
+  'tracking.event.created': 'Etiqueta gerada',
+  'tracking.event.picked_up': 'Coletado pela transportadora',
+  'tracking.event.in_transit': 'Em trânsito',
+  'tracking.event.last_mile': 'Saiu para entrega',
+  'tracking.event.delivery_attempt': 'Tentativa de entrega',
+  'tracking.event.delivered_to_branch': 'Disponível no ponto de retirada',
+  'tracking.event.delivered': 'Entregue',
+  'tracking.event.exception': 'Problema relatado',
+  'tracking.event.in_return': 'Em devolução',
+  'tracking.event.canceled': 'Envio cancelado',
+  'tracking.event.retained': 'Pacote retido',
 
   'info.envios.title': 'Envios e entregas',
   'info.envios.body': ['Enviamos para todo o México via FedEx aereo.', 'Despacho no mesmo dia: pedidos até as 17:00 são enviados no mesmo dia útil; depois disso, no próximo dia útil.', 'Prazo estimado de entrega: 2 a 5 dias uteis (segunda a sexta, exceto feriados). Algumas regioes podem variar.', 'Você recebera o código de rastreio por e-mail automaticamente assim que a etiqueta for criada.', 'Não realizamos envios internacionais nem serviços de reenvio.', 'Verifique seu endereço com cuidado ao finalizar a compra. Alteracoes so podem ser solicitadas antes do envio.'],

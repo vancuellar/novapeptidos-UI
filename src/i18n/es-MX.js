@@ -1402,6 +1402,20 @@ const esMX = {
   'tracking.history': 'Historial del envío',
   'tracking.issue': 'La paquetería reportó un problema con este envío. Escríbenos con tu número de pedido y lo revisamos contigo.',
   'tracking.carrierSite': 'Ver En El Sitio De La Paquetería',
+  // El carrier reporta en INGLÉS («Picked up»). Como el servidor ya normaliza el
+  // código del evento, se prefiere NUESTRO texto y sólo se cae al del carrier cuando
+  // el código no lo conocemos. Ver RastreoEnvio.js.
+  'tracking.event.created': 'Guía generada',
+  'tracking.event.picked_up': 'Recolectado por la paquetería',
+  'tracking.event.in_transit': 'En tránsito',
+  'tracking.event.last_mile': 'En ruta de entrega',
+  'tracking.event.delivery_attempt': 'Intento de entrega',
+  'tracking.event.delivered_to_branch': 'Disponible en sucursal',
+  'tracking.event.delivered': 'Entregado',
+  'tracking.event.exception': 'Incidencia reportada',
+  'tracking.event.in_return': 'En devolución',
+  'tracking.event.canceled': 'Envío cancelado',
+  'tracking.event.retained': 'Paquete retenido',
 
   'info.envios.title': 'Envíos y entregas',
   'info.envios.body': ['Enviamos a todo el territorio de la Republica Mexicana por FedEx aereo.', 'Despacho el mismo día: los pedidos realizados antes de las 5:00 pm se envian ese mismo día habil; después, al siguiente día habil.', 'Tiempo de entrega estimado: 2 a 5 días habiles (lunes a viernes, sin contar festivos). Algunas zonas pueden variar.', 'Recibiras el número de rastreo por correo automaticamente en cuanto se genere la guia.', 'No realizamos envíos internacionales ni usamos servicios de reenvio.', 'Verifica cuidadosamente tu dirección al finalizar la compra. Los cambios de dirección solo se pueden solicitar antes de que el pedido sea enviado.'],

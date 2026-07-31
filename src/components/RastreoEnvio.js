@@ -73,6 +73,23 @@ const RastreoEnvio = ({ orderNumber }) => {
   const { t, language } = useLanguage();
   const [datos, setDatos] = useState(null);
 
+  /**
+   * ⛔ EL CARRIER REPORTA EN INGLÉS. FedEx manda «Picked up» y «Shipment information
+   * sent to fedex» tal cual, y eso se veía en inglés en medio de una página en español
+   * (comprobado en vivo con el pedido de Brenda el 2026-07-31).
+   *
+   * Como el servidor ya normaliza el código del evento (`picked_up`, `in_transit`…),
+   * se prefiere NUESTRO texto en el idioma del sitio y sólo se cae al del carrier
+   * cuando el código es uno que no conocemos. Traducir a ciegas la frase del carrier
+   * sería inventar; traducir por CÓDIGO es exacto.
+   */
+  const textoDelEvento = (e) => {
+    const clave = `tracking.event.${e.estado || ''}`;
+    const nuestro = t(clave);
+    // `t` devuelve la clave pelada cuando no la encuentra: así se sabe que no hay.
+    return nuestro === clave ? (e.descripcion || '') : nuestro;
+  };
+
   useEffect(() => {
     if (!orderNumber) return;
     let vivo = true;
@@ -165,7 +182,7 @@ const RastreoEnvio = ({ orderNumber }) => {
             {eventos.slice().reverse().map((e, i) => (
               <li key={`${e.fecha}-${i}`} className="flex flex-col sm:flex-row sm:justify-between sm:gap-3 text-xs">
                 <span className="text-foreground">
-                  {e.descripcion}
+                  {textoDelEvento(e)}
                   {e.lugar ? <span className="text-muted-foreground"> · {e.lugar}</span> : null}
                 </span>
                 <span className="text-muted-foreground shrink-0 font-mono-tech">

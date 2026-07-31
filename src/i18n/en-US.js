@@ -1402,6 +1402,20 @@ const enUS = {
   'tracking.history': 'Shipment history',
   'tracking.issue': 'The carrier reported a problem with this shipment. Write to us with your order number and we will look into it with you.',
   'tracking.carrierSite': 'View On The Carrier Site',
+  // The carrier reports in its own words. The server already normalizes the event
+  // code, so we prefer OUR wording and fall back to the carrier only for codes we
+  // do not know. See RastreoEnvio.js.
+  'tracking.event.created': 'Label created',
+  'tracking.event.picked_up': 'Picked up by the carrier',
+  'tracking.event.in_transit': 'In transit',
+  'tracking.event.last_mile': 'Out for delivery',
+  'tracking.event.delivery_attempt': 'Delivery attempt',
+  'tracking.event.delivered_to_branch': 'Available at pickup point',
+  'tracking.event.delivered': 'Delivered',
+  'tracking.event.exception': 'Issue reported',
+  'tracking.event.in_return': 'Being returned',
+  'tracking.event.canceled': 'Shipment canceled',
+  'tracking.event.retained': 'Package held',
 
   'info.envios.title': 'Shipping and Delivery',
   'info.envios.body': ['We ship throughout Mexico via FedEx air.', 'Same-day dispatch: orders placed before 5:00 pm ship the same business day; after that, the next business day.', 'Estimated delivery: 2 to 5 business days (Monday to Friday, holidays excluded). Some areas may vary.', 'You will receive your tracking number by email automatically once the label is created.', 'We do not offer international shipping or reshipping services.', 'Please verify your address carefully at checkout. Address changes can only be requested before the order ships.'],
