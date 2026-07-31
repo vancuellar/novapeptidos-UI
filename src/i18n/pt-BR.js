@@ -794,6 +794,7 @@ const ptBR = {
   'cotizador.docDe': 'De',
   'cotizador.docFolio': 'Nº',
   'cotizador.docSinNombre': 'Cliente',
+  'cotizador.docAntes': 'Antes',
   'cotizador.colProducto': 'Produto',
   'cotizador.colCant': 'Qtd.',
   'cotizador.colUnitario': 'Preço unitário',

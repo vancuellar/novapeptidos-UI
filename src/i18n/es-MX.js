@@ -738,6 +738,7 @@ const esMX = {
   'cotizador.docDe': 'De',
   'cotizador.docFolio': 'Folio',
   'cotizador.docSinNombre': 'Cliente',
+  'cotizador.docAntes': 'Antes',
   'cotizador.colProducto': 'Producto',
   'cotizador.colCant': 'Cant.',
   'cotizador.colUnitario': 'Precio unitario',

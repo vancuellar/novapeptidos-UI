@@ -799,6 +799,7 @@ const enUS = {
   'cotizador.docDe': 'From',
   'cotizador.docFolio': 'Quote no.',
   'cotizador.docSinNombre': 'Client',
+  'cotizador.docAntes': 'Was',
   'cotizador.colProducto': 'Product',
   'cotizador.colCant': 'Qty',
   'cotizador.colUnitario': 'Unit price',

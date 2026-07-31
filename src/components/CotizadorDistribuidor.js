@@ -3,29 +3,35 @@ import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import {
-  Search, Plus, Minus, Trash2, FileText, Share2, Printer, Sparkles,
+  Search, Plus, Minus, Trash2, FileText, Share2, Printer, Sparkles, Mail, X, Loader2,
 } from 'lucide-react';
-import { BrandMark } from '@/components/BrandLogo';
+import { toast } from 'sonner';
 import { useLanguage } from '@/context/LanguageContext';
+import { useTheme } from '@/context/ThemeContext';
+import api from '@/lib/api';
+import {
+  hojaCotizacionHTML, imprimirCotizacion, nuevoFolio, money,
+} from '@/lib/hojaCotizacion';
 
-/* Cotizador del distribuidor — DISEÑO por F5 (2026-07-30).
-   Genera una cotización presentable para el cliente final.
+/* Cotizador del distribuidor — genera una cotización presentable para el cliente
+   final: se ve en pantalla, se imprime en una carta y se manda por correo.
 
    ⛔ REGLA DE ORO: aquí NUNCA entra el costo real, el proveedor ni el ROI.
-   Este componente solo conoce: precio público, el descuento que el
-   distribuidor puede dar (su tasa efectiva compartida, topada por producto)
-   y los totales. El costo es territorio EXCLUSIVO del admin.
+   Este componente solo conoce: precio público, el descuento que el distribuidor
+   puede dar (su tasa efectiva, topada por producto) y los totales. El costo es
+   territorio EXCLUSIVO del admin.
 
-   La lógica de datos (catálogo, topes por producto, tasa del distribuidor,
-   compartir por WhatsApp/PDF) la cablea Codex — los puntos de enchufe están
-   marcados con TODO(codex). */
-
-const money = (n) => `$${(n || 0).toLocaleString('es-MX', { maximumFractionDigits: 0 })}`;
+   La HOJA (vista previa e impresión) vive en `@/lib/hojaCotizacion`: un solo
+   documento para los dos usos, para que lo que se ve sea exactamente lo que sale
+   en papel. El correo lo arma el SERVIDOR con sus propios precios — ver
+   `/distributor/quote/email`: si esta pantalla mintiera, el correo no la sigue. */
 
 // A dónde manda el enlace de la cotización: el catálogo, con el código del
 // distribuidor pegado. El sitio lo aplica solo al abrirlo (ver CartContext), así
 // que la venta se le atribuye aunque el cliente no escriba nada.
 const CATALOGO_URL = 'https://exygenlabs.com/catalogo';
+
+const CORREO_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 
 // `conEncabezado` en false quita el título de arriba: lo usa "Mis Herramientas",
 // donde el nombre de la sección ya lo pone el acordeón y repetirlo se lee como un
@@ -33,12 +39,17 @@ const CATALOGO_URL = 'https://exygenlabs.com/catalogo';
 export default function CotizadorDistribuidor({
   catalogo = [], tasaMaxima = 0.15, codigo = '', conEncabezado = true,
 }) {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
+  const { theme } = useTheme();
   const [busqueda, setBusqueda] = useState('');
   const [renglones, setRenglones] = useState([]); // {id, nombre, presentacion, precio, topePct, qty}
   const [descuento, setDescuento] = useState(Math.min(0.10, tasaMaxima));
   const [vistaPrevia, setVistaPrevia] = useState(false);
   const [nombreCliente, setNombreCliente] = useState('');
+  const [folio, setFolio] = useState(nuevoFolio);
+  const [correoAbierto, setCorreoAbierto] = useState(false);
+  const [correo, setCorreo] = useState('');
+  const [enviando, setEnviando] = useState(false);
 
   // La tasa la trae el servidor DESPUÉS del primer pintado. Sin esto el control
   // se queda clavado en el 0% con el que arrancó, y el cotizador no descuenta
@@ -84,12 +95,61 @@ export default function CotizadorDistribuidor({
     ? `${CATALOGO_URL}?ref=${encodeURIComponent(codigo)}`
     : CATALOGO_URL;
 
+  // Las cadenas que necesita la hoja, ya traducidas. La hoja no sabe de i18n a
+  // propósito: es un documento, no una pantalla.
+  const textos = useMemo(() => ({
+    docTitulo: t('cotizador.docTitulo'),
+    docFolio: t('cotizador.docFolio'),
+    docPara: t('cotizador.docPara'),
+    docDe: t('cotizador.docDe'),
+    docSinNombre: t('cotizador.docSinNombre'),
+    docCodigo: t('cotizador.docCodigo'),
+    colProducto: t('cotizador.colProducto'),
+    colCant: t('cotizador.colCant'),
+    colUnitario: t('cotizador.colUnitario'),
+    colImporte: t('cotizador.colImporte'),
+    cadaUno: t('cotizador.cadaUno'),
+    docAntes: t('cotizador.docAntes'),
+    docDinero: t('cotizador.docDinero'),
+    precioLista: t('cotizador.precioLista'),
+    docAhorro: t('cotizador.docAhorro'),
+    docAhorroCaja: t('cotizador.docAhorroCaja'),
+    total: t('cotizador.total'),
+    docLeyenda: t('cotizador.docLeyenda'),
+    docCatalogo: t('cotizador.docCatalogo'),
+  }), [t]);
+
+  const datosHoja = {
+    folio, fecha: new Date(), cliente: nombreCliente, codigo, enlace,
+    idioma: language, filas, subtotalLista, ahorro, total,
+  };
+
+  const esOscuro = theme === 'dark'
+    || (theme === 'system' && window.matchMedia?.('(prefers-color-scheme: dark)').matches);
+
+  // La vista previa pinta LA MISMA hoja que se imprime (misma función), sólo que
+  // con la paleta del tema activo. Lo que ve es lo que sale.
+  const hojaEnPantalla = useMemo(
+    () => hojaCotizacionHTML({ ...datosHoja, textos }, {
+      tema: esOscuro ? 'oscuro' : 'claro',
+      origen: process.env.PUBLIC_URL || '',
+    }),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [folio, nombreCliente, codigo, enlace, language, JSON.stringify(filas), total, esOscuro, textos],
+  );
+
+  const abrirVistaPrevia = () => {
+    setFolio(nuevoFolio());   // cada cotización que se genera es un documento nuevo
+    setCorreoAbierto(false);
+    setVistaPrevia(true);
+  };
+
   // Compartir por WhatsApp SIN número fijo: wa.me sin destinatario abre la lista
   // de contactos y el distribuidor elige a quién se la manda. Con un número
   // pegado sólo serviría para mandársela a esa persona.
   const compartir = () => {
     const texto = [
-      `*EXYGEN LABS* — ${t('cotizador.docTitulo')}`,
+      `*EXYGEN LABS* — ${t('cotizador.docTitulo')} ${folio}`,
       nombreCliente ? `${t('cotizador.docPara')} ${nombreCliente}` : '',
       '',
       ...filas.map((f) => `• ${f.qty} × ${f.nombre} — ${money(f.importe)}`),
@@ -105,16 +165,33 @@ export default function CotizadorDistribuidor({
     window.open(`https://wa.me/?text=${encodeURIComponent(texto)}`, '_blank', 'noopener,noreferrer');
   };
 
-  // Imprimir SOLO la hoja de la cotización. La marca en el body es lo que enciende
-  // la hoja de estilos de abajo — y de paso apaga el resumen imprimible de la
-  // calculadora, que vive en la misma pantalla ("Mis Herramientas") y si no se
-  // apaga sale pegado en la misma hoja.
-  const imprimir = () => {
-    const quitar = () => document.body.classList.remove('imprimiendo-cotizacion');
-    document.body.classList.add('imprimiendo-cotizacion');
-    window.addEventListener('afterprint', quitar, { once: true });
-    window.print();
-    setTimeout(quitar, 1500);   // red: no todos los navegadores avisan al terminar
+  const imprimir = () => imprimirCotizacion(datosHoja, textos);
+
+  // El correo lo MANDA EL SERVIDOR, y con SUS precios: aquí sólo viajan qué
+  // productos, cuántos y cuánto descuento se pidió. Si esta pantalla estuviera
+  // manipulada, el correo saldría con el precio real de todas formas.
+  const enviarCorreo = async () => {
+    const destino = correo.trim();
+    if (!CORREO_RE.test(destino)) { toast.error(t('cotizador.correoInvalido')); return; }
+    setEnviando(true);
+    try {
+      await api.post('/distributor/quote/email', {
+        email: destino,
+        client_name: nombreCliente.trim(),
+        discount: descuento,
+        language,
+        folio,
+        items: filas.map((f) => ({ product_id: f.id, quantity: f.qty })),
+      });
+      toast.success(t('cotizador.correoEnviado', { email: destino }));
+      setCorreoAbierto(false);
+      setCorreo('');
+    } catch (e) {
+      const codigoHttp = e?.response?.status;
+      toast.error(codigoHttp === 429 ? t('cotizador.correoDemasiados') : t('cotizador.correoError'));
+    } finally {
+      setEnviando(false);
+    }
   };
 
   return (
@@ -217,76 +294,70 @@ export default function CotizadorDistribuidor({
           <div className="flex flex-col sm:flex-row gap-2 pt-1">
             <Input value={nombreCliente} onChange={(e) => setNombreCliente(e.target.value)}
               placeholder={t('cotizador.nombreCliente')} className="sm:flex-1" />
-            <Button onClick={() => setVistaPrevia(true)} className="gap-2" data-testid="cotizador-generar">
+            <Button onClick={abrirVistaPrevia} className="gap-2" data-testid="cotizador-generar">
               <FileText className="h-4 w-4" />{t('cotizador.generar')}
             </Button>
           </div>
         </Card>
       )}
 
-      {/* Vista previa — el documento que ve el CLIENTE (sin costos, sin topes, sin nada interno) */}
+      {/* Vista previa — el documento que ve el CLIENTE (sin costos, sin topes, sin nada interno).
+          Es la MISMA hoja que se imprime, pintada con la paleta del tema activo. */}
       {vistaPrevia && (
-        <div className="cotizacion-capa fixed inset-0 z-50 bg-black/50 flex items-end sm:items-center justify-center p-0 sm:p-6" onClick={() => setVistaPrevia(false)}>
-          <Card className="cotizacion-hoja w-full sm:max-w-md max-h-[90vh] overflow-y-auto rounded-t-2xl sm:rounded-2xl" onClick={(e) => e.stopPropagation()} data-testid="cotizador-preview">
-            <div id="cotizacion-imprimible" className="p-6 space-y-5">
-              <div className="text-center space-y-1 border-b border-border pb-4">
-                {/* El logo REAL del sitio: molécula + wordmark + "RESEARCH PEPTIDES". */}
-                <BrandMark className="h-14 mx-auto" />
-                <p className="text-sm font-medium pt-2">{t('cotizador.docTitulo')}</p>
-                {nombreCliente && <p className="text-sm text-muted-foreground">{t('cotizador.docPara')} {nombreCliente}</p>}
-                <p className="text-xs text-muted-foreground">{new Date().toLocaleDateString()}</p>
-              </div>
-              <div className="space-y-2">
-                {filas.map((f) => (
-                  <div key={f.id} className="flex justify-between text-sm gap-3">
-                    <span className="min-w-0 truncate">{f.qty} × {f.nombre}</span>
-                    <span className="tabular-nums shrink-0">{money(f.importe)}</span>
-                  </div>
-                ))}
-              </div>
-              <div className="border-t border-border pt-3 space-y-1 text-sm">
-                {ahorro > 0 && (
-                  <div className="flex justify-between text-muted-foreground">
-                    <span>{t('cotizador.docAhorro')}</span><span className="tabular-nums">−{money(ahorro)}</span>
-                  </div>
-                )}
-                <div className="flex justify-between font-heading font-semibold text-lg">
-                  <span>{t('cotizador.total')}</span><span className="tabular-nums">{money(total)}</span>
-                </div>
-              </div>
-              <p className="text-[10px] text-muted-foreground text-center leading-relaxed">
-                {t('cotizador.docLeyenda') /* RUO + vigencia de la cotización + código del distribuidor */}
-                {codigo && <> · {t('cotizador.docCodigo')} <b>{codigo}</b></>}
-              </p>
-            </div>
-            <div className="cotizacion-acciones flex gap-2 p-4 pt-0">
-              <Button className="flex-1 gap-2" onClick={compartir} data-testid="cotizador-whatsapp"><Share2 className="h-4 w-4" />{t('cotizador.compartir')}</Button>
-              <Button variant="outline" className="flex-1 gap-2" onClick={imprimir} data-testid="cotizador-imprimir"><Printer className="h-4 w-4" />{t('cotizador.imprimir')}</Button>
-            </div>
-          </Card>
+        <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-end sm:items-center justify-center p-0 sm:p-6 overflow-y-auto"
+          onClick={() => setVistaPrevia(false)} data-testid="cotizador-preview">
+          <div className="w-full sm:max-w-2xl my-auto" onClick={(e) => e.stopPropagation()}>
 
-          {/* Impresión: SOLO la hoja de la cotización. Se enciende con la marca
-              que pone `imprimir()` en el body, para no pelearse con el resumen
-              imprimible de la calculadora, que está en la misma pantalla. */}
-          <style>{`
-            @media print{
-              body.imprimiendo-cotizacion *{visibility:hidden !important}
-              body.imprimiendo-cotizacion #cotizacion-imprimible,
-              body.imprimiendo-cotizacion #cotizacion-imprimible *{visibility:visible !important}
-              body.imprimiendo-cotizacion #calc-print{display:none !important}
-              body.imprimiendo-cotizacion .cotizacion-acciones{display:none !important}
-              body.imprimiendo-cotizacion .cotizacion-capa{
-                position:absolute !important;inset:auto !important;left:0;top:0;
-                display:block !important;width:100%;padding:0 !important;background:none !important}
-              body.imprimiendo-cotizacion .cotizacion-hoja{
-                width:100% !important;max-width:none !important;max-height:none !important;
-                overflow:visible !important;border:0 !important;box-shadow:none !important;
-                border-radius:0 !important;background:#fff !important}
-              body.imprimiendo-cotizacion #cotizacion-imprimible{color:#111 !important;padding:32px !important}
-              /* En tema oscuro el logo va invertido a blanco: en papel sería invisible. */
-              body.imprimiendo-cotizacion #cotizacion-imprimible img{filter:none !important}
-            }
-          `}</style>
+            <div className="flex items-center justify-between px-4 sm:px-0 pb-2 pt-3 sm:pt-0">
+              <span className="text-xs uppercase tracking-widest text-white/70">{t('cotizador.vistaPrevia')}</span>
+              <button type="button" onClick={() => setVistaPrevia(false)}
+                className="text-white/70 hover:text-white transition-colors p-1" aria-label={t('common.close')}>
+                <X className="h-5 w-5" />
+              </button>
+            </div>
+
+            {/* La hoja. Sombra de papel y esquinas suaves: se lee como un documento. */}
+            <div className="rounded-t-xl sm:rounded-xl overflow-hidden shadow-2xl ring-1 ring-black/10 max-h-[70vh] overflow-y-auto bg-white dark:bg-[#111]"
+              // eslint-disable-next-line react/no-danger
+              dangerouslySetInnerHTML={{ __html: hojaEnPantalla }}
+            />
+
+            <div className="flex flex-col gap-2 p-4 sm:px-0 sm:pt-3 bg-card sm:bg-transparent rounded-b-xl sm:rounded-none">
+              <div className="flex gap-2">
+                <Button className="flex-1 gap-2" onClick={compartir} data-testid="cotizador-whatsapp">
+                  <Share2 className="h-4 w-4" /><span className="truncate">{t('cotizador.compartir')}</span>
+                </Button>
+                <Button variant="secondary" className="flex-1 gap-2" onClick={imprimir} data-testid="cotizador-imprimir">
+                  <Printer className="h-4 w-4" /><span className="truncate">{t('cotizador.imprimir')}</span>
+                </Button>
+              </div>
+              {!correoAbierto ? (
+                <Button variant="outline" className="w-full gap-2 bg-card"
+                  onClick={() => setCorreoAbierto(true)} data-testid="cotizador-correo-abrir">
+                  <Mail className="h-4 w-4" />{t('cotizador.enviarCorreo')}
+                </Button>
+              ) : (
+                <div className="rounded-xl border border-border bg-card p-3 space-y-2" data-testid="cotizador-correo-form">
+                  <label className="text-xs text-muted-foreground" htmlFor="cot-correo">
+                    {t('cotizador.correoPide')}
+                  </label>
+                  <div className="flex flex-col sm:flex-row gap-2">
+                    <Input id="cot-correo" type="email" inputMode="email" autoComplete="email"
+                      value={correo} onChange={(e) => setCorreo(e.target.value)}
+                      onKeyDown={(e) => { if (e.key === 'Enter' && !enviando) enviarCorreo(); }}
+                      placeholder="cliente@correo.com" className="sm:flex-1"
+                      data-testid="cotizador-correo-input" />
+                    <Button onClick={enviarCorreo} disabled={enviando} className="gap-2"
+                      data-testid="cotizador-correo-enviar">
+                      {enviando ? <Loader2 className="h-4 w-4 animate-spin" /> : <Mail className="h-4 w-4" />}
+                      {t('cotizador.enviar')}
+                    </Button>
+                  </div>
+                  <p className="text-[11px] text-muted-foreground leading-relaxed">{t('cotizador.correoNota')}</p>
+                </div>
+              )}
+            </div>
+          </div>
         </div>
       )}
     </div>
