@@ -1,3 +1,29 @@
+# 🔜 PRÓXIMA TAREA #1 — ADELGAZAR EL HOME, SOBRE TODO EN MÓVIL
+
+Orden de Christián (2026-07-31). Feedback de **María (22 años)**: *"la página tiene
+mucho ruido, mucha información y la gente no sabe dónde empezar; está bonita y
+elegante, pero tiene demasiada información."*
+
+**El dato que manda la decisión:** el 100% del gasto de publicidad va a Facebook e
+Instagram (Feed, Stories y Reels). Stories y Reels son prácticamente 100% móvil, así
+que **casi todo el que llega al sitio lo ve en un teléfono**. El home hay que
+diseñarlo para móvil primero, no adaptarlo después.
+
+Y el embudo lo confirma: **de 1,362 visitas solo 118 abrieron una ficha de producto
+(8.7%)** — la gente llega y no sabe a dónde ir. Ahí está la fuga, no en el checkout.
+
+**Qué hacer:** una sola cosa que hacer al abrir (un botón claro), menos bloques,
+menos texto, y lo demás abajo o escondido. Retatrutida se lleva el 58% de las vistas
+de producto: quizá merece estar de entrada. Medir el largo del home en móvil antes y
+después (el pie ya pesa 1,700px por su cuenta).
+
+⚠️ **HUECO DE MEDICIÓN:** el sitio NO registra el dispositivo del visitante. No
+podemos decir con nuestros propios datos qué porcentaje es móvil, tableta o
+computadora. Agregarlo al registro de eventos es barato y hay que hacerlo ANTES de
+rediseñar, para poder comprobar si el cambio sirvió.
+
+---
+
 # 🏷️ 2026-07-31 — EL PREFIJO MONICAF ES DE MARÍA, NO DE TODOS
 
 Christián lo aclaró la misma noche: la orden de privacidad de la mañana —«los clientes no
