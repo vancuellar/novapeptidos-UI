@@ -24,6 +24,21 @@
 3. Textos nuevos en es/en/pt · prompts de Codex (ROMPEDOR y AUDITORIA) al día
    con la regla deliberada del ?pedido= para que no lo reporten como falla.
 
+**También cerrado (30-jul noche 2, tanda 2):** video "Conviértete en
+Distribuidor" ESCONDIDO: fuera de /tutoriales público; ahora vive en
+**/invitacion** (página sin enlaces, fuera del sitemap y con Disallow en
+robots.txt — cualquiera CON el enlace la ve, y Christián lo reparte por
+WhatsApp/correo; en el panel del distribuidor se sigue listando para reclutar)
+· **tercer auditor de Codex: `./capturista.sh`** (PROMPT-CAPTURISTA.md,
+pricing-system) — verifica proveedor por proveedor que su lista fuente esté
+capturada completa y correcta en costo_lista (conteos, moneda, unidades,
+colisiones de llave, duplicados de lab); mismo mecanismo de conteos
+autoinyectados; al cierre de cada sesión ahora se actualizan LOS TRES prompts
+· 3 agentes Opus despachados en paralelo: doble cotizador de envíos + ROI real,
+política de envío gratis (mínima $2,500 + tope 5%, flat fee por decidir), y
+Chat IA de negocio (admin+distribuidores) — sus resultados se suman aquí cuando
+cierren.
+
 **También cerrado:** el crash de `x.py` con ofertas empatadas (`x.py rt 60`,
 `x.py klow 80` tronaban por sort de tuplas con dicts; ya ordena por precio) —
 era parte de la orden "respuestas de negocio". Pregunta de Christián contestada
