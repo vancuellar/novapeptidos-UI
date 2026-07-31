@@ -1,3 +1,78 @@
+# 🤝 HANDOFF — 2026-07-30 (noche 3) — ASESOR DE NEGOCIO (chat IA del panel)
+
+## ✅ EN VIVO Y VERIFICADO
+
+Un chat de IA **de negocio** dentro del panel, detrás de login, para **admin y
+distribuidores**. Es OTRO chat: el del sitio (`AIChatWidget` → `chat.exygenlabs.com`)
+le habla a un visitante anónimo y vende catálogo; éste le habla a quien ya entró y
+responde cotizaciones, comisiones y qué ofrecerle a un cliente.
+
+**Dónde se ve:**
+- Distribuidor: `/distribuidor?tab=asesor` — grupo **Mi Negocio**, junto al Cotizador.
+- Admin: `/admin?tab=asesor` — grupo **Negocio**, debajo de Ventas.
+
+**Piezas:**
+- `chat_negocio.py` (backend) — arma el contexto **según el rol**. Módulo puro
+  salvo la lectura de costos.
+- `POST /api/business/chat` y `GET /api/business/history/{sesion}` (server.py).
+- `ChatNegocio.js` (UI) — un solo componente para los dos tableros.
+- `test_chat_negocio.py` — **20 pruebas**. Backend total: **760/760 en verde**.
+- Auditoría UI: **93 bien, 0 fallas**, con dos comprobaciones nuevas en vivo.
+
+## ⛔ EL CANDADO — dónde vive y por qué ahí
+
+**Regla de oro (Christián, 2026-07-30):** costos, proveedores, márgenes y ROI son
+territorio **exclusivo del admin**.
+
+El candado **no es una frase en el prompt**: el contexto que recibe el modelo se
+**arma en el servidor** según el rol (`chat_negocio.armar_contexto`). A un
+distribuidor el costo no le llega **porque nunca entró al sobre**. Un modelo se
+convence; un `if` en el servidor no.
+
+Tres puertas, todas del lado del servidor:
+1. `get_current_distributor` — sin sesión **401**, cliente **403**.
+2. `deny_view_as` — el "ver como" del admin es **solo lectura**: **403** al preguntar.
+3. El historial se filtra por `user_id`: adivinar el id de sesión de otro devuelve vacío.
+
+**Cómo está probado.** El doble de `stream_reply` **devuelve el system prompt**, así
+que las pruebas leen exactamente lo que habría viajado a Gemini, y hacen un barrido
+de palabras completas sobre el contexto entero. Además hay una prueba que truena si
+`bloque_costos` **llega a llamarse** con un distribuidor, aunque el texto saliera
+limpio de casualidad.
+
+⚠️ **Por eso `CANDADO_DISTRIBUIDOR` está redactado sin usar las palabras "costo",
+"proveedor", "ROI" ni "margen"**: el barrido cubre el contexto entero,
+instrucciones incluidas. Exceptuar un pedazo obligaría a la prueba a saber dónde
+empieza y dónde acaba — la clase de excepción por la que un día se cuela un dato
+de verdad. Si alguien reescribe ese bloque con esas palabras, la prueba truena: es
+a propósito, no la apagues, redáctalo con otras.
+
+**Verificado en vivo con datos REALES de producción** (197 productos, 382 llaves de
+proveedor): el sobre del distribuidor sale limpio, el del admin sí trae costos y
+proveedores, y Gemini —con ese sobre— rechaza en una frase la pregunta de costos y
+sí calcula la comisión bien.
+
+## 🔋 CUANDO SE ACABA LA CUOTA
+
+Gemini está en **plan gratis: 20 consultas al día**, compartidas con el chat público.
+Al agotarse **no truena**: contesta *"se acabó la cuota del asistente por hoy…"* y
+sugiere avisar a Christián. Sin llave configurada, otro mensaje claro.
+
+**Decisión pendiente de Christián:** activar billing en Google AI Studio. Sin eso, el
+asesor se apaga solo cada día. No se activó a propósito (no se abren cuentas ni se
+prende cobro sin su visto bueno).
+
+## 🧭 SI TOCAS ESTO
+
+- Lo que el asesor sabe **se decide en `chat_negocio.py`**, nunca en `ChatNegocio.js`
+  (ese archivo se sirve entero en el navegador).
+- La tasa y los escalones salen de `pyramid.effective_rate` / `discount_tiers_de`, y
+  el tope por producto de `server.tope_de_descuento` — **las mismas funciones del
+  checkout y del cotizador**. Copiarlas a mano aquí haría que el asesor prometa lo
+  que la caja no respeta.
+
+---
+
 # 🤝 HANDOFF — 2026-07-30 (noche 2) — LÉELO PRIMERO
 
 ## ✅ HECHO el 30-jul noche 2 (EN VIVO, E2E completo en verde al cierre)
