@@ -5504,3 +5504,38 @@ P06=P01 Lisa, P16=P29 Mia, P22=P30 US Lab RT40-275, P27=P36 Cell Peptides. Sus n
 empiezan con «DUPLICADO de Pxx» y no tienen precios propios.
 
 **Compuertas:** motor **344/344** ✅.
+
+---
+
+## 🚚 EL FLETE DEL PROVEEDOR YA CUENTA PARA EL ROI — 2026-07-31
+
+Christián: **«tienes que considerar el costo que he pagado de envío para el ROI»** y, sobre
+cómo repartirlo, **«let's split the freight evenly»**. Regla oficial, ya escrita en
+FUENTE-DE-VERDAD y en `flete_proveedor.py` (motor, commit `ba6d256`):
+
+> **flete por caja = lo que cobra el proveedor de envío ÷ las cajas del pedido**, en partes
+> iguales. Con la compra real a Lucy del 31-jul (3 cajas, $75 de envío) son **$25 USD por
+> caja**.
+
+También se registró esa **compra real**: 3 cajas por **$490 USD** (Epithalon 50 mg $120,
+Tesamorelin 20 mg $240, NAD+ 1000 mg $55 + $75 de envío). Lucy ya cuenta como proveedor
+**verificado**. ⚠️ Y trae un dato feo: **cobró más caro que su propia lista en las tres**
+(100→120, 220→240, 44→55).
+
+### ⛔ Nada se aplicó, y hay DOS cosas esperando decisión de Christián
+
+1. **11 productos necesitan que suba el precio** para volver al piso de 5× con el flete
+   dentro. La lista con su precio propuesto sale de `python3 flete_proveedor.py` en el repo
+   del motor. Los dos que quedarían **arriba de Certified** son Kisspeptin-10 5 mg ($749 →
+   $819, Certified $760) y PT-141 10 mg ($829 → $859, Certified $840). Los más gordos son
+   HGH 36 iu ($1,548 → $2,149) y HGH 191AA 12 iu ($639 → $949).
+   *(Otros 16 se arreglan solos entregando menos comisión — el motor la baja de escalón —
+   así que NO hay que tocarles el precio.)*
+2. **35 de 39 proveedores nunca han dicho cuánto cobran de envío**, así que **110 de 191
+   productos se comparan sin flete**: el «más barato» está sesgado a favor del callado. El
+   peor caso es **Mia**, que hoy gana en 64 productos y jamás lo ha dicho. Hay que
+   preguntarles o asignarles un estimado.
+
+**Si suben esos 11 precios, el sitio sí se toca** (precios públicos). Hoy no: nada se movió.
+
+**Compuertas:** motor **346/346** ✅.
