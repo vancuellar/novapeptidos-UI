@@ -9,6 +9,7 @@ import api, { formatMXN } from '@/lib/api';
 import { useLanguage } from '@/context/LanguageContext';
 import AvisoSobrePedido from '@/components/AvisoSobrePedido';
 import HojaDeGuia from '@/components/HojaDeGuia';
+import BotonImprimirGuia from '@/components/BotonImprimirGuia';
 
 /**
  * LA FICHA DE UN PEDIDO — qué compró y qué pasó con su dinero.
@@ -139,6 +140,18 @@ const FichaPedido = ({ orderNumber, open, onClose, admin = false }) => {
                 <Truck className="h-4 w-4 mr-1.5" />
                 {pedido.tracking_number ? t('guia.edit') : t('guia.add')}
               </Button>
+              {/* IMPRIMIR LA GUÍA — sin salir a la página de la paquetería (Christián,
+                  2026-07-31: «quiero manejar TODO desde nuestra app»). Sale sólo cuando
+                  hay etiqueta que traer: una guía tecleada a mano no tiene PDF nuestro.
+                  Cada quien pide por SU ruta; el candado lo pone el servidor. */}
+              {pedido.tiene_etiqueta && (
+                <div className="flex items-center gap-2 mt-2">
+                  <BotonImprimirGuia testid="ficha-pedido-imprimir" className="flex-1"
+                    ruta={admin
+                      ? `/admin/orders/${pedido.order_number}/etiqueta`
+                      : `/distributor/orders/${pedido.order_number}/etiqueta`} />
+                </div>
+              )}
             </div>
           </div>
         )}

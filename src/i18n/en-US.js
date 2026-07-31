@@ -74,6 +74,13 @@ const enUS = {
   'guia.error': 'The tracking could not be saved.',
   'guia.needNumber': 'Type the tracking number.',
   'guia.needCarrier': 'Pick the carrier.',
+  // IMPRIMIR LA GUÍA desde el panel (Christián, 2026-07-31).
+  'etiqueta.print': 'Print Label',
+  'etiqueta.generating': 'Generating…',
+  'etiqueta.open': 'Open PDF',
+  'etiqueta.opened': 'The label opened in another tab: print or save it from there.',
+  'etiqueta.notReady': 'The carrier is still preparing the PDF. Try again in a few seconds.',
+  'etiqueta.error': 'The label could not be retrieved.',
   'admin.sales.noData': 'No sales to show yet.',
   'admin.sales.avgTicket': 'Average order',
   'admin.sales.monthly': 'Revenue by month',

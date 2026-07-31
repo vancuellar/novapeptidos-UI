@@ -25,6 +25,8 @@ import FichaCliente from '@/components/FichaCliente';
 import AdminAnnouncements from '@/components/AdminAnnouncements';
 import NotificationsFeed from '@/components/NotificationsFeed';
 import HojaDeGuia from '@/components/HojaDeGuia';
+import BotonImprimirGuia from '@/components/BotonImprimirGuia';
+import { hayEtiqueta } from '@/lib/etiquetaGuia';
 import ChatNegocio from '@/components/ChatNegocio';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Checkbox } from '@/components/ui/checkbox';
@@ -1850,12 +1852,14 @@ const Admin = () => {
                   <Button size="sm" onClick={() => { const o = orderOpen; setOrderOpen(null); openShipping(o); }} data-testid="admin-order-ship">
                     <Truck className="h-4 w-4 mr-1.5" /> {orderOpen.tracking_number ? t('guia.edit') : t('guia.add')}
                   </Button>
-                  {orderOpen.label_url && (
-                    <Button variant="outline" size="sm" asChild data-testid="admin-order-label">
-                      <a href={orderOpen.label_url} target="_blank" rel="noreferrer">
-                        <Truck className="h-4 w-4 mr-1.5" /> {t('admin.shipping.label')}
-                      </a>
-                    </Button>
+                  {/* IMPRIMIR LA GUÍA, no «abrir la página de la paquetería»
+                      (Christián, 2026-07-31). Era un enlace crudo al `label_url`, que
+                      es una URL FIRMADA y caduca: el día que caducaba, el botón se veía
+                      igual de bien y no traía nada. Ahora el PDF lo sirve la casa y se
+                      rescata solo si hace falta. Ver components/BotonImprimirGuia.js. */}
+                  {hayEtiqueta(orderOpen) && (
+                    <BotonImprimirGuia testid="admin-order-label"
+                      ruta={`/admin/orders/${orderOpen.order_number}/etiqueta`} />
                   )}
                   {orderOpen.spei_receipt_at && (
                     <Button variant="outline" size="sm" onClick={() => openReceipt(orderOpen.id)}>

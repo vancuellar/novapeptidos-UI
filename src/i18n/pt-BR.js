@@ -69,6 +69,13 @@ const ptBR = {
   'guia.error': 'Não foi possível salvar o rastreio.',
   'guia.needNumber': 'Digite o número do rastreio.',
   'guia.needCarrier': 'Escolha a transportadora.',
+  // IMPRIMIR LA GUÍA desde el panel (Christián, 2026-07-31).
+  'etiqueta.print': 'Imprimir Etiqueta',
+  'etiqueta.generating': 'Gerando…',
+  'etiqueta.open': 'Abrir PDF',
+  'etiqueta.opened': 'A etiqueta abriu em outra aba: de lá você pode imprimir ou salvar.',
+  'etiqueta.notReady': 'A transportadora ainda está preparando o PDF. Tente em alguns segundos.',
+  'etiqueta.error': 'Não foi possível trazer a etiqueta.',
   'admin.sales.noData': 'Ainda não há vendas para mostrar.',
   'admin.sales.avgTicket': 'Ticket médio',
   'admin.sales.monthly': 'Receita por mês',

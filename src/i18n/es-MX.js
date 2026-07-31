@@ -1567,6 +1567,14 @@ const esMX = {
   'guia.error': 'No se pudo guardar la guía.',
   'guia.needNumber': 'Escribe el número de guía.',
   'guia.needCarrier': 'Elige la paquetería.',
+  // IMPRIMIR LA GUÍA desde el panel, sin salir a la página de la paquetería
+  // (Christián, 2026-07-31: «quiero manejar TODO desde nuestra app»).
+  'etiqueta.print': 'Imprimir Guía',
+  'etiqueta.generating': 'Generando…',
+  'etiqueta.open': 'Abrir PDF',
+  'etiqueta.opened': 'La guía se abrió en otra pestaña: desde ahí puedes imprimirla o guardarla.',
+  'etiqueta.notReady': 'La paquetería todavía está preparando el PDF. Inténtalo en unos segundos.',
+  'etiqueta.error': 'No se pudo traer la guía.',
   'admin.sales.noData': 'Aun no hay ventas que graficar',
   'admin.sales.avgTicket': 'Ticket promedio',
   'admin.sales.monthly': 'Ingresos por mes',

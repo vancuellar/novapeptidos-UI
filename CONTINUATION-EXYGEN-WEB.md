@@ -1,3 +1,67 @@
+# 🖨️ 2026-07-31 — IMPRIMIR LA GUÍA DESDE EL PANEL (admin y distribuidor)
+
+Orden de Christián: «¿Puedes hacer que recibamos la guía para imprimir en nuestro
+panel de distribuidor o admin panel? Recuerda que quiero manejar **TODO** desde
+nuestra app». La etiqueta de Brenda (EX-20260730-5930, FedEx 875164874865) ya se
+imprime de un botón.
+
+## Dónde está el botón
+
+| Quién | Cómo llegar | Botón |
+|---|---|---|
+| Admin | `/admin` → Pedidos → abrir el pedido | **Imprimir Guía** (junto a «Poner Guía») |
+| Admin | `/admin` → cualquier ficha de pedido (campanita, ficha del cliente, listas) | **Imprimir Guía** |
+| Distribuidor | `/distribuidor` → Pedidos → abrir el pedido | **Imprimir Guía**, sólo en SUS pedidos |
+
+Sale sólo cuando hay etiqueta que traer (`tiene_etiqueta`): una guía **tecleada a
+mano** no tiene PDF nuestro, y ofrecer un botón que no puede cumplir es peor que no
+ofrecerlo.
+
+## Qué pasa al picarlo
+
+1. Se le pide el PDF a **nuestro** servidor, con sesión (`/…/orders/{numero}/etiqueta`).
+   La liga del proveedor **nunca** viaja al navegador del distribuidor.
+2. Se abre el diálogo de impresión, en un iframe limpio — el mismo truco de la hoja
+   de cotización. Si el navegador no deja (Safari con ciertos PDF), se abre en pestaña
+   nueva y avisa. Y queda un **Abrir PDF** para guardarla o mandarla por WhatsApp.
+3. **Si el PDF todavía no existe** (la paquetería publica el papel unos segundos
+   después de vender la guía): el botón dice **«Generando…»** y reintenta solo, tres
+   veces cada 4 segundos. Nadie tiene que saber que eso pasa.
+
+## Las tres cosas que estaban rotas y ya no
+
+- **La liga firmada caduca.** Era un `<a href={label_url}>`: el día que caducaba, el
+  botón se veía igual de bien y no traía nada. Ahora el servidor baja el PDF,
+  comprueba que **de verdad sea un PDF** (una liga vencida contesta 200 con HTML de
+  error) y si no, lo rescata por número de rastreo y guarda la liga nueva.
+- **El distribuidor no podía imprimir nada**: `label_url` sólo viajaba al admin, así
+  que cada paquete que despachaba María tenía que pasar por Christián.
+- **Dependía de la plataforma.** Ahora todo pasa por `paqueterias.modulo(...)`: el
+  pedido de Brenda se despachó con **Envíos Internacionales** y se le pregunta a ÉSE,
+  no a Skydropx.
+
+## Dónde vive
+
+| Qué | Archivo |
+|---|---|
+| Rutas + rescate + servir el PDF | `novapeptidos-RBAC/etiquetas.py` |
+| El sí/no que enciende el botón | `server.py` → `_detalle_de_pedido` → `tiene_etiqueta` |
+| El botón | `src/components/BotonImprimirGuia.js` |
+| Bajar / imprimir / plan B | `src/lib/etiquetaGuia.js` |
+| Pruebas (17) | `test_etiquetas.py` |
+
+⛔ **El candado vive en el servidor.** `test_etiquetas.py` empieza por la prueba que no
+puede fallar nunca: un distribuidor **no** saca la etiqueta de un pedido ajeno (403).
+Una etiqueta trae impreso el nombre y el domicilio COMPLETO del cliente de otro, y
+esconder el botón no sirve: el número de pedido ajeno se teclea en la barra de
+direcciones. Comprobado en vivo: 403 en el ajeno, 401 sin sesión, 200 con el suyo.
+
+**Verificado en vivo (2026-07-31):** admin y María bajan el MISMO PDF de 108,722 bytes
+del pedido de Brenda; el papel dice `TRK# 8751 6487 4865`, STANDARD OVERNIGHT, San
+Juan del Río QRO 76807.
+
+---
+
 # 📹 CITA HOY VIERNES 2026-07-31, 4:00 PM (hora de Cancún) — VIDEO SEMANAL DE ADS
 Orden de Christián: video de 1-2 min explicando la semana de publicidad de Meta
 (gasto, clics, WhatsApps, compras del píxel/CAPI, embudo, mejor anuncio y UNA
