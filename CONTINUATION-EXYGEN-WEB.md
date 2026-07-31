@@ -1,3 +1,72 @@
+# 🤝 CIERRE — 2026-07-31 (noche) — LÉELO PRIMERO
+
+## 🔴 REGLA NUEVA E INNEGOCIABLE: NO SE DESPLIEGA SIN AVISARLE A CHRISTIÁN
+Hoy el sitio se cayó varias veces por NUESTROS despliegues (diez en tres horas,
+desde varias sesiones a la vez). Su exigencia: **99.99% en pie = 4.5 minutos de
+caída AL MES**. Está escrito en el `CLAUDE.md` del repo UI: avisar antes, los
+cambios salen JUNTOS, uno a la vez, verificado antes y después con marcha atrás.
+La causa NUNCA fue el servidor: fue publicar builds rotos. Ya hay candado de
+imports (`.githooks/pre-commit`), `desplegar.sh` construye desde copia limpia y
+verifica con navegador real, y `vigilante.py` mide la disponibilidad de verdad.
+
+## 🔜 PRÓXIMA TAREA #1 — DESCRIPCIONES EN CRISTIANO (en curso)
+Christián: *"Esto solo lo entiende un puto químico. Imagínate que se lo estás
+explicando a una señora de 65 años."* Ejemplo real: 5-Amino-1MQ decía "Inhibidor
+de NNMT explorado en adipocitos". Se están reescribiendo las descripciones CORTA
+y LARGA de LOS ~191 productos en los 3 idiomas. **Él quiere ver 10 ejemplos
+antes/después ANTES de publicar.**
+
+## 🔜 PRÓXIMA TAREA #2 — ADELGAZAR EL HOME EN MÓVIL
+Feedback de María (22): *"mucho ruido, mucha información, la gente no sabe dónde
+empezar"*. Casi TODO el tráfico es móvil (100% del gasto va a FB/IG Feed, Stories
+y Reels). El embudo lo confirma: **de 1,362 visitas solo 118 abrieron una ficha
+(8.7%)**. Hay maquetas en camino con 3 variantes del botón del hero (Catálogo vs
+**Calculadora** vs **Asesor de Péptidos** — idea de Christián). ⚠️ El sitio NO
+registra el dispositivo del visitante: hay que agregarlo para medir si sirvió.
+
+## ✅ CERRADO HOY (además de lo del handoff anterior)
+- **NAD+ corregido y EN VIVO**: 25/50/50 mg a 2×/2×/3× semana (antes daba 210
+  mg/semana al principiante, más del doble que el nivel "típico"); vial de 500 mg
+  ahora con **5 mL** = 100 mg/mL, o sea los miligramos SON las rayitas. Cero
+  caída medida (0 fallas en 378 sondeos).
+- **Base de dosis de Codex**: 96 compuestos, 194 presentaciones, 240 fuentes con
+  URL calificadas por solidez (73% con respaldo A/B). En
+  `pricing-system.nosync/datos/dosis_referencia.csv`. Contra la calculadora:
+  🔴 5 · 🟡 51 · ✅ 30 · ⚪ 10.
+- Barrido grande: backend 1088/1088 · auditoría 86/0 · **E2E cripto 21/21 y
+  tarjeta 15/15** · 68 páginas y 160 enlaces revisados sin un solo roto.
+- Adipotida a la venta (2/5/10 mg) con identidad química verificada (CAS
+  859216-15-2; "FTTP" era errata de FTPP copiada por todo el mercado) + el
+  procedimiento `alta_producto.py` que truena si falta un campo.
+- Clientes invitados con ficha e historial completo (Brenda y Aidee eran
+  invisibles pese a $7,657 cobrados).
+- Códigos: MONICAF solo para María; ALANIS/JAVIER volvieron a los suyos.
+
+## ⏳ DECISIONES PENDIENTES DE CHRISTIÁN
+1. 🔴 **El domicilio del cliente sale con solo el número de pedido**, sin
+   contraseña (`GET /api/orders/{num}` devuelve nombre, correo, teléfono y
+   dirección; los números son adivinables). Opciones: quitar los datos de ahí
+   (recomendado), pedir el correo como segunda llave, o dejarlo.
+2. **8 dosis que piden MÁS de lo que trae el vial entero** (L-Carnitine pide 100×
+   su vial; CJC-1295 con DAC, TB-500, Cagrilintida, Mazdutida, Thymalin).
+3. **Las 5 dosis 🔴 de la base de Codex**: ACTH 1-39 (8× el techo del estudio),
+   Epithalon (10 mg vs 0.5 mg publicado), Thymalin (200 rayitas, no cabe en la
+   jeringa), PNC-27, PE-22-28. Más 4 productos con dosis SIN fuente.
+4. **23 costos de la maestra desfasados** por los proveedores nuevos. Refrescarlos
+   dispara re-precios en cascada con proveedores NO comprobados. Recomendación:
+   esperar a una compra real.
+5. **Prueba a Chuangyan** (le gana a todos en 57 tamaños): sugerido Cagrisema
+   10mg + LIPO-C + GHK-Cu o BPC-157.
+6. Gemini sigue en plan gratis (20/día). Prender billing o pegar llave de OpenAI.
+7. Servidor de JADA: hace falta host, usuario y forma de acceso. Ojo: NO habría
+   evitado las caídas de hoy (esas fueron por builds rotos), sirve para que la
+   tienda siga si la EC2 muere.
+8. Skydropx sin saldo ni verificación (Envíos Internacionales sí compra).
+9. **NADA de WhatsApp hasta nuevo aviso** — hay borradores listos para Chuangyan,
+   Jess, Bjvvb, Peptideals, DT y los 2 ingleses.
+
+---
+
 # 🛡️ 2026-07-31 — EL BOTÓN NO ESTABA ROTO: LA PUERTA NO CABÍA EN EL TELÉFONO
 
 Christián reportó *"el botón de 'Empieza aquí' en el hero está roto"*. El botón
