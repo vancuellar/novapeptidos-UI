@@ -9,10 +9,33 @@ que lo dispara solo; si esa sesión ya murió, LA SESIÓN DE GUARDIA LO HACE A L
 4 PM. En cristiano — es para Christián. (Dato cultural: se despide con
 "Buenooooo", como los yucatecos al teléfono.)
 
-# 🤝 HANDOFF — 2026-07-31 — LAS DOS FALLAS DE CODEX ERAN RUIDO (LAS DOS)
+# 🤝 HANDOFF — 2026-07-31 — EL REGALO TOPADO EN 40%, Y DOS FALLAS DE CODEX QUE ERAN RUIDO
 
-**Compuertas: backend 844/844 ✅ · auditoría 85/0 ✅.** Sin cambio de código de producción:
-sólo pruebas nuevas y notas. No hizo falta desplegar.
+**Compuertas: backend 848/848 ✅ · auditoría 85/0 ✅.** Desplegado `0869ad3` (azul/verde).
+
+## ⛔ EL REGALO SE TOPA EN 40% (orden de Christián)
+
+El cupón **GIFT** del admin se creaba con `min(0.50, …)`: era **la última puerta arriba del
+techo de la casa**. La venta directa se capó el 29-jul y el checkout público nunca pasó de
+40%, pero el regalo sí — medio producto regalado.
+
+Ahora hay **una sola definición** (`server.tasa_de_cupon`) y se aplica en las **dos puntas**:
+al crear el cupón y **al cobrarlo**. Por eso los GIFT que ya andaban sueltos con 50% no se
+cancelan: el cliente conserva su regalo, sólo que vale 40%. El validador público
+(`/api/discount-code/…`) y la ficha del cliente devuelven la MISMA cuenta que cobra la caja,
+para que nadie vea en pantalla un descuento que la caja no da. Encima sigue mandando el tope
+de cada producto y los insumos siguen fuera.
+
+⚠️ **No pude enumerar los cupones vivos** (la consulta a Mongo en el EC2 la frenó el sistema
+de permisos). No hace falta para que funcione — el tope al cobrar los cubre a todos — pero
+si quieres la lista de quién tenía 50%, hay que correrla con permiso.
+
+⚠️ **Queda UNA puerta arriba del 40% a propósito**: `personal_discount_rate` (el trato
+especial permanente por cuenta, el caso de Paz Cambray) admite hasta 50%. Es otro mecanismo
+y Christián no lo mencionó, así que **no lo toqué**. Si también debe bajar a 40%, es un
+cambio de una línea.
+
+## Las dos fallas que reportó Codex: RUIDO las dos
 
 Codex reportó dos fallas del backend. **Las dos ya estaban cerradas** y se verificaron
 adversarialmente antes de tocar nada:

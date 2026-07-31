@@ -87,7 +87,10 @@ const FichaCliente = ({ clientId, open, onClose }) => {
   const mandarCupon = async () => {
     try {
       const r = await api.post(`/admin/customers/${cliente.id}/coupon`, {
-        discount_rate: Math.max(5, Math.min(50, Number(cuponForm.pct) || 10)) / 100,
+        // ⛔ EL REGALO SE TOPA EN 40% (Christián, 2026-07-31), igual que la venta directa
+        // y el checkout. El servidor lo vuelve a topar — esto es sólo para que el admin
+        // no teclee un 50 y vea salir un 40 sin entender por qué.
+        discount_rate: Math.max(5, Math.min(40, Number(cuponForm.pct) || 10)) / 100,
         expires_days: Math.max(1, Number(cuponForm.days) || 30),
         note: cuponForm.note,
       });
@@ -301,7 +304,7 @@ const FichaCliente = ({ clientId, open, onClose }) => {
                   <div className="rounded-xl border border-border p-3 space-y-2" data-testid="ficha-cliente-cupon">
                     <div className="text-xs font-semibold">{t('admin.ficha.sendCoupon')}</div>
                     <div className="flex items-center gap-2 flex-wrap">
-                      <Input type="number" min="5" max="50" className="h-8 w-20" value={cuponForm.pct}
+                      <Input type="number" min="5" max="40" className="h-8 w-20" value={cuponForm.pct}
                         onChange={(e) => setCuponForm((f) => ({ ...f, pct: e.target.value }))} />
                       <span className="text-xs text-muted-foreground">% ·</span>
                       <Input type="number" min="1" className="h-8 w-20" value={cuponForm.days}
