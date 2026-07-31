@@ -542,8 +542,8 @@ const Advisor = () => {
 
           <p className="text-xs text-muted-foreground">
             Este plan lo arma nuestro motor de reglas con los datos que diste y los precios reales del catálogo.
-            Es orientativo y educativo: los productos son exclusivamente para investigación (RUO), no son para consumo
-            humano ni animal, y nada de esto sustituye la opinión de un profesional de la salud.
+            Es orientativo y educativo: los productos son exclusivamente para investigación (RUO), en laboratorio
+            y ensayos in vitro, y nada de esto sustituye la opinión de un profesional de la salud.
           </p>
         </div>
       )}
