@@ -1,3 +1,85 @@
+# 📦 2026-07-31 — EL RASTREO VIVE EN NUESTRA PÁGINA (el iframe era imposible)
+
+Orden de Christián: «Quiero que el cliente rastree su pedido DENTRO de
+exygenlabs.com, sin mandarlo a la página de FedEx. Quiero que vivan en nuestra
+página el mayor tiempo posible.» Su propuesta fue un **iframe**.
+
+## ⛔ Por qué el iframe NO se podía (y no era cosa de programarlo mejor)
+
+Las paqueterías lo prohíben **desde su propio servidor**, y el navegador obedece.
+Comprobado con `curl -I` el 2026-07-31:
+
+| Sitio | Cabecera que devuelve |
+|---|---|
+| `https://www.fedex.com/wtrk/track/?trknbr=875164874865` | `x-frame-options: SAMEORIGIN` · `content-security-policy: frame-ancestors 'self'` |
+| `https://rastreo3.estafeta.com/RastreoWebInternet/consultaEnvio.do` | `x-frame-options: SAMEORIGIN` |
+
+`frame-ancestors 'self'` quiere decir literalmente «sólo fedex.com puede
+enmarcarme». Dentro de exygenlabs.com ese marco sale **EN BLANCO** — no con un
+error entendible: en blanco. Es **peor** que mandar al cliente a FedEx, porque
+parece que nuestra página está rota.
+
+(De paso: FedEx además responde `503` de Akamai a cualquier petición que no venga
+de un navegador de verdad, así que ni siquiera se podía "raspar" la página.)
+
+## Cómo quedó: página propia alimentada por la API
+
+El servidor le pide los eventos a la API de la paquetería y **los pintamos
+nosotros**, con la marca de la casa. El cliente no sale del sitio.
+
+- **Backend** — `rastreo.py` (nuevo): `GET /api/orders/{numero}/rastreo`, pública
+  por número de pedido igual que la ficha. Y `rastrear()` en `skydropx.py` y en
+  `enviosinternacionales.py`, contra `GET /shipments/tracking` (está en su
+  OpenAPI). Como Envíos Internacionales es white-label de Skydropx, la traducción
+  del JSON vive en un solo lugar (`skydropx._eventos_del_json`).
+- **Frontend** — `src/components/RastreoEnvio.js` (nuevo), montado en
+  `src/pages/OrderConfirmation.js`, que es la página pública `/pedido/{numero}`.
+  Línea de tiempo **vertical** de cuatro pasos: recibido → en camino → en reparto
+  → entregado, con historial (fecha y lugar) y entrega estimada. Vertical a
+  propósito: casi todos la abren desde el teléfono.
+- Textos en los **tres idiomas** (`tracking.*` en es-MX, en-US, pt-BR).
+
+## Los tres candados
+
+1. **La lista es BLANCA, no negra.** `ficha_publica()` arma la respuesta campo por
+   campo. Así, el día que alguien agregue un dato interno al pedido, NO se cuela
+   solo: para que salga hay que escribirlo a mano. `label_provider`,
+   `shipping_cost` y el distribuidor que refirió el pedido no están. Hay una
+   prueba que lee el sobre completo como texto plano y truena si se asoman.
+2. **Caché de 5 minutos.** El tope de las paqueterías es de 2 peticiones por
+   segundo **por cuenta**, y lo comparte la compra de guías — que es lo que sí
+   cuesta dinero. Sin caché, una pestaña recargando deja sin cupo al despacho.
+   Mil recargas del mismo pedido = **una** sola llamada. El freno de `ritmo.py`
+   sigue debajo como última red.
+3. **La paquetería caída NO tumba la página.** El cliente ya pagó: ve su pedido
+   aunque FedEx tenga un mal día. Sin eventos no es error — es lo normal las
+   primeras horas, y se pinta el primer paso prendido, no una pantalla vacía.
+
+Dos detalles que costaría caro no cuidar: la barra **nunca retrocede** (gana el
+paso más avanzado, no el último evento — los carriers mandan avisos
+administrativos *después* de entregar), y **«en sucursal» no es «entregado»**
+(`delivered_to_branch` es un paquete esperando a que lo recojan; pintarlo como
+entregado haría que alguien deje de ir por él).
+
+La liga al sitio de la paquetería **no se esconde**, pero deja de ser la
+protagonista: va hasta abajo y chiquita.
+
+## Probado con el pedido real de Brenda
+
+`EX-20260730-5930` · guía FedEx `875164874865`, comprada con Envíos
+Internacionales. 17 pruebas nuevas en `test_rastreo.py`; **966 en total, cero
+fallas**.
+
+## ⚠️ PENDIENTE — el correo todavía manda a FedEx
+
+El correo de envío (`emails.py`) sigue apuntando el botón al rastreo de FedEx.
+Debe apuntar a `https://exygenlabs.com/pedido/{numero}`, que es nuestra página
+con el rastreo dentro. **No se tocó a propósito**: otro agente tenía `emails.py`
+en la mano ese mismo día (consolidación de correos + compra automática de guía).
+Es un cambio de una línea; hay que pasárselo a quien tenga ese archivo.
+
+---
+
 # ⚖️ 2026-07-31 — FUERA LA FRASE DE "CONSUMO HUMANO NI ANIMAL"
 
 Orden de Christián: «Me llegan muchos reclamos por esa frase. Quitemos eso y
