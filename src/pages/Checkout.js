@@ -38,6 +38,9 @@ const Checkout = () => {
     api.get('/stock').then((r) => setStockMap(r.data || null)).catch(() => setStockMap(null));
   }, []);
   const sobrePedido = desgloseSobrePedido(items, stockMap);
+  // Qué renglones van sobre pedido, para la nota chiquita debajo de CADA uno en el
+  // resumen del pedido (ya no el bloque grande de "dos entregas").
+  const sobrePedidoIds = new Set(sobrePedido.map((l) => l.product_id));
   const navigate = useNavigate();
   const [payment, setPayment] = useState('spei');
   const [submitting, setSubmitting] = useState(false);
@@ -496,8 +499,7 @@ const Checkout = () => {
         </div>
 
         <div className="lg:col-span-4">
-          <AvisoSobrePedido lineas={sobrePedido} testid="checkout-aviso-sobre-pedido" />
-          <Card className={`p-5 sticky top-32${sobrePedido.length ? ' mt-4' : ''}`} data-testid="checkout-order-summary">
+          <Card className="p-5 sticky top-32" data-testid="checkout-order-summary">
             <button type="button" onClick={() => setSummaryOpen((v) => !v)} className="w-full flex items-center justify-between mb-4" data-testid="checkout-summary-toggle">
               <h3 className="font-heading font-semibold">{t('common.items', { count: items.length })}</h3>
               <span className="inline-flex items-center gap-1 text-xs text-[hsl(var(--primary))] font-medium">{summaryOpen ? t('checkout.hideDetail') : t('checkout.viewDetail')} <ChevronDown className={`h-3.5 w-3.5 transition-transform ${summaryOpen ? 'rotate-180' : ''}`} /></span>
@@ -508,7 +510,13 @@ const Checkout = () => {
                   {items.map((i) => (
                     <div key={i.product_id} className="flex gap-3 items-center text-sm">
                       <img src={i.image_url || null} alt={i.name} className="h-12 w-12 rounded-md object-cover border border-border" />
-                      <div className="flex-1 min-w-0"><div className="line-clamp-1">{i.name}</div><div className="text-xs text-muted-foreground">x{i.quantity}</div></div>
+                      <div className="flex-1 min-w-0">
+                        <div className="line-clamp-1">{i.name}</div>
+                        <div className="text-xs text-muted-foreground">x{i.quantity}</div>
+                        {sobrePedidoIds.has(i.product_id) && (
+                          <AvisoSobrePedido testid="checkout-item-sobre-pedido" />
+                        )}
+                      </div>
                       <div>{formatMXN(i.price * i.quantity)}</div>
                     </div>
                   ))}

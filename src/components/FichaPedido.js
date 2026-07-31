@@ -68,27 +68,31 @@ const FichaPedido = ({ orderNumber, open, onClose, admin = false }) => {
 
         {pedido && (
           <div className="space-y-4 text-sm">
-            {pedido.backorder_items?.length > 0 && (
-              <AvisoSobrePedido lineas={pedido.backorder_items} testid="ficha-pedido-sobre-pedido" />
-            )}
-
             <div>
               <div className="text-xs font-semibold mb-1.5">{t('order.detail.what')}</div>
               <div className="rounded-lg border border-border divide-y divide-border">
-                {pedido.items.map((it, i) => (
-                  <div key={i} className="flex items-center justify-between gap-3 p-2.5">
-                    <div className="min-w-0">
-                      <div className="truncate">{it.name}</div>
-                      <div className="text-xs text-muted-foreground">
-                        {it.presentation} · {formatMXN(it.unit_price)} c/u
+                {/* Esta ficha no trae el id de producto por renglón, solo el nombre — se
+                    empareja por nombre para la nota chiquita (ya no el bloque grande de
+                    "dos entregas"). Es lo mismo que ve el cliente, aquí para consulta. */}
+                {pedido.items.map((it, i) => {
+                  const sobrePedido = (pedido.backorder_items || []).some(
+                    (b) => (b.name || '').trim().toLowerCase() === (it.name || '').trim().toLowerCase());
+                  return (
+                    <div key={i} className="flex items-center justify-between gap-3 p-2.5">
+                      <div className="min-w-0">
+                        <div className="truncate">{it.name}</div>
+                        <div className="text-xs text-muted-foreground">
+                          {it.presentation} · {formatMXN(it.unit_price)} c/u
+                        </div>
+                        {sobrePedido && <AvisoSobrePedido testid="ficha-pedido-item-sobre-pedido" />}
+                      </div>
+                      <div className="shrink-0 text-right">
+                        <div className="font-semibold">×{it.quantity}</div>
+                        <div className="text-xs text-muted-foreground">{formatMXN(it.line_total)}</div>
                       </div>
                     </div>
-                    <div className="shrink-0 text-right">
-                      <div className="font-semibold">×{it.quantity}</div>
-                      <div className="text-xs text-muted-foreground">{formatMXN(it.line_total)}</div>
-                    </div>
-                  </div>
-                ))}
+                  );
+                })}
               </div>
             </div>
 

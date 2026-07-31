@@ -323,12 +323,7 @@ const enUS = {
 
   'product.inHandStock': 'In stock — ships immediately ({{stock}} available)',
   'product.oneWeekShip': 'Available — ships in ~1 week',
-  'backorder.title': 'Your order arrives in two deliveries',
-  'backorder.intro': 'What we have in stock ships right away. The rest we order for you and it arrives later, with no extra shipping cost.',
-  'backorder.line': '{{name}}: {{now}} of {{asked}} ship now, {{later}} on backorder.',
-  'backorder.lineAll': '{{name}}: all {{later}} on backorder.',
-  'backorder.now': 'Ships now: arrives in 2 to 5 business days.',
-  'backorder.later': 'On backorder: arrives about a week later.',
+  'backorder.itemNote': "Ships from the USA — takes a little longer. We'll keep you posted.",
   'backorder.badge': 'On backorder — arrives ~1 week later',
   'backorder.cardNote': 'On backorder (~1 week)',
   'admin.stockTab': 'Inventory',

@@ -243,14 +243,10 @@ const esMX = {
   'product.inHandStock': 'En stock — entrega inmediata ({{stock}} disponibles)',
   'product.oneWeekShip': 'Disponible — envío en ~1 semana',
   // ENVÍO PARTIDO (Christián, 2026-07-30): ninguna venta se bloquea por inventario.
-  // Lo que hay sale ya; lo demás se manda pedir y llega ~1 semana después. El cliente
-  // lo ve ANTES de pagar — en el carrito, en el checkout y en la confirmación.
-  'backorder.title': 'Tu pedido llega en dos entregas',
-  'backorder.intro': 'Lo que tenemos listo sale de inmediato. Lo demás lo mandamos pedir y te llega después, sin que pagues envío extra.',
-  'backorder.line': '{{name}}: {{now}} de {{asked}} salen ya, {{later}} sobre pedido.',
-  'backorder.lineAll': '{{name}}: las {{later}} van sobre pedido.',
-  'backorder.now': 'Sale ya: llega en 2 a 5 días hábiles.',
-  'backorder.later': 'Sobre pedido: llega alrededor de una semana después.',
+  // Lo que hay sale ya; lo demás se manda pedir. Ya NO se anuncia como "dos entregas"
+  // ni con plazos duros (Christián, 2026-07-30): una nota chiquita bajo CADA producto
+  // sobre pedido, en el carrito, el checkout y la confirmación.
+  'backorder.itemNote': 'Se surte desde EUA: tarda un poco más en llegar. Te mantendremos al tanto.',
   'backorder.badge': 'Sobre pedido — llega ~1 semana después',
   'backorder.cardNote': 'Sobre pedido (~1 semana)',
   'admin.stockTab': 'Inventario',

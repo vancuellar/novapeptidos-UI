@@ -66,6 +66,9 @@ const Cart = () => {
 
   const hasBac = items.some(isBac);
   const bacPlan = buildBacPlan(items);
+  // Qué renglones van sobre pedido, para la nota chiquita debajo de CADA uno
+  // (ya no el bloque grande de "dos entregas").
+  const sobrePedidoIds = new Set(desgloseSobrePedido(items, stockMap).map((l) => l.product_id));
 
   const goCheckout = () => navigate('/checkout');
   const onCheckoutClick = () => {
@@ -105,7 +108,6 @@ const Cart = () => {
       </div>
       <div className="grid lg:grid-cols-12 gap-6">
         <div className="lg:col-span-8 space-y-3" data-testid="cart-items-table">
-          <AvisoSobrePedido lineas={desgloseSobrePedido(items, stockMap)} testid="cart-aviso-sobre-pedido" />
           {items.map((item) => (
             <Card key={item.product_id} className="p-4 flex gap-4 items-center">
               <img src={item.image_url || null} alt={item.name} className="h-20 w-20 rounded-lg object-cover border border-border bg-[hsl(var(--secondary))]" />
@@ -115,6 +117,9 @@ const Cart = () => {
                 <div className="font-heading font-semibold mt-1">{formatMXN(item.price)}</div>
                 {isNetPriceItem(item) && (
                   <div className="text-[11px] text-muted-foreground mt-0.5" data-testid="cart-net-price-note">{t('cart.netPrice')}</div>
+                )}
+                {sobrePedidoIds.has(item.product_id) && (
+                  <AvisoSobrePedido testid="cart-item-sobre-pedido" />
                 )}
                 {/* REGLA DE 5: qué precio lleva ESTE renglón, y el empujón cuando le
                     faltan piezas. Sólo se ve en compras propias de distribuidor. */}

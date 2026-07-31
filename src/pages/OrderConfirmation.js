@@ -22,6 +22,9 @@ const OrderConfirmation = () => {
   const [receiptUp, setReceiptUp] = useState(false);
   const fileRef = useRef(null);
   const purchaseAvisado = useRef(false);
+  // Qué renglones van sobre pedido, para la nota chiquita debajo de CADA uno
+  // (ya no el bloque grande de "dos entregas").
+  const sobrePedidoIds = new Set((order?.backorder_items || []).map((b) => b.product_id));
 
   useEffect(() => {
     api.get(`/orders/${orderNumber}`)
@@ -71,16 +74,16 @@ const OrderConfirmation = () => {
         <p className="text-muted-foreground mt-2">{t('order.receivedBody', { number: orderNumber })}</p>
         {order && (
           <div className="mt-6 text-left">
-            {/* El aviso se repite aquí: lo vio en el checkout, pero ésta es la pantalla
-                que la gente deja abierta y le manda a alguien más. */}
-            {order.backorder_items?.length > 0 && (
-              <div className="mb-4">
-                <AvisoSobrePedido lineas={order.backorder_items} testid="order-aviso-sobre-pedido" />
-              </div>
-            )}
             <div className="rounded-lg border border-border p-4 space-y-2 text-sm">
               {order.items.map((it) => (
-                <div key={it.product_id} className="flex justify-between"><span className="text-muted-foreground">{it.quantity} × {it.name}</span><span>{formatMXN(it.price * it.quantity)}</span></div>
+                <div key={it.product_id}>
+                  <div className="flex justify-between"><span className="text-muted-foreground">{it.quantity} × {it.name}</span><span>{formatMXN(it.price * it.quantity)}</span></div>
+                  {/* La nota chiquita, pegada a SU producto: ya no el bloque grande de
+                      "dos entregas" arriba de todo. */}
+                  {sobrePedidoIds.has(it.product_id) && (
+                    <AvisoSobrePedido testid="order-item-sobre-pedido" />
+                  )}
+                </div>
               ))}
               <Separator className="my-2" />
               <div className="flex justify-between"><span className="text-muted-foreground">{t('common.subtotal')}</span><span>{formatMXN(order.subtotal)}</span></div>

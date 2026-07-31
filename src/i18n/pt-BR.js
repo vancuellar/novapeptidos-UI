@@ -337,12 +337,7 @@ const ptBR = {
 
   'product.inHandStock': 'Em estoque — entrega imediata ({{stock}} disponíveis)',
   'product.oneWeekShip': 'Disponível — envio em ~1 semana',
-  'backorder.title': 'Seu pedido chega em duas entregas',
-  'backorder.intro': 'O que temos pronto sai de imediato. O restante nós encomendamos e chega depois, sem que você pague frete extra.',
-  'backorder.line': '{{name}}: {{now}} de {{asked}} saem agora, {{later}} sob encomenda.',
-  'backorder.lineAll': '{{name}}: as {{later}} vão sob encomenda.',
-  'backorder.now': 'Sai agora: chega em 2 a 5 dias úteis.',
-  'backorder.later': 'Sob encomenda: chega cerca de uma semana depois.',
+  'backorder.itemNote': 'Vem dos EUA: demora um pouco mais para chegar. Vamos te manter informado.',
   'backorder.badge': 'Sob encomenda — chega ~1 semana depois',
   'backorder.cardNote': 'Sob encomenda (~1 semana)',
   'admin.stockTab': 'Estoque',
