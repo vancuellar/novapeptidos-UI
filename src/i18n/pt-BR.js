@@ -399,6 +399,31 @@ const ptBR = {
   'activate.saving': 'Ativando…',
   'activate.done': 'Conta ativada',
   'activate.failed': 'Não conseguimos ativar sua conta',
+
+  // ---- Acordo de Distribuidor (aceitação eletrônica) ----
+  // ⛔ O TEXTO LEGAL NÃO É TRADUZIDO. O servidor o envia em espanhol, que é a
+  // versão que rege (cl. 20 do próprio acordo: leis mexicanas). Aqui só se
+  // traduz a INTERFACE, mais a nota 'acuerdo.legalNote'.
+  'acuerdo.title': 'Acordo De Distribuidor',
+  'acuerdo.subtitle': 'Antes de continuar operando como distribuidor, leia o acordo completo e aceite-o. É o contrato que rege sua relação com a Exygen Labs.',
+  'acuerdo.subtitleUpdated': 'O acordo mudou em algo essencial, então precisamos da sua aceitação de novo. Leia a versão nova e aceite-a.',
+  'acuerdo.checkbox': 'Li e aceito o Acordo de Distribuidor na versão {{version}}.',
+  'acuerdo.accept': 'Aceitar E Continuar',
+  'acuerdo.accepting': 'Registrando sua aceitação…',
+  'acuerdo.accepted': 'Acordo aceito. Obrigado.',
+  'acuerdo.later': 'Agora não, quero ver meu painel',
+  'acuerdo.error': 'Não conseguimos registrar sua aceitação. Tente de novo.',
+  'acuerdo.mustCheck': 'Marque a caixa para aceitar o acordo.',
+  'acuerdo.versionLine': 'Versão {{version}} · {{fecha}}',
+  'acuerdo.legalNote': 'O acordo está em espanhol de propósito: essa é a versão que rege, conforme as leis mexicanas.',
+  'acuerdo.blockedTitle': 'Você Tem O Acordo De Distribuidor Pendente',
+  'acuerdo.blockedBody': 'Você pode ver seu painel e tudo o que já ganhou. Enquanto não aceitar, não se geram códigos novos, não dá para cotar e não acumulam comissões novas.',
+  'acuerdo.readAndAccept': 'Ler E Aceitar',
+  'acuerdo.download': 'Baixar Minha Cópia',
+  'acuerdo.downloadError': 'Não conseguimos preparar sua cópia. Tente de novo.',
+  'acuerdo.acceptedOn': 'Você aceitou a versão {{version}} em {{fecha}}.',
+  'acuerdo.pending': 'Você ainda não aceitou o acordo vigente.',
+  'acuerdo.draftWarning': 'Este texto ainda é um rascunho com pontos em aberto. Não deveria estar sendo pedido ainda — avise-nos.',
   'auth.consent.age': 'Tenho 18 anos ou mais, li e aceito os',
   'auth.consent.promos': 'Desejo ativar bônus e participar de campanhas',
   'auth.consent.email': 'Desejo receber mensagens de marketing por e-mail',

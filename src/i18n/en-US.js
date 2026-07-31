@@ -385,6 +385,31 @@ const enUS = {
   'activate.saving': 'Activating…',
   'activate.done': 'Account activated',
   'activate.failed': "We couldn't activate your account",
+
+  // ---- Distributor Agreement (electronic acceptance) ----
+  // ⛔ THE LEGAL TEXT IS NOT TRANSLATED. The server sends it in Spanish, which
+  // is the governing version (cl. 20 of the agreement itself: Mexican law).
+  // Only the interface is translated, plus the 'acuerdo.legalNote' footnote.
+  'acuerdo.title': 'Distributor Agreement',
+  'acuerdo.subtitle': 'Before you keep operating as a distributor, please read the full agreement and accept it. It is the contract that governs your relationship with Exygen Labs.',
+  'acuerdo.subtitleUpdated': 'The agreement changed in something essential, so we need your acceptance again. Please read the new version and accept it.',
+  'acuerdo.checkbox': 'I have read and accept the Distributor Agreement, version {{version}}.',
+  'acuerdo.accept': 'Accept And Continue',
+  'acuerdo.accepting': 'Recording your acceptance…',
+  'acuerdo.accepted': 'Agreement accepted. Thank you.',
+  'acuerdo.later': 'Not now, let me see my dashboard',
+  'acuerdo.error': "We couldn't record your acceptance. Please try again.",
+  'acuerdo.mustCheck': 'Tick the box to accept the agreement.',
+  'acuerdo.versionLine': 'Version {{version}} · {{fecha}}',
+  'acuerdo.legalNote': 'The agreement is in Spanish on purpose: that is the governing version under Mexican law.',
+  'acuerdo.blockedTitle': 'Your Distributor Agreement Is Pending',
+  'acuerdo.blockedBody': 'You can still see your dashboard and everything you have already earned. Until you accept it, no new codes are issued, quoting is off, and no new commissions accrue.',
+  'acuerdo.readAndAccept': 'Read And Accept',
+  'acuerdo.download': 'Download My Copy',
+  'acuerdo.downloadError': "We couldn't prepare your copy. Please try again.",
+  'acuerdo.acceptedOn': 'You accepted version {{version}} on {{fecha}}.',
+  'acuerdo.pending': 'You have not accepted the current agreement yet.',
+  'acuerdo.draftWarning': 'This text is still a draft with open points. It should not be asked for yet — please let us know.',
   'auth.consent.age': 'I am 18 or older, and I have read and accept the',
   'auth.consent.promos': 'I want to activate bonuses and take part in campaigns',
   'auth.consent.email': 'I want to receive marketing messages by email',

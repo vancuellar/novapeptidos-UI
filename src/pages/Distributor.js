@@ -17,6 +17,10 @@ import LabReports from '@/components/LabReports';
 import NotificationsFeed from '@/components/NotificationsFeed';
 import ToolsPanel, { herramientasDesbloqueadas } from '@/components/ToolsPanel';
 import CotizadorDistribuidor from '@/components/CotizadorDistribuidor';
+// ⛔ ACUERDO DE DISTRIBUIDOR — apagado en el backend por omisión. Mientras lo
+// esté, `useAcuerdo` devuelve `requiere_aceptacion: false` y ni la pantalla ni
+// la tarjeta de Perfil se pintan: el panel se ve exactamente igual que hoy.
+import PantallaDeAcuerdo, { useAcuerdo, AcuerdoEnPerfil, AvisoDeAcuerdoPendiente } from '@/components/AcuerdoDistribuidor';
 import OrdersPanel from '@/components/panels/OrdersPanel';
 import StatCard from '@/components/panels/StatCard';
 import PointsPanel from '@/components/panels/PointsPanel';
@@ -111,6 +115,13 @@ const Distributor = () => {
   // de "Mis Herramientas" pre-carga sus propios péptidos, y son los que ve en
   // su pestaña "Mis Pedidos".
   const [misPedidos, setMisPedidos] = useState([]);
+  // El acuerdo: si hay que firmarlo, qué versión, y cuándo lo firmó. La pantalla
+  // se abre SOLA en cuanto el servidor dice que falta firmar; cerrarla no es
+  // aceptar (queda el aviso arriba) y vuelve a abrirse en la siguiente visita.
+  const { estado: acuerdo, setEstado: setAcuerdo } = useAcuerdo();
+  const [acuerdoAbierto, setAcuerdoAbierto] = useState(false);
+  useEffect(() => { if (acuerdo?.requiere_aceptacion) setAcuerdoAbierto(true); },
+    [acuerdo?.requiere_aceptacion]);
   const [params, setParams] = useSearchParams();
   // Abrir ARRIBA al cambiar de pestaña, venga el cambio de donde venga (sidebar,
   // link interno o URL directa). ScrollToTop no ve cambios que son sólo de query.
@@ -289,6 +300,10 @@ const Distributor = () => {
           </Card>
         )}
       </div>
+
+      {/* ⛔ El aviso del acuerdo, arriba de TODO el panel y en todas las pestañas:
+          es lo primero que se lee y no se va hasta que firma. Apagado no existe. */}
+      <AvisoDeAcuerdoPendiente estado={acuerdo} onAbrir={() => setAcuerdoAbierto(true)} />
 
       <Tabs value={tabActiva} onValueChange={(v) => setParams(v === 'overview' ? {} : { tab: v }, { replace: true })}
         className="lg:flex lg:gap-8 lg:items-start">
@@ -699,10 +714,22 @@ const Distributor = () => {
         </TabsContent>
 
         <TabsContent value="profile" className="mt-5">
-          <ProfilePanel user={user} onUserChange={refreshUser} />
+          {/* Su copia del acuerdo vive en Perfil: es su papel, va con sus datos.
+              Apagado no se pinta (AcuerdoEnPerfil mira `estado.aplica`). */}
+          <AcuerdoEnPerfil estado={acuerdo} />
+          <div className={acuerdo?.aplica ? 'mt-4' : ''}>
+            <ProfilePanel user={user} onUserChange={refreshUser} />
+          </div>
         </TabsContent>
         </div>
       </Tabs>
+      {/* ⛔ LA PANTALLA DEL ACUERDO. Va al final y por encima de todo: el panel
+          queda cargado por debajo, así que al aceptar desaparece sin recargar.
+          Con el interruptor APAGADO `requiere_aceptacion` es false y no pinta
+          absolutamente nada — hoy este componente devuelve null siempre. */}
+      <PantallaDeAcuerdo estado={acuerdo} abierta={acuerdoAbierto}
+        onCerrar={() => setAcuerdoAbierto(false)}
+        onAceptado={(nuevo) => { setAcuerdo(nuevo); setAcuerdoAbierto(false); loadAll(); }} />
       <FichaPedido orderNumber={pedidoAbierto} open={!!pedidoAbierto}
         onClose={() => setPedidoAbierto(null)} />
       <FichaCliente clientId={clienteAbierto} open={!!clienteAbierto}

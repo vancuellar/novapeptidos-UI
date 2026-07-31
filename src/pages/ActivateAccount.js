@@ -9,11 +9,18 @@ import { toast } from 'sonner';
 import api from '@/lib/api';
 import { useAuth } from '@/context/AuthContext';
 import { useLanguage } from '@/context/LanguageContext';
+import { useAcuerdo, AcuerdoEnActivacion } from '@/components/AcuerdoDistribuidor';
 
 /**
  * Activación desde una invitación del admin. El invitado elige su propia
  * contraseña; al hacerlo su correo queda confirmado. Nunca viaja una
  * contraseña por correo.
+ *
+ * ⛔ ACUERDO DE DISTRIBUIDOR. Si quien activa es distribuidor Y el interruptor
+ * del backend está encendido, aquí se le enseña el acuerdo completo con una
+ * casilla NO premarcada: es el momento en que entra al canal, así que es el
+ * momento de firmar. Apagado —como está hoy— `estado.activo` es false y esta
+ * pantalla es exactamente la de siempre.
  */
 const ActivateAccount = () => {
   const [params] = useSearchParams();
@@ -28,6 +35,10 @@ const ActivateAccount = () => {
   const [confirm, setConfirm] = useState('');
   const [show, setShow] = useState(false);
   const [saving, setSaving] = useState(false);
+  // ⛔ La casilla del acuerdo. Arranca en false SIEMPRE (art. 93 Bis del Código
+  // de Comercio: el consentimiento es un acto del usuario, no un descuido).
+  const [aceptaAcuerdo, setAceptaAcuerdo] = useState(false);
+  const { estado: acuerdo } = useAcuerdo();
 
   useEffect(() => {
     if (!token) { setState('error'); setError(t('activate.noToken')); return; }
@@ -37,12 +48,23 @@ const ActivateAccount = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [token]);
 
+  const isDistributor = invite?.role === 'distributor';
+  // Sólo se le pide firmar si el backend lo tiene encendido Y viene al canal.
+  const pideAcuerdo = Boolean(acuerdo?.activo && isDistributor);
+
   const submit = async (e) => {
     e.preventDefault();
     if (password !== confirm) { toast.error(t('auth.reset.mismatch')); return; }
+    if (pideAcuerdo && !aceptaAcuerdo) { toast.error(t('acuerdo.mustCheck')); return; }
     setSaving(true);
     try {
-      const r = await api.post('/auth/activate', { token, password });
+      const r = await api.post('/auth/activate', {
+        token,
+        password,
+        // Van siempre, pero el servidor las ignora con el interruptor apagado.
+        acepta_acuerdo: pideAcuerdo && aceptaAcuerdo,
+        acuerdo_version: acuerdo?.version || null,
+      });
       adoptSession(r.data.token, r.data.user);
       toast.success(t('activate.done'));
       navigate(r.data.user.role === 'distributor' ? '/distribuidor' : '/cuenta');
@@ -51,11 +73,11 @@ const ActivateAccount = () => {
     } finally { setSaving(false); }
   };
 
-  const isDistributor = invite?.role === 'distributor';
-
   return (
     <div className="min-h-[70vh] flex items-center justify-center px-4 py-14">
-      <Card className="w-full max-w-md p-8" data-testid="activate-card">
+      {/* La tarjeta se ensancha SÓLO cuando hay que leer un contrato: 20
+          cláusulas en una columna de móvil no se leen, se abandonan. */}
+      <Card className={`w-full p-8 ${pideAcuerdo ? 'max-w-2xl' : 'max-w-md'}`} data-testid="activate-card">
         {state === 'loading' && (
           <div className="text-center">
             <Loader2 className="h-8 w-8 mx-auto mb-4 animate-spin text-[hsl(var(--primary))]" />
@@ -104,7 +126,12 @@ const ActivateAccount = () => {
                 <Input type={show ? 'text' : 'password'} className="mt-1.5" minLength={6} required
                   value={confirm} onChange={(e) => setConfirm(e.target.value)} data-testid="activate-confirm" />
               </div>
-              <Button type="submit" size="lg" className="w-full" disabled={saving} data-testid="activate-submit">
+              {/* ⛔ El acuerdo, sólo si el interruptor está encendido y viene al
+                  canal. Apagado no se pinta nada y el formulario es el de siempre. */}
+              <AcuerdoEnActivacion estado={acuerdo} mostrar={isDistributor}
+                marcada={aceptaAcuerdo} onChange={setAceptaAcuerdo} />
+              <Button type="submit" size="lg" className="w-full"
+                disabled={saving || (pideAcuerdo && !aceptaAcuerdo)} data-testid="activate-submit">
                 {saving ? t('activate.saving') : t('activate.cta')}
               </Button>
             </form>

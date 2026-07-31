@@ -308,6 +308,32 @@ const esMX = {
   'activate.saving': 'Activando…',
   'activate.done': 'Cuenta activada',
   'activate.failed': 'No pudimos activar tu cuenta',
+
+  // ---- Acuerdo de Distribuidor (aceptación electrónica) ----
+  // ⛔ EL TEXTO LEGAL NO SE TRADUCE: lo manda el servidor y va en español, que
+  // es el idioma que rige (cl. 20 del propio acuerdo: leyes mexicanas). Aquí
+  // sólo se traduce la INTERFAZ. En inglés y portugués sale además la nota
+  // 'acuerdo.legalNote' diciéndolo.
+  'acuerdo.title': 'Acuerdo De Distribuidor',
+  'acuerdo.subtitle': 'Antes de seguir operando como distribuidor, lee el acuerdo completo y acéptalo. Es el contrato que rige tu relación con Exygen Labs.',
+  'acuerdo.subtitleUpdated': 'El acuerdo cambió en algo esencial, así que necesitamos tu aceptación otra vez. Lee la versión nueva y acéptala.',
+  'acuerdo.checkbox': 'He leído y acepto el Acuerdo de Distribuidor en su versión {{version}}.',
+  'acuerdo.accept': 'Aceptar Y Continuar',
+  'acuerdo.accepting': 'Registrando tu aceptación…',
+  'acuerdo.accepted': 'Acuerdo aceptado. Gracias.',
+  'acuerdo.later': 'Ahora no, quiero ver mi panel',
+  'acuerdo.error': 'No pudimos registrar tu aceptación. Inténtalo de nuevo.',
+  'acuerdo.mustCheck': 'Marca la casilla para aceptar el acuerdo.',
+  'acuerdo.versionLine': 'Versión {{version}} · {{fecha}}',
+  'acuerdo.legalNote': 'El acuerdo está en español a propósito: esa es la versión que rige, conforme a las leyes mexicanas.',
+  'acuerdo.blockedTitle': 'Tienes El Acuerdo De Distribuidor Pendiente',
+  'acuerdo.blockedBody': 'Puedes ver tu panel y todo lo que ya ganaste. Mientras no lo aceptes, no se generan códigos nuevos, no se puede cotizar y no se acumulan comisiones nuevas.',
+  'acuerdo.readAndAccept': 'Leer Y Aceptar',
+  'acuerdo.download': 'Descargar Mi Copia',
+  'acuerdo.downloadError': 'No pudimos preparar tu copia. Inténtalo de nuevo.',
+  'acuerdo.acceptedOn': 'Aceptaste la versión {{version}} el {{fecha}}.',
+  'acuerdo.pending': 'Todavía no has aceptado el acuerdo vigente.',
+  'acuerdo.draftWarning': 'Este texto todavía es un borrador y tiene puntos por definir. No debería estar pidiéndose todavía: avísanos.',
   'auth.consent.age': 'Tengo 18 años o más, he leído y acepto los',
   'auth.consent.promos': 'Deseo activar bonos y participar en campañas',
   'auth.consent.email': 'Deseo recibir mensajes de marketing por correo electrónico',
