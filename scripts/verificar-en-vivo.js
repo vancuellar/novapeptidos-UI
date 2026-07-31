@@ -205,14 +205,37 @@ async function revisarCatalogoYFicha(browser) {
 
 (async () => {
   if (HASH) {
-    try {
-      const r = await fetch(`${SITIO}/?cb=${Date.now()}`, { signal: AbortSignal.timeout(20000) });
-      const html = await r.text();
-      if (!html.includes(HASH)) mal(`el bundle en vivo no es ${HASH} (todavía se sirve otro)`);
-      else bien(`el bundle en vivo es ${HASH}`);
-    } catch (e) {
-      console.error('⚠️  No se pudo leer el HTML en vivo:', String(e).slice(0, 120));
+    // Cloudflare no cambia de versión de golpe en TODOS los bordes: durante
+    // unos segundos unas peticiones traen el bundle nuevo y otras el viejo.
+    // Con una sola lectura esto se caía en falso — pasó el 2026-07-31: las 14
+    // pruebas de pintado salieron bien, esta lectura pescó el bundle viejo,
+    // y el script dio marcha atrás a un despliegue bueno sin necesidad.
+    // Ahora se pide que el hash aparezca CINCO veces seguidas: eso es haber
+    // propagado, no haber tenido suerte.
+    const SEGUIDAS = 5;
+    let racha = 0, ultimoVisto = '', fallo = null;
+    for (let i = 0; i < 60 && racha < SEGUIDAS; i++) {
+      try {
+        const r = await fetch(`${SITIO}/?cb=${Date.now()}-${i}`, { signal: AbortSignal.timeout(20000) });
+        const html = await r.text();
+        if (html.includes(HASH)) racha++;
+        else {
+          racha = 0;
+          ultimoVisto = (html.match(/main\.[a-z0-9]+\.js/) || ['¿?'])[0];
+        }
+      } catch (e) {
+        fallo = e;
+        racha = 0;
+      }
+      if (racha < SEGUIDAS) await new Promise((s) => setTimeout(s, 2000));
+    }
+    if (racha >= SEGUIDAS) {
+      bien(`el bundle en vivo es ${HASH} (${SEGUIDAS} lecturas seguidas)`);
+    } else if (fallo && !ultimoVisto) {
+      console.error('⚠️  No se pudo leer el HTML en vivo:', String(fallo).slice(0, 120));
       process.exit(2);
+    } else {
+      mal(`el bundle en vivo no es ${HASH} tras 2 minutos (se sirve ${ultimoVisto})`);
     }
   }
 
