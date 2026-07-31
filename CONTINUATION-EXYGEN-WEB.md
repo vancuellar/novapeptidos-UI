@@ -1,3 +1,77 @@
+# 🤝 HANDOFF — 2026-07-31 (tarde-noche) — LÉELO PRIMERO
+
+## ✅ EN VIVO hoy
+Cotizador con datos de cliente + enlace `?pedido=` al checkout · doble cotizador de
+envíos (Skydropx + Envíos Internacionales, gana el más barato) · **primera guía real
+comprada**: Brenda EX-20260730-5930, FedEx 875164874865, $192.90 por EI (saldo quedó
+en $2,307.10) · botón **Imprimir Guía** en ficha de pedido (admin y distribuidor, solo
+sus pedidos) · **rastreo DENTRO de exygenlabs.com** (`/pedido/{num}`, línea de tiempo
+con eventos reales traducidos; el iframe a FedEx era imposible: `frame-ancestors self`)
+· correos consolidados (1 solo con tarjeta/cripto; SPEI mantiene el de la CLABE) ·
+**compra automática de guía** al entrar el pago, con dos frenos: hasta 4 PIEZAS (la
+bolsa stand-up 12×15×1) y tope de $400 · envío partido **lo elige el cliente** en el
+checkout · Asesor IA **desbloqueado** (contesta dosis, reconstitución, combinaciones;
+el freno era nuestro prompt + que el backend no tenía las monografías) · **formato
+limpio** en los dos chats (se acabaron los `**asteriscos**`) · techo del **40% en UNA
+sola puerta** (venta directa, GIFT, trato especial, códigos; excepción solo admin y la
+marca de María, que nace apagada) · leyenda RUO nueva en 52 textos (fuera "consumo
+humano ni animal", conservada SOLO en Términos) · página **Marketing** en el admin con
+archivo de videos semanal + comparación semana a semana · códigos **MONICAF-*** para
+María conviviendo con los viejos (caducan 21-29 oct) · precios acercados a Certified:
+Retatrutida 10mg $2,489, Tirzepatida 10mg $2,129 y 30mg $3,089 · **1MQ bajado a $949**
+(el candado anti-Certified estaba apagado desde el 26-jul; reactivado).
+
+## 🔴 FUGAS CERRADAS HOY (todas eran reales)
+- `/pedido/{num}` (SIN contraseña) entregaba el **PDF de la etiqueta con el domicilio
+  completo del cliente**, y los números de pedido son adivinables.
+- La misma ruta traía **quién refirió la venta y el reparto de comisiones**.
+- **Cupón de un solo uso canjeable dos veces en simultáneo** (hasta 40% del segundo
+  pedido: en un ticket de $177k son $71k). Tercera vez que aparece este mismo patrón
+  (inventario → puntos → cupón): los auditores buscan la cuarta.
+- El servidor mandaba al navegador del cliente **lo que cuesta la guía**.
+- Registros con `?ref=` que entraban **sin distribuidor y sin comisión**, en silencio.
+- La prueba de Meta estaba fuera de la suite y **en rojo**: pedidos de prueba
+  (@example.com) podían llegar a Meta como compras reales.
+
+## 💰 NÚMEROS REALES DE LA SEMANA (25-31 jul)
+Vendido $11,514 · **cobrado $7,657** (Brenda + Aidee; Alanís $3,857 entregado y NO
+pagado = deuda) · **ganancia neta de lo cobrado $4,644.59 (60.7%)** · caja real
+$4,279.29 · publicidad Meta $237 USD ≈ $4,268 MXN → **empate técnico de $11**, y con
+flete de proveedor cargado, $234 abajo. **Meta no generó ninguna de las 3 ventas.**
+110 conversaciones de WhatsApp a $39 c/u. Detalle en `GANANCIA-SEMANA-2026-07-31.md`
+y `REPORTE-ADS-SEMANA-2026-07-31.md`/`.mp4`.
+
+## 🏭 PROVEEDORES NUEVOS
+P39 Bjvvb · P40/P42 (Reino Unido, uno sin capturar por falta de tamaño/moneda) ·
+**P41 Chuangyan Biotech** (+852 9056 5942) — le gana a TODOS en **57 tamaños**, 46 de
+nuestro catálogo (Cagrisema −56%, GHK-Cu −35%, BPC-157 −30%, LIPO-C −70%) ·
+**P43 Jess "Peptide Makers"** (+852 7019 3438) — gana en 31 tamaños de segunda fila
+(HGH, B12, TB Frag), pierde feo en Reta/Tirze/Sema. Lee Factory (0→184) y Mia
+(73→157) recapturados: **Mia es la más barata en 78 de 204**.
+
+## ⏳ DECISIONES DE CHRISTIÁN
+1. **23 costos de la maestra ya no son los del más barato** (por Jess). Refrescarlos
+   baja costos en medio catálogo y dispara re-precios en cascada — con proveedores que
+   NADIE ha comprobado con una compra real. Recomendación: esperar a una compra real.
+2. **Prueba a Chuangyan**: sugerido Cagrisema 10mg + LIPO-C + GHK-Cu o BPC-157.
+3. Glutatión 1500mg: para acercarlo a Certified hay que subir también el de 600mg.
+4. Marca de descuento de María: nace APAGADA. Diamante en compra propia quedó en 40%.
+5. Retención de videos: 52 semanas, nada se borra solo.
+6. Adipotida: en curso (identidad química, SKU, ficha, imagen).
+7. Gemini: cuota gratis 20/día agotada. Recomendado prender plan de paga (5 min) o
+   pegar llave de OpenAI (`AI_PROVIDER=openai`, ya implementado sin probar).
+8. Skydropx: sigue sin saldo/verificación (Envíos Internacionales sí compra).
+9. **NADA de WhatsApp hasta nuevo aviso** — hay borradores listos para Chuangyan,
+   Jess, Bjvvb, Peptideals, DT y los 2 ingleses.
+
+## ⚠️ RIESGO OPERATIVO
+Con 5-6 agentes escribiendo a la vez hubo `main` sin compilar (import a un archivo no
+subido), commits que arrastraron trabajo ajeno y pruebas intermitentes. Regla nueva:
+`git add` por archivo (nunca `-A`), compilar antes de push, y el barrido grande
+(E2E + enlaces + huecos) se corre UNA vez al final, con todo mergeado.
+
+---
+
 # 🧪 2026-07-31 — LA ADIPOTIDA YA SE VENDE, Y EL ALTA DE UN PRODUCTO NUEVO YA TIENE CANDADO
 
 Orden de Christián: «Para Adipotida o cualquier otro item que adoptemos nuevo, tienes
