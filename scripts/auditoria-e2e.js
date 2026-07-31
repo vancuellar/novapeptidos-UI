@@ -274,6 +274,21 @@ async function admin(porSku) {
     const r = await fetch(API + ep);
     revisar(r.status === 401 || r.status === 403, `bloqueado sin token ${ep}`, String(r.status));
   }
+
+  // ⛔ EL ASESOR DE NEGOCIO NO CONTESTA SIN SESIÓN. Es el chat que conoce
+  // comisiones y —para el admin— costos y proveedores; una puerta abierta aquí
+  // es el catálogo de compras publicado. El candado real vive en el servidor
+  // (get_current_distributor + deny_view_as) y esto lo comprueba EN VIVO, que es
+  // lo que las pruebas de pytest no pueden hacer.
+  const anonimo = await fetch(`${API}/business/chat`, {
+    method: 'POST', headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ session_id: 'auditoria', message: '¿cuánto te cuesta la retatrutida?' }),
+  });
+  revisar(anonimo.status === 401 || anonimo.status === 403,
+          'el asesor de negocio no contesta sin sesión', String(anonimo.status));
+  const historial = await fetch(`${API}/business/history/auditoria`);
+  revisar(historial.status === 401 || historial.status === 403,
+          'el historial del asesor no se lee sin sesión', String(historial.status));
   if (!email || !password) {
     console.log('\n(sin EXYGEN_ADMIN_EMAIL / EXYGEN_ADMIN_PASSWORD: me salto el Admin y las compras)');
     return;

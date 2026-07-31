@@ -1,6 +1,6 @@
 import React, { useEffect, useLayoutEffect, useState, useCallback } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import { Filter, Eye, LayoutDashboard, Package, ShoppingBag, Plus, Pencil, Trash2, DollarSign, Users, Clock, TrendingUp, Phone, Receipt, Store, Copy, Boxes, Truck, RefreshCw, MailCheck, Ban, Megaphone, BarChart3, Upload, ShoppingCart, Target, KeyRound, Gauge, Search, Archive, ArchiveRestore, HandCoins, CircleCheck, CircleAlert, ArrowUp, ArrowDown, ArrowUpDown } from 'lucide-react';
+import { Filter, Eye, LayoutDashboard, Package, ShoppingBag, Plus, Pencil, Trash2, DollarSign, Users, Clock, TrendingUp, Phone, Receipt, Store, Copy, Boxes, Truck, RefreshCw, MailCheck, Ban, Megaphone, BarChart3, Upload, ShoppingCart, Target, KeyRound, Gauge, Search, Archive, ArchiveRestore, HandCoins, CircleCheck, CircleAlert, ArrowUp, ArrowDown, ArrowUpDown, Sparkles } from 'lucide-react';
 import Marketing from '@/components/admin/Marketing';
 import VideoComoLeerDifusion from '@/components/admin/VideoComoLeerDifusion';
 import MotorPrecios from '@/components/admin/MotorPrecios';
@@ -25,6 +25,7 @@ import FichaCliente from '@/components/FichaCliente';
 import AdminAnnouncements from '@/components/AdminAnnouncements';
 import NotificationsFeed from '@/components/NotificationsFeed';
 import HojaDeGuia from '@/components/HojaDeGuia';
+import ChatNegocio from '@/components/ChatNegocio';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog';
@@ -659,6 +660,10 @@ const Admin = () => {
         ] : [
           { grupo: 'Negocio' },
           { value: 'sales', icon: TrendingUp, label: t('admin.salesTab') },
+          // El Asesor de Negocio. Es el MISMO componente que ve el distribuidor;
+          // lo que cambia es el contexto que le arma el servidor: al admin sí le
+          // entran costos, proveedores y la foto del motor (chat_negocio.py).
+          { value: 'asesor', icon: Sparkles, label: t('negocio.chat.tab') },
           { value: 'orders', icon: ShoppingBag, label: t('admin.ordersTab') },
           { value: 'funnel', icon: Filter, label: t('admin.funnelTab') },
           { value: 'intentos', icon: ShoppingCart, label: t('admin.tryTab') },
@@ -703,6 +708,12 @@ const Admin = () => {
 
         <TabsContent value="pagos" className="mt-5">
           <GatewayCredentials />
+        </TabsContent>
+
+        {/* Asesor de Negocio: aquí sí puede preguntar de costos, proveedores y
+            márgenes — el servidor arma ese contexto SÓLO cuando el rol es admin. */}
+        <TabsContent value="asesor" className="mt-5">
+          <ChatNegocio />
         </TabsContent>
 
         {/* El remitente y las cajas: de aquí sale lo que cuesta cada guía. */}

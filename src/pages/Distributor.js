@@ -1,6 +1,6 @@
 import React, { useEffect, useLayoutEffect, useState, useCallback } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import { Store, Users, DollarSign, TrendingUp, ShoppingBag, Copy, Percent, Truck, ExternalLink, BookOpen, Award, Ticket, RefreshCw, Bell, Syringe, Package, Coins, User, GraduationCap, FlaskConical, Megaphone, ChevronRight, Calculator } from 'lucide-react';
+import { Store, Users, DollarSign, TrendingUp, ShoppingBag, Copy, Percent, Truck, ExternalLink, BookOpen, Award, Ticket, RefreshCw, Bell, Syringe, Package, Coins, User, GraduationCap, FlaskConical, Megaphone, ChevronRight, Calculator, Sparkles } from 'lucide-react';
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip } from 'recharts';
 import GraficaInteractiva from '@/components/charts/GraficaInteractiva';
 import { Button } from '@/components/ui/button';
@@ -17,6 +17,7 @@ import LabReports from '@/components/LabReports';
 import NotificationsFeed from '@/components/NotificationsFeed';
 import ToolsPanel, { herramientasDesbloqueadas } from '@/components/ToolsPanel';
 import CotizadorDistribuidor from '@/components/CotizadorDistribuidor';
+import ChatNegocio from '@/components/ChatNegocio';
 // ⛔ ACUERDO DE DISTRIBUIDOR — apagado en el backend por omisión. Mientras lo
 // esté, `useAcuerdo` devuelve `requiere_aceptacion: false` y ni la pantalla ni
 // la tarjeta de Perfil se pintan: el panel se ve exactamente igual que hoy.
@@ -249,6 +250,11 @@ const Distributor = () => {
     // presupuesto que le manda a SU cliente. Antes vivía adentro de "Mis
     // Herramientas"; aquí tiene más lógica, junto a Clientes y Ventas.
     { value: 'cotizador', icon: Calculator, label: t('distributor.cotizadorTab') },
+    // El Asesor de Negocio va junto al Cotizador porque es su hermano: uno arma
+    // el papel, el otro contesta la pregunta de antes de armarlo. ⛔ Lo que el
+    // asesor sabe lo decide el SERVIDOR según el rol del token: aquí no hay nada
+    // que ocultar ni que enseñar (ver ChatNegocio.js y chat_negocio.py).
+    { value: 'asesor', icon: Sparkles, label: t('negocio.chat.tab') },
     { value: 'sales', icon: ShoppingBag, label: t('distributor.salesTab') },
     { value: 'envios', icon: Truck, label: t('distributor.ordersTab') },
     { grupo: t('dash.group.purchases') },
@@ -513,6 +519,13 @@ const Distributor = () => {
         <TabsContent value="cotizador" className="mt-5">
           <CotizadorDistribuidor catalogo={catalogoCotizador} tasaMaxima={tasaMaximaCotizador}
             codigo={summary?.distributor_code || user.distributor_code || ''} />
+        </TabsContent>
+
+        {/* El Asesor de Negocio. El componente es el MISMO que ve el admin; lo
+            que cambia —qué datos entran a la conversación— lo decide el servidor
+            con el token, no este archivo. */}
+        <TabsContent value="asesor" className="mt-5">
+          <ChatNegocio />
         </TabsContent>
 
         <TabsContent value="sales" className="mt-5 space-y-4">

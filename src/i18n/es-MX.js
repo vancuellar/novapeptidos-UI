@@ -1418,6 +1418,30 @@ const esMX = {
   'chat.placeholder': 'Pregunta sobre productos, precios o envíos...',
   'chat.disclaimer': 'Respuestas informativas. Solo uso en investigación (RUO).',
 
+  // ---------------------------------------------------------------------
+  //  ASESOR DE NEGOCIO — el chat de adentro del panel (admin y distribuidores)
+  // ---------------------------------------------------------------------
+  // ⛔ Los textos del admin hablan de costos y proveedores; los del distribuidor
+  // NO. Aun así, el candado no son estos textos: es el servidor, que arma el
+  // contexto según el rol. Aquí sólo se ajusta lo que se le sugiere a cada quien.
+  'negocio.chat.tab': 'Asesor De Negocio',
+  'negocio.chat.title': 'Asesor De Negocio',
+  'negocio.chat.subtitleDist': 'Pregúntale de tu negocio: cotizaciones, cuánto ganas con un descuento y qué ofrecerle a un cliente. Conoce el catálogo con precios, tu comisión y tus topes.',
+  'negocio.chat.subtitleAdmin': 'Tu asistente de negocio: cotizaciones, márgenes, costos, proveedores y qué conviene ofrecer. Ve todo el catálogo con costos y ROI.',
+  'negocio.chat.hi': '¿En qué te ayudo?',
+  'negocio.chat.helpDist': 'Conozco el catálogo con precios, tu comisión, tu descuento máximo y las reglas del canal. No tengo los números internos de la casa.',
+  'negocio.chat.helpAdmin': 'Conozco el catálogo con precios, los costos de compra, a quién le compramos y la última foto del motor de precios.',
+  'negocio.chat.ask.quote': 'Ármame una cotización de 5 piezas de Retatrutida',
+  'negocio.chat.ask.earn': '¿Cuánto gano si vendo $10,000 con 20% de descuento?',
+  'negocio.chat.ask.recommend': '¿Qué le recomiendo a un cliente que busca bajar de peso?',
+  'negocio.chat.ask.rules': '¿Cuáles son las reglas de mi comisión y mis descuentos?',
+  'negocio.chat.ask.margin': '¿Qué productos me dejan menos margen?',
+  'negocio.chat.ask.supplier': '¿A quién le compro la Retatrutida y a cuánto?',
+  'negocio.chat.placeholder': 'Escribe tu pregunta de negocio...',
+  'negocio.chat.send': 'Enviar',
+  'negocio.chat.error': 'No pude responder en este momento. Intenta de nuevo en un minuto.',
+  'negocio.chat.disclaimer': 'El asistente puede equivocarse. El precio y la comisión que valen son los del pedido.',
+
   'admin.title': 'Panel De Administración',
   'admin.subtitle': 'Gestiona productos, inventario y pedidos de Exygen Labs',
   'admin.stats.revenue': 'Cobrado',

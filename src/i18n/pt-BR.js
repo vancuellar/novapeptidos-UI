@@ -1418,6 +1418,26 @@ const ptBR = {
   'chat.placeholder': 'Pergunte sobre produtos, preços ou envios...',
   'chat.disclaimer': 'Respostas informativas. Somente para uso em pesquisa (RUO).',
 
+  // Consultor de Negócios — o chat de dentro do painel (admin e distribuidores).
+  // A trava NÃO são estes textos: é o servidor, que monta o contexto por papel.
+  'negocio.chat.tab': 'Consultor De Negócios',
+  'negocio.chat.title': 'Consultor De Negócios',
+  'negocio.chat.subtitleDist': 'Pergunte sobre o seu negócio: orçamentos, quanto você ganha com um desconto e o que oferecer a um cliente. Ele conhece o catálogo com preços, a sua comissão e os seus limites.',
+  'negocio.chat.subtitleAdmin': 'Seu assistente de negócios: orçamentos, margens, custos, fornecedores e o que vale a pena oferecer. Vê o catálogo inteiro com custos e ROI.',
+  'negocio.chat.hi': 'Como posso ajudar?',
+  'negocio.chat.helpDist': 'Conheço o catálogo com preços, a sua comissão, o seu desconto máximo e as regras do canal. Não tenho os números internos da casa.',
+  'negocio.chat.helpAdmin': 'Conheço o catálogo com preços, os custos de compra, de quem compramos e a última foto do motor de preços.',
+  'negocio.chat.ask.quote': 'Monte um orçamento de 5 unidades de Retatrutida',
+  'negocio.chat.ask.earn': 'Quanto eu ganho vendendo $10,000 com 20% de desconto?',
+  'negocio.chat.ask.recommend': 'O que recomendo a um cliente que quer emagrecer?',
+  'negocio.chat.ask.rules': 'Quais são as regras da minha comissão e dos meus descontos?',
+  'negocio.chat.ask.margin': 'Quais produtos me deixam menos margem?',
+  'negocio.chat.ask.supplier': 'De quem eu compro a Retatrutida e por quanto?',
+  'negocio.chat.placeholder': 'Escreva a sua pergunta de negócios...',
+  'negocio.chat.send': 'Enviar',
+  'negocio.chat.error': 'Não consegui responder agora. Tente de novo em um minuto.',
+  'negocio.chat.disclaimer': 'O assistente pode errar. O preço e a comissão que valem são os do pedido.',
+
   'admin.title': 'Painel Administrativo',
   'admin.subtitle': 'Gerencie produtos, estoque e pedidos da Exygen Labs',
   'admin.stats.revenue': 'Recebido',

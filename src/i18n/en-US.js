@@ -1423,6 +1423,26 @@ const enUS = {
   'chat.placeholder': 'Ask about products, pricing or shipping...',
   'chat.disclaimer': 'Informational answers. Research use only (RUO).',
 
+  // Business Advisor — the in-panel chat (admin and distributors).
+  // The lock is NOT these strings: the server builds the context by role.
+  'negocio.chat.tab': 'Business Advisor',
+  'negocio.chat.title': 'Business Advisor',
+  'negocio.chat.subtitleDist': 'Ask about your business: quotes, how much you earn at a given discount, and what to offer a client. It knows the catalog with prices, your commission and your caps.',
+  'negocio.chat.subtitleAdmin': 'Your business assistant: quotes, margins, costs, suppliers and what is worth offering. It sees the full catalog with costs and ROI.',
+  'negocio.chat.hi': 'How can I help?',
+  'negocio.chat.helpDist': 'I know the catalog with prices, your commission, your maximum discount and the channel rules. I do not have the house internal numbers.',
+  'negocio.chat.helpAdmin': 'I know the catalog with prices, purchase costs, who we buy from and the latest pricing engine snapshot.',
+  'negocio.chat.ask.quote': 'Build me a quote for 5 units of Retatrutide',
+  'negocio.chat.ask.earn': 'How much do I earn selling $10,000 at a 20% discount?',
+  'negocio.chat.ask.recommend': 'What should I recommend to a client looking to lose weight?',
+  'negocio.chat.ask.rules': 'What are the rules for my commission and my discounts?',
+  'negocio.chat.ask.margin': 'Which products leave me the thinnest margin?',
+  'negocio.chat.ask.supplier': 'Who do I buy Retatrutide from, and at what cost?',
+  'negocio.chat.placeholder': 'Type your business question...',
+  'negocio.chat.send': 'Send',
+  'negocio.chat.error': 'I could not answer right now. Try again in a minute.',
+  'negocio.chat.disclaimer': 'The assistant can be wrong. The price and commission that count are the ones on the order.',
+
   'admin.title': 'Admin Panel',
   'admin.subtitle': 'Manage Exygen Labs products, inventory, and orders',
   'admin.stats.revenue': 'Collected',
