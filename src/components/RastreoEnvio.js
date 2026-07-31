@@ -59,10 +59,16 @@ const fechaLarga = (valor, idioma) => {
   } catch { return d.toLocaleDateString(); }
 };
 
+/**
+ * ⛔ LA ENTREGA ESTIMADA NO SIEMPRE ES UNA FECHA. El pedido de Aidee traía
+ * `eta: "2 - 5 dias habiles"` —texto libre, capturado a mano— y tratarlo como fecha
+ * dejaba en pantalla un «Llegada estimada:» seguido de NADA, que se ve roto.
+ * Si parece fecha se formatea bonito; si no, se enseña tal cual lo escribieron.
+ */
 const fechaCorta = (valor, idioma) => {
   if (!valor) return '';
   const d = new Date(valor);
-  if (Number.isNaN(d.getTime())) return '';
+  if (Number.isNaN(d.getTime())) return String(valor);
   try {
     return d.toLocaleDateString(LOCALES[idioma] || 'es-MX',
       { weekday: 'long', day: 'numeric', month: 'long' });
@@ -172,6 +178,20 @@ const RastreoEnvio = ({ orderNumber }) => {
           );
         })}
       </ol>
+
+      {/* ⛔ SIN DETALLE, LA VERDAD — NO UN HUECO (Christián, 2026-07-31: «el rastreo
+          también debe aplicar para Aidee»). Hay guías que no se compraron por ninguna
+          plataforma —la de Aidee se compró a mano en el mostrador de FedEx— y de ésas
+          nunca vamos a tener los eventos. Antes eso dejaba la caja a medias, como si
+          algo se hubiera roto. Ahora se dice: la guía y la paquetería siguen ahí
+          arriba, la liga sigue abajo, y en medio va el porqué. */}
+      {eventos.length === 0 && datos.rastreo && (
+        <div className="mt-4 pt-4 border-t border-border" data-testid="rastreo-sin-detalle">
+          <p className="text-xs text-muted-foreground leading-relaxed">
+            {t('tracking.noDetail')}
+          </p>
+        </div>
+      )}
 
       {/* El historial que reportó la paquetería, del más nuevo al más viejo — que es el
           orden en que la gente lo lee cuando quiere saber «¿y ahora dónde está?». */}

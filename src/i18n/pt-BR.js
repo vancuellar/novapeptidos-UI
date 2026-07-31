@@ -1395,6 +1395,9 @@ const ptBR = {
   'tracking.step.entregado': 'Entregue',
   'tracking.eta': 'Chegada estimada: {{date}}',
   'tracking.history': 'Histórico do envio',
+  // Etiquetas compradas fora da plataforma não têm eventos. Dizemos isso em vez
+  // de deixar um vazio que parece falha.
+  'tracking.noDetail': 'O detalhe do rastreamento ainda não está disponível para esta etiqueta. Com o seu código você pode consultá-la direto no site da transportadora.',
   'tracking.issue': 'A transportadora relatou um problema com este envio. Escreva para nós com o número do seu pedido e vamos verificar junto com você.',
   'tracking.carrierSite': 'Ver No Site Da Transportadora',
   // A transportadora reporta com as palavras dela. Como o servidor já normaliza o

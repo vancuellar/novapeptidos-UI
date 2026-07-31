@@ -1400,6 +1400,9 @@ const enUS = {
   'tracking.step.entregado': 'Delivered',
   'tracking.eta': 'Estimated arrival: {{date}}',
   'tracking.history': 'Shipment history',
+  // Labels bought outside any platform have no events. We say so instead of
+  // leaving a gap that looks like a failure.
+  'tracking.noDetail': 'Detailed tracking is not available yet for this label. You can check it directly on the carrier site using your tracking number.',
   'tracking.issue': 'The carrier reported a problem with this shipment. Write to us with your order number and we will look into it with you.',
   'tracking.carrierSite': 'View On The Carrier Site',
   // The carrier reports in its own words. The server already normalizes the event

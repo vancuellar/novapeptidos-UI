@@ -1400,6 +1400,9 @@ const esMX = {
   'tracking.step.entregado': 'Entregado',
   'tracking.eta': 'Llegada estimada: {{date}}',
   'tracking.history': 'Historial del envío',
+  // Guías compradas fuera de plataforma (la de Aidee se compró en el mostrador):
+  // de ésas no hay eventos y se dice, en vez de dejar un hueco que parece falla.
+  'tracking.noDetail': 'El detalle del rastreo aún no está disponible para esta guía. Con tu número de guía puedes consultarla directo en el sitio de la paquetería.',
   'tracking.issue': 'La paquetería reportó un problema con este envío. Escríbenos con tu número de pedido y lo revisamos contigo.',
   'tracking.carrierSite': 'Ver En El Sitio De La Paquetería',
   // El carrier reporta en INGLÉS («Picked up»). Como el servidor ya normaliza el
