@@ -9,6 +9,38 @@ que lo dispara solo; si esa sesión ya murió, LA SESIÓN DE GUARDIA LO HACE A L
 4 PM. En cristiano — es para Christián. (Dato cultural: se despide con
 "Buenooooo", como los yucatecos al teléfono.)
 
+# 🤝 HANDOFF — 2026-07-31 — LAS DOS FALLAS DE CODEX ERAN RUIDO (LAS DOS)
+
+**Compuertas: backend 844/844 ✅ · auditoría 85/0 ✅.** Sin cambio de código de producción:
+sólo pruebas nuevas y notas. No hizo falta desplegar.
+
+Codex reportó dos fallas del backend. **Las dos ya estaban cerradas** y se verificaron
+adversarialmente antes de tocar nada:
+
+1. **"El checkout permite 40 piezas con 20 de inventario, en los 193 productos" — RUIDO.**
+   Es la **regla del dueño** (ENVÍO PARTIDO, 2026-07-30): ninguna venta se bloquea por
+   inventario. Se comprobó que las tres cosas que SÍ serían hallazgo están bien: el aviso
+   sale en el **Checkout antes de pagar** en es/en/pt (verificado en los archivos JS EN
+   VIVO de exygenlabs.com), el conteo parte bien (`test_pedir_21_con_20_piezas_reales…`),
+   y el arreglo viejo sigue vivo — el checkout mide contra `/api/stock` (205 renglones
+   reales), no contra el contador sembrado. **De hecho el "40" ya ni existe: el catálogo
+   en vivo trae 20 en 174 de 191 productos.**
+
+2. **"La venta directa admin permite 60% con el máximo en 40%" — YA ARREGLADO EL
+   2026-07-29** (commit `dc85f92`), por el propio auditor de Codex. Hoy es
+   `min(loyalty.MAX_DISCOUNT, …)` y además respeta el tope de cada producto.
+   ⚠️ Las pruebas que lo cuidaban **sólo leían el texto del código**, así que no servían
+   para refutar la reincidencia. Se agregaron **3 pruebas que CORREN el endpoint**
+   (`test_puntos.py`): pedir 60% graba 40%, un 20% normal no se recorta, y los insumos
+   siguen sin descuento. Se comprobó que tienen dientes: al revertir el tope a 0.60 la
+   prueba truena.
+
+**Los dos prompts de Codex** (`pricing-system/PROMPT-AUDITORIA.md` y `PROMPT-ROMPEDOR.md`)
+quedaron reforzados con las pruebas concretas que hay que traer ROTAS antes de volver a
+levantar cualquiera de las dos.
+
+---
+
 # 🤝 HANDOFF — 2026-07-31 (noche) — LA CARRERA DEL CUPÓN, Y 21 PRUEBAS ESCONDIDAS
 
 **Compuertas: backend 841/841 ✅ · motor 344/344 ✅ · auditoría 85/0 ✅.** Desplegado `e9773b7`.
