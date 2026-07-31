@@ -5661,3 +5661,39 @@ no autorizó. Están listas en `subidas_autorizadas.json` del motor. **Cuando de
 sitio sí se toca** (son precios públicos).
 
 **Compuertas:** motor **346/346** ✅, dos corridas en seco en cero.
+
+---
+
+## 💰 1MQ BAJA A $949 — EN VIVO — 2026-07-31
+
+**Verificado contra Certified EN VIVO antes de mover nada** (31-jul 11:31, su API pública).
+Los cinco precios coinciden exacto con lo guardado y la captura es de hoy:
+
+| producto | Certified en vivo | guardado | nosotros |
+|---|---:|---:|---:|
+| 5-Amino-1MQ 10 mg | $960 | $960 | **$949** (bajó de $1,259) |
+| Tirzepatida 60 mg | $4,580 | $4,580 | $3,919 |
+| Retatrutida 30 mg | $4,800 | $4,800 | $4,189 |
+| Semaglutida 10 mg | $2,300 | $2,300 | $1,799 |
+| Adipotida 10 mg | $3,100 | — | **no la vendemos** |
+
+**El 1MQ de 10 mg ya está en $949 en el sitio y en el backend en vivo** (verificado con una
+consulta a la API: `5AMINO1MQ-10MG $949.0`). Christián revirtió su decisión del 26-jul de
+quedarse arriba de Certified. El candado no ladraba porque estaba desactivado a propósito,
+no roto.
+
+### Pendiente de su palabra: 3 subidas topadas por la escalera
+
+Certified cobra mucho más que nosotros en tres, pero **la escalera no deja llegar hasta él**
+(el vial grande no puede salir más caro por mg que el chico):
+
+- **Tirzepatida 60 mg** — ⛔ no se puede subir: ya está en el tope del de 50 mg.
+- **Retatrutida 30 mg** $4,189 → **$4,299** (lo topa el de 40 mg, no Certified).
+- **Semaglutida 10 mg** $1,799 → **$1,849** (lo topa el de 15 mg).
+
+Para llegar de verdad a Certified habría que subir la escalera completa de cada uno.
+
+**Oportunidad:** Certified vende **Adipotida 10 mg a $3,100** y nosotros no la vendemos
+(está retirada por seguridad desde el 23-jul). DT y otros la surten. Decisión de Christián.
+
+**Compuertas:** motor **348/348** ✅.

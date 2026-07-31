@@ -3216,7 +3216,7 @@ export const fallbackProducts = [
       },
       {
         "presentation": "10 mg",
-        "price": 1259,
+        "price": 949,
         "stock": 40,
         "batch_number": "NP-5AMI10-2601",
         "id": "4f6e26cf-a4e3-4cde-be7b-0a031514b7aa",
