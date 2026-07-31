@@ -5,6 +5,7 @@ import {
 } from 'lucide-react';
 import { useLanguage } from '@/context/LanguageContext';
 import { WHATSAPP_URL } from '@/lib/contact';
+import RespuestaIA from '@/components/RespuestaIA';
 
 // El chat de IA vive en su propio servicio (Gemini), separado del backend principal.
 const CHAT_API = 'https://chat.exygenlabs.com/api';
@@ -236,10 +237,16 @@ const AIChatWidget = () => {
 
             {messages.map((m, i) => (
               <div key={i} className={`flex ${m.role === 'user' ? 'justify-end' : 'justify-start'}`}>
-                <div className={`max-w-[85%] rounded-2xl px-3.5 py-2.5 text-sm whitespace-pre-wrap leading-relaxed ${m.role === 'user'
-                  ? 'bg-[hsl(var(--primary))] text-[hsl(var(--primary-foreground))] rounded-br-md'
+                <div className={`max-w-[85%] rounded-2xl px-3.5 py-2.5 text-sm leading-relaxed ${m.role === 'user'
+                  ? 'whitespace-pre-wrap bg-[hsl(var(--primary))] text-[hsl(var(--primary-foreground))] rounded-br-md'
                   : 'bg-[hsl(var(--card))] border border-border shadow-[var(--shadow-sm)] rounded-bl-md'}`}>
-                  {m.content || (loading && i === messages.length - 1 ? '…' : '')}
+                  {/* En la TIENDA es peor que en el panel: un cliente que ve
+                      `**NAD+ 500**` en pantalla no vuelve. Se pinta. */}
+                  {m.role === 'assistant'
+                    ? (m.content
+                      ? <RespuestaIA texto={m.content} />
+                      : (loading && i === messages.length - 1 ? '…' : ''))
+                    : m.content}
                 </div>
               </div>
             ))}

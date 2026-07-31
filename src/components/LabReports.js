@@ -9,6 +9,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ReferenceArea } from 'recharts';
 import GraficaInteractiva from '@/components/charts/GraficaInteractiva';
+import RespuestaIA from '@/components/RespuestaIA';
 import {
   Upload, FlaskConical, Trash2, Sparkles, AlertTriangle, TrendingUp, Plus, Loader2, FileText,
 } from 'lucide-react';
@@ -365,9 +366,10 @@ const LabReports = () => {
                 </DialogTitle>
               </DialogHeader>
               <Disclaimer big text={interpretation.disclaimer} />
-              <div className="text-sm leading-relaxed whitespace-pre-wrap" data-testid="labs-interpretation">
-                {interpretation.interpretation}
-              </div>
+              {/* La escribe el modelo, así que se pinta como las del chat: sin
+                  asteriscos ni almohadillas a la vista. Ver RespuestaIA.js. */}
+              <RespuestaIA texto={interpretation.interpretation}
+                testId="labs-interpretation" className="text-sm" />
               <Disclaimer text="Si algo de esto te preocupa, llévale la hoja original a un profesional de la salud. Esta explicación no sustituye una consulta." />
             </>
           )}

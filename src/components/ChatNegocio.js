@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Sparkles, ArrowUp, Calculator, Percent, Target, Boxes, Coins, Truck } from 'lucide-react';
 import { Card } from '@/components/ui/card';
+import RespuestaIA from '@/components/RespuestaIA';
 import { API } from '@/lib/api';
 import { useLanguage } from '@/context/LanguageContext';
 import { useAuth } from '@/context/AuthContext';
@@ -176,10 +177,17 @@ export default function ChatNegocio() {
 
           {mensajes.map((m, i) => (
             <div key={i} className={`flex ${m.role === 'user' ? 'justify-end' : 'justify-start'}`}>
-              <div className={`max-w-[88%] rounded-2xl px-3.5 py-2.5 text-sm whitespace-pre-wrap leading-relaxed ${m.role === 'user'
-                ? 'bg-[hsl(var(--primary))] text-[hsl(var(--primary-foreground))] rounded-br-md'
+              <div className={`max-w-[88%] rounded-2xl px-3.5 py-2.5 text-sm leading-relaxed ${m.role === 'user'
+                ? 'whitespace-pre-wrap bg-[hsl(var(--primary))] text-[hsl(var(--primary-foreground))] rounded-br-md'
                 : 'bg-[hsl(var(--card))] border border-border shadow-[var(--shadow-sm)] rounded-bl-md'}`}>
-                {m.content || (cargando && i === mensajes.length - 1 ? '…' : '')}
+                {/* Lo del asistente se PINTA (negritas de verdad, viñetas de
+                    verdad). Antes salía el Markdown crudo y el distribuidor
+                    veía los asteriscos: `**NAD+ 500**`. Ver RespuestaIA.js. */}
+                {m.role === 'assistant'
+                  ? (m.content
+                    ? <RespuestaIA texto={m.content} />
+                    : (cargando && i === mensajes.length - 1 ? '…' : ''))
+                  : m.content}
               </div>
             </div>
           ))}

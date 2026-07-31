@@ -1,3 +1,54 @@
+# 🧹 2026-07-31 — LAS RESPUESTAS DE LA IA SALEN LIMPIAS (se veían los asteriscos)
+
+Orden de Christián: «las respuestas de la AI no están limpias, dejan código,
+ejemplo `**NAD+ 500**`. Eso NO me gusta y NO está bien.»
+
+El modelo contesta en **Markdown** y las burbujas de chat lo pintaban **crudo**:
+el asterisco, la almohadilla del título y la tubería de la tabla se leían tal
+cual en pantalla. Pasaba en los **dos** chats — el Asesor de Negocio del panel y
+el asistente de la tienda — y en la tienda es peor: lo ve el cliente.
+
+## Tres capas, no una
+
+1. **La pantalla lo pinta de verdad** — `src/components/RespuestaIA.js` (nuevo).
+   Negritas, viñetas con el punto de marca, listas numeradas, tablas que se
+   deslizan en móvil, citas y enlaces. Montado en `AIChatWidget.js` (tienda),
+   `ChatNegocio.js` (panel) y `LabReports.js` (la explicación del estudio de
+   laboratorio, que es el mismo texto de un modelo y tenía el mismo defecto).
+2. **Al modelo se le pide prosa limpia** — bloque «COMO SE VE TU RESPUESTA» en
+   `ai_assistant.SYSTEM_PROMPT` y en `chat_negocio.PROMPT_BASE`.
+3. **El servidor limpia lo que se escape** — `texto_ia.py` (nuevo).
+
+## Por qué a mano y no con `react-markdown`
+
+Peso y seguridad. Serían ~14 dependencias nuevas para pintar negritas, y este
+repo ya resolvió así la hoja de cotización. Pero la razón de fondo es que **el
+texto lo escribe un modelo**, y un modelo repite lo que le peguen en el mensaje:
+las librerías de Markdown aceptan HTML crudo por omisión y hay que apagarlo.
+Aquí no existe ese camino — **no hay un solo `dangerouslySetInnerHTML`**, todo
+sale como elementos de React. Probado en vivo: un `<script>` y un `<img
+onerror>` en la respuesta se pintan como texto y no ejecutan nada, y un enlace
+`javascript:` no llega a ser enlace (sólo pasan http, https, mailto y rutas
+propias, con `rel="noopener"`).
+
+## El detalle que costaba caro: el chorrito
+
+La respuesta llega en pedazos y un `**` puede venir **partido entre dos**. Si se
+limpiara pedazo por pedazo, medio marcador se colaría a la pantalla como basura.
+Por eso `LimpiezaEnVivo` suelta sólo hasta el último punto **seguro** y se
+guarda el resto; y del lado de la pantalla, una negrita abierta al final se
+pinta abierta hasta el final. Nunca se ve un asterisco suelto, ni medio segundo.
+`test_texto_ia.py` parte la respuesta en trozos de 1, 2, 3, 5, 7 y 13 caracteres
+y revisa **la pantalla en cada paso**.
+
+Lo que **no** se borra: las negritas bien cerradas, las listas y las tablas. La
+orden fue limpiar, no destruir — y la pantalla ya las pinta bonito.
+
+⚠️ **Sin probar con el modelo en vivo**: la cuota gratis de Gemini (20/día) se
+acabó el 2026-07-31. Se verificó con texto real de respuesta, streaming incluido.
+
+---
+
 # 📦 2026-07-31 — EL RASTREO VIVE EN NUESTRA PÁGINA (el iframe era imposible)
 
 Orden de Christián: «Quiero que el cliente rastree su pedido DENTRO de
@@ -373,6 +424,56 @@ la consola del navegador:
 2. **Había dos Mónicas.** La portada y el pie decían «Mónica **Fuentes**» (puesto
    el 30-jul); la orden del 31-jul dice «Mónica **Flores**». Se unificó todo a
    **Flores**. Si la buena era Fuentes, son 3 renglones de i18n para devolverlo.
+
+# 🆕 2026-07-31 — PROVEEDOR NUEVO: P43 «Jess» / Peptide Makers
+
+Cuenta de negocio de Hong Kong, **+852 7019 3438**, llegada por **anuncio de Instagram**.
+Mandó un solo archivo: `-Peptide Makers Catalog .pdf` (7 páginas, 8.6 MB), guardado en
+`pricing-system.nosync/proveedores/whatsapp/extraidos/Jess/`.
+
+| ID | Quién | Renglones | Moneda |
+|---|---|---:|---|
+| **P43** | **Jess / «Peptide Makers»** (+852 7019 3438, Hong Kong) | **234 en el PDF · 211 con precio · los 211 capturados (100%)** | ⚠️ **no la declaró**: dice «$», se dedujo USD |
+
+Los 23 renglones restantes traen **«X» en la columna de precio** en su propia lista: no es
+captura perdida. El PDF no lo abre el importador, así que la transcripción la hizo Claude
+página por página a un CSV (`proveedores/procesados/Jess +85270193438.csv`) — no un OCR a
+ciegas.
+
+**Dónde le gana al más barato de hoy (tamaño contra tamaño, sin contar a Lucy que está
+vetada):** en **31 tamaños**, pero todos de catálogo secundario. Los más grandes: TB Frag
+10 mg $6.80/pz (hoy $13.80), las 8 medidas de HGH (−10% a −39%), HGH Fragment 176-191
+5/10/12/15 mg (−9% a −29%), B12 $4.50 (hoy $6.45), L-Carnitine 600/1200 mg (−22% a −27%),
+Bronchogen 20 mg $7.80 (hoy $10.50), HCG 1000 IU $2.50, P21 $23.80, Melatonina $4.20,
+B7-33 10 mg $14.50, BPC-157 20 mg $8.00, Pinealon, SS-31 5 mg, Vesugen, KPV 10 mg,
+SLU-PP-332, Thymalin y Hexarelina.
+
+**Donde NO gana es en lo que da el dinero:** en Retatrutida, Tirzepatida, Semaglutida y
+Cagrilintida está claramente arriba en TODAS las medidas (Reta 60 mg $23.80 vs $10.15 de
+Mia; Tirze 20 mg $11.00 vs $4.80 de Chuangyan; Sema 10 mg $5.00 vs $3.50).
+
+⛔ **NO SE MOVIÓ NINGÚN PRECIO NUESTRO.** Igual que con P40/P41/P42, el test
+`test_precios.py::test_el_costo_de_la_maestra_es_el_del_proveedor_mas_barato` **queda en
+rojo a propósito** (347 pasan, 1 falla): avisa que **23 costos** de la MAESTRA ya no son los
+del proveedor más barato. Cerrarlo pide `refrescar_costos.py` + `reprecio.py`, que **mueve
+precios** — decisión de Christián. Y otra vez: el 31-jul otra sesión estaba escribiendo
+`MAESTRA.xlsx` en ese mismo minuto; tocarla habría pisado su trabajo.
+
+⚠️ **Todo lo que promete está SIN COMPROBAR** y no se le ha comprado nada: acepta tarjeta
+de crédito, «la mejor calidad» y reposición total si se pierde el paquete. **No dijo envío,
+ni pedido mínimo, ni días de entrega, ni bodega, ni COAs.** Vende además cosas que no son
+péptidos RUO (toxina botulínica, HGH, HCG, HMG, EPO, Lemon Bottle).
+
+⚠️ **Sus nombres traen erratas** y se transcriben tal cual: `CHRP-2`/`CHRP-6` por
+GHRP-2/GHRP-6, `CJC-1296/1297` por CJC-1295, `Semag Lutide`, `Trizepatide`. Por eso el
+motor **no empareja solo** su GHRP-2 y GHRP-6 de 10 mg, que a $3.80/pz serían los más
+baratos (hoy $4.00). Tres renglones (`LC396`, `WA3`, `WA10`) vienen sin nombre de producto
+en su lista.
+
+⚠️ **Hay un mensaje suyo que WhatsApp Web no sincronizó** («Waiting for this message. Check
+your phone»): está en el teléfono de Christián y no se pudo leer.
+
+Ficha: `pricing-system.nosync/proveedores/md/P43-jess.md`.
 
 # 🆕 2026-07-31 — TRES PROVEEDORES NUEVOS DEL WHATSAPP (P40, P41, P42)
 
