@@ -849,6 +849,8 @@ const enUS = {
   'cotizador.enviar': 'Send',
   'cotizador.correoPide': "Your client's email",
   'cotizador.correoNota': 'They get the quote with your code and a button that opens the cart already set up, so the purchase is credited to you.',
+  // Tu cliente no sabe que el código es tuyo: quien firma es la casa.
+  'cotizador.correoPrivacidad': 'Your name and email never travel: the email is signed by Mónica Flores, from customer service, and if your client replies we pass the message on to you. The sale is still yours.',
   'cotizador.correoEnviado': 'Quote sent to {{email}}',
   'cotizador.correoInvalido': "That email doesn't look right. Please check it.",
   'cotizador.correoError': 'The quote could not be sent. Please try again.',
@@ -913,7 +915,7 @@ const enUS = {
   'home.edu2.body': 'Your report documents the identity and purity of the compound, measured by HPLC and mass spectrometry.',
   'home.edu3.title': 'Verify your batch',
   'home.edu3.body': 'Every vial carries its printed lot number. Match it against its COA before using it in your research.',
-  'home.rep.name': 'Mónica Fuentes',
+  'home.rep.name': 'Mónica Flores',
   'home.rep.role': 'Sales representative',
   'home.rep.body': 'A real person on the other side: Mónica helps you put your order together, answers shipping and payment questions, and follows up until it arrives. Monday to Saturday.',
   'home.rep.cta': 'Message Mónica',

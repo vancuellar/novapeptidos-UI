@@ -451,6 +451,10 @@ export default function CotizadorDistribuidor({
                     </Button>
                   </div>
                   <p className="text-[11px] text-muted-foreground leading-relaxed">{t('cotizador.correoNota')}</p>
+                  {/* Que no sea una sorpresa: el correo lo firma la atención de la
+                      casa, no el distribuidor. Su nombre y su correo no viajan al
+                      cliente — es la regla, y más vale que la lea aquí. */}
+                  <p className="text-[11px] text-muted-foreground leading-relaxed">{t('cotizador.correoPrivacidad')}</p>
                 </div>
               )}
             </div>

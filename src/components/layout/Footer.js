@@ -128,7 +128,7 @@ const Footer = () => {
                   ligado a él. Al tenerlo, restaurar aquí el <li> con formato
                   +52 (XXX) XXX-XXXX y liga tel:. */}
               <li className="flex items-center gap-2"><Mail className="h-4 w-4 text-[hsl(var(--primary))]" /> hola@exygenlabs.com</li>
-              {/* ===== Mónica Fuentes — la cara del negocio, en chiquito ===== */}
+              {/* ===== Mónica Flores — la cara del negocio, en chiquito ===== */}
               {/* Movida aquí, DEBAJO del correo (Christián, 2026-07-30): antes vivía
                   suelta al final del home, sobre la sección B2B. Mónica es la
                   representante de ventas REAL (Christián, 2026-07-28). Sin foto no se
@@ -152,7 +152,7 @@ const Footer = () => {
               </li>
               {/* ⛔ Aquí había un SEGUNDO enlace de WhatsApp suelto
                   (data-testid="footer-whatsapp", Christian 2026-07-28). Al mover a
-                  Mónica Fuentes al footer (2026-07-30) quedaron dos ligas pegadas
+                  Mónica Flores al footer (2026-07-30) quedaron dos ligas pegadas
                   con el mismo @exygenlabs y el mismo wa.me. Se quitó el suelto y se
                   conservó el de Mónica, que trae nombre y rol de la representante.
                   NO volver a agregar un WhatsApp aparte en este bloque. */}

@@ -844,6 +844,8 @@ const ptBR = {
   'cotizador.enviar': 'Enviar',
   'cotizador.correoPide': 'E-mail do seu cliente',
   'cotizador.correoNota': 'Ele recebe o orçamento com o seu código e um botão que abre o carrinho já montado, para que a compra seja creditada a você.',
+  // Tu cliente no sabe que el código es tuyo: quien firma es la casa.
+  'cotizador.correoPrivacidad': 'Seu nome e seu e-mail não viajam: o e-mail é assinado por Mónica Flores, do atendimento ao cliente, e se o seu cliente responder nós passamos o recado para você. A venda continua sendo sua.',
   'cotizador.correoEnviado': 'Orçamento enviado para {{email}}',
   'cotizador.correoInvalido': 'Esse e-mail não parece certo. Confira.',
   'cotizador.correoError': 'Não foi possível enviar o orçamento. Tente de novo.',
@@ -908,7 +910,7 @@ const ptBR = {
   'home.edu2.body': 'Seu relatório documenta a identidade e a pureza do composto, medidas por HPLC e espectrometria de massas.',
   'home.edu3.title': 'Verifique seu lote',
   'home.edu3.body': 'Cada frasco traz seu número de lote impresso. Assim você mantem rastreabilidade total em sua pesquisa.',
-  'home.rep.name': 'Mónica Fuentes',
+  'home.rep.name': 'Mónica Flores',
   'home.rep.role': 'Representante de vendas',
   'home.rep.body': 'Uma pessoa real do outro lado: a Mônica ajuda você a montar seu pedido, tira dúvidas de envio e pagamento e acompanha até chegar. De segunda a sábado.',
   'home.rep.cta': 'Falar com a Mônica',

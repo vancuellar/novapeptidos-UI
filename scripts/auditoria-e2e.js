@@ -264,6 +264,35 @@ async function catalogo({ prods }) {
   return porSku;
 }
 
+// ------------------------------- el código de descuento no delata a quien es
+// ⛔ REGLA DE CHRISTIÁN (2026-07-31): el cliente NUNCA se entera de que el código
+// que usó es de María. `/api/discount-code/{codigo}` no pide sesión —el carrito lo
+// consulta antes de que nadie entre— así que lo que devuelva lo puede leer
+// cualquiera con la dirección. Sólo puede traer el porcentaje y las condiciones.
+//
+// Esto se comprueba EN VIVO porque es lo que pytest no puede hacer: el candado
+// puede estar bien escrito en el repo y mal desplegado en el servidor.
+async function codigoDeDescuento(codigosReales) {
+  const permitidos = new Set(['code', 'discount_rate', 'min_order']);
+
+  // Un código inventado no puede soltar nada, ni siquiera en el mensaje de error.
+  const falso = await fetch(`${API}/discount-code/NOEXISTE-99-XXXX`);
+  revisar(falso.status === 404, 'código inventado devuelve 404', String(falso.status));
+
+  // Y los de verdad: SIN sesión, como los ve internet.
+  for (const { codigo, nombre, correo, id } of codigosReales) {
+    const r = await fetch(`${API}/discount-code/${encodeURIComponent(codigo)}`);
+    if (r.status !== 200) { mal(`el código ${codigo} ya no valida`, String(r.status)); continue; }
+    const texto = await r.text();
+    const sobra = Object.keys(JSON.parse(texto)).filter((k) => !permitidos.has(k));
+    revisar(sobra.length === 0, `el validador de ${codigo} sólo trae el porcentaje`, sobra.join(','));
+    // El sobre completo como texto: no depende de acordarse de una lista de campos.
+    const delatan = [nombre, correo, id].filter((x) => x && texto.includes(x));
+    revisar(delatan.length === 0, `el validador de ${codigo} no delata al distribuidor`,
+            delatan.join(' | '));
+  }
+}
+
 // ------------------------------------------------------------------ Admin
 async function admin(porSku) {
   const email = process.env.EXYGEN_ADMIN_EMAIL;
@@ -307,6 +336,22 @@ async function admin(porSku) {
     const r = await fetch(API + ep, { headers: h });
     revisar(r.status === 200, `admin ${ep}`, String(r.status));
   }
+
+  // Con la llave del admin se sacan los códigos DE VERDAD que andan sueltos, y se
+  // consultan SIN sesión para ver lo que ve el cliente. Sin esto la revisión sería
+  // teórica: probaría un código inventado, que es justo el que nunca delata a nadie.
+  const dists = await j(await fetch(`${API}/admin/distributors`, { headers: h }));
+  const codigos = [];
+  for (const d of dists) {
+    const det = await j(await fetch(`${API}/admin/distributors/${d.id}/detail`, { headers: h }));
+    for (const c of (det.codes || []).filter((x) => x.active)) {
+      codigos.push({ codigo: c.code, nombre: d.name, correo: d.email, id: d.id });
+    }
+    if (d.distributor_code) {
+      codigos.push({ codigo: d.distributor_code, nombre: d.name, correo: d.email, id: d.id });
+    }
+  }
+  await codigoDeDescuento(codigos);
 
   if (!CON_COMPRAS) {
     console.log('(sin --compras: me salto las compras reales)');
@@ -389,7 +434,8 @@ async function main() {
   idioma();
   traducciones();
   const porSku = await catalogo(cat);
-  await admin(porSku);
+  await codigoDeDescuento([]);   // la parte que no necesita llave
+  await admin(porSku);           // y dentro, la de verdad: los códigos vivos
 
   console.log(resultados.map((r) => `${r.bien ? 'OK   ' : 'FALLA'}  ${r.nombre}${r.detalle ? '  — ' + r.detalle : ''}`).join('\n'));
   const fallas = resultados.filter((r) => !r.bien);

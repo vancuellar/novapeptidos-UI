@@ -789,6 +789,8 @@ const esMX = {
   'cotizador.enviar': 'Enviar',
   'cotizador.correoPide': 'Correo de tu cliente',
   'cotizador.correoNota': 'Le llega la cotización con tu código y un botón que abre el carrito ya armado, para que la compra se te acredite.',
+  // Tu cliente no sabe que el código es tuyo: quien firma es la casa.
+  'cotizador.correoPrivacidad': 'Tu nombre y tu correo no viajan: el correo lo firma Mónica Flores, de atención a clientes, y si tu cliente responde nosotros te pasamos el recado. La venta sigue siendo tuya.',
   'cotizador.correoEnviado': 'Cotización enviada a {{email}}',
   'cotizador.correoInvalido': 'Ese correo no se ve bien. Revísalo.',
   'cotizador.correoError': 'No se pudo enviar la cotización. Intenta de nuevo.',
@@ -865,7 +867,7 @@ const esMX = {
   'home.edu2.body': 'Tu reporte documenta la identidad y pureza del compuesto medidas por HPLC y espectrometría de masas.',
   'home.edu3.title': 'Verifica tu lote',
   'home.edu3.body': 'Cada vial lleva su número de lote impreso. Así mantienes trazabilidad total en tu investigación.',
-  'home.rep.name': 'Mónica Fuentes',
+  'home.rep.name': 'Mónica Flores',
   'home.rep.role': 'Representante de ventas',
   'home.rep.body': 'Una persona real del otro lado: Mónica te ayuda a armar tu pedido, resuelve dudas de envío y pago, y te da seguimiento hasta que llega. Lunes a sábado.',
   'home.rep.cta': 'Escribirle a Mónica',
