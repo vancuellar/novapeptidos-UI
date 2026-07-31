@@ -43,6 +43,10 @@ const Checkout = () => {
   const sobrePedidoIds = new Set(sobrePedido.map((l) => l.product_id));
   const navigate = useNavigate();
   const [payment, setPayment] = useState('spei');
+  // Cómo quiere que le mandemos el pedido cuando no sale completo: 'partido' (lo que
+  // hay sale ya) o 'completo' (todo junto). Nace en 'partido' porque es lo que la casa
+  // hacía hasta hoy y porque es lo que nunca deja mercancía pagada detenida.
+  const [envioModo, setEnvioModo] = useState('partido');
   const [submitting, setSubmitting] = useState(false);
   const [summaryOpen, setSummaryOpen] = useState(true);
   const savedPhone = parsePhone(user?.phone);
@@ -289,6 +293,11 @@ const Checkout = () => {
         // el estorbo no.
         terms_accepted_at: ruoAcceptedAt(),
         payment_method: payment,
+        // Cómo pidió que se le mande cuando falta mercancía. Es una PREFERENCIA, no
+        // dinero: no mueve un peso del total, por eso viaja tal cual. El servidor la
+        // normaliza igual y la respeta al despachar (una guía o dos).
+        // Si el pedido sale completo esto no cambia nada.
+        shipping_preference: sobrePedido.length > 0 ? envioModo : 'partido',
         shipping: envioACobrar,
         // ⛔ Viaja el ID de la cotización, NUNCA su precio. El servidor va por el
         // monto a la cotización que él mismo guardó, y la revalida contra este CP y
@@ -500,6 +509,39 @@ const Checkout = () => {
             {payment === 'cripto' && (
               <div className="mt-4 rounded-xl border border-border bg-[hsl(var(--secondary))]/50 p-4 text-sm text-muted-foreground" data-testid="checkout-crypto-note">
                 {t('checkout.cryptoNote')}
+              </div>
+            )}
+
+            {/* ⛔ CÓMO QUIERE QUE LE MANDEMOS SU PEDIDO — LO ELIGE ÉL, NO NOSOTROS.
+                (Christián, 2026-07-31.)
+
+                Sólo aparece cuando de verdad hay algo que decidir: si el pedido sale
+                completo de la bodega, esta pregunta no tiene sentido y no se pinta.
+                Preguntar de más en la pantalla de pagar cuesta ventas.
+
+                Hasta hoy la casa partía SIEMPRE sin preguntar: a quien tenía prisa le
+                servía, y a quien no quería dos entregas le molestaba. Nadie le
+                preguntó nunca. */}
+            {sobrePedido.length > 0 && (
+              <div className="mt-5 rounded-xl border border-border p-4" data-testid="checkout-envio-partido">
+                <div className="text-sm font-medium">{t('shippingChoice.title')}</div>
+                <div className="mt-1 text-xs text-muted-foreground">{t('shippingChoice.hint')}</div>
+                <RadioGroup value={envioModo} onValueChange={setEnvioModo} className="mt-3 space-y-2" data-testid="checkout-envio-partido-radio">
+                  {['partido', 'completo'].map((modo) => (
+                    <Label
+                      key={modo}
+                      htmlFor={`envio-${modo}`}
+                      className={`flex items-start gap-3 rounded-lg border p-3 cursor-pointer transition-all ${envioModo === modo ? 'border-[hsl(var(--primary))] ring-2 ring-[hsl(var(--ring))] ring-offset-1' : 'border-border hover:bg-[hsl(var(--secondary))]'}`}
+                      data-testid={`checkout-envio-${modo}`}
+                    >
+                      <RadioGroupItem value={modo} id={`envio-${modo}`} className="mt-0.5" />
+                      <div>
+                        <div className="font-medium text-sm">{t(`shippingChoice.${modo}.label`)}</div>
+                        <div className="text-xs text-muted-foreground">{t(`shippingChoice.${modo}.desc`)}</div>
+                      </div>
+                    </Label>
+                  ))}
+                </RadioGroup>
               </div>
             )}
 

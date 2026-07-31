@@ -92,6 +92,24 @@ const OrdersPanel = ({ orders = [] }) => {
                         <div className="flex justify-between font-bold text-base"><span>{t('common.total')}</span><span>{formatMXN(o.total)}</span></div>
                         <div className="flex justify-between"><span className="text-muted-foreground">{t('common.payment')}</span><span>{t(`payment.${o.payment_method}.label`)}</span></div>
                         <div className="text-xs text-muted-foreground mt-2">{t('account.shipTo', { address: o.customer.address, city: o.customer.city, state: o.customer.state, postalCode: o.customer.postal_code })}</div>
+                        {/* ⛔ CÓMO VOLVER A LOS DATOS DE PAGO. Christián, 2026-07-31:
+                            «que pueda volver a verlos las veces que haga falta».
+                            La CLABE y la ficha de OXXO viven en la ficha del pedido,
+                            pero desde aquí NO HABÍA NI UN ENLACE: para volver a
+                            verlas había que teclear la URL a mano. Un pedido
+                            pendiente de pago sin camino de regreso a cómo pagarlo es
+                            una venta que se cae sola. */}
+                        {o.status === 'pendiente' && (
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            className="mt-3 w-full"
+                            onClick={() => navigate(`/pedido/${o.order_number}`)}
+                            data-testid="account-order-payment-details"
+                          >
+                            {t('account.seePaymentDetails')}
+                          </Button>
+                        )}
                       </div>
                     </DialogContent>
                   </Dialog>

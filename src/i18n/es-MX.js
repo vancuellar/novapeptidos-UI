@@ -247,6 +247,15 @@ const esMX = {
   // ni con plazos duros (Christián, 2026-07-30): una nota chiquita bajo CADA producto
   // sobre pedido, en el carrito, el checkout y la confirmación.
   'backorder.itemNote': 'Se surte desde EUA: tarda un poco más en llegar. Te mantendremos al tanto.',
+  // ⛔ CÓMO QUIERE QUE LE MANDEMOS SU PEDIDO. Christián, 2026-07-31: cuando el pedido
+  // no sale completo, la casa dejaba de partirlo o lo partía por su cuenta. Ahora se
+  // le pregunta y se respeta. Los plazos son los de siempre, sin promesas nuevas.
+  'shippingChoice.title': '¿Cómo prefieres que te lo mandemos?',
+  'shippingChoice.hint': 'Una parte de tu pedido se surte desde EUA. Tú decides.',
+  'shippingChoice.partido.label': 'Mándame Lo Disponible Ya',
+  'shippingChoice.partido.desc': 'Lo que ya tenemos sale en 2 a 5 días y el resto después, en un segundo envío. Recibes dos números de guía, uno por cada envío.',
+  'shippingChoice.completo.label': 'Prefiero Esperar Y Recibir Todo Junto',
+  'shippingChoice.completo.desc': 'Sale todo en un solo envío cuando esté completo, aproximadamente en una semana. Un solo número de guía.',
   'backorder.badge': 'Sobre pedido — llega ~1 semana después',
   'backorder.cardNote': 'Sobre pedido (~1 semana)',
   'admin.stockTab': 'Inventario',
@@ -705,6 +714,14 @@ const esMX = {
   // RUO —fines informativos, investigación in vitro, sin promesa terapéutica—
   // que es lo que de verdad protege. Aquí también viven los métodos de pago:
   // antes tenían su propia sección y se sentía repetido.
+  //
+  // 2026-07-31 — Christian extendió esta misma decisión a TODO el sitio, los
+  // correos y la hoja de cotización, porque la frase de consumo humano/animal
+  // generaba reclamos. Se conserva ÚNICAMENTE en Términos y Condiciones
+  // (info.terminos.body y src/data/info/terminos.js), que es exactamente como
+  // lo tiene Certified: su pie y sus fichas no la traen, pero su "Aviso legal"
+  // y su cláusula 3 de T&C sí. Ese es el respaldo defensivo; no lo quites de
+  // ahí sin orden expresa.
   'footer.legalBody': 'Toda la información y las descripciones de producto de este sitio tienen fines educativos e informativos. Nuestros productos son solo para uso en investigación in vitro y no están destinados a diagnosticar, tratar, curar ni prevenir ninguna enfermedad.',
   'footer.paymentsInline': 'Pagos seguros:',
   'footer.backToTop': 'Volver arriba',
@@ -716,7 +733,7 @@ const esMX = {
   'ruo.gate.title': 'Antes de entrar, confirma esto',
   'ruo.gate.intro': 'Exygen Labs es un proveedor de péptidos y compuestos para investigación científica. Para continuar necesitamos que reconozcas en qué términos se ofrece todo lo que encontrarás aquí.',
   'ruo.gate.point1': 'Todo el material del catálogo es para uso exclusivo en investigación (RUO), en laboratorio y en ensayos in vitro.',
-  'ruo.gate.point2': 'Nada de lo que vendemos es un medicamento ni un suplemento: no está destinado a consumo humano ni animal, ni a diagnóstico, tratamiento o prevención de enfermedades.',
+  'ruo.gate.point2': 'Nada de lo que vendemos es un medicamento ni un suplemento: es material de laboratorio y no está destinado a diagnosticar, tratar, curar ni prevenir ninguna enfermedad.',
   'ruo.gate.point3': 'Declaro que tengo 18 años o más y que adquiero este material con fines de investigación.',
   'ruo.gate.checkbox': 'Confirmo los tres puntos anteriores',
   'ruo.gate.accept': 'Entiendo y acepto',
@@ -919,7 +936,7 @@ const esMX = {
   'trust.payment.desc': 'OXXO, SPEI, tarjeta y cripto. El monto lo confirma nuestro servidor en cada pedido.',
   'trust.support.title': 'Soporte Por WhatsApp',
   'trust.support.desc': 'Escríbenos al {{phone}}.',
-  'trust.ruo': 'Material exclusivamente para investigación (RUO). No es para consumo humano ni para uso diagnóstico o terapéutico.',
+  'trust.ruo': 'Material exclusivamente para investigación (RUO), en laboratorio y ensayos in vitro. No es para uso diagnóstico ni terapéutico.',
   // ===== Widget colapsable "Tienda de confianza" (componente TrustWidget) =====
   // Diseño pedido por Christian (2026-07-30): tarjeta verde, colapsable, con
   // resumen de 3 columnas y una lista de certificaciones al abrir. Reutiliza
@@ -945,7 +962,7 @@ const esMX = {
   // no se dice de qué laboratorio salió.
   'home.transparency.bullet4': 'Fabricado en laboratorios de Estados Unidos',
   'home.learnProcess': 'Conoce nuestro proceso',
-  'home.ruoNotice': 'Nuestros productos no están destinados al consumo humano ni animal, ni para diagnóstico, tratamiento, cura o prevención de enfermedades. Su uso es responsabilidad exclusiva de investigadores calificados.',
+  'home.ruoNotice': 'Nuestros productos son solo para uso en investigación in vitro y no están destinados a diagnosticar, tratar, curar ni prevenir ninguna enfermedad. Su uso es responsabilidad exclusiva de investigadores calificados.',
   'home.labAlt': 'Laboratorio Exygen Labs',
   'home.coaAlt': 'Transparencia y COA',
   'home.kicker': 'Research Grade Peptides',
@@ -1022,7 +1039,7 @@ const esMX = {
   'edu.title': 'Guía para empezar con péptidos de investigación',
   'edu.subtitle': 'Una introducción clara para quien apenas comienza: qué son, cómo se estudian y dónde leer la literatura científica original.',
   'edu.ruoTitle': 'Solo para uso en investigación (RUO)',
-  'edu.ruoBody': 'Todos nuestros productos son exclusivamente para investigación de laboratorio. No son medicamentos, no están aprobados para uso humano ni veterinario, y nada en esta página es consejo médico. Consulta siempre a un profesional de la salud.',
+  'edu.ruoBody': 'Todos nuestros productos son exclusivamente para investigación de laboratorio. No son medicamentos ni suplementos, y nada en esta página es consejo médico. Consulta siempre a un profesional de la salud.',
   'edu.whatTitle': '¿Qué son los péptidos?',
   'edu.whatBody': [
     'Los péptidos son cadenas cortas de aminoácidos, los mismos bloques que forman las proteínas. El cuerpo produce miles de ellos de forma natural para señalizar procesos como reparación de tejido, metabolismo o inflamación.',
@@ -1340,6 +1357,13 @@ const esMX = {
   'account.detail': 'Detalle',
   'account.orderTitle': 'Pedido {{number}}',
   'account.shipTo': 'Envío a: {{address}}, {{city}} {{state}} {{postalCode}}',
+  // Vuelta a los datos de pago (CLABE de SPEI, ficha de OXXO) desde Mis Pedidos.
+  // Antes no había enlace y había que teclear la URL del pedido a mano.
+  'account.seePaymentDetails': 'Ver Datos Para Pagar',
+  // La ficha de OXXO, recuperable. Antes se perdía al cerrar la pestaña.
+  'oxxo.title': 'Tu ficha de pago OXXO',
+  'oxxo.instructions': 'Abre tu ficha, muéstrala en la caja de cualquier OXXO y paga en efectivo. En cuanto se refleje el pago te avisamos por correo.',
+  'oxxo.openVoucher': 'Abrir Mi Ficha De Pago',
   'account.name': 'Nombre',
   'account.email': 'Correo',
   'account.accountType': 'Tipo de cuenta',
@@ -1364,6 +1388,20 @@ const esMX = {
   'order.noteTitle': 'Nota:',
   'order.noteBody': 'Los métodos de pago se muestran como propuesta. Aun no se procesa el cobro en linea; nuestro equipo te contactara para coordinar el pago y el envío.',
   'order.viewMyOrders': 'Ver mis pedidos',
+
+  // EL RASTREO, DENTRO DE NUESTRA PÁGINA (Christián, 2026-07-31). El iframe a FedEx no
+  // se puede —mandan `x-frame-options: SAMEORIGIN`—, así que le pedimos los eventos a
+  // su API y los pintamos aquí. Ver RastreoEnvio.js.
+  'tracking.title': 'Dónde va tu pedido',
+  'tracking.preparing': 'Estamos preparando tu paquete. En cuanto salga, aquí aparece la guía.',
+  'tracking.step.recibido': 'Pedido recibido',
+  'tracking.step.transito': 'En camino',
+  'tracking.step.reparto': 'En reparto',
+  'tracking.step.entregado': 'Entregado',
+  'tracking.eta': 'Llegada estimada: {{date}}',
+  'tracking.history': 'Historial del envío',
+  'tracking.issue': 'La paquetería reportó un problema con este envío. Escríbenos con tu número de pedido y lo revisamos contigo.',
+  'tracking.carrierSite': 'Ver En El Sitio De La Paquetería',
 
   'info.envios.title': 'Envíos y entregas',
   'info.envios.body': ['Enviamos a todo el territorio de la Republica Mexicana por FedEx aereo.', 'Despacho el mismo día: los pedidos realizados antes de las 5:00 pm se envian ese mismo día habil; después, al siguiente día habil.', 'Tiempo de entrega estimado: 2 a 5 días habiles (lunes a viernes, sin contar festivos). Algunas zonas pueden variar.', 'Recibiras el número de rastreo por correo automaticamente en cuanto se genere la guia.', 'No realizamos envíos internacionales ni usamos servicios de reenvio.', 'Verifica cuidadosamente tu dirección al finalizar la compra. Los cambios de dirección solo se pueden solicitar antes de que el pedido sea enviado.'],

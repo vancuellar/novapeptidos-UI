@@ -8,6 +8,10 @@ import { toast } from 'sonner';
 import api, { esCaidaDeApi, formatMXN } from '@/lib/api';
 import { useLanguage } from '@/context/LanguageContext';
 import AvisoSobrePedido from '@/components/AvisoSobrePedido';
+// El rastreo se ve AQUÍ y no en la página de FedEx (Christián, 2026-07-31). El iframe
+// que él propuso no se puede: las paqueterías mandan `x-frame-options: SAMEORIGIN` y el
+// marco sale en blanco. Ver RastreoEnvio.js.
+import RastreoEnvio from '@/components/RastreoEnvio';
 import { track } from '@/lib/track';
 
 const OrderConfirmation = () => {
@@ -132,6 +136,30 @@ const OrderConfirmation = () => {
                 </div>
               </div>
             )}
+            {/* ⛔ LA FICHA DE OXXO SE PODÍA PERDER PARA SIEMPRE. La URL de Mercado
+                Pago —que ES la ficha con el código de barras— viajaba una sola vez
+                en la respuesta del checkout y no se guardaba en ningún lado: quien
+                cerraba esa pestaña antes de pagar ya no tenía cómo volver a ella.
+                Ahora el servidor la guarda en el pedido y desde aquí se recupera las
+                veces que haga falta, que es lo que pidió Christián (2026-07-31). */}
+            {order.payment_method === 'oxxo' && order.card_checkout_url
+              && order.status === 'pendiente' && (
+              <div className="mt-4 rounded-lg border border-[hsl(var(--primary))]/30 bg-[hsl(var(--accent))] p-4 text-left" data-testid="oxxo-voucher">
+                <div className="flex items-center gap-2 font-heading font-semibold mb-2">
+                  <Landmark className="h-4 w-4 text-[hsl(var(--primary))]" /> {t('oxxo.title')}
+                </div>
+                <p className="text-xs text-muted-foreground mb-3">{t('oxxo.instructions')}</p>
+                <Button asChild variant="outline" size="sm">
+                  <a href={order.card_checkout_url} target="_blank" rel="noopener noreferrer" data-testid="oxxo-voucher-link">
+                    {t('oxxo.openVoucher')}
+                  </a>
+                </Button>
+              </div>
+            )}
+            {/* Dónde va el paquete, sin salir de exygenlabs.com. Se pinta solo cuando
+                el pedido ya está pagado: antes de eso no hay nada que rastrear y un
+                bloque de envío encima de unas instrucciones de pago sólo confunde. */}
+            {order.paid && <RastreoEnvio orderNumber={orderNumber} />}
             <div className="mt-4 rounded-lg bg-[hsl(var(--warning))] border border-[hsl(var(--warning-border))] text-[hsl(var(--warning-foreground))] p-3 text-xs leading-relaxed">
               <strong>{t('order.noteTitle')}</strong> {t('order.noteBody')}
             </div>

@@ -62,6 +62,97 @@ Juan del Río QRO 76807.
 
 ---
 
+# 📬 2026-07-31 — UN SOLO CORREO, Y LA GUÍA SE COMPRA SOLA
+
+Dos órdenes de Christián el mismo día: **simplificar los correos al cliente** y
+**comprar la guía automáticamente al entrar el pago**. Sus palabras: «nadie debe
+recibir tres correos por una compra. Consolida.»
+
+## Qué correo recibe el cliente en cada caso
+
+| Cómo pagó | ¿Se compró la guía? | Correos | Qué dice cada uno |
+|---|---|---|---|
+| Tarjeta / cripto | Sí | **1** | pedido + pago confirmado + número de guía, todo junto |
+| Tarjeta / cripto | No (freno o fallo) | 2 | pago confirmado («el rastreo llega en cuanto salga») → luego el rastreo |
+| SPEI / OXXO | Sí | **2** | CLABE o ficha → pago confirmado + guía |
+| SPEI / OXXO | No | 3 | CLABE → pago confirmado → rastreo *(el único caso de 3; ver abajo)* |
+| Envío partido | Dos guías | +1 | cada aviso dice qué lleva ese paquete |
+
+**La regla, en una línea: un correo por EVENTO REAL y jamás dos por el mismo
+evento.** Los eventos son tres — hay que pagar (sólo si el pago no es inmediato),
+entró el dinero, salió un paquete — y cuando dos caen juntos en el tiempo, caen
+juntos en el mismo correo.
+
+**El truco que quita el tercer correo:** la guía se compra ANTES de mandar el correo
+de pago confirmado (`_confirmar_y_avisar` en server.py), así ese correo ya la lleva
+adentro. Antes iban en paralelo y salían dos.
+
+- **La puerta es una sola**: `avisar_al_cliente(order, evento)`. El candado de
+  «nunca dos veces» vive en el pedido (`emails_sent`), apartado con un `$addToSet`
+  condicionado en un solo paso — igual que el cupón y los puntos.
+- `send_payment_confirmed_email` quedó **jubilada**. Reconectarla al flujo de compra
+  devuelve el tercer correo; lo dice en su propio docstring.
+- Con tarjeta y cripto ya **no** sale el correo de «recibimos tu pedido». Sí sale si
+  la pasarela no da liga de pago (si no, se quedaría sin nada por escrito).
+
+## La compra automática, con dos frenos y un candado
+
+`envios.COMPRAR_GUIA_AL_PAGAR = True` (encendido por orden suya).
+
+1. **Freno del empaque.** Sólo existe UN empaque: la bolsa stand-up 12×15×1 cm, ~4
+   piezas. **1-4 piezas compra sola; 5 o más se detiene** y le avisa a él. Antes todo
+   se cotizaba como 1 kg en caja chica y lo que no cabía volvía como **recobro por
+   sobrepeso**. Es tabla **configurable** desde Admin → Envíos
+   (`PUT /admin/envios/empaques`): el día que compre cajas las captura ahí y ese
+   rango empieza a comprar solo, **sin desplegar**.
+2. **Freno de gasto: $400** (`envios.TOPE_GUIA_AUTOMATICA_MXN`). Se revisa ENTRE
+   cotizar y comprar. Si el servicio pedido se pasa pero hay otra permitida más
+   barata que sí cabe, se toma ésa; si ninguna cabe, no compra y pide visto bueno.
+3. **Candado atómico** (`label_lock`): dos webhooks simultáneos no compran dos guías.
+4. **Si falla** (sin saldo, API caída, dirección rechazada): correo URGENTE +
+   campanita a Christián, **reintento solo cada 10 min** hasta 6 veces, y el cliente
+   recibe su pago confirmado diciendo que el rastreo llega en cuanto salga. **Nunca
+   se manda un número de guía que no existe.**
+
+Un **freno** nunca se reintenta (espera una decisión); un **fallo** sí.
+
+## Envío partido: ahora lo elige el cliente
+
+En el checkout, y **sólo cuando el pedido no sale completo**, se le pregunta:
+«¿te mando lo disponible ya (2-5 días) o esperas a tenerlo todo junto (~1 semana)?».
+Se guarda en `shipping_preference` y se respeta al despachar: con `completo` la guía
+no se compra mientras falte mercancía. Textos en los tres idiomas, Title Case.
+
+## Los datos de pago ya no se pierden
+
+- **OXXO**: la liga de Mercado Pago (que ES la ficha con el código de barras) se
+  guarda en el pedido y se puede volver a abrir desde `/pedido/:numero`. Antes
+  viajaba una sola vez y quien cerraba la pestaña ya no podía pagar.
+- **SPEI**: la CLABE ya persistía; ahora además hay botón «Ver Datos Para Pagar»
+  desde Mis Pedidos, que antes no tenía ni un enlace.
+
+## De regalo: lo interno dejó de viajar al navegador
+
+`pedido_para_el_cliente` ahora filtra también `shipping_cost`, `shipping_absorbed`,
+`shipping_quote` y los `label_*`. La regla de «el cliente nunca ve la cifra del
+envío» estaba cuidada en los correos y **no** en la API — y `/orders/{numero}` ni
+siquiera pide sesión.
+
+## ⚠️ Lo que falta que decida Christián
+
+1. **Medidas y peso de las cajas** chica y mediana, para el día que las compre. Sin
+   ellas, todo pedido de 5+ piezas seguirá parándose a preguntar. **No se
+   inventaron**: una medida inventada es justo lo que produce el recobro.
+2. **SPEI + sin guía = 3 correos.** Es el único camino donde no se pudo bajar de
+   tres, y los tres son eventos reales (CLABE / entró el dinero / salió el paquete).
+   Callar el de «pago confirmado» dejaría a alguien que ya transfirió sin saber que
+   su dinero llegó. Se dejó así; si prefiere otra cosa, se cambia en un lugar.
+
+Pruebas: `test_correos_y_guia_automatica.py` (31, con dientes: corren el endpoint y
+**cuentan los correos que de verdad salieron**). Suite backend en 940, cero fallas.
+
+---
+
 # 📹 CITA HOY VIERNES 2026-07-31, 4:00 PM (hora de Cancún) — VIDEO SEMANAL DE ADS
 Orden de Christián: video de 1-2 min explicando la semana de publicidad de Meta
 (gasto, clics, WhatsApps, compras del píxel/CAPI, embudo, mejor anuncio y UNA
