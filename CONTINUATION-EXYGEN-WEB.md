@@ -108,12 +108,28 @@ La causa NUNCA fue el servidor: fue publicar builds rotos. Ya hay candado de
 imports (`.githooks/pre-commit`), `desplegar.sh` construye desde copia limpia y
 verifica con navegador real, y `vigilante.py` mide la disponibilidad de verdad.
 
-## 🔜 PRÓXIMA TAREA #1 — DESCRIPCIONES EN CRISTIANO (en curso)
+## ✅ DESCRIPCIONES EN CRISTIANO — ESCRITAS Y COMMITEADAS, SIN PUBLICAR
 Christián: *"Esto solo lo entiende un puto químico. Imagínate que se lo estás
 explicando a una señora de 65 años."* Ejemplo real: 5-Amino-1MQ decía "Inhibidor
-de NNMT explorado en adipocitos". Se están reescribiendo las descripciones CORTA
-y LARGA de LOS ~191 productos en los 3 idiomas. **Él quiere ver 10 ejemplos
-antes/después ANTES de publicar.**
+de NNMT explorado en adipocitos"; ahora dice **"Se estudia por su efecto en las
+células que almacenan grasa."**
+
+Reescritas la CORTA y la LARGA de **los 96 compuestos (194 presentaciones)** en
+los 3 idiomas (commit `a53a5fd`). Corrección de tono suya del mismo día: **nada
+que espante** — fuera "no hay ensayo clínico", "evidencia limitada", "no apto
+para consumo humano"; se habla en positivo de lo que SÍ se ha explorado, como
+hace Certified, y la advertencia legal se queda en Términos. Se conserva el
+marco RUO y sigue prohibido prometer resultados.
+
+**Hallazgo:** los catálogos de i18n en inglés y portugués estaban PARADOS —sólo
+8 productos y con slugs viejos (`bpc-157-5mg`) que ya no existen, así que ni uno
+solo se aplicaba. Ahora cubren los 96, con nombre, forma y conservación.
+
+⛔ **NO DESPLEGADO.** Falta que Christián apruebe la muestra de 10 antes/después.
+Cuando dé el visto bueno: `./desplegar.sh` **y además** `python3
+pricing-system.nosync/sync_backend.py --apply` (el sitio en vivo lee las
+descripciones del backend, no de `fallbackCatalog.js`), y `node
+exportar_compendio.mjs` en el repo RBAC para que el Asesor no cite las viejas.
 
 ## 🔜 PRÓXIMA TAREA #2 — ADELGAZAR EL HOME EN MÓVIL
 Feedback de María (22): *"mucho ruido, mucha información, la gente no sabe dónde
