@@ -70,6 +70,19 @@ tipo factura). Debe incluir:
   Admin tenga esta vista completa (el bloque "a quién le compro" ya existe;
   hacerla buscable/instantánea). Objetivo: una sola fuente instantánea.
 
+**MÁS ÓRDENES de Christián (2026-07-30 noche):**
+- **Búsqueda por abreviatura**: el buscador del catálogo (y el del Cotizador)
+  debe encontrar péptidos por nombre O por abreviatura/apodo: RT→Retatrutida,
+  TZ/Tirze→Tirzepatida, Sema→Semaglutida, BPC, TB, MT2, NAD, etc. (el motor ya
+  tiene diccionario de apodos en x.py/alias — reutilizarlo, no inventar otro).
+- **Chat IA de NEGOCIO, solo admin + distribuidores** (separado del chat
+  público de clientes): asistente que responda cosas de negocio — "ármame una
+  cotización de X", "¿cuánto gano si vendo Y con 20%?", "¿qué le recomiendo a
+  un cliente que busca Z?" — conectado a precios públicos + SUS topes/comisiones
+  (los del rol que pregunta), SIN costos/proveedores para distribuidores (eso
+  solo admin). Detrás de login, con el candado de rol en el SERVIDOR. Ojo:
+  cuota Gemini gratis 20/día — considerar billing o modelo aparte.
+
 ## ⏳ PENDIENTE (además de lo del handoff anterior)
 1. Christián: llenar [corchetes] del ACUERDO-DISTRIBUIDOR-BORRADOR.md (razón
    social/RFC, fuero, plazos) y ordenar encender ACUERDO_DISTRIBUIDOR_ACTIVO.
