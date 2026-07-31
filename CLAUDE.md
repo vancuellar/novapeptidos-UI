@@ -41,6 +41,38 @@ Tras un clon nuevo hay que activarlo una vez (`core.hooksPath` no se versiona):
 git config core.hooksPath .githooks
 ```
 
+## El catálogo NO es un respaldo
+
+`src/data/fallbackCatalog.js` se llama "de respaldo" y no lo es. La ficha de
+producto, el catálogo, la portada y el carrito leen **siempre** de ahí; del API en
+vivo sólo viene el inventario (`/stock`). O sea que ese archivo es **el precio que
+ve el cliente**: si se separa del backend, la caja cobra otra cosa.
+
+Se editaba a mano y se desincronizaba en silencio. Para eso está:
+
+```bash
+npm run catalogo:revisar        # sólo mira y reporta (seguro, no toca nada)
+npm run catalogo:sincronizar    # además arregla precios e IDs desde el backend
+```
+
+Casa por SKU y baja del backend `price`, `id`, `presentation` y `descuentable`.
+NO da de alta ni de baja productos: un SKU nuevo necesita descripción, categorías
+y escalera de dosis, y eso lo escribe una persona — el script los enumera y ahí se
+queda. Siempre `git diff` antes de commitear lo que escribió.
+
+**El `id` importa tanto como el precio.** Es lo que viaja al backend como
+`product_id` cuando el cliente compra. Si el backend recrea un producto, su UUID
+cambia y el del sitio se queda apuntando a un fantasma.
+
+**Qué pasó el 2026-07-31.** Se encontraron 5-amino-1MQ 10 mg y 50 mg con el UUID
+viejo: el backend los recreó el 26 de julio y el sitio siguió cinco días mandando
+un `product_id` muerto al carrito. Los 194 precios estaban bien — pero nadie lo
+sabía, porque `npm run auditoria` sólo comparaba precios, y su comprobación de
+"topes" era humo (comparaba `commission_cap ?? 0.5` contra `commission_cap ?? 0.5`
+cuando ese campo ya no existía en ninguno de los dos lados, así que salía en verde
+sin mirar nada). Hoy la auditoría compara además IDs, presentaciones y
+`descuentable`, y los topes de verdad contra `/distributor/quote-caps`.
+
 ## Publicar
 
 ### ⛔ NO SE DESPLIEGA SIN AVISARLE A CHRISTIÁN

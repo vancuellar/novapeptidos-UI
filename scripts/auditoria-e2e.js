@@ -243,8 +243,16 @@ async function catalogo({ prods }) {
 
   // Lo más importante de todo: el sitio le enseña un precio al cliente y el
   // backend le cobra otro si estos dos se separan.
+  //
+  // OJO CON EL ALCANCE (2026-07-31). `fallbackCatalog.js` se llama "de respaldo"
+  // pero NO lo es: la ficha, el catálogo y la portada leen SIEMPRE de ahí y el API
+  // sólo aporta el inventario (`/stock`). O sea que esto de aquí abajo no compara
+  // "el plan B" contra el backend — compara EL precio que ve el cliente contra el
+  // que va a cobrar la caja. Por eso corre en cada auditoría.
   const difPrecio = [];
-  const difTope = [];
+  const difId = [];
+  const difPres = [];
+  const difDesc = [];
   const huerfanos = [];
   for (const p of prods) {
     for (const v of (p.variants || [])) {
@@ -253,15 +261,70 @@ async function catalogo({ prods }) {
       if (Math.round(v.price) !== Math.round(b.price)) {
         difPrecio.push(`${v.sku}: sitio $${v.price} vs API $${b.price}`);
       }
-      const cf = v.commission_cap == null ? 0.5 : v.commission_cap;
-      const cb = b.commission_cap == null ? 0.5 : b.commission_cap;
-      if (Math.abs(cf - cb) > 0.001) difTope.push(`${v.sku}: ${cf} vs ${cb}`);
+      // El id ES lo que viaja al backend como `product_id` (ProductDetail manda
+      // `active.id`). Si el backend recrea un producto, su UUID cambia y el del
+      // sitio se queda apuntando a un fantasma: la caja no lo encuentra al cobrar.
+      // Pasó con 5AMINO1MQ-10MG y -50MG, recreados el 2026-07-26 — cinco días con
+      // dos presentaciones mandando un id muerto, y esta auditoría en verde porque
+      // sólo miraba el precio.
+      if (v.id && b.id && v.id !== b.id) difId.push(`${v.sku}: sitio ${v.id} vs API ${b.id}`);
+      if ((v.presentation || '').trim() !== (b.presentation || '').trim()) {
+        difPres.push(`${v.sku}: '${v.presentation}' vs '${b.presentation}'`);
+      }
+      // `descuentable` sí decide dinero en el carrito (CAPS en CartContext).
+      if ((v.descuentable !== false) !== (b.descuentable !== false)) {
+        difDesc.push(`${v.sku}: sitio ${v.descuentable} vs API ${b.descuentable}`);
+      }
     }
   }
   revisar(difPrecio.length === 0, 'precios del sitio = backend', difPrecio.slice(0, 5).join(' | '));
-  revisar(difTope.length === 0, 'topes del sitio = backend', difTope.slice(0, 5).join(' | '));
+  revisar(difId.length === 0, 'IDs del sitio = backend', difId.slice(0, 5).join(' | '));
+  revisar(difPres.length === 0, 'presentaciones del sitio = backend', difPres.slice(0, 5).join(' | '));
+  revisar(difDesc.length === 0, 'descuentable del sitio = backend', difDesc.slice(0, 5).join(' | '));
   revisar(huerfanos.length === 0, 'SKUs del sitio existen en el backend', huerfanos.slice(0, 5).join(','));
+
+  // Y al revés: algo que el backend vende y el sitio no enseña es dinero que no se
+  // cobra. No es una falla —puede ser a propósito— pero se dice en voz alta.
+  const enSitio = new Set(prods.flatMap((p) => (p.variants || []).map((v) => v.sku)));
+  const soloBackend = Object.keys(porSku).filter((s) => !enSitio.has(s));
+  revisar(soloBackend.length === 0, 'el sitio enseña todo lo que el backend vende',
+          soloBackend.slice(0, 8).join(','));
+
+  // ⛔ NO PONER AQUÍ UNA COMPROBACIÓN DE `commission_cap`. La hubo hasta hoy y era
+  // humo: comparaba `v.commission_cap ?? 0.5` contra `b.commission_cap ?? 0.5`, y
+  // desde que el tope de comisión se sacó del catálogo público (Christián,
+  // 2026-07-30) ese campo NO EXISTE en ninguno de los dos lados. O sea que comparaba
+  // 0.5 contra 0.5 en las 194 variantes y daba "topes del sitio = backend  OK" sin
+  // haber mirado nada. El tope de verdad lo sirve `/distributor/quote-caps` y se
+  // revisa abajo, en `topesDeDistribuidor()`, que necesita la llave del admin.
   return porSku;
+}
+
+// ------------------------------------------- topes de verdad (con llave de admin)
+// El número que decide cuánto descuento aguanta cada producto vive SÓLO en el
+// servidor. El carrito de un distribuidor se lo pide a `/distributor/quote-caps` y,
+// cuando llega, MANDA sobre lo que diga el bundle. Aquí se comprueba que ese mapa
+// esté completo y venga en llaves que el carrito sepa buscar: lo indexa por
+// `product_id` y por `sku` (itemDiscountRate en CartContext), así que un cap que
+// llegue con un id que el sitio no usa es un cap que el carrito nunca va a aplicar
+// — y el cliente vería un total más barato del que le van a cobrar.
+async function topesDeDistribuidor(porSku, h, prods) {
+  const r = await fetch(`${API}/distributor/quote-caps`, { headers: h });
+  if (r.status !== 200) { mal('topes de distribuidor (/distributor/quote-caps)', String(r.status)); return; }
+  const caps = (await j(r)).caps || [];
+  revisar(caps.length > 0, 'el servidor sirve topes de distribuidor', `${caps.length} topes`);
+
+  const llaves = new Set();
+  for (const p of prods) for (const v of (p.variants || [])) { if (v.id) llaves.add(v.id); if (v.sku) llaves.add(v.sku); }
+  const invisibles = caps.filter((c) => !llaves.has(c.product_id)).map((c) => c.product_id);
+  revisar(invisibles.length === 0, 'cada tope llega con una llave que el carrito busca',
+          invisibles.slice(0, 5).join(','));
+
+  const conTope = new Set(caps.map((c) => c.product_id));
+  const sinTope = Object.values(porSku).filter((b) => b.descuentable !== false && !conTope.has(b.id))
+    .map((b) => b.sku);
+  revisar(sinTope.length === 0, 'todo producto descuentable trae su tope',
+          `${sinTope.length}: ${sinTope.slice(0, 5).join(',')}`);
 }
 
 // ------------------------------- el código de descuento no delata a quien es
@@ -294,7 +357,7 @@ async function codigoDeDescuento(codigosReales) {
 }
 
 // ------------------------------------------------------------------ Admin
-async function admin(porSku) {
+async function admin(porSku, prods) {
   const email = process.env.EXYGEN_ADMIN_EMAIL;
   const password = process.env.EXYGEN_ADMIN_PASSWORD;
 
@@ -352,6 +415,7 @@ async function admin(porSku) {
     }
   }
   await codigoDeDescuento(codigos);
+  await topesDeDistribuidor(porSku, h, prods);
 
   if (!CON_COMPRAS) {
     console.log('(sin --compras: me salto las compras reales)');
@@ -435,7 +499,7 @@ async function main() {
   traducciones();
   const porSku = await catalogo(cat);
   await codigoDeDescuento([]);   // la parte que no necesita llave
-  await admin(porSku);           // y dentro, la de verdad: los códigos vivos
+  await admin(porSku, cat.prods); // y dentro, la de verdad: los códigos vivos y los topes
 
   console.log(resultados.map((r) => `${r.bien ? 'OK   ' : 'FALLA'}  ${r.nombre}${r.detalle ? '  — ' + r.detalle : ''}`).join('\n'));
   const fallas = resultados.filter((r) => !r.bien);

@@ -66,6 +66,8 @@
     "build": "craco build && node scripts/prerender-routes.js",
     "test": "craco test",
     "verificar:imports": "node scripts/verificar-imports.js",
+    "catalogo:revisar": "node scripts/sincronizar-catalogo.js",
+    "catalogo:sincronizar": "node scripts/sincronizar-catalogo.js --escribir",
     "auditoria": "node scripts/auditoria-e2e.js",
     "auditoria:completa": "node scripts/auditoria-e2e.js --compras",
     "e2e:cripto": "node scripts/e2e-nowpayments.js",

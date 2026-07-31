@@ -3219,7 +3219,7 @@ export const fallbackProducts = [
         "price": 949,
         "stock": 40,
         "batch_number": "NP-5AMI10-2601",
-        "id": "4f6e26cf-a4e3-4cde-be7b-0a031514b7aa",
+        "id": "e1a5f910-648a-4cc0-85ae-6f3911dfe05d",
         "sku": "5AMINO1MQ-10MG",
         "descuentable": true
       },
@@ -3228,7 +3228,7 @@ export const fallbackProducts = [
         "price": 2999,
         "stock": 40,
         "batch_number": "NP-5AMI50-2601",
-        "id": "0b8dd26f-4148-4eb3-a90f-67bfee083209",
+        "id": "4f7de286-6f49-491d-ae36-059a5cd10db0",
         "sku": "5AMINO1MQ-50MG",
         "descuentable": true
       }
