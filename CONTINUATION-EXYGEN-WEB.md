@@ -1,3 +1,108 @@
+# 📦 2026-07-31 — TODO EL QUE COMPRA ES CLIENTE (tenga cuenta o no)
+
+Orden de Christián: «Todas las personas que nos compran se vuelven Clientes,
+independientemente de si crean o no crean un perfil de usuario. Cuando abro un cliente,
+debo de poder ver todo su historial: compras, etc.»
+
+## Cuántos había sin ficha
+
+Contra el backend en vivo, no de memoria: de **4 pedidos vivos**, **2 eran de invitados**
+y eran **2 personas distintas**.
+
+| Persona | Correo | Pedido | Cobrado | Vino con |
+|---|---|---|---|---|
+| Brenda Iliana Oseguera | `breniog73@yahoo.com.mx` | `EX-20260730-5930` | $4,827 | MONICAF-7451 (María) |
+| Aidee Liliana García | `lilygarciahdz@hotmail.com` | `EX-20260730-2906` | $2,830 | MONICAF-7451 (María) |
+
+Las dos pagaron, a las dos se les puso guía, la comisión se pagó — y **ninguna de las dos
+salía en la lista de Clientes del Panel**: se armaba sólo con `users.role == 'user'`.
+$7,657 de compras sin una ficha a la que volver.
+
+## Cómo se identifica a alguien sin cuenta
+
+Su **correo**, en minúsculas y sin espacios: «Juan@X.mx» y «juan@x.mx» son la misma
+persona. Su id es `invitado:<correo>` — la misma llave que ya usaban los pedidos, así que
+el nombre abre la ficha desde cualquier lista.
+
+Y también sus **correos alternos**. La casa ya había fusionado dos cuentas con
+`alt_emails`, y el login mira las dos desde entonces; la ficha miraba sólo `email`, así
+que quien compró de invitado con la dirección que después quedó de alterna abría una
+ficha aparte. **Una persona, una ficha** — ahora también aquí.
+
+## Qué se ve al abrir un cliente
+
+La ficha unificada de siempre (la de los ocho lugares), ahora completa. Ejemplo real,
+Brenda, invitada sin cuenta:
+
+| | |
+|---|---|
+| Contacto | correo, `+52 (44) 2521-7088`, Prolongación el Roble 73, San Juan del Río, Querétaro 76807 |
+| Vino de | **María Neunfeld · MONICAF-7451** |
+| Pedidos | `EX-20260730-5930` · enviado · $4,827 · pagado · FedEx `875164874865` con liga |
+| Total pagado / por cobrar | $4,827 / $0 |
+| Primera y última compra | 30 jul 2026 (las dos) |
+| Lo que suele llevar | Retatrutida 20 mg · NAD+ 1000 mg · Agua bacteriostática 10 mL |
+| Puntos, cupones, nota | los de siempre (sólo admin) |
+
+Lo nuevo: **primera compra** (antes sólo la última) y **lo que suele llevar** — la
+respuesta a «¿qué le ofrezco?» sin abrir pedido por pedido.
+
+## Si mañana abre cuenta
+
+Ya estaba resuelto y sigue igual: al **confirmar su correo**, sus pedidos de invitado se
+adoptan solos, con sus puntos y con el distribuidor que la trajo. La confirmación es el
+candado — adoptar por correo a secas sería regalarle el historial de compras de
+cualquiera al primero que se registre tecleando el correo de otro.
+
+## Duplicados: se REPORTAN, no se fusionan
+
+Juntar dos fichas por error no tiene vuelta atrás. `/admin/clientes/duplicados` los
+señala y decide Christián. Cuatro reglas: invitado con cuenta · correo repetido (mira los
+alternos) · teléfono repetido · mismo nombre con dos correos.
+
+**Lo que encontró hoy en la base real — 2, los dos para que Christián decida:**
+
+| Quién | Cuenta 1 | Cuenta 2 |
+|---|---|---|
+| María Neunfeld | `marianeunfeld0@gmail.com` (distribuidora) | `maria.itlegal@gmail.com` (clienta) |
+| Christián Cuéllar | `admin@exygenlabs.com` (admin) | `christiancuellar@gmail.com` (cliente) |
+
+Ninguno se tocó.
+
+## La lista de Clientes
+
+8 renglones donde antes había 6: los 6 de cuenta más Brenda y Aidee. Cada uno dice **Con
+Cuenta** o **Invitado**, y hay **buscador por nombre, correo o teléfono** (sin acentos y
+sin mayúsculas). Al invitado no se le pintan Convertir, Bloquear ni «Ver como» —necesitan
+un usuario detrás—; la ficha sí, siempre. El mosaico de Clientes del tablero cuenta lo
+mismo que la lista que abre, para que no se contradigan.
+
+## ⛔ Y un candado que faltaba
+
+El interruptor de «ve los datos de contacto de sus clientes» (hoy sólo María) ya mandaba
+en la ficha del pedido y en el autollenado, pero **NO en `/clientes/{id}/ficha`** — la
+ruta que se abre desde ocho lugares. Cualquier distribuidor abriendo a su propio cliente
+se llevaba su correo, teléfono, domicilio y qué compuestos compra: justo lo que la regla
+del 2026-07-23 prohíbe. Ahora se recorta **en el servidor**, no en la pantalla.
+
+## Verificado en vivo (no sólo en pruebas)
+
+| Como | Qué pidió | Resultado |
+|---|---|---|
+| Admin | lista de clientes | 8, con Brenda y Aidee ✅ |
+| Admin | duplicados | 2 encontrados ✅ |
+| María (ver como) | ficha de Brenda, su clienta | 200, con su comisión de $1,350 ✅ |
+| María (ver como) | ficha de Paz, que no es suya | **403** ✅ |
+| María (ver como) | lista de clientes del admin | **403** ✅ |
+| María (ver como) | reporte de duplicados | **403** ✅ |
+| María (ver como) | guardar la nota (escritura) | **403** ✅ |
+
+Interruptor de contacto en producción: María `True`, Alanis `False`, Javier `False`.
+
+**1088 pruebas backend, 0 fallas · auditoría 86, 0 fallas.**
+
+---
+
 # 📦 2026-07-31 — EL RASTREO TAMBIÉN PARA AIDEE (guías compradas fuera del sistema)
 
 Orden de Christián: «El rastreo también debe aplicar para Aidee y para todos los
