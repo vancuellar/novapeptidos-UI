@@ -1,3 +1,51 @@
+# ✅ SESIÓN 2026-07-31 (tarde) — LO QUE SE HIZO, SIN PUBLICAR
+
+**Ojo: el bloque de abajo ("nada está en vivo") YA NO ES CIERTO.** Se comprobó
+contra el bundle en vivo (`main.73ea4a05.js`): el hero nuevo y "Arma Mi Plan"
+SÍ están publicados, y la frase del "lote impreso" ya no existe ni en el repo
+ni en el sitio. Alguien desplegó después de escribir esa nota.
+
+## Hecho hoy (commiteado en main, PENDIENTE DE PUBLICAR)
+1. **TAREA #1 CERRADA: la calculadora ya dice cuánto dura el vial.**
+   - Nueva columna "Te dura" en la cuadrícula de niveles (ahí se ve la escalera
+     completa: al subir de nivel el vial se gasta más rápido, y como la
+     frecuencia cambia por nivel la cuenta no es proporcional).
+   - Nuevo indicador "Te dura" junto a Concentración y Dosis por vial.
+   - Aviso cuando el vial rinde MÁS que su vida útil ya mezclado, con la
+     presentación que sí le conviene. El ejemplo de Christián sale exacto:
+     Retatrutida 120 mg a 5 mg/semana → "24 semanas … lo recomendable es usarlo
+     dentro de 4 semanas … te acomoda mejor el vial de 20 mg".
+   - Los tres idiomas.
+2. **La vida útil reconstituida: se investigó y el resultado fue UN solo número.**
+   `src/data/vidaUtilReconstituido.js` = **28 días**, fuente USP <797>
+   (contenedor multidosis, desde la primera punción) + etiquetas FDA de
+   Humatrope, Genotropin y Norditropin. El informe completo con las citas está
+   en `../INVESTIGACION-VIDA-UTIL-RECONSTITUIDO.md`.
+   ⛔ **NO metas una tabla por compuesto.** Se buscó: ni Bachem, ni GenScript,
+   ni Sigma, ni AnaSpec publican días a 2-8 °C para péptidos en solución. El
+   "4 a 6 semanas" que circula en tiendas de péptidos no tiene fuente. Los 56
+   días de Ozempic son pluma de fábrica y NO se extrapolan a un vial que uno
+   reconstituye. Sería repetir la trampa de las dosis "por familia".
+3. **En el Admin, el nombre del producto abre su ficha pública** (pestaña
+   nueva). Era texto muerto: para leer la descripción que ve el cliente había
+   que salirse del panel. Los slugs del backend traen el gramaje
+   (`bronchogen-10-mg`) y la ficha los acepta — `getFallbackProductBySlug` les
+   quita la presentación. Comprobado en vivo.
+
+## Compuertas de hoy
+Auditoría **95 bien / 0 fallas** · candado de imports en verde · `npm run build`
+limpio (137 rutas prerenderizadas) · calculadora probada en navegador real con
+Retatrutida (120 mg y 10 mg) y BPC-157.
+
+## Pendiente que dejó Christián (su lista)
+- 16. 21 productos a la venta sin identidad química investigada (y por eso sin ficha).
+- 17. ~~La portada dice "cada vial lleva su lote impreso"~~ → **ya no lo dice**, verificado.
+- 18. Medir de nuevo el 8.7% cuando pase tráfico nuevo.
+- 19. Doble cotizador de envíos: falta que Envíos Internacionales compita en todas las rutas.
+- Fusionar las pestañas Productos e Inventario del Admin (lo preguntó; se puede).
+
+---
+
 # ⚠️ ESTADO REAL AL CIERRE — 2026-08-01 madrugada — LÉELO ANTES QUE NADA
 
 ## NADA DE LO DE AYER ESTÁ EN VIVO. TODO ESTÁ EN main, SIN PUBLICAR.

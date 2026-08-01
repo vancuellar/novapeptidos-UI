@@ -1690,7 +1690,23 @@ const Admin = () => {
               <TableBody>
                 {productosFiltrados.map((p) => (
                   <TableRow key={p.id}>
-                    <TableCell className="font-medium">{p.name}{p.featured && <Badge variant="secondary" className="ml-2 text-[10px]">{t('admin.featured')}</Badge>}</TableCell>
+                    {/* El nombre abre la FICHA PÚBLICA del producto, en otra pestaña
+                        (Christián, 2026-07-31). Era texto muerto: para leer la
+                        descripción que ve el cliente había que salirse del panel,
+                        ir al catálogo y buscarlo a mano. El lápiz sigue siendo el
+                        que edita; esto sólo es para ver. Va en pestaña nueva a
+                        propósito: quien revisa fichas revisa varias seguidas y no
+                        debe perder la tabla ni el filtro que traía puesto. */}
+                    <TableCell className="font-medium">
+                      {p.slug ? (
+                        <a href={`/producto/${p.slug}`} target="_blank" rel="noopener noreferrer"
+                          data-testid="admin-open-product"
+                          className="underline decoration-dotted underline-offset-4 hover:text-[hsl(var(--primary))] transition">
+                          {p.name}
+                        </a>
+                      ) : p.name}
+                      {p.featured && <Badge variant="secondary" className="ml-2 text-[10px]">{t('admin.featured')}</Badge>}
+                    </TableCell>
                     <TableCell className="text-xs text-muted-foreground">{categories.find((c) => c.slug === p.category)?.name || p.category}</TableCell>
                     <TableCell className="font-mono-tech text-xs">{p.purity}</TableCell>
                     <TableCell><Badge variant="outline" className={p.stock <= 5 ? 'text-[hsl(var(--warning-foreground))] border-[hsl(var(--warning-border))] bg-[hsl(var(--warning))]' : ''}>{p.stock}</Badge></TableCell>

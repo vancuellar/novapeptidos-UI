@@ -10,6 +10,7 @@ import { Popover, PopoverTrigger, PopoverContent } from '@/components/ui/popover
 import { Command, CommandInput, CommandList, CommandEmpty, CommandItem } from '@/components/ui/command';
 import { Syringe, Droplet, FlaskConical, Search, Check, ChevronsUpDown, RotateCcw, Copy, Link2, FileDown, ShoppingBag, CalendarClock, AlertTriangle } from 'lucide-react';
 import { fallbackProducts } from '@/data/fallbackCatalog';
+import { vidaUtilDe } from '@/data/vidaUtilReconstituido';
 import { useLanguage } from '@/context/LanguageContext';
 
 // Jeringas de insulina más comunes en México. units = ml * (units/ml).
@@ -110,6 +111,26 @@ const START_WATER_TAIL = {
 const START_UNITS = { es: 'rayitas', en: 'units', pt: 'risquinhos' };
 
 const MIN_UNITS = 2;                       // menos de esto no se puede medir en la jeringa
+
+// CUÁNTAS APLICACIONES CABEN EN UNA SEMANA, según la frecuencia del catálogo.
+// Con esto y las dosis que rinde el vial sale cuánto le dura al cliente.
+//
+// Tres frecuencias se quedan FUERA a propósito (null): `as_needed` no tiene
+// ritmo, `mt` cambia de ritmo a mitad del camino y `daily_cycle` alterna ciclos
+// con descansos. En esos tres el vial se gasta a un ritmo que no podemos
+// prometer, y un número inventado aquí se convierte en un consejo de compra
+// equivocado. Se sigue diciendo cuántas dosis rinde, que eso sí es aritmética.
+const DOSIS_POR_SEMANA = {
+  weekly: 1,
+  daily: 7,
+  daily_2x: 14,
+  '2x_week': 2,
+  '3x_week': 3,
+  eod: 3.5,
+  as_needed: null,
+  mt: null,
+  daily_cycle: null,
+};
 
 // Péptidos que se dosifican en mg (GLP-1/incretinas + unos pocos). El resto va en mcg.
 const MG_DOSED = /tirzepat|retatrut|semaglut|cagrilint|mazdut|survodut|liraglut|dulaglut|nad|carnit|glutat|humanin|reta|sema|tirze|klow|glow|tesamorelin|tb-500|ghk/i;
@@ -449,6 +470,43 @@ const ReconstitutionCalculator = ({ variant = 'full', purchased = [], onTrack, s
         ? { water: suggest.pick.w, units: suggest.pick.units, drawMl: suggest.pick.drawMl, conc: suggest.pick.conc } : null)
     : (known ? { water: Number(waterMl), units: known.units, drawMl: known.drawMl, conc: known.conc } : null);
   const dosesPerVial = doseMcg ? Math.floor((mg * 1000) / doseMcg) : 0;
+
+  // ¿CUÁNTO LE DURA EL VIAL, Y LE CONVIENE ESE TAMAÑO?
+  //
+  // Lo pidió Christián (2026-07-31) con este ejemplo: "un vial de 120 mg de RT,
+  // si la persona toma 5 mg a la semana, le dura 24 semanas, y eso es más de la
+  // vida útil del péptido ya reconstituido". Comprar el vial grande sale más
+  // barato por miligramo, pero si la mitad se va a echar a perder dentro del
+  // refrigerador el ahorro es falso — y eso hoy no se lo decía nadie.
+  //
+  // Se calcula al NIVEL QUE TIENE PUESTO, no a uno promedio: la frecuencia
+  // cambia por nivel (NAD+, TB-500 tienen carga y mantenimiento), así que la
+  // única duración honesta es la de la dosis que está mirando. Los tres niveles
+  // salen en su propia columna de la tabla de abajo.
+  const duracion = useMemo(() => {
+    const codigo = freqDeNivel(levels, activeLevel, currentProduct?.startFreq);
+    const porSemana = DOSIS_POR_SEMANA[codigo];
+    if (!porSemana || !dosesPerVial) return null;
+    const vida = vidaUtilDe(currentProduct?.slug);
+    const semanas = dosesPerVial / porSemana;
+    const semanasDe = (v) => Math.floor((v * 1000) / doseMcg) / porSemana;
+    // La presentación MÁS GRANDE que sí se alcanza a usar a tiempo. Se prefiere
+    // la mayor porque el miligramo sale más barato: la idea es que no compre de
+    // menos, no empujarlo al vial chiquito.
+    const cabe = currentVariants.filter((v) => semanasDe(v) <= vida.semanas);
+    return {
+      semanas,
+      dias: semanas * 7,
+      vida,
+      sePasa: semanas > vida.semanas,
+      sugerido: cabe.length ? cabe[cabe.length - 1] : null,
+    };
+  }, [levels, activeLevel, currentProduct, dosesPerVial, doseMcg, currentVariants]);
+
+  // "24 semanas" o "9 días": debajo de dos semanas los días se leen mejor.
+  const duracionTexto = (semanas) => (semanas >= 2
+    ? `${Math.round(semanas)} ${t('calc.dura.weeks')}`
+    : `${Math.round(semanas * 7)} ${t('calc.dura.days')}`);
 
   // Arranque en lo suyo (área privada): si el cliente ya compró, la calculadora
   // abre con su primer péptido y EN LA PRESENTACIÓN QUE COMPRÓ, en vez de en
@@ -792,6 +850,29 @@ const ReconstitutionCalculator = ({ variant = 'full', purchased = [], onTrack, s
               {' '}No le cambies el agua al vial para que quepa.
             </div>
           )}
+          {/* EL VIAL LE DURA MÁS DE LO QUE AGUANTA YA MEZCLADO.
+              ⛔ Sin espantar: no se dice que "se echa a perder" ni se habla de
+              perder potencia. Se dice cuánto rinde, cuánto se recomienda usarlo
+              y cuál presentación le cuadra. Es una recomendación de compra, no
+              una alarma sanitaria. */}
+          {duracion?.sePasa && (
+            <div className="mb-5 rounded-xl border border-[hsl(var(--primary))]/40 bg-[hsl(var(--primary))]/10 p-4 text-sm leading-relaxed"
+                 data-testid="calc-vida-util">
+              <strong>{t('calc.dura.avisoTitle')}</strong>{' '}
+              {t('calc.dura.avisoBody', {
+                vial: vialMg,
+                dura: duracionTexto(duracion.semanas),
+                vida: duracionTexto(duracion.vida.semanas),
+              })}
+              {' '}
+              {duracion.sugerido
+                ? t('calc.dura.avisoSugerido', { mg: duracion.sugerido })
+                : t('calc.dura.avisoPorciones')}
+              <div className="text-[11px] text-muted-foreground mt-2">
+                {t('calc.dura.fuente', { fuente: duracion.vida.fuente })}
+              </div>
+            </div>
+          )}
           {noSeMide && (
             <div className="mb-5 rounded-xl border border-[hsl(var(--warning-foreground))]/40 bg-[hsl(var(--warning-foreground))]/10 p-4 text-sm leading-relaxed"
                  data-testid="calc-no-se-mide">
@@ -847,9 +928,14 @@ const ReconstitutionCalculator = ({ variant = 'full', purchased = [], onTrack, s
                       </div>
                     </div>
                   )}
-                  <div className="grid grid-cols-2 gap-3 self-end">
+                  <div className={`grid ${duracion ? 'grid-cols-3' : 'grid-cols-2'} gap-3 self-end`}>
                     <Stat icon={FlaskConical} label={t('calc.conc')} value={(suggest.pick.conc / 1000).toFixed(1)} unit="mg/mL" />
                     <Stat icon={Droplet} label={t('calc.dosesPerVial')} value={Math.floor((mg * 1000) / doseMcg)} unit={t('calc.doses')} />
+                    {duracion && (
+                      <Stat icon={CalendarClock} label={t('calc.dura.label')}
+                        value={duracion.semanas >= 2 ? Math.round(duracion.semanas) : Math.round(duracion.dias)}
+                        unit={duracion.semanas >= 2 ? t('calc.dura.weeks') : t('calc.dura.days')} />
+                    )}
                   </div>
                 </div>
 
@@ -899,9 +985,14 @@ const ReconstitutionCalculator = ({ variant = 'full', purchased = [], onTrack, s
                     </div>
                   </div>
                 )}
-                <div className="grid grid-cols-2 gap-3 mt-4 lg:max-w-[560px]">
+                <div className={`grid ${duracion ? 'grid-cols-3 lg:max-w-[760px]' : 'grid-cols-2 lg:max-w-[560px]'} gap-3 mt-4`}>
                   <Stat icon={FlaskConical} label={t('calc.conc')} value={(known.conc / 1000).toFixed(1)} unit="mg/mL" />
                   <Stat icon={Droplet} label={t('calc.dosesPerVial')} value={known.dosesPerVial} unit={t('calc.doses')} />
+                  {duracion && (
+                    <Stat icon={CalendarClock} label={t('calc.dura.label')}
+                      value={duracion.semanas >= 2 ? Math.round(duracion.semanas) : Math.round(duracion.dias)}
+                      unit={duracion.semanas >= 2 ? t('calc.dura.weeks') : t('calc.dura.days')} />
+                  )}
                 </div>
               </>
             )
@@ -930,6 +1021,10 @@ const ReconstitutionCalculator = ({ variant = 'full', purchased = [], onTrack, s
                     <th className="text-right px-5 font-medium text-[11px] uppercase tracking-wider">Dosis</th>
                     <th className="text-right px-5 font-medium text-[11px] uppercase tracking-wider">Rayitas</th>
                     <th className="text-right px-5 font-medium text-[11px] uppercase tracking-wider whitespace-nowrap">Cada cuándo</th>
+                    {/* Aquí es donde se ve la escalera completa: al subir de nivel
+                        el vial se gasta más rápido, y con la frecuencia cambiando
+                        por nivel la cuenta no es proporcional. */}
+                    <th className="text-right px-5 font-medium text-[11px] uppercase tracking-wider whitespace-nowrap">{t('calc.dura.label')}</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -957,6 +1052,19 @@ const ReconstitutionCalculator = ({ variant = 'full', purchased = [], onTrack, s
                         <td className="text-right px-5 text-muted-foreground whitespace-nowrap">
                           {freqPhrase(freqDeNivel(levels, k, currentProduct?.startFreq), language) || '—'}
                         </td>
+                        {(() => {
+                          const porSemana = DOSIS_POR_SEMANA[freqDeNivel(levels, k, currentProduct?.startFreq)];
+                          const dosisNivel = Math.floor(vialMg / mgNivel);
+                          if (!porSemana || !dosisNivel) return <td className="text-right px-5 text-muted-foreground">—</td>;
+                          const semanas = dosisNivel / porSemana;
+                          const pasa = semanas > vidaUtilDe(currentProduct?.slug).semanas;
+                          return (
+                            <td className={`text-right px-5 tabular-nums whitespace-nowrap ${pasa ? 'text-[hsl(var(--warning-foreground))]' : 'text-muted-foreground'}`}
+                                data-testid={`calc-dura-${k}`}>
+                              {duracionTexto(semanas)}
+                            </td>
+                          );
+                        })()}
                       </tr>
                     );
                   })}
