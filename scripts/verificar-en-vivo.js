@@ -147,9 +147,15 @@ async function revisarPortada(browser, viewport, donde) {
     if (h1.length < 10) mal(`${donde}: la portada no tiene título (h1="${h1}")`);
     else bien(`${donde}: título "${h1.slice(0, 40)}…"`);
 
+    // El SEGUNDO botón del hero va al Asesor, no a la guía (Christián,
+    // 2026-07-31: "me gustaría cambiar que te lleve al asesor un botón
+    // directo, porque está muy escondido"). Esta prueba se quedó pidiendo
+    // /aprende/empieza-aqui y tumbó un despliegue sano el 31 de julio: el
+    // sitio hacía lo correcto y la prueba lo llamaba roto. Se buscan por
+    // data-testid y no por clase, que las clases se mueven con el diseño.
     for (const [nombre, sel] of [
       ['Ver catálogo', '[data-testid="hero-catalog-button"]'],
-      ['Empieza aquí', 'a.btn-resend-ghost'],
+      ['Arma Mi Plan', '[data-testid="hero-advisor-button"]'],
     ]) {
       const r = await page.evaluate(sondaClicable, sel);
       if (r !== 'OK') mal(`${donde}: el botón "${nombre}" del hero — ${r}`);
@@ -158,12 +164,12 @@ async function revisarPortada(browser, viewport, donde) {
 
     // Y que de verdad LLEVE a donde dice.
     try {
-      await page.click('a.btn-resend-ghost', { timeout: 8000 });
+      await page.click('[data-testid="hero-advisor-button"]', { timeout: 8000 });
       await page.waitForTimeout(1800);
-      if (!page.url().includes('/aprende/empieza-aqui')) mal(`${donde}: "Empieza aquí" no llevó a la guía (quedó en ${page.url()})`);
-      else bien(`${donde}: "Empieza aquí" abre la guía`);
+      if (!page.url().includes('/asesor')) mal(`${donde}: "Arma Mi Plan" no llevó al asesor (quedó en ${page.url()})`);
+      else bien(`${donde}: "Arma Mi Plan" abre el asesor`);
     } catch (e) {
-      mal(`${donde}: no se pudo picar "Empieza aquí" (${String(e).slice(0, 90)})`);
+      mal(`${donde}: no se pudo picar "Arma Mi Plan" (${String(e).slice(0, 90)})`);
     }
 
     if (errores.length) mal(`${donde}: errores de JavaScript → ${errores.slice(0, 2).join(' | ')}`);
