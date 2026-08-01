@@ -404,17 +404,17 @@ export const fallbackProducts = [
     "coa_url": "https://exygenlabs.com/coa/thymalin.pdf",
     "batch_number": "NP-THYM10-2601",
     "storage": "Conservar a -20 °C, protegido de la luz. Reconstituido: 2–8 °C.",
-    "start_dose": 10,
+    "start_dose": 5,
     "start_unit": "mg",
     "start_freq": "daily_cycle",
     "start_levels": {
-      "inicial": 10,
-      "tipica": 10,
-      "avanzada": 10,
+      "inicial": 5,
+      "tipica": 5,
+      "avanzada": 5,
       "unit": "mg",
-      "fuente": "Protocolo clínico de Khavinson (Instituto de Bioregulación y Gerontología, San Petersburgo): 10 mg al día durante 5 a 10 días seguidos, y el curso se repite cada 6 a 12 meses. ⚠️ CORRECCIÓN: antes lo habíamos bajado a 1-2 mg por analogía con los otros bioreguladores. Para Thymalin esa analogía era falsa — su protocolo publicado sí es de 10 mg.",
+      "fuente": "⚠️ ORIENTATIVA. Ficha del fabricante registrado Samson-Med (https://samsonmed.ru/en/portfolio-items/thymalin/ — calidad B, ficha oficial de producto): 5 a 20 mg INTRAMUSCULARES al día, de 3 a 10 días, 30 a 100 mg por curso, disolviendo el vial en 1 a 2 mL de solución salina isotónica. CORRECCIÓN 2026-07-31: los tres niveles decían 10 mg con 2 mL de agua — el VIAL ENTERO en un solo pinchazo, y 200 rayitas, el doble de lo que cabe en una jeringa U-100. Era imposible de aplicar. Se baja al extremo inferior de la ficha (5 mg) y se reconstituye con 1 mL, que también está dentro del rango que indica el fabricante: quedan 10 mg/mL, la dosis son 50 rayitas (media jeringa) y el vial rinde 2 aplicaciones. A 5 mg al día durante 6 a 10 días el curso suma 30 a 50 mg, dentro de los 30 a 100 mg que pide la ficha. El protocolo de Khavinson que citábamos antes (10 mg/día) no se pudo verificar contra una fuente localizable.",
       "agua_ml": {
-        "10": 2
+        "10": 1
       }
     },
     "featured": false,
@@ -1901,9 +1901,9 @@ export const fallbackProducts = [
       "avanzada": 24,
       "unit": "mg",
       "agua_ml": {
-        "215": 8
+        "60": 1
       },
-      "fuente": "researchdosing.com — manual de dosificación del mercado (fuente de vendedor, sin bibliografía; nuestras rayitas se recalculan, no se copian de su tabla)"
+      "fuente": "⚠️ ORIENTATIVA, y la dosis está pendiente de decisión. researchdosing.com — manual de dosificación del mercado (hoja de vendedor, sin bibliografía; nuestras rayitas se recalculan, no se copian de su tabla). CORRECCIÓN 2026-07-31: el agua estaba anotada para un vial de 215 mg que NO vendemos (nuestra única presentación es de 60 mg), así que ese dato investigado no lo leía nadie y la calculadora caía a su fórmula genérica. Se corrige a 1 mL para el vial de 60 mg: quedan 60 mg/mL y los tres niveles caen en 13, 27 y 40 rayitas. ⚠️ PENDIENTE: la monografía del fabricante (cerebrolysin.com, calidad B) describe una SOLUCIÓN de 215.2 mg/mL y dosis de 10 a 30 mL, o sea miles de miligramos; nuestro vial de 60 mg no corresponde a ese producto y los 8/16/24 mg no tienen fuente propia."
     },
     "featured": false,
     "is_new": false,
@@ -2515,18 +2515,18 @@ export const fallbackProducts = [
     "coa_url": "https://exygenlabs.com/coa/cjc-1295-con-dac.pdf",
     "batch_number": "NP-CJCD2-2601",
     "storage": "Conservar a -20 °C, protegido de la luz. Reconstituido: 2–8 °C.",
-    "start_dose": 2,
+    "start_dose": 0.5,
     "start_unit": "mg",
     "start_freq": "weekly",
     "start_levels": {
-      "inicial": 2,
-      "tipica": 3,
-      "avanzada": 4,
+      "inicial": 0.5,
+      "tipica": 1,
+      "avanzada": 1.5,
       "unit": "mg",
-      "fuente": "Teichman SL et al., J Clin Endocrinol Metab 2006;91(3):799-805 (PMID 16352683): 30 a 60 mcg/kg subcutáneos, semanal o cada dos semanas. ⚠️ El ensayo dosificó POR PESO; los niveles de aquí son la conversión para ~70 kg.",
+      "fuente": "⚠️ ORIENTATIVA y deliberadamente CONSERVADORA. Teichman SL et al., J Clin Endocrinol Metab 2006;91(3):799-805 (PMID 16352683 — calidad A, ensayo aleatorizado en adultos sanos): 30 a 60 mcg/kg subcutáneos, semanal o cada dos semanas; 30 y 60 mcg/kg fueron los cohortes mejor tolerados. El ensayo dosificó POR PESO. CORRECCIÓN 2026-07-31: los niveles anteriores (2/3/4 mg) eran la conversión para ~70 kg, y 3 y 4 mg NO CABEN en el vial de 2 mg que vendemos — la calculadora pedía hasta el doble de lo que trae el vial entero. Como el cohorte más bajo del ensayo ya equivale a ~2.1 mg para 70 kg, cualquier escalera que quepa en ese vial queda por debajo del ensayo: 1.5 mg equivale a 30 mcg/kg para una persona de 50 kg. Se toma esa lectura conservadora (0.5 / 1 / 1.5 mg semanales) para que la dosis quepa siempre y el nivel avanzado no se lleve el vial entero. Quien quiera las cifras del ensayo necesita el vial de 5 mg y criterio médico.",
       "agua_ml": {
-        "5": 1.25,
-        "10": 2.5
+        "2": 1,
+        "5": 1.5
       }
     },
     "featured": false,
@@ -2732,18 +2732,19 @@ export const fallbackProducts = [
     "coa_url": "https://exygenlabs.com/coa/mazdutida.pdf",
     "batch_number": "NP-MAZD5-2601",
     "storage": "Conservar a -20 °C, protegido de la luz. Reconstituido: 2–8 °C.",
-    "start_dose": 2,
+    "start_dose": 1.5,
     "start_unit": "mg",
     "start_freq": "weekly",
     "start_levels": {
-      "inicial": 2,
-      "tipica": 4.5,
-      "avanzada": 6,
+      "inicial": 1.5,
+      "tipica": 3,
+      "avanzada": 4.5,
       "unit": "mg",
       "agua_ml": {
+        "5": 1,
         "10": 1
       },
-      "fuente": "researchdosing.com — manual de dosificación del mercado (fuente de vendedor, sin bibliografía; nuestras rayitas se recalculan, no se copian de su tabla)"
+      "fuente": "⚠️ ORIENTATIVA. Ensayo fase 2 humano de mazdutida (https://pmc.ncbi.nlm.nih.gov/articles/PMC10719339/ — calidad A): subcutánea SEMANAL con la titulación exacta 1.5 mg las semanas 1 a 4, 3 mg las semanas 5 a 8 y 4.5 mg de la semana 9 a la 24. Los tres niveles son esos tres escalones publicados, ni uno inventado. CORRECCIÓN 2026-07-31: antes decían 2 / 4.5 / 6 mg salidos de una hoja de vendedor (researchdosing.com), y los 6 mg NO CABEN en el vial de 5 mg que vendemos. ⚠️ Aun así, en el vial de 5 mg el nivel avanzado (4.5 mg) se lleva casi todo el vial en un solo pinchazo de 0.9 mL: para ese nivel conviene el vial de 10 mg, donde son 45 rayitas."
     },
     "featured": false,
     "is_new": true
@@ -3472,18 +3473,20 @@ export const fallbackProducts = [
     "coa_url": "https://exygenlabs.com/coa/cagrilintida.pdf",
     "batch_number": "NP-CAGR2-2601",
     "storage": "Conservar a -20 °C, protegido de la luz. Reconstituido: 2–8 °C.",
-    "start_dose": 0.2,
+    "start_dose": 0.6,
     "start_unit": "mg",
     "start_freq": "weekly",
     "start_levels": {
-      "inicial": 0.2,
+      "inicial": 0.6,
       "tipica": 1.2,
-      "avanzada": 2.7,
+      "avanzada": 1.8,
       "unit": "mg",
       "agua_ml": {
+        "2": 1,
+        "5": 1,
         "10": 2
       },
-      "fuente": "researchdosing.com — manual de dosificación del mercado (fuente de vendedor, sin bibliografía; nuestras rayitas se recalculan, no se copian de su tabla)"
+      "fuente": "⚠️ ORIENTATIVA. Registro del ensayo humano de cagrilintida (https://www.clinicaltrialsregister.eu/ctr-search/trial/2018-001945-14/results — calidad A, 26 semanas, subcutánea semanal): escalona 0.6 mg la semana 0, 1.2 mg la semana 2, 2.4 mg la semana 4 y 4.5 mg la semana 6. Los niveles inicial y típico son los dos primeros escalones publicados, exactos. CORRECCIÓN 2026-07-31: antes decían 0.2 / 1.2 / 2.7 mg salidos de una hoja de vendedor (researchdosing.com); los 2.7 mg NO CABEN en el vial de 2 mg y el arranque de 0.2 mg estaba tres veces por debajo del ensayo. El nivel avanzado se topa en 1.8 mg —dentro del rango que recorre el ensayo, pero por debajo del escalón de 2.4 mg— porque 2.4 mg ya no caben en el vial de 2 mg. Los escalones de 2.4 y 4.5 mg del ensayo exigen los viales de 5 o 10 mg y criterio médico."
     },
     "featured": false,
     "is_new": true
@@ -3594,18 +3597,11 @@ export const fallbackProducts = [
     "coa_url": "https://exygenlabs.com/coa/l-carnitine.pdf",
     "batch_number": "NP-LCAR2-2601",
     "storage": "Conservar a -20 °C, protegido de la luz. Reconstituido: 2–8 °C.",
-    "start_dose": 50,
-    "start_unit": "mg",
-    "start_freq": "daily",
+    "start_dose": null,
+    "start_unit": null,
+    "start_freq": null,
     "start_levels": {
-      "inicial": 50,
-      "tipica": 100,
-      "avanzada": 200,
-      "unit": "mg",
-      "agua_ml": {
-        "500": 5
-      },
-      "fuente": "researchdosing.com — manual de dosificación del mercado (fuente de vendedor, sin bibliografía; nuestras rayitas se recalculan, no se copian de su tabla)"
+      "apagada": "APAGADA el 2026-07-31. Mostrábamos 50 / 100 / 200 mg diarios con el agua anotada para un vial de 500 mg que NO vendemos (nuestras presentaciones son 2, 400, 600 y 1200 mg). En el vial de 2 mg esos niveles pedían 25, 50 y 100 VECES lo que trae el vial entero: era el peor caso de todo el catálogo. La única fuente que teníamos era researchdosing.com, una hoja de vendedor sin bibliografía. La revisión con búsqueda web (2026-07-31) no localizó NINGUNA pauta humana intramuscular de L-carnitina: la etiqueta IM que existe es de un preparado de farmacia no aprobado y no publica dosis, y la presentación aprobada por la FDA es sólo intravenosa. Regla de la casa: sin fuente, no se muestra dosis. La calculadora sigue convirtiendo la dosis que el cliente escriba. ⚠️ Aparte: la presentación de 2 mg parece un error de catálogo — la L-carnitina se dosifica en cientos de miligramos y un vial de 2 mg no tiene uso plausible."
     },
     "featured": false,
     "is_new": false
@@ -4101,9 +4097,9 @@ export const fallbackProducts = [
       "tipica": 2,
       "avanzada": 2.5,
       "unit": "mg",
-      "fuente": "researchdosing.com — manual de dosificación del mercado (fuente de vendedor, sin bibliografía). Las rayitas las recalculamos nosotros: sus tablas traen errores de aritmética comprobados. ⚠️ Esta fuente lo reconstituye con agua bacteriostática MÁS DMSO, no solo agua.",
+      "fuente": "⚠️ ORIENTATIVA. researchdosing.com — manual de dosificación del mercado (hoja de vendedor, sin bibliografía). Las rayitas las recalculamos nosotros: sus tablas traen errores de aritmética comprobados. ⚠️ Esta fuente lo reconstituye con agua bacteriostática MÁS DMSO, no solo agua. CORRECCIÓN 2026-07-31: el agua estaba anotada para un vial de 10 mg que NO vendemos (nuestra única presentación es de 5 mg), así que la calculadora nunca leía el dato investigado. Se corrige a 1 mL para el vial de 5 mg: quedan 5 mg/mL y los tres niveles caen en 25, 40 y 50 rayitas.",
       "agua_ml": {
-        "10": 2
+        "5": 1
       }
     },
     "featured": false,
@@ -4924,18 +4920,20 @@ export const fallbackProducts = [
     "coa_url": "https://exygenlabs.com/coa/tb-500.pdf",
     "batch_number": "NP-TB2-2601",
     "storage": "Conservar a -20 °C, protegido de la luz. Reconstituido: 2–8 °C.",
-    "start_dose": 1,
+    "start_dose": 0.5,
     "start_unit": "mg",
     "start_freq": "2x_week",
     "start_levels": {
-      "inicial": 1,
-      "tipica": 2,
-      "avanzada": 3,
+      "inicial": 0.5,
+      "tipica": 1,
+      "avanzada": 1.5,
       "unit": "mg",
       "agua_ml": {
-        "10": 2
+        "2": 1,
+        "5": 1.5,
+        "10": 3
       },
-      "fuente": "researchdosing.com — manual de dosificación del mercado (fuente de vendedor, sin bibliografía; nuestras rayitas se recalculan, no se copian de su tabla)"
+      "fuente": "⚠️ ORIENTATIVA y CONSERVADORA: el mejor respaldo que existe es de nivel D (recopilación de protocolos de comunidad). La FDA (https://www.fda.gov/media/193349/download — calidad B) confirma la identidad Ac-LKKTETQ, CAS 885340-08-9, y deja constancia de que NO hay datos humanos de seguridad por ninguna vía. La pauta comunitaria (https://greypeptides.com/encyclopedia/tb-500/dosage/) habla de 2 a 2.5 mg subcutáneos 1 o 2 veces por semana durante 4 a 6 semanas de carga, y ella misma declara que ninguna prueba humana la validó. CORRECCIÓN 2026-07-31: el nivel avanzado decía 3 mg y NO CABE en el vial de 2 mg que vendemos. Se baja la escalera a 0.5 / 1 / 1.5 mg dos veces por semana: por semana suma 1, 2 y 3 mg, o sea el mismo orden de magnitud de la pauta comunitaria, pero cada pinchazo cabe en el vial más chico y el nivel avanzado no se lo lleva entero."
     },
     "featured": true,
     "is_new": false
@@ -5275,18 +5273,11 @@ export const fallbackProducts = [
     "coa_url": "https://exygenlabs.com/coa/b12.pdf",
     "batch_number": "NP-B121-2601",
     "storage": "Conservar a -20 °C, protegido de la luz. Reconstituido: 2–8 °C.",
-    "start_dose": 1000,
-    "start_unit": "mcg",
-    "start_freq": "weekly",
+    "start_dose": null,
+    "start_unit": null,
+    "start_freq": null,
     "start_levels": {
-      "inicial": 1000,
-      "tipica": 2500,
-      "avanzada": 5000,
-      "unit": "mcg",
-      "agua_ml": {
-        "10": 1
-      },
-      "fuente": "researchdosing.com — manual de dosificación del mercado (fuente de vendedor, sin bibliografía; nuestras rayitas se recalculan, no se copian de su tabla)"
+      "apagada": "APAGADA el 2026-07-31. Dos problemas a la vez. (1) El B12 NO SE RECONSTITUYE: ya viene en solución a 1 mg/mL en un frasco de 10 mL, así que una calculadora de agua bacteriostática no aplica. El agua que teníamos anotada era para una llave '10' que la calculadora ni siquiera leía, porque de la presentación '1 mg/mL (10 mL)' toma el número 1. (2) Con ese vial leído como 1 mg, los niveles de 2500 y 5000 mcg salían en 500 y 1000 rayitas — cinco y diez jeringas U-100 llenas, y más de lo que la calculadora creía que traía el frasco. La única fuente que teníamos era researchdosing.com, hoja de vendedor sin bibliografía, y la revisión con búsqueda web no localizó pauta citable. Regla de la casa: sin fuente, no se muestra dosis. ⚠️ PENDIENTE para Christián: la cianocobalamina inyectable SÍ tiene etiqueta oficial (FDA), así que aquí sí se podría encender una dosis con respaldo B — pero primero hay que resolver que el producto es solución y no polvo."
     },
     "featured": false,
     "is_new": false
