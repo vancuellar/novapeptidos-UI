@@ -322,7 +322,15 @@ const Distributor = () => {
       <Tabs value={tabActiva} onValueChange={(v) => setParams(v === 'overview' ? {} : { tab: v }, { replace: true })}
         className="lg:flex lg:gap-8 lg:items-start">
         <DashboardSidebar activeTab={tabActiva} items={menu} />
-        <div className="min-w-0 flex-1">
+        {/* ALINEADO CON EL MENÚ (Christián, 2026-08-01): «alinea el borde superior
+            de la calculadora con el borde superior del left sidebar».
+            Cada pestaña trae `mt-5`, que en TELÉFONO sí hace falta —ahí el menú es
+            una barra horizontal y el contenido va debajo—, pero en ESCRITORIO el
+            menú está al lado, así que esos 20 px dejaban la primera tarjeta caída
+            respecto al panel de la izquierda. Se anula aquí, en el contenedor, y no
+            pestaña por pestaña: son catorce y la siguiente que alguien agregue
+            volvería a nacer desalineada. */}
+        <div className="min-w-0 flex-1 lg:[&>[role=tabpanel]]:mt-0">
 
         {/* Los números, el nivel y la nota de comisión son el RESUMEN: viven en
             su pestaña y no encima de todas las demás. Antes se repetían aunque
