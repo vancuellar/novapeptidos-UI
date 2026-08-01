@@ -30,13 +30,13 @@ const page = {
     {
       type: 'list',
       title: 'Qué llega en el paquete',
-      intro: 'Un pedido típico incluye esto y nada más. No trae agua ni jeringas salvo que las hayas agregado al carrito.',
+      intro: 'Un pedido típico incluye esto y nada más. No trae jeringas, y el agua bacteriostática solo si la agregaste al carrito.',
       items: [
         'El vial de vidrio con el péptido liofilizado: entre 2 mg y 100 mg de polvo según el producto, con tapón de goma y sello de aluminio de color.',
-        'Etiqueta con el nombre del compuesto, la cantidad en mg, el número de lote y la leyenda RUO.',
-        'Empaque con material aislante y, en pedidos que lo requieren, gel refrigerante. El gel llega tibio con frecuencia y eso no arruina el producto: el polvo liofilizado tolera varios días fuera de refrigeración.',
-        'Acceso al certificado de análisis (COA) del lote, con el resultado de HPLC y espectrometría de masas.',
-        'En algunos formatos, un vial adicional de agua bacteriostática si la compraste por separado.',
+        'Etiqueta con el nombre del compuesto, la cantidad en mg y la leyenda RUO.',
+        'Empaque térmico: un sobre con material aislante y una bolsa sellada. El polvo liofilizado viaja sin frío y tolera varios días fuera de refrigeración; guárdalo en refrigeración al recibirlo.',
+        'El vial adicional de agua bacteriostática, si la compraste junto con el péptido.',
+        'El certificado de análisis (COA) del lote no viaja dentro del paquete: se entrega de forma digital después de tu compra, con el resultado de HPLC y espectrometría de masas.',
       ],
     },
     {
@@ -100,7 +100,7 @@ const page = {
         {
           title: 'Registra y desecha bien',
           body:
-            'Lleva bitácora de lote, concentración, fechas y volúmenes usados. Las agujas van a contenedor rígido para punzocortantes, nunca a la basura común ni al drenaje.',
+            'Lleva bitácora de compuesto, concentración, fechas y volúmenes usados; el número de lote lo tomas del certificado de análisis que te entregamos después de la compra. Las agujas van a contenedor rígido para punzocortantes, nunca a la basura común ni al drenaje.',
         },
       ],
     },
@@ -166,11 +166,11 @@ const page = {
         {
           term: 'Lote',
           plain: 'El número que identifica la tanda de producción exacta de tu vial.',
-          example: 'Con el lote impreso en la etiqueta puedes pedir el COA que le corresponde a ese vial y no a otro.',
+          example: 'Es lo que amarra tu vial con su certificado: el COA que te entregamos después de la compra es el de ese lote y no el de otro.',
         },
         {
           term: 'COA',
-          plain: 'Certificado de análisis: el papel del laboratorio que dice qué pureza salió en la prueba.',
+          plain: 'Certificado de análisis: el documento del laboratorio que dice qué pureza salió en la prueba. Te lo entregamos en digital después de tu compra.',
           example: 'Un COA típico reporta pureza por HPLC de 98.5% y confirma el peso molecular por espectrometría de masas.',
         },
       ],
@@ -184,8 +184,8 @@ const page = {
           a: 'No. No es estéril, trae minerales y microorganismos, y contamina el vial al instante. Usa agua bacteriostática o agua estéril para inyección. Es barata y es el insumo menos indicado para ahorrar.',
         },
         {
-          q: 'Mi vial llegó y el gel refrigerante venía tibio. ¿Se echó a perder?',
-          a: 'Casi con seguridad no. El polvo liofilizado es estable varios días a temperatura ambiente; por eso se envía seco. Lo que sí importa es que el vial esté sellado e íntegro. Guárdalo en refrigeración al recibirlo.',
+          q: 'El paquete llegó a temperatura ambiente, sin nada frío adentro. ¿Se echó a perder?',
+          a: 'No. El polvo liofilizado es estable varios días a temperatura ambiente; por eso se envía seco, en empaque térmico y sin hielo. Lo que sí importa es que el vial esté sellado e íntegro. Guárdalo en refrigeración al recibirlo.',
         },
         {
           q: 'El polvo se ve como una costra pegada a la pared del vidrio. ¿Está mal?',

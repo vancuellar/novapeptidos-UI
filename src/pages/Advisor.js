@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -40,6 +40,19 @@ const Section = ({ icon: Icon, title, children, tone }) => (
 const Advisor = () => {
   const navigate = useNavigate();
   const { addItem } = useCart();
+  // ATAJO: /asesor?rapido=1 (Christián, 2026-07-31).
+  //
+  // El botón del hero de la portada entra por aquí. Se midió el 31 de julio: el
+  // "Plan rápido" son 2 toques y 2.1 segundos hasta un plan con tres productos,
+  // precio, dosis y "Agregar todo al carrito"; la ruta larga son 67 opciones en
+  // tres pasos. El problema era que el botón del atajo sólo APARECÍA después de
+  // elegir un objetivo, así que quien llegaba de fuera ni sabía que existía.
+  //
+  // Con `?rapido=1` el botón se ve desde el primer momento (apagado hasta que se
+  // elija un objetivo) y arriba se explica en un renglón qué hay que hacer. El
+  // resto del asesor no cambia: sin el parámetro, todo se comporta igual que antes.
+  const [searchParams] = useSearchParams();
+  const modoRapido = searchParams.get('rapido') === '1';
 
   const [step, setStep] = useState(1);
   const [selected, setSelected] = useState([]);          // ids de objetivos
@@ -182,13 +195,18 @@ const Advisor = () => {
           <div className="flex items-center gap-2 mb-1"><Target className="h-4 w-4 text-[hsl(var(--primary))]" /><h2 className="font-heading text-lg font-semibold">¿Cuál es tu objetivo?</h2></div>
           <div className="flex items-center justify-between mb-1 gap-3">
             <p className="text-sm text-muted-foreground">Elige hasta {MAX_OBJ} áreas. {selected.length}/{MAX_OBJ} seleccionadas.</p>
-            {selected.length > 0 && (
-              <button onClick={() => setStep(4)} data-testid="advisor-simple-mode"
-                className="shrink-0 inline-flex items-center gap-1.5 rounded-full border border-[hsl(var(--primary))] text-[hsl(var(--primary))] text-xs font-semibold px-3 py-1.5 hover:bg-[hsl(var(--primary))] hover:text-white transition-colors">
+            {(selected.length > 0 || modoRapido) && (
+              <button onClick={() => selected.length && setStep(4)} disabled={!selected.length} data-testid="advisor-simple-mode"
+                className="shrink-0 inline-flex items-center gap-1.5 rounded-full border border-[hsl(var(--primary))] text-[hsl(var(--primary))] text-xs font-semibold px-3 py-1.5 hover:bg-[hsl(var(--primary))] hover:text-white transition-colors disabled:opacity-40 disabled:hover:bg-transparent disabled:hover:text-[hsl(var(--primary))]">
                 <Zap className="h-3.5 w-3.5" /> Plan rápido
               </button>
             )}
           </div>
+          {modoRapido && (
+            <p className="text-xs text-[hsl(var(--primary))] font-medium mb-1" data-testid="advisor-hint-rapido">
+              Atajo: toca tu objetivo y luego «Plan rápido». Son dos toques y ya tienes tu plan con precios.
+            </p>
+          )}
           <p className="text-[11px] text-muted-foreground mb-4">Modo simple: plan al instante con valores estándar (nivel principiante, 8 semanas). Para afinar dosis, presupuesto y salud, sigue los 3 pasos.</p>
           <div className="space-y-2">
             {OBJECTIVES.map((o) => {

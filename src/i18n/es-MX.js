@@ -77,7 +77,7 @@ const esMX = {
   'tutorials.prospect.cta': 'Escríbenos por WhatsApp',
   'tutorials.prospect.wa': 'Hola, me interesa ser distribuidor de Exygen Labs. Quiero agendar una llamada.',
   'learn.video.title': 'Míralo En Video',
-  'learn.video.sub': 'Menos de cuatro minutos con todo lo que dice esta página.',
+  'learn.video.sub': 'Poco más de cuatro minutos con todo lo que dice esta página.',
   'discount.launchBanner': 'Precio de lanzamiento: 10% de descuento en tu primer pedido',
   'discount.volumeTitle': 'Descuento por volumen automático',
   'discount.appliedInCart': 'Se aplica solo en el carrito, sin código.',
@@ -880,6 +880,9 @@ const esMX = {
   'home.leadUsa.body': 'Nuestros péptidos se fabrican en laboratorios de Estados Unidos y pasan por el mismo estándar analítico: pureza por HPLC, lote por lote.',
   'home.presentations': 'Presentaciones a la venta',
   'home.viewCatalog': 'Ver catálogo',
+  // Segundo botón del hero (Christián, 2026-07-31): antes decía "Empieza aquí" y
+  // llevaba a una guía. Ahora lleva al Asesor, que estaba escondido.
+  'home.advisorCta': 'Arma Mi Plan',
   'home.verifyPurity': 'Cómo verificamos la pureza',
   'home.eduKicker': 'Aprende',
   'home.eduTitle': 'Antes de tu primer pedido',
@@ -1027,6 +1030,12 @@ const esMX = {
   'footer.howToReconstitute': 'Cómo reconstituir',
   'footer.compendium': 'Fichas de compuestos',
   'footer.allGuides': 'Todas las guías',
+  // Enlaces a lo que salió de la portada en teléfono (Christián, 2026-07-31).
+  // Nada se borró: desde aquí se llega a todo.
+  'footer.comparison': 'Comparativa Contra Otros',
+  'footer.wholesale': 'Mayoreo Y Distribuidores',
+  'footer.traceability': 'Cómo Verificamos Cada Lote',
+  'footer.labPhotos': 'Fotos Del Laboratorio',
   'footer.stacks': 'Stacks / Combos',
   'nav.peptides': 'Péptidos',
   'nav.tools': 'Recursos',
@@ -1061,6 +1070,9 @@ const esMX = {
   'edu.startCta': 'Abrir la calculadora',
   'edu.libTitle': 'Literatura de investigación',
   'edu.libIntro': 'Selección de fuentes revisadas por pares y bases de datos públicas para leer directamente a los estudios. Se abren en una pestaña nueva.',
+  // Galería de las 7 fotos que salieron de la portada (Christián, 2026-07-31).
+  'edu.photosTitle': 'Así Se Ve El Trabajo De Laboratorio',
+  'edu.photosIntro': 'Cuadros del laboratorio donde se fabrican nuestros péptidos y del trabajo analítico que hay detrás de cada lote.',
   'edu.libNote': 'Enlaces a sitios externos (revistas y organismos científicos). Exygen Labs no es autor de estos trabajos y los ofrece solo con fines educativos.',
   'edu.cat.metabolic': 'Metabólicos y control de peso (GLP-1)',
   'edu.cat.repair': 'Reparación y recuperación de tejido',

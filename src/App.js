@@ -55,6 +55,9 @@ const Advisor = lazy(() => import(/* webpackChunkName: "asesor" */ '@/pages/Advi
 const LearnHub = lazy(() => import(/* webpackChunkName: "aprende" */ '@/pages/LearnHub'));
 const LearnPage = lazy(() => import(/* webpackChunkName: "aprende-pagina" */ '@/pages/LearnPage'));
 const Compendium = lazy(() => import(/* webpackChunkName: "compuestos" */ '@/pages/Compendium'));
+// La comparativa contra otros vendedores salió de la portada el 2026-07-31 (orden
+// de Christián: adelgazar el home en móvil) y ahora es su propia página.
+const Comparativa = lazy(() => import(/* webpackChunkName: "comparativa" */ '@/pages/Comparativa'));
 
 // RED DE SEGURIDAD DEL PARTIDO EN TROZOS.
 //
@@ -210,6 +213,7 @@ function App() {
                     <Route path="/aprende" element={<LearnHub />} />
                     <Route path="/aprende/:slug" element={<LearnPage />} />
                     <Route path="/compuestos" element={<Compendium />} />
+                    <Route path="/comparativa" element={<Comparativa />} />
                     <Route path="/producto/:slug" element={<ProductDetail />} />
                     <Route path="/carrito" element={<Cart />} />
                     <Route path="/checkout" element={<Checkout />} />

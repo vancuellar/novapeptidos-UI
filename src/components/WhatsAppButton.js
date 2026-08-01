@@ -1,12 +1,42 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { useLocation } from 'react-router-dom';
 import { WHATSAPP_URL } from '@/lib/contact';
 import { useLanguage } from '@/context/LanguageContext';
 
 // Botón flotante de WhatsApp. Abre un chat a nuestro número (el del iPhone) con
 // un mensaje ya redactado. No hay API ni bot: es el link wa.me, gratis.
 // Se apaga solo si WHATSAPP_URL está en null.
+//
+// ⚠️ TAPABA LOS BOTONES DEL HERO (medido el 2026-07-31). En un teléfono, el globo
+// vive pegado abajo a la derecha y ahí es exactamente donde cae el SEGUNDO botón
+// de la portada. Con el cambio del mismo día ese botón pasó a ser el del Asesor
+// —el que Christián quería dejar de esconder—, así que dejarlo tapado era peor.
+//
+// El arreglo NO toca el hero (orden expresa: ni el texto ni los botones): el que
+// se quita es el globo. Mientras los botones de la portada están a la vista, se
+// desvanece; en cuanto se baja un poco, vuelve. En escritorio no cambia nada
+// (`lg:` lo deja siempre encendido) y en las demás páginas tampoco, porque ahí
+// no existe el botón que vigila.
 export default function WhatsAppButton() {
   const { t } = useLanguage();
+  const { pathname } = useLocation();
+  const [tapaElHero, setTapaElHero] = useState(false);
+
+  useEffect(() => {
+    setTapaElHero(false);
+    if (typeof window === 'undefined' || !('IntersectionObserver' in window)) return undefined;
+    // La portada no es diferida, así que el botón ya está en el DOM cuando corre
+    // este efecto; el rAF es sólo por si el navegador aún no acomodó la página.
+    let io;
+    const cuadro = requestAnimationFrame(() => {
+      const botones = document.querySelector('[data-testid="hero-catalog-button"]');
+      if (!botones) return;
+      io = new IntersectionObserver(([e]) => setTapaElHero(e.isIntersecting), { threshold: 0 });
+      io.observe(botones);
+    });
+    return () => { cancelAnimationFrame(cuadro); if (io) io.disconnect(); };
+  }, [pathname]);
+
   if (!WHATSAPP_URL) return null;
   const href = `${WHATSAPP_URL}?text=${encodeURIComponent(t('whatsapp.prefill'))}`;
 
@@ -16,9 +46,10 @@ export default function WhatsAppButton() {
       target="_blank"
       rel="noreferrer"
       data-testid="whatsapp-fab"
+      aria-hidden={tapaElHero || undefined}
       aria-label={t('whatsapp.aria')}
       title={t('whatsapp.aria')}
-      className="fixed bottom-5 right-5 z-50 h-14 w-14 rounded-full bg-[#25D366] shadow-[var(--shadow-md)] flex items-center justify-center hover:scale-105 transition-transform"
+      className={`fixed bottom-5 right-5 z-50 h-14 w-14 rounded-full bg-[#25D366] shadow-[var(--shadow-md)] flex items-center justify-center hover:scale-105 transition-[transform,opacity] duration-200 lg:opacity-100 lg:pointer-events-auto ${tapaElHero ? 'opacity-0 pointer-events-none' : 'opacity-100'}`}
     >
       {/* Isotipo de WhatsApp (SVG propio, sin dependencias) */}
       <svg viewBox="0 0 32 32" className="h-7 w-7" fill="#fff" aria-hidden="true">

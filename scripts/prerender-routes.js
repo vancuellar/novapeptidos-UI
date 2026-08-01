@@ -43,6 +43,7 @@ const STATIC_ROUTES = [
   ['asesor', 'Asesor de péptidos', 'Responde unas preguntas y te armamos un plan de investigación con los compuestos que encajan.'],
   ['educacion', 'Centro educativo', 'Material de formación sobre péptidos de investigación, manejo de material y control de calidad.'],
   ['distribuidor', 'Programa de distribuidores', 'Gana comisiones revendiendo péptidos de investigación.'],
+  ['comparativa', '¿Por qué Exygen Labs?', 'Qué damos nosotros y qué dan los demás vendedores de péptidos de investigación, renglón por renglón.'],
   ['login', 'Iniciar sesión', 'Entra a tu cuenta de Exygen Labs.'],
   ['registro', 'Crear cuenta', 'Crea tu cuenta para comprar y seguir tus pedidos.'],
   // Las de abajo se generan para que no den 404 si alguien recarga la página,

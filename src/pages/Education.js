@@ -165,6 +165,40 @@ const Education = () => {
         <p className="text-xs text-muted-foreground mt-6">{t('edu.libNote')}</p>
       </section>
 
+      {/* ===== Las siete fotos de laboratorio ===== */}
+      {/* Vivían en la portada. Se mudaron aquí el 2026-07-31 (Christián: adelgazar
+          el home en móvil): en el teléfono medían 1,896 px y 402 KB, servidas a
+          1,200 px de ancho para verse a 380. No se borró ninguna.
+          ⚫ REGLA DE CHRISTIAN (2026-07-28): TODA foto que no sea NUESTRO péptido va
+          en blanco y negro y sólo toma color al pasarle el cursor o el dedo.
+          ⛔ Ninguna con personas ni con etiquetas que choquen con el RUO. Las
+          últimas cuatro son de banco con licencia libre (Pexels) — trabajo de
+          laboratorio, NO nuestra planta: nunca se dice "nuestro laboratorio". */}
+      <section className="mt-10">
+        <h2 className="font-heading text-lg font-semibold mb-1">{t('edu.photosTitle')}</h2>
+        <p className="text-sm leading-relaxed text-muted-foreground mb-6">{t('edu.photosIntro')}</p>
+        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4" data-testid="edu-fotos-laboratorio">
+          {[
+            { src: 'viales-liofilizados', alt: t('home.photos.lyo') },
+            { src: 'envasado', alt: t('home.photos.filling') },
+            { src: 'taponado', alt: t('home.photos.capping') },
+            { src: 'cientifica-banco', alt: t('home.photos.bench') },
+            { src: 'pipeteo-matraz', alt: t('home.photos.pipetting') },
+            { src: 'analista-muestra', alt: t('home.photos.sample') },
+            { src: 'pipeta-multicanal', alt: t('home.photos.multichannel') },
+          ].map((f) => (
+            <figure key={f.src} className="group overflow-hidden rounded-xl border border-[hsl(var(--border))] bg-card">
+              <img
+                src={`${process.env.PUBLIC_URL}/images/laboratorio/${f.src}.jpg`}
+                alt={f.alt} loading="lazy" width="1200" height="720"
+                className="w-full h-44 object-cover grayscale group-hover:grayscale-0 transition-[filter] duration-500"
+              />
+              <figcaption className="px-4 py-3 text-xs text-muted-foreground">{f.alt}</figcaption>
+            </figure>
+          ))}
+        </div>
+      </section>
+
       <Link to="/catalogo" className="inline-block mt-8 text-[hsl(var(--primary))] text-sm">{t('info.backToCatalog')}</Link>
     </div>
   );

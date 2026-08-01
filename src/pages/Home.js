@@ -16,6 +16,8 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { toast } from 'sonner';
 import ProductCard from '@/components/ProductCard';
 import TrustBadges from '@/components/TrustBadges';
+import TrustWidget from '@/components/TrustWidget';
+import useEsMovil from '@/hooks/useEsMovil';
 import api from '@/lib/api';
 import { VISIBLE_CATEGORIES, fallbackProducts } from '@/data/fallbackCatalog';
 import { FEATURED_TABS, getTabProducts } from '@/data/featured';
@@ -118,6 +120,24 @@ const Home = () => {
   const [vialOffset, setVialOffset] = useState(0);
   const carouselRef = useRef(null);
   const { language, t } = useLanguage();
+  // ===== LA PORTADA EN TELÉFONO VA ADELGAZADA (Christián, 2026-07-31) =====
+  //
+  // Medido el 31 de julio: el home medía 10,565 px a 375 px de ancho —trece
+  // pantallas de teléfono— con once bloques antes del primer producto, y de 1,362
+  // visitas sólo 118 abrieron una ficha (8.7%). Casi todo el tráfico es móvil.
+  //
+  // Orden de Christián: NO se rediseña nada (el diseño actual le gusta y el hero
+  // no se toca); sólo se quita PESO, y sólo en teléfono. En escritorio la portada
+  // se queda EXACTAMENTE igual, por eso todo va detrás de `esMovil`.
+  //
+  // ⛔ Nada se borra. Cada cosa que sale de aquí vive en su página y se llega a
+  // ella desde el pie:
+  //   · las 7 fotos de laboratorio → /educacion
+  //   · trazabilidad               → /aprende/como-verificamos-cada-lote
+  //   · comparativa                → /comparativa
+  //   · bloque educativo           → /aprende
+  //   · mayoreo / distribuidores   → /distribuidor
+  const esMovil = useEsMovil();
   // Solicitud "Quiero ser distribuidor" (sección Mayoreo). Christian aprueba en su Admin.
   const [b2bOpen, setB2bOpen] = useState(false);
   const [b2bSent, setB2bSent] = useState(false);
@@ -254,7 +274,17 @@ const Home = () => {
                 <Link to="/catalogo" className="btn-resend" data-testid="hero-catalog-button">
                   {t('home.viewCatalog')} <ArrowRight className="h-4 w-4" />
                 </Link>
-                <Link to="/aprende/empieza-aqui" className="btn-resend-ghost">{t('home.startHere')}</Link>
+                {/* EL SEGUNDO BOTÓN AHORA VA AL ASESOR (Christián, 2026-07-31):
+                    "en el hero actual sí me gustaría cambiar que te lleve al
+                    asesor un botón directo. Porque está muy escondido."
+                    Antes iba a /aprende/empieza-aqui.
+                    · El PRINCIPAL sigue siendo el catálogo: es el camino más corto
+                      al carrito y hoy sólo el 8.7% llega a una ficha; no se degrada.
+                    · Y entra por el ATAJO (`?rapido=1`), no por la ruta larga: el
+                      atajo son 2 toques / 2.1 s hasta un plan con tres productos,
+                      precio, dosis y "Agregar todo al carrito"; la ruta larga son
+                      67 opciones en 3 pasos, y ahí sí se pierde gente. */}
+                <Link to="/asesor?rapido=1" className="btn-resend-ghost" data-testid="hero-advisor-button">{t('home.advisorCta')}</Link>
               </div>
             </div>
             <div className="[grid-area:b] flex flex-col items-center justify-center">
@@ -449,9 +479,15 @@ const Home = () => {
           luego corrigió: el widget colapsable es SOLO para carrito, checkout
           y ficha de producto — el hero se queda limpio y esta franja se queda
           exactamente donde estaba. */}
+      {/* EN TELÉFONO ES EL WIDGET COLAPSABLE, NO LA FRANJA (Christián, 2026-07-31):
+          "Lo de Tienda de Confianza en la versión móvil lo puedes hacer como el que
+          está en el checkout. Minimizado quizás." Es EL MISMO componente que ya
+          usan el carrito, el checkout y la ficha de producto —verde, de una sola
+          línea, se abre al tocarlo—, no uno nuevo. En escritorio la franja de seis
+          sellos se queda exactamente igual. */}
       <section className="border-b border-border bg-card">
         <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 py-6">
-          <TrustBadges variant="strip" />
+          {esMovil ? <TrustWidget /> : <TrustBadges variant="strip" />}
         </div>
       </section>
 
@@ -464,7 +500,20 @@ const Home = () => {
           adjetivos. La tarjeta de abajo es el origen: laboratorios de Estados Unidos.
           ⛔ NUNCA se menciona Asia, en ningún idioma — orden expresa de Christian
           (2026-07-28). Y tampoco se inventa una fábrica propia que no tenemos. */}
+      {/* EN TELÉFONO SÓLO SE MENCIONA (Christián, 2026-07-31): "hacer más pequeño
+          toda esa info de que somos el distribuidor más grande de México. Solo
+          menciónalo y ya. Nadie te pide que lo soportes con facts." Así que en
+          móvil queda UN renglón: sin párrafo, sin las tres tarjetas de cifras, sin
+          el recuadro de origen y sin botón. Las cifras que lo sostenían no se
+          borran: viven en /comparativa. En escritorio, idéntico a como estaba. */}
       <section className="border-b border-border" data-testid="home-liderazgo">
+        {esMovil ? (
+          <div className="max-w-[1280px] mx-auto px-4 py-4">
+            <p className="font-heading text-[15px] font-semibold leading-snug" data-testid="home-liderazgo-linea">
+              {t('home.leadTitle')}
+            </p>
+          </div>
+        ) : (
         <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 py-16 lg:py-20 grid lg:grid-cols-[1fr_1fr] gap-10 lg:gap-16 items-center">
           <div>
             <div className="kicker">{t('home.leadKicker')}</div>
@@ -500,6 +549,7 @@ const Home = () => {
             </div>
           </div>
         </div>
+        )}
       </section>
 
       {/* ===== Fotos de producción ===== */}
@@ -510,7 +560,12 @@ const Home = () => {
           Carga diferida: no deben frenar lo que se ve primero.
           ⚫ REGLA DE CHRISTIAN (2026-07-28): TODA foto que no sea NUESTRO péptido va
           en blanco y negro y sólo toma color al pasarle el cursor o el dedo. Los
-          únicos que van a color siempre son los viales de la marca del hero. */}
+          únicos que van a color siempre son los viales de la marca del hero.
+          ⚠️ EN TELÉFONO NO SE PINTAN (Christián, 2026-07-31). Estas tres y las
+          cuatro de más abajo son las 7 fotos de laboratorio que medían 1,896 px y
+          402 KB en el celular, servidas a 1,200 px de ancho para verse a 380. Se
+          mudaron a /educacion, que está enlazada desde el pie. */}
+      {!esMovil && (
       <section className="border-b border-border">
         <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 py-16">
           <div className="grid sm:grid-cols-3 gap-4" data-testid="home-fotos-produccion">
@@ -531,6 +586,7 @@ const Home = () => {
           </div>
         </div>
       </section>
+      )}
 
       {/* ===== Categories ===== */}
       {/* pt-[5px]: el kicker "CATÁLOGO" quedaba PEGADO a la línea divisoria de la
@@ -586,6 +642,9 @@ const Home = () => {
       </section>
 
       {/* ===== Before your first order — 3 education cards ===== */}
+      {/* Fuera del teléfono (Christián, 2026-07-31): lo mismo, y más completo, ya
+          vive en /aprende, que está enlazado desde el pie. */}
+      {!esMovil && (
       <section className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 pb-24">
         <div className="mb-12">
           <div className="kicker">{t('home.eduKicker')}</div>
@@ -614,13 +673,17 @@ const Home = () => {
           ))}
         </div>
       </section>
+      )}
 
       {/* ===== Fotos de laboratorio ===== */}
       {/* Segunda banda de fotos (Christian, 2026-07-28): la portada alterna una
           sección con fotos y una sin fotos. Éstas son de banco con licencia libre
           para uso comercial (Pexels) — trabajo de laboratorio, NO nuestra planta,
           por eso el pie habla del oficio y nunca dice "nuestro laboratorio".
-          ⛔ Ninguna con personas asiáticas ni referencia a Asia. */}
+          ⛔ Ninguna con personas asiáticas ni referencia a Asia.
+          ⚠️ Tampoco se pintan en teléfono (Christián, 2026-07-31): son las otras
+          cuatro de las siete fotos que se mudaron a /educacion. */}
+      {!esMovil && (
       <section className="border-b border-border">
         <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 pb-16">
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4" data-testid="home-fotos-laboratorio">
@@ -642,8 +705,13 @@ const Home = () => {
           </div>
         </div>
       </section>
+      )}
 
       {/* ===== Traceability — light band, 3 steps ===== */}
+      {/* Fuera del teléfono (Christián, 2026-07-31): "cómo verificamos cada lote"
+          ya existe entero en /aprende/como-verificamos-cada-lote, enlazado desde
+          el pie. Aquí eran cuatro tarjetas apiladas = casi una pantalla y media. */}
+      {!esMovil && (
       <section className="bg-[hsl(var(--secondary))] border-y border-border">
         <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 py-24">
           <div className="max-w-2xl">
@@ -673,8 +741,13 @@ const Home = () => {
           <Button asChild className="mt-8"><Link to="/info/calidad">{t('home.learnProcess')}</Link></Button>
         </div>
       </section>
+      )}
 
       {/* ===== Why Exygen — comparison ===== */}
+      {/* Fuera del teléfono (Christián, 2026-07-31): la tabla se mudó ENTERA, con
+          los mismos renglones, a su propia página —/comparativa—, enlazada desde
+          el pie. En escritorio se queda aquí, igual que siempre. */}
+      {!esMovil && (
       <section className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 py-24">
         <div className="mb-12">
           <div className="kicker">{t('home.whyKicker')}</div>
@@ -724,8 +797,13 @@ const Home = () => {
           </div>
         </Card>
       </section>
+      )}
 
       {/* ===== Wholesale / B2B ===== */}
+      {/* Fuera del teléfono (Christián, 2026-07-31): el programa de mayoreo ya
+          tiene su página completa en /distribuidor, con su propia solicitud, y va
+          enlazada desde el pie. */}
+      {!esMovil && (
       <section className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 pb-24">
         <div className="rounded-2xl border border-border bg-[hsl(var(--secondary))] px-6 py-10 sm:px-10 grid lg:grid-cols-[1.2fr_0.8fr] gap-8 items-center">
           <div>
@@ -782,6 +860,7 @@ const Home = () => {
           </DialogContent>
         </Dialog>
       </section>
+      )}
 
       {/* La sección "Pagos seguros y protegidos" se ELIMINÓ (Christian,
           2026-07-28): los métodos de pago ahora viven dentro del recuadro del
