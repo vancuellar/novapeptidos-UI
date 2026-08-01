@@ -132,9 +132,36 @@ const DOSIS_POR_SEMANA = {
   daily_cycle: null,
 };
 
-// Péptidos que se dosifican en mg (GLP-1/incretinas + unos pocos). El resto va en mcg.
-const MG_DOSED = /tirzepat|retatrut|semaglut|cagrilint|mazdut|survodut|liraglut|dulaglut|nad|carnit|glutat|humanin|reta|sema|tirze|klow|glow|tesamorelin|tb-500|ghk/i;
-const unitFor = (name) => (MG_DOSED.test(name || '') ? 'mg' : 'mcg');
+// ⛔ QUÉ SE DOSIFICA EN mg Y QUÉ EN mcg. EQUIVOCARSE AQUÍ MULTIPLICA POR MIL.
+//
+// Esta lista tenía pedazos de palabra sueltos —`nad`, `sema`, `reta`, `tb-500`—
+// y un pedazo de palabra caza cualquier nombre que lo contenga:
+//   · `sema` cazaba **Semax**        → su dosis de 300 mcg salía como "300 mg"
+//   · `nad`  cazaba **Gonadorelin**  → 50 mcg salían como "50 mg"
+//   · `tb-500` cazaba **BPC-157 + TB-500** → 600 mcg salían como "600 mg"
+// Estuvo EN VIVO. Cuatro productos le decían al cliente que se aplicara MIL VECES
+// su dosis, y encima con el botón de "mcg" apagado, así que no había forma de
+// corregirlo desde la pantalla. Lo encontró la auditoría del 2026-08-01.
+//
+// Dos candados para que no vuelva a pasar:
+//   1. **Manda el catálogo.** Si el producto trae su unidad investigada
+//      (`start_levels.unit` o `start_unit`), esa decide y esta lista ni se
+//      consulta. El dato le gana siempre a la adivinanza por nombre.
+//   2. La lista es sólo para productos SIN unidad anotada, y va con nombres
+//      completos y `\b` al inicio, nunca con fragmentos. Si agregas uno,
+//      escríbelo entero.
+const MG_DOSED = /\b(tirzepat\w*|retatrut\w*|semaglut\w*|cagrilint\w*|mazdut\w*|survodut\w*|liraglut\w*|dulaglut\w*|nad\+?|l-carnitin\w*|carnitina|glutat\w*|glutathione|humanin\w*|klow|glow|tesamorelin\w*|tb-?500|ghk-?cu)\b/i;
+// La unidad del producto: primero lo investigado, y sólo si no hay dato, el nombre.
+const unitFor = (name, producto) => {
+  const anotada = producto?.startLevels?.unit || producto?.startUnit;
+  if (anotada) return anotada === 'mg' ? 'mg' : 'mcg';
+  // Las mezclas se dosifican por el total y van en mcg, salvo KLOW y GLOW que
+  // el catálogo sí lleva en mg. Sin esto, "BPC-157 5mg + TB-500 5mg" cazaría
+  // por el `tb-500` de la lista y volvería a salir en mg — el mismo error.
+  const mezcla = /\+/.test(name || '') && !/\b(klow|glow)\b/i.test(name || '');
+  if (mezcla) return 'mcg';
+  return MG_DOSED.test(name || '') ? 'mg' : 'mcg';
+};
 // dosis inicial neutral según unidad (solo un punto de partida, RUO)
 const defaultDose = (unit) => (unit === 'mg' ? 2 : 250);
 // Punto de partida MEDIBLE para péptidos sin dosis de referencia: si el default
@@ -197,7 +224,7 @@ const aguaSugerida = (vialMg, p) => {
   //    0.3 mL (30 rayitas). Se ancla en la típica y no en la inicial porque es
   //    el centro del rango: anclar en la más baja deja la más alta fuera de la
   //    jeringa.
-  const unidad = p?.startUnit || unitFor(p?.name);
+  const unidad = unitFor(p?.name, p);
   const dosis = p?.startLevels?.tipica ?? p?.startLevels?.inicial ?? p?.startDose;
   if (!vialMg || !dosis || unidad !== 'mg') return 2;   // viales chicos de mcg: 2 mL
   const ml = (vialMg * DRAW_OBJETIVO_ML) / dosis;
@@ -362,7 +389,7 @@ const ReconstitutionCalculator = ({ variant = 'full', purchased = [], onTrack, s
   const currentVariants = (currentProduct?.variants || []).slice().sort((a, b) => a - b);
   const hasRef = currentProduct?.startDose != null;
   const levels = full ? currentProduct?.startLevels || null : null;
-  const mcgDisabled = product && unitFor(product) === 'mg';   // péptido mg-dosado → mcg apagado
+  const mcgDisabled = product && unitFor(product, currentProduct) === 'mg';   // péptido mg-dosado → mcg apagado
   const effUnit = mcgDisabled ? 'mg' : doseUnit;
   // Nivel de referencia activo (inicial | tipica | avanzada), derivado de la
   // dosis actual. Se guarda con el seguimiento porque la reconstitución cambia.
@@ -445,7 +472,7 @@ const ReconstitutionCalculator = ({ variant = 'full', purchased = [], onTrack, s
       setDoseUnit((p.startLevels?.unit || p.startUnit) === 'mg' ? 'mg' : 'mcg');
       setDose(inicial != null ? inicial : p.startDose);
     } else {
-      const u = unitFor(name);
+      const u = unitFor(name, p);
       setDoseUnit(u);
       setDose(measurableDefault(u, vial));
     }
