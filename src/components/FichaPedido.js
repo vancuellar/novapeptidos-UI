@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { Truck } from 'lucide-react';
+import { Truck, Trash2 } from 'lucide-react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -21,10 +21,19 @@ import BotonImprimirGuia from '@/components/BotonImprimirGuia';
  *
  * `ruta` la decide quien la usa: el distribuidor pide la suya (filtrada) y el admin la de
  * admin (ve todas). Son dos rutas distintas a propósito.
+ *
+ * ⛔ «YA NO ESTÁ» NO ES «ALGO FALLÓ» (Christián, 2026-08-01). Todos los errores decían lo
+ * mismo —«No se pudo abrir el pedido»— así que un aviso de la campanita que apuntaba a un
+ * pedido ya borrado parecía una falla del sistema, y el aviso huérfano se quedaba ahí para
+ * siempre. Ahora un 404 se dice como lo que es (ese pedido ya se borró) y trae el botón
+ * para quitar el aviso; cualquier otro error sigue siendo «no se pudo, inténtalo de nuevo».
+ * `onQuitarAviso` sólo lo manda la campanita: desde una lista de pedidos no hay aviso que
+ * quitar y el botón ni se pinta.
  */
-const FichaPedido = ({ orderNumber, open, onClose, admin = false }) => {
+const FichaPedido = ({ orderNumber, open, onClose, admin = false, onQuitarAviso }) => {
   const { t, language } = useLanguage();
   const [pedido, setPedido] = useState(null);
+  // { tipo: 'borrado' | 'ajeno' | 'falla', texto }
   const [error, setError] = useState(null);
   // Poner la guía SIN salir de aquí: esta ficha se abre desde la campanita, desde la
   // ficha del cliente y desde las listas, así que es el único lugar por donde pasan
@@ -37,9 +46,15 @@ const FichaPedido = ({ orderNumber, open, onClose, admin = false }) => {
       : `/distributor/orders/${orderNumber}`;
     api.get(ruta)
       .then((r) => setPedido(r.data))
-      .catch((e) => setError(e.response?.status === 403
-        ? t('order.detail.forbidden')
-        : t('order.detail.error')));
+      .catch((e) => {
+        // El 404 del servidor es la única forma de saber que el pedido ya no existe, y
+        // se distingue solo: EX-20260731-2316 (borrado) contesta 404 y EX-20260730-5930
+        // contesta 200. Sin red no hay `e.response`, y eso NO es un pedido borrado.
+        const codigo = e.response?.status;
+        if (codigo === 404) setError({ tipo: 'borrado', texto: t('order.detail.deleted') });
+        else if (codigo === 403) setError({ tipo: 'ajeno', texto: t('order.detail.forbidden') });
+        else setError({ tipo: 'falla', texto: t('order.detail.error') });
+      });
   }, [orderNumber, admin, t]);
 
   useEffect(() => {
@@ -64,7 +79,21 @@ const FichaPedido = ({ orderNumber, open, onClose, admin = false }) => {
           <DialogTitle className="font-mono-tech text-base">{orderNumber}</DialogTitle>
         </DialogHeader>
 
-        {error && <p className="text-sm text-destructive" data-testid="ficha-pedido-error">{error}</p>}
+        {error && (
+          <div className="space-y-3" data-testid="ficha-pedido-aviso">
+            {/* Un pedido borrado no es una falla: se dice en gris, no en rojo de alarma. */}
+            <p className={`text-sm ${error.tipo === 'borrado' ? 'text-muted-foreground' : 'text-destructive'}`}
+              data-testid="ficha-pedido-error">{error.texto}</p>
+            {/* LA SALIDA. Sin este botón el aviso huérfano se queda en el buzón para
+                siempre: apunta a un pedido que ya no existe y no hay forma de cerrarlo. */}
+            {error.tipo === 'borrado' && onQuitarAviso && (
+              <Button variant="outline" size="sm" data-testid="ficha-pedido-quitar-aviso"
+                onClick={() => { onQuitarAviso(); onClose(); }}>
+                <Trash2 className="h-4 w-4 mr-1.5" /> {t('order.detail.removeNotice')}
+              </Button>
+            )}
+          </div>
+        )}
         {!pedido && !error && <Skeleton className="h-64 rounded-lg" />}
 
         {pedido && (

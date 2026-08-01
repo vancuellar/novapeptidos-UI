@@ -1,6 +1,6 @@
 import React, { useEffect, useLayoutEffect, useState, useCallback } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import { Filter, Eye, LayoutDashboard, Package, ShoppingBag, Plus, Pencil, Trash2, DollarSign, Users, Clock, TrendingUp, Phone, Receipt, Store, Copy, Boxes, Truck, RefreshCw, MailCheck, Ban, Megaphone, BarChart3, Upload, ShoppingCart, Target, KeyRound, Gauge, Search, Archive, ArchiveRestore, HandCoins, CircleCheck, CircleAlert, ArrowUp, ArrowDown, ArrowUpDown, Sparkles, MessageCircle } from 'lucide-react';
+import { Filter, Eye, LayoutDashboard, Package, ShoppingBag, Plus, Pencil, Trash2, DollarSign, Users, Clock, TrendingUp, Phone, Receipt, Store, Copy, Boxes, Truck, RefreshCw, MailCheck, Ban, Megaphone, BarChart3, Upload, ShoppingCart, Target, KeyRound, Gauge, Search, Archive, ArchiveRestore, HandCoins, CircleCheck, CircleAlert, ArrowUp, ArrowDown, ArrowUpDown, Sparkles, MessageCircle, FlaskConical } from 'lucide-react';
 import Marketing from '@/components/admin/Marketing';
 import WhatsApp from '@/components/admin/WhatsApp';
 import EmbudoPorDispositivo from '@/components/admin/EmbudoPorDispositivo';
@@ -170,6 +170,8 @@ const Admin = () => {
   const [archivados, setArchivados] = useState([]);
   const [loteKill, setLoteKill] = useState(null);           // confirmación de borrado en lote
   const [loteBusy, setLoteBusy] = useState(false);
+  // El SIMULACRO del barrido de pruebas: qué se llevaría y qué no, antes de tocar nada.
+  const [barrido, setBarrido] = useState(null);
   const [intentos, setIntentos] = useState(null);    // carritos que no se cerraron
   const [meta, setMeta] = useState(null);
   const [metaBusy, setMetaBusy] = useState(false);
@@ -461,6 +463,12 @@ const Admin = () => {
     .sort((a, b) => fechaPedido(b) - fechaPedido(a));
   const toggleSel = (id) => setSel((s) => (s.includes(id) ? s.filter((x) => x !== id) : [...s, id]));
   const todosSel = pedidosVista.length > 0 && pedidosVista.every((o) => sel.includes(o.id));
+  // ¿Hay basura de pruebas? Se miran activos Y archivados: archivar no desmarca, y el
+  // barrido del servidor tampoco distingue — si no, un pedido de prueba archivado se
+  // quedaría marcado para siempre sin botón que lo barra.
+  const selPedidos = pedidosVista.filter((o) => sel.includes(o.id));
+  const hayPruebas = [...orders, ...archivados].some((o) => o.es_prueba);
+  const selTodosPrueba = selPedidos.length > 0 && selPedidos.every((o) => o.es_prueba);
 
   // `forzar` SOLO puede venir del botón explícito del diálogo de protegidos,
   // nunca de un flujo automático: entre los pedidos de prueba vive la única
@@ -486,6 +494,47 @@ const Admin = () => {
     } catch (e) { toast.error(e.response?.data?.detail || 'Error'); }
     finally { setLoteBusy(false); }
   };
+  // ---- PEDIDOS DE PRUEBA: marcarlos y barrerlos ----
+  // ⛔ Quien prueba comprando en producción limpia lo que ensució, en la misma sesión
+  // (Christián, 2026-08-01). Marcar es sólo una etiqueta —no borra nada y se quita
+  // igual—; el que borra es el barrido, y el barrido NO puede tocar una venta real:
+  // sólo mira lo etiquetado, y de eso aparta lo que huela a venta (pagado, surtido, con
+  // comprobante o con guía). La decisión la toma el servidor, aquí sólo se pinta.
+  const marcarPrueba = async (ids, esPrueba) => {
+    setLoteBusy(true);
+    try {
+      await Promise.all(ids.map((id) => api.put(`/admin/orders/${id}/prueba`, { es_prueba: esPrueba })));
+      toast.success(t(esPrueba ? 'admin.prueba.marked' : 'admin.prueba.unmarked', { n: ids.length }));
+      setSel([]);
+      loadAll();
+      cargarArchivados();
+    } catch (e) { toast.error(e.response?.data?.detail || 'Error'); }
+    finally { setLoteBusy(false); }
+  };
+
+  // Dos pasos siempre: primero el SIMULACRO (que no toca nada) para enseñar qué se va y
+  // qué se queda, y sólo entonces el botón que borra.
+  const verBarrido = async () => {
+    setLoteBusy(true);
+    try {
+      const r = await api.post('/admin/orders/barrer-pruebas', { simulacro: true });
+      setBarrido(r.data);
+    } catch (e) { toast.error(e.response?.data?.detail || 'Error'); }
+    finally { setLoteBusy(false); }
+  };
+  const barrerPruebas = async () => {
+    setLoteBusy(true);
+    try {
+      const r = await api.post('/admin/orders/barrer-pruebas', { simulacro: false });
+      toast.success(t('admin.prueba.done', { n: r.data.borrados }));
+      setBarrido(null);
+      setSel([]);
+      loadAll();
+      cargarArchivados();
+    } catch (e) { toast.error(e.response?.data?.detail || 'Error'); }
+    finally { setLoteBusy(false); }
+  };
+
   const recargarIntentos = () => api.get('/admin/intentos').then((r) => setIntentos(r.data)).catch(() => {});
   const mandarOferta = async (it) => {
     try {
@@ -1531,10 +1580,31 @@ const Admin = () => {
                   <SelectItem value="deuda">{t('admin.filter.onlyDebt')}</SelectItem>
                 </SelectContent>
               </Select>
+              {/* BARRER LAS PRUEBAS. Sólo sale cuando hay algo marcado como prueba: si
+                  nadie ensució, no hay botón que invite a borrar. */}
+              {hayPruebas && (
+                <Button size="sm" variant="outline" className="ml-2" disabled={loteBusy}
+                  onClick={verBarrido} data-testid="admin-barrer-pruebas">
+                  <FlaskConical className="h-3.5 w-3.5 mr-1.5" /> {t('admin.prueba.sweep')}
+                </Button>
+              )}
             </div>
             {sel.length > 0 && (
               <div className="flex flex-wrap items-center gap-2" data-testid="admin-lote-bar">
                 <span className="text-sm text-muted-foreground">{t('admin.lote.selected', { n: sel.length })}</span>
+                {/* Marcar / desmarcar como prueba. Es una etiqueta, no un borrado: por eso
+                    va en gris junto a archivar y no en rojo junto a borrar. */}
+                {selTodosPrueba ? (
+                  <Button size="sm" variant="outline" disabled={loteBusy} data-testid="admin-lote-desmarcar-prueba"
+                    onClick={() => marcarPrueba(sel, false)}>
+                    <FlaskConical className="h-3.5 w-3.5 mr-1.5" /> {t('admin.lote.unmarkTest')}
+                  </Button>
+                ) : (
+                  <Button size="sm" variant="outline" disabled={loteBusy} data-testid="admin-lote-marcar-prueba"
+                    onClick={() => marcarPrueba(sel, true)}>
+                    <FlaskConical className="h-3.5 w-3.5 mr-1.5" /> {t('admin.lote.markTest')}
+                  </Button>
+                )}
                 {!verArchivados ? (
                   <Button size="sm" variant="outline" onClick={() => lote(sel, 'archivar')} disabled={loteBusy} data-testid="admin-lote-archivar">
                     <Archive className="h-3.5 w-3.5 mr-1.5" /> {t('admin.lote.archive')}
@@ -1589,6 +1659,16 @@ const Admin = () => {
                           <Badge variant="outline" data-testid="admin-order-backorder-badge"
                             className="text-[10px] border-[hsl(var(--warning-border))] bg-[hsl(var(--warning))] text-[hsl(var(--warning-foreground))]">
                             {t('admin.order.backorderBadge')}
+                          </Badge>
+                        </div>
+                      )}
+                      {/* MARCADO COMO PRUEBA. Se ve en la lista, no sólo adentro: si no
+                          se ve, nadie se acuerda de barrerlo. */}
+                      {o.es_prueba && (
+                        <div className="mt-1">
+                          <Badge variant="outline" data-testid="admin-order-prueba-badge"
+                            className="text-[10px] border-dashed text-muted-foreground">
+                            {t('admin.prueba.badge')}
                           </Badge>
                         </div>
                       )}
@@ -1817,6 +1897,53 @@ const Admin = () => {
               </div>
             </>
           ))}
+        </DialogContent>
+      </Dialog>
+
+      {/* BARRIDO DE PRUEBAS. Lo que se ve aquí es el SIMULACRO que contestó el servidor:
+          los que se va a llevar, y los que NO va a tocar con el motivo de cada uno. El
+          botón de borrar sólo aparece si hay algo que borrar. */}
+      <Dialog open={!!barrido} onOpenChange={(v) => !v && setBarrido(null)}>
+        <DialogContent className="max-w-md" data-testid="admin-barrido-dialog">
+          {barrido && (
+            <>
+              <DialogHeader><DialogTitle>{t('admin.prueba.sweepTitle')}</DialogTitle></DialogHeader>
+              {barrido.numeros?.length > 0 ? (
+                <>
+                  <p className="text-sm text-muted-foreground">{t('admin.prueba.sweepBody', { n: barrido.numeros.length })}</p>
+                  <div className="rounded-lg border border-border p-3 space-y-1 text-xs max-h-40 overflow-y-auto" data-testid="admin-barrido-lista">
+                    {barrido.numeros.map((n) => <div key={n} className="font-mono-tech">{n}</div>)}
+                  </div>
+                </>
+              ) : (
+                <p className="text-sm text-muted-foreground" data-testid="admin-barrido-vacio">{t('admin.prueba.none')}</p>
+              )}
+              {barrido.protegidos?.length > 0 && (
+                <>
+                  <p className="text-xs text-muted-foreground">{t('admin.prueba.protected', { n: barrido.protegidos.length })}</p>
+                  <div className="rounded-lg border border-[hsl(var(--warning-border))] bg-[hsl(var(--warning))]/10 p-3 space-y-1.5 text-xs max-h-40 overflow-y-auto" data-testid="admin-barrido-protegidos">
+                    {barrido.protegidos.map((p) => (
+                      <div key={p.order_number} className="flex items-center justify-between gap-2">
+                        <span className="font-mono-tech shrink-0">{p.order_number}</span>
+                        <span className="truncate flex-1">{p.cliente}</span>
+                        {/* El motivo viaja como clave y se traduce aquí: el Panel habla tres idiomas. */}
+                        <span className="shrink-0">{(p.motivos || []).map((m) => t(`admin.prueba.motivo.${m}`)).join(' · ')}</span>
+                      </div>
+                    ))}
+                  </div>
+                </>
+              )}
+              <div className="flex justify-end gap-2 mt-2">
+                <Button variant="outline" size="sm" onClick={() => setBarrido(null)}>{t('common.cancel')}</Button>
+                {barrido.numeros?.length > 0 && (
+                  <Button variant="destructive" size="sm" disabled={loteBusy}
+                    onClick={barrerPruebas} data-testid="admin-barrido-confirmar">
+                    <Trash2 className="h-4 w-4 mr-1.5" /> {t('admin.prueba.sweepConfirm', { n: barrido.numeros.length })}
+                  </Button>
+                )}
+              </div>
+            </>
+          )}
         </DialogContent>
       </Dialog>
 

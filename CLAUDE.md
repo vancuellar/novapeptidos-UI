@@ -102,6 +102,16 @@ cuando ese campo ya no existía en ninguno de los dos lados, así que salía en 
 sin mirar nada). Hoy la auditoría compara además IDs, presentaciones y
 `descuentable`, y los topes de verdad contra `/distributor/quote-caps`.
 
+## Quien prueba comprando en producción, limpia lo que ensució
+
+Los guiones que compran de verdad viven aquí (`npm run auditoria:completa`,
+`npm run e2e:cripto`, `npm run e2e:tarjeta`) y **cada corrida deja un pedido en la
+tienda**. La regla completa está en el `CLAUDE.md` del backend; en corto: al terminar,
+el pedido se **marca como prueba** en el Panel (o con
+`PUT /api/admin/orders/{id}/prueba`) y se **barre en la misma sesión**
+(`POST /api/admin/orders/barrer-pruebas`). El barrido no puede tocar una venta real —
+para eso están sus tres candados—, así que no hay excusa para dejar la basura ahí.
+
 ## Publicar
 
 ### ⛔ NO SE DESPLIEGA SIN AVISARLE A CHRISTIÁN

@@ -39,6 +39,8 @@ const NotificationsFeed = ({ onSeen }) => {
   const { user } = useAuth();
   const [items, setItems] = useState([]);
   const [loaded, setLoaded] = useState(false);
+  // { numero, avisoId } — el aviso viaja junto al número porque si el pedido ya se borró
+  // hay que poder quitar ESE aviso desde la propia ficha (Christián, 2026-08-01).
   const [pedidoAbierto, setPedidoAbierto] = useState(null);
   const [clienteAbierto, setClienteAbierto] = useState(null);
   // Sólo quien vende abre fichas; a un cliente el servidor le contestaría 403, así que
@@ -104,7 +106,7 @@ const NotificationsFeed = ({ onSeen }) => {
               {n.body && <div className="text-sm text-muted-foreground mt-0.5">{n.body}</div>}
               <div className="flex flex-wrap items-center gap-3 mt-1">
                 {pedido && (
-                  <button type="button" onClick={() => setPedidoAbierto(pedido)} data-testid="news-open-order"
+                  <button type="button" onClick={() => setPedidoAbierto({ numero: pedido, avisoId: n.id })} data-testid="news-open-order"
                     className="text-xs text-[hsl(var(--primary))] hover:underline">{t('news.openOrder')}</button>
                 )}
                 {cliente && (
@@ -122,7 +124,8 @@ const NotificationsFeed = ({ onSeen }) => {
         );
       })}
 
-      <FichaPedido orderNumber={pedidoAbierto} open={!!pedidoAbierto} admin={user?.role === 'admin'}
+      <FichaPedido orderNumber={pedidoAbierto?.numero} open={!!pedidoAbierto} admin={user?.role === 'admin'}
+        onQuitarAviso={() => pedidoAbierto && dismiss(pedidoAbierto.avisoId)}
         onClose={() => setPedidoAbierto(null)} />
       <FichaCliente clientId={clienteAbierto} open={!!clienteAbierto}
         onClose={() => setClienteAbierto(null)} />
