@@ -1,7 +1,9 @@
 import React, { useEffect, useLayoutEffect, useState, useCallback } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import { Filter, Eye, LayoutDashboard, Package, ShoppingBag, Plus, Pencil, Trash2, DollarSign, Users, Clock, TrendingUp, Phone, Receipt, Store, Copy, Boxes, Truck, RefreshCw, MailCheck, Ban, Megaphone, BarChart3, Upload, ShoppingCart, Target, KeyRound, Gauge, Search, Archive, ArchiveRestore, HandCoins, CircleCheck, CircleAlert, ArrowUp, ArrowDown, ArrowUpDown, Sparkles } from 'lucide-react';
+import { Filter, Eye, LayoutDashboard, Package, ShoppingBag, Plus, Pencil, Trash2, DollarSign, Users, Clock, TrendingUp, Phone, Receipt, Store, Copy, Boxes, Truck, RefreshCw, MailCheck, Ban, Megaphone, BarChart3, Upload, ShoppingCart, Target, KeyRound, Gauge, Search, Archive, ArchiveRestore, HandCoins, CircleCheck, CircleAlert, ArrowUp, ArrowDown, ArrowUpDown, Sparkles, MessageCircle } from 'lucide-react';
 import Marketing from '@/components/admin/Marketing';
+import WhatsApp from '@/components/admin/WhatsApp';
+import EmbudoPorDispositivo from '@/components/admin/EmbudoPorDispositivo';
 import ReportesSemanales from '@/components/admin/ReportesSemanales';
 import VideoComoLeerDifusion from '@/components/admin/VideoComoLeerDifusion';
 import MotorPrecios from '@/components/admin/MotorPrecios';
@@ -52,7 +54,7 @@ const EMPTY = { name: '', slug: '', category: '', short_description: '', descrip
 
 // Las únicas pestañas del rol 'marketing' (difusión). El backend rechaza con
 // 403 cualquier otra ruta para ese rol, así que esta lista es solo la vista.
-const TABS_DIFUSION = ['funnel', 'marketing', 'meta'];
+const TABS_DIFUSION = ['funnel', 'marketing', 'whatsapp', 'meta'];
 
 // ¿Este pedido pasa los filtros de la tabla? UNA sola definición, que usan la
 // lista y la limpieza de la selección en lote. Si se separaran, la barra en lote
@@ -674,6 +676,7 @@ const Admin = () => {
           { grupo: 'Difusión' },
           { value: 'funnel', icon: Filter, label: t('admin.funnelTab') },
           { value: 'marketing', icon: Target, label: 'Marketing' },
+          { value: 'whatsapp', icon: MessageCircle, label: 'WhatsApp' },
           { value: 'meta', icon: BarChart3, label: t('admin.metaTab') },
         ] : [
           { grupo: 'Negocio' },
@@ -694,6 +697,9 @@ const Admin = () => {
           { value: 'motor', icon: Gauge, label: 'Motor de Precios' },
           { grupo: 'Difusión' },
           { value: 'marketing', icon: Target, label: 'Marketing' },
+          // De la conversación a la venta: lo único que puede demostrar si el
+          // dinero de WhatsApp regresa (110 conversaciones, 0 compras medidas).
+          { value: 'whatsapp', icon: MessageCircle, label: 'WhatsApp' },
           { value: 'meta', icon: BarChart3, label: t('admin.metaTab') },
           { value: 'news', icon: Megaphone, label: t('adminNews.tab') },
           { grupo: 'Ajustes' },
@@ -879,6 +885,13 @@ const Admin = () => {
               puerta de entrada para quien no vive en estos números. */}
           <VideoComoLeerDifusion />
           <Marketing />
+        </TabsContent>
+
+        {/* ¿Las conversaciones de WhatsApp venden? Pestaña propia porque es la
+            pregunta que decide el presupuesto de la semana, y porque necesita su
+            propio botón para crear el código que reparte Mónica. */}
+        <TabsContent value="whatsapp" className="mt-5">
+          <WhatsApp />
         </TabsContent>
 
         {/* El Motor de Precios, resumido. Vive en su propio archivo por lo mismo que
@@ -1067,6 +1080,12 @@ const Admin = () => {
                   })}
                 </div>
               </Card>
+
+              {/* El mismo embudo partido por aparato. Va JUSTO debajo del embudo
+                  general a propósito: el número de arriba es el promedio de los de
+                  abajo, y verlos separados es lo único que dice si adelgazar la
+                  portada móvil sirvió. */}
+              <EmbudoPorDispositivo funnel={funnel} />
 
               <Card className="p-5" data-testid="funnel-sources">
                 <h4 className="font-heading font-semibold mb-1">{t('admin.funnel.sourcesTitle')}</h4>

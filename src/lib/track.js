@@ -88,6 +88,52 @@ const origin = () => {
   } catch { return { ...VACIO }; }
 };
 
+// ---- Los tres datos que Christián autorizó el 2026-07-31 ----
+//
+// ⛔ HASTA HOY EL SITIO NO GUARDABA NADA DE ESTO. Por eso no se podía comprobar si
+// adelgazar la portada móvil sirvió (el 8.7% de visita→ficha es un promedio de
+// teléfonos y monitores juntos), ni afirmar con datos PROPIOS que la mayoría entra
+// por teléfono: eso sólo se deducía de dónde se compran los anuncios.
+//
+// 🔒 PRIVACIDAD. Sólo lo AGREGADO. El User-Agent se lee aquí y se tira: al servidor
+// viaja únicamente la palabra 'telefono' / 'tableta' / 'computadora'. No se manda
+// IP (el servidor tampoco la guarda), no se manda el User-Agent, y no se calcula
+// ninguna huella digital del visitante.
+
+// El aparato. El orden importa: casi todos los Android de tableta también dicen
+// "Mobile", así que si se preguntara por teléfono primero, TODA tableta Android
+// contaría como teléfono. El iPad moderno miente al revés —se anuncia como Mac—,
+// y por eso hace falta el `maxTouchPoints`: un Mac de verdad no tiene 5 dedos.
+const device = () => {
+  try {
+    const ua = navigator.userAgent || '';
+    const dedos = navigator.maxTouchPoints || 0;
+    if (/iPad|Tablet|PlayBook|Silk/i.test(ua) || (/Android/i.test(ua) && !/Mobile/i.test(ua))) return 'tableta';
+    if (/Macintosh/i.test(ua) && dedos > 1) return 'tableta';           // iPad disfrazado de Mac
+    if (/Mobi|iPhone|iPod|Android|Windows Phone/i.test(ua)) return 'telefono';
+    return 'computadora';
+  } catch { return ''; }
+};
+
+// El ancho del NAVEGADOR, no el de la pantalla física: es el que decide cómo se
+// acomoda la portada. Un monitor de 2,560 px con la ventana a medias ve el mismo
+// diseño que una laptop, y lo que se quiere saber es qué DISEÑO está viendo la gente.
+const screenW = () => {
+  try { return Math.round(window.innerWidth || document.documentElement.clientWidth || 0); }
+  catch { return 0; }
+};
+
+// El `?ref=` del distribuidor. Ya lo guardaba el carrito (`np_dist_code`) para
+// aplicar el descuento, pero nunca llegaba a la medición: una visita traída por
+// María era indistinguible de una visita directa hasta que alguien COMPRABA.
+// Se lee de la URL y, si no viene, de lo que el carrito ya haya guardado.
+const refCode = () => {
+  try {
+    const q = new URLSearchParams(window.location.search).get('ref');
+    return (q || localStorage.getItem('np_dist_code') || '').trim().toUpperCase().slice(0, 40);
+  } catch { return ''; }
+};
+
 // Lo que necesita el checkout para dejar escrito en el PEDIDO de dónde salió el
 // cliente. Sin esto, el gasto de Meta y las ventas viven en dos mundos que no se
 // tocan, y el "costo por cliente" no se puede calcular: solo adivinar.
@@ -141,7 +187,15 @@ const avisarAMeta = (type, extra) => {
 export const track = (type, extra = {}) => {
   avisarAMeta(type, extra);
   try {
-    const body = JSON.stringify({ type, session_id: sessionId(), visitor_id: visitorId(), path: window.location.pathname, ...origin(), ...extra });
+    const body = JSON.stringify({
+      type, session_id: sessionId(), visitor_id: visitorId(),
+      path: window.location.pathname,
+      // Se calculan en CADA evento, no una vez por sesión: alguien puede girar el
+      // teléfono o cambiar el tamaño de la ventana a media visita, y el servidor
+      // se queda con el primero que llegue (ver `_embudo_por_dispositivo`).
+      device: device(), screen_w: screenW(), ref_code: refCode(),
+      ...origin(), ...extra,
+    });
     // sendBeacon sobrevive al cambio de página (clave para medir la compra).
     if (navigator.sendBeacon) {
       navigator.sendBeacon(`${API}/events`, new Blob([body], { type: 'application/json' }));
