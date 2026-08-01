@@ -130,7 +130,7 @@ const page = {
       rows: [
         ['Estado de mi pedido', 'Mi cuenta, o WhatsApp', 'Número de pedido'],
         ['Producto dañado o incompleto', 'Correo con fotos', 'Número de pedido y 4 fotos'],
-        ['Análisis de un lote', 'Correo', 'Número de lote del vial'],
+        ['Análisis de un lote', 'Correo', 'Número de pedido'],
         ['Facturación (CFDI)', 'Correo', 'Datos fiscales completos'],
         ['Mayoreo o distribución', 'Correo, asunto "Mayoreo"', 'Compuestos y volumen mensual'],
         ['Qué producto comprar', 'Asesor, o WhatsApp', 'Tu objetivo y presupuesto'],

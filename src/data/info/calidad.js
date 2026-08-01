@@ -2,7 +2,7 @@ const page = {
   slug: 'calidad',
   title: 'Calidad y trazabilidad',
   subtitle:
-    'Qué se le hace a cada lote antes de que llegue a tu mesa de trabajo: identidad, pureza, condiciones de llenado y el número de lote que amarra todo eso a tu vial.',
+    'Qué se le hace a cada lote antes de que llegue a tu mesa de trabajo: identidad, pureza, condiciones de llenado y el registro de lote que amarra todo eso a tu pedido.',
   badge: 'Control de calidad',
   updated: '20 de julio de 2026',
   sections: [
@@ -11,7 +11,7 @@ const page = {
       tone: 'info',
       title: 'El resumen honesto',
       body:
-        'Cada lote se analiza por HPLC para pureza y por espectrometría de masas para confirmar identidad. La pureza típica de nuestro catálogo es ≥99%. Cada vial lleva impreso su número de lote y el análisis de ese lote está disponible a solicitud, escribiendo a hola@exygenlabs.com con el número que aparece en tu etiqueta.',
+        'Cada lote se analiza por HPLC para pureza y por espectrometría de masas para confirmar identidad. La pureza típica de nuestro catálogo es ≥99%. Cada lote queda registrado con su propio análisis, y después de tu compra te entregamos en digital el certificado del lote que te corresponde, sin que tengas que pedirlo.',
     },
     // El origen va ARRIBA de todo lo analítico, y a propósito. Certified dedica su
     // página de pruebas de laboratorio a repetir que su material es de Estados
@@ -69,7 +69,7 @@ const page = {
         {
           title: 'Etiquetado y asignación de lote',
           body:
-            'Se imprime la etiqueta con el compuesto, la presentación en mg, el aviso de uso exclusivo en investigación y el número de lote. Ese número es la llave: con él recuperamos el análisis completo de tu vial en particular.',
+            'Se imprime la etiqueta con el compuesto, la presentación en mg y el aviso de uso exclusivo en investigación. El número de lote se asigna en ese momento y queda registrado en sistema, amarrado al pedido que se surta con ese material: esa es la llave con la que recuperamos el análisis completo de tu vial en particular.',
         },
       ],
     },
@@ -81,23 +81,23 @@ const page = {
       columns: ['Campo', 'Qué significa', 'Qué esperar'],
       rows: [
         ['Compuesto y secuencia', 'El nombre y la cadena de aminoácidos analizada.', 'Debe coincidir exactamente con lo que compraste.'],
-        ['Número de lote', 'El identificador del batch de producción.', 'El mismo que está impreso en tu vial.'],
+        ['Número de lote', 'El identificador del batch de producción.', 'El del lote que te tocó según tu compra.'],
         ['Pureza (HPLC)', 'Porcentaje del área del pico principal.', 'Típicamente ≥99% en nuestro catálogo.'],
         ['Masa observada vs. teórica', 'Confirmación de identidad por MS.', 'Diferencia mínima, dentro de la tolerancia del método.'],
         ['Aspecto', 'Inspección visual del liofilizado.', 'Polvo o torta blanca o casi blanca.'],
         ['Fecha de análisis', 'Cuándo se corrió la prueba.', 'Cercana a la fecha de producción del lote.'],
       ],
       note:
-        'Si algún campo del análisis que recibes no coincide con tu vial —sobre todo el número de lote— avísanos de inmediato: es justo el tipo de cosa que queremos detectar.',
+        'Si algún campo del análisis que recibes no coincide con lo que pediste —sobre todo el compuesto y la presentación— avísanos de inmediato: es justo el tipo de cosa que queremos detectar.',
     },
     {
       type: 'prose',
       title: 'Cómo accedes al certificado de tu lote',
       paragraphs: [
         'Nuestros clientes reciben acceso al certificado de análisis del lote específico que les corresponde según su compra. No es un documento genérico del compuesto: es el análisis del material que está en tu vial.',
-        'Lo encuentras en la pestaña "Certificados" dentro de Mi cuenta, en cuanto tu pedido queda confirmado. Los distribuidores tienen la misma pestaña en su portal, con los certificados de los productos que manejan. Desde ahí se descarga el PDF.',
-        'Publicamos además un certificado de muestra abierto, para que cualquiera pueda ver el formato y el nivel de detalle antes de comprar. Y si prefieres pedirlo a mano, escríbenos a hola@exygenlabs.com con el número de lote impreso en tu etiqueta —o una foto legible de ella— y te lo mandamos.',
-        'Si compraste varios viales del mismo compuesto en momentos distintos, revisa el lote de cada uno: pueden ser diferentes, y cada lote tiene su propio análisis.',
+        'Te lo entregamos en digital en cuanto tu pedido queda confirmado: no tienes que pedirlo ni identificar nada por tu cuenta. Los distribuidores reciben igual los certificados de los productos que manejan.',
+        'Publicamos además un certificado de muestra abierto, para que cualquiera pueda ver el formato y el nivel de detalle antes de comprar. Y si necesitas otra copia del tuyo, escríbenos a hola@exygenlabs.com con tu número de pedido y te la mandamos.',
+        'Si compraste el mismo compuesto en momentos distintos, revisa el certificado de cada pedido: pueden ser lotes diferentes, y cada lote tiene su propio análisis.',
       ],
     },
     {
@@ -105,7 +105,7 @@ const page = {
       title: 'Trazabilidad: qué significa en la práctica',
       paragraphs: [
         'Trazabilidad es poder responder, para un vial concreto que tienes en la mano, de qué lote de síntesis salió, cuándo se llenó, qué resultados analíticos dio ese lote y en qué pedido se despachó. No es un adjetivo de marketing: es una cadena de registros que se puede reconstruir hacia atrás.',
-        'En nuestro caso, esa cadena se ancla en el número de lote impreso en tu etiqueta. Con él podemos ir del vial al análisis, y del análisis al inventario y al pedido. Por eso insistimos tanto en que la etiqueta sea legible y en que nos avises si llega borrosa o ilegible: un vial sin lote identificable pierde justamente lo que lo hace confiable.',
+        'En nuestro caso, esa cadena se ancla en el número de lote que registramos al recibir el material y que queda amarrado a tu pedido. Con él vamos del análisis al inventario y del inventario a tu compra, y de tu compra de regreso al lote que te tocó. Por eso el certificado que te entregamos va ligado a tu pedido: es lo que hace que el documento corresponda a tu material y no a otro.',
         'También significa que si alguna vez detectáramos un problema en un lote, sabríamos exactamente a qué pedidos avisar. Ese es el verdadero valor de la trazabilidad, y solo funciona si se construye antes de necesitarla.',
       ],
     },
@@ -166,7 +166,7 @@ const page = {
         },
         {
           q: '¿Puedo mandar a analizar el material por mi cuenta?',
-          a: 'Por supuesto, y nos parece perfectamente razonable. Si el resultado de tu análisis independiente difiere de lo que reportamos para ese lote, compártenoslo con el número de lote: lo revisamos en serio y, si el material está fuera de especificación, lo reponemos o reembolsamos.',
+          a: 'Por supuesto, y nos parece perfectamente razonable. Si el resultado de tu análisis independiente difiere de lo que reportamos para ese lote, compártenoslo con tu número de pedido: lo revisamos en serio y, si el material está fuera de especificación, lo reponemos o reembolsamos.',
         },
         {
           q: '¿Qué pasa si un lote no pasa el control?',

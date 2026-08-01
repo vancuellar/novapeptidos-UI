@@ -43,11 +43,11 @@ const page = {
         },
         {
           q: '¿Qué es un COA y cómo lo consigo?',
-          a: 'El COA (certificate of analysis) es el reporte del laboratorio para ese lote específico: cromatograma de HPLC con el porcentaje de pureza, espectro de masas, apariencia, contenido de agua y número de lote. Nuestros clientes lo reciben en la pestaña Certificados de Mi cuenta, con el lote que les corresponde según su compra. Antes de comprar puedes revisar el certificado de muestra que publicamos, o escribirnos a hola@exygenlabs.com.',
+          a: 'El COA (certificate of analysis) es el reporte del laboratorio para ese lote específico: cromatograma de HPLC con el porcentaje de pureza, espectro de masas, apariencia, contenido de agua y número de lote. Nuestros clientes lo reciben en digital después de la compra, con el lote que les corresponde. Antes de comprar puedes revisar el certificado de muestra que publicamos, o escribirnos a hola@exygenlabs.com.',
         },
         {
           q: '¿El COA corresponde a mi vial o es genérico?',
-          a: 'Corresponde al lote. Por eso te pedimos el número de lote de tu etiqueta: así te mandamos exactamente el análisis del material que recibiste, no un documento de muestra.',
+          a: 'Corresponde al lote. Por eso el certificado va ligado a tu pedido: así te llega exactamente el análisis del material que recibiste, no un documento de muestra.',
         },
         {
           q: '¿Cuánto dura el producto y cómo se guarda?',
@@ -211,7 +211,7 @@ const page = {
         },
         {
           q: '¿Y si sospecho que el material no corresponde al COA?',
-          a: 'Escríbenos con el número de lote y con los resultados que obtuviste. Cotejamos contra la contramuestra del lote y, si el material efectivamente no cumple, lo reponemos. Preferimos perder un vial que un lote mal caracterizado circulando.',
+          a: 'Escríbenos con tu número de pedido y con los resultados que obtuviste. Cotejamos contra la contramuestra del lote y, si el material efectivamente no cumple, lo reponemos. Preferimos perder un vial que un lote mal caracterizado circulando.',
         },
         {
           q: '¿Qué pasa si me equivoqué al pedir o ya no lo quiero?',

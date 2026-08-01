@@ -67,7 +67,7 @@ const page = {
         },
         {
           q: '¿Cuál es lo primero que debo hacer al abrir la caja?',
-          a: 'Cuatro pasos: revisa que ningún vial venga roto o con el engargolado flojo, verifica que los productos coincidan con tu pedido, anota el número de lote de cada etiqueta en tu bitácora y mete todo al refrigerador. Si algo viene dañado, foto de inmediato y escríbenos dentro de las primeras 48 horas.',
+          a: 'Cuatro pasos: revisa que ningún vial venga roto o con el engargolado flojo, verifica que los productos coincidan con tu pedido, guarda junto a tu bitácora el certificado del lote que te llegó y mete todo al refrigerador. Si algo viene dañado, foto de inmediato y escríbenos dentro de las primeras 48 horas.',
         },
         {
           q: '¿Le quito el sello de aluminio al vial?',

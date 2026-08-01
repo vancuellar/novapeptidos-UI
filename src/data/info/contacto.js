@@ -55,7 +55,7 @@ const page = {
         'No es burocracia: con estos datos resolvemos en un mensaje lo que de otro modo toma tres idas y vueltas.',
       items: [
         'Tu número de pedido, con formato EX-AAAAMMDD-1234, si tu duda es sobre una compra.',
-        'El número de lote impreso en el vial, si preguntas por un análisis o por el material.',
+        'El número de tu pedido, si preguntas por un análisis o por el material.',
         'Fotos claras y sin filtros, si reportas un daño o algo que no corresponde.',
         'El compuesto y la presentación en mg exactos de los que hablas: muchos productos tienen varias presentaciones.',
         'Tus datos fiscales completos (RFC, razón social, régimen, uso de CFDI y código postal), si pides factura.',

@@ -171,25 +171,25 @@ const page = {
     },
     {
       type: 'steps',
-      title: 'Cómo pedir el COA de tu lote',
+      title: 'Cómo obtener el COA de tu lote',
       intro:
-        'Cada cliente recibe el certificado del lote que le corresponde según su compra: aparece en la pestaña Certificados de Mi cuenta cuando el pedido queda confirmado, y los distribuidores lo tienen en su portal. Además publicamos uno de muestra abierto, para revisar el formato antes de comprar, y siempre puedes pedirlo por correo con tu número de lote.',
+        'Cada cliente recibe el certificado del lote que le corresponde según su compra: se lo entregamos en digital en cuanto el pedido queda confirmado, sin que tenga que pedirlo, y los distribuidores lo reciben igual para los productos que manejan. Además publicamos uno de muestra abierto, para revisar el formato antes de comprar. Si necesitas otra copia del tuyo, pídela por correo con tu número de pedido.',
       items: [
         {
           title: 'Escríbenos a hola@exygenlabs.com',
           body:
-            'Asunto sugerido: "Solicitud de COA". Es el único canal por el que emitimos certificados; así queda registro escrito de qué documento se entregó y para qué lote.',
+            'Asunto sugerido: "Solicitud de COA". Es el único canal por el que reemitimos certificados; así queda registro escrito de qué documento se entregó y para qué lote.',
         },
         {
           title: 'Incluye los datos del producto',
           body:
-            'Nombre del producto y presentación. Si ya lo recibiste, agrega el número de lote impreso en la etiqueta del vial. Si todavía no compras, dilo: te enviamos el COA del lote vigente en inventario.',
-          note: 'Un producto puede tener varios lotes en circulación. El número de lote es lo que hace que te llegue el documento correcto.',
+            'Nombre del producto y presentación. Si ya compraste, agrega tu número de pedido: con él ubicamos el lote que te tocó. Si todavía no compras, dilo: te enviamos el COA del lote vigente en inventario.',
+          note: 'Un producto puede tener varios lotes en circulación. Tu número de pedido es lo que hace que te llegue el documento correcto.',
         },
         {
-          title: 'Recibe el PDF y revísalo contra la etiqueta',
+          title: 'Recibe el PDF y revísalo contra tu pedido',
           body:
-            'Verifica que el lote del PDF sea idéntico al del vial, que la secuencia coincida con lo que pediste y que la fecha de análisis esté presente. Si algo no cuadra, respóndenos el mismo correo antes de usar el material.',
+            'Verifica que el producto y la presentación sean los de tu pedido, que la secuencia coincida con lo que compraste y que la fecha de análisis esté presente. Si algo no cuadra, respóndenos el mismo correo antes de usar el material.',
         },
       ],
     },
@@ -206,11 +206,11 @@ const page = {
       items: [
         {
           q: '¿Puedo ver los COA sin escribirles?',
-          a: 'En abierto publicamos solo un certificado de muestra, para que cualquiera vea el formato y el nivel de detalle. El resto se entrega por cliente: en Mi cuenta, pestaña Certificados, aparece el COA del lote que compraste. Lo hacemos así porque el documento que sirve es el de TU lote; una galería general dejaría de corresponder a tu vial en cuanto entrara un lote nuevo. También puedes pedirlo por correo a hola@exygenlabs.com con tu número de lote.',
+          a: 'En abierto publicamos solo un certificado de muestra, para que cualquiera vea el formato y el nivel de detalle. El resto se entrega por cliente: después de tu compra te mandamos en digital el COA del lote que te tocó. Lo hacemos así porque el documento que sirve es el de TU lote; una galería general dejaría de corresponder a tu material en cuanto entrara un lote nuevo. Si necesitas otra copia, pídela por correo a hola@exygenlabs.com con tu número de pedido.',
         },
         {
           q: '¿El COA es del lote que me van a mandar?',
-          a: 'Sí. Si ya compraste, pide el certificado con el número de lote de tu etiqueta. Si aún no compras, te mandamos el del lote vigente en inventario, que es el que saldría en tu pedido. Si entre tu solicitud y tu envío entra un lote nuevo, pídenos el actualizado y te lo reenviamos.',
+          a: 'Sí. Si ya compraste, pide el certificado con tu número de pedido. Si aún no compras, te mandamos el del lote vigente en inventario, que es el que saldría en tu pedido. Si entre tu solicitud y tu envío entra un lote nuevo, pídenos el actualizado y te lo reenviamos.',
         },
         {
           q: '¿Qué diferencia hay entre 99% y 98%?',
@@ -235,7 +235,7 @@ const page = {
       tone: 'info',
       title: '¿Dudas con un lote concreto?',
       body:
-        'Escríbenos a hola@exygenlabs.com con el número de lote y el producto. Contestamos con el COA correspondiente y, si hace falta, con el cromatograma para que lo revises tú mismo.',
+        'Escríbenos a hola@exygenlabs.com con tu número de pedido y el producto. Contestamos con el COA correspondiente y, si hace falta, con el cromatograma para que lo revises tú mismo.',
     },
   ],
   related: [

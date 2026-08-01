@@ -33,7 +33,7 @@ const page = {
       intro: 'Un pedido típico incluye esto y nada más. No trae agua ni jeringas salvo que las hayas agregado al carrito.',
       items: [
         'El vial de vidrio con el péptido liofilizado: entre 2 mg y 100 mg de polvo según el producto, con tapón de goma y sello de aluminio de color.',
-        'Etiqueta con el nombre del compuesto, la cantidad en mg, el número de lote y la leyenda RUO.',
+        'Etiqueta con el nombre del compuesto, la cantidad en mg y la leyenda RUO.',
         'Empaque con material aislante y, en pedidos que lo requieren, gel refrigerante. El gel llega tibio con frecuencia y eso no arruina el producto: el polvo liofilizado tolera varios días fuera de refrigeración.',
         'Acceso al certificado de análisis (COA) del lote, con el resultado de HPLC y espectrometría de masas.',
         'En algunos formatos, un vial adicional de agua bacteriostática si la compraste por separado.',
@@ -166,7 +166,7 @@ const page = {
         {
           term: 'Lote',
           plain: 'El número que identifica la tanda de producción exacta de tu vial.',
-          example: 'Con el lote impreso en la etiqueta puedes pedir el COA que le corresponde a ese vial y no a otro.',
+          example: 'El COA que te entregamos después de la compra es el del lote que te tocó, y no el de otro.',
         },
         {
           term: 'COA',

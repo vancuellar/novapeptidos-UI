@@ -97,9 +97,9 @@ const page = {
       type: 'prose',
       title: '8. Calidad, análisis y alcance de lo que garantizamos',
       paragraphs: [
-        'Cada lote se analiza para verificar identidad y pureza, y el análisis correspondiente está disponible a solicitud con el número de lote impreso en el vial. Lo que garantizamos es que el material entregado corresponde al compuesto y a la especificación publicada para ese lote.',
+        'Cada lote se analiza para verificar identidad y pureza, y el análisis correspondiente se entrega en digital después de la compra. Lo que garantizamos es que el material entregado corresponde al compuesto y a la especificación publicada para ese lote.',
         'No garantizamos ningún resultado experimental. La idoneidad del material para un diseño experimental concreto, así como la interpretación de los resultados, corresponden exclusivamente al investigador.',
-        'Si un análisis independiente contradice nuestra especificación para un lote, compártenoslo con el número de lote: lo revisamos y, de confirmarse, reponemos o reembolsamos.',
+        'Si un análisis independiente contradice nuestra especificación para un lote, compártenoslo con tu número de pedido: lo revisamos y, de confirmarse, reponemos o reembolsamos.',
       ],
     },
     {
