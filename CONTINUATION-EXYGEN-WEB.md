@@ -1,3 +1,137 @@
+# 🤝 HANDOFF — cierre del 2026-07-31 — LÉELO PRIMERO, ES EL ESTADO REAL
+
+## ⛔ TODO ESTÁ EN main Y SIN PUBLICAR
+Los tres repos están limpios y empujados. **Nada de lo de hoy está en vivo todavía**
+salvo lo que se indica abajo. ⚠️ OJO CRÍTICO: **un `git push` al repo UI dispara solo
+el despliegue** (`.github/workflows/deploy.yml` corre en cada push a `main`) — así que
+al empujar YA SE PUBLICÓ. Y **el backend debe salir ANTES o JUNTO con el frontend**: si
+sale solo el frontend, la pestaña de WhatsApp pega a rutas que no existen.
+
+## 🔴 LA REGLA QUE MANDA: NO SE DESPLIEGA SIN AVISARLE A CHRISTIÁN
+El 31-jul hubo **10 despliegues en 3 horas** desde varias sesiones y el sitio se cayó
+varias veces. Su exigencia: **99.99% en pie = 4 min 30 s de caída AL MES**. Está en el
+`CLAUDE.md` del repo UI. La causa NUNCA fue el servidor (EC2 12 días arriba, azul/verde
+jamás falló): fue **publicar builds rotos**. Defensas puestas: candado de imports
+(`.githooks/pre-commit`), `desplegar.sh` construye desde copia limpia + verifica con
+navegador real que las páginas PINTAN + marcha atrás automática, y `vigilante.py` en el
+EC2 (cron 3 min) que mide y avisa:
+`sudo python3 /opt/exygen/vigilante/vigilante.py --resumen 7`
+
+## 🔜 TAREA #1 DEL PRÓXIMO CHAT — LA CALCULADORA DEBE DECIR CUÁNTO DURA EL VIAL
+Orden de Christián (31-jul, con sus palabras): la calculadora de reconstitución tiene
+que **considerar la titulación** para decir **cuánto te va a durar en promedio un vial**.
+Y —esto es lo importante— **avisar cuando un vial muy grande no tenga sentido**, porque
+su duración se pasa de la vida útil del péptido YA RECONSTITUIDO.
+Su ejemplo textual: *"un vial de 120 mg de RT, si la persona está tomando dosis de 5 mg
+a la semana, le va a durar 24 semanas y eso es más de la vida útil del péptido después
+de haber sido reconstituido."*
+Qué hace falta: (a) semanas/dosis que rinde el vial según el nivel y la frecuencia
+elegidos, contando la titulación escalonada donde exista (27 compuestos la tienen en la
+base nueva); (b) la **vida útil reconstituido** por compuesto — hoy NO existe ese dato
+en el catálogo, hay que investigarlo con fuente como se hizo con las dosis; (c) el aviso
+claro cuando duración > vida útil, sugiriendo la presentación que sí le conviene.
+⚠️ Sin espantar (ver regla de tono abajo) y sin inventar: lo que no tenga fuente se dice.
+
+## 🎨 REGLAS DE TONO Y DISEÑO (se ganaron a pulso hoy, no las rompas)
+- **El diseño y el hero NO se tocan.** Vio 3 propuestas de rediseño y dijo NINGUNA:
+  *"Vas a respetar el hero actual, el diseño actual y solo le vamos a quitar ruido."*
+- **Descripciones en cristiano**: la vara es *"una señora de 65 años que no entiende de
+  química"*. Ejemplo del enojo: 5-Amino-1MQ decía "Inhibidor de NNMT explorado en
+  adipocitos" → ahora "Se estudia por su efecto en las células que almacenan grasa."
+- **NADA que espante**: fuera "no hay ensayo clínico", "no aprobado por la FDA",
+  "evidencia limitada/preliminar". Se copia el equilibrio de Certified: el compuesto en
+  positivo y simple; la advertencia vive en el pie y en Términos.
+- **"No apto para consumo humano ni animal"**: prohibida en fichas, home, /aprende,
+  /info, correos y las dos IAs. Vive SOLO en el aviso de entrada y en Términos —él lo
+  autorizó al ver que Certified la trae en su banner.
+- **Textos siempre en los 3 idiomas** (es-MX, en-US, pt-BR), Title Case en botones.
+
+## ✅ HECHO HOY Y YA EN VIVO
+NAD+ corregido (25/50/50 mg a 2×/2×/3× semana; 500 mg con **5 mL** = 100 mg/mL, los mg
+SON las rayitas) · **RuoGate arreglado**: medía ~900 px sin scroll propio y en iPhone
+SE/8 el botón de aceptar quedaba FUERA — **el sitio entero era inaccesible en teléfonos
+chicos** y nadie lo veía porque el aviso solo sale la primera vez · 1MQ bajado a $949
+(el candado anti-Certified estaba apagado desde el 26-jul) · Retatrutida 30mg $4,299 y
+Semaglutida 10mg $1,849 · **HGH tapiado hacia abajo** (nunca se ajusta a la baja, orden
+suya; escrito en FUENTE-DE-VERDAD y los 3 prompts) · 8 códigos MONICAF de Alanís y
+Javier jubilados · Adipotida a la venta (2/5/10 mg, CAS 859216-15-2; "FTTP" era errata
+de FTPP copiada por todo el mercado) · clientes invitados con ficha (Brenda y Aidee eran
+invisibles con $7,657 cobrados) · rastreo propio en `/pedido/{num}` · página Marketing
+con archivo semanal · botón Imprimir Guía · correos consolidados + compra automática de
+guía (hasta 4 piezas, tope $400).
+
+## 📦 COMMITEADO EN main, PENDIENTE DE PUBLICAR
+1. **Descripciones de los 96 compuestos** en 3 idiomas. ⚠️ Hallazgo: los catálogos de
+   inglés y portugués estaban MUERTOS (8 productos con slugs viejos) — ninguna
+   traducción se aplicaba. ⚠️ Y el sitio lee las descripciones del BACKEND, no del repo:
+   hay que correr `subir_descripciones_backend.py --aplicar` y regenerar `compendio.json`.
+2. **Home móvil adelgazado**: 10,565 → **3,569 px** (13 → 4.4 pantallas), pie 1,702 →
+   902, imágenes 886 → 470 KB. **Escritorio idéntico al píxel.** Nada se borró: fotos de
+   lab → /educacion, comparativa → /comparativa (página nueva), trazabilidad y educación
+   → /aprende, mayoreo → /distribuidor, todos enlazados desde el pie.
+3. **Botón del hero al Asesor**: el secundario pasó a **"Arma Mi Plan"** → `/asesor?rapido=1`
+   (atajo de 2 toques; la ruta larga son 67 opciones). "Ver Catálogo" sigue de principal.
+   El globo de WhatsApp ya no lo tapa.
+4. **Aviso de entrada**: 970 → **423 px**, cabe sin scroll en iPhone SE. Decía lo mismo
+   4 veces; ahora son 4 renglones.
+5. **Hero corto**: fuera el párrafo de la pureza por lote; queda "Péptidos liofilizados
+   de investigación, fabricados en laboratorios de Estados Unidos."
+6. **10 dosis imposibles arregladas** (Thymalin, Mazdutida, Cagrilintida, CJC-1295,
+   TB-500) y **2 APAGADAS** por falta de fuente: L-Carnitine (pedía 100× su vial) y B12.
+7. **Video de `/aprende/empieza-aqui`** (4:09, 3 idiomas) con las correcciones de
+   Christián: la etiqueta NO trae lote y el COA NO viaja en la caja (llega digital tras
+   la compra). También se quitó el gel refrigerante y las jeringas, que no existen.
+8. **Métricas de visita** (dispositivo, ancho de pantalla, origen) + embudo partido por
+   dispositivo, y **atribución de WhatsApp** con código por anuncio (`WA-RETA-JUL`).
+   ⚠️ Hallazgo: las conversaciones de WhatsApp NO se leían de Meta — justo el número que
+   se llevó casi todo el presupuesto no salía en el tablero.
+9. **Base de dosis de Codex** en el motor: 96 compuestos, 240 fuentes calificadas.
+
+## ⏳ DECISIONES QUE ESPERAN A CHRISTIÁN
+1. 🔴 **El domicilio del cliente sale con solo el número de pedido, sin contraseña**
+   (`GET /api/orders/{num}` devuelve nombre, correo, teléfono y dirección; los números
+   son adivinables: EX- + fecha + 4 dígitos). Opciones: quitar los datos de ahí
+   (recomendado), pedir el correo como segunda llave, o dejarlo.
+2. **HGH hacia arriba**: cerrar la escalera cuesta subir 36 IU $1,548 → **$3,489** y
+   24 IU $1,139 → **$2,329** (+125% y +104%, van los dos o ninguno), quedando 170%
+   arriba de Exoma. Calculado y esperando su sí. Certified NO vende HGH.
+3. **Las 5 dosis 🔴 de la base**: ACTH 1-39 (8× el techo del estudio), Epithalon (10 mg
+   vs 0.5 publicado), PNC-27, PE-22-28 + 4 productos con dosis SIN fuente.
+4. **CJC-1295 con DAC**: el ensayo dosifica por peso y su escalón más bajo ya pide más
+   que el vial de 2 mg entero. ¿Bajamos la escalera (hecho) o escondemos el vial de 2 mg?
+5. **L-Carnitine de 2 mg**: parece error de catálogo (se dosifica en cientos de mg).
+6. **Cerebrolysin**: nuestro vial de 60 mg no corresponde al producto oficial y sus
+   dosis no tienen fuente. ¿Se apaga?
+7. **23 costos de la maestra desfasados** por Jess (P43) y Chuangyan (P41) — a los que
+   NADIE ha comprado. Refrescarlos dispara reprecios en cascada, y destaparía que la
+   **HGH 40 IU pasaría de $3,869 a ~$1,719** (prohibido por él). La prueba
+   `test_el_costo_de_la_maestra_es_el_del_proveedor_mas_barato` está EN ROJO a propósito.
+   Recomendación: esperar a una compra real.
+8. **Prueba a Chuangyan** (gana en 57 tamaños): Cagrisema 10mg + LIPO-C + GHK-Cu o BPC-157.
+9. **Portada y /info/calidad siguen diciendo "cada vial lleva su número de lote impreso"**
+   en los 3 idiomas, y hay un titular construido sobre eso. Es texto de posicionamiento:
+   él decide qué decir en su lugar.
+10. Gemini en plan gratis (20/día) — prender billing o pegar llave de OpenAI
+    (`AI_PROVIDER=openai`, ya implementado sin probar).
+11. Servidor de JADA: hace falta host, usuario y acceso. **No habría evitado las caídas**
+    (fueron builds rotos). Alternativa más barata: Worker de Cloudflare con cron (gratis)
+    vigilando desde fuera de AWS — hace falta un token con permiso de Workers.
+12. Skydropx sin saldo ni verificación (Envíos Internacionales sí compra).
+13. **NADA de WhatsApp hasta nuevo aviso** — hay borradores para Chuangyan, Jess, Bjvvb,
+    Peptideals, DT y los 2 ingleses.
+
+## 📣 MARKETING — la semana que empieza
+$237 USD gastados, **0 compras atribuidas por Meta**, 110 conversaciones de WhatsApp a
+$39. Las 3 ventas reales entraron por otro lado. Ganancia real de lo cobrado **$4,644.59
+(60.7%)**; caja $4,279 contra $4,268 de publicidad = **empate técnico de $11**.
+Plan: (1) medir si las conversaciones venden — ya construido, falta repartir códigos;
+(2) mandar los anuncios a la ficha de Retatrutida (58% de las vistas) con los enlaces ya
+preparados; (3) concentrar WhatsApp en **Facebook Reels** ($0.53/conv); (4) dejar
+$8-10/día de tráfico web vivo (hoy en cero); (5) **no tocar nada 7 días** — hubo 18
+campañas nuevas y 12 cambios de presupuesto en 3 días. **Todavía no subir presupuesto.**
+
+---
+
 # 🚪 2026-07-31 — EL AVISO DE ENTRADA: DE 970 px A 423 px
 
 Christián, tres mensajes seguidos: *«Haz el anuncio de "Antes de entrar" mucho
