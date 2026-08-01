@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
-import { FlaskConical, ShieldCheck, Ban, ExternalLink } from 'lucide-react';
+import { ExternalLink } from 'lucide-react';
 import { BrandMark } from '@/components/BrandLogo';
 import { useLanguage } from '@/context/LanguageContext';
 
@@ -72,67 +72,59 @@ const RuoGate = () => {
 
   if (!open) return null;
 
-  const points = [
-    { icon: FlaskConical, text: t('ruo.gate.point1') },
-    { icon: Ban, text: t('ruo.gate.point2') },
-    { icon: ShieldCheck, text: t('ruo.gate.point3') },
-  ];
-
   return (
-    // El aviso es MÁS ALTO que la pantalla de un teléfono (≈900 px de contenido
-    // contra los 667 de un iPhone SE). Con `items-center` y sin scroll propio,
-    // el recuadro se recortaba por arriba Y por abajo: la casilla y el botón de
-    // aceptar quedaban FUERA de la pantalla, y como el aviso bloquea el scroll
-    // del fondo no había forma de bajar. En esos teléfonos no se podía entrar al
-    // sitio — ni al catálogo, ni a "Empieza aquí", ni a comprar (2026-07-31).
-    // Por eso: la capa scrollea (`overflow-y-auto`), se alinea arriba
-    // (`items-start`) y el recuadro se centra solo cuando SOBRA alto (`my-auto`).
+    // TAMAÑO: este aviso tiene que caber ENTERO, sin scroll, en 320x568 (el
+    // teléfono más chico que existe). No es capricho de diseño —
+    //
+    //   Hasta el 2026-07-31 medía 970 px: un intro largo, tres puntos con icono
+    //   y una casilla que repetía los tres puntos. En un iPhone SE el botón de
+    //   "Entiendo y acepto" quedaba FUERA de la pantalla y, como el aviso
+    //   bloquea el scroll del fondo, no había forma de bajar: el sitio entero
+    //   era inalcanzable en esos teléfonos. Ese día Christian pidió además
+    //   copiar la brevedad del aviso de Certified (el suyo mide 343 px).
+    //
+    // Quedan CUATRO cosas y ninguna más: qué es esto, la edad, la casilla y el
+    // botón. Si añades un renglón, vuelve a medirlo en 320x568.
+    // La capa scrollea igual (`overflow-y-auto` + `items-start`) como red de
+    // seguridad para tipografías grandes del sistema; el recuadro se centra
+    // solo cuando sobra alto (`my-auto`).
     <div
-      className="fixed inset-0 z-[100] overflow-y-auto flex items-start justify-center px-4 py-6 sm:py-8 bg-background/80 backdrop-blur-md"
+      className="fixed inset-0 z-[100] overflow-y-auto flex items-start justify-center px-4 py-5 bg-background/80 backdrop-blur-md"
       role="dialog"
       aria-modal="true"
       aria-labelledby="ruo-gate-title"
       data-testid="ruo-gate"
     >
-      <div className="w-full max-w-lg my-auto rounded-2xl border border-border bg-card shadow-[var(--shadow-md)] p-5 sm:p-9">
-        <BrandMark className="h-8 mx-auto mb-6 sm:mb-7" noMolecule />
+      <div className="w-full max-w-sm my-auto rounded-2xl border border-border bg-card shadow-[var(--shadow-md)] p-5">
+        <BrandMark className="h-6 mx-auto mb-4" noMolecule />
 
-        <span className="inline-flex items-center gap-1.5 rounded-full border border-[hsl(var(--primary))]/30 bg-[hsl(var(--primary))]/10 px-3 py-1 font-mono-tech text-[10px] uppercase tracking-[0.18em] text-[hsl(var(--primary))]">
+        <span className="inline-flex items-center gap-1.5 rounded-full border border-[hsl(var(--primary))]/30 bg-[hsl(var(--primary))]/10 px-2.5 py-0.5 font-mono-tech text-[10px] uppercase tracking-[0.14em] text-[hsl(var(--primary))]">
           {t('ruo.gate.badge')}
         </span>
 
-        <h2 id="ruo-gate-title" className="font-heading text-2xl sm:text-3xl font-bold tracking-tight mt-4">
+        <h2 id="ruo-gate-title" className="font-heading text-xl font-bold tracking-tight mt-2">
           {t('ruo.gate.title')}
         </h2>
-        <p className="text-sm text-muted-foreground leading-relaxed mt-3">
+        <p className="text-[13px] text-muted-foreground leading-snug mt-1.5">
           {t('ruo.gate.intro')}
         </p>
 
-        <ul className="mt-5 sm:mt-6 space-y-3">
-          {points.map(({ icon: Icon, text }) => (
-            <li key={text} className="flex gap-3 text-sm leading-relaxed">
-              <Icon className="h-4 w-4 mt-0.5 shrink-0 text-[hsl(var(--primary))]" />
-              <span>{text}</span>
-            </li>
-          ))}
-        </ul>
-
         {/* Aceptar es un acto, no un clic de paso: la casilla deja constancia
-            de que la persona afirmó los tres puntos. */}
-        <label className="mt-5 sm:mt-7 flex items-start gap-3 cursor-pointer rounded-xl border border-border bg-secondary/40 p-3.5 sm:p-4" data-testid="ruo-gate-checkbox">
+            de la edad y del propósito, que es lo que viaja con el pedido. */}
+        <label className="mt-3.5 flex items-start gap-2.5 cursor-pointer rounded-xl border border-border bg-secondary/40 p-3" data-testid="ruo-gate-checkbox">
           <input type="checkbox" checked={checked} onChange={(e) => setChecked(e.target.checked)}
-            className="h-5 w-5 mt-0.5 shrink-0 accent-[hsl(var(--primary))] cursor-pointer" />
-          <span className="text-sm leading-relaxed font-medium">{t('ruo.gate.checkbox')}</span>
+            className="h-5 w-5 mt-px shrink-0 accent-[hsl(var(--primary))] cursor-pointer" />
+          <span className="text-[13px] leading-snug font-medium">{t('ruo.gate.checkbox')}</span>
         </label>
 
         <button onClick={accept} disabled={!checked} data-testid="ruo-gate-accept"
-          className="btn-resend w-full mt-5 disabled:opacity-40 disabled:pointer-events-none">
+          className="btn-resend w-full mt-3 disabled:opacity-40 disabled:pointer-events-none">
           {t('ruo.gate.accept')}
         </button>
 
         {/* En pestana nueva: asi se pueden leer sin perder el aviso ni tener
             que aceptar a ciegas lo que todavia no se ha leido. */}
-        <p className="text-[11px] text-muted-foreground leading-relaxed text-center mt-4">
+        <p className="text-[11px] text-muted-foreground leading-snug text-center mt-3">
           {t('ruo.gate.termsPre')}{' '}
           <a href={`${BASE}/info/terminos`} target="_blank" rel="noreferrer" data-testid="ruo-gate-terms"
             className="text-[hsl(var(--primary))] hover:underline inline-flex items-center gap-0.5">
@@ -142,10 +134,10 @@ const RuoGate = () => {
           <a href={`${BASE}/info/privacidad`} target="_blank" rel="noreferrer" data-testid="ruo-gate-privacy"
             className="text-[hsl(var(--primary))] hover:underline inline-flex items-center gap-0.5">
             {t('auth.terms.privacy')}<ExternalLink className="h-2.5 w-2.5" />
-          </a>.
+          </a>
         </p>
 
-        <a href="https://www.google.com" className="block text-center text-[11px] text-muted-foreground hover:text-foreground transition-colors mt-3" data-testid="ruo-gate-leave">
+        <a href="https://www.google.com" className="block text-center text-[11px] text-muted-foreground hover:text-foreground transition-colors mt-2" data-testid="ruo-gate-leave">
           {t('ruo.gate.leave')}
         </a>
       </div>

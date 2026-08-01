@@ -1,3 +1,48 @@
+# 🚪 2026-07-31 — EL AVISO DE ENTRADA: DE 970 px A 423 px
+
+Christián, tres mensajes seguidos: *«Haz el anuncio de "Antes de entrar" mucho
+más pequeño. Copia el de Certified, que es pequeño»* · *«Recorta la cantidad de
+info. Eres muy repetitivo»*.
+
+Tenía razón: el aviso decía lo mismo **cuatro veces** (un intro, tres puntos con
+icono y una casilla que remataba «confirmo los tres puntos anteriores») y medía
+**970 px** en un iPhone SE de 320×568 — más alto que la pantalla. El de
+Certified, leído en vivo ese día, mide **343 px**.
+
+Ahora son **cuatro cosas y ninguna más**: qué es esto, la edad, la casilla y el
+botón. **423 px** en es-MX, 441 en pt-BR (el más largo). Verificado con
+navegador de verdad en 320×568, 375×667 y 390×844 y en escritorio: cabe entero
+**sin scroll** y el botón se puede picar (casilla → botón → la puerta se cierra
+y queda la constancia con fecha en `exygen_ruo_ack`).
+
+Texto final, los tres idiomas:
+
+| | es-MX | en-US | pt-BR |
+|---|---|---|---|
+| Etiqueta | Solo investigación | Research only | Somente pesquisa |
+| Título | Antes de entrar | Before you enter | Antes de entrar |
+| Cuerpo | Todo lo que vendemos es material de laboratorio para investigación. No está destinado al consumo humano ni animal. | Everything we sell is laboratory material for research. It is not intended for human or animal consumption. | Tudo o que vendemos é material de laboratório para pesquisa. Não se destina ao consumo humano nem animal. |
+| Casilla | Tengo 18 años o más y lo adquiero con fines de investigación. | I am 18 or older and I am buying this for research purposes. | Tenho 18 anos ou mais e adquiro este material para fins de pesquisa. |
+| Botón | Entiendo y acepto | I understand and accept | Entendo e aceito |
+
+## ⛔ La frase de «consumo humano ni animal» — dónde SÍ y dónde JAMÁS
+
+Orden suya del mismo día: *«Jamás digas eso… JAMÁS.»* Ese día salió de **52
+textos**. Después, al saber que Certified la trae en su banner de entrada,
+matizó: *«por lo visto la puedes dejar en ese aviso, considerando que también
+Certified la tiene»*.
+
+Queda entonces en **dos sitios y en ninguno más**: **Términos y Condiciones** y
+**el aviso de entrada** (`ruo.gate.intro`). ⛔ Prohibida en fichas, portada,
+`/aprende`, `/info`, correos, cotizaciones y los prompts de las dos IAs, en
+cualquier idioma y cualquier variante. Escrito también en el `CLAUDE.md` del
+repo, con el `grep` que lo comprueba. Si una prueba de la auditoría la exige,
+la que se ajusta es la prueba, no el texto.
+
+⛔ **NO DESPLEGADO** — commiteado y en cola con lo demás.
+
+---
+
 # 🤝 CIERRE — 2026-07-31 (noche cerrada) — LÉELO PRIMERO
 
 ## 🔴 LA REGLA QUE MANDA: NO SE DESPLIEGA SIN AVISARLE A CHRISTIÁN

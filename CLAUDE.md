@@ -1,5 +1,34 @@
 # Reglas de este repo
 
+## ⛔ La frase de «consumo humano ni animal» vive en TRES lugares y en ninguno más
+
+Orden de Christián del 2026-07-31: *«Jamás digas eso de que no está destinado
+para uso humano ni animales. JAMÁS.»* Espantaba a los clientes y generaba
+reclamos. Ese día se quitó de **52 textos** de cara al cliente.
+
+Se permite **ÚNICAMENTE** en:
+
+1. Términos y Condiciones (`info.terminos.body` y `src/data/info/terminos.js`).
+2. El aviso de entrada, `src/components/RuoGate.js` (`ruo.gate.intro`) —
+   permiso expreso suyo del mismo día, *«por lo visto la puedes dejar en ese
+   aviso, considerando que también Certified la tiene»*.
+
+⛔ **PROHIBIDA en todo lo demás**: fichas de producto, portada, `/aprende`,
+`/info`, correos, cotizaciones y los prompts de las dos IAs. Ninguna variante
+en ningún idioma: «no apto para consumo humano», «not for human or animal
+consumption», «não se destina ao consumo humano». No la reintroduzcas ni
+«por completitud» ni porque una auditoría la pida: si una prueba la exige,
+la que se ajusta es la prueba.
+
+Antes de dar por buena una tanda de textos:
+
+```bash
+grep -rniE "consumo humano|human or animal|uso humano ni animal" src | \
+  grep -v "info/terminos\|info.terminos\|ruo.gate.intro"
+```
+
+Debe salir vacío.
+
 ## Aquí hay varias sesiones trabajando a la vez
 
 En este árbol suele haber más de una sesión de Claude abierta (además de los

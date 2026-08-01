@@ -731,16 +731,20 @@ const esMX = {
   'footer.ruoLine': 'Research Use Only · Solo para investigación',
   'footer.flagMexico': 'Envíos en todo México',
   'controls.language': 'Idioma',
-  'ruo.gate.badge': 'Uso exclusivo en investigación',
-  'ruo.gate.title': 'Antes de entrar, confirma esto',
-  'ruo.gate.intro': 'Exygen Labs es un proveedor de péptidos y compuestos para investigación científica. Para continuar necesitamos que reconozcas en qué términos se ofrece todo lo que encontrarás aquí.',
-  'ruo.gate.point1': 'Todo el material del catálogo es para uso exclusivo en investigación (RUO), en laboratorio y en ensayos in vitro.',
-  'ruo.gate.point2': 'Nada de lo que vendemos es un medicamento ni un suplemento: es material de laboratorio y no está destinado a diagnosticar, tratar, curar ni prevenir ninguna enfermedad.',
-  'ruo.gate.point3': 'Declaro que tengo 18 años o más y que adquiero este material con fines de investigación.',
-  'ruo.gate.checkbox': 'Confirmo los tres puntos anteriores',
+  // La puerta de entrada. Christian, 2026-07-31: «Haz el anuncio mucho más
+  // pequeño. Copia el de Certified, que es pequeño» · «Recorta la cantidad de
+  // info. Eres muy repetitivo». Antes eran un intro + tres puntos + una casilla
+  // que decía "confirmo los tres puntos": cuatro maneras de decir lo mismo, 970
+  // px de alto en un iPhone SE. Ahora son DOS frases —qué es y quién puede
+  // comprarlo— y cabe entero sin scroll en 320x568.
+  // ⚠️ No le agregues renglones. Si algo hace falta, va en Términos.
+  'ruo.gate.badge': 'Solo investigación',
+  'ruo.gate.title': 'Antes de entrar',
+  'ruo.gate.intro': 'Todo lo que vendemos es material de laboratorio para investigación. No está destinado al consumo humano ni animal.',
+  'ruo.gate.checkbox': 'Tengo 18 años o más y lo adquiero con fines de investigación.',
   'ruo.gate.accept': 'Entiendo y acepto',
   'ruo.gate.termsPre': 'Al continuar aceptas nuestros',
-  'ruo.gate.leave': 'No acepto, salir del sitio',
+  'ruo.gate.leave': 'No acepto, salir',
   'controls.theme': 'Tema',
   'controls.appearance': 'Apariencia',
   'controls.preferences': 'Preferencias',
