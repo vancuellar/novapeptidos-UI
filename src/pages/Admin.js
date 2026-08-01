@@ -22,6 +22,9 @@ import DashboardSidebar, { alTope } from '@/components/layout/DashboardSidebar';
 import StatCard from '@/components/panels/StatCard';
 import GatewayCredentials from '@/components/GatewayCredentials';
 import AjustesEnvio from '@/components/AjustesEnvio';
+// El mismo cotizador que ve el distribuidor; al admin el servidor le manda además
+// los números de la casa (lo que cuesta la guía y lo que absorbe).
+import CotizadorDeEnvios from '@/components/CotizadorDeEnvios';
 import CotizarEnvio from '@/components/CotizarEnvio';
 import FichaPedido from '@/components/FichaPedido';
 import FichaCliente from '@/components/FichaCliente';
@@ -740,8 +743,11 @@ const Admin = () => {
           <ChatNegocio />
         </TabsContent>
 
-        {/* El remitente y las cajas: de aquí sale lo que cuesta cada guía. */}
-        <TabsContent value="envios" className="mt-5">
+        {/* Primero el COTIZADOR —«¿cuánto sale mandar esto a Mérida?», que es la
+            pregunta de todos los días y hasta hoy exigía armar un carrito— y debajo
+            el remitente y las cajas, que se capturan una vez y no se vuelven a tocar. */}
+        <TabsContent value="envios" className="mt-5 space-y-8">
+          <CotizadorDeEnvios rol="admin" />
           <AjustesEnvio />
         </TabsContent>
 

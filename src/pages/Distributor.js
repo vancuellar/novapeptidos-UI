@@ -17,6 +17,10 @@ import LabReports from '@/components/LabReports';
 import NotificationsFeed from '@/components/NotificationsFeed';
 import ToolsPanel, { herramientasDesbloqueadas } from '@/components/ToolsPanel';
 import CotizadorDistribuidor from '@/components/CotizadorDistribuidor';
+// ⛔ EL MISMO componente que ve el admin. Lo que cambia —si se ven o no los números
+// de la casa— lo decide el SERVIDOR con el token, no este archivo: la ruta del
+// distribuidor recorta la respuesta con una lista blanca antes de mandarla.
+import CotizadorDeEnvios from '@/components/CotizadorDeEnvios';
 import ChatNegocio from '@/components/ChatNegocio';
 // ⛔ ACUERDO DE DISTRIBUIDOR — apagado en el backend por omisión. Mientras lo
 // esté, `useAcuerdo` devuelve `requiere_aceptacion: false` y ni la pantalla ni
@@ -255,6 +259,10 @@ const Distributor = () => {
     // asesor sabe lo decide el SERVIDOR según el rol del token: aquí no hay nada
     // que ocultar ni que enseñar (ver ChatNegocio.js y chat_negocio.py).
     { value: 'asesor', icon: Sparkles, label: t('negocio.chat.tab') },
+    // El Cotizador de Envíos, junto a los otros dos: la pregunta «¿cuánto sale
+    // mandarlo a Mérida?» llega en la misma conversación en la que se arma el
+    // presupuesto, y hasta hoy sólo se podía contestar armando un carrito.
+    { value: 'cotizador-envio', icon: Truck, label: t('cotizadorEnvio.title') },
     { value: 'sales', icon: ShoppingBag, label: t('distributor.salesTab') },
     { value: 'envios', icon: Truck, label: t('distributor.ordersTab') },
     { grupo: t('dash.group.purchases') },
@@ -526,6 +534,14 @@ const Distributor = () => {
             con el token, no este archivo. */}
         <TabsContent value="asesor" className="mt-5">
           <ChatNegocio />
+        </TabsContent>
+
+        {/* Cotizador de Envíos. ⛔ Lo que este panel recibe NO trae lo que la casa
+            paga de guía: el servidor recorta la respuesta antes de mandarla (ver
+            `_solo_lo_del_distribuidor` y `test_cotizador_envios.py`). Aquí no hay
+            nada que esconder porque no llega. */}
+        <TabsContent value="cotizador-envio" className="mt-5">
+          <CotizadorDeEnvios rol="distributor" />
         </TabsContent>
 
         <TabsContent value="sales" className="mt-5 space-y-4">
