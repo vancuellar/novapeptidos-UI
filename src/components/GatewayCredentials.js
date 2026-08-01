@@ -29,6 +29,19 @@ const ETIQUETAS = {
   // esta etiqueta es lo que las hace aparecer en la pantalla.
   ENVIOSINT_CLIENT_ID: { grupo: 'Envíos Internacionales (envíos)', label: 'Client ID', pista: 'app.enviosinternacionales.com → Configuración → API ("Clave del Cliente")' },
   ENVIOSINT_CLIENT_SECRET: { grupo: 'Envíos Internacionales (envíos)', label: 'Client secret', pista: 'La "Clave Secreta del Cliente", en la misma pantalla' },
+  // El motor del chat con IA (el asesor del Panel y el chat de los clientes).
+  //
+  // ⚠️ El backend ya aceptaba estas tres llaves desde el 2026-08-01 (están en la
+  // lista de `secretos.py`), pero NADIE las había puesto en esta pantalla, así que
+  // no había dónde pegarlas y hacía falta entrar al servidor por SSH. Christián lo
+  // cachó: «No tengo dónde meter la llave de OpenAI en Admin, no lo construiste.»
+  // Tenía razón — el trabajo estaba a medias. Esta tabla es lo único que hacía falta.
+  //
+  // Cuál se usa lo decide `AI_PROVIDER` en el servidor; si el motor elegido falla,
+  // el chat se cae de vuelta al anterior en lugar de dejar al cliente sin respuesta.
+  OPENAI_API_KEY: { grupo: 'Chat con IA', label: 'OpenAI (GPT) — API key', pista: 'platform.openai.com → API keys. Empieza con sk-proj-' },
+  MOONSHOT_API_KEY: { grupo: 'Chat con IA', label: 'Moonshot (Kimi) — API key', pista: 'Sólo si se decide usar Kimi; hoy la recomendación es GPT' },
+  ANTHROPIC_API_KEY: { grupo: 'Chat con IA', label: 'Anthropic (Claude) — API key', pista: 'Opcional, como motor de respaldo' },
 };
 
 const GatewayCredentials = () => {
