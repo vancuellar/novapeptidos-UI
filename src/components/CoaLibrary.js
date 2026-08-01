@@ -71,7 +71,7 @@ const CoaLibrary = ({ locked = false }) => {
           <FileText className="h-8 w-8 mx-auto text-muted-foreground" />
           <p className="text-sm text-muted-foreground mt-3 max-w-md mx-auto leading-relaxed">
             Todavía no hay certificados publicados para los productos de tus pedidos. Escríbenos a
-            hola@exygenlabs.com con tu número de lote y te lo mandamos directo.
+            hola@exygenlabs.com con tu número de pedido y te lo mandamos directo.
           </p>
         </Card>
       ) : (
@@ -104,8 +104,8 @@ const CoaLibrary = ({ locked = false }) => {
       )}
 
       <p className="text-xs text-muted-foreground leading-relaxed">
-        Verifica que el número de lote del certificado coincida con el impreso en tu vial. Si no
-        coincide o tu lote no aparece, escríbenos: es justo el tipo de cosa que queremos detectar.
+        Cada certificado corresponde a un lote específico, el que te tocó según tu compra. Si el
+        de tu pedido no aparece aquí, escríbenos: es justo el tipo de cosa que queremos detectar.
       </p>
     </div>
   );

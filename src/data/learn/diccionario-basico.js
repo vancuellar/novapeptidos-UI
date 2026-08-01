@@ -119,7 +119,7 @@ const page = {
         {
           term: 'COA',
           plain: 'Certificado de análisis: el documento del laboratorio que dice qué salió al analizar ese lote exacto.',
-          example: 'Un COA reporta, por ejemplo, pureza por HPLC de 98.7%, peso molecular confirmado de 3,364 Da y el número de lote impreso en tu etiqueta.',
+          example: 'Un COA reporta, por ejemplo, pureza por HPLC de 98.7%, peso molecular confirmado de 3,364 Da y el número del lote al que corresponde.',
         },
         {
           term: 'HPLC',

@@ -73,7 +73,7 @@ const page = {
         {
           q: 'Mito 10: "Un COA sin lote sirve igual"',
           a:
-            'No sirve. Un certificado de análisis es un documento sobre un lote de producción concreto —una síntesis, una purificación, un llenado— y sin ese número no hay manera de saber si corresponde al vial que tienes en la mano. Un COA sin lote puede ser de hace tres años, de otra síntesis, o de un lote de muestra hecho para exhibir. La comprobación mínima es que el número impreso en la etiqueta del vial coincida con el del documento. Y ya que estás ahí, revisa que el COA traiga fecha de análisis, método declarado, cromatograma de HPLC legible, resultado de espectrometría de masas con la masa esperada, y el nombre del laboratorio que lo firmó. Un PDF con un logo y un porcentaje no es un certificado; es una imagen.',
+            'No sirve. Un certificado de análisis es un documento sobre un lote de producción concreto —una síntesis, una purificación, un llenado— y sin ese número no hay manera de saber si corresponde al vial que tienes en la mano. Un COA sin lote puede ser de hace tres años, de otra síntesis, o de un lote de muestra hecho para exhibir. La comprobación mínima es que el certificado identifique un lote concreto y que ese lote sea el que el vendedor te asignó a ti en tu compra. Y ya que estás ahí, revisa que el COA traiga fecha de análisis, método declarado, cromatograma de HPLC legible, resultado de espectrometría de masas con la masa esperada, y el nombre del laboratorio que lo firmó. Un PDF con un logo y un porcentaje no es un certificado; es una imagen.',
         },
       ],
     },

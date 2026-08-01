@@ -203,7 +203,7 @@ const page = {
       tone: 'info',
       title: 'Pide el método, no solo el número',
       body:
-        'Si ya compraste, el COA de tu lote está en la pestaña Certificados de Mi cuenta, con el método de HPLC completo. Si todavía no, puedes revisar el certificado de muestra que publicamos, o escribirnos a hola@exygenlabs.com con el producto y el número de lote.',
+        'Si ya compraste, el COA de tu lote te lo entregamos en digital después de la compra, con el método de HPLC completo. Si todavía no, puedes revisar el certificado de muestra que publicamos, o escribirnos a hola@exygenlabs.com con el producto que te interesa.',
     },
   ],
   related: [

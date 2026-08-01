@@ -32,7 +32,7 @@ const page = {
         'Pedido incompleto: falta uno o más viales respecto de lo que dice tu confirmación.',
         'Daño en tránsito: viales rotos, fisurados, con el tapón comprometido o con el sello violado.',
         'Vial visiblemente comprometido al abrir: sin la torta de liofilizado esperada, con humedad evidente o con material fuera de especificación.',
-        'Etiqueta ilegible o sin número de lote, que impide la trazabilidad del material.',
+        'Etiqueta ilegible, que impide identificar el compuesto y la presentación del material.',
         'Paquete extraviado por la paquetería, confirmado tras la investigación formal con el transportista.',
       ],
     },
@@ -77,7 +77,7 @@ const page = {
         {
           title: 'Toma fotos antes de mover nada',
           body:
-            'Necesitamos cuatro tomas: la caja cerrada con la etiqueta de la guía visible y legible; la caja abierta con el contenido en su posición; los viales sobre una superficie plana; y un acercamiento nítido al daño o a la etiqueta con el número de lote.',
+            'Necesitamos cuatro tomas: la caja cerrada con la etiqueta de la guía visible y legible; la caja abierta con el contenido en su posición; los viales sobre una superficie plana; y un acercamiento nítido al daño o a la etiqueta del vial.',
           note: 'Con buena luz y sin filtros. Una foto borrosa nos hace pedirte otra y todo se retrasa un día.',
         },
         {
@@ -147,11 +147,11 @@ const page = {
         },
         {
           q: 'El análisis del lote no me convence, ¿puedo devolverlo?',
-          a: 'Si tienes una duda técnica sobre un lote, escríbenos con el número de lote antes que nada: te compartimos el análisis correspondiente y lo revisamos contigo. Si el material efectivamente está fuera de la especificación que publicamos, lo reponemos o reembolsamos, sin importar el plazo.',
+          a: 'Si tienes una duda técnica sobre un lote, escríbenos con tu número de pedido antes que nada: te compartimos el análisis correspondiente y lo revisamos contigo. Si el material efectivamente está fuera de la especificación que publicamos, lo reponemos o reembolsamos, sin importar el plazo.',
         },
         {
           q: 'Mandé a analizar el material por mi cuenta y no coincide, ¿qué hago?',
-          a: 'Compártenos el reporte junto con el número de lote de tu vial. Lo revisamos en serio y lo contrastamos con nuestro análisis del mismo lote. Si tu resultado se confirma, reponemos o reembolsamos sin plazo de por medio, y revisamos el lote completo. Un análisis independiente es una señal que nos sirve, no una molestia.',
+          a: 'Compártenos el reporte junto con tu número de pedido. Con él ubicamos el lote que te tocó, lo revisamos en serio y lo contrastamos con nuestro análisis de ese mismo lote. Si tu resultado se confirma, reponemos o reembolsamos sin plazo de por medio, y revisamos el lote completo. Un análisis independiente es una señal que nos sirve, no una molestia.',
         },
         {
           q: 'El vial se ve casi vacío, ¿me faltó producto?',

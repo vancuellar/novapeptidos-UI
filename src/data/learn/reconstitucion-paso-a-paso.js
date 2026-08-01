@@ -27,7 +27,7 @@ const page = {
       title: 'Material necesario',
       intro: 'Todo debe estar a la mano antes de destapar nada. Interrumpir el procedimiento a media reconstitución es la fuente más común de contaminación.',
       items: [
-        'Vial de péptido liofilizado, todavía sellado y con su etiqueta de lote legible.',
+        'Vial de péptido liofilizado, todavía sellado y con su etiqueta legible.',
         'Diluyente: agua bacteriostática (agua estéril con 0.9 % de alcohol bencílico) o agua estéril para inyección, según el uso previsto y la compatibilidad del compuesto.',
         'Jeringa de precisión con graduación fina; para volúmenes de 0.3 a 1 mL una jeringa U-100 permite leer al 0.01 mL.',
         'Toallitas con alcohol isopropílico al 70 % para desinfectar ambos septos.',
@@ -139,7 +139,7 @@ const page = {
         {
           title: 'Refrigera de inmediato',
           body:
-            'Guárdalo enseguida a 2–8 °C, en la parte trasera del refrigerador y protegido de la luz. El vial ya viene etiquetado con producto, lote y caducidad; solo añade la fecha de reconstitución y la concentración resultante (mg/mL), que son los datos que cambian al reconstituir.',
+            'Guárdalo enseguida a 2–8 °C, en la parte trasera del refrigerador y protegido de la luz. El vial ya viene etiquetado de fábrica con el producto y su presentación; solo añade la fecha de reconstitución y la concentración resultante (mg/mL), que son los datos que cambian al reconstituir.',
           note:
             'Anotar la fecha de reconstitución evita la duda de si el vial sigue siendo válido semanas después.',
         },
@@ -278,7 +278,7 @@ const page = {
         {
           q: '¿Por qué el vial se ve vacío si pagué por 10 mg de polvo?',
           a:
-            'Porque 10 mg de un liofilizado ocupan muy poco y muchas veces quedan como una película translúcida pegada al fondo o a la pared. Es normal. La forma de verificar el contenido no es mirando el vial, sino leyendo el certificado de análisis del lote impreso en la etiqueta.',
+            'Porque 10 mg de un liofilizado ocupan muy poco y muchas veces quedan como una película translúcida pegada al fondo o a la pared. Es normal. La forma de verificar el contenido no es mirando el vial, sino leyendo el certificado de análisis del lote que te entregamos con tu compra.',
         },
       ],
     },

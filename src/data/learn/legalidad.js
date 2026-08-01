@@ -73,7 +73,7 @@ const page = {
         {
           title: 'Etiquetado RUO explícito y visible',
           body:
-            'RUO significa "research use only": exclusivamente para uso en investigación. La leyenda debe estar en la etiqueta del vial y en la documentación, no escondida en un pie de página del sitio. Debe decir con claridad que el destino del material es el trabajo de laboratorio y los ensayos in vitro, y que no es un medicamento ni sirve para uso diagnóstico o terapéutico. El etiquetado también debe identificar el producto, el lote y las condiciones de conservación.',
+            'RUO significa "research use only": exclusivamente para uso en investigación. La leyenda debe estar en la etiqueta del vial y en la documentación, no escondida en un pie de página del sitio. Debe decir con claridad que el destino del material es el trabajo de laboratorio y los ensayos in vitro, y que no es un medicamento ni sirve para uso diagnóstico o terapéutico. El etiquetado también debe identificar el producto, su presentación y las condiciones de conservación.',
           note:
             'La leyenda RUO no es un descargo de responsabilidad decorativo. Es la declaración de destino del producto, y tiene que ser congruente con todo lo demás.',
         },
@@ -111,7 +111,7 @@ const page = {
         'No hacemos ni permitimos afirmaciones terapéuticas en ningún canal: ni sitio, ni fichas, ni redes, ni correo, ni atención a clientes. Nuestro contenido educativo explica química, mecanismos y manejo de laboratorio, nunca uso en personas.',
         'No publicamos dosis, protocolos de administración humana ni comparaciones con medicamentos.',
         'Analizamos cada lote antes de liberarlo: identidad por espectrometría de masas y pureza por RP-HPLC con método declarado. Cada lote tiene número propio y trazabilidad.',
-        'Cada cliente recibe el certificado de análisis del lote que le corresponde según su compra, en la pestaña Certificados de Mi cuenta. Hay además un certificado de muestra público, y siempre puedes pedirlo por correo a hola@exygenlabs.com con tu número de lote.',
+        'Cada cliente recibe el certificado de análisis del lote que le corresponde según su compra, en digital y sin tener que pedirlo. Hay además un certificado de muestra público, y si necesitas otra copia la pides por correo a hola@exygenlabs.com con tu número de pedido.',
         'Publicamos aviso de privacidad conforme a la legislación mexicana de datos personales: qué datos recabamos, para qué y cómo ejercer tus derechos de acceso, rectificación, cancelación y oposición.',
         'Describimos con veracidad lo que vendemos: presentación, pureza, condiciones de envío y política de devoluciones corresponden con lo que efectivamente entregamos.',
         { text: 'Vendemos únicamente para investigación de laboratorio y no asesoramos sobre uso en organismos vivos. Si esa es la intención de la compra, no somos el proveedor adecuado.', bad: true },
@@ -150,7 +150,7 @@ const page = {
         },
         {
           q: '¿Qué documentación debo conservar como comprador?',
-          a: 'Factura o comprobante de compra, el certificado de análisis del lote, la etiqueta o fotografía del vial con su número de lote, y el registro interno de para qué proyecto se adquirió el material. Si trabajas en una institución, guarda también la autorización interna correspondiente. No es burocracia: es lo que permite reconstruir el origen de un reactivo si alguna vez se cuestiona un resultado o el material mismo.',
+          a: 'Factura o comprobante de compra, el certificado de análisis del lote que te entregaron, una fotografía del vial y su etiqueta, y el registro interno de para qué proyecto se adquirió el material. Si trabajas en una institución, guarda también la autorización interna correspondiente. No es burocracia: es lo que permite reconstruir el origen de un reactivo si alguna vez se cuestiona un resultado o el material mismo.',
         },
         {
           q: '¿El certificado de análisis tiene valor legal?',
