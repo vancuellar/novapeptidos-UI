@@ -1,9 +1,19 @@
 name: Deploy website
 
+# ⛔ NO se dispara solo. Orden de Christián del 2026-07-31.
+#
+# Este sitio se publica en CLOUDFLARE PAGES y SOLO con ./desplegar.sh, que es
+# el único camino que verifica el bundle en vivo y sabe dar marcha atrás.
+# Este workflow publica en OTRO lado (GitHub Pages) y antes corría en cada
+# push a main: el 31 de julio se disparó cinco veces en veinticinco minutos,
+# una por commit, sin que nadie lo pidiera. Eso es justo lo que la regla
+# «los cambios se acumulan y salen JUNTOS» busca evitar.
+#
+# No lo borramos por si algún día hace falta un espejo, pero ya no se dispara
+# solo: hay que ir a la pestaña Actions y correrlo a mano. Si lo vuelves a
+# poner en `push`, acuérdate de que public/CNAME reclamaba exygenlabs.com,
+# el dominio de producción. Ver memoria dos-sistemas-de-despliegue.
 on:
-  push:
-    branches:
-      - main
   workflow_dispatch:
 
 permissions:
