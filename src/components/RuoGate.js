@@ -18,13 +18,45 @@ const STORAGE_KEY = 'exygen_ruo_ack';
  * de pagar parecía muerto—, así que la casilla se quitó y quedó esto, que es lo
  * único que de verdad aportaba: la prueba de que aceptó y cuándo.
  */
-export const ruoAcceptedAt = () => {
+// ⛔ EL AVISO SE ACEPTA UNA VEZ Y YA. NO SE PREGUNTA CADA VISITA.
+//
+// Christián, 2026-08-01: "no debería haber necesidad de picarle a la cajita
+// cada vez que entro". Tenía razón y eran DOS fallas encadenadas:
+//
+//   1. `accept()` guardaba en `sessionStorage` cuando `localStorage` estaba
+//      bloqueado, pero la comprobación de arranque SÓLO miraba `localStorage`.
+//      Quien navegara en privado, o con las cookies restringidas, aceptaba y
+//      el aviso le volvía a salir al instante siguiente.
+//   2. Y lo que pega a casi todo nuestro tráfico, que es iPhone: **Safari borra
+//      el `localStorage` a los 7 días** de no volver al sitio. El cliente que
+//      compra una vez al mes se topaba la puerta SIEMPRE.
+//
+// Por eso ahora se deja rastro en tres lados y se acepta cualquiera de ellos.
+// La cookie de primera parte es la que sobrevive a Safari; las otras dos se
+// quedan porque una cookie se puede bloquear por separado.
+const COOKIE_DIAS = 365;
+
+const leerCookie = () => {
   try {
-    return localStorage.getItem(STORAGE_KEY) || sessionStorage.getItem(STORAGE_KEY) || '';
+    const m = document.cookie.match(new RegExp('(?:^|; )' + STORAGE_KEY + '=([^;]*)'));
+    return m ? decodeURIComponent(m[1]) : '';
   } catch {
     return '';
   }
 };
+
+const escribirCookie = (valor) => {
+  try {
+    const secure = window.location.protocol === 'https:' ? '; Secure' : '';
+    document.cookie = `${STORAGE_KEY}=${encodeURIComponent(valor)}; Max-Age=${COOKIE_DIAS * 24 * 60 * 60}; Path=/; SameSite=Lax${secure}`;
+  } catch { /* sin cookies: quedan los otros dos */ }
+};
+
+const leerDe = (almacen) => {
+  try { return almacen.getItem(STORAGE_KEY) || ''; } catch { return ''; }
+};
+
+export const ruoAcceptedAt = () => leerDe(localStorage) || leerDe(sessionStorage) || leerCookie();
 
 // No se puede exigir aceptar algo que no se deja leer: en estas rutas el aviso
 // NO se muestra, para que Terminos y Privacidad sean legibles aunque nadie haya
@@ -39,11 +71,13 @@ const RuoGate = () => {
   const [checked, setChecked] = useState(false);    // la casilla: sin marcar no hay botón
 
   useEffect(() => {
-    try {
-      setAccepted(!!localStorage.getItem(STORAGE_KEY));
-    } catch {
-      setAccepted(false);   // navegador sin almacenamiento: se muestra igual
-    }
+    // Se pregunta por los TRES rastros, no sólo por localStorage: es justo lo
+    // que hacía que el aviso volviera a salir.
+    const ya = ruoAcceptedAt();
+    setAccepted(!!ya);
+    // Si aceptó antes de que existiera la cookie, se le pone ahora para que no
+    // le vuelva a salir cuando Safari le limpie el localStorage.
+    if (ya && !leerCookie()) escribirCookie(ya);
   }, []);
 
   const open = !accepted && !ALWAYS_READABLE.includes(pathname);
@@ -62,11 +96,11 @@ const RuoGate = () => {
     // pedido. Si el navegador no deja escribir en localStorage se intenta en la
     // sesión, para no perder el rastro de quien navega en modo privado.
     const cuando = new Date().toISOString();
-    try {
-      localStorage.setItem(STORAGE_KEY, cuando);
-    } catch {
-      try { sessionStorage.setItem(STORAGE_KEY, cuando); } catch { /* sin almacenamiento */ }
-    }
+    // Se escribe en los tres, sin depender de que ninguno funcione: basta con
+    // que UNO sobreviva para no volver a preguntarle.
+    try { localStorage.setItem(STORAGE_KEY, cuando); } catch { /* bloqueado */ }
+    try { sessionStorage.setItem(STORAGE_KEY, cuando); } catch { /* bloqueado */ }
+    escribirCookie(cuando);
     setAccepted(true);
   };
 
