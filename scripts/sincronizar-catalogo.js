@@ -70,8 +70,21 @@ async function main() {
   if (!r.ok) { console.error(`El API contestó ${r.status}. No sincronizo a ciegas.`); process.exit(2); }
   const d = await r.json();
   const vivos = d.products || d;
-  if (!Array.isArray(vivos) || vivos.length < 190) {
-    console.error(`El API devolvió ${vivos.length} productos: muy pocos. Me planto.`);
+  // El seguro contra una respuesta TRUNCADA del API: si vienen muchos menos productos de
+  // los que el sitio conoce, no se sincroniza a ciegas.
+  //
+  // ⛔ Era el número 190, escrito a mano, y se quedó viejo el 2026-08-01: al ocultar ocho
+  // presentaciones por la ventana de sentido el catálogo bajó a 187 y esta compuerta se
+  // puso en rojo por una decisión DELIBERADA de Christián. Un piso fijo obliga a que
+  // alguien se acuerde de bajarlo cada vez que el catálogo encoge a propósito, y el día
+  // que no se acuerde la compuerta se aprende a ignorar. Ahora es RELATIVO a lo que el
+  // propio sitio trae: protege igual contra un truncamiento (que llega en cientos de
+  // menos, no en ocho) y no caduca.
+  const skusDelSitio = new Set(prods.flatMap((p) => (p.variants || []).map((v) => v.sku))).size;
+  const minimo = Math.floor(skusDelSitio * 0.9);
+  if (!Array.isArray(vivos) || vivos.length < minimo) {
+    console.error(`El API devolvió ${vivos.length} productos y el sitio conoce `
+      + `${skusDelSitio}: muy pocos (mínimo ${minimo}). Me planto.`);
     process.exit(2);
   }
   const porSku = {};

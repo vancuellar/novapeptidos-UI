@@ -233,7 +233,15 @@ function traducciones() {
 async function catalogo({ prods }) {
   const d = await j(await fetch(`${API}/products?limit=500`));
   const vivos = d.products || d;
-  revisar(vivos.length >= 190, 'catálogo del API', `${vivos.length} productos`);
+  // El seguro contra una respuesta TRUNCADA, igual que en `sincronizar-catalogo.js` y por
+  // la misma razón: era `>= 190` a mano y se puso en rojo el 2026-08-01, cuando se
+  // ocultaron ocho presentaciones a propósito (ventana de sentido) y el catálogo bajó a
+  // 187. Un piso escrito a mano convierte cada decisión de negocio en una compuerta rota,
+  // y una compuerta que se rompe por lo que la casa QUISO hacer se aprende a ignorar. Se
+  // mide contra lo que el propio sitio conoce: un truncamiento llega en cientos de menos.
+  const skusDelSitio = new Set(prods.flatMap((p) => (p.variants || []).map((v) => v.sku))).size;
+  revisar(vivos.length >= Math.floor(skusDelSitio * 0.9), 'catálogo del API',
+          `${vivos.length} productos · el sitio conoce ${skusDelSitio}`);
   revisar(vivos.every((p) => p.price > 0), 'todos con precio',
           vivos.filter((p) => !(p.price > 0)).map((p) => p.sku).join(','));
   revisar(vivos.every((p) => p.sku), 'todos con SKU');

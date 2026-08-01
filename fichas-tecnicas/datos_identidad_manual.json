@@ -107,5 +107,36 @@
    "secuencia": "Wikipedia «Prohibitin-targeting peptide 1» y literatura primaria (Kolonin et al., Nat Med 2004; Barnhart et al., Sci Transl Med 2011)",
    "sinonimos": "PubChem CID 163360068; Wikipedia «Prohibitin-targeting peptide 1» (Adipotide, TP01)"
   }
+ },
+ "pinealon": {
+  "nombre": "Pinealon",
+  "nombre_quimico": "L-glutamil-L-aspartil-L-arginina (tripéptido EDR)",
+  "sinonimos": [
+   "EDR",
+   "Glu-Asp-Arg",
+   "H-Glu-Asp-Arg-OH",
+   "L-Glu-L-Asp-L-Arg",
+   "glutamyl-aspartyl-arginine"
+  ],
+  "cas_complejo": "175175-23-2",
+  "cas_peptido_libre": null,
+  "formula": "C15H26N6O8",
+  "peso_molecular": "418.40 g/mol",
+  "formula_peptido_libre": null,
+  "peso_peptido_libre": null,
+  "secuencia": "Glu-Asp-Arg",
+  "residuos": 3,
+  "apariencia": null,
+  "solubilidad": null,
+  "categoria": "Tripéptido corto (bioregulador de la familia de los citogenos)",
+  "nota_nomenclatura": "El cosechador de PubChem tenía a Pinealon en la lista de «sin identidad química por naturaleza», junto con los otros citogenos rusos, y por eso se quedaba sin ficha. Sí la tiene: es el tripéptido EDR, una molécula única y definida. OJO al leer las listas de proveedor y las fuentes comerciales: el mismo nombre se usa también para un complejo ORAL «AC-5» que además lleva arginina y ácidos glutámico y aspártico sueltos — ése sí es una mezcla, y su pauta de dosis (20-40 mg por boca) no se traslada al vial liofilizado.",
+  "fuentes": {
+   "cas_complejo": "PubChem CID 10273502 (el CAS 175175-23-2 aparece entre sus sinónimos registrados)",
+   "formula": "PubChem CID 10273502",
+   "peso_molecular": "PubChem CID 10273502",
+   "nombre_quimico": "PubChem CID 10273502 (nombre IUPAC abreviado a la nomenclatura peptídica)",
+   "secuencia": "PubChem CID 10273502 · sinónimos «Glu-Asp-Arg» y «H-Glu-Asp-Arg-OH»",
+   "verificacion": "Triple comprobación: las consultas por «Pinealon», por «Glu-Asp-Arg» y por el CAS «175175-23-2» devuelven las TRES el mismo CID 10273502, con C15H26N6O8 y 418.40 g/mol. Es la comprobación que faltó en los matches falsos de HCG y MGF."
+  }
  }
 }

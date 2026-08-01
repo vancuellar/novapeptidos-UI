@@ -76,6 +76,68 @@
     },
     "etiqueta_forma_libre": "Fórmula del catión activo"
   },
+  "adipotida": {
+    "nombre": "Adipotida",
+    "nombre_quimico": "Péptido quimérico CKGGRAKDC-GG-D(KLAKLAK)2",
+    "sinonimos": [
+      "Adipotide (grafía en inglés)",
+      "FTPP (fat-targeted proapoptotic peptide)",
+      "Prohibitin-targeting peptide 1",
+      "TP01",
+      "FTTP (grafía frecuente en listas de proveedor; es el mismo compuesto)"
+    ],
+    "cas_complejo": "859216-15-2",
+    "cas_peptido_libre": null,
+    "formula": "C111H206N36O28S2",
+    "peso_molecular": "2557.2 g/mol",
+    "formula_peptido_libre": null,
+    "peso_peptido_libre": null,
+    "secuencia": "CKGGRAKDC-GG-D(KLAKLAK)2",
+    "residuos": 26,
+    "apariencia": null,
+    "solubilidad": null,
+    "categoria": "Péptido quimérico sintético (peptidomimético)",
+    "etiqueta_forma_libre": null,
+    "nota_nomenclatura": "En las listas de proveedor aparece indistintamente como «Adipotide», «Adipotide / FTTP» y «FTPP Adipotide». Es el mismo compuesto: el acrónimo correcto es FTPP (fat-targeted proapoptotic peptide) y «FTTP» es una errata que se copió por todo el mercado. Circula además un segundo número CAS (1401066-79-2) que no está verificado en PubChem ni en la literatura primaria; hasta comprobarlo, el único CAS que esta ficha reconoce es 859216-15-2.",
+    "fuentes": {
+      "cas_complejo": "PubChem CID 163360068 (sinónimo 859216-15-2)",
+      "formula": "PubChem CID 163360068",
+      "peso_molecular": "PubChem CID 163360068",
+      "secuencia": "Wikipedia «Prohibitin-targeting peptide 1» y literatura primaria (Kolonin et al., Nat Med 2004; Barnhart et al., Sci Transl Med 2011)",
+      "sinonimos": "PubChem CID 163360068; Wikipedia «Prohibitin-targeting peptide 1» (Adipotide, TP01)"
+    }
+  },
+  "pinealon": {
+    "nombre": "Pinealon",
+    "nombre_quimico": "L-glutamil-L-aspartil-L-arginina (tripéptido EDR)",
+    "sinonimos": [
+      "EDR",
+      "Glu-Asp-Arg",
+      "H-Glu-Asp-Arg-OH",
+      "L-Glu-L-Asp-L-Arg",
+      "glutamyl-aspartyl-arginine"
+    ],
+    "cas_complejo": "175175-23-2",
+    "cas_peptido_libre": null,
+    "formula": "C15H26N6O8",
+    "peso_molecular": "418.40 g/mol",
+    "formula_peptido_libre": null,
+    "peso_peptido_libre": null,
+    "secuencia": "Glu-Asp-Arg",
+    "residuos": 3,
+    "apariencia": null,
+    "solubilidad": null,
+    "categoria": "Tripéptido corto (bioregulador de la familia de los citogenos)",
+    "nota_nomenclatura": "El cosechador de PubChem tenía a Pinealon en la lista de «sin identidad química por naturaleza», junto con los otros citogenos rusos, y por eso se quedaba sin ficha. Sí la tiene: es el tripéptido EDR, una molécula única y definida. OJO al leer las listas de proveedor y las fuentes comerciales: el mismo nombre se usa también para un complejo ORAL «AC-5» que además lleva arginina y ácidos glutámico y aspártico sueltos — ése sí es una mezcla, y su pauta de dosis (20-40 mg por boca) no se traslada al vial liofilizado.",
+    "fuentes": {
+      "cas_complejo": "PubChem CID 10273502 (el CAS 175175-23-2 aparece entre sus sinónimos registrados)",
+      "formula": "PubChem CID 10273502",
+      "peso_molecular": "PubChem CID 10273502",
+      "nombre_quimico": "PubChem CID 10273502 (nombre IUPAC abreviado a la nomenclatura peptídica)",
+      "secuencia": "PubChem CID 10273502 · sinónimos «Glu-Asp-Arg» y «H-Glu-Asp-Arg-OH»",
+      "verificacion": "Triple comprobación: las consultas por «Pinealon», por «Glu-Asp-Arg» y por el CAS «175175-23-2» devuelven las TRES el mismo CID 10273502, con C15H26N6O8 y 418.40 g/mol. Es la comprobación que faltó en los matches falsos de HCG y MGF."
+    }
+  },
   "thymosin-alpha-1": {
     "nombre": "Thymosin Alpha-1",
     "nombre_quimico": "(4S)-4-[[(2S)-2-[[(2S)-2-[[(2S)-2-[[(2S)-2-[[(2S)-2-[[(2S)-2-[[(2S)-2-[[(2S)-2-[[(2S)-2-[[(2S)-2-[[(2S)-2-[[(2S)-2-[[(2S)-2-[[(2S,3R)-2-[[(2S,3R)-2-[[(2S,3S)-2-[[(2S)-2-[[(2S)-2-[[(2S)-2-[[(2S,3R)-2-[[(2S)-2-[[(2S)-2-[[(2S)-2-[[(2S)-2-[[(2S)-2-[[(2S)-2-acetamido-3-hydroxypropanoyl]amino]-3-carboxypropanoyl]amino]propanoyl]amino]propanoyl]amino]-3-methylbutanoyl]amino]-3-carboxypropanoyl]amino]-3-hydroxybutanoyl]amino]-3-hydroxypropanoyl]amino]-3-hydroxypropanoyl]amino]-4-carboxybutanoyl]amino]-3-methylpentanoyl]amino]-3-hydroxybutanoyl]amino]-3-hydroxybutanoyl]amino]-6-aminohexanoyl]amino]-3-carboxypropanoyl]amino]-4-methylpentanoyl]amino]-6-aminohexanoyl]amino]-4-carboxybutanoyl]amino]-6-aminohexanoyl]amino]-6-aminohexanoyl]amino]-4-carboxybutanoyl]amino]-3-methylbutanoyl]amino]-3-methylbutanoyl]amino]-4-carboxybutanoyl]amino]-4-carboxybutanoyl]amino]propanoyl]amino]-5-[[(1S)-3-amino-1-carboxy-3-oxopropyl]amino]-5-oxopentanoic acid",
@@ -1734,36 +1796,5 @@
     "fuentes": {},
     "nota_nomenclatura": "Es una presentación comercial que reúne varios componentes. Como mezcla no tiene número CAS, fórmula molecular ni peso molecular propios: la identidad corresponde a cada componente por separado. Cualquier caracterización analítica debe hacerse componente por componente."
   },
-  "_comentario": "Consolidado de datos_identidad_manual.json (verificado a mano), cosecha_pubchem.json (API de PubChem) y datos_identidad_lote2.json (Codex, solo relleno de huecos). Los matches falsos de PubChem estan en la clave 'descartados' de cosecha_pubchem.json y NO entran aqui. Un campo en null NO se imprime en la ficha.",
-  "adipotida": {
-    "nombre": "Adipotida",
-    "nombre_quimico": "Péptido quimérico CKGGRAKDC-GG-D(KLAKLAK)2",
-    "sinonimos": [
-      "Adipotide (grafía en inglés)",
-      "FTPP (fat-targeted proapoptotic peptide)",
-      "Prohibitin-targeting peptide 1",
-      "TP01",
-      "FTTP (grafía frecuente en listas de proveedor; es el mismo compuesto)"
-    ],
-    "cas_complejo": "859216-15-2",
-    "cas_peptido_libre": null,
-    "formula": "C111H206N36O28S2",
-    "peso_molecular": "2557.2 g/mol",
-    "formula_peptido_libre": null,
-    "peso_peptido_libre": null,
-    "secuencia": "CKGGRAKDC-GG-D(KLAKLAK)2",
-    "residuos": 26,
-    "apariencia": null,
-    "solubilidad": null,
-    "categoria": "Péptido quimérico sintético (peptidomimético)",
-    "etiqueta_forma_libre": null,
-    "nota_nomenclatura": "En las listas de proveedor aparece indistintamente como «Adipotide», «Adipotide / FTTP» y «FTPP Adipotide». Es el mismo compuesto: el acrónimo correcto es FTPP (fat-targeted proapoptotic peptide) y «FTTP» es una errata que se copió por todo el mercado. Circula además un segundo número CAS (1401066-79-2) que no está verificado en PubChem ni en la literatura primaria; hasta comprobarlo, el único CAS que esta ficha reconoce es 859216-15-2.",
-    "fuentes": {
-      "cas_complejo": "PubChem CID 163360068 (sinónimo 859216-15-2)",
-      "formula": "PubChem CID 163360068",
-      "peso_molecular": "PubChem CID 163360068",
-      "secuencia": "Wikipedia «Prohibitin-targeting peptide 1» y literatura primaria (Kolonin et al., Nat Med 2004; Barnhart et al., Sci Transl Med 2011)",
-      "sinonimos": "PubChem CID 163360068; Wikipedia «Prohibitin-targeting peptide 1» (Adipotide, TP01)"
-    }
-  }
+  "_comentario": "Consolidado de datos_identidad_manual.json (verificado a mano), cosecha_pubchem.json (API de PubChem) y datos_identidad_lote2.json (Codex, solo relleno de huecos). Los matches falsos de PubChem estan en la clave 'descartados' de cosecha_pubchem.json y NO entran aqui. Un campo en null NO se imprime en la ficha."
 }

@@ -348,6 +348,15 @@ export const fallbackProducts = [
         "id": "91bf6c38-503a-414c-affc-4f86e96ccac7",
         "sku": "PINEALON-10MG",
         "descuentable": true
+      },
+      {
+        "presentation": "20 mg",
+        "price": 1879,
+        "stock": 40,
+        "batch_number": "NP-PINE20-2601",
+        "id": "f1d8a11a-a544-4f8f-bb26-9c62ef776d67",
+        "sku": "PINEALON-20MG",
+        "descuentable": true
       }
     ],
     "tiers": [],
@@ -366,7 +375,8 @@ export const fallbackProducts = [
       "unit": "mg",
       "agua_ml": {
         "5": 1,
-        "10": 2
+        "10": 2,
+        "20": 4
       },
       "fuente": "researchdosing.com — manual de dosificación del mercado (fuente de vendedor, sin bibliografía; nuestras rayitas se recalculan, no se copian de su tabla)"
     },
@@ -1092,20 +1102,11 @@ export const fallbackProducts = [
     ],
     "short_description": "Es un pedazo de la hormona de crecimiento, estudiado en la grasa.",
     "description": "Este compuesto es sólo un trocito de la hormona de crecimiento: la parte 176-191 de la molécula entera. Se estudia porque en laboratorio y en animales se ha mirado su efecto sobre las células que guardan la grasa, sin arrastrar los demás efectos de la hormona completa. La investigación se ha hecho sobre todo fuera del ser humano. Uso exclusivo en investigación (RUO).",
-    "presentation": "1 mg – 15 mg",
+    "presentation": "2 mg – 15 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
-    "price": 509,
+    "price": 959,
     "variants": [
-      {
-        "presentation": "1 mg",
-        "price": 509,
-        "stock": 40,
-        "batch_number": "NP-HGHF1-2601",
-        "id": "56adf073-14e0-41c2-bd43-d5d4d63a28d6",
-        "sku": "HGHFRAGMENT176-1MG",
-        "descuentable": true
-      },
       {
         "presentation": "2 mg",
         "price": 959,
@@ -1156,7 +1157,7 @@ export const fallbackProducts = [
     "stock": 40,
     "image_url": "https://images.pexels.com/photos/9259977/pexels-photo-9259977.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
     "coa_url": "https://exygenlabs.com/coa/hgh-fragment-176-191.pdf",
-    "batch_number": "NP-HGHF1-2601",
+    "batch_number": "NP-HGHF2-2601",
     "storage": "Conservar a -20 °C, protegido de la luz. Reconstituido: 2–8 °C.",
     "start_dose": 250,
     "start_unit": "mcg",
@@ -1189,20 +1190,11 @@ export const fallbackProducts = [
     ],
     "short_description": "Versión de larga duración de un factor de crecimiento.",
     "description": "IGF-1 LR3 es una versión modificada del IGF-1, un factor de crecimiento que el cuerpo fabrica en el hígado. El cambio hace que dure más tiempo activo, porque se le pegan menos las proteínas que normalmente lo frenan. Se ha estudiado sobre todo en cultivos de células. Uso exclusivo en investigación (RUO).",
-    "presentation": "0.1 mg – 1 mg",
+    "presentation": "1 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
-    "price": 589,
+    "price": 1449,
     "variants": [
-      {
-        "presentation": "0.1 mg",
-        "price": 589,
-        "stock": 40,
-        "batch_number": "NP-IGF101-2601",
-        "id": "adc6f9d6-6c27-4485-a728-f1f758f362a1",
-        "sku": "IGF1LR3-01MG",
-        "descuentable": true
-      },
       {
         "presentation": "1 mg",
         "price": 1449,
@@ -1217,7 +1209,7 @@ export const fallbackProducts = [
     "stock": 40,
     "image_url": "https://images.pexels.com/photos/9259977/pexels-photo-9259977.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
     "coa_url": "https://exygenlabs.com/coa/igf-1-lr3.pdf",
-    "batch_number": "NP-IGF101-2601",
+    "batch_number": "NP-IGF11-2601",
     "storage": "Conservar a -20 °C, protegido de la luz. Reconstituido: 2–8 °C.",
     "start_dose": 33,
     "start_unit": "mcg",
@@ -3070,29 +3062,11 @@ export const fallbackProducts = [
     ],
     "short_description": "Se estudia en la grasa del abdomen y la hormona de crecimiento.",
     "description": "Tesamorelina es una versión reforzada de la señal natural que pide hormona de crecimiento; el refuerzo la hace aguantar más antes de deshacerse. Se estudia en el manejo de las grasas y en la composición del cuerpo. Hay trabajo en laboratorio, en animales y estudios en personas. Uso exclusivo en investigación (RUO).",
-    "presentation": "2 mg – 20 mg",
+    "presentation": "10 mg – 20 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
-    "price": 749,
+    "price": 1929,
     "variants": [
-      {
-        "presentation": "2 mg",
-        "price": 749,
-        "stock": 40,
-        "batch_number": "NP-TESA2-2601",
-        "id": "e4e46c55-b8da-4058-96e3-db76f99905d9",
-        "sku": "TESAMORELINA-2MG",
-        "descuentable": true
-      },
-      {
-        "presentation": "5 mg",
-        "price": 1179,
-        "stock": 40,
-        "batch_number": "NP-TESA5-2601",
-        "id": "517d579b-7afc-427e-ac06-53c88855fb90",
-        "sku": "TESAMORELINA-5MG",
-        "descuentable": true
-      },
       {
         "presentation": "10 mg",
         "price": 1929,
@@ -3116,7 +3090,7 @@ export const fallbackProducts = [
     "stock": 40,
     "image_url": "https://images.pexels.com/photos/6129873/pexels-photo-6129873.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
     "coa_url": "https://exygenlabs.com/coa/tesamorelina.pdf",
-    "batch_number": "NP-TESA2-2601",
+    "batch_number": "NP-TESA10-2601",
     "storage": "Conservar a -20 °C, protegido de la luz. Reconstituido: 2–8 °C.",
     "start_dose": 1,
     "start_unit": "mg",
@@ -3201,20 +3175,11 @@ export const fallbackProducts = [
     ],
     "short_description": "Se estudia por su efecto en las células que almacenan grasa.",
     "description": "5-Amino-1MQ es una molécula pequeña, no un péptido. Se estudia porque frena una enzima que trabaja dentro de las células que almacenan grasa, y de paso influye en el NAD+, que es lo que la célula usa para producir energía. La investigación se ha hecho en laboratorio y en animales. Uso exclusivo en investigación (RUO).",
-    "presentation": "5 mg – 50 mg",
+    "presentation": "10 mg – 50 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
-    "price": 839,
+    "price": 949,
     "variants": [
-      {
-        "presentation": "5 mg",
-        "price": 839,
-        "stock": 40,
-        "batch_number": "NP-5AMI5-2601",
-        "id": "bd1ca7a4-03e0-4891-bbba-e60424162662",
-        "sku": "5AMINO1MQ-5MG",
-        "descuentable": true
-      },
       {
         "presentation": "10 mg",
         "price": 949,
@@ -3238,7 +3203,7 @@ export const fallbackProducts = [
     "stock": 40,
     "image_url": "https://images.pexels.com/photos/9259977/pexels-photo-9259977.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
     "coa_url": "https://exygenlabs.com/coa/5-amino-1mq.pdf",
-    "batch_number": "NP-5AMI5-2601",
+    "batch_number": "NP-5AMI10-2601",
     "storage": "Conservar a -20 °C, protegido de la luz. Reconstituido: 2–8 °C.",
     "start_dose": 1,
     "start_unit": "mg",
@@ -3267,20 +3232,11 @@ export const fallbackProducts = [
     ],
     "short_description": "Se estudia en cómo el músculo produce y gasta energía.",
     "description": "AICAR es una molécula pequeña, no un péptido. Se estudia porque enciende un interruptor que la célula usa cuando le falta energía, el mismo que se activa con el ejercicio. El trabajo se ha hecho en laboratorio y en animales, sobre todo en músculo. Uso exclusivo en investigación (RUO).",
-    "presentation": "50 mg – 100 mg",
+    "presentation": "100 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
-    "price": 1379,
+    "price": 1919,
     "variants": [
-      {
-        "presentation": "50 mg",
-        "price": 1379,
-        "stock": 40,
-        "batch_number": "NP-AICA50-2601",
-        "id": "2c286d5f-d9c6-4bf3-9a69-3dadada51d40",
-        "sku": "AICAR-50MG",
-        "descuentable": true
-      },
       {
         "presentation": "100 mg",
         "price": 1919,
@@ -3295,7 +3251,7 @@ export const fallbackProducts = [
     "stock": 40,
     "image_url": "https://images.pexels.com/photos/9259977/pexels-photo-9259977.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
     "coa_url": "https://exygenlabs.com/coa/aicar.pdf",
-    "batch_number": "NP-AICA50-2601",
+    "batch_number": "NP-AICA100-2601",
     "storage": "Conservar a -20 °C, protegido de la luz. Reconstituido: 2–8 °C.",
     "start_dose": 10,
     "start_unit": "mg",
@@ -3321,20 +3277,11 @@ export const fallbackProducts = [
     ],
     "short_description": "Trozo modificado de la hormona de crecimiento, visto en la grasa.",
     "description": "AOD-9604 es un pedacito de la hormona de crecimiento al que se le hizo un cambio en laboratorio. Se estudia por su efecto sobre las células que guardan la grasa, sin arrastrar los demás efectos de la hormona entera. Hay trabajo en laboratorio, en animales y también estudios en personas. Uso exclusivo en investigación (RUO).",
-    "presentation": "2 mg – 10 mg",
+    "presentation": "5 mg – 10 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
-    "price": 929,
+    "price": 949,
     "variants": [
-      {
-        "presentation": "2 mg",
-        "price": 929,
-        "stock": 40,
-        "batch_number": "NP-AOD92-2601",
-        "id": "1ad4788e-50c0-409e-b3d7-ab16895edc40",
-        "sku": "AOD9604-2MG",
-        "descuentable": true
-      },
       {
         "presentation": "5 mg",
         "price": 949,
@@ -3358,7 +3305,7 @@ export const fallbackProducts = [
     "stock": 40,
     "image_url": "https://images.pexels.com/photos/9259977/pexels-photo-9259977.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
     "coa_url": "https://exygenlabs.com/coa/aod-9604.pdf",
-    "batch_number": "NP-AOD92-2601",
+    "batch_number": "NP-AOD95-2601",
     "storage": "Conservar a -20 °C, protegido de la luz. Reconstituido: 2–8 °C.",
     "start_dose": 300,
     "start_unit": "mcg",
@@ -4275,20 +4222,11 @@ export const fallbackProducts = [
     ],
     "short_description": "Se estudia en los nervios pequeños y en la inflamación.",
     "description": "ARA-290, también llamado cibinetide, es un trocito de la eritropoyetina al que se le quitó la parte que fabrica glóbulos rojos: queda sólo la que se relaciona con la reparación. Se estudia en los nervios pequeños y en la inflamación de los tejidos, con trabajo en laboratorio, en animales y en personas. Uso exclusivo en investigación (RUO).",
-    "presentation": "10 mg – 16 mg",
+    "presentation": "16 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
-    "price": 1689,
+    "price": 1739,
     "variants": [
-      {
-        "presentation": "10 mg",
-        "price": 1689,
-        "stock": 40,
-        "batch_number": "NP-ARA210-2601",
-        "id": "17e9db60-aea1-43d4-b37e-7e0a78389f6c",
-        "sku": "ARA290-10MG",
-        "descuentable": true
-      },
       {
         "presentation": "16 mg",
         "price": 1739,
@@ -4303,7 +4241,7 @@ export const fallbackProducts = [
     "stock": 40,
     "image_url": "https://images.pexels.com/photos/6129873/pexels-photo-6129873.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
     "coa_url": "https://exygenlabs.com/coa/ara-290.pdf",
-    "batch_number": "NP-ARA210-2601",
+    "batch_number": "NP-ARA216-2601",
     "storage": "Conservar a -20 °C, protegido de la luz. Reconstituido: 2–8 °C.",
     "start_dose": 2,
     "start_unit": "mg",
