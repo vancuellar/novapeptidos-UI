@@ -912,7 +912,7 @@ const enUS = {
 
   'home.badge': 'HPLC-verified purity',
   'home.heroTitle': 'Science and precision, lot by lot',
-  'home.heroBody': "We don't publish one purity for the whole catalog: we publish your lot's, HPLC-verified. Made in United States laboratories and at your door in 2 to 5 days, anywhere in Mexico.",
+  'home.heroBody': 'Lyophilized research peptides, made in United States laboratories.',
   'home.heroRuo': 'Research use only (RUO).',
 
   // Ver el bloque en español: el número lo cuenta Home.js del catálogo, no se escribe aquí.

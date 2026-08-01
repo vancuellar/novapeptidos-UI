@@ -859,7 +859,7 @@ const esMX = {
   //
   // ⛔ NUNCA se menciona Asia en el sitio, en ningún idioma. Orden expresa de Christian
   // (2026-07-28). Si vuelves a escribir de dónde sale el material, esta es la regla.
-  'home.heroBody': 'No publicamos una pureza para todo el catálogo: publicamos la de tu lote, verificada por HPLC. Fabricados en laboratorios de Estados Unidos y en tu puerta en 2 a 5 días, en todo México.',
+  'home.heroBody': 'Péptidos liofilizados de investigación, fabricados en laboratorios de Estados Unidos.',
   'home.heroRuo': 'Solo para uso en investigación (RUO).',
 
   // ===== "El más grande de México" (Christian, 2026-07-28) =====

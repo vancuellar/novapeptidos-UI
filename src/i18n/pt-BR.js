@@ -907,7 +907,7 @@ const ptBR = {
 
   'home.badge': 'Pureza verificada por HPLC',
   'home.heroTitle': 'Ciência e precisão, lote a lote',
-  'home.heroBody': 'Não publicamos uma pureza para o catálogo inteiro: publicamos a do seu lote, verificada por HPLC. Fabricados em laboratórios dos Estados Unidos e na sua porta em 2 a 5 dias, em todo o México.',
+  'home.heroBody': 'Peptídeos liofilizados de pesquisa, fabricados em laboratórios dos Estados Unidos.',
   'home.heroRuo': 'Somente para uso em pesquisa (RUO).',
 
   // Ver o bloco em espanhol: o número é contado pelo Home.js a partir do catálogo.
