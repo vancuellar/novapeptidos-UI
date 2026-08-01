@@ -1,3 +1,44 @@
+# ⚠️ ESTADO REAL AL CIERRE — 2026-08-01 madrugada — LÉELO ANTES QUE NADA
+
+## NADA DE LO DE AYER ESTÁ EN VIVO. TODO ESTÁ EN main, SIN PUBLICAR.
+Verificado contra el sitio: el bundle en vivo sigue siendo el viejo (el hero
+todavía dice "No publicamos una pureza para todo el catálogo…"). Los tres repos
+están **limpios, sin worktrees y al día con origin/main**.
+
+**Ojo, esto cambió:** otra sesión **quitó el disparo automático de GitHub Pages**
+(commit `52ced0d`), así que **un push YA NO publica**. Ahora publicar es
+explícito y en dos pasos:
+```
+cd novapeptidos-UI.nosync && ./desplegar.sh          # frontend (Cloudflare Pages)
+cd .. && ./actualizar-exygen-backend.sh              # backend (azul/verde)
+```
+⚠️ **El backend va ANTES o JUNTO con el frontend** (si sale solo el frontend, la
+pestaña de WhatsApp pega a rutas que no existen). Y después:
+`python3 subir_descripciones_backend.py --aplicar` + regenerar `compendio.json`,
+o el cliente seguirá viendo las descripciones viejas (el sitio las lee del
+BACKEND, no del repo).
+
+## Compuertas al cierre
+Backend **1119 en verde** · Motor **355 en verde, CERO fallas** (la que estaba en
+rojo por los 23 costos de Jess **ya se cerró**: otra sesión arregló sus erratas de
+nombre y **bajaron 26 costos**) · auditoría del sitio 95/0.
+
+## Lo que hicieron las otras sesiones mientras tanto
+- `52ced0d` GitHub Pages ya no se dispara solo en cada push a main.
+- `8e3178f` playwright vuelve a estar declarado: sin él `desplegar.sh` no publica.
+- `61b4acb` el guardián del despliegue pedía un botón que ya no existe (arreglado).
+- `f310e04` / `3e5f186` / `680501c` las erratas de nombre de Jess ya no parten los
+  cajones de costo; dos combos suyos a su dosis real y **26 costos bajaron**.
+- El "lote impreso" se quitó de portada, /info/calidad y guías.
+
+## ⚠️ OJO CON ESTO ANTES DE PUBLICAR
+Los **26 costos que bajaron con Jess** pueden mover precios. Antes de desplegar,
+corre `reprecio.py` en seco y **revisa qué precios cambiarían** — y recuerda la
+orden vigente: **el HGH NUNCA se ajusta a la baja**. Si aparece una bajada de HGH,
+está tapiada, pero verifícalo.
+
+---
+
 # 🤝 HANDOFF — cierre del 2026-07-31 — LÉELO PRIMERO, ES EL ESTADO REAL
 
 ## ⛔ TODO ESTÁ EN main Y SIN PUBLICAR
