@@ -56,11 +56,38 @@ export const fechaLarga = (fecha, idioma = 'es') => {
   } catch { return new Date(fecha).toLocaleDateString(); }
 };
 
+/* NOMBRE DEL ARCHIVO. Christián, 2026-08-01: la hoja se manda por WhatsApp y por
+   correo, y llegaba con un nombre genérico que no dice de quién es.
+   `Cotizacion-<cliente>-<AAAA-MM-DD>.pdf`, y si no hay nombre de cliente, el folio.
+
+   ⛔ SIN ACENTOS NI ESPACIOS NI SIGNOS. WhatsApp y varios clientes de correo
+   destrozan un archivo con acentos: «Cotización Ramírez.pdf» llega como
+   «Cotizaci%C3%B3n%20Ram%C3%ADrez.pdf» o directamente sin extensión. Se normaliza a
+   ASCII (NFD y fuera los diacríticos) y todo lo que no sea letra o número se vuelve
+   guion. */
+export function nombreDeArchivo({ cliente = '', folio = '', fecha = new Date() } = {}) {
+  const limpio = String(cliente || '')
+    .normalize('NFD').replace(/[̀-ͯ]/g, '')   // á → a, ñ → n
+    .replace(/[^A-Za-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '')
+    .slice(0, 40);
+  const d = fecha instanceof Date ? fecha : new Date(fecha);
+  const dia = Number.isNaN(d.getTime()) ? new Date() : d;
+  const iso = `${dia.getFullYear()}-${String(dia.getMonth() + 1).padStart(2, '0')}-${String(dia.getDate()).padStart(2, '0')}`;
+  // Sin cliente, el folio: es lo único que identifica esa hoja y se puede citar
+  // por teléfono. El folio ya nace sin acentos ni espacios.
+  const quien = limpio || String(folio || '').replace(/[^A-Za-z0-9-]+/g, '') || 'sin-nombre';
+  return `Cotizacion-${quien}-${iso}`;
+}
+
 /* El CUERPO de la hoja. `datos`:
      folio, fecha (Date), cliente, clienteCorreo, clienteTel, clienteDir,
-     codigo, enlace, idioma,
+     codigo, distribuidor (el nombre de quien cotiza), idioma,
+     enlaceCotizacion / enlaceCotizacionTexto — para volver a ABRIR la cotización,
+     enlacePago / enlacePagoTexto           — el carrito de ESA cotización, listo,
      filas: [{nombre, qty, unit, importe, precio, pct}]
-     subtotalLista, ahorro, total
+     regalos: [{nombre, cantidad, tipo}]   — las CORTESÍAS, sin su código
+     subtotalLista, descuento, descuentoPct, envio, cobraEnvio, total
    Los datos del cliente son TODOS opcionales: los que existan se pintan bajo
    "Para", los que no, simplemente no aparecen.
    `textos` son las cadenas ya traducidas (la hoja no sabe de i18n).           */
@@ -68,7 +95,10 @@ export function hojaCotizacionHTML(datos, { tema = 'claro', origen = '' } = {}) 
   const c = tema === 'oscuro' ? OSCURO : CLARO;
   const t = datos.textos || {};
   const filas = datos.filas || [];
-  const conDescuento = (datos.ahorro || 0) > 0;
+  const descuento = Number(datos.descuento) || 0;
+  const conDescuento = descuento > 0;
+  const regalos = datos.regalos || [];
+  const envio = Number(datos.envio) || 0;
 
   const renglones = filas.map((f) => `
     <tr>
@@ -81,12 +111,60 @@ export function hojaCotizacionHTML(datos, { tema = 'claro', origen = '' } = {}) 
       <td class="cot-td cot-num cot-importe">${money(f.importe)}</td>
     </tr>`).join('');
 
+  /* LAS CORTESÍAS, en la misma tabla y con el importe en $0.
+     ⛔ El cliente ve el REGALO —«Agua bacteriostática — Cortesía»— y jamás el código
+     que lo hizo posible (Christián, 2026-08-01). Aquí no hay dónde escribirlo: a esta
+     función sólo le llega el nombre. */
+  const cortesias = regalos.map((g) => `
+    <tr>
+      <td class="cot-td cot-nom">
+        ${esc(g.nombre || '')}
+        <span class="cot-antes cot-verde">${esc(t.docCortesia || '')}</span>
+      </td>
+      <td class="cot-td cot-num">${Number(g.cantidad) || 1}</td>
+      <td class="cot-td cot-num">${money(0)}</td>
+      <td class="cot-td cot-num cot-importe cot-verde">${money(0)}</td>
+    </tr>`).join('');
+
+  /* LOS DOS ENLACES DEL PIE (Christián, 2026-08-01). Antes había uno solo y era
+     genérico —«Paga en línea: exygenlabs.com/checkout»—, así que el cliente aterrizaba
+     en un checkout vacío y tenía que rearmar todo lo que ya había leído.
+
+       1. VER LA COTIZACIÓN: la vuelve a abrir sin depender del PDF. Es útil justo
+          cuando el PDF se pierde en la conversación de WhatsApp.
+       2. PAGAR: el carrito de ESA cotización, con sus precios y sus cortesías.
+
+     Los dos cuelgan del MISMO token del carrito compartido, y ninguno lleva el código
+     del obsequio: el token es opaco y el servidor resuelve el regalo por dentro.
+
+     Cada uno en su propio renglón para que en el PDF se puedan tocar por separado —
+     dos enlaces pegados en una línea son un solo blanco de dedo en un teléfono. */
+  const filaEnlace = (etiqueta, url, texto) => (url
+    ? `<div class="cot-enlace"><b>${esc(etiqueta || '')}</b> <a href="${esc(url)}">${esc(texto || url)}</a></div>`
+    : '');
+  const enlaces = [
+    filaEnlace(t.docVerCotizacion, datos.enlaceCotizacion, datos.enlaceCotizacionTexto),
+    filaEnlace(t.docPagar, datos.enlacePago, datos.enlacePagoTexto),
+  ].join('');
+
+  /* EL BLOQUE DEL DINERO. Christián, 2026-08-01, textual: «después del precio de
+     lista dice "ahorro", por favor cámbialo y mejor que diga "descuento X%" porque
+     Mónica no entiende fácilmente». El porcentaje se calcula descuento ÷ lista y
+     viene ya armado en `t.docDescuento`.
+
+     ⛔ Y EL ENVÍO SUMA, NUNCA RESTA. Va debajo del descuento y antes del total, con
+     la palabra «Gratis» cuando el pedido llega al mínimo de la casa. La política no
+     se inventa aquí: sale de `/payments/config`, que es la que aplica la caja. */
   const dinero = [
     `<tr><td class="cot-dlabel">${esc(t.precioLista || '')}</td>
          <td class="cot-dval">${money(datos.subtotalLista)}</td></tr>`,
     conDescuento
-      ? `<tr><td class="cot-dlabel">${esc(t.docAhorro || '')}</td>
-             <td class="cot-dval cot-verde">&minus;${money(datos.ahorro)}</td></tr>`
+      ? `<tr><td class="cot-dlabel">${esc(t.docDescuento || '')}</td>
+             <td class="cot-dval cot-verde">&minus;${money(descuento)}</td></tr>`
+      : '',
+    datos.cobraEnvio
+      ? `<tr><td class="cot-dlabel">${esc(t.docEnvio || '')}</td>
+             <td class="cot-dval${envio > 0 ? '' : ' cot-verde'}">${envio > 0 ? money(envio) : esc(t.docEnvioGratis || '')}</td></tr>`
       : '',
     `<tr><td class="cot-dlabel cot-dtotal">${esc(t.total || '')}</td>
          <td class="cot-dval cot-dtotal">${money(datos.total)}</td></tr>`,
@@ -137,7 +215,10 @@ export function hojaCotizacionHTML(datos, { tema = 'claro', origen = '' } = {}) 
   .cot-pie{margin-top:26px;padding-top:12px;border-top:1px solid ${c.line};
     font-size:9.5px;line-height:1.6;color:${c.muted};}
   .cot-pie b{color:${c.body};font-weight:600;}
-  .cot-pie a{color:${c.muted};text-decoration:none;}
+  .cot-pie a{color:${c.ink};text-decoration:underline;}
+  /* Cada enlace en su propio renglón y con aire arriba: en un teléfono dos enlaces
+     pegados en la misma línea son un solo blanco para el dedo. */
+  .cot-enlace{margin-top:6px;line-height:1.7;word-break:break-word;}
   /* En un teléfono el encabezado a dos columnas se encima: el logo y la palabra
      "Cotización" se pisan y el folio se parte a la mitad. Ahí se apila. Y la
      columna del precio unitario se va: el importe ya lleva la cuenta hecha. */
@@ -167,7 +248,7 @@ export function hojaCotizacionHTML(datos, { tema = 'claro', origen = '' } = {}) 
   <table class="cot-partes"><tr>
     <td>
       <div class="cot-etiqueta">${esc(t.docPara || 'Para')}</div>
-      <div class="cot-valor">${esc(datos.cliente || t.docSinNombre || '—')}
+      <div class="cot-valor">${esc(datos.cliente || t.docSinNombre || '')}
         ${[datos.clienteCorreo, datos.clienteTel, datos.clienteDir]
     .filter((d) => (d || '').trim())
     .map((d) => `<small>${esc(d.trim())}</small>`).join('')}
@@ -176,6 +257,7 @@ export function hojaCotizacionHTML(datos, { tema = 'claro', origen = '' } = {}) 
     <td>
       <div class="cot-etiqueta">${esc(t.docDe || 'De')}</div>
       <div class="cot-valor">Exygen Labs
+        ${datos.distribuidor ? `<small>${esc(datos.distribuidor)}</small>` : ''}
         ${datos.codigo ? `<small>${esc(t.docCodigo || 'Código')} ${esc(datos.codigo)}</small>` : ''}
       </div>
     </td>
@@ -188,21 +270,21 @@ export function hojaCotizacionHTML(datos, { tema = 'claro', origen = '' } = {}) 
       <th class="cot-num">${esc(t.colUnitario || 'Unitario')}</th>
       <th class="cot-num">${esc(t.colImporte || 'Importe')}</th>
     </tr></thead>
-    <tbody>${renglones}</tbody>
+    <tbody>${renglones}${cortesias}</tbody>
   </table>
 
   <table class="cot-dineroCaja"><tr><td>
     <table class="cot-dinero">
-      <tr><td class="cot-etiqueta" colspan="2" style="padding-bottom:6px;">${esc(t.docDinero || 'El Dinero')}</td></tr>
+      <tr><td class="cot-etiqueta" colspan="2" style="padding-bottom:6px;">${esc(t.docResumen || '')}</td></tr>
       ${dinero}
     </table>
   </td></tr></table>
 
-  ${conDescuento ? `<div class="cot-ahorro">${esc(t.docAhorroCaja || '')} ${money(datos.ahorro)}</div>` : ''}
+  ${conDescuento ? `<div class="cot-ahorro">${esc(t.docDescuentoCaja || '')} ${money(descuento)}</div>` : ''}
 
   <div class="cot-pie">
-    ${esc(t.docLeyenda || '')}<br>
-    ${datos.enlace ? `<b>${esc(t.docPagar || t.docCatalogo || '')}</b> <a href="${esc(datos.enlace)}">${esc(datos.enlaceTexto || datos.enlace)}</a>` : ''}
+    ${esc(t.docLeyenda || '')}
+    ${enlaces}
   </div>
 </div>`;
 }
@@ -221,9 +303,14 @@ export function imprimirCotizacion(datos, textos) {
 
   const doc = marco.contentDocument;
   doc.open();
+  // ⛔ EL `<title>` ES EL NOMBRE DEL ARCHIVO. Todos los navegadores lo usan como
+  // nombre por omisión al «Guardar como PDF», así que ésta es la única línea que
+  // decide cómo se va a llamar la hoja que Mónica manda por WhatsApp. Antes iba el
+  // folio solo (o el título de la página, que salía como «Cotización .pdf»): un
+  // nombre que no dice de quién es y que se rompe por el acento.
   doc.write(`<!DOCTYPE html><html lang="${datos.idioma || 'es'}"><head>
 <meta charset="utf-8">
-<title>${esc(datos.folio || 'Cotizacion')}</title>
+<title>${esc(nombreDeArchivo({ cliente: datos.cliente, folio: datos.folio, fecha: datos.fecha }))}</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=Marcellus&display=swap">
 <style>
   @page{size:letter;margin:14mm 13mm;}

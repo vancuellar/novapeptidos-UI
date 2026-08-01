@@ -525,8 +525,12 @@ const Distributor = () => {
             Ventas — no en "Mis Herramientas", que es para su propio consumo.
             El componente no cambió, sólo se re-monta aquí (Christián, 2026-07-30). */}
         <TabsContent value="cotizador" className="mt-5">
+          {/* `nombreDistribuidor` va a la HOJA que ella imprime y comparte, para que
+              su cliente sepa con quién trata (Christián, 2026-08-01). ⛔ NO viaja al
+              correo que manda el servidor: ahí sigue firmando la atención de la casa. */}
           <CotizadorDistribuidor catalogo={catalogoCotizador} tasaMaxima={tasaMaximaCotizador}
-            codigo={summary?.distributor_code || user.distributor_code || ''} />
+            codigo={summary?.distributor_code || user.distributor_code || ''}
+            nombreDistribuidor={user.name || ''} />
         </TabsContent>
 
         {/* El Asesor de Negocio. El componente es el MISMO que ve el admin; lo

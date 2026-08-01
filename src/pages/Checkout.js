@@ -27,7 +27,7 @@ const ICONS = { CreditCard, Landmark, Bitcoin, Store };
 // Pago, no aqui. Se borraron con el formulario (Christian, 2026-07-26).
 
 const Checkout = () => {
-  const { items, hidratando, subtotal, discount, discountRate, discountSource, cappedItems, regla5Items, calcularEnvio, cobraEnvio, envioGratisDesde, envioGratisDeVerdadDesde, topeEnvio, distCode, clearCart } = useCart();
+  const { items, hidratando, subtotal, discount, discountRate, discountSource, cappedItems, regla5Items, calcularEnvio, cobraEnvio, envioGratisDesde, envioGratisDeVerdadDesde, topeEnvio, distCode, clearCart, sharedCartToken } = useCart();
   const { user } = useAuth();
   const { t } = useLanguage();
   // El inventario REAL. El aviso de envío partido tiene que estar EN LA PANTALLA DE
@@ -306,6 +306,11 @@ const Checkout = () => {
         shipping_quote_id: quoteOn ? (envioElegido || null) : null,
         discount,
         distributor_code: distCode || null,
+        // ⛔ EL CARRITO COMPARTIDO: viaja el TOKEN y nada más. El servidor abre el
+        // documento que guardó su distribuidora, revalida las cortesías contra el ROI
+        // de ESTE pedido y sólo entonces las aplica. Ni el regalo ni su valor ni su
+        // código pasan por aquí — no hay dónde escribirlos.
+        shared_cart_token: sharedCartToken || null,
         points_to_use: pointsApplied,
         // De dónde salió este cliente (primer toque: utm/fbclid de su PRIMERA visita).
         // Va en el pedido para poder sacar el costo por cliente que SÍ compró: sin

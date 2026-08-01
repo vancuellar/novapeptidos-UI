@@ -123,7 +123,9 @@ export const CartProvider = ({ children }) => {
     setItems((prev) => prev.filter((i) => i.product_id !== productId));
   };
 
-  const clearCart = () => setItems([]);
+  // Vaciar el carrito también suelta el carrito compartido: las cortesías eran de
+  // ESE carrito, no del cliente. Si arma otro a mano, ya no le tocan.
+  const clearCart = () => { setItems([]); setSharedCartToken(''); };
 
   const subtotal = items.reduce((sum, i) => sum + i.price * i.quantity, 0);
   const count = items.reduce((sum, i) => sum + i.quantity, 0);
@@ -214,6 +216,32 @@ export const CartProvider = ({ children }) => {
     }
   };
   const clearDistCode = () => { setDistCode(''); setDistRate(0); setCodeMin(0); };
+
+  /* CARRITO COMPARTIDO (`?cart=`) — el enlace que la distribuidora manda por WhatsApp.
+     Sólo se guarda el TOKEN, y viaja al checkout para que el SERVIDOR aplique las
+     cortesías que ella dejó puestas.
+
+     ⛔ De aquí no sale ni un peso ni un código: el token es opaco. Qué se regaló,
+     cuánto vale y si cabe bajo el ROI lo resuelve el servidor al cobrar (ver
+     `_obsequios_del_pedido` en server.py). Un token inventado no encuentra nada y la
+     compra sigue como cualquier otra.
+
+     Se guarda en `sessionStorage` porque entre abrir el enlace y pagar hay varias
+     pantallas: sin eso, la cortesía se perdería en el primer clic. Muere con la
+     pestaña y se borra al vaciar el carrito. */
+  const LLAVE_CARRITO = 'exygen_carrito_compartido';
+  const [sharedCartToken, setSharedCartToken] = useState(() => {
+    try {
+      const dela = new URLSearchParams(window.location.search).get('cart');
+      return (dela || sessionStorage.getItem(LLAVE_CARRITO) || '').trim();
+    } catch { return ''; }
+  });
+  useEffect(() => {
+    try {
+      if (sharedCartToken) sessionStorage.setItem(LLAVE_CARRITO, sharedCartToken);
+      else sessionStorage.removeItem(LLAVE_CARRITO);
+    } catch { /* modo privado de Safari: sin memoria, pero el checkout sigue */ }
+  }, [sharedCartToken]);
 
   // ENLACE CON CÓDIGO (?ref=): lo que reparte el distribuidor desde su cotizador.
   // Sin esto el enlace sería adorno — el cliente entraría, compraría, y la venta
@@ -411,7 +439,7 @@ export const CartProvider = ({ children }) => {
   const envioGratis = cobraEnvio && items.length > 0 && shipping === 0;
 
   return (
-    <CartContext.Provider value={{ items, hidratando, addItem, updateQty, removeItem, clearCart, subtotal, count, discount, discountRate, discountSource, cappedItems, lineDiscounts, regla5Items, compraPropia, baseRate, nextTier, shipping, calcularEnvio, cobraEnvio, envioGratis, faltaParaEnvioGratis, envioGratisDesde: envio.free_shipping_from, envioGratisDeVerdadDesde, topeEnvio, distCode, distRate, codeMin, codeMinMet, applyDistCode, clearDistCode }}>
+    <CartContext.Provider value={{ items, hidratando, addItem, updateQty, removeItem, clearCart, subtotal, count, discount, discountRate, discountSource, cappedItems, lineDiscounts, regla5Items, compraPropia, baseRate, nextTier, shipping, calcularEnvio, cobraEnvio, envioGratis, faltaParaEnvioGratis, envioGratisDesde: envio.free_shipping_from, envioGratisDeVerdadDesde, topeEnvio, distCode, distRate, codeMin, codeMinMet, applyDistCode, clearDistCode, sharedCartToken, setSharedCartToken }}>
       {children}
     </CartContext.Provider>
   );

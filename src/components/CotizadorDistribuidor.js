@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import {
   Search, Plus, Minus, Trash2, FileText, Share2, Printer, Sparkles, Mail, X, Loader2,
+  Gift, Link2, Copy, Truck,
 } from 'lucide-react';
 import { toast } from 'sonner';
 import { useLanguage } from '@/context/LanguageContext';
@@ -41,7 +42,7 @@ const CORREO_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 // donde el nombre de la sección ya lo pone el acordeón y repetirlo se lee como un
 // error. El diseño no cambia; sólo se apaga la parte que estorba ahí.
 export default function CotizadorDistribuidor({
-  catalogo = [], tasaMaxima = 0.15, codigo = '', conEncabezado = true,
+  catalogo = [], tasaMaxima = 0.15, codigo = '', conEncabezado = true, nombreDistribuidor = '',
 }) {
   const { t, language } = useLanguage();
   const { theme } = useTheme();
@@ -63,6 +64,32 @@ export default function CotizadorDistribuidor({
   const [correoAbierto, setCorreoAbierto] = useState(false);
   const [correo, setCorreo] = useState('');
   const [enviando, setEnviando] = useState(false);
+
+  // OBSEQUIOS (Christián, 2026-08-01). Un producto de cortesía o el envío. Se apilan
+  // con el descuento del código, y su CÓDIGO INTERNO no existe en esta pantalla: lo
+  // genera y lo guarda el servidor al compartir el carrito, y no vuelve nunca.
+  // [{tipo:'producto', product_id, nombre, cantidad} | {tipo:'envio'}]
+  const [obsequios, setObsequios] = useState([]);
+  const [buscaObsequio, setBuscaObsequio] = useState('');
+  const [carrito, setCarrito] = useState(null);      // {url} del enlace ya creado
+  const [compartiendoCarrito, setCompartiendoCarrito] = useState(false);
+
+  // ⛔ LA POLÍTICA DE ENVÍO NO SE ESCRIBE AQUÍ: SE PIDE. Vive en el backend
+  // (`envios.py` + `SHIPPING_FLAT` / `FREE_SHIPPING_FROM`) y viaja por
+  // `/payments/config`, la MISMA ruta que ya usa el carrito del cliente. Copiada a
+  // mano se desalinea en silencio, y una cotización que promete envío gratis donde
+  // la caja cobra $250 es exactamente la mentira que ya costó dinero.
+  //
+  // Mientras la configuración no llega, `shipping_charged` es false y el renglón de
+  // envío simplemente no se pinta: no se promete nada de más.
+  const [envioCfg, setEnvioCfg] = useState({ shipping_charged: false });
+  useEffect(() => {
+    let vivo = true;
+    api.get('/payments/config')
+      .then((r) => { if (vivo && r.data?.free_shipping_from) setEnvioCfg(r.data); })
+      .catch(() => {});
+    return () => { vivo = false; };
+  }, []);
 
   // La tasa la trae el servidor DESPUÉS del primer pintado. Sin esto el control
   // se queda clavado en el 0% con el que arrancó, y el cotizador no descuenta
@@ -125,6 +152,38 @@ export default function CotizadorDistribuidor({
     .map((x) => (x.id === id ? { ...x, qty: Math.max(1, x.qty + d) } : x)));
   const quitar = (id) => setRenglones((r) => r.filter((x) => x.id !== id));
 
+  // ------------------------------------------------------------- los obsequios
+  const agregarObsequio = (p) => {
+    setObsequios((o) => (o.some((x) => x.product_id === p.id) ? o
+      : [...o, { tipo: 'producto', product_id: p.id, nombre: p.name, cantidad: 1 }]));
+    setBuscaObsequio('');
+  };
+  const alternarEnvioDeCortesia = () => setObsequios((o) => (o.some((x) => x.tipo === 'envio')
+    ? o.filter((x) => x.tipo !== 'envio') : [...o, { tipo: 'envio' }]));
+  const quitarObsequio = (llave) => setObsequios(
+    (o) => o.filter((x) => (x.tipo === 'envio' ? 'envio' : x.product_id) !== llave));
+
+  const sugerenciasObsequio = useMemo(() => {
+    const q = buscaObsequio.trim().toLowerCase();
+    if (q.length < 2) return [];
+    return catalogo
+      .filter((p) => `${p.name} ${p.presentation || ''}`.toLowerCase().includes(q))
+      .slice(0, 6);
+  }, [buscaObsequio, catalogo]);
+
+  // ⛔ UN ENLACE VIEJO NO PUEDE SEGUIR EN PANTALLA CUANDO EL CARRITO YA CAMBIÓ. El
+  // enlace guarda en el servidor lo que había al crearlo; si Mónica mueve un
+  // producto, el descuento o un regalo y lo manda igual, su cliente abre otra cosa
+  // distinta de la que ella está viendo. Se borra y ella vuelve a picar el botón.
+  // Se comparan como texto (y en una variable con nombre, no dentro del arreglo de
+  // dependencias) porque son arreglos de objetos: por referencia cambian en cada
+  // pintado y el enlace se borraría solo mientras Mónica lo está copiando.
+  const huellaRenglones = JSON.stringify(renglones);
+  const huellaObsequios = JSON.stringify(obsequios);
+  useEffect(() => {
+    setCarrito(null);
+  }, [huellaRenglones, huellaObsequios, descuento, nombreCliente]);
+
   // El descuento de cada renglón respeta su tope por producto; los insumos van sin descuento.
   const filas = renglones.map((x) => {
     const pct = Math.min(descuento, x.topePct, tasaMaxima);
@@ -132,19 +191,69 @@ export default function CotizadorDistribuidor({
     return { ...x, pct, unit, importe: unit * x.qty, lista: x.precio * x.qty };
   });
   const subtotalLista = filas.reduce((s, f) => s + f.lista, 0);
-  const total = filas.reduce((s, f) => s + f.importe, 0);
-  const ahorro = subtotalLista - total;
+  const mercancia = filas.reduce((s, f) => s + f.importe, 0);
+  const descuentoPesos = subtotalLista - mercancia;
+  // ⛔ EL PORCENTAJE QUE PIDIÓ CHRISTIÁN: descuento ÷ precio de lista, no la barra.
+  // La barra dice cuánto se PIDE; esto dice cuánto se dio de verdad, ya recortado
+  // renglón por renglón por el tope de cada producto. Con insumos en el carrito los
+  // dos números no coinciden, y el que el cliente puede comprobar con una división
+  // es éste.
+  const descuentoPct = subtotalLista > 0 ? Math.round((descuentoPesos / subtotalLista) * 100) : 0;
+
+  /* EL ENVÍO. Los dos candados de la casa, EN ORDEN (Christián, 2026-07-31), con los
+     números que manda el servidor: 1º la compra mínima —abajo de ella se paga la
+     tarifa plana—; 2º el tope —la casa absorbe hasta su 5% y el cliente pone la
+     diferencia—. Es la misma cuenta que ya hace `CartContext`, contra los mismos
+     parámetros, para que la cotización y el carrito digan el mismo número.
+
+     ⛔ Y EL ENVÍO SUMA AL TOTAL, NUNCA RESTA. */
+  const cobraEnvio = envioCfg.shipping_charged === true && filas.length > 0;
+  const envioDeCortesia = obsequios.some((o) => o.tipo === 'envio');
+  const envio = (() => {
+    if (!cobraEnvio || envioDeCortesia) return 0;
+    if (mercancia < (Number(envioCfg.free_shipping_from) || 0)) return Number(envioCfg.shipping_flat) || 0;
+    const tope = Number(envioCfg.shipping_cap_rate) || 0;
+    if (tope <= 0) return 0;                       // servidor sin tope: la regla de antes
+    const costo = Number(envioCfg.shipping_cost_estimate) || Number(envioCfg.shipping_flat) || 0;
+    return Math.max(0, Math.round(costo - mercancia * tope));
+  })();
+  const total = mercancia + envio;
+
+  // Las cortesías tal como las ve el CLIENTE: nombre y cantidad. Su código no está
+  // aquí porque no existe en el navegador — lo genera el servidor al compartir.
+  const regalosVisibles = obsequios.map((o) => (o.tipo === 'envio'
+    ? { tipo: 'envio', nombre: t('cotizador.obsequioEnvio'), cantidad: 1 }
+    : { tipo: 'producto', nombre: o.nombre, cantidad: o.cantidad }));
 
   // El enlace de la cotización: el checkout con estos MISMOS renglones y SU
   // código. Es lo que convierte una cotización en una venta atribuida — sin el
   // ?ref=, el cliente compra y la comisión no es de nadie.
   const pedidoPayload = filas.map((f) => `${f.id}:${f.qty}`).join(',');
-  const enlace = filas.length
-    ? `${SITIO_URL}/checkout?pedido=${encodeURIComponent(pedidoPayload)}${codigo ? `&ref=${encodeURIComponent(codigo)}` : ''}`
-    : (codigo ? `${CATALOGO_URL}?ref=${encodeURIComponent(codigo)}` : CATALOGO_URL);
+
+  /* LOS DOS ENLACES DE LA COTIZACIÓN (Christián, 2026-08-01).
+
+       1. VER LA COTIZACIÓN — la vuelve a abrir sin depender del PDF, que es
+          justo lo que se pierde en una conversación de WhatsApp.
+       2. PAGAR — el carrito de ESA cotización, con sus precios y sus cortesías.
+
+     Los dos cuelgan del MISMO token del carrito compartido, que se crea solo al
+     generar la hoja. ⛔ El token es OPACO: no lleva precios ni el código del
+     obsequio; el servidor resuelve todo por dentro al abrirlo y al cobrar.
+
+     Sin token (el servidor no contestó, o el regalo no cabía) se cae al enlace de
+     siempre: el checkout con `?pedido=`, que ya funcionaba. Una cotización sin
+     enlace de pago sería peor que una con el enlace genérico. */
+  const token = carrito?.token || '';
+  const enlaceCotizacion = token ? `${SITIO_URL}/carrito/${token}` : '';
+  const enlacePago = token
+    ? `${SITIO_URL}/checkout?pedido=${encodeURIComponent(pedidoPayload)}&cart=${encodeURIComponent(token)}${codigo ? `&ref=${encodeURIComponent(codigo)}` : ''}`
+    : (filas.length
+      ? `${SITIO_URL}/checkout?pedido=${encodeURIComponent(pedidoPayload)}${codigo ? `&ref=${encodeURIComponent(codigo)}` : ''}`
+      : (codigo ? `${CATALOGO_URL}?ref=${encodeURIComponent(codigo)}` : CATALOGO_URL));
   // En la hoja impresa la URL cruda (con sus ids) sería un ciempiés ilegible: se
   // pinta un texto corto y el enlace vivo queda en el href.
-  const enlaceTexto = filas.length ? `${SITIO_URL.replace('https://', '')}/checkout` : enlace;
+  const enlaceCotizacionTexto = t('cotizador.docVerCotizacionTexto');
+  const enlacePagoTexto = t('cotizador.docPagarTexto');
 
   // Las cadenas que necesita la hoja, ya traducidas. La hoja no sabe de i18n a
   // propósito: es un documento, no una pantalla.
@@ -161,22 +270,37 @@ export default function CotizadorDistribuidor({
     colImporte: t('cotizador.colImporte'),
     cadaUno: t('cotizador.cadaUno'),
     docAntes: t('cotizador.docAntes'),
-    docDinero: t('cotizador.docDinero'),
+    // ⛔ «El Dinero» fuera (Christián, 2026-08-01): «no aplica bien en español».
+    docResumen: t('cotizador.docResumen'),
+    docVerCotizacion: t('cotizador.docVerCotizacion'),
     precioLista: t('cotizador.precioLista'),
-    docAhorro: t('cotizador.docAhorro'),
-    docAhorroCaja: t('cotizador.docAhorroCaja'),
+    // ⛔ «Descuento X%», no «Ahorro» (Christián, 2026-08-01). El porcentaje ya viene
+    // sustituido: la hoja es un documento y no sabe de i18n ni de interpolaciones.
+    docDescuento: t('cotizador.docDescuento', { pct: descuentoPct }),
+    docDescuentoCaja: t('cotizador.docDescuentoCaja', { pct: `${descuentoPct}%` }),
+    docEnvio: t('cotizador.docEnvio'),
+    docEnvioGratis: t('cotizador.docEnvioGratis'),
+    docCortesia: t('cotizador.docCortesia'),
     total: t('cotizador.total'),
     docLeyenda: t('cotizador.docLeyenda'),
     docCatalogo: t('cotizador.docCatalogo'),
     docPagar: t('cotizador.docPagar'),
-  }), [t]);
+  }), [t, descuentoPct]);
 
   const datosHoja = {
     folio, fecha: new Date(), cliente: nombreCliente,
     clienteCorreo: correoCliente, clienteTel: telCliente, clienteDir: dirCliente,
-    codigo, enlace, enlaceTexto,
-    idioma: language, filas, subtotalLista, ahorro, total,
+    codigo, distribuidor: nombreDistribuidor,
+    enlaceCotizacion, enlaceCotizacionTexto, enlacePago, enlacePagoTexto,
+    idioma: language, filas, subtotalLista,
+    descuento: descuentoPesos, descuentoPct,
+    regalos: regalosVisibles, envio, cobraEnvio, total,
   };
+
+  // Mismo motivo que arriba: son arreglos de objetos, y por referencia la hoja se
+  // volvería a armar en cada pintado.
+  const huellaFilas = JSON.stringify(filas);
+  const huellaRegalos = JSON.stringify(regalosVisibles);
 
   const esOscuro = theme === 'dark'
     || (theme === 'system' && window.matchMedia?.('(prefers-color-scheme: dark)').matches);
@@ -189,37 +313,113 @@ export default function CotizadorDistribuidor({
       origen: process.env.PUBLIC_URL || '',
     }),
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [folio, nombreCliente, correoCliente, telCliente, dirCliente, codigo, enlace, language, JSON.stringify(filas), total, esOscuro, textos],
+    [folio, nombreCliente, correoCliente, telCliente, dirCliente, codigo, enlaceCotizacion, enlacePago, language, huellaFilas, huellaRegalos, envio, cobraEnvio, total, esOscuro, textos],
   );
 
-  const abrirVistaPrevia = () => {
-    setFolio(nuevoFolio());   // cada cotización que se genera es un documento nuevo
+  const abrirVistaPrevia = async () => {
+    const nuevo = nuevoFolio();
+    setFolio(nuevo);          // cada cotización que se genera es un documento nuevo
     setCorreoAbierto(false);
     // Si ya se capturó el correo del cliente, el campo de "Enviar Por Correo"
     // llega lleno — se puede corregir, pero no hay que teclearlo dos veces.
     setCorreo((c) => c || correoCliente.trim());
     setVistaPrevia(true);
+    // ⛔ LOS DOS ENLACES DE LA HOJA NECESITAN UN CARRITO GUARDADO. Se crea AQUÍ, al
+    // generar, para que el PDF salga con enlaces vivos sin que Mónica tenga que
+    // acordarse de picar otro botón. Si el servidor no contesta —o el regalo no
+    // cabe— la hoja sale igual con el enlace de siempre: una cotización sin enlace
+    // sería peor que una con el genérico.
+    // Se rehace SIEMPRE, no sólo si no había: cada "Generar" estrena folio, y un
+    // carrito guardado con el folio anterior haría que el enlace abriera una hoja
+    // con un número distinto del que el cliente tiene en el PDF.
+    await compartirCarrito({ silencioso: true, folio: nuevo });
   };
 
   // Compartir por WhatsApp SIN número fijo: wa.me sin destinatario abre la lista
   // de contactos y el distribuidor elige a quién se la manda. Con un número
   // pegado sólo serviría para mandársela a esa persona.
+  // El texto de WhatsApp dice EXACTAMENTE lo mismo que la hoja: el descuento en
+  // porcentaje, el envío como un renglón que suma, y las cortesías por su nombre.
+  // ⛔ Y NUNCA el código del obsequio: aquí no hay ninguno que escribir.
+  const textoDeWhatsApp = () => [
+    `*EXYGEN LABS* — ${t('cotizador.docTitulo')} ${folio}`,
+    nombreCliente ? `${t('cotizador.docPara')} ${nombreCliente}` : '',
+    // Quién se la manda, igual que en la hoja: el cliente sabe con quién trata.
+    nombreDistribuidor ? `${t('cotizador.docDe')} ${nombreDistribuidor}` : '',
+    '',
+    ...filas.map((f) => `• ${f.qty} × ${f.nombre} — ${money(f.importe)}`),
+    ...regalosVisibles.map((g) => `• ${g.cantidad} × ${g.nombre} — ${t('cotizador.docCortesia')}`),
+    '',
+    descuentoPesos > 0
+      ? `${t('cotizador.docDescuento', { pct: descuentoPct })}: −${money(descuentoPesos)}` : '',
+    cobraEnvio
+      ? `${t('cotizador.docEnvio')}: ${envio > 0 ? money(envio) : t('cotizador.docEnvioGratis')}` : '',
+    `*${t('cotizador.total')}: ${money(total)}*`,
+    '',
+    // LOS DOS ENLACES, los mismos que van en el PDF: volver a ver la cotización y
+    // pagar con el carrito ya armado. ⛔ Ninguno lleva el código del obsequio.
+    enlaceCotizacion ? `${t('cotizador.waVerCotizacion')} ${enlaceCotizacion}` : '',
+    `${t('cotizador.waPagar')} ${enlacePago}`,
+    codigo ? `${t('cotizador.docCodigo')} ${codigo}` : '',
+    '',
+    t('cotizador.docLeyenda'),
+  ].filter(Boolean).join('\n');
+
   const compartir = () => {
-    const texto = [
-      `*EXYGEN LABS* — ${t('cotizador.docTitulo')} ${folio}`,
-      nombreCliente ? `${t('cotizador.docPara')} ${nombreCliente}` : '',
-      '',
-      ...filas.map((f) => `• ${f.qty} × ${f.nombre} — ${money(f.importe)}`),
-      '',
-      ahorro > 0 ? `${t('cotizador.docAhorro')} −${money(ahorro)}` : '',
-      `*${t('cotizador.total')}: ${money(total)}*`,
-      '',
-      `${t('cotizador.waPagar')} ${enlace}`,
-      codigo ? `${t('cotizador.docCodigo')} ${codigo}` : '',
-      '',
-      t('cotizador.docLeyenda'),
-    ].filter(Boolean).join('\n');
-    window.open(`https://wa.me/?text=${encodeURIComponent(texto)}`, '_blank', 'noopener,noreferrer');
+    window.open(`https://wa.me/?text=${encodeURIComponent(textoDeWhatsApp())}`,
+      '_blank', 'noopener,noreferrer');
+  };
+
+  /* EL CARRITO COMPARTIBLE. «¿Me lo construyes súper rápido?» (Christián, 2026-08-01).
+     Se le pide al servidor un enlace: él guarda QUÉ y CUÁNTOS, genera el código
+     interno del obsequio, comprueba que el regalo no rompa el ROI y devuelve una URL.
+
+     ⛔ Del navegador no viaja ni un peso: ni precios, ni el valor del regalo, ni el
+     envío. Todo eso lo recalcula el servidor al abrir el enlace y otra vez al cobrar.
+     Y el código del obsequio no vuelve en la respuesta — no hay dónde enseñarlo. */
+  const compartirCarrito = async ({ silencioso = false, folio: folioNuevo } = {}) => {
+    setCompartiendoCarrito(true);
+    try {
+      const r = await api.post('/distributor/cart/share', {
+        client_name: nombreCliente.trim(),
+        discount: descuento,
+        language,
+        folio: folioNuevo || folio,
+        items: filas.map((f) => ({ product_id: f.id, quantity: f.qty })),
+        gifts: obsequios.map((o) => (o.tipo === 'envio'
+          ? { tipo: 'envio' }
+          : { tipo: 'producto', product_id: o.product_id, cantidad: o.cantidad })),
+      });
+      setCarrito({ url: r.data.url, token: r.data.token });
+      if (!silencioso) toast.success(t('cotizador.carritoListo'));
+      return true;
+    } catch (e) {
+      // El 409 es el ÚNICO "no" de todo esto, y es del lado de Mónica: el regalo se
+      // pasa del margen que este pedido aguanta. Se le dice con los dos números para
+      // que sepa qué mover, en vez de un "no se pudo" que no explica nada.
+      //
+      // ⚠️ Este aviso SÍ se enseña aunque la llamada sea automática: si el regalo no
+      // cupo, ella tiene que enterarse antes de mandar la hoja — la cotización sale
+      // sin esa cortesía y callárselo sería peor.
+      const d = e?.response?.data?.detail;
+      if (e?.response?.status === 409 && d?.error === 'regalo_sin_margen') {
+        toast.error(t('cotizador.obsequioSinMargen', {
+          entregado: money(d.entregado), permitido: money(d.permitido),
+        }));
+      } else if (!silencioso) {
+        toast.error(t('cotizador.carritoError'));
+      }
+      return false;
+    } finally {
+      setCompartiendoCarrito(false);
+    }
+  };
+
+  const copiarEnlace = async () => {
+    try {
+      await navigator.clipboard.writeText(carrito.url);
+      toast.success(t('cotizador.carritoCopiado'));
+    } catch { /* sin portapapeles (http, permisos): el enlace se ve y se puede marcar */ }
   };
 
   const imprimir = () => imprimirCotizacion(datosHoja, textos);
@@ -337,19 +537,96 @@ export default function CotizadorDistribuidor({
               className="w-full accent-primary" data-testid="cotizador-descuento" />
             <p className="text-xs text-muted-foreground mt-1">{t('cotizador.topeNota')}</p>
           </div>
-          <div className="space-y-1.5 text-sm border-t border-border pt-3">
+          {/* EL BLOQUE DEL DINERO, con las palabras que pidió Christián: «Descuento
+              X%» en vez de «Ahorro», y el envío como un renglón que SUMA. */}
+          <div className="space-y-1.5 text-sm border-t border-border pt-3" data-testid="cotizador-dinero">
             <div className="flex justify-between text-muted-foreground">
               <span>{t('cotizador.precioLista')}</span><span className="tabular-nums">{money(subtotalLista)}</span>
             </div>
-            {ahorro > 0 && (
-              <div className="flex justify-between text-emerald-600 dark:text-emerald-400">
-                <span className="flex items-center gap-1"><Sparkles className="h-3.5 w-3.5" />{t('cotizador.ahorro')}</span>
-                <span className="tabular-nums">−{money(ahorro)}</span>
+            {descuentoPesos > 0 && (
+              <div className="flex justify-between text-emerald-600 dark:text-emerald-400"
+                data-testid="cotizador-descuento-renglon">
+                <span className="flex items-center gap-1">
+                  <Sparkles className="h-3.5 w-3.5" />{t('cotizador.descuentoPct', { pct: descuentoPct })}
+                </span>
+                <span className="tabular-nums">−{money(descuentoPesos)}</span>
+              </div>
+            )}
+            {regalosVisibles.filter((g) => g.tipo === 'producto').map((g) => (
+              <div key={g.nombre} className="flex justify-between text-emerald-600 dark:text-emerald-400">
+                <span className="flex items-center gap-1 min-w-0">
+                  <Gift className="h-3.5 w-3.5 shrink-0" />
+                  <span className="truncate">{g.cantidad} × {g.nombre}</span>
+                </span>
+                <span className="tabular-nums shrink-0 ml-2">{t('cotizador.docCortesia')}</span>
+              </div>
+            ))}
+            {cobraEnvio && (
+              <div className="flex justify-between text-muted-foreground" data-testid="cotizador-envio-renglon">
+                <span className="flex items-center gap-1"><Truck className="h-3.5 w-3.5" />{t('cotizador.envio')}</span>
+                {envio > 0
+                  ? <span className="tabular-nums">{money(envio)}</span>
+                  : <span className="tabular-nums text-emerald-600 dark:text-emerald-400">{t('cotizador.envioGratis')}</span>}
               </div>
             )}
             <div className="flex justify-between font-heading font-semibold text-base pt-1">
               <span>{t('cotizador.total')}</span><span className="tabular-nums">{money(total)}</span>
             </div>
+          </div>
+
+          {/* OBSEQUIOS. «Necesito que Mónica pueda agregar regalos por ejemplo agua
+              bac o envío» (Christián, 2026-08-01).
+              ⛔ Aquí NO hay ningún código que enseñar ni que esconder: el código del
+              obsequio lo genera el SERVIDOR al compartir el carrito y no vuelve. */}
+          <div className="border-t border-border pt-3 space-y-2">
+            <div className="flex items-center gap-1.5">
+              <Gift className="h-4 w-4 text-primary" />
+              <span className="text-sm font-medium">{t('cotizador.obsequios')}</span>
+            </div>
+            <p className="text-xs text-muted-foreground">{t('cotizador.obsequiosNota')}</p>
+            <div className="relative">
+              <Search className="h-4 w-4 absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
+              <Input value={buscaObsequio} onChange={(e) => setBuscaObsequio(e.target.value)}
+                placeholder={t('cotizador.obsequioBuscar')} className="pl-9"
+                data-testid="cotizador-obsequio-buscar" />
+              {sugerenciasObsequio.length > 0 && (
+                <Card className="absolute z-20 mt-2 w-full overflow-hidden divide-y divide-border shadow-lg">
+                  {sugerenciasObsequio.map((p) => (
+                    <button key={p.id} type="button" onClick={() => agregarObsequio(p)}
+                      className="w-full flex items-center justify-between px-4 py-2.5 text-sm hover:bg-accent transition-colors text-left"
+                      data-testid={`cotizador-obsequio-op-${p.id}`}>
+                      <span className="truncate">{p.name}</span>
+                      <span className="text-muted-foreground shrink-0 ml-3">{money(p.price)}</span>
+                    </button>
+                  ))}
+                </Card>
+              )}
+            </div>
+            <Button type="button" variant={envioDeCortesia ? 'default' : 'outline'}
+              size="sm" className="gap-2" onClick={alternarEnvioDeCortesia}
+              data-testid="cotizador-obsequio-envio">
+              <Truck className="h-3.5 w-3.5" />{t('cotizador.obsequioEnvio')}
+            </Button>
+            {obsequios.length > 0 && (
+              <ul className="space-y-1" data-testid="cotizador-obsequios-lista">
+                {obsequios.map((o) => {
+                  const llave = o.tipo === 'envio' ? 'envio' : o.product_id;
+                  const nombre = o.tipo === 'envio' ? t('cotizador.obsequioEnvio') : o.nombre;
+                  return (
+                    <li key={llave} className="flex items-center justify-between gap-2 text-sm">
+                      <span className="flex items-center gap-1.5 min-w-0 text-emerald-600 dark:text-emerald-400">
+                        <Gift className="h-3.5 w-3.5 shrink-0" />
+                        <span className="truncate">{nombre}</span>
+                      </span>
+                      <Button variant="ghost" size="icon" className="h-7 w-7 text-muted-foreground hover:text-destructive shrink-0"
+                        onClick={() => quitarObsequio(llave)} aria-label={t('cotizador.obsequioQuitar')}>
+                        <Trash2 className="h-3.5 w-3.5" />
+                      </Button>
+                    </li>
+                  );
+                })}
+              </ul>
+            )}
           </div>
           {/* Datos del cliente: NINGUNO obligatorio. Los que existan se pintan
               en la hoja y viajan en el correo; los vacíos no dejan hueco.
@@ -395,6 +672,28 @@ export default function CotizadorDistribuidor({
           <Button onClick={abrirVistaPrevia} className="w-full gap-2" data-testid="cotizador-generar">
             <FileText className="h-4 w-4" />{t('cotizador.generar')}
           </Button>
+
+          {/* EL CARRITO COMPARTIBLE. Un enlace que el cliente abre en su teléfono,
+              sin cuenta, con el carrito ya armado y la venta atribuida a ella. */}
+          <div className="rounded-xl border border-border bg-muted/30 p-3 space-y-2">
+            <Button variant="secondary" className="w-full gap-2" onClick={() => compartirCarrito()}
+              disabled={compartiendoCarrito} data-testid="cotizador-compartir-carrito">
+              {compartiendoCarrito ? <Loader2 className="h-4 w-4 animate-spin" /> : <Link2 className="h-4 w-4" />}
+              {t('cotizador.compartirCarrito')}
+            </Button>
+            <p className="text-[11px] text-muted-foreground leading-relaxed">
+              {t('cotizador.compartirCarritoNota')}
+            </p>
+            {carrito?.url && (
+              <div className="flex flex-col sm:flex-row gap-2" data-testid="cotizador-carrito-enlace">
+                <Input readOnly value={carrito.url} className="sm:flex-1 text-xs"
+                  onFocus={(e) => e.target.select()} />
+                <Button variant="outline" className="gap-2 bg-card" onClick={copiarEnlace}>
+                  <Copy className="h-4 w-4" />{t('cotizador.carritoCopiar')}
+                </Button>
+              </div>
+            )}
+          </div>
         </Card>
       )}
 

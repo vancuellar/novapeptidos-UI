@@ -36,6 +36,9 @@ import { track } from '@/lib/track';
 const Catalog = lazy(() => import(/* webpackChunkName: "catalogo", webpackPrefetch: true */ '@/pages/Catalog'));
 const ProductDetail = lazy(() => import(/* webpackChunkName: "producto", webpackPrefetch: true */ '@/pages/ProductDetail'));
 const Cart = lazy(() => import(/* webpackChunkName: "carrito" */ '@/pages/Cart'));
+// EL CARRITO COMPARTIDO que manda un distribuidor por WhatsApp. Ruta PÚBLICA: el
+// cliente lo abre en su teléfono sin cuenta (Christián, 2026-08-01).
+const CarritoCompartido = lazy(() => import(/* webpackChunkName: "carrito-compartido" */ '@/pages/CarritoCompartido'));
 const Checkout = lazy(() => import(/* webpackChunkName: "checkout" */ '@/pages/Checkout'));
 const OrderConfirmation = lazy(() => import(/* webpackChunkName: "pedido" */ '@/pages/OrderConfirmation'));
 const Calculator = lazy(() => import(/* webpackChunkName: "calculadora" */ '@/pages/Calculator'));
@@ -216,6 +219,7 @@ function App() {
                     <Route path="/comparativa" element={<Comparativa />} />
                     <Route path="/producto/:slug" element={<ProductDetail />} />
                     <Route path="/carrito" element={<Cart />} />
+                    <Route path="/carrito/:token" element={<CarritoCompartido />} />
                     <Route path="/checkout" element={<Checkout />} />
                     <Route path="/pedido/:orderNumber" element={<OrderConfirmation />} />
                     <Route path="/login" element={<Login />} />
