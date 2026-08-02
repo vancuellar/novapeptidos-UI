@@ -45,7 +45,18 @@ Christián la cerró pregunta por pregunta:
   guía monstruosa lo paga el cliente (su ejemplo: $40,000 → absorbe hasta $2,000).
 - **Express: +$150 SIEMPRE** (`EXTRA_EXPRESS_MXN`), también con envío incluido
   y también sobre el envío de cortesía (el regalo cubre el estándar).
-- **Guía automática**: $400 estándar / **$600 express** (`tope_guia_automatica`).
+- **Guía automática**: $400 estándar / **$600 express** (`tope_guia_automatica`),
+  y **un pedido express jamás se degrada solo**: la compra automática sólo toma
+  servicios de 1-2 días; si ninguno cabe en el tope, le pregunta a Christián
+  (`guia_para(dias_max=...)`, backend `330316b`).
+- **REGLA V2 del express** (mismo día, backend `a3ba897`): desde $2,500, el costo
+  REAL de la guía express al CP del cliente se mide contra el presupuesto — si
+  cabe en max($250, 5%), **GRATIS TOTAL, ni los $150** («¡Buenas noticias! Tu
+  pedido califica para envío express gratis», palabras suyas); si se pasa, sólo
+  el excedente. Abajo de $2,500: $250 + $150. El checkout cotiza por CP para
+  enseñar el número exacto; sin respuesta, el estimado de la casa ($250+$150),
+  el MISMO respaldo con el que cobra el servidor. Verificado en vivo con CP
+  22000 (Tijuana): pedido de $3,878 → express Gratis con su aviso.
 - El cobro ya **no depende de Skydropx**: es política; la paquetería sólo aporta
   el costo real y el servicio a comprar (rápido si es express).
 - Checkout: selector Estándar/Express (fuera las opciones de paquetería con
