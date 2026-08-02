@@ -236,6 +236,10 @@ export const CartProvider = ({ children }) => {
       return (dela || sessionStorage.getItem(LLAVE_CARRITO) || '').trim();
     } catch { return ''; }
   });
+  // El código puesto, visto desde un callback que no se vuelve a crear. Sin esto,
+  // `hidratarDesdeUrl` leería el `distCode` del primer pintado para siempre.
+  const codigoPuesto = React.useRef(distCode);
+  useEffect(() => { codigoPuesto.current = distCode; }, [distCode]);
   useEffect(() => {
     try {
       if (sharedCartToken) sessionStorage.setItem(LLAVE_CARRITO, sharedCartToken);
@@ -243,50 +247,81 @@ export const CartProvider = ({ children }) => {
     } catch { /* modo privado de Safari: sin memoria, pero el checkout sigue */ }
   }, [sharedCartToken]);
 
-  // ENLACE CON CÓDIGO (?ref=): lo que reparte el distribuidor desde su cotizador.
-  // Sin esto el enlace sería adorno — el cliente entraría, compraría, y la venta
-  // no sería de nadie porque nunca escribió el código a mano.
-  //
-  // Se hace UNA vez por carga y sin ruido: si el código ya está puesto no se
-  // toca, y si el servidor no lo reconoce no se le grita nada al cliente (él no
-  // escribió ese código, llegó pegado en un enlace).
-  useEffect(() => {
-    const ref = new URLSearchParams(window.location.search).get('ref');
-    if (!ref || distCode) return;
-    api.get(`/discount-code/${encodeURIComponent(ref.trim().toUpperCase())}`)
-      .then((r) => {
-        setDistCode(r.data.code);
-        setDistRate(r.data.discount_rate || 0);
-        setCodeMin(Number(r.data.min_order) || 0);
-      })
-      .catch(() => {});
-    // Sólo al entrar: el código de un enlace no se vuelve a pedir en cada cambio.
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  /* ⛔ LA URL SE LEE EN CADA NAVEGACIÓN, NO SÓLO AL CARGAR LA PÁGINA.
+     ================================================================
+     ÉSTE ERA EL AGUJERO POR EL QUE SE VACIABA EL CARRITO COMPARTIDO (2026-08-01).
 
-  // COTIZACIÓN → CARRITO (?pedido=): el enlace que arma el cotizador del
-  // distribuidor (y el correo del servidor) trae los renglones como
-  // `id:cantidad,id:cantidad`. Al abrirlo, el carrito se llena SOLO y el cliente
-  // aterriza a un paso de pagar, en vez de en el catálogo pelón.
-  //
-  // ⛔ Del enlace sólo se toman QUÉ producto y CUÁNTOS. Nombre, precio e imagen
-  // salen del catálogo real (el del servidor; el empacado si el servidor no
-  // contesta) — y al cobrar, el precio lo vuelve a poner el servidor de todos
-  // modos. Un enlace manipulado no puede ni inventar productos ni cambiar un peso.
-  //
-  // El carrito se REEMPLAZA, no se suma: el enlace es la cotización que el
-  // cliente ya leyó, y su carrito debe decir exactamente lo mismo que la hoja.
+     Christián: «Compartí el link del carrito y cuando le di a pagar se borró todo.»
+     Y era exactamente eso: los tres datos que viajan en el enlace —los renglones
+     (`?pedido=`), el código del distribuidor (`?ref=`) y el token de las cortesías
+     (`?cart=`)— se leían UNA sola vez, al montar el proveedor, con
+     `window.location.search`. Pero `CartProvider` vive FUERA del `BrowserRouter`
+     (ver App.js): cuando la pantalla del carrito compartido navega al checkout con
+     `navigate()`, no hay recarga, el proveedor no se vuelve a montar y esos tres
+     efectos no se vuelven a correr JAMÁS. El checkout llegaba con el carrito vacío,
+     sin código y sin cortesías.
+
+     Por qué no lo cazó la verificación anterior: llamando la API a mano el flujo
+     pasa (el servidor está bien), y abriendo el enlace de pago PEGADO en la barra
+     del navegador también (ahí sí hay carga completa). Sólo se rompe por el camino
+     del cliente de verdad: abrir el carrito compartido y apretar «Comprar Ahora».
+
+     La cura es leer la URL cada vez que cambia. `hidratarDesdeUrl` es idempotente:
+     la misma cadena de búsqueda no se procesa dos veces, así que el montaje y la
+     navegación no se pisan. Quien la llama en cada cambio de ruta es
+     `HidrataElCarritoDeLaUrl`, en App.js, que sí está dentro del router. */
   const [hidratando, setHidratando] = useState(
     () => new URLSearchParams(window.location.search).has('pedido'),
   );
-  useEffect(() => {
-    const crudo = new URLSearchParams(window.location.search).get('pedido');
+  const urlYaLeida = React.useRef(null);
+
+  const hidratarDesdeUrl = React.useCallback((busqueda) => {
+    const cadena = typeof busqueda === 'string' ? busqueda : window.location.search;
+    if (urlYaLeida.current === cadena) return;
+    urlYaLeida.current = cadena;
+    const q = new URLSearchParams(cadena);
+
+    // 1. EL TOKEN DEL CARRITO COMPARTIDO. Sólo el token; ni un peso.
+    const token = (q.get('cart') || '').trim();
+    if (token) setSharedCartToken(token);
+
+    // 2. ENLACE CON CÓDIGO (?ref=): lo que reparte el distribuidor desde su
+    //    cotizador. Sin esto el enlace sería adorno — el cliente entraría,
+    //    compraría, y la venta no sería de nadie porque nunca escribió el código.
+    //    Si ya hay uno puesto no se toca, y si el servidor no lo reconoce no se le
+    //    grita nada al cliente (él no escribió ese código, llegó en un enlace).
+    const ref = (q.get('ref') || '').trim();
+    if (ref && !codigoPuesto.current) {
+      api.get(`/discount-code/${encodeURIComponent(ref.toUpperCase())}`)
+        .then((r) => {
+          setDistCode(r.data.code);
+          setDistRate(r.data.discount_rate || 0);
+          setCodeMin(Number(r.data.min_order) || 0);
+        })
+        .catch(() => {});
+    }
+
+    // 3. COTIZACIÓN → CARRITO (?pedido=): el enlace que arma el cotizador del
+    //    distribuidor (y el correo del servidor) trae los renglones como
+    //    `id:cantidad,id:cantidad`. Al abrirlo, el carrito se llena SOLO y el
+    //    cliente aterriza a un paso de pagar, en vez de en el catálogo pelón.
+    //
+    //    ⛔ Del enlace sólo se toman QUÉ producto y CUÁNTOS. Nombre, precio e
+    //    imagen salen del catálogo real (el del servidor; el empacado si el
+    //    servidor no contesta) — y al cobrar, el precio lo vuelve a poner el
+    //    servidor de todos modos. Un enlace manipulado no puede ni inventar
+    //    productos ni cambiar un peso.
+    //
+    //    El carrito se REEMPLAZA, no se suma: el enlace es la cotización que el
+    //    cliente ya leyó, y su carrito debe decir lo mismo que la hoja.
+    const crudo = q.get('pedido');
     if (!crudo) return;
+    setHidratando(true);
     // `id:qty` por renglón; cantidades 1–999 y máximo 40 renglones, como el cotizador.
     const pedidos = [];
     for (const parte of crudo.split(',').slice(0, 40)) {
-      const [id, q] = parte.split(':');
-      const qty = Math.min(999, Math.max(1, Math.round(Number(q)) || 1));
+      const [id, cant] = parte.split(':');
+      const qty = Math.min(999, Math.max(1, Math.round(Number(cant)) || 1));
       if (!id) continue;
       const ya = pedidos.find((p) => p.id === id);
       if (ya) ya.qty = Math.min(999, ya.qty + qty); else pedidos.push({ id, qty });
@@ -328,9 +363,11 @@ export const CartProvider = ({ children }) => {
       }
       setHidratando(false);
     })();
-    // Una vez por carga, igual que el ?ref= de arriba.
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [t]);
+
+  // El montaje también pasa por aquí, para que el proveedor siga sirviendo aunque
+  // nadie lo llame desde la ruta (y para no depender del orden de los efectos).
+  useEffect(() => { hidratarDesdeUrl(window.location.search); }, [hidratarDesdeUrl]);
 
   // Si el cupón exige un mínimo y el carrito no llega, NO se aplica — igual que
   // en el servidor, para que el total en pantalla sea el que se cobra.
@@ -439,7 +476,7 @@ export const CartProvider = ({ children }) => {
   const envioGratis = cobraEnvio && items.length > 0 && shipping === 0;
 
   return (
-    <CartContext.Provider value={{ items, hidratando, addItem, updateQty, removeItem, clearCart, subtotal, count, discount, discountRate, discountSource, cappedItems, lineDiscounts, regla5Items, compraPropia, baseRate, nextTier, shipping, calcularEnvio, cobraEnvio, envioGratis, faltaParaEnvioGratis, envioGratisDesde: envio.free_shipping_from, envioGratisDeVerdadDesde, topeEnvio, distCode, distRate, codeMin, codeMinMet, applyDistCode, clearDistCode, sharedCartToken, setSharedCartToken }}>
+    <CartContext.Provider value={{ items, hidratando, addItem, updateQty, removeItem, clearCart, subtotal, count, discount, discountRate, discountSource, cappedItems, lineDiscounts, regla5Items, compraPropia, baseRate, nextTier, shipping, calcularEnvio, cobraEnvio, envioGratis, faltaParaEnvioGratis, envioGratisDesde: envio.free_shipping_from, envioGratisDeVerdadDesde, topeEnvio, distCode, distRate, codeMin, codeMinMet, applyDistCode, clearDistCode, sharedCartToken, setSharedCartToken, hidratarDesdeUrl }}>
       {children}
     </CartContext.Provider>
   );

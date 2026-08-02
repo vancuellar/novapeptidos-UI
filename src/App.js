@@ -3,7 +3,7 @@ import '@/App.css';
 import { BrowserRouter, Routes, Route, useLocation, useNavigationType } from 'react-router-dom';
 import { Toaster } from '@/components/ui/sonner';
 import { AuthProvider } from '@/context/AuthContext';
-import { CartProvider } from '@/context/CartContext';
+import { CartProvider, useCart } from '@/context/CartContext';
 import { LanguageProvider } from '@/context/LanguageContext';
 import { ThemeProvider } from '@/context/ThemeContext';
 import Header from '@/components/layout/Header';
@@ -177,6 +177,26 @@ const ScrollToTop = () => {
   return null;
 };
 
+/* ⛔ EL CARRITO SE LEE DE LA URL EN CADA NAVEGACIÓN, NO SÓLO AL CARGAR (2026-08-01).
+
+   `CartProvider` está MÁS ARRIBA que el `BrowserRouter` (mírese abajo), así que no
+   puede enterarse por su cuenta de un cambio de ruta: sus efectos de arranque sólo
+   corrían al montar. Por eso, cuando el carrito compartido navegaba al checkout con
+   `navigate()` —sin recarga—, los tres datos que viajan en el enlace (los renglones
+   de `?pedido=`, el código de `?ref=` y el token de las cortesías de `?cart=`) no se
+   leían nunca y el cliente aterrizaba en «Tu carrito está vacío».
+
+   Este componente vive DENTRO del router, ve la URL cambiar y se lo cuenta al
+   carrito. `useLayoutEffect` y no `useEffect` a propósito: corre ANTES de pintar, así
+   que el checkout no alcanza a enseñar el cartel de carrito vacío mientras se llena.
+   `hidratarDesdeUrl` es idempotente — la misma búsqueda no se procesa dos veces. */
+const HidrataElCarritoDeLaUrl = () => {
+  const { search } = useLocation();
+  const { hidratarDesdeUrl } = useCart();
+  useLayoutEffect(() => { hidratarDesdeUrl(search); }, [search, hidratarDesdeUrl]);
+  return null;
+};
+
 const SiteChrome = ({ children }) => {
   const { pathname } = useLocation();
   if (STANDALONE_ROUTES.includes(pathname)) return null;
@@ -200,6 +220,7 @@ function App() {
               <BrowserRouter basename={process.env.PUBLIC_URL || '/'}>
                 <ScrollToTop />
                 <TrackPageViews />
+                <HidrataElCarritoDeLaUrl />
                 {/* El aviso va ANTES del header y NO es sticky: el header ya
                     lo es (top-0, z-40) y ViewAsBanner también (top-0, z-50).
                     Un tercer sticky en top-0 se encabalgaría con los otros. */}
