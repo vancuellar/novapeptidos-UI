@@ -1110,6 +1110,7 @@ const enUS = {
   'trust.ruo': 'Research use only (RUO), for laboratory and in vitro work. Not for diagnostic or therapeutic use.',
   // ===== Collapsible "Trusted Store" widget (TrustWidget component) =====
   'trustWidget.panelTitle': 'This Store Holds The Following Certifications',
+  'trustWidget.check.shipping': 'Fast Shipping Included (3-5 Business Days)',
   'trustWidget.check.ssl': 'Secure Connection (SSL)',
   'trustWidget.check.privacy': 'Published Privacy Policy',
   'trustWidget.toggleExpand': 'View Certifications',

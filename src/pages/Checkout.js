@@ -705,6 +705,8 @@ const Checkout = () => {
             <Button type="submit" className="w-full mt-5" size="lg" disabled={submitting} data-testid="checkout-place-order-button">
               {submitting ? t('common.loading') : (payment === 'tarjeta' ? t('checkout.payAmount', { amount: formatMXN(total) }) : t('checkout.placeOrder'))}
             </Button>
+            {/* Los dos iconitos bajo el botón — Christián (2026-08-02): «Pago
+                Seguro and Pureza HPLC - leave these there». */}
             <div className="mt-4 flex items-center justify-center gap-3 text-[10px] text-muted-foreground">
               <span className="flex items-center gap-1"><ShieldCheck className="h-3.5 w-3.5" /> {t('checkout.securePayment')}</span>
               <span className="flex items-center gap-1"><Package className="h-3.5 w-3.5" /> {t('checkout.coaByLot')}</span>

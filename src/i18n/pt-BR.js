@@ -1105,6 +1105,7 @@ const ptBR = {
   'trust.ruo': 'Material exclusivamente para pesquisa (RUO), em laboratório e ensaios in vitro. Não é para uso diagnóstico nem terapêutico.',
   // ===== Widget colapsável "Loja De Confiança" (componente TrustWidget) =====
   'trustWidget.panelTitle': 'Esta Loja Possui As Seguintes Certificações',
+  'trustWidget.check.shipping': 'Envio Rápido Incluído (3-5 Dias Úteis)',
   'trustWidget.check.ssl': 'Conexão Segura (SSL)',
   'trustWidget.check.privacy': 'Política De Privacidade Publicada',
   'trustWidget.toggleExpand': 'Ver Certificações',

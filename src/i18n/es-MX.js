@@ -1085,6 +1085,7 @@ const esMX = {
   // la lista — SSL y la política de privacidad son los únicos textos nuevos,
   // y los dos son verificables (candado del navegador, /info/privacidad).
   'trustWidget.panelTitle': 'Esta Tienda Cuenta Con Las Siguientes Certificaciones',
+  'trustWidget.check.shipping': 'Envío Rápido Incluido (3-5 Días Hábiles)',
   'trustWidget.check.ssl': 'Conexión Segura (SSL)',
   'trustWidget.check.privacy': 'Política De Privacidad Publicada',
   'trustWidget.toggleExpand': 'Ver Certificaciones',

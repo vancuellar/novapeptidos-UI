@@ -37,6 +37,9 @@ const TrustWidget = ({ className = '', defaultOpen = false }) => {
   const certificaciones = [
     { id: 'payment', label: t('trust.payment.title') },
     { id: 'purity', label: t('trust.purity.title') },
+    // El envío rápido, como punto del sello (Christián, 2026-08-02): es parte de
+    // la promesa de la casa — 3-5 días hábiles, incluido desde $2,500.
+    { id: 'shipping', label: t('trustWidget.check.shipping'), href: '/info/envios' },
     { id: 'ssl', label: t('trustWidget.check.ssl') },
     { id: 'privacy', label: t('trustWidget.check.privacy'), href: '/info/privacidad' },
   ];
