@@ -1,3 +1,135 @@
+# 🤝 HANDOFF — 1 de agosto de 2026 · TODO PUBLICADO Y VERIFICADO
+
+**Estado: los tres repos limpios, empujados y EN VIVO.** Último despliegue verificado
+con 14 comprobaciones en navegador real. Backend `cb14154`, sitio `25907f1`, motor
+`3e1f709`.
+
+**Compuertas al cierre:** backend **1,302 pruebas** · motor **381** · auditoría del sitio
+**95/0** · catálogo **187 productos** · 47 proveedores · 4,282 costos.
+
+---
+
+## ⛔ LO QUE ESPERA UNA DECISIÓN DE CHRISTIÁN
+
+1. **Glutatión 600 mg.** Rinde menos de 7 días, pero **sostiene la escalera del de 1500**:
+   ocultarlo lo sube de $1,499 a $1,569. Declarado en `excepciones_ventana.json` con
+   `pendiente: true`; el vigía lo grita en cada corrida hasta que se decida.
+2. **Semaglutida 50 mg.** Rinde **350 días** contra 28 de vida útil. Es el peor renglón
+   del catálogo por el techo. No se tocó.
+3. **HGH hacia arriba.** Subir 36 IU a $3,489 y 24 IU a $2,329 (+125% y +104%). Calculado
+   y esperando su sí. ⛔ El HGH **nunca** se ajusta a la baja.
+4. **El domicilio del cliente sale con sólo el número de pedido**, sin contraseña
+   (`GET /api/orders/{num}`). Abierto desde el 31-jul.
+
+## 🔑 LO QUE SÓLO PUEDE HACER ÉL
+
+5. **Llave de OpenAI** en Admin → Cobros → «Chat con IA». El campo ya existe y está en
+   vivo. Sin ella el chat sigue en Gemini gratis, que se queda corto **hoy**: 20 al día
+   son 600 al mes y el tráfico pide ~800.
+   ⚠️ La llave que compartió por chat conviene rotarla.
+6. **Borrar los pedidos de prueba** desde el Panel → Pedidos → «Barrer Pruebas».
+7. **Copiar los 77 PDF de fichas al EC2** (`/opt/exygen/fichas/`). No viajan con git.
+   Se regeneraron hoy, así que hay que volver a subirlos.
+8. **DMARC**: quedó `v=DMARC1; p=none; rua=...` y se borró el duplicado. Falta endurecerlo
+   más adelante.
+
+## 🔜 TRABAJO PENDIENTE
+
+9. **Lo que pidió al cierre y NO se alcanzó a hacer:**
+   - Si el distribuidor **no** pone descuento propio, deben aplicar los **automáticos**
+     (10%, 15% y envío gratis por umbral). Hoy no está confirmado que ocurra.
+   - En el panel del distribuidor, **totales de comisión por cliente** con filtro de
+     fecha (semana, 30 días, mes, año, todo).
+   - **Solicitud y registro de pago de comisiones**: hoy no hay dónde ver qué se le debe
+     a cada quien ni qué ya se pagó.
+10. **Huecos de catálogo** que el proveedor sí tiene: SLU-PP-332 10 mg, PNC-27 10 mg,
+    AHK-Cu 20 mg, Survodutida 2 y 5 mg, Dulaglutida 5 mg.
+11. **`/aprende/conservacion` todavía recomienda congelar** alícuotas. Se comprobó que no
+    hay respaldo y se quitó de la calculadora; falta corregir esa página.
+12. **20 proveedores del padrón sin lista indexada** (44 en el padrón, 24 con precios).
+13. **Los 842 análisis de Uther**, corriendo en otra sesión.
+
+---
+
+## ✅ LO QUE SE CERRÓ HOY
+
+### El dinero que se estaba yendo
+- **El envío no se cobraba.** `COTIZAR_EN_CHECKOUT` nació apagado el 28-jul y se quedó,
+  con `COMPRAR_GUIA_AL_PAGAR` prendido: la casa **compró la guía de cada pedido sin
+  cobrarla**, entre $165 y $250 por venta, invisible porque el checkout se veía normal.
+  ⛔ Ese interruptor **no se apaga**; si la paquetería cae, el sitio ya se degrada solo.
+- **633 costos capturados nunca llegaban a la base activa.** Los archivos tenían 47
+  proveedores y 4,406 costos; `exygen.db` seguía en 43 y 3,773.
+- **La cadena del motor, que nadie tenía escrita:** `refrescar_costos` → `reprecio` →
+  `sincronizar_historial` → `exportar_precios_maestra` → `db.py --construir`.
+- **Lucy: mandan sus precios ROJOS**, no su «Internal price» (que es su margen interno y
+  no honra). Cotiza **28.6% arriba** de su propio interno. En Semaglutida 30 mg el más
+  barato dejó de ser ella y pasó a Chuangyan.
+
+### Lo que le estaba diciendo cosas falsas al cliente
+- **La calculadora decía «300 mg» donde eran 300 mcg** en cuatro productos (Semax,
+  Gonadorelin, los dos combos BPC+TB-500), con el botón de mcg apagado. Estuvo EN VIVO.
+- **El aviso de entrada salía en cada visita**: Safari borra el localStorage a los 7 días.
+  Ahora hay cookie de un año.
+- **Fuera el nombre de la IA** de 21 textos, incluidas 10 fichas técnicas que el cliente
+  descarga. `researchdosing.com` se cita por su nombre: es fuente válida.
+
+### Lo nuevo que hoy funciona
+- **La calculadora cuenta la escalera de dosis.** 120 mg de retatrutida = **17 semanas**
+  siguiendo la titulación (ni 60 del nivel bajo ni 10 del alto). 10 compuestos con
+  calendario con fuente; los 7 sin él lo dicen en pantalla.
+- **Vida útil reconstituido: se queda en 28 días**, ahora con cuatro razones. Se buscó
+  subirlo a 6-8 semanas y **no se pudo**: USP no deja extender ni con estudios, los 56
+  días son de Ozempic (solución de fábrica), Omnitrope —el caso idéntico— recibió **21**,
+  y el estudio que todos citan (**«Patel et al., IJPC 2023»**) ⛔ **NO EXISTE**, es una
+  cita fabricada que sólo vive en sitios de afiliados. Ver
+  `TITULACION-Y-VIDA-UTIL-2026-08-01.md`.
+- **Cotizador del distribuidor**: «Descuento X%» en vez de «Ahorro», renglón de envío,
+  descuentos con botones, obsequios con cantidad, archivo con nombre útil, y **carrito
+  compartible** que ya cobró de verdad. El **código del obsequio no se le enseña nunca al
+  cliente**.
+- **El checkout llega con los datos del cliente** si el distribuidor los capturó. La
+  llave viaja en el **fragmento** del enlace (`#d=`), la única parte que el navegador
+  nunca manda a un servidor: ni con el registro del servidor se puede leer un domicilio.
+- **«Mis Cotizaciones»** en el panel del distribuidor: reenviar sin rearmar, y **al
+  pagarse se convierten en venta** (el estado se deduce, no se guarda: no hay dos
+  verdades).
+- **Cotizador de envíos** para admin y distribuidor. El distribuidor **no ve costos**:
+  lista blanca, con prueba que intenta sacarlos y falla.
+- **El correo funciona**: Resend, dominio verificado, entrega confirmada. Se puede
+  configurar desde el Panel (antes exigía SSH). Cae en Promociones — falta DMARC duro.
+- **Catálogo: 187 productos.** Salieron 8 viales que no le rendían a nadie; entró
+  **Pinealon 20 mg a $1,879** (precio del motor), y se le encontró identidad química:
+  tripéptido EDR, CAS 175175-23-2.
+- **La ventana de sentido**: un vial debe rendir entre **7 y 28 días**. El vigía avisa
+  cuando algo se sale, hay 4 pruebas que lo fijan y está en los 3 prompts de Codex.
+- **El paréntesis distingue el compuesto**: `CJC-1295 (sin DAC)` y `(con DAC)` caían en
+  la misma familia y se aplicaban la escalera entre sí.
+
+### La cacería de Certified
+- **Su proveedor tiene nombre: Uther Pharmaceutical.** La prueba está en el servidor de
+  ellos: un reporte de Janoshik (tarea #74801) donde el cliente que pagó es Uther y el
+  fabricante dice «uther». Verificado a mano; copia en `evidencia-certified-2026-08-01/`.
+- **Uther revende, no fabrica** (surte también a tres tiendas del Reino Unido), y en
+  **Loudi, Hunan —su ciudad— no se fabrican péptidos**: el plan industrial de la
+  provincia no incluye ninguno.
+- **Su «planta GMP en Texas» no existe** y sus COAs de 2026 los firma **Vanguard, el mismo
+  laboratorio que usa Exygen**, a 30 km de su domicilio real en Washington.
+- **Ellos tampoco controlan su calidad**: su propio certificado muestra tirzepatida de
+  10 mg con **16.08 mg** dentro.
+- **Quién fabrica para Uther sigue sin saberse.** Ninguna vía pública lo dio.
+  Contactos de las 11 fábricas con expediente FDA de retatrutida en
+  `CONTACTOS-FABRICAS-CHINA-2026-08-01.md`.
+
+### Reglas nuevas de la casa
+- **Quien prueba comprando en producción, limpia en la misma sesión.** Hay «Marcar Como
+  Prueba» y «Barrer Pruebas» con simulacro y tres candados que no dejan tocar una venta
+  real (incluido el entregado y fiado, que no está pagado pero ya salió la mercancía).
+- **Cada lista de proveedor se convierte a `.md` ANTES de indexarla.**
+- **Cero menciones a una IA** en cualquier texto que vea alguien de fuera.
+
+---
+
 # ✅ SESIÓN 2026-07-31 (tarde) — LO QUE SE HIZO, SIN PUBLICAR
 
 **Ojo: el bloque de abajo ("nada está en vivo") YA NO ES CIERTO.** Se comprobó
