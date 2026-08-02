@@ -1243,9 +1243,10 @@ const enUS = {
   'calc.dura.days': 'days',
   'calc.dura.avisoTitle': 'This vial goes a long way.',
   'calc.dura.avisoBody': 'At the dose you have set, your {{vial}} mg vial covers about {{dura}}. Once mixed with water, the recommendation is to use it within {{vida}}, kept in the fridge.',
-  'calc.dura.avisoSugerido': 'For this dose, the {{mg}} mg vial suits you better.',
-  'calc.dura.avisoPorciones': 'If you keep this size, split the solution into single-use portions and freeze them; we explain how in the storage guide.',
+  'calc.dura.avisoSugerido': 'To avoid keeping it mixed longer than recommended, the {{mg}} mg vial suits you better.',
+  'calc.dura.avisoPorciones': 'There is no smaller size of this product. Write down the date you mix it and go by that window.',
   'calc.dura.fuente': 'Where that window comes from: {{fuente}}',
+  'calc.dura.porQue': 'That window is how long the vial is guaranteed to stay clean inside once the stopper takes its first needle. Nobody has published a number for how the peptide itself holds up in the fridge, so we go by the vial window, which does have one.',
   'calc.dura.avisoBodyPlan': 'Following the plan below, your {{vial}} mg vial covers about {{dura}}. Once mixed with water, the recommendation is to use it within {{vida}}, kept in the fridge.',
   // The step-up plan. In plain words: never write "titration".
   'calc.plan.title': 'Your plan, week by week',

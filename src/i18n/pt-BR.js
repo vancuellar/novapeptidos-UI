@@ -1238,9 +1238,10 @@ const ptBR = {
   'calc.dura.days': 'dias',
   'calc.dura.avisoTitle': 'Este frasco rende bastante.',
   'calc.dura.avisoBody': 'Com a dose que você escolheu, seu frasco de {{vial}} mg dá para {{dura}}. Depois de misturado com água, o recomendado é usá-lo em até {{vida}}, na geladeira.',
-  'calc.dura.avisoSugerido': 'Para esta dose, o frasco de {{mg}} mg cai melhor.',
-  'calc.dura.avisoPorciones': 'Se preferir este tamanho, divida a solução em porções de uma única aplicação e congele; explicamos como no guia de conservação.',
+  'calc.dura.avisoSugerido': 'Para não mantê-lo misturado mais tempo do que o recomendado, o frasco de {{mg}} mg cai melhor.',
+  'calc.dura.avisoPorciones': 'Deste produto não há um tamanho menor. Anote a data em que você misturar e siga esse prazo.',
   'calc.dura.fuente': 'De onde vem esse prazo: {{fuente}}',
+  'calc.dura.porQue': 'Esse prazo é o que se garante ao frasco de continuar limpo por dentro depois que a tampa recebe a primeira picada. Sobre a força do peptídeo guardado na geladeira ninguém publicou um número, então seguimos o prazo do frasco, que tem um.',
   'calc.dura.avisoBodyPlan': 'Seguindo o plano abaixo, seu frasco de {{vial}} mg dá para {{dura}}. Depois de misturado com água, o recomendado é usá-lo em até {{vida}}, na geladeira.',
   // O plano de subida. Em linguagem simples: nunca se escreve "titulação".
   'calc.plan.title': 'Seu plano, semana a semana',

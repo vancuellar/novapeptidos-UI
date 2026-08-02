@@ -1086,7 +1086,32 @@ export const fallbackProducts = [
       "tipica": 0.6,
       "avanzada": 0.9,
       "unit": "iu",
-      "fuente": "Etiqueta aprobada de somatropina (Norditropin/FDA) para deficiencia de GH en adultos: 0.2 mg al día entre 23 y 60 años, 0.1 mg arriba de 60 y 0.3 mg en mujeres con estrógeno oral. Conversión usada: 1 mg = 3 UI. https://www.accessdata.fda.gov/drugsatfda_docs/label/2017/021148s049lbl.pdf"
+      "fuente": "Etiqueta aprobada de somatropina (Norditropin/FDA) para deficiencia de GH en adultos: 0.2 mg al día entre 23 y 60 años, 0.1 mg arriba de 60 y 0.3 mg en mujeres con estrógeno oral. Conversión usada: 1 mg = 3 UI. https://www.accessdata.fda.gov/drugsatfda_docs/label/2017/021148s049lbl.pdf",
+      "escalera": {
+        "unit": "iu",
+        "freq": "daily",
+        "tipo": "etiqueta",
+        "quien": "FDA · prospectos de somatropina (Norditropin, Genotropin, Omnitrope), deficiencia de GH en adultos",
+        "fuente": "https://www.accessdata.fda.gov/drugsatfda_docs/label/2017/021148s049lbl.pdf",
+        "pasos": [
+          {
+            "dosis": 0.3,
+            "semanas": 8
+          },
+          {
+            "dosis": 0.6,
+            "semanas": 8
+          },
+          {
+            "dosis": 0.9,
+            "nota": {
+              "es": "El prospecto no pone un tope: de aquí en adelante se sube o se baja según el análisis de IGF-1. Los escalones son los incrementos que sí publica —0.1 a 0.2 mg al día cada 1 o 2 meses— pasados a UI.",
+              "en": "The label sets no ceiling: from here you go up or down according to the IGF-1 test. The steps are the increments it does publish — 0.1 to 0.2 mg a day every 1 to 2 months — converted to IU.",
+              "pt": "A bula não fixa um teto: daqui em diante sobe-se ou desce-se conforme o exame de IGF-1. Os degraus são os incrementos que ela publica — 0,1 a 0,2 mg por dia a cada 1 ou 2 meses — convertidos em UI."
+            }
+          }
+        ]
+      }
     },
     "featured": false,
     "is_new": false,
@@ -1289,7 +1314,30 @@ export const fallbackProducts = [
         "10": 2.5,
         "15": 3
       },
-      "fuente": "investigación propia de Codex (INVESTIGACION-DOSIS-PEPTIDOS.md) + researchdosing.com (manual de dosificación del mercado)"
+      "fuente": "investigación propia de Codex (INVESTIGACION-DOSIS-PEPTIDOS.md) + researchdosing.com (manual de dosificación del mercado)",
+      "titulacion": [
+        {
+          "quien": "Literatura publicada",
+          "dice": {
+            "es": "El único estudio en personas usó una cantidad fija durante unos días, sin subir nada. Nadie ha publicado un calendario de subida.",
+            "en": "The only human study used a fixed amount for a few days, with no increases. Nobody has published a step-up calendar.",
+            "pt": "O único estudo em pessoas usou uma quantidade fixa por alguns dias, sem subir nada. Ninguém publicou um calendário de subida."
+          }
+        },
+        {
+          "quien": "researchdosing.com (manual del mercado)",
+          "dice": {
+            "es": "Propone ciclos de 8 a 12 semanas con 4 a 6 de descanso, aplicando 5 días y descansando 2. No dice en qué semana subir.",
+            "en": "It proposes 8-12 week cycles with 4-6 weeks off, applying 5 days and resting 2. It does not say which week to move up.",
+            "pt": "Propõe ciclos de 8 a 12 semanas com 4 a 6 de descanso, aplicando 5 dias e descansando 2. Não diz em que semana subir."
+          },
+          "aviso": {
+            "es": "Sin bibliografía. Es la costumbre del mercado, no evidencia.",
+            "en": "No literature cited. Market custom, not evidence.",
+            "pt": "Sem bibliografia. É o costume do mercado, não evidência."
+          }
+        }
+      ]
     },
     "featured": true,
     "is_new": false
@@ -1792,7 +1840,22 @@ export const fallbackProducts = [
         "tipica": "mantenimiento",
         "avanzada": "mantenimiento"
       },
-      "fuente": "⚠️ ORIENTATIVA. No existe pauta de NAD+ inyectable respaldada por ensayo clínico; no hay producto aprobado por la FDA y todo lo del mercado es de farmacia de compounding (off-label). Nivel típico = hoja de paciente de Extension Health para el vial de 500 mg (50 mg, 2 inyecciones/semana, 500 mg en 5 mL = 100 mg/mL). Nivel avanzado = tope IM de 150 mg/semana de Olympia Pharmacy (farmacia de compounding 503A). Nivel inicial = mitad del protocolo típico, arranque prudente nuestro. Todo a 100 mg/mL, que es la concentración que usan ambas fuentes: así 1 mg = 1 rayita en jeringa U-100. Revisado 2026-07-31."
+      "fuente": "⚠️ ORIENTATIVA. No existe pauta de NAD+ inyectable respaldada por ensayo clínico; no hay producto aprobado por la FDA y todo lo del mercado es de farmacia de compounding (off-label). Nivel típico = hoja de paciente de Extension Health para el vial de 500 mg (50 mg, 2 inyecciones/semana, 500 mg en 5 mL = 100 mg/mL). Nivel avanzado = tope IM de 150 mg/semana de Olympia Pharmacy (farmacia de compounding 503A). Nivel inicial = mitad del protocolo típico, arranque prudente nuestro. Todo a 100 mg/mL, que es la concentración que usan ambas fuentes: así 1 mg = 1 rayita en jeringa U-100. Revisado 2026-07-31.",
+      "titulacion": [
+        {
+          "quien": "researchdosing.com (manual del mercado)",
+          "dice": {
+            "es": "Lo que sube con las semanas no es la cantidad, es cada cuándo: empieza 2 veces por semana y llega hasta 4 o 7, en ciclos de hasta 12 semanas con 4 a 6 de descanso.",
+            "en": "What goes up over the weeks is not the amount but how often: it starts twice a week and reaches 4 or 7, in cycles of up to 12 weeks with 4-6 weeks off.",
+            "pt": "O que sobe com as semanas não é a quantidade, é a frequência: começa 2 vezes por semana e chega a 4 ou 7, em ciclos de até 12 semanas com 4 a 6 de descanso."
+          },
+          "aviso": {
+            "es": "Sin bibliografía. En personas sólo hay estudios por vena con cantidad fija; nadie ha publicado un calendario de subida para NAD+ inyectado bajo la piel.",
+            "en": "No literature cited. In humans there are only intravenous studies at a fixed amount; nobody has published a step-up calendar for NAD+ injected under the skin.",
+            "pt": "Sem bibliografia. Em pessoas só há estudos por veia com quantidade fixa; ninguém publicou um calendário de subida para NAD+ injetado sob a pele."
+          }
+        }
+      ]
     },
     "featured": true,
     "is_new": false
@@ -2519,7 +2582,17 @@ export const fallbackProducts = [
       "agua_ml": {
         "2": 1,
         "5": 1.5
-      }
+      },
+      "titulacion": [
+        {
+          "quien": "Teichman SL et al., J Clin Endocrinol Metab 2006 (PMID 16352683)",
+          "dice": {
+            "es": "El ensayo probó cantidades de menos a más para medir la seguridad, no para subir a una persona por escalones. No publica cuántas semanas quedarse en cada una.",
+            "en": "The trial tested amounts from low to high to measure safety, not to move a person up in steps. It does not publish how many weeks to stay at each one.",
+            "pt": "O ensaio testou quantidades de menos a mais para medir a segurança, não para subir alguém por degraus. Não publica quantas semanas ficar em cada uma."
+          }
+        }
+      ]
     },
     "featured": false,
     "is_new": false
@@ -2585,7 +2658,22 @@ export const fallbackProducts = [
       "agua_ml": {
         "5": 1.25,
         "10": 2.5
-      }
+      },
+      "titulacion": [
+        {
+          "quien": "researchdosing.com (manual del mercado)",
+          "dice": {
+            "es": "Para una sola aplicación al día propone 100 mcg las primeras 4 semanas y 150 mcg de ahí hasta la 12, en ciclos con 6 a 12 semanas de descanso. Sus planes de 2 y 3 aplicaciones diarias son otro calendario distinto.",
+            "en": "For a single daily application it proposes 100 mcg for the first 4 weeks and 150 mcg from there to week 12, in cycles with 6-12 weeks off. Its 2- and 3-a-day plans are a different calendar.",
+            "pt": "Para uma única aplicação por dia propõe 100 mcg nas primeiras 4 semanas e 150 mcg daí até a 12, em ciclos com 6 a 12 semanas de descanso. Seus planos de 2 e 3 aplicações diárias são outro calendário."
+          },
+          "aviso": {
+            "es": "Sin bibliografía. Es la costumbre del mercado, no evidencia.",
+            "en": "No literature cited. Market custom, not evidence.",
+            "pt": "Sem bibliografia. É o costume do mercado, não evidência."
+          }
+        }
+      ]
     },
     "featured": false,
     "is_new": false
@@ -2736,7 +2824,32 @@ export const fallbackProducts = [
         "5": 1,
         "10": 1
       },
-      "fuente": "⚠️ ORIENTATIVA. Ensayo fase 2 humano de mazdutida (https://pmc.ncbi.nlm.nih.gov/articles/PMC10719339/ — calidad A): subcutánea SEMANAL con la titulación exacta 1.5 mg las semanas 1 a 4, 3 mg las semanas 5 a 8 y 4.5 mg de la semana 9 a la 24. Los tres niveles son esos tres escalones publicados, ni uno inventado. CORRECCIÓN 2026-07-31: antes decían 2 / 4.5 / 6 mg salidos de una hoja de vendedor (researchdosing.com), y los 6 mg NO CABEN en el vial de 5 mg que vendemos. ⚠️ Aun así, en el vial de 5 mg el nivel avanzado (4.5 mg) se lleva casi todo el vial en un solo pinchazo de 0.9 mL: para ese nivel conviene el vial de 10 mg, donde son 45 rayitas."
+      "fuente": "⚠️ ORIENTATIVA. Ensayo fase 2 humano de mazdutida (https://pmc.ncbi.nlm.nih.gov/articles/PMC10719339/ — calidad A): subcutánea SEMANAL con la titulación exacta 1.5 mg las semanas 1 a 4, 3 mg las semanas 5 a 8 y 4.5 mg de la semana 9 a la 24. Los tres niveles son esos tres escalones publicados, ni uno inventado. CORRECCIÓN 2026-07-31: antes decían 2 / 4.5 / 6 mg salidos de una hoja de vendedor (researchdosing.com), y los 6 mg NO CABEN en el vial de 5 mg que vendemos. ⚠️ Aun así, en el vial de 5 mg el nivel avanzado (4.5 mg) se lleva casi todo el vial en un solo pinchazo de 0.9 mL: para ese nivel conviene el vial de 10 mg, donde son 45 rayitas.",
+      "escalera": {
+        "unit": "mg",
+        "freq": "weekly",
+        "tipo": "ensayo",
+        "quien": "Ensayo Fase 2 en obesidad · Nat Commun 2023;14:8289 (NCT04904913)",
+        "fuente": "https://pmc.ncbi.nlm.nih.gov/articles/PMC10719339/",
+        "pasos": [
+          {
+            "dosis": 1.5,
+            "semanas": 4
+          },
+          {
+            "dosis": 3,
+            "semanas": 4
+          },
+          {
+            "dosis": 4.5,
+            "nota": {
+              "es": "El prospecto aprobado en China va por otro camino: 2 mg las semanas 1 a 4, 4 mg las semanas 5 a 8 y 4 o 6 mg de ahí en adelante.",
+              "en": "The label approved in China takes another route: 2 mg weeks 1-4, 4 mg weeks 5-8, then 4 or 6 mg onward.",
+              "pt": "A bula aprovada na China segue outro caminho: 2 mg nas semanas 1 a 4, 4 mg nas semanas 5 a 8 e 4 ou 6 mg em diante."
+            }
+          }
+        ]
+      }
     },
     "featured": false,
     "is_new": true
@@ -3046,7 +3159,32 @@ export const fallbackProducts = [
       "tipica": 0.6,
       "avanzada": 0.9,
       "unit": "iu",
-      "fuente": "Etiqueta aprobada de somatropina (Norditropin/FDA) para deficiencia de GH en adultos: 0.2 mg al día entre 23 y 60 años, 0.1 mg arriba de 60 y 0.3 mg en mujeres con estrógeno oral. Conversión usada: 1 mg = 3 UI. https://www.accessdata.fda.gov/drugsatfda_docs/label/2017/021148s049lbl.pdf"
+      "fuente": "Etiqueta aprobada de somatropina (Norditropin/FDA) para deficiencia de GH en adultos: 0.2 mg al día entre 23 y 60 años, 0.1 mg arriba de 60 y 0.3 mg en mujeres con estrógeno oral. Conversión usada: 1 mg = 3 UI. https://www.accessdata.fda.gov/drugsatfda_docs/label/2017/021148s049lbl.pdf",
+      "escalera": {
+        "unit": "iu",
+        "freq": "daily",
+        "tipo": "etiqueta",
+        "quien": "FDA · prospectos de somatropina (Norditropin, Genotropin, Omnitrope), deficiencia de GH en adultos",
+        "fuente": "https://www.accessdata.fda.gov/drugsatfda_docs/label/2017/021148s049lbl.pdf",
+        "pasos": [
+          {
+            "dosis": 0.3,
+            "semanas": 8
+          },
+          {
+            "dosis": 0.6,
+            "semanas": 8
+          },
+          {
+            "dosis": 0.9,
+            "nota": {
+              "es": "El prospecto no pone un tope: de aquí en adelante se sube o se baja según el análisis de IGF-1. Los escalones son los incrementos que sí publica —0.1 a 0.2 mg al día cada 1 o 2 meses— pasados a UI.",
+              "en": "The label sets no ceiling: from here you go up or down according to the IGF-1 test. The steps are the increments it does publish — 0.1 to 0.2 mg a day every 1 to 2 months — converted to IU.",
+              "pt": "A bula não fixa um teto: daqui em diante sobe-se ou desce-se conforme o exame de IGF-1. Os degraus são os incrementos que ela publica — 0,1 a 0,2 mg por dia a cada 1 ou 2 meses — convertidos em UI."
+            }
+          }
+        ]
+      }
     },
     "featured": false,
     "is_new": false,
@@ -3104,7 +3242,30 @@ export const fallbackProducts = [
         "10": 3,
         "20": 3
       },
-      "fuente": "investigación propia de Codex (INVESTIGACION-DOSIS-PEPTIDOS.md) + researchdosing.com (manual de dosificación del mercado)"
+      "fuente": "investigación propia de Codex (INVESTIGACION-DOSIS-PEPTIDOS.md) + researchdosing.com (manual de dosificación del mercado)",
+      "titulacion": [
+        {
+          "quien": "FDA · prospecto de Egrifta SV (tesamorelina)",
+          "dice": {
+            "es": "No hay escalera que subir: el prospecto marca una sola cantidad al día, siempre la misma, desde el primer día. Lo que sí dice es cuándo conviene parar, y eso se revisa con análisis.",
+            "en": "There is no ladder to climb: the label sets one single daily amount, always the same, from day one. What it does say is when it is worth stopping, and that is reviewed with lab work.",
+            "pt": "Não há escada para subir: a bula marca uma única quantidade por dia, sempre a mesma, desde o primeiro dia. O que ela diz é quando vale a pena parar, e isso se revisa com exames."
+          }
+        },
+        {
+          "quien": "researchdosing.com (manual del mercado)",
+          "dice": {
+            "es": "Propone ciclos de 12 a 16 semanas con 4 a 8 de descanso, aplicando 5 días y descansando 2.",
+            "en": "It proposes 12-16 week cycles with 4-8 weeks off, applying 5 days and resting 2.",
+            "pt": "Propõe ciclos de 12 a 16 semanas com 4 a 8 de descanso, aplicando 5 dias e descansando 2."
+          },
+          "aviso": {
+            "es": "Contradice al prospecto aprobado, que es diario y sin descansos.",
+            "en": "It contradicts the approved label, which is daily with no rest days.",
+            "pt": "Contradiz a bula aprovada, que é diária e sem descansos."
+          }
+        }
+      ]
     },
     "featured": false,
     "is_new": false
@@ -3433,7 +3594,36 @@ export const fallbackProducts = [
         "5": 1,
         "10": 2
       },
-      "fuente": "⚠️ ORIENTATIVA. Registro del ensayo humano de cagrilintida (https://www.clinicaltrialsregister.eu/ctr-search/trial/2018-001945-14/results — calidad A, 26 semanas, subcutánea semanal): escalona 0.6 mg la semana 0, 1.2 mg la semana 2, 2.4 mg la semana 4 y 4.5 mg la semana 6. Los niveles inicial y típico son los dos primeros escalones publicados, exactos. CORRECCIÓN 2026-07-31: antes decían 0.2 / 1.2 / 2.7 mg salidos de una hoja de vendedor (researchdosing.com); los 2.7 mg NO CABEN en el vial de 2 mg y el arranque de 0.2 mg estaba tres veces por debajo del ensayo. El nivel avanzado se topa en 1.8 mg —dentro del rango que recorre el ensayo, pero por debajo del escalón de 2.4 mg— porque 2.4 mg ya no caben en el vial de 2 mg. Los escalones de 2.4 y 4.5 mg del ensayo exigen los viales de 5 o 10 mg y criterio médico."
+      "fuente": "⚠️ ORIENTATIVA. Registro del ensayo humano de cagrilintida (https://www.clinicaltrialsregister.eu/ctr-search/trial/2018-001945-14/results — calidad A, 26 semanas, subcutánea semanal): escalona 0.6 mg la semana 0, 1.2 mg la semana 2, 2.4 mg la semana 4 y 4.5 mg la semana 6. Los niveles inicial y típico son los dos primeros escalones publicados, exactos. CORRECCIÓN 2026-07-31: antes decían 0.2 / 1.2 / 2.7 mg salidos de una hoja de vendedor (researchdosing.com); los 2.7 mg NO CABEN en el vial de 2 mg y el arranque de 0.2 mg estaba tres veces por debajo del ensayo. El nivel avanzado se topa en 1.8 mg —dentro del rango que recorre el ensayo, pero por debajo del escalón de 2.4 mg— porque 2.4 mg ya no caben en el vial de 2 mg. Los escalones de 2.4 y 4.5 mg del ensayo exigen los viales de 5 o 10 mg y criterio médico.",
+      "escalera": {
+        "unit": "mg",
+        "freq": "weekly",
+        "tipo": "ensayo",
+        "quien": "Protocolo del ensayo Fase 2 publicado por el patrocinador (NCT03856047), sección 7",
+        "fuente": "https://cdn.clinicaltrials.gov/large-docs/47/NCT03856047/Prot_000.pdf",
+        "pasos": [
+          {
+            "dosis": 0.6,
+            "semanas": 2
+          },
+          {
+            "dosis": 1.2,
+            "semanas": 2
+          },
+          {
+            "dosis": 2.4,
+            "semanas": 2
+          },
+          {
+            "dosis": 4.5,
+            "nota": {
+              "es": "Ojo: aquí los escalones son de DOS semanas, no de cuatro. Los de 2.4 y 4.5 mg no caben en el vial de 2 mg.",
+              "en": "Note: here the steps are TWO weeks, not four. The 2.4 and 4.5 mg steps do not fit in the 2 mg vial.",
+              "pt": "Atenção: aqui os degraus são de DUAS semanas, não de quatro. Os de 2,4 e 4,5 mg não cabem no frasco de 2 mg."
+            }
+          }
+        ]
+      }
     },
     "featured": false,
     "is_new": true
@@ -3658,6 +3848,39 @@ export const fallbackProducts = [
       "agua_ml": {
         "5": 1,
         "10": 2
+      },
+      "escalera": {
+        "unit": "mg",
+        "freq": "daily",
+        "tipo": "etiqueta",
+        "quien": "FDA · prospecto de Saxenda (liraglutida), sección 2, Tabla 1",
+        "fuente": "https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=3946d389-0926-4f77-a708-0acb8153b143",
+        "pasos": [
+          {
+            "dosis": 0.6,
+            "semanas": 1
+          },
+          {
+            "dosis": 1.2,
+            "semanas": 1
+          },
+          {
+            "dosis": 1.8,
+            "semanas": 1
+          },
+          {
+            "dosis": 2.4,
+            "semanas": 1
+          },
+          {
+            "dosis": 3,
+            "nota": {
+              "es": "Aquí los escalones son de UNA semana, no de cuatro: es la escalera más rápida del catálogo. Para diabetes (Victoza) el prospecto se detiene en 1.8 mg.",
+              "en": "Here the steps are ONE week, not four: the fastest ladder in the catalog. For diabetes (Victoza) the label stops at 1.8 mg.",
+              "pt": "Aqui os degraus são de UMA semana, não de quatro: a escada mais rápida do catálogo. Para diabetes (Victoza) a bula para em 1,8 mg."
+            }
+          }
+        ]
       }
     },
     "featured": false,
@@ -3844,14 +4067,63 @@ export const fallbackProducts = [
       "titulacion": [
         {
           "quien": "Ensayo Fase 2 (NEJM 2023 · NCT04881760)",
-          "dice": "Los grupos que llegaron a 8 y 12 mg no empezaron ahí: arrancaron en 2 mg y subieron por escalones 2 → 4 → 8 → 12 mg, una vez por semana. El registro describe los escalones; no publica cuántas semanas se queda uno en cada uno."
+          "dice": {
+            "es": "Los grupos que llegaron a 8 y 12 mg no empezaron ahí: arrancaron en 2 mg y subieron un escalón cada cuatro semanas. Ese es el calendario que ves arriba.",
+            "en": "The groups that reached 8 and 12 mg did not start there: they began at 2 mg and moved up one step every four weeks. That is the calendar you see above.",
+            "pt": "Os grupos que chegaram a 8 e 12 mg não começaram ali: começaram em 2 mg e subiram um degrau a cada quatro semanas. Esse é o calendário que você vê acima."
+          }
         },
         {
-          "quien": "researchdosing.com (manual compartido entre vendedores)",
-          "dice": "Mínimo 4 semanas en cada dosis y subir de 2 en 2 mg.",
-          "aviso": "No cita bibliografía, y sus tablas de unidades traen errores de aritmética comprobados. Es la costumbre del mercado, no evidencia."
+          "quien": "Ensayo Fase 3 TRIUMPH-1 (NCT05929066)",
+          "dice": {
+            "es": "Misma idea pero con más paradas: 2 → 4 → 6 → 9 → 12 mg, cuatro semanas en cada una.",
+            "en": "Same idea with more stops: 2 → 4 → 6 → 9 → 12 mg, four weeks at each.",
+            "pt": "Mesma ideia com mais paradas: 2 → 4 → 6 → 9 → 12 mg, quatro semanas em cada."
+          }
+        },
+        {
+          "quien": "researchdosing.com (manual del mercado)",
+          "dice": {
+            "es": "Mínimo 4 semanas en cada dosis y subir de 2 en 2 mg.",
+            "en": "At least 4 weeks at each dose and move up 2 mg at a time.",
+            "pt": "No mínimo 4 semanas em cada dose e subir de 2 em 2 mg."
+          },
+          "aviso": {
+            "es": "No cita bibliografía, y sus tablas de unidades traen errores de aritmética comprobados. Es la costumbre del mercado, no evidencia.",
+            "en": "It cites no literature, and its unit tables contain verified arithmetic errors. Market custom, not evidence.",
+            "pt": "Não cita bibliografia, e suas tabelas de unidades trazem erros de aritmética comprovados. É o costume do mercado, não evidência."
+          }
         }
-      ]
+      ],
+      "escalera": {
+        "unit": "mg",
+        "freq": "weekly",
+        "tipo": "ensayo",
+        "quien": "Ensayo Fase 2 en obesidad · Jastreboff AM et al., N Engl J Med 2023;389(6):514-526 (NCT04881760)",
+        "fuente": "https://www.nejm.org/doi/full/10.1056/NEJMoa2301972",
+        "pasos": [
+          {
+            "dosis": 2,
+            "semanas": 4
+          },
+          {
+            "dosis": 4,
+            "semanas": 4
+          },
+          {
+            "dosis": 8,
+            "semanas": 4
+          },
+          {
+            "dosis": 12,
+            "nota": {
+              "es": "El ensayo Fase 3 (TRIUMPH-1) hace dos paradas más antes de llegar aquí, en 6 y en 9 mg, también de cuatro semanas cada una.",
+              "en": "The Phase 3 trial (TRIUMPH-1) adds two more stops before this one, at 6 and 9 mg, also four weeks each.",
+              "pt": "O ensaio Fase 3 (TRIUMPH-1) faz mais duas paradas antes desta, em 6 e 9 mg, também de quatro semanas cada."
+            }
+          }
+        ]
+      }
     },
     "featured": true,
     "is_new": true
@@ -4001,7 +4273,40 @@ export const fallbackProducts = [
         "5": 1,
         "10": 2
       },
-      "fuente": "investigación propia de Codex (INVESTIGACION-DOSIS-PEPTIDOS.md) + researchdosing.com (manual de dosificación del mercado)"
+      "fuente": "Prospecto aprobado por la FDA de Wegovy (semaglutida), sección 2, Tabla 1: 0.25 mg semanales las semanas 1 a 4, 0.5 mg las semanas 5 a 8 y 1 mg las semanas 9 a 12. Los tres niveles son esos tres escalones, exactos. Para diabetes (Ozempic) el máximo aprobado son 2 mg semanales. https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=ee06186f-2aa3-4990-a760-757579d8f77b",
+      "escalera": {
+        "unit": "mg",
+        "freq": "weekly",
+        "tipo": "etiqueta",
+        "quien": "FDA · prospecto de Wegovy (semaglutida), sección 2, Tabla 1",
+        "fuente": "https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=ee06186f-2aa3-4990-a760-757579d8f77b",
+        "pasos": [
+          {
+            "dosis": 0.25,
+            "semanas": 4
+          },
+          {
+            "dosis": 0.5,
+            "semanas": 4
+          },
+          {
+            "dosis": 1,
+            "semanas": 4
+          },
+          {
+            "dosis": 1.7,
+            "semanas": 4
+          },
+          {
+            "dosis": 2.4,
+            "nota": {
+              "es": "Para diabetes (Ozempic) el prospecto se detiene antes: 0.25 → 0.5 → 1 → 2 mg, también de cuatro en cuatro semanas.",
+              "en": "For diabetes (Ozempic) the label stops earlier: 0.25 → 0.5 → 1 → 2 mg, also four weeks per step.",
+              "pt": "Para diabetes (Ozempic) a bula para antes: 0,25 → 0,5 → 1 → 2 mg, também de quatro em quatro semanas."
+            }
+          }
+        ]
+      }
     },
     "featured": true,
     "is_new": false
@@ -4088,14 +4393,47 @@ export const fallbackProducts = [
     "start_unit": "mg",
     "start_freq": "weekly",
     "start_levels": {
-      "inicial": 0.8,
-      "tipica": 1.6,
+      "inicial": 0.3,
+      "tipica": 1.2,
       "avanzada": 2.4,
       "unit": "mg",
       "agua_ml": {
         "10": 1.5
       },
-      "fuente": "investigación propia de Codex (INVESTIGACION-DOSIS-PEPTIDOS.md) + researchdosing.com (manual de dosificación del mercado)"
+      "fuente": "⚠️ ORIENTATIVA. Protocolo del ensayo Fase 3 SYNCHRONIZE-1 (NCT06065515, Tabla 4): 0.3 mg semanales las semanas 1 a 4, 0.6 las 5 a 8, 1.2 las 9 a 12, 2.4 las 13 a 16 y 3.6 mg de la 17 en adelante. CORRECCIÓN 2026-08-01: los niveles decían 0.8 / 1.6 / 2.4 mg, y ni 0.8 ni 1.6 aparecen en ningún protocolo publicado — venían de una hoja de vendedor (researchdosing.com), que además propone un escalón de 2.7 mg que no existe en ningún ensayo. Ahora los tres niveles son escalones reales del protocolo: 0.3 (el arranque), 1.2 (medio camino) y 2.4 mg. Los ensayos Fase 2 recorrían la misma escalera pero de dos en dos semanas. https://mediacenteratypon.nejmgroup-production.org/NEJMoa2600751_protocol.pdf",
+      "escalera": {
+        "unit": "mg",
+        "freq": "weekly",
+        "tipo": "ensayo",
+        "quien": "Protocolo del ensayo Fase 3 SYNCHRONIZE-1 (NCT06065515), Tabla 4",
+        "fuente": "https://mediacenteratypon.nejmgroup-production.org/NEJMoa2600751_protocol.pdf",
+        "pasos": [
+          {
+            "dosis": 0.3,
+            "semanas": 4
+          },
+          {
+            "dosis": 0.6,
+            "semanas": 4
+          },
+          {
+            "dosis": 1.2,
+            "semanas": 4
+          },
+          {
+            "dosis": 2.4,
+            "semanas": 4
+          },
+          {
+            "dosis": 3.6,
+            "nota": {
+              "es": "En los ensayos Fase 2 la subida iba al doble de rápido, con escalones de dos semanas. El de Fase 3 es el lento a propósito.",
+              "en": "In the Phase 2 trials the climb went twice as fast, with two-week steps. The Phase 3 one is deliberately slower.",
+              "pt": "Nos ensaios Fase 2 a subida ia duas vezes mais rápido, com degraus de duas semanas. O da Fase 3 é lento de propósito."
+            }
+          }
+        ]
+      }
     },
     "featured": false,
     "is_new": false
@@ -4207,7 +4545,44 @@ export const fallbackProducts = [
         "30": 1.5,
         "60": 3
       },
-      "fuente": "investigación propia de Codex (INVESTIGACION-DOSIS-PEPTIDOS.md) + researchdosing.com (manual de dosificación del mercado)"
+      "fuente": "Prospecto aprobado por la FDA de Zepbound y Mounjaro (tirzepatida), sección 2: se arranca en 2.5 mg semanales cuatro semanas, luego 5 mg, y de ahí se sube de 2.5 en 2.5 mg dejando al menos cuatro semanas en cada escalón. Los tres niveles son escalones del prospecto, exactos. Máximo aprobado 15 mg. https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=487cd7e7-434c-4925-99fa-aa80b1cc776b",
+      "escalera": {
+        "unit": "mg",
+        "freq": "weekly",
+        "tipo": "etiqueta",
+        "quien": "FDA · prospecto de Zepbound y Mounjaro (tirzepatida), sección 2",
+        "fuente": "https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=487cd7e7-434c-4925-99fa-aa80b1cc776b",
+        "pasos": [
+          {
+            "dosis": 2.5,
+            "semanas": 4
+          },
+          {
+            "dosis": 5,
+            "semanas": 4
+          },
+          {
+            "dosis": 7.5,
+            "semanas": 4
+          },
+          {
+            "dosis": 10,
+            "semanas": 4
+          },
+          {
+            "dosis": 12.5,
+            "semanas": 4
+          },
+          {
+            "dosis": 15,
+            "nota": {
+              "es": "No hay que llegar hasta acá: el prospecto acepta quedarse en 5 o en 10 mg si con eso basta.",
+              "en": "You do not have to get here: the label accepts staying at 5 or 10 mg if that is enough.",
+              "pt": "Não é preciso chegar até aqui: a bula aceita ficar em 5 ou 10 mg se isso bastar."
+            }
+          }
+        ]
+      }
     },
     "featured": true,
     "is_new": true
@@ -4329,7 +4704,32 @@ export const fallbackProducts = [
         "5": 1.5,
         "10": 2.5
       },
-      "fuente": "investigación propia de Codex (INVESTIGACION-DOSIS-PEPTIDOS.md) + researchdosing.com (manual de dosificación del mercado)"
+      "fuente": "investigación propia de Codex (INVESTIGACION-DOSIS-PEPTIDOS.md) + researchdosing.com (manual de dosificación del mercado)",
+      "escalera": {
+        "unit": "mcg",
+        "freq": "daily",
+        "tipo": "manual",
+        "quien": "researchdosing.com — manual de dosificación compartido entre vendedores",
+        "fuente": "https://researchdosing.com/bpc-157/",
+        "aviso": {
+          "es": "No cita bibliografía, y de BPC-157 no hay ningún ensayo en personas publicado. Es la costumbre del mercado, no evidencia. El mismo manual sugiere descansar de 4 a 6 semanas después de 8 a 10 de uso.",
+          "en": "It cites no literature, and no human trial of BPC-157 has been published. This is market custom, not evidence. The same handbook suggests a 4-6 week rest after 8-10 weeks of use.",
+          "pt": "Não cita bibliografia, e não há nenhum ensaio em pessoas publicado de BPC-157. É o costume do mercado, não evidência. O próprio manual sugere descansar de 4 a 6 semanas após 8 a 10 de uso."
+        },
+        "pasos": [
+          {
+            "dosis": 250,
+            "semanas": 1
+          },
+          {
+            "dosis": 500,
+            "semanas": 3
+          },
+          {
+            "dosis": 750
+          }
+        ]
+      }
     },
     "featured": true,
     "is_new": false
@@ -4871,7 +5271,22 @@ export const fallbackProducts = [
         "5": 1.5,
         "10": 3
       },
-      "fuente": "⚠️ ORIENTATIVA y CONSERVADORA: el mejor respaldo que existe es de nivel D (recopilación de protocolos de comunidad). La FDA (https://www.fda.gov/media/193349/download — calidad B) confirma la identidad Ac-LKKTETQ, CAS 885340-08-9, y deja constancia de que NO hay datos humanos de seguridad por ninguna vía. La pauta comunitaria (https://greypeptides.com/encyclopedia/tb-500/dosage/) habla de 2 a 2.5 mg subcutáneos 1 o 2 veces por semana durante 4 a 6 semanas de carga, y ella misma declara que ninguna prueba humana la validó. CORRECCIÓN 2026-07-31: el nivel avanzado decía 3 mg y NO CABE en el vial de 2 mg que vendemos. Se baja la escalera a 0.5 / 1 / 1.5 mg dos veces por semana: por semana suma 1, 2 y 3 mg, o sea el mismo orden de magnitud de la pauta comunitaria, pero cada pinchazo cabe en el vial más chico y el nivel avanzado no se lo lleva entero."
+      "fuente": "⚠️ ORIENTATIVA y CONSERVADORA: el mejor respaldo que existe es de nivel D (recopilación de protocolos de comunidad). La FDA (https://www.fda.gov/media/193349/download — calidad B) confirma la identidad Ac-LKKTETQ, CAS 885340-08-9, y deja constancia de que NO hay datos humanos de seguridad por ninguna vía. La pauta comunitaria (https://greypeptides.com/encyclopedia/tb-500/dosage/) habla de 2 a 2.5 mg subcutáneos 1 o 2 veces por semana durante 4 a 6 semanas de carga, y ella misma declara que ninguna prueba humana la validó. CORRECCIÓN 2026-07-31: el nivel avanzado decía 3 mg y NO CABE en el vial de 2 mg que vendemos. Se baja la escalera a 0.5 / 1 / 1.5 mg dos veces por semana: por semana suma 1, 2 y 3 mg, o sea el mismo orden de magnitud de la pauta comunitaria, pero cada pinchazo cabe en el vial más chico y el nivel avanzado no se lo lleva entero.",
+      "titulacion": [
+        {
+          "quien": "researchdosing.com (manual del mercado)",
+          "dice": {
+            "es": "Propone una primera semana de carga con 1 mg dos veces por semana y luego de 1 a 2.5 mg dos veces por semana hasta la semana 8, subiendo poco a poco, con 4 a 8 semanas de descanso.",
+            "en": "It proposes a first loading week at 1 mg twice a week, then 1 to 2.5 mg twice a week through week 8, moving up gradually, with 4-8 weeks off.",
+            "pt": "Propõe uma primeira semana de carga com 1 mg duas vezes por semana e depois de 1 a 2,5 mg duas vezes por semana até a semana 8, subindo aos poucos, com 4 a 8 semanas de descanso."
+          },
+          "aviso": {
+            "es": "Sin bibliografía. Los únicos estudios en personas fueron por vena y con cantidades cientos de veces mayores: no sirven de guía aquí.",
+            "en": "No literature cited. The only human studies were intravenous at amounts hundreds of times larger: they are no guide here.",
+            "pt": "Sem bibliografia. Os únicos estudos em pessoas foram por veia e com quantidades centenas de vezes maiores: não servem de guia aqui."
+          }
+        }
+      ]
     },
     "featured": true,
     "is_new": false

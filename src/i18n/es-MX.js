@@ -1231,16 +1231,20 @@ const esMX = {
   'calc.dura.days': 'días',
   'calc.dura.avisoTitle': 'Este vial te rinde para mucho tiempo.',
   'calc.dura.avisoBody': 'Con la dosis que tienes puesta, tu vial de {{vial}} mg te alcanza para {{dura}}. Ya mezclado con agua, lo recomendable es usarlo dentro de {{vida}}, guardado en el refrigerador.',
-  'calc.dura.avisoSugerido': 'Para esta dosis te acomoda mejor el vial de {{mg}} mg.',
-  'calc.dura.avisoPorciones': 'Si te quedas con este tamaño, reparte la solución en porciones de una sola aplicación y congélalas; te explicamos cómo en la guía de conservación.',
+  'calc.dura.avisoSugerido': 'Para no tenerlo mezclado más tiempo del recomendado, te acomoda mejor el vial de {{mg}} mg.',
+  'calc.dura.avisoPorciones': 'De este producto no hay una presentación más chica. Apunta la fecha en que lo mezcles y guíate por ese plazo.',
   'calc.dura.fuente': 'De dónde sale ese plazo: {{fuente}}',
+  // Qué es ese plazo, en cristiano. Va en los dos sentidos a propósito: ni
+  // "se echa a perder" (que espanta y no está demostrado) ni "el péptido está
+  // perfecto" (que tampoco lo está: nadie lo midió en refrigeración).
+  'calc.dura.porQue': 'Ese plazo es el que se le garantiza al vial de seguir limpio por dentro una vez que el tapón recibe el primer piquete. De la fuerza del péptido guardado en frío nadie ha publicado un número, así que nos guiamos por el plazo del vial, que sí lo tiene.',
   'calc.dura.avisoBodyPlan': 'Siguiendo el plan de abajo, tu vial de {{vial}} mg te alcanza para {{dura}}. Ya mezclado con agua, lo recomendable es usarlo dentro de {{vida}}, guardado en el refrigerador.',
   // El plan de subida (la escalera). En llano: nunca se escribe "titulación".
   'calc.plan.title': 'Tu plan, semana por semana',
   'calc.plan.intro': 'No te quedas siempre en la misma cantidad. Se empieza con poquito, el cuerpo se va acostumbrando y cada cierto tiempo se sube un escalón.',
   'calc.plan.hint': 'siguiendo el plan de abajo',
   'calc.plan.semana': 'Semana {{n}}',
-  'calc.plan.semanas': 'Semanas {{a}} a la {{b}}',
+  'calc.plan.semanas': 'Semanas {{a}} a {{b}}',
   'calc.plan.desdeLa': 'De la semana {{a}} en adelante',
   'calc.plan.teQuedas': 'aquí te quedas',
   'calc.plan.dura': 'Siguiendo este plan, tu vial de {{vial}} mg te alcanza para {{dura}}.',

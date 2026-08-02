@@ -8,9 +8,10 @@ import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Popover, PopoverTrigger, PopoverContent } from '@/components/ui/popover';
 import { Command, CommandInput, CommandList, CommandEmpty, CommandItem } from '@/components/ui/command';
-import { Syringe, Droplet, FlaskConical, Search, Check, ChevronsUpDown, RotateCcw, Copy, Link2, FileDown, ShoppingBag, CalendarClock, AlertTriangle } from 'lucide-react';
+import { Syringe, Droplet, FlaskConical, Search, Check, ChevronsUpDown, RotateCcw, Copy, Link2, FileDown, ShoppingBag, CalendarClock, AlertTriangle, TrendingUp } from 'lucide-react';
 import { fallbackProducts } from '@/data/fallbackCatalog';
 import { vidaUtilDe } from '@/data/vidaUtilReconstituido';
+import { DOSIS_POR_SEMANA, escaleraDe, planDeEscalera, duracionDeEscalera } from '@/lib/escalera';
 import { useLanguage } from '@/context/LanguageContext';
 
 // Jeringas de insulina más comunes en México. units = ml * (units/ml).
@@ -19,6 +20,19 @@ const SYRINGES = [
   { id: 'u100-05', label: 'U-100 · 0.5 mL', perMl: 100, maxMl: 0.5 },
   { id: 'u100-03', label: 'U-100 · 0.3 mL', perMl: 100, maxMl: 0.3 },
 ];
+
+// ⛔ EL IDIOMA LLEGA COMO 'es-MX', 'en-US' o 'pt-BR'. LAS TABLAS DE ABAJO SE
+// ESCRIBIERON CON 'es', 'en' y 'pt'.
+//
+// O sea que `TABLA[language]` NUNCA encontraba nada y el `|| .es` de rescate
+// hacía el resto: las frases de este archivo —cada cuándo aplicarlo, la fase,
+// "Para empezar", "rayitas"— se veían EN ESPAÑOL aunque el cliente tuviera el
+// sitio en inglés o en portugués. Lo encontró la verificación en navegador del
+// 2026-08-01: la tarjeta del plan decía "Your plan, week by week" y debajo
+// "1 vez por semana".
+//
+// Se recorta el código UNA vez, aquí, y todas las tablas lo usan.
+const corto = (lang) => (lang || 'es').slice(0, 2);
 
 // ⛔ LAS SUGERENCIAS DE DOSIS SE ENCIENDEN POR PRODUCTO, NO EN BLOQUE.
 //
@@ -69,7 +83,7 @@ const FREQ_PHRASES = {
   daily_cycle: { es: '1 vez al día, en ciclos de 10 a 20 días', en: 'once a day, in 10–20 day cycles', pt: '1 vez ao dia, em ciclos de 10 a 20 dias' },
   mt:          { es: '1 vez al día para empezar; al lograr el tono, 1–2 por semana', en: 'once a day to start; then 1–2 times a week', pt: '1 vez ao dia para começar; depois 1–2 vezes por semana' },
 };
-const freqPhrase = (code, lang) => (FREQ_PHRASES[code] ? (FREQ_PHRASES[code][lang] || FREQ_PHRASES[code].es) : '');
+const freqPhrase = (code, lang) => (FREQ_PHRASES[code] ? (FREQ_PHRASES[code][corto(lang)] || FREQ_PHRASES[code].es) : '');
 
 // La frecuencia puede ser POR NIVEL, no por producto. Salió de NAD+ (2026-07-26):
 // las fuentes parecían contradecirse —unas decían diaria y otras 2-3 por semana—
@@ -96,7 +110,7 @@ const faseDeNivel = (levels, nivel, lang) => {
   const code = levels && levels.fase && levels.fase[nivel];
   if (!code) return '';
   const f = FASES[code];
-  return f ? (f[lang] || f.es) : '';
+  return f ? (f[corto(lang)] || f.es) : '';
 };
 // Frase "para empezar" en lenguaje simple (para que la entienda cualquiera).
 const START_LEAD = { es: 'Para empezar', en: 'To start', pt: 'Para começar' };
@@ -112,24 +126,30 @@ const START_UNITS = { es: 'rayitas', en: 'units', pt: 'risquinhos' };
 
 const MIN_UNITS = 2;                       // menos de esto no se puede medir en la jeringa
 
-// CUÁNTAS APLICACIONES CABEN EN UNA SEMANA, según la frecuencia del catálogo.
-// Con esto y las dosis que rinde el vial sale cuánto le dura al cliente.
-//
-// Tres frecuencias se quedan FUERA a propósito (null): `as_needed` no tiene
-// ritmo, `mt` cambia de ritmo a mitad del camino y `daily_cycle` alterna ciclos
-// con descansos. En esos tres el vial se gasta a un ritmo que no podemos
-// prometer, y un número inventado aquí se convierte en un consejo de compra
-// equivocado. Se sigue diciendo cuántas dosis rinde, que eso sí es aritmética.
-const DOSIS_POR_SEMANA = {
-  weekly: 1,
-  daily: 7,
-  daily_2x: 14,
-  '2x_week': 2,
-  '3x_week': 3,
-  eod: 3.5,
-  as_needed: null,
-  mt: null,
-  daily_cycle: null,
+// `DOSIS_POR_SEMANA` (cuántas aplicaciones caben en una semana) y toda la
+// aritmética de la escalera viven en `@/lib/escalera`, con sus propias pruebas.
+
+// DE DÓNDE SALE EL CALENDARIO. Un ensayo publicado y un manual de vendedores no
+// valen lo mismo, y el cliente tiene que poder notarlo de un vistazo — la misma
+// regla que ya se aplica a las dosis.
+const ORIGEN_ESCALERA = {
+  etiqueta: { es: 'Prospecto aprobado', en: 'Approved label',    pt: 'Bula aprovada' },
+  ensayo:   { es: 'Estudio publicado',  en: 'Published study',   pt: 'Estudo publicado' },
+  manual:   { es: 'Manual del mercado', en: 'Market handbook',   pt: 'Manual do mercado' },
+};
+const origenTexto = (tipo, lang) => {
+  const o = ORIGEN_ESCALERA[tipo] || ORIGEN_ESCALERA.manual;
+  return o[corto(lang)] || o.es;
+};
+
+// El catálogo llega en español y sólo se traducen nombre y descripción, así que
+// la prosa nueva de las fuentes se escribe ahí mismo en los tres idiomas:
+// `{ es, en, pt }`. Un texto plano de toda la vida sigue funcionando igual —lo
+// que ya estaba escrito no se rompe— y se enseña tal cual.
+const enIdioma = (valor, lang) => {
+  if (!valor) return '';
+  if (typeof valor === 'string') return valor;
+  return valor[corto(lang)] || valor.es || '';
 };
 
 // ⛔ QUÉ SE DOSIFICA EN mg Y QUÉ EN mcg. EQUIVOCARSE AQUÍ MULTIPLICA POR MIL.
@@ -231,10 +251,14 @@ const aguaSugerida = (vialMg, p) => {
   return Math.min(AGUA_MAX_ML, Math.max(1, Math.round(ml * 2) / 2));   // a medios mL
 };
 
-const Stat = ({ icon: Icon, label, value, unit }) => (
+// `hint` dice con qué cuenta salió el número. Sin eso, "te dura 17 semanas" y
+// "te dura 24 semanas" se ven igual de firmes y son cuentas distintas: una es a
+// dosis fija y la otra es subiendo por escalones.
+const Stat = ({ icon: Icon, label, value, unit, hint }) => (
   <div className="rounded-xl border border-[hsl(var(--border))] bg-[hsl(var(--muted))]/30 p-4">
     <div className="flex items-center gap-1.5 text-xs text-muted-foreground mb-1"><Icon className="h-3.5 w-3.5" /> {label}</div>
     <div className="text-lg font-semibold tabular-nums">{value} <span className="text-xs font-normal text-muted-foreground">{unit}</span></div>
+    {hint && <div className="text-[11px] text-muted-foreground mt-0.5 leading-tight">{hint}</div>}
   </div>
 );
 
@@ -510,13 +534,32 @@ const ReconstitutionCalculator = ({ variant = 'full', purchased = [], onTrack, s
   // cambia por nivel (NAD+, TB-500 tienen carga y mantenimiento), así que la
   // única duración honesta es la de la dosis que está mirando. Los tres niveles
   // salen en su propia columna de la tabla de abajo.
+  //
+  // ⬆ Y DESDE EL 2026-08-01, CUANDO HAY CALENDARIO, MANDA EL CALENDARIO.
+  // Christián: «El usuario empieza con X cantidad y DEBE ir aumentando a Y
+  // cantidad según sus metas.» Una duración calculada a dosis fija describe a
+  // alguien que nunca sube, y ése no es el cliente. Si el producto trae su
+  // escalera anotada (con quién la publica), la cuenta que se enseña es la de
+  // ir subiendo. Sin escalera, todo sigue exactamente igual que antes.
+  const escalera = useMemo(() => (full ? escaleraDe(levels, currentProduct?.startFreq) : null),
+    [full, levels, currentProduct]);
+  const plan = useMemo(() => planDeEscalera(escalera), [escalera]);
+  const duracionPlan = useMemo(() => duracionDeEscalera(escalera, mg), [escalera, mg]);
+
   const duracion = useMemo(() => {
     const codigo = freqDeNivel(levels, activeLevel, currentProduct?.startFreq);
     const porSemana = DOSIS_POR_SEMANA[codigo];
-    if (!porSemana || !dosesPerVial) return null;
     const vida = vidaUtilDe(currentProduct?.slug);
-    const semanas = dosesPerVial / porSemana;
-    const semanasDe = (v) => Math.floor((v * 1000) / doseMcg) / porSemana;
+    // Duración a la dosis fija que tiene puesta (lo de siempre).
+    const fija = porSemana && dosesPerVial ? dosesPerVial / porSemana : null;
+    // Duración siguiendo la escalera. Es la que gana cuando existe.
+    const semanas = duracionPlan ? duracionPlan.semanas : fija;
+    if (!semanas) return null;
+    // ¿Qué presentación se alcanza a usar a tiempo? Se mide con la MISMA cuenta
+    // que se enseña: si el aviso habla de la escalera, la sugerencia también.
+    const semanasDe = (v) => (duracionPlan
+      ? (duracionDeEscalera(escalera, v)?.semanas ?? Infinity)
+      : Math.floor((v * 1000) / doseMcg) / porSemana);
     // La presentación MÁS GRANDE que sí se alcanza a usar a tiempo. Se prefiere
     // la mayor porque el miligramo sale más barato: la idea es que no compre de
     // menos, no empujarlo al vial chiquito.
@@ -525,10 +568,11 @@ const ReconstitutionCalculator = ({ variant = 'full', purchased = [], onTrack, s
       semanas,
       dias: semanas * 7,
       vida,
+      porPlan: Boolean(duracionPlan),
       sePasa: semanas > vida.semanas,
       sugerido: cabe.length ? cabe[cabe.length - 1] : null,
     };
-  }, [levels, activeLevel, currentProduct, dosesPerVial, doseMcg, currentVariants]);
+  }, [levels, activeLevel, currentProduct, dosesPerVial, doseMcg, currentVariants, duracionPlan, escalera]);
 
   // "24 semanas" o "9 días": debajo de dos semanas los días se leen mejor.
   const duracionTexto = (semanas) => (semanas >= 2
@@ -838,24 +882,24 @@ const ReconstitutionCalculator = ({ variant = 'full', purchased = [], onTrack, s
           {/* Resumen en una frase: cuánto + cada cuándo (referencia RUO). */}
           {full && currentProduct?.startFreq && (parseFloat(dose) > 0) && (
             <div className="mb-5 rounded-xl border border-[hsl(var(--primary))]/40 bg-[hsl(var(--primary))]/10 p-4" data-testid="calc-plain-summary">
-              <div className="text-[11px] uppercase tracking-wide text-muted-foreground mb-1">{START_LEAD[language] || START_LEAD.es} · RUO</div>
+              <div className="text-[11px] uppercase tracking-wide text-muted-foreground mb-1">{START_LEAD[corto(language)] || START_LEAD.es} · RUO</div>
               {/* El agua va en la MISMA frase. Antes vivía en otro recuadro y
                   quedaba la duda de cuánta ponerle al vial para empezar
                   (Christian, 2026-07-26, con NAD+ 500 mg). Es el primer paso
                   real: sin reconstituir no hay dosis que aplicar. */}
               {res && res.water > 0 && (
                 <div className="text-lg leading-snug mb-1">
-                  {START_WATER[language] || START_WATER.es}{' '}
+                  {START_WATER[corto(language)] || START_WATER.es}{' '}
                   <span className="font-bold text-[hsl(var(--primary))]">{res.water} mL</span>{' '}
-                  {START_WATER_TAIL[language] || START_WATER_TAIL.es}
+                  {START_WATER_TAIL[corto(language)] || START_WATER_TAIL.es}
                 </div>
               )}
               <div className="text-lg leading-snug">
-                {START_APPLY[language] || START_APPLY.es}{' '}
+                {START_APPLY[corto(language)] || START_APPLY.es}{' '}
                 <span className="font-bold text-[hsl(var(--primary))]">{dose} {effUnit}</span>,{' '}
                 <span className="font-bold text-[hsl(var(--primary))]">{freqPhrase(freqDeNivel(levels, activeLevel, currentProduct.startFreq), language)}</span>
                 {res && res.units > 0 && (
-                  <> — <span className="font-bold text-[hsl(var(--primary))]">{res.units.toFixed(0)} {START_UNITS[language] || START_UNITS.es}</span></>
+                  <> — <span className="font-bold text-[hsl(var(--primary))]">{res.units.toFixed(0)} {START_UNITS[corto(language)] || START_UNITS.es}</span></>
                 )}.
               </div>
             </div>
@@ -886,7 +930,7 @@ const ReconstitutionCalculator = ({ variant = 'full', purchased = [], onTrack, s
             <div className="mb-5 rounded-xl border border-[hsl(var(--primary))]/40 bg-[hsl(var(--primary))]/10 p-4 text-sm leading-relaxed"
                  data-testid="calc-vida-util">
               <strong>{t('calc.dura.avisoTitle')}</strong>{' '}
-              {t('calc.dura.avisoBody', {
+              {t(duracion.porPlan ? 'calc.dura.avisoBodyPlan' : 'calc.dura.avisoBody', {
                 vial: vialMg,
                 dura: duracionTexto(duracion.semanas),
                 vida: duracionTexto(duracion.vida.semanas),
@@ -895,6 +939,14 @@ const ReconstitutionCalculator = ({ variant = 'full', purchased = [], onTrack, s
               {duracion.sugerido
                 ? t('calc.dura.avisoSugerido', { mg: duracion.sugerido })
                 : t('calc.dura.avisoPorciones')}
+              {/* QUÉ ES ESE PLAZO. Faltaba, y sin esto la frase se lee como que
+                  el péptido se echa a perder — que ni está demostrado ni es lo
+                  que se quiere decir. Pero tampoco se promete lo contrario: de
+                  la química a 2-8 °C no hay un solo estudio publicado, así que
+                  se dice exactamente eso. (Christián, 2026-08-01) */}
+              <div className="text-xs text-muted-foreground mt-2.5 leading-relaxed" data-testid="calc-vida-porque">
+                {t('calc.dura.porQue')}
+              </div>
               <div className="text-[11px] text-muted-foreground mt-2">
                 {t('calc.dura.fuente', { fuente: duracion.vida.fuente })}
               </div>
@@ -961,7 +1013,8 @@ const ReconstitutionCalculator = ({ variant = 'full', purchased = [], onTrack, s
                     {duracion && (
                       <Stat icon={CalendarClock} label={t('calc.dura.label')}
                         value={duracion.semanas >= 2 ? Math.round(duracion.semanas) : Math.round(duracion.dias)}
-                        unit={duracion.semanas >= 2 ? t('calc.dura.weeks') : t('calc.dura.days')} />
+                        unit={duracion.semanas >= 2 ? t('calc.dura.weeks') : t('calc.dura.days')}
+                        hint={duracion.porPlan ? t('calc.plan.hint') : null} />
                     )}
                   </div>
                 </div>
@@ -1018,7 +1071,8 @@ const ReconstitutionCalculator = ({ variant = 'full', purchased = [], onTrack, s
                   {duracion && (
                     <Stat icon={CalendarClock} label={t('calc.dura.label')}
                       value={duracion.semanas >= 2 ? Math.round(duracion.semanas) : Math.round(duracion.dias)}
-                      unit={duracion.semanas >= 2 ? t('calc.dura.weeks') : t('calc.dura.days')} />
+                      unit={duracion.semanas >= 2 ? t('calc.dura.weeks') : t('calc.dura.days')}
+                      hint={duracion.porPlan ? t('calc.plan.hint') : null} />
                   )}
                 </div>
               </>
@@ -1026,6 +1080,92 @@ const ReconstitutionCalculator = ({ variant = 'full', purchased = [], onTrack, s
           )}
           <p className="text-[11px] text-muted-foreground mt-6 leading-relaxed">{t('calc.disclaimer')}</p>
         </Card>
+
+        {/* TU PLAN, SEMANA POR SEMANA.
+            Lo pidió Christián (2026-08-01): «El usuario empieza con X cantidad y
+            DEBE ir aumentando a Y cantidad según sus metas.» Los tres niveles
+            sueltos de la tabla de abajo no son un plan: son tres fotos de
+            momentos distintos, sin decir cuándo se pasa de una a la otra.
+
+            Aquí se dice en cristiano: en qué semana toca cada cantidad y en cuál
+            se queda uno. Sólo aparece si el producto trae su calendario anotado
+            con quién lo publica — misma regla que las dosis, sin fuente no sale.
+
+            ⛔ Vara de claridad: una señora de 65 años. Nada de "titulación",
+            nada que asuste, y el número de semanas siempre a la vista. */}
+        {full && escalera && plan.length > 0 && (
+          <Card className="p-0 overflow-hidden" data-testid="calc-plan">
+            <div className="bg-[hsl(var(--secondary))] px-5 py-3 flex items-center gap-2">
+              <TrendingUp className="h-4 w-4 text-[hsl(var(--primary))]" />
+              <span className="text-sm font-semibold">{t('calc.plan.title')}</span>
+            </div>
+            <div className="px-5 py-4">
+              <p className="text-sm text-muted-foreground mb-4">{t('calc.plan.intro')}</p>
+              <ol className="space-y-2" data-testid="calc-plan-pasos">
+                {plan.map((paso, i) => {
+                  // ¿Le alcanza el vial para llegar hasta este escalón? Si no,
+                  // se dice: prometer una semana 13 que el vial no paga es
+                  // justo el consejo de compra equivocado que se quiere evitar.
+                  const alcanza = !duracionPlan || duracionPlan.tramos.length > i;
+                  const cuando = paso.hasta == null
+                    ? t('calc.plan.desdeLa', { a: paso.desde })
+                    : paso.desde === paso.hasta
+                      ? t('calc.plan.semana', { n: paso.desde })
+                      : t('calc.plan.semanas', { a: paso.desde, b: paso.hasta });
+                  return (
+                    <li key={`${paso.dosis}-${paso.desde}`}
+                        className={`flex flex-wrap items-baseline gap-x-2 gap-y-1 rounded-lg px-3 py-2.5 ${alcanza ? 'bg-[hsl(var(--muted))]/40' : 'opacity-50'}`}
+                        data-testid={`calc-plan-paso-${i}`}>
+                      <span className="text-xs text-muted-foreground min-w-[9rem]">{cuando}</span>
+                      <span className="font-semibold text-[hsl(var(--primary))] tabular-nums">
+                        {paso.dosis} {paso.unit}
+                      </span>
+                      <span className="text-xs text-muted-foreground">
+                        {freqPhrase(escalera.freq, language)}
+                      </span>
+                      {paso.hasta == null && (
+                        <span className="text-[11px] rounded-full px-2 py-0.5 bg-[hsl(var(--primary))]/15 text-[hsl(var(--primary))]">
+                          {t('calc.plan.teQuedas')}
+                        </span>
+                      )}
+                      {paso.nota && <span className="text-xs text-muted-foreground w-full">{enIdioma(paso.nota, language)}</span>}
+                    </li>
+                  );
+                })}
+              </ol>
+
+              {/* CUÁNTO LE DURA EL VIAL SIGUIENDO ESTE PLAN. Es la respuesta que
+                  faltaba: ni la del escalón más bajo ni la del más alto. */}
+              {duracionPlan && (
+                <div className="mt-4 rounded-xl border border-[hsl(var(--primary))]/40 bg-[hsl(var(--primary))]/10 p-4 text-sm leading-relaxed"
+                     data-testid="calc-plan-dura">
+                  {duracionPlan.alcanzaFinal
+                    ? t('calc.plan.dura', { vial: vialMg, dura: duracionTexto(duracionPlan.semanas) })
+                    : t('calc.plan.duraCorto', {
+                        vial: vialMg,
+                        dura: duracionTexto(duracionPlan.semanas),
+                        dosis: `${duracionPlan.tramos[duracionPlan.tramos.length - 1]?.dosis} ${escalera.unit}`,
+                      })}
+                </div>
+              )}
+            </div>
+
+            {/* DE DÓNDE SALE EL CALENDARIO, con nombre y apellido. Un prospecto
+                aprobado y un manual de vendedores se distinguen a la vista. */}
+            <div className="px-5 py-3 text-xs text-muted-foreground leading-relaxed border-t border-[hsl(var(--border))]"
+                 data-testid="calc-plan-fuente">
+              <span className="inline-block rounded-full px-2 py-0.5 mr-1.5 bg-[hsl(var(--muted))] text-foreground font-medium">
+                {origenTexto(escalera.tipo, language)}
+              </span>
+              {escalera.quien}
+              {escalera.fuente && <> · {escalera.fuente}</>}
+              {escalera.aviso && (
+                <div className="text-[hsl(var(--warning-foreground))] mt-1.5">⚠️ {enIdioma(escalera.aviso, language)}</div>
+              )}
+              <div className="mt-1.5">{t('calc.plan.medico')}</div>
+            </div>
+          </Card>
+        )}
 
         {/* ⚠️ Esta cuadrícula decía "va a ancho completo" y era mentira: seguía
             DENTRO de la tarjeta de resultados, o sea dentro de la columna de 3/5.
@@ -1150,8 +1290,8 @@ const ReconstitutionCalculator = ({ variant = 'full', purchased = [], onTrack, s
                       <li key={r.quien} className="flex gap-2">
                         <span className="text-[hsl(var(--primary))]">•</span>
                         <span>
-                          <strong>{r.quien}:</strong> {r.dice}
-                          {r.aviso && <span className="text-[hsl(var(--warning-foreground))]"> ⚠️ {r.aviso}</span>}
+                          <strong>{r.quien}:</strong> {enIdioma(r.dice, language)}
+                          {r.aviso && <span className="text-[hsl(var(--warning-foreground))]"> ⚠️ {enIdioma(r.aviso, language)}</span>}
                         </span>
                       </li>
                     ))}
