@@ -1417,6 +1417,8 @@ const ptBR = {
   'checkout.placeOrder': 'Fazer pedido',
   'checkout.securePayment': 'Pagamento seguro',
   'checkout.coaByLot': 'Pureza HPLC',
+  'checkout.toast.envio': 'Escolha seu tipo de envio: padrão ou express.',
+  'checkout.shipping.porElegir': 'Escolha acima',
   'checkout.toast.cp': 'Digite um CEP válido (5 dígitos).',
   'checkout.toast.pago': 'Escolha como quer pagar.',
   'checkout.toast.required': 'Preencha os campos obrigatorios',

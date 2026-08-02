@@ -1415,6 +1415,8 @@ const esMX = {
   'checkout.placeOrder': 'Realizar pedido',
   'checkout.securePayment': 'Pago seguro',
   'checkout.coaByLot': 'Pureza HPLC',
+  'checkout.toast.envio': 'Elige tu tipo de envío: estándar o express.',
+  'checkout.shipping.porElegir': 'Elige arriba',
   'checkout.toast.cp': 'Escribe un código postal válido (5 dígitos).',
   'checkout.toast.pago': 'Elige cómo quieres pagar.',
   'checkout.toast.required': 'Completa los campos obligatorios',

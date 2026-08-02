@@ -74,10 +74,10 @@ const Checkout = () => {
   const [cryptoOn, setCryptoOn] = useState(false);
   const [cardOn, setCardOn] = useState(false);
   const [oxxoOn, setOxxoOn] = useState(false);
-  // EL TIPO DE ENVÍO (Christián, 2026-08-02): el cliente ya no ve opciones de
-  // paquetería con precios reales — la casa la elige. Aquí sólo vive si pidió
-  // EXPRESS (1-2 días hábiles); todo lo demás lo decide el servidor.
-  const [express, setExpress] = useState(false);
+  // EL TIPO DE ENVÍO (Christián, 2026-08-02): estándar o express, y ⛔ SIN
+  // PRESELECCIÓN — igual que el pago, el cliente lo ELIGE ('' | 'estandar' |
+  // 'express'); sin elegir no hay compra. La paquetería la pone la casa.
+  const [envioTipo, setEnvioTipo] = useState('');
   // LA COTIZACIÓN REAL POR CP, sólo para que la pantalla diga el número exacto de
   // la REGLA V2: desde $2,500, si la guía express real cabe en max($250, 5% de la
   // compra), el express sale GRATIS TOTAL («¡Buenas noticias!»). Mientras no hay
@@ -277,10 +277,15 @@ const Checkout = () => {
   const envioExpressTotal = cumpleMinima
     ? Math.max(0, Math.round(costoExp - presupuesto)) : envioEstandar + extraExpress;
   const expressGratis = hayExpress && cumpleMinima && envioExpressTotal === 0;
-  const envioACobrar = hayExpress && express ? envioExpressTotal : envioEstandar;
+  // Sin tipo elegido, el resumen no promete un número: dice «elige arriba» y el
+  // total va sin envío hasta que el cliente decida (el candado está en submit).
+  const envioSinElegir = hayExpress && !envioTipo;
+  const envioACobrar = !hayExpress ? envioEstandar
+    : envioTipo === 'express' ? envioExpressTotal
+      : envioTipo === 'estandar' ? envioEstandar : 0;
   // "Gratis" es un envío que SE GANÓ, no un envío que no se cobra: con el cobro
   // apagado el renglón dice "se cotiza por separado", que es otra cosa.
-  const envioGratis = envioACobrar === 0 && cobraEnvio && items.length > 0;
+  const envioGratis = !envioSinElegir && envioACobrar === 0 && cobraEnvio && items.length > 0;
   // El empujón, también sobre la cifra con puntos ya restados.
   const faltaAquiParaEnvioGratis = envioEstandar > 0 && envioGratisDeVerdadDesde > 0
     ? Math.max(0, envioGratisDeVerdadDesde - pagaMercancia) : 0;
@@ -330,6 +335,12 @@ const Checkout = () => {
       llevarAlCampo('checkout-postal-code-input');
       return;
     }
+    // EL TIPO DE ENVÍO SE ELIGE (Christián, 2026-08-02): estándar o express.
+    if (envioSinElegir) {
+      toast.error(t('checkout.toast.envio'));
+      llevarAlCampo('checkout-shipping-options');
+      return;
+    }
     // Y LA FORMA DE PAGO TAMBIÉN SE ELIGE, no se hereda de un default.
     if (!payment) {
       toast.error(t('checkout.toast.pago'));
@@ -367,7 +378,7 @@ const Checkout = () => {
         // ⛔ Viaja el TIPO (estándar o express), NUNCA un monto. El servidor cobra
         // la política de la casa con sus números; lo que mande esta pantalla en
         // `shipping` lo ignora — creerle un precio al navegador ya costó dinero.
-        shipping_express: hayExpress && express,
+        shipping_express: hayExpress && envioTipo === 'express',
         discount,
         distributor_code: distCode || null,
         // ⛔ EL CARRITO COMPARTIDO: viaja el TOKEN y nada más. El servidor abre el
@@ -508,12 +519,12 @@ const Checkout = () => {
                   <Truck className="h-4 w-4 text-[hsl(var(--primary))]" />
                   <span className="text-sm font-medium">{t('checkout.shipping.pick')}</span>
                 </div>
-                <RadioGroup value={express ? 'express' : 'estandar'}
-                  onValueChange={(v) => setExpress(v === 'express')} className="space-y-2">
+                <RadioGroup value={envioTipo}
+                  onValueChange={setEnvioTipo} className="space-y-2">
                   <Label htmlFor="envio-estandar"
-                    className={`flex items-center gap-3 rounded-lg border p-3 cursor-pointer transition-all ${!express ? 'border-[hsl(var(--primary))] ring-2 ring-[hsl(var(--ring))] ring-offset-1' : 'border-border hover:bg-[hsl(var(--secondary))]'}`}
+                    className={`flex items-center gap-3 rounded-lg border p-3 cursor-pointer transition-all ${envioTipo === 'estandar' ? 'border-[hsl(var(--primary))] ring-2 ring-[hsl(var(--ring))] ring-offset-1' : 'border-border hover:bg-[hsl(var(--secondary))]'}`}
                     data-testid="checkout-envio-estandar">
-                    <RadioGroupItem value="estandar" id="envio-estandar" />
+                    <RadioGroupItem value="estandar" id="envio-estandar" data-testid="radio-envio-estandar" />
                     <div className="flex-1 min-w-0">
                       <div className="text-sm font-medium">{t('checkout.shipping.standard')}</div>
                       <div className="text-xs text-muted-foreground">{t('checkout.shipping.standardDays')}</div>
@@ -524,7 +535,7 @@ const Checkout = () => {
                     </div>
                   </Label>
                   <Label htmlFor="envio-express"
-                    className={`flex items-center gap-3 rounded-lg border p-3 cursor-pointer transition-all ${express ? 'border-[hsl(var(--primary))] ring-2 ring-[hsl(var(--ring))] ring-offset-1' : 'border-border hover:bg-[hsl(var(--secondary))]'}`}
+                    className={`flex items-center gap-3 rounded-lg border p-3 cursor-pointer transition-all ${envioTipo === 'express' ? 'border-[hsl(var(--primary))] ring-2 ring-[hsl(var(--ring))] ring-offset-1' : 'border-border hover:bg-[hsl(var(--secondary))]'}`}
                     data-testid="checkout-envio-express">
                     <RadioGroupItem value="express" id="envio-express" />
                     <div className="flex-1 min-w-0">
@@ -736,11 +747,13 @@ const Checkout = () => {
                     Skydropx encendida: por el camino de la tarifa plana, que es el
                     que se usa HOY, el envío ganado se enseñaba como "se cotiza
                     aparte" — o sea, el cliente no se enteraba de lo que se ganó. */}
-                {envioGratis
-                  ? <span className="text-[hsl(var(--success))]" data-testid="checkout-shipping-total">{t('checkout.shipping.free')}</span>
-                  : envioACobrar > 0
-                    ? <span data-testid="checkout-shipping-total">{formatMXN(envioACobrar)}</span>
-                    : <span className="text-muted-foreground text-xs text-right" data-testid="checkout-shipping-total">{t('cart.shippingQuoted')}</span>}
+                {envioSinElegir
+                  ? <span className="text-muted-foreground text-xs text-right" data-testid="checkout-shipping-total">{t('checkout.shipping.porElegir')}</span>
+                  : envioGratis
+                    ? <span className="text-[hsl(var(--success))]" data-testid="checkout-shipping-total">{t('checkout.shipping.free')}</span>
+                    : envioACobrar > 0
+                      ? <span data-testid="checkout-shipping-total">{formatMXN(envioACobrar)}</span>
+                      : <span className="text-muted-foreground text-xs text-right" data-testid="checkout-shipping-total">{t('cart.shippingQuoted')}</span>}
               </div>
               {envioGratis && (
                 <p className="text-xs text-[hsl(var(--success))]" data-testid="checkout-shipping-free-note">{t('checkout.shipping.freeNote')}</p>

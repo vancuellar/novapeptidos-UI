@@ -1422,6 +1422,8 @@ const enUS = {
   'checkout.placeOrder': 'Place order',
   'checkout.securePayment': 'Secure payment',
   'checkout.coaByLot': 'HPLC purity',
+  'checkout.toast.envio': 'Choose your shipping type: standard or express.',
+  'checkout.shipping.porElegir': 'Choose above',
   'checkout.toast.cp': 'Enter a valid 5-digit postal code.',
   'checkout.toast.pago': 'Choose how you want to pay.',
   'checkout.toast.required': 'Complete the required fields',
