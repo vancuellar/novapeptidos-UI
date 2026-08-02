@@ -39,6 +39,13 @@ const ETIQUETAS = {
   //
   // Cuál se usa lo decide `AI_PROVIDER` en el servidor; si el motor elegido falla,
   // el chat se cae de vuelta al anterior en lugar de dejar al cliente sin respuesta.
+  // El correo. Lo mismo que arriba: el backend ya sabía mandar por Resend, pero
+  // `EMAIL_PROVIDER` viene en `ses` por omisión y no había dónde cambiarlo sin
+  // entrar al servidor. El 2026-08-01 eso dejó las cotizaciones sin salir.
+  EMAIL_PROVIDER: { grupo: 'Correo', label: 'Proveedor', pista: 'Escribe resend (recomendado) o ses' },
+  RESEND_API_KEY: { grupo: 'Correo', label: 'Resend — API key', pista: 'resend.com → API Keys. Empieza con re_' },
+  EMAIL_ENABLED: { grupo: 'Correo', label: '¿Encendido?', pista: 'true para que salgan los correos; false los apaga todos' },
+  EMAIL_FROM: { grupo: 'Correo', label: 'Remitente', pista: 'Exygen Labs <hola@exygenlabs.com>. El dominio debe estar verificado' },
   OPENAI_API_KEY: { grupo: 'Chat con IA', label: 'OpenAI (GPT) — API key', pista: 'platform.openai.com → API keys. Empieza con sk-proj-' },
   MOONSHOT_API_KEY: { grupo: 'Chat con IA', label: 'Moonshot (Kimi) — API key', pista: 'Sólo si se decide usar Kimi; hoy la recomendación es GPT' },
   ANTHROPIC_API_KEY: { grupo: 'Chat con IA', label: 'Anthropic (Claude) — API key', pista: 'Opcional, como motor de respaldo' },
