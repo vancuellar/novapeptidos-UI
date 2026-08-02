@@ -1314,7 +1314,7 @@ export const fallbackProducts = [
         "10": 2.5,
         "15": 3
       },
-      "fuente": "investigación propia de Codex (INVESTIGACION-DOSIS-PEPTIDOS.md) + researchdosing.com (manual de dosificación del mercado)",
+      "fuente": "researchdosing.com — manual de dosificación de referencia del sector — cotejado con la literatura publicada del compuesto",
       "titulacion": [
         {
           "quien": "Literatura publicada",
@@ -1492,7 +1492,7 @@ export const fallbackProducts = [
       "agua_ml": {
         "5": 2.5
       },
-      "fuente": "investigación propia de Codex (INVESTIGACION-DOSIS-PEPTIDOS.md) + researchdosing.com (manual de dosificación del mercado)"
+      "fuente": "researchdosing.com — manual de dosificación de referencia del sector — cotejado con la literatura publicada del compuesto"
     },
     "featured": false,
     "is_new": false
@@ -2943,7 +2943,7 @@ export const fallbackProducts = [
       "agua_ml": {
         "10": 2.5
       },
-      "fuente": "investigación propia de Codex (INVESTIGACION-DOSIS-PEPTIDOS.md) + researchdosing.com (manual de dosificación del mercado)"
+      "fuente": "researchdosing.com — manual de dosificación de referencia del sector — cotejado con la literatura publicada del compuesto"
     },
     "featured": false,
     "is_new": false
@@ -3242,7 +3242,7 @@ export const fallbackProducts = [
         "10": 3,
         "20": 3
       },
-      "fuente": "investigación propia de Codex (INVESTIGACION-DOSIS-PEPTIDOS.md) + researchdosing.com (manual de dosificación del mercado)",
+      "fuente": "researchdosing.com — manual de dosificación de referencia del sector — cotejado con la literatura publicada del compuesto",
       "titulacion": [
         {
           "quien": "FDA · prospecto de Egrifta SV (tesamorelina)",
@@ -3479,7 +3479,7 @@ export const fallbackProducts = [
       "agua_ml": {
         "5": 2.5
       },
-      "fuente": "investigación propia de Codex (INVESTIGACION-DOSIS-PEPTIDOS.md) + researchdosing.com (manual de dosificación del mercado)"
+      "fuente": "researchdosing.com — manual de dosificación de referencia del sector — cotejado con la literatura publicada del compuesto"
     },
     "featured": false,
     "is_new": false
@@ -4629,7 +4629,7 @@ export const fallbackProducts = [
       "agua_ml": {
         "10": 1.5
       },
-      "fuente": "investigación propia de Codex (INVESTIGACION-DOSIS-PEPTIDOS.md) + researchdosing.com (manual de dosificación del mercado)"
+      "fuente": "researchdosing.com — manual de dosificación de referencia del sector — cotejado con la literatura publicada del compuesto"
     },
     "featured": false,
     "is_new": false
@@ -4704,7 +4704,7 @@ export const fallbackProducts = [
         "5": 1.5,
         "10": 2.5
       },
-      "fuente": "investigación propia de Codex (INVESTIGACION-DOSIS-PEPTIDOS.md) + researchdosing.com (manual de dosificación del mercado)",
+      "fuente": "researchdosing.com — manual de dosificación de referencia del sector — cotejado con la literatura publicada del compuesto",
       "escalera": {
         "unit": "mcg",
         "freq": "daily",
@@ -5416,7 +5416,7 @@ export const fallbackProducts = [
       "agua_ml": {
         "5000": 2
       },
-      "fuente": "investigación propia de Codex (INVESTIGACION-DOSIS-PEPTIDOS.md) + researchdosing.com (manual de dosificación del mercado)"
+      "fuente": "researchdosing.com — manual de dosificación de referencia del sector — cotejado con la literatura publicada del compuesto"
     },
     "featured": false,
     "is_new": false,

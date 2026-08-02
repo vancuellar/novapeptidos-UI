@@ -1796,5 +1796,5 @@
     "fuentes": {},
     "nota_nomenclatura": "Es una presentación comercial que reúne varios componentes. Como mezcla no tiene número CAS, fórmula molecular ni peso molecular propios: la identidad corresponde a cada componente por separado. Cualquier caracterización analítica debe hacerse componente por componente."
   },
-  "_comentario": "Consolidado de datos_identidad_manual.json (verificado a mano), cosecha_pubchem.json (API de PubChem) y datos_identidad_lote2.json (Codex, solo relleno de huecos). Los matches falsos de PubChem estan en la clave 'descartados' de cosecha_pubchem.json y NO entran aqui. Un campo en null NO se imprime en la ficha."
+  "_comentario": "Consolidado de datos_identidad_manual.json (verificado a mano), cosecha_pubchem.json (API de PubChem) y datos_identidad_lote2.json (relleno de huecos). Los matches falsos de PubChem estan en la clave 'descartados' de cosecha_pubchem.json y NO entran aqui. Un campo en null NO se imprime en la ficha."
 }
