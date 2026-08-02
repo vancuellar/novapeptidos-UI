@@ -161,9 +161,14 @@ export default function CarritoCompartido() {
         )}
         <div className="flex justify-between text-muted-foreground">
           <span className="flex items-center gap-1"><Truck className="h-3.5 w-3.5" />{t('cotizador.envio')}</span>
-          {carrito.shipping > 0
-            ? <span className="tabular-nums">{money(carrito.shipping)}</span>
-            : <span className="tabular-nums text-emerald-600 dark:text-emerald-400">{t('cotizador.envioGratis')}</span>}
+          {/* SIN DIRECCIÓN NO HAY COSTO QUE ENSEÑAR (Christián, 2026-08-01): el
+              servidor manda `shipping_pending` y aquí se dice que se calcula al
+              pagar — prometer «gratis» sería mentirle al cliente. */}
+          {carrito.shipping_pending
+            ? <span className="text-xs" data-testid="carrito-envio-pendiente">{t('cotizador.envioPendiente')}</span>
+            : carrito.shipping > 0
+              ? <span className="tabular-nums">{money(carrito.shipping)}</span>
+              : <span className="tabular-nums text-emerald-600 dark:text-emerald-400">{t('cotizador.envioGratis')}</span>}
         </div>
         <div className="flex justify-between font-heading font-semibold text-base pt-2 border-t border-border">
           <span>{t('cotizador.total')}</span>

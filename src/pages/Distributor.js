@@ -17,6 +17,7 @@ import LabReports from '@/components/LabReports';
 import NotificationsFeed from '@/components/NotificationsFeed';
 import ToolsPanel, { herramientasDesbloqueadas } from '@/components/ToolsPanel';
 import CotizadorDistribuidor from '@/components/CotizadorDistribuidor';
+import ComisionesDistribuidor from '@/components/ComisionesDistribuidor';
 // ⛔ EL MISMO componente que ve el admin. Lo que cambia —si se ven o no los números
 // de la casa— lo decide el SERVIDOR con el token, no este archivo: la ruta del
 // distribuidor recorta la respuesta con una lista blanca antes de mandarla.
@@ -105,6 +106,11 @@ const Distributor = () => {
   const [clienteAbierto, setClienteAbierto] = useState(null);
   const [sales, setSales] = useState([]);
   const [orders, setOrders] = useState([]);
+  // FILTRO DE FECHA DE LA PESTAÑA CLIENTES (Christián, 2026-08-01): «totales de
+  // comisión por cliente, con filtro de fecha: semana, 30 días, mes, año, todo».
+  // El recorte lo hace el SERVIDOR (los pedidos no viajan a esta pantalla);
+  // aquí sólo se guarda cuál botón está prendido y se vuelve a pedir la lista.
+  const [periodoClientes, setPeriodoClientes] = useState('todo');
   const [period, setPeriod] = useState('all');
   const [statusFilter, setStatusFilter] = useState('all');
   const [orderPeriod, setOrderPeriod] = useState('all');
@@ -148,7 +154,6 @@ const Distributor = () => {
   const loadAll = useCallback(() => {
     api.get('/distributor/summary').then((r) => setSummary(r.data)).catch(() => {});
     api.get('/distributor/best-sellers').then((r) => setBestSellers(r.data.ranking || [])).catch(() => {});
-    api.get('/distributor/clients').then((r) => setClients(r.data)).catch(() => {});
     api.get('/distributor/sales').then((r) => setSales(r.data)).catch(() => {});
     api.get('/distributor/orders').then((r) => setOrders(r.data)).catch(() => {});
     api.get('/me/notifications').then((r) => setNotifUnread(r.data.unread || 0)).catch(() => {});
@@ -164,6 +169,13 @@ const Distributor = () => {
   const copyText = (txt) => { navigator.clipboard?.writeText(txt); toast.success(t('distributor.codes.copied')); };
 
   useEffect(() => { if (user) loadAll(); }, [user, loadAll]);
+  // La lista de clientes va aparte de `loadAll`: cambiar el filtro de fecha sólo
+  // vuelve a pedir ESTA lista, no las otras siete llamadas del panel.
+  useEffect(() => {
+    if (!user) return;
+    api.get('/distributor/clients', { params: { periodo: periodoClientes } })
+      .then((r) => setClients(r.data)).catch(() => {});
+  }, [user, periodoClientes]);
 
   if (!user || !['distributor', 'admin'].includes(user.role)) return null;
 
@@ -499,7 +511,28 @@ const Distributor = () => {
         </TabsContent>
 
         <TabsContent value="clients" className="mt-5">
-          <h3 className="font-heading font-semibold mb-4">{t('distributor.clientsCount', { count: clients.length })}</h3>
+          <h3 className="font-heading font-semibold mb-2">{t('distributor.clientsCount', { count: clients.length })}</h3>
+          {/* EL FILTRO DE FECHA (Christián, 2026-08-01). Recorta lo que se SUMA
+              (pedidos, gastado, comisión), no la lista: un cliente sin compras en
+              el periodo sigue ahí, con ceros. El corte lo hace el servidor. */}
+          <div className="flex flex-wrap items-center gap-1.5 mb-3" data-testid="dist-clientes-periodos">
+            {['semana', '30dias', 'mes', 'ano', 'todo'].map((p) => (
+              <Button key={p} type="button" size="sm"
+                variant={periodoClientes === p ? 'default' : 'outline'}
+                className="h-8 px-3"
+                onClick={() => setPeriodoClientes(p)}
+                data-testid={`dist-clientes-periodo-${p}`}>
+                {t(`distributor.periodo.${p}`)}
+              </Button>
+            ))}
+            {/* El total del periodo, a la vista: la suma de la columna de comisión. */}
+            <span className="ml-auto text-sm text-muted-foreground" data-testid="dist-clientes-comision-total">
+              {t('distributor.comisionPeriodo')}{' '}
+              <span className="font-semibold text-[hsl(var(--primary))] tabular-nums">
+                {formatMXN(clients.reduce((s, c) => s + (c.my_earnings || 0), 0))}
+              </span>
+            </span>
+          </div>
           <Card className="overflow-x-auto">
             <Table data-testid="distributor-clients-table">
               <TableHeader>
@@ -573,6 +606,9 @@ const Distributor = () => {
         </TabsContent>
 
         <TabsContent value="sales" className="mt-5 space-y-4">
+          {/* La bolsa de comisiones ARRIBA de las ventas: es el dinero que esas
+              ventas le dejan, y aquí vive el botón de solicitar su pago. */}
+          <ComisionesDistribuidor />
           <div className="flex flex-wrap items-center gap-3" data-testid="distributor-sales-filters">
             <Select value={period} onValueChange={setPeriod}>
               <SelectTrigger className="w-44 h-9" data-testid="distributor-period-filter"><SelectValue /></SelectTrigger>

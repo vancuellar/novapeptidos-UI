@@ -230,9 +230,22 @@ export default function CotizadorDistribuidor({
   }, [huellaRenglones, huellaObsequios, descuento, nombreCliente,
     correoCliente, telCliente, dirCliente]);
 
-  // El descuento de cada renglón respeta su tope por producto; los insumos van sin descuento.
+  // SIN DESCUENTO PROPIO, MANDA LA PROMO DE LA CASA (Christián, 2026-08-01): al 0%
+  // el cliente recibe los automáticos —10%, o 15% desde $35,000 de mercancía
+  // descuentable— igual que si llegara solo al sitio. El servidor hace ESTA misma
+  // cuenta al armar el enlace y al cobrar (`_armar_cotizacion` y `create_order`);
+  // si esta pantalla la omitiera, la hoja y el WhatsApp dirían un total distinto
+  // del que el cliente ve al abrir el carrito.
+  const baseDescuentable = renglones.reduce(
+    (s, x) => s + (x.topePct > 0 ? x.precio * x.qty : 0), 0);
+  const promoCasa = baseDescuentable >= 35000 ? 0.15 : 0.10;
+  const sinDescuentoPropio = descuento <= 0;
+  // El descuento de cada renglón respeta su tope por producto; los insumos van sin
+  // descuento. La promo de la casa no se recorta con el máximo del distribuidor.
   const filas = renglones.map((x) => {
-    const pct = Math.min(descuento, x.topePct, tasaMaxima);
+    const pct = sinDescuentoPropio
+      ? Math.min(promoCasa, x.topePct)
+      : Math.min(descuento, x.topePct, tasaMaxima);
     const unit = Math.round(x.precio * (1 - pct));
     return { ...x, pct, unit, importe: unit * x.qty, lista: x.precio * x.qty };
   });
@@ -255,8 +268,14 @@ export default function CotizadorDistribuidor({
      ⛔ Y EL ENVÍO SUMA AL TOTAL, NUNCA RESTA. */
   const cobraEnvio = envioCfg.shipping_charged === true && filas.length > 0;
   const envioDeCortesia = obsequios.some((o) => o.tipo === 'envio');
+  // ⛔ SIN DIRECCIÓN NO SE COTIZA ENVÍO (Christián, 2026-08-01): si el
+  // distribuidor no capturó la dirección del cliente, la cotización NO enseña
+  // un costo de envío — se calcula con la dirección al pagar. El envío de
+  // cortesía sí se enseña (es gratis con o sin dirección). El servidor hace la
+  // misma cuenta en el carrito compartido (`_resolver_carrito`).
+  const envioPendiente = cobraEnvio && !envioDeCortesia && !dirCliente.trim();
   const envio = (() => {
-    if (!cobraEnvio || envioDeCortesia) return 0;
+    if (!cobraEnvio || envioDeCortesia || envioPendiente) return 0;
     if (mercancia < (Number(envioCfg.free_shipping_from) || 0)) return Number(envioCfg.shipping_flat) || 0;
     const tope = Number(envioCfg.shipping_cap_rate) || 0;
     if (tope <= 0) return 0;                       // servidor sin tope: la regla de antes
@@ -331,6 +350,7 @@ export default function CotizadorDistribuidor({
     docDescuentoCaja: t('cotizador.docDescuentoCaja', { pct: `${descuentoPct}%` }),
     docEnvio: t('cotizador.docEnvio'),
     docEnvioGratis: t('cotizador.docEnvioGratis'),
+    docEnvioPendiente: t('cotizador.envioPendiente'),
     docCortesia: t('cotizador.docCortesia'),
     total: t('cotizador.total'),
     docLeyenda: t('cotizador.docLeyenda'),
@@ -345,7 +365,7 @@ export default function CotizadorDistribuidor({
     enlaceCotizacion, enlaceCotizacionTexto, enlacePago, enlacePagoTexto,
     idioma: language, filas, subtotalLista,
     descuento: descuentoPesos, descuentoPct,
-    regalos: regalosVisibles, envio, cobraEnvio, total,
+    regalos: regalosVisibles, envio, cobraEnvio, envioPendiente, total,
   };
 
   // Mismo motivo que arriba: son arreglos de objetos, y por referencia la hoja se
@@ -364,7 +384,7 @@ export default function CotizadorDistribuidor({
       origen: process.env.PUBLIC_URL || '',
     }),
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [folio, nombreCliente, correoCliente, telCliente, dirCliente, codigo, enlaceCotizacion, enlacePago, language, huellaFilas, huellaRegalos, envio, cobraEnvio, total, esOscuro, textos],
+    [folio, nombreCliente, correoCliente, telCliente, dirCliente, codigo, enlaceCotizacion, enlacePago, language, huellaFilas, huellaRegalos, envio, cobraEnvio, envioPendiente, total, esOscuro, textos],
   );
 
   const abrirVistaPrevia = async () => {
@@ -405,7 +425,8 @@ export default function CotizadorDistribuidor({
     descuentoPesos > 0
       ? `${t('cotizador.docDescuento', { pct: descuentoPct })}: −${money(descuentoPesos)}` : '',
     cobraEnvio
-      ? `${t('cotizador.docEnvio')}: ${envio > 0 ? money(envio) : t('cotizador.docEnvioGratis')}` : '',
+      ? `${t('cotizador.docEnvio')}: ${envioPendiente ? t('cotizador.envioPendiente')
+        : envio > 0 ? money(envio) : t('cotizador.docEnvioGratis')}` : '',
     `*${t('cotizador.total')}: ${money(total)}*`,
     '',
     // LOS DOS ENLACES, los mismos que van en el PDF: volver a ver la cotización y
@@ -651,6 +672,15 @@ export default function CotizadorDistribuidor({
               <span className="text-xs text-muted-foreground">%</span>
             </div>
             <p className="text-xs text-muted-foreground mt-1">{t('cotizador.topeNota')}</p>
+            {/* AL 0%, EL AVISO: el cliente recibe la promo de la casa de todos modos.
+                Sin esta línea, Mónica cree que cotizó a precio de lista y el carrito
+                que abre su cliente trae 10% — parecería un error del sistema. */}
+            {sinDescuentoPropio && (
+              <p className="text-xs text-amber-600 dark:text-amber-400 mt-1"
+                data-testid="cotizador-promo-casa">
+                {t('cotizador.promoCasa', { pct: Math.round(promoCasa * 100) })}
+              </p>
+            )}
           </div>
           {/* EL BLOQUE DEL DINERO, con las palabras que pidió Christián: «Descuento
               X%» en vez de «Ahorro», y el envío como un renglón que SUMA. */}
@@ -679,9 +709,11 @@ export default function CotizadorDistribuidor({
             {cobraEnvio && (
               <div className="flex justify-between text-muted-foreground" data-testid="cotizador-envio-renglon">
                 <span className="flex items-center gap-1"><Truck className="h-3.5 w-3.5" />{t('cotizador.envio')}</span>
-                {envio > 0
-                  ? <span className="tabular-nums">{money(envio)}</span>
-                  : <span className="tabular-nums text-emerald-600 dark:text-emerald-400">{t('cotizador.envioGratis')}</span>}
+                {envioPendiente
+                  ? <span className="text-xs" data-testid="cotizador-envio-pendiente">{t('cotizador.envioPendiente')}</span>
+                  : envio > 0
+                    ? <span className="tabular-nums">{money(envio)}</span>
+                    : <span className="tabular-nums text-emerald-600 dark:text-emerald-400">{t('cotizador.envioGratis')}</span>}
               </div>
             )}
             <div className="flex justify-between font-heading font-semibold text-base pt-1">

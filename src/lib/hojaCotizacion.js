@@ -164,7 +164,11 @@ export function hojaCotizacionHTML(datos, { tema = 'claro', origen = '' } = {}) 
       : '',
     datos.cobraEnvio
       ? `<tr><td class="cot-dlabel">${esc(t.docEnvio || '')}</td>
-             <td class="cot-dval${envio > 0 ? '' : ' cot-verde'}">${envio > 0 ? money(envio) : esc(t.docEnvioGratis || '')}</td></tr>`
+             <td class="cot-dval${envio > 0 || datos.envioPendiente ? '' : ' cot-verde'}">${
+  /* ⛔ SIN DIRECCIÓN NO SE ENSEÑA COSTO DE ENVÍO (Christián, 2026-08-01): se
+     calcula con la dirección al pagar. Con dirección, la política de siempre. */
+  datos.envioPendiente ? esc(t.docEnvioPendiente || '')
+    : envio > 0 ? money(envio) : esc(t.docEnvioGratis || '')}</td></tr>`
       : '',
     `<tr><td class="cot-dlabel cot-dtotal">${esc(t.total || '')}</td>
          <td class="cot-dval cot-dtotal">${money(datos.total)}</td></tr>`,

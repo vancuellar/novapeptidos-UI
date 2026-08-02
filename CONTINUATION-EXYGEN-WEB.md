@@ -1,3 +1,47 @@
+# 🤝 HANDOFF — 1 de agosto de 2026 (TARDE) · PANEL DEL DISTRIBUIDOR CERRADO
+
+**Estado: backend `649d720` EN VIVO (azul/verde, salud OK, rutas nuevas contestando
+401 como deben); sitio desplegado con `./desplegar.sh` después de este commit.**
+Compuertas: backend **1,344 pruebas** (42 nuevas) · auditoría **95/0** · build con
+137 rutas prerender.
+
+## ✅ Lo que se cerró esta tarde (los pendientes del punto 9 + 2 encargos nuevos)
+
+1. **La promo automática es el PISO.** Si el distribuidor no pone descuento propio
+   (0%), el cliente recibe los automáticos —10%, 15% desde $35,000— en el
+   cotizador, el carrito compartido y la caja. Y se tapó un hoyo: **el carrito
+   compartido ahora cobra el descuento que se COTIZÓ** (`discount_asked`); antes
+   cobraba el del código `ref`, y un carrito al 20% podía cobrarse al 10%. El
+   envío gratis por umbral ya aplicaba (`shipping_for`). `test_promo_automatica.py`.
+2. **Totales de comisión por cliente con filtro de fecha** en el panel del
+   distribuidor: Semana / 30 Días / Este Mes / Este Año / Todo
+   (`/distributor/clients?periodo=`), con la suma del periodo a la vista.
+3. **Pago de comisiones** (`comisiones.py` + colección `commission_payouts`):
+   el distribuidor ve ganado/pagado/por pagar y SOLICITA su pago (pestaña Ventas);
+   el admin ve la deuda de toda la casa en Distribuidores, REGISTRA cada pago con
+   referencia o RECHAZA con motivo. Candados: no se solicita ni se paga más que el
+   saldo; una solicitud a la vez; campanitas en ambos sentidos. `test_comisiones.py`.
+4. **Mis Cotizaciones: seleccionar, archivar y borrar** (checkbox por renglón,
+   bote por fila, botones de lote arriba, filtro «Archivadas»).
+   ⛔ Lo pagado NO se borra: se archiva y se avisa («protegidas»). El borrado es
+   suave (`deleted_at`): el enlace del cliente muere (404), el documento queda
+   para auditar el obsequio.
+5. **Sin dirección no se enseña costo de envío** (top priority de Christián):
+   cotizador, hoja/PDF, WhatsApp y carrito compartido dicen «Se cotiza por
+   separado» (`shipping_pending`); el total va sin envío. Con dirección, las
+   reglas de siempre — las nuevas se definen con él (ver abajo).
+
+## 🔜 Lo que sigue
+
+- **Reglas de envío CON dirección** — Christián va a dictarlas («quizás costo
+  fijo… etc»). Hoy rigen: $250 plano bajo $2,500; arriba, la casa absorbe hasta
+  el 5% de la compra; el análisis está en el mensaje de cierre de esta sesión.
+- Los pendientes 10-13 del handoff de la mañana siguen igual (huecos de catálogo,
+  /aprende/conservacion, 20 proveedores sin indexar, análisis de Uther).
+- Las 4 decisiones de Christián del handoff de la mañana siguen esperando.
+
+---
+
 # 🤝 HANDOFF — 1 de agosto de 2026 · TODO PUBLICADO Y VERIFICADO
 
 **Estado: los tres repos limpios, empujados y EN VIVO.** Último despliegue verificado

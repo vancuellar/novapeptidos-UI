@@ -20,6 +20,7 @@ import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent } from '@/components/ui/tabs';
 import DashboardSidebar, { alTope } from '@/components/layout/DashboardSidebar';
 import StatCard from '@/components/panels/StatCard';
+import ComisionesAdmin from '@/components/panels/ComisionesAdmin';
 import GatewayCredentials from '@/components/GatewayCredentials';
 import AjustesEnvio from '@/components/AjustesEnvio';
 // El mismo cotizador que ve el distribuidor; al admin el servidor le manda además
@@ -1488,6 +1489,9 @@ const Admin = () => {
         </TabsContent>
 
         <TabsContent value="distributors" className="mt-5">
+          {/* La bolsa de comisiones: qué se debe y qué ya se pagó, con el registro
+              de cada pago. Solo aparece cuando hay movimiento. */}
+          <ComisionesAdmin />
           {applications.filter((a) => a.status === 'pendiente').length > 0 && (
             <Card className="p-4 mb-4 border-[hsl(var(--warning-border))]" data-testid="admin-applications">
               <h3 className="font-heading font-semibold text-sm mb-3">{t('admin.apps.title', { count: applications.filter((a) => a.status === 'pendiente').length })}</h3>
