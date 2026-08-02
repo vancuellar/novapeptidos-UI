@@ -170,9 +170,12 @@ const Checkout = () => {
     (m) => (m.id !== 'cripto' || cryptoOn) && (m.id !== 'tarjeta' || cardOn)
       && (m.id !== 'oxxo' || oxxoOn),
   );
-  // Si el metodo elegido deja de estar disponible, cae al primero que si este.
+  // Si el metodo ELEGIDO deja de estar disponible, se vacía para que vuelva a
+  // elegir. ⛔ Ya no cae «al primero que sí esté»: eso re-preseleccionaba SPEI
+  // en cuanto cargaba la configuración y deshacía la regla de Christián
+  // (2026-08-02) de que la forma de pago se ELIGE, no se hereda.
   useEffect(() => {
-    if (methods.length && !methods.some((m) => m.id === payment)) setPayment(methods[0].id);
+    if (payment && methods.length && !methods.some((m) => m.id === payment)) setPayment('');
   }, [methods, payment]);
   const sectionRefs = { 0: useRef(null), 1: useRef(null), 2: useRef(null) };
 
