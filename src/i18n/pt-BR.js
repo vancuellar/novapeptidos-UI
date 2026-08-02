@@ -1428,6 +1428,8 @@ const ptBR = {
   'checkout.shipping.express': 'Envio Express',
   'checkout.shipping.expressDays': '1 a 2 dias úteis',
   'checkout.shipping.included': 'Incluído',
+  'checkout.expressBadge': 'Envio Express Disponível',
+  'checkout.shipping.soloDisponible': 'Os prazos valem para itens em estoque; itens sob encomenda levam ~1 semana.',
   'checkout.shipping.expressGratis': 'Boas notícias! Seu pedido se qualifica para envio express grátis.',
   'checkout.shipping.askZip': 'Digite seu CEP e dizemos quanto custa o frete.',
   'checkout.shipping.loading': 'Consultando a transportadora…',

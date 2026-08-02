@@ -500,6 +500,16 @@ const Checkout = () => {
                     {t('checkout.shipping.expressGratis')}
                   </p>
                 )}
+                {/* ⛔ CON MERCANCÍA SOBRE PEDIDO EN EL CARRITO, SE DICE AQUÍ TAMBIÉN
+                    (Christián, 2026-08-02): los plazos rápidos aplican a lo que hay
+                    en bodega; lo sobre pedido tarda ~1 semana — como ya avisan el
+                    catálogo, la ficha, el carrito y el bloque de envío partido. */}
+                {sobrePedido.length > 0 && (
+                  <p className="mt-2 text-xs text-muted-foreground"
+                    data-testid="checkout-envio-plazos-nota">
+                    {t('checkout.shipping.soloDisponible')}
+                  </p>
+                )}
               </div>
             )}
           </Card>
@@ -705,11 +715,12 @@ const Checkout = () => {
             <Button type="submit" className="w-full mt-5" size="lg" disabled={submitting} data-testid="checkout-place-order-button">
               {submitting ? t('common.loading') : (payment === 'tarjeta' ? t('checkout.payAmount', { amount: formatMXN(total) }) : t('checkout.placeOrder'))}
             </Button>
-            {/* Los dos iconitos bajo el botón — Christián (2026-08-02): «Pago
-                Seguro and Pureza HPLC - leave these there». */}
+            {/* Los dos iconitos bajo el botón (Christián, 2026-08-02, última
+                vuelta): Pago Seguro se queda y Pureza HPLC se cambia por el
+                envío express — la pureza ya vive en los puntos del sello. */}
             <div className="mt-4 flex items-center justify-center gap-3 text-[10px] text-muted-foreground">
               <span className="flex items-center gap-1"><ShieldCheck className="h-3.5 w-3.5" /> {t('checkout.securePayment')}</span>
-              <span className="flex items-center gap-1"><Package className="h-3.5 w-3.5" /> {t('checkout.coaByLot')}</span>
+              <span className="flex items-center gap-1"><Truck className="h-3.5 w-3.5" /> {t('checkout.expressBadge')}</span>
             </div>
 
             {/* ⛔ DENTRO de la tarjeta pegajosa, no debajo (Christián, 2026-08-02:

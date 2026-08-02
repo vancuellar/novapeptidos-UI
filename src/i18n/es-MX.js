@@ -1426,6 +1426,8 @@ const esMX = {
   'checkout.shipping.express': 'Envío Express',
   'checkout.shipping.expressDays': '1 a 2 días hábiles',
   'checkout.shipping.included': 'Incluido',
+  'checkout.expressBadge': 'Envío Express Disponible',
+  'checkout.shipping.soloDisponible': 'Los plazos aplican a lo disponible en bodega; lo sobre pedido tarda ~1 semana.',
   'checkout.shipping.expressGratis': '¡Buenas noticias! Tu pedido califica para envío express gratis.',
   'checkout.shipping.askZip': 'Escribe tu código postal y te decimos cuánto cuesta el envío.',
   'checkout.shipping.loading': 'Consultando a la paquetería…',

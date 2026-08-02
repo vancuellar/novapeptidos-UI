@@ -1433,6 +1433,8 @@ const enUS = {
   'checkout.shipping.express': 'Express Shipping',
   'checkout.shipping.expressDays': '1 to 2 business days',
   'checkout.shipping.included': 'Included',
+  'checkout.expressBadge': 'Express Shipping Available',
+  'checkout.shipping.soloDisponible': 'Delivery times apply to in-stock items; backordered items take ~1 week.',
   'checkout.shipping.expressGratis': 'Good news! Your order qualifies for free express shipping.',
   'checkout.shipping.askZip': 'Enter your postal code and we will tell you the shipping cost.',
   'checkout.shipping.loading': 'Checking with the carrier…',
