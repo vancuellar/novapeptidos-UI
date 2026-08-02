@@ -466,21 +466,31 @@ async function reglasDeDinero(porSku, h) {
   aBorrar.push(conTope);
   revisar(conTope.discount === Math.round(porSku['AHKCU-50MG'].price * 0.10),
           'descuento automático correcto', `$${conTope.discount}`);
-  revisar(Math.round(conTope.total) === Math.round(conTope.subtotal - conTope.discount),
-          'total = subtotal − descuento', `${conTope.subtotal} − ${conTope.discount} = ${conTope.total}`);
+  // Desde que Skydropx cotiza EN VIVO (2026-08-01), el pedido trae su envío real:
+  // la cuenta que se fija es total = subtotal − descuento + envío. Exigir el total
+  // sin envío era la expectativa vieja, de cuando el cobro estaba dormido.
+  revisar(Math.round(conTope.total) === Math.round(conTope.subtotal - conTope.discount + (conTope.shipping || 0)),
+          'total = subtotal − descuento + envío',
+          `${conTope.subtotal} − ${conTope.discount} + ${conTope.shipping || 0} = ${conTope.total}`);
+  revisar((conTope.shipping || 0) >= 0, 'el envío nunca resta', `$${conTope.shipping}`);
 
   // Un código que no existe no puede dar descuento de distribuidor.
   const falso = await comprar([item('NAD-1000MG')], 'NOEXISTE-99-XXXX');
   aBorrar.push(falso);
   revisar(falso.discount_rate <= 0.10, 'código inválido cae al automático', String(falso.discount_rate));
 
-  // No se vende lo que no hay.
+  // ⛔ VENDER SIEMPRE — ENVÍO PARTIDO (Christián, 2026-07-30): el checkout ACEPTA
+  // pedidos que exceden el inventario; lo disponible sale ya y el resto se manda
+  // pedir, con el pedido marcado (`backorder`). La expectativa vieja ("bloquea la
+  // compra") contradecía esa orden. Lo que se fija ahora: que la venta ENTRE y que
+  // quede MARCADA como sobre pedido — un exceso que pasara sin marca sí sería falla.
   const exceso = await comprar([item('NAD-1000MG', 99999)]);
   if (exceso.order_number) {
     aBorrar.push(exceso);
-    mal('bloquea compra sobre el stock', 'DEJÓ comprar 99,999');
+    revisar(exceso.backorder === true, 'el exceso entra PARTIDO y marcado (backorder)',
+            `backorder=${exceso.backorder}`);
   } else {
-    ok('bloquea compra sobre el stock', String(exceso.detail || '').slice(0, 70));
+    mal('vender siempre: el exceso se aceptó partido', String(exceso.detail || '').slice(0, 70));
   }
 
   // Limpieza: la auditoría no deja basura en los números de Christian.
