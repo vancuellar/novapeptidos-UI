@@ -1,6 +1,6 @@
 import React, { useEffect, useLayoutEffect, useState, useCallback } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import { Store, Users, DollarSign, TrendingUp, ShoppingBag, Copy, Percent, Truck, ExternalLink, BookOpen, Award, Ticket, RefreshCw, Bell, Syringe, Package, Coins, User, GraduationCap, FlaskConical, Megaphone, ChevronRight, Calculator, Sparkles } from 'lucide-react';
+import { Store, Users, DollarSign, TrendingUp, ShoppingBag, Copy, Percent, Truck, ExternalLink, BookOpen, Award, Ticket, RefreshCw, Bell, Syringe, Package, Coins, User, GraduationCap, FlaskConical, Megaphone, ChevronRight, Calculator, Sparkles, FileText } from 'lucide-react';
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip } from 'recharts';
 import GraficaInteractiva from '@/components/charts/GraficaInteractiva';
 import { Button } from '@/components/ui/button';
@@ -31,6 +31,10 @@ import StatCard from '@/components/panels/StatCard';
 import PointsPanel from '@/components/panels/PointsPanel';
 import ProfilePanel from '@/components/panels/ProfilePanel';
 import TutorialsPanel from '@/components/panels/TutorialsPanel';
+// MIS COTIZACIONES: las que ya generó, para reenviarlas sin rearmarlas — y para ver
+// cuáles ya se pagaron (Christián, 2026-08-01). Va pegado al Cotizador porque es su
+// otra mitad: uno arma el papel, el otro guarda los que ya salieron.
+import MisCotizaciones from '@/components/panels/MisCotizaciones';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog';
@@ -254,6 +258,10 @@ const Distributor = () => {
     // presupuesto que le manda a SU cliente. Antes vivía adentro de "Mis
     // Herramientas"; aquí tiene más lógica, junto a Clientes y Ventas.
     { value: 'cotizador', icon: Calculator, label: t('distributor.cotizadorTab') },
+    // Las cotizaciones YA GENERADAS. Christián: «que no las tenga que volver a
+    // generar de cero», y «una vez pagadas dejan de ser cotizaciones y se
+    // transforman en ventas».
+    { value: 'cotizaciones', icon: FileText, label: t('cotizaciones.tab') },
     // El Asesor de Negocio va junto al Cotizador porque es su hermano: uno arma
     // el papel, el otro contesta la pregunta de antes de armarlo. ⛔ Lo que el
     // asesor sabe lo decide el SERVIDOR según el rol del token: aquí no hay nada
@@ -539,6 +547,14 @@ const Distributor = () => {
           <CotizadorDistribuidor catalogo={catalogoCotizador} tasaMaxima={tasaMaximaCotizador}
             codigo={summary?.distributor_code || user.distributor_code || ''}
             nombreDistribuidor={user.name || ''} />
+        </TabsContent>
+
+        {/* MIS COTIZACIONES. ⛔ Sólo las SUYAS: el servidor filtra por el id del
+            token, no por ningún parámetro que se pueda escribir a mano. Y el código
+            del obsequio no llega ni aquí — si ella lo viera, se lo podría pasar al
+            cliente, que es justo lo que no puede pasar. */}
+        <TabsContent value="cotizaciones" className="mt-5">
+          <MisCotizaciones />
         </TabsContent>
 
         {/* El Asesor de Negocio. El componente es el MISMO que ve el admin; lo

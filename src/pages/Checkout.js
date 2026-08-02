@@ -27,7 +27,7 @@ const ICONS = { CreditCard, Landmark, Bitcoin, Store };
 // Pago, no aqui. Se borraron con el formulario (Christian, 2026-07-26).
 
 const Checkout = () => {
-  const { items, hidratando, subtotal, discount, discountRate, discountSource, cappedItems, regla5Items, calcularEnvio, cobraEnvio, envioGratisDesde, envioGratisDeVerdadDesde, topeEnvio, distCode, clearCart, sharedCartToken } = useCart();
+  const { items, hidratando, subtotal, discount, discountRate, discountSource, cappedItems, regla5Items, calcularEnvio, cobraEnvio, envioGratisDesde, envioGratisDeVerdadDesde, topeEnvio, distCode, clearCart, sharedCartToken, datosDelCliente } = useCart();
   const { user } = useAuth();
   const { t } = useLanguage();
   // El inventario REAL. El aviso de envío partido tiene que estar EN LA PANTALLA DE
@@ -62,6 +62,9 @@ const Checkout = () => {
   // Si el formulario llegó lleno con lo de su última compra, se le dice — con una
   // línea, no con un diálogo que haya que cerrar para poder comprar.
   const [prefilled, setPrefilled] = useState(false);
+  // Lo mismo, pero cuando los datos vienen de la COTIZACIÓN que le armó su
+  // distribuidora (carrito compartido) en vez de su última compra.
+  const [deLaCotizacion, setDeLaCotizacion] = useState(false);
   const [loyalty, setLoyalty] = useState({ eligible: false, balance: 0 });
   const [usePoints, setUsePoints] = useState(false);
   const [cryptoOn, setCryptoOn] = useState(false);
@@ -123,6 +126,37 @@ const Checkout = () => {
     }).catch(() => {});
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user]);
+
+  /* ⛔ EL PRELLENADO DEL CARRITO COMPARTIDO (Christián, 2026-08-01), en sus palabras:
+     «Cuando el cliente abre el link de la cotización, su nombre, email, teléfono,
+     dirección, NADA se guardó. Necesito que corrijas esto si el distribuidor ya lo
+     llenó por él.»
+
+     Su distribuidora ya los tecleó al armar la cotización. Aquí llegan del contexto
+     del carrito, que los pidió con la SEGUNDA LLAVE del enlace (ver CartContext:
+     no salen por la ruta pública del carrito, así que probar tokens no los revela).
+
+     Se rellena SÓLO lo que está vacío, igual que el prellenado de quien tiene
+     sesión: nunca se pisa lo que el cliente ya escribió, y todo sigue editable —
+     esto le ahorra teclear, no le impone nada. Si no vino nada, el checkout se
+     comporta exactamente como antes. */
+  useEffect(() => {
+    if (!datosDelCliente) return;
+    const d = datosDelCliente;
+    const tel = parsePhone(d.phone);
+    setForm((f) => ({
+      ...f,
+      full_name: f.full_name || d.full_name || '',
+      email: f.email || d.email || '',
+      phone: f.phone || tel.national,
+      address: f.address || d.address || '',
+    }));
+    if (!savedPhone.national && d.phone) setPhoneCountry(tel.country);
+    // Aviso PROPIO, no el de «tu última compra»: aquí los datos vienen de la
+    // cotización que le armaron, y decirle otra cosa sería mentirle.
+    if (d.full_name || d.email || d.phone || d.address) setDeLaCotizacion(true);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [datosDelCliente]);
   // La TARJETA solo aparece si Mercado Pago esta configurado. Antes salia siempre
   // — y por defecto — con un formulario que pedia el numero, lo validaba y lo
   // TIRABA: nadie cobraba y el cliente se iba creyendo que habia pagado.
@@ -376,7 +410,11 @@ const Checkout = () => {
           {t('checkout.haveAccount')} <Link to="/login" className="text-[hsl(var(--primary))] font-medium hover:underline">{t('checkout.loginLink')}</Link> · {t('checkout.guestOk')}
         </p>
       )}
-      {prefilled && (
+      {deLaCotizacion ? (
+        <p className="text-sm text-muted-foreground mb-4" data-testid="checkout-prefilled-cotizacion">
+          {t('checkout.prefilledCotizacion')}
+        </p>
+      ) : prefilled && (
         <p className="text-sm text-muted-foreground mb-4" data-testid="checkout-prefilled-hint">
           {t('checkout.prefilled')}
         </p>

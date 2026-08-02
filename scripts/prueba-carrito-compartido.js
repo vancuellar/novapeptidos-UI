@@ -21,6 +21,13 @@
  *   5. ⛔ Comprueba que en el checkout SIGUEN sus productos —no «Tu carrito está
  *      vacío»—, que el token del carrito viajó y que el código del distribuidor
  *      quedó aplicado (sin él la venta no es de nadie).
+ *   6. ⛔ Y que el checkout llega CON SUS DATOS PUESTOS: nombre, correo, teléfono y
+ *      domicilio, los que su distribuidora capturó al armar la cotización
+ *      (Christián, 2026-08-01: «su nombre, email, teléfono, dirección, NADA se
+ *      guardó»). Los datos NO vienen del carrito público —esa ruta no los
+ *      devuelve— sino de `POST /carrito/<token>/datos`, que exige la segunda llave
+ *      del enlace; aquí se comprueba además que esa llamada LLEVA la llave que iba
+ *      en el fragmento y que el carrito público NO trae ni un dato personal.
  *
  * El servidor NO hace falta: sus respuestas se sirven desde aquí (`page.route`), que
  * es lo correcto para una prueba de esta pantalla — lo que se está probando es el
@@ -39,6 +46,18 @@ const TOKEN = 'tokendepruebaf0f0f0f0f0f0f0f0f0f0';
 // El código interno del obsequio. NO tiene por qué existir en el navegador: se busca
 // en el HTML de las dos pantallas y si aparece, la prueba truena.
 const CODIGO_DE_OBSEQUIO = 'DGIFT-NOSEENSENA';
+
+// LA SEGUNDA LLAVE — la que abre los datos del cliente. Viaja en el FRAGMENTO del
+// enlace (`#d=`), que el navegador nunca manda al servidor.
+const LLAVE = 'llave-de-prueba-192-bits-abcdefgh';
+// Los datos que Mónica capturó por su cliente al armar la cotización. Son los del
+// ejemplo real que mandó Christián.
+const DATOS = {
+  full_name: 'Christian Cuellar',
+  email: 'christiancuellar@gmail.com',
+  phone: '9982440119',
+  address: 'Frac. Selvamar, Priv. La Ceiba, Casa 6, Solidaridad, Quintana Roo, 77727',
+};
 
 const PRODUCTOS = [
   { id: 'prod-reta-60', sku: 'RETA-60MG', name: 'Retatrutida 60 mg', slug: 'retatrutida-60-mg',
@@ -106,6 +125,8 @@ function servirBuild() {
 }
 
 // ------------------------------------------------------------- el API de mentira
+const llamadasDeDatos = [];
+
 async function montarApi(page) {
   await page.route('**/api/**', async (route) => {
     const url = new URL(route.request().url());
@@ -113,6 +134,14 @@ async function montarApi(page) {
     const json = (cuerpo, status = 200) => route.fulfill({
       status, contentType: 'application/json', body: JSON.stringify(cuerpo),
     });
+    // ⛔ LOS DATOS DEL CLIENTE — sólo con la segunda llave, igual que el servidor.
+    // Se apunta cada intento para poder comprobar QUÉ llave mandó el navegador.
+    if (ruta === `/carrito/${TOKEN}/datos`) {
+      let clave = '';
+      try { clave = JSON.parse(route.request().postData() || '{}').clave || ''; } catch { /* nada */ }
+      llamadasDeDatos.push(clave);
+      return clave === LLAVE ? json(DATOS) : json({ detail: 'No hay datos para ese carrito' }, 404);
+    }
     if (ruta === `/carrito/${TOKEN}`) return json(CARRITO);
     if (ruta === '/products') return json(PRODUCTOS);
     if (ruta === '/payments/config') return json(CONFIG_PAGOS);
@@ -147,7 +176,7 @@ function revisar(ok, que, detalle = '') {
 
   try {
     // ---- 1. el cliente abre el enlace que le mandaron por WhatsApp ----
-    await page.goto(`${sitio}/carrito/${TOKEN}`, { waitUntil: 'domcontentloaded' });
+    await page.goto(`${sitio}/carrito/${TOKEN}#d=${LLAVE}`, { waitUntil: 'domcontentloaded' });
     await page.waitForSelector('[data-testid="carrito-compartido"]', { timeout: 20000 });
     const htmlCarrito = await page.content();
     revisar(htmlCarrito.includes('Retatrutida 60 mg'), 'el carrito compartido enseña sus productos');
@@ -193,6 +222,35 @@ function revisar(ok, que, detalle = '') {
     const htmlCheckout = await page.content();
     revisar(!htmlCheckout.includes('DGIFT'),
       '⛔ el código del obsequio NO aparece en el checkout');
+
+    // ---- 4. ⛔ EL PRELLENADO: los cuatro datos, ya puestos ----
+    // Se espera al formulario lleno: los datos llegan de una llamada aparte.
+    await page.waitForFunction(
+      (correo) => document.querySelector('[data-testid="checkout-email-input"]')?.value === correo,
+      DATOS.email, { timeout: 20000 },
+    ).catch(() => {});
+    const puesto = async (testid) => page.locator(`[data-testid="${testid}"]`).inputValue().catch(() => '');
+    const nombre = await puesto('checkout-name-input');
+    const correo = await puesto('checkout-email-input');
+    const telefono = await puesto('checkout-phone-input');
+    const domicilio = await puesto('checkout-address-input');
+    revisar(nombre === DATOS.full_name, '⛔ el checkout llega con el NOMBRE puesto', `«${nombre}»`);
+    revisar(correo === DATOS.email, '⛔ el checkout llega con el CORREO puesto', `«${correo}»`);
+    revisar(telefono.replace(/\D/g, '') === DATOS.phone,
+      '⛔ el checkout llega con el TELÉFONO puesto', `«${telefono}»`);
+    revisar(domicilio === DATOS.address, '⛔ el checkout llega con el DOMICILIO puesto',
+      `«${domicilio.slice(0, 40)}…»`);
+    revisar((await page.locator('[data-testid="checkout-prefilled-cotizacion"]').count()) === 1,
+      'se le avisa que los datos vienen de su cotización (y son editables)');
+
+    // ---- 5. ⛔ LA PRIVACIDAD: de dónde NO salieron esos datos ----
+    revisar(llamadasDeDatos.includes(LLAVE),
+      '⛔ el navegador pidió los datos CON la segunda llave del fragmento',
+      `intentos=${llamadasDeDatos.length}`);
+    const carritoPublico = JSON.stringify(CARRITO);
+    revisar(!carritoPublico.includes(DATOS.email) && !carritoPublico.includes(DATOS.phone)
+      && !carritoPublico.includes(DATOS.address),
+      '⛔ el carrito PÚBLICO no lleva correo, teléfono ni domicilio');
   } catch (e) {
     revisar(false, 'la prueba llegó hasta el final', String(e && e.message).slice(0, 200));
   } finally {

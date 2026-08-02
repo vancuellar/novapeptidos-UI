@@ -125,7 +125,15 @@ export const CartProvider = ({ children }) => {
 
   // Vaciar el carrito también suelta el carrito compartido: las cortesías eran de
   // ESE carrito, no del cliente. Si arma otro a mano, ya no le tocan.
-  const clearCart = () => { setItems([]); setSharedCartToken(''); };
+  //
+  // Y suelta los datos del cliente que venían prellenados: son de ESA cotización, y
+  // una vez hecho el pedido no tienen por qué seguir en la memoria del navegador —
+  // sobre todo en un teléfono prestado o compartido.
+  const clearCart = () => {
+    setItems([]);
+    setSharedCartToken('');
+    guardarDatosDelCliente(null);
+  };
 
   const subtotal = items.reduce((sum, i) => sum + i.price * i.quantity, 0);
   const count = items.reduce((sum, i) => sum + i.quantity, 0);
@@ -236,6 +244,50 @@ export const CartProvider = ({ children }) => {
       return (dela || sessionStorage.getItem(LLAVE_CARRITO) || '').trim();
     } catch { return ''; }
   });
+  /* LOS DATOS DEL CLIENTE QUE SU DISTRIBUIDORA YA CAPTURÓ (Christián, 2026-08-01):
+     «Cuando el cliente abre el link de la cotización, su nombre, email, teléfono,
+     dirección, NADA se guardó. Necesito que corrijas esto si el distribuidor ya lo
+     llenó por él.»
+
+     ⛔ CÓMO VIAJAN, Y POR QUÉ ES SEGURO. NO vienen en `/carrito/{token}`, que es una
+     ruta PÚBLICA y sin sesión: por ahí sólo salen productos y precios, igual que
+     ayer, así que quien pruebe tokens al azar no cosecha ni un domicilio. Vienen de
+     `POST /carrito/{token}/datos`, que exige una SEGUNDA llave, y esa llave viaja en
+     el FRAGMENTO del enlace (`#d=…`) — la única parte de una dirección que el
+     navegador nunca manda a ningún servidor, así que no queda en registros de acceso
+     ni se le filtra a terceros por el `Referer`.
+
+     Aquí sólo se guardan en memoria y en `sessionStorage`, para que sobrevivan el
+     salto del carrito compartido al checkout (que es una navegación sin recarga).
+     Mueren con la pestaña. */
+  const LLAVE_DATOS = 'exygen_datos_del_cliente';
+  const [datosDelCliente, setDatosDelCliente] = useState(() => {
+    try { return JSON.parse(sessionStorage.getItem(LLAVE_DATOS) || 'null'); } catch { return null; }
+  });
+  const guardarDatosDelCliente = React.useCallback((datos) => {
+    setDatosDelCliente(datos);
+    try {
+      if (datos) sessionStorage.setItem(LLAVE_DATOS, JSON.stringify(datos));
+      else sessionStorage.removeItem(LLAVE_DATOS);
+    } catch { /* modo privado de Safari: se pierde al navegar, no rompe nada */ }
+  }, []);
+
+  /* Pide los datos con la llave del fragmento. Si algo falla —llave mala, carrito
+     vencido, servidor caído— NO se le dice nada al cliente: el checkout se comporta
+     como siempre y él teclea sus datos. Prellenar es una cortesía, no un requisito. */
+  const claveYaUsada = React.useRef('');
+  const pedirDatosDelCliente = React.useCallback(async (token, clave) => {
+    if (!token || !clave) return;
+    const huella = `${token}:${clave}`;
+    if (claveYaUsada.current === huella) return;
+    claveYaUsada.current = huella;
+    try {
+      const r = await api.post(`/carrito/${encodeURIComponent(token)}/datos`, { clave });
+      const d = r.data || {};
+      if (d.full_name || d.email || d.phone || d.address) guardarDatosDelCliente(d);
+    } catch { /* sin prellenado: el checkout sigue como siempre */ }
+  }, [guardarDatosDelCliente]);
+
   // El código puesto, visto desde un callback que no se vuelve a crear. Sin esto,
   // `hidratarDesdeUrl` leería el `distCode` del primer pintado para siempre.
   const codigoPuesto = React.useRef(distCode);
@@ -275,15 +327,26 @@ export const CartProvider = ({ children }) => {
   );
   const urlYaLeida = React.useRef(null);
 
-  const hidratarDesdeUrl = React.useCallback((busqueda) => {
+  const hidratarDesdeUrl = React.useCallback((busqueda, fragmento) => {
     const cadena = typeof busqueda === 'string' ? busqueda : window.location.search;
-    if (urlYaLeida.current === cadena) return;
-    urlYaLeida.current = cadena;
+    const trozo = typeof fragmento === 'string' ? fragmento : window.location.hash;
+    if (urlYaLeida.current === cadena + trozo) return;
+    urlYaLeida.current = cadena + trozo;
     const q = new URLSearchParams(cadena);
 
     // 1. EL TOKEN DEL CARRITO COMPARTIDO. Sólo el token; ni un peso.
     const token = (q.get('cart') || '').trim();
     if (token) setSharedCartToken(token);
+
+    // 1bis. LA SEGUNDA LLAVE, la de los datos del cliente. Va en el FRAGMENTO
+    //       (`#d=…`) a propósito: el navegador no lo manda a ningún servidor, así
+    //       que no queda escrito en ningún registro. Ver `pedirDatosDelCliente`.
+    const clave = (new URLSearchParams((trozo || '').replace(/^#/, '')).get('d') || '').trim();
+    if (clave) {
+      let guardado = '';
+      try { guardado = sessionStorage.getItem(LLAVE_CARRITO) || ''; } catch { guardado = ''; }
+      pedirDatosDelCliente(token || guardado, clave);
+    }
 
     // 2. ENLACE CON CÓDIGO (?ref=): lo que reparte el distribuidor desde su
     //    cotizador. Sin esto el enlace sería adorno — el cliente entraría,
@@ -363,11 +426,12 @@ export const CartProvider = ({ children }) => {
       }
       setHidratando(false);
     })();
-  }, [t]);
+  }, [t, pedirDatosDelCliente]);
 
   // El montaje también pasa por aquí, para que el proveedor siga sirviendo aunque
   // nadie lo llame desde la ruta (y para no depender del orden de los efectos).
-  useEffect(() => { hidratarDesdeUrl(window.location.search); }, [hidratarDesdeUrl]);
+  useEffect(() => { hidratarDesdeUrl(window.location.search, window.location.hash); },
+  [hidratarDesdeUrl]);
 
   // Si el cupón exige un mínimo y el carrito no llega, NO se aplica — igual que
   // en el servidor, para que el total en pantalla sea el que se cobra.
@@ -476,7 +540,7 @@ export const CartProvider = ({ children }) => {
   const envioGratis = cobraEnvio && items.length > 0 && shipping === 0;
 
   return (
-    <CartContext.Provider value={{ items, hidratando, addItem, updateQty, removeItem, clearCart, subtotal, count, discount, discountRate, discountSource, cappedItems, lineDiscounts, regla5Items, compraPropia, baseRate, nextTier, shipping, calcularEnvio, cobraEnvio, envioGratis, faltaParaEnvioGratis, envioGratisDesde: envio.free_shipping_from, envioGratisDeVerdadDesde, topeEnvio, distCode, distRate, codeMin, codeMinMet, applyDistCode, clearDistCode, sharedCartToken, setSharedCartToken, hidratarDesdeUrl }}>
+    <CartContext.Provider value={{ items, hidratando, addItem, updateQty, removeItem, clearCart, subtotal, count, discount, discountRate, discountSource, cappedItems, lineDiscounts, regla5Items, compraPropia, baseRate, nextTier, shipping, calcularEnvio, cobraEnvio, envioGratis, faltaParaEnvioGratis, envioGratisDesde: envio.free_shipping_from, envioGratisDeVerdadDesde, topeEnvio, distCode, distRate, codeMin, codeMinMet, applyDistCode, clearDistCode, sharedCartToken, setSharedCartToken, hidratarDesdeUrl, datosDelCliente, pedirDatosDelCliente }}>
       {children}
     </CartContext.Provider>
   );

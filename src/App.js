@@ -190,10 +190,13 @@ const ScrollToTop = () => {
    carrito. `useLayoutEffect` y no `useEffect` a propósito: corre ANTES de pintar, así
    que el checkout no alcanza a enseñar el cartel de carrito vacío mientras se llena.
    `hidratarDesdeUrl` es idempotente — la misma búsqueda no se procesa dos veces. */
+// El `hash` va junto al `search` porque la SEGUNDA LLAVE del carrito compartido
+// —la que abre los datos del cliente para prellenarle el checkout— viaja ahí
+// (`#d=…`) y no en la parte que sí llega al servidor. Ver `CartContext`.
 const HidrataElCarritoDeLaUrl = () => {
-  const { search } = useLocation();
+  const { search, hash } = useLocation();
   const { hidratarDesdeUrl } = useCart();
-  useLayoutEffect(() => { hidratarDesdeUrl(search); }, [search, hidratarDesdeUrl]);
+  useLayoutEffect(() => { hidratarDesdeUrl(search, hash); }, [search, hash, hidratarDesdeUrl]);
   return null;
 };
 

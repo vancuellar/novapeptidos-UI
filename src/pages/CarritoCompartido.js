@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Gift, Loader2, ShoppingCart, Truck, Sparkles } from 'lucide-react';
 import { useLanguage } from '@/context/LanguageContext';
+import { useCart } from '@/context/CartContext';
 import api from '@/lib/api';
 import { money } from '@/lib/hojaCotizacion';
 
@@ -26,9 +27,26 @@ import { money } from '@/lib/hojaCotizacion';
 export default function CarritoCompartido() {
   const { token } = useParams();
   const navigate = useNavigate();
+  const { hash } = useLocation();
+  const { pedirDatosDelCliente } = useCart();
   const { t } = useLanguage();
   const [carrito, setCarrito] = useState(null);
   const [estado, setEstado] = useState('cargando');   // cargando | listo | vencido | error
+
+  /* LOS DATOS QUE SU DISTRIBUIDORA YA CAPTURÓ POR ÉL (Christián, 2026-08-01). Se
+     piden AQUÍ, en cuanto se abre el enlace, para que al apretar «Comprar Ahora» el
+     checkout ya llegue lleno y no haya que teclear nombre, correo, teléfono y
+     domicilio otra vez — que es justo donde se pierde la venta.
+
+     ⛔ La llave va en el FRAGMENTO del enlace (`#d=…`), que el navegador no manda a
+     ningún servidor. Sin ella no sale ni un dato: `/carrito/{token}` —la ruta
+     pública— sigue devolviendo sólo productos y precios, así que probar tokens al
+     azar no cosecha domicilios. Si falla, no se le dice nada al cliente: el checkout
+     se comporta como siempre y él escribe sus datos. */
+  const clave = (new URLSearchParams((hash || '').replace(/^#/, '')).get('d') || '').trim();
+  useEffect(() => {
+    if (clave && token) pedirDatosDelCliente(token, clave);
+  }, [clave, token, pedirDatosDelCliente]);
 
   useEffect(() => {
     let vivo = true;
@@ -52,7 +70,10 @@ export default function CarritoCompartido() {
     const pedido = (carrito.lines || []).map((l) => `${l.product_id}:${l.quantity}`).join(',');
     const params = new URLSearchParams({ pedido, cart: token });
     if (carrito.ref) params.set('ref', carrito.ref);
-    navigate(`/checkout?${params.toString()}`);
+    // El fragmento viaja también: así el checkout funciona igual si el cliente
+    // recarga esa dirección o la abre directo desde el enlace de «Pagar» que su
+    // distribuidora le mandó por WhatsApp. Sigue sin salir del navegador.
+    navigate(`/checkout?${params.toString()}${clave ? `#d=${encodeURIComponent(clave)}` : ''}`);
   };
 
   if (estado === 'cargando') {

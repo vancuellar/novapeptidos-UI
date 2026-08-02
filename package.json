@@ -69,6 +69,7 @@
     "catalogo:revisar": "node scripts/sincronizar-catalogo.js",
     "catalogo:sincronizar": "node scripts/sincronizar-catalogo.js --escribir",
     "prueba:carrito": "node scripts/prueba-carrito-compartido.js",
+    "prueba:cotizaciones": "node scripts/prueba-cotizaciones.js",
     "auditoria": "node scripts/auditoria-e2e.js",
     "auditoria:completa": "node scripts/auditoria-e2e.js --compras",
     "e2e:cripto": "node scripts/e2e-nowpayments.js",

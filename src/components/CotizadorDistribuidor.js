@@ -222,9 +222,13 @@ export default function CotizadorDistribuidor({
   // pintado y el enlace se borraría solo mientras Mónica lo está copiando.
   const huellaRenglones = JSON.stringify(renglones);
   const huellaObsequios = JSON.stringify(obsequios);
+  // Los datos del cliente también cuentan: desde el 2026-08-01 viajan DENTRO del
+  // carrito guardado (es lo que prellena el checkout), así que un enlace hecho antes
+  // de corregir el teléfono llevaría el teléfono viejo.
   useEffect(() => {
     setCarrito(null);
-  }, [huellaRenglones, huellaObsequios, descuento, nombreCliente]);
+  }, [huellaRenglones, huellaObsequios, descuento, nombreCliente,
+    correoCliente, telCliente, dirCliente]);
 
   // El descuento de cada renglón respeta su tope por producto; los insumos van sin descuento.
   const filas = renglones.map((x) => {
@@ -286,9 +290,14 @@ export default function CotizadorDistribuidor({
      siempre: el checkout con `?pedido=`, que ya funcionaba. Una cotización sin
      enlace de pago sería peor que una con el enlace genérico. */
   const token = carrito?.token || '';
-  const enlaceCotizacion = token ? `${SITIO_URL}/carrito/${token}` : '';
+  // El FRAGMENTO con la llave de los datos del cliente. Va en los dos enlaces para
+  // que el checkout llegue prellenado por cualquiera de los dos caminos. Si el
+  // distribuidor no capturó correo, teléfono ni domicilio, el servidor no reparte
+  // llave y esto queda vacío: un secreto que no abre nada no se manda.
+  const fragmentoDatos = carrito?.clave ? `#d=${encodeURIComponent(carrito.clave)}` : '';
+  const enlaceCotizacion = token ? `${SITIO_URL}/carrito/${token}${fragmentoDatos}` : '';
   const enlacePago = token
-    ? `${SITIO_URL}/checkout?pedido=${encodeURIComponent(pedidoPayload)}&cart=${encodeURIComponent(token)}${codigo ? `&ref=${encodeURIComponent(codigo)}` : ''}`
+    ? `${SITIO_URL}/checkout?pedido=${encodeURIComponent(pedidoPayload)}&cart=${encodeURIComponent(token)}${codigo ? `&ref=${encodeURIComponent(codigo)}` : ''}${fragmentoDatos}`
     : (filas.length
       ? `${SITIO_URL}/checkout?pedido=${encodeURIComponent(pedidoPayload)}${codigo ? `&ref=${encodeURIComponent(codigo)}` : ''}`
       : (codigo ? `${CATALOGO_URL}?ref=${encodeURIComponent(codigo)}` : CATALOGO_URL));
@@ -425,6 +434,14 @@ export default function CotizadorDistribuidor({
     try {
       const r = await api.post('/distributor/cart/share', {
         client_name: nombreCliente.trim(),
+        // ⛔ LOS DATOS DEL CLIENTE VIAJAN Y SE GUARDAN (Christián, 2026-08-01).
+        // Antes se tecleaban, se pintaban en la hoja… y se tiraban: el cliente
+        // llegaba al checkout con todo vacío y tenía que escribirlos otra vez,
+        // justo en el paso donde se pierde la venta. El servidor los guarda y sólo
+        // los devuelve a quien abre ESTE enlace, con la llave del fragmento.
+        client_email: correoCliente.trim(),
+        client_phone: telCliente.trim(),
+        client_address: dirCliente.trim(),
         discount: descuento,
         language,
         folio: folioNuevo || folio,
@@ -433,7 +450,11 @@ export default function CotizadorDistribuidor({
           ? { tipo: 'envio' }
           : { tipo: 'producto', product_id: o.product_id, cantidad: o.cantidad })),
       });
-      setCarrito({ url: r.data.url, token: r.data.token });
+      // `prefill_key` es la SEGUNDA llave del enlace: la que abre los datos del
+      // cliente para prellenarle el checkout. Sólo llega aquí, a la pantalla de
+      // quien armó la cotización, y se pega al enlace como FRAGMENTO (`#d=…`) —
+      // la parte de una dirección que el navegador nunca manda a ningún servidor.
+      setCarrito({ url: r.data.url, token: r.data.token, clave: r.data.prefill_key || '' });
       if (!silencioso) toast.success(t('cotizador.carritoListo'));
       return true;
     } catch (e) {
