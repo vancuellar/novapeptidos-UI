@@ -7,6 +7,7 @@ import {
   Gift, Link2, Copy, Truck,
 } from 'lucide-react';
 import { toast } from 'sonner';
+import { StateField } from '@/components/CountryPhoneFields';
 import { useLanguage } from '@/context/LanguageContext';
 import { useTheme } from '@/context/ThemeContext';
 import api from '@/lib/api';
@@ -69,6 +70,15 @@ export default function CotizadorDistribuidor({
   const [correoCliente, setCorreoCliente] = useState('');
   const [telCliente, setTelCliente] = useState('');
   const [dirCliente, setDirCliente] = useState('');
+  // EL DOMICILIO POR CAMPOS (Christián, 2026-08-02): ciudad, estado y CP como en
+  // el checkout. Con el CP el envío se cotiza de verdad; sin él, «se cotiza por
+  // separado» como hasta hoy.
+  const [ciudadCliente, setCiudadCliente] = useState('');
+  const [estadoCliente, setEstadoCliente] = useState('');
+  const [cpCliente, setCpCliente] = useState('');
+  const cpValido = /^\d{5}$/.test(cpCliente.trim());
+  // El costo REAL de la guía a ese CP (null = sin cotizar; usa el estimado).
+  const [costoGuiaCp, setCostoGuiaCp] = useState(null);
   // Autollenado: los clientes ya registrados que ESTE usuario puede ver. Lo que trae
   // cada uno lo decide el servidor según su rol (ver /cotizador/clientes).
   const [clientes, setClientes] = useState([]);
@@ -197,6 +207,45 @@ export default function CotizadorDistribuidor({
      máximo que puede dar. El 0% va primero: cotizar sin descuento también es cotizar.
      Y queda el campo para teclear un número intermedio, porque quitarlo sería quitar
      algo que ya se podía hacer. */
+  // EL CP SUGIERE CIUDAD Y ESTADO (mismo ayudante que el checkout): se llenan
+  // sólo los campos vacíos — lo que Mónica ya escribió no se pisa.
+  useEffect(() => {
+    if (!cpValido) return undefined;
+    let vivo = true;
+    const timer = setTimeout(() => {
+      api.get(`/cp/${cpCliente.trim()}`).then((r) => {
+        if (!vivo || !r.data?.found) return;
+        setCiudadCliente((c) => c || r.data.city || '');
+        setEstadoCliente((s) => s || r.data.state || '');
+      }).catch(() => {});
+    }, 500);
+    return () => { vivo = false; clearTimeout(timer); };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [cpCliente, cpValido]);
+
+  // Y CON EL CP SE COTIZA LA GUÍA REAL (Christián, 2026-08-02): la misma ruta
+  // que usa la caja. Si la paquetería no contesta, manda el estimado de la casa
+  // — que es el mismo respaldo con el que cobra el servidor.
+  const huellaParaEnvio = JSON.stringify(renglones.map((x) => [x.id, x.qty]));
+  useEffect(() => {
+    setCostoGuiaCp(null);
+    if (!cpValido || !renglones.length) return undefined;
+    let vivo = true;
+    const timer = setTimeout(() => {
+      api.post('/shipping/quote', {
+        postal_code: cpCliente.trim(), state: estadoCliente || '', city: ciudadCliente || '',
+        items: renglones.map((x) => ({ product_id: x.id, name: x.nombre,
+                                       price: x.precio, quantity: x.qty })),
+      }).then((r) => {
+        if (!vivo) return;
+        const precios = (r.data?.options || []).map((o) => Number(o.price)).filter((p) => p > 0);
+        setCostoGuiaCp(precios.length ? Math.min(...precios) : null);
+      }).catch(() => { if (vivo) setCostoGuiaCp(null); });
+    }, 700);
+    return () => { vivo = false; clearTimeout(timer); };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [cpCliente, cpValido, huellaParaEnvio]);
+
   const pasosDescuento = useMemo(() => {
     const max = Math.round((tasaMaxima || 0) * 100);
     const pasos = [0];
@@ -228,7 +277,7 @@ export default function CotizadorDistribuidor({
   useEffect(() => {
     setCarrito(null);
   }, [huellaRenglones, huellaObsequios, descuento, nombreCliente,
-    correoCliente, telCliente, dirCliente]);
+    correoCliente, telCliente, dirCliente, ciudadCliente, estadoCliente, cpCliente]);
 
   // SIN DESCUENTO PROPIO, MANDA LA PROMO DE LA CASA (Christián, 2026-08-01): al 0%
   // el cliente recibe los automáticos —10%, o 15% desde $35,000 de mercancía
@@ -273,15 +322,17 @@ export default function CotizadorDistribuidor({
   // un costo de envío — se calcula con la dirección al pagar. El envío de
   // cortesía sí se enseña (es gratis con o sin dirección). El servidor hace la
   // misma cuenta en el carrito compartido (`_resolver_carrito`).
-  const envioPendiente = cobraEnvio && !envioDeCortesia && !dirCliente.trim();
+  // Con el CP (o al menos la calle) ya se cotiza; sin nada, por separado.
+  const envioPendiente = cobraEnvio && !envioDeCortesia && !cpValido && !dirCliente.trim();
   const envio = (() => {
     if (!cobraEnvio || envioDeCortesia || envioPendiente) return 0;
     if (mercancia < (Number(envioCfg.free_shipping_from) || 0)) return Number(envioCfg.shipping_flat) || 0;
     const tope = Number(envioCfg.shipping_cap_rate) || 0;
     if (tope <= 0) return 0;                       // servidor sin tope: la regla de antes
-    const costo = Number(envioCfg.shipping_cost_estimate) || Number(envioCfg.shipping_flat) || 0;
-    // El PISO de absorción (2026-08-02): la casa come hasta $250 o el 5%, lo mayor
-    // — con la guía normal, incluido parejo desde la mínima. Mismo número que la caja.
+    // Con CP cotizado manda la guía REAL; si no, el estimado de la casa. Es la
+    // misma cuenta de la caja (piso de absorción: $250 o el 5%, lo mayor).
+    const costo = (cpValido && costoGuiaCp) ? costoGuiaCp
+      : Number(envioCfg.shipping_cost_estimate) || Number(envioCfg.shipping_flat) || 0;
     const piso = Number(envioCfg.shipping_absorb_floor) || 0;
     return Math.max(0, Math.round(costo - Math.max(piso, mercancia * tope)));
   })();
@@ -361,9 +412,12 @@ export default function CotizadorDistribuidor({
     docPagar: t('cotizador.docPagar'),
   }), [t, descuentoPct]);
 
+  // El domicilio completo en una línea, para la hoja y el correo.
+  const dirCompleta = [dirCliente, ciudadCliente, estadoCliente, cpCliente]
+    .map((x) => (x || '').trim()).filter(Boolean).join(', ');
   const datosHoja = {
     folio, fecha: new Date(), cliente: nombreCliente,
-    clienteCorreo: correoCliente, clienteTel: telCliente, clienteDir: dirCliente,
+    clienteCorreo: correoCliente, clienteTel: telCliente, clienteDir: dirCompleta,
     codigo, distribuidor: nombreDistribuidor,
     enlaceCotizacion, enlaceCotizacionTexto, enlacePago, enlacePagoTexto,
     idioma: language, filas, subtotalLista,
@@ -387,7 +441,7 @@ export default function CotizadorDistribuidor({
       origen: process.env.PUBLIC_URL || '',
     }),
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [folio, nombreCliente, correoCliente, telCliente, dirCliente, codigo, enlaceCotizacion, enlacePago, language, huellaFilas, huellaRegalos, envio, cobraEnvio, envioPendiente, total, esOscuro, textos],
+    [folio, nombreCliente, correoCliente, telCliente, dirCompleta, codigo, enlaceCotizacion, enlacePago, language, huellaFilas, huellaRegalos, envio, cobraEnvio, envioPendiente, total, esOscuro, textos],
   );
 
   const abrirVistaPrevia = async () => {
@@ -466,6 +520,9 @@ export default function CotizadorDistribuidor({
         client_email: correoCliente.trim(),
         client_phone: telCliente.trim(),
         client_address: dirCliente.trim(),
+        client_city: ciudadCliente.trim(),
+        client_state: estadoCliente.trim(),
+        client_zip: cpCliente.trim(),
         discount: descuento,
         language,
         folio: folioNuevo || folio,
@@ -543,7 +600,8 @@ export default function CotizadorDistribuidor({
         client_name: nombreCliente.trim(),
         client_email: correoCliente.trim(),
         client_phone: telCliente.trim(),
-        client_address: dirCliente.trim(),
+        // Al correo va el domicilio COMPLETO en una línea (es un documento).
+        client_address: dirCompleta,
         discount: descuento,
         language,
         folio,
@@ -842,6 +900,18 @@ export default function CotizadorDistribuidor({
               placeholder={t('cotizador.telCliente')} data-testid="cotizador-cliente-tel" />
             <Input value={dirCliente} onChange={(e) => setDirCliente(e.target.value)}
               placeholder={t('cotizador.dirCliente')} data-testid="cotizador-cliente-dir" />
+            {/* EL DOMICILIO POR CAMPOS, como en el checkout (Christián, 2026-08-02).
+                El CP es el que importa: con él la cotización trae el envío real y
+                el checkout del cliente llega con todo puesto. */}
+            <div className="grid grid-cols-2 gap-2">
+              <Input value={cpCliente} inputMode="numeric" maxLength={5}
+                onChange={(e) => setCpCliente(e.target.value.replace(/\D/g, ''))}
+                placeholder={t('checkout.postalCode')} data-testid="cotizador-cliente-cp" />
+              <Input value={ciudadCliente} onChange={(e) => setCiudadCliente(e.target.value)}
+                placeholder={t('checkout.city')} data-testid="cotizador-cliente-ciudad" />
+            </div>
+            <StateField country="MX" value={estadoCliente} onChange={setEstadoCliente}
+              testid="cotizador-cliente-estado" />
           </div>
           <Button onClick={abrirVistaPrevia} className="w-full gap-2" data-testid="cotizador-generar">
             <FileText className="h-4 w-4" />{t('cotizador.generar')}

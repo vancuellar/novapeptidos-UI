@@ -155,6 +155,10 @@ const Checkout = () => {
       email: f.email || d.email || '',
       phone: f.phone || tel.national,
       address: f.address || d.address || '',
+      // El domicilio POR CAMPOS que capturó su distribuidora (2026-08-02).
+      city: f.city || d.city || '',
+      state: f.state || d.state || '',
+      postal_code: f.postal_code || d.postal_code || '',
     }));
     if (!savedPhone.national && d.phone) setPhoneCountry(tel.country);
     // Aviso PROPIO, no el de «tu última compra»: aquí los datos vienen de la
