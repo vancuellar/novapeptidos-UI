@@ -709,13 +709,15 @@ const Checkout = () => {
               <span className="flex items-center gap-1"><ShieldCheck className="h-3.5 w-3.5" /> {t('checkout.securePayment')}</span>
               <span className="flex items-center gap-1"><Package className="h-3.5 w-3.5" /> {t('checkout.coaByLot')}</span>
             </div>
-          </Card>
 
-          {/* Widget colapsable, debajo del resumen. En el teléfono esta columna
-              cae después del botón de pagar, que es justo donde al cliente le
-              entra la duda de si esto es una tienda seria. Mismo componente
-              que la portada y la ficha de producto (Christian, 2026-07-30). */}
-          <TrustWidget className="mt-4" />
+            {/* ⛔ DENTRO de la tarjeta pegajosa, no debajo (Christián, 2026-08-02:
+                «I want the Tienda de Confianza static... under the Realizar Pedido
+                button, I don't want it to move behind it floating»). Afuera, el
+                resumen sticky se deslizaba y el widget se le quedaba atrás
+                flotando; adentro viajan JUNTOS y el sello vive siempre pegado
+                al botón de pagar. */}
+            <TrustWidget className="mt-4" />
+          </Card>
         </div>
       </form>
     </div>
