@@ -42,7 +42,9 @@ const Checkout = () => {
   // resumen del pedido (ya no el bloque grande de "dos entregas").
   const sobrePedidoIds = new Set(sobrePedido.map((l) => l.product_id));
   const navigate = useNavigate();
-  const [payment, setPayment] = useState('spei');
+  // ⛔ SIN PRESELECCIÓN (Christián, 2026-08-02): la forma de pago la ELIGE el
+  // cliente; antes venía marcada SPEI y había quien pagaba por ahí sin querer.
+  const [payment, setPayment] = useState('');
   // Cómo quiere que le mandemos el pedido cuando no sale completo: 'partido' (lo que
   // hay sale ya) o 'completo' (todo junto).
   // ⛔ SIN PRESELECCIÓN (Christián, 2026-08-02): cuando falta mercancía, el
@@ -220,6 +222,26 @@ const Checkout = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [cp, items, cobraEnvio]);
 
+  // EL CP SUGIERE LA CIUDAD Y EL ESTADO (Christián, 2026-08-02: «If he enters
+  // the zip code, that should assist User with suggesting the rest»). Se llenan
+  // SOLO los campos vacíos — lo que el cliente ya escribió no se pisa. Si la
+  // fuente no contesta, no pasa nada: teclea su ciudad como siempre.
+  useEffect(() => {
+    if (!/^\d{5}$/.test(cp)) return undefined;
+    let vivo = true;
+    const timer = setTimeout(() => {
+      api.get(`/cp/${cp}`).then((r) => {
+        if (!vivo || !r.data?.found) return;
+        setForm((f) => ({
+          ...f,
+          city: f.city || r.data.city || '',
+          state: f.state || r.data.state || '',
+        }));
+      }).catch(() => {});
+    }, 500);
+    return () => { vivo = false; clearTimeout(timer); };
+  }, [cp]);
+
   const afterDiscount = subtotal - discount;
   const pointsApplied = usePoints && loyalty.eligible
     ? Math.min(loyalty.balance, Math.floor(afterDiscount)) : 0;
@@ -287,13 +309,28 @@ const Checkout = () => {
 
   const submit = async (e) => {
     e.preventDefault();
+    // LA DIRECCIÓN COMPLETA ES OBLIGATORIA (Christián, 2026-08-02): ciudad,
+    // estado y CP incluidos — sin ellos no hay guía que imprimir.
     const faltante = [
       ['full_name', 'checkout-name-input'], ['email', 'checkout-email-input'],
       ['phone', 'checkout-phone-input'], ['address', 'checkout-address-input'],
-    ].find(([campo]) => !form[campo]);
+      ['city', 'checkout-city-input'], ['state', 'checkout-state-input'],
+      ['postal_code', 'checkout-postal-code-input'],
+    ].find(([campo]) => !String(form[campo] || '').trim());
     if (faltante) {
       toast.error(t('checkout.toast.required'));
       llevarAlCampo(faltante[1]);
+      return;
+    }
+    if (!/^\d{5}$/.test((form.postal_code || '').trim())) {
+      toast.error(t('checkout.toast.cp'));
+      llevarAlCampo('checkout-postal-code-input');
+      return;
+    }
+    // Y LA FORMA DE PAGO TAMBIÉN SE ELIGE, no se hereda de un default.
+    if (!payment) {
+      toast.error(t('checkout.toast.pago'));
+      llevarAlCampo('checkout-payment-method-radio');
       return;
     }
     if (!phoneValid(form.phone, phoneCountry)) {

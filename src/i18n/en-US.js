@@ -1422,6 +1422,8 @@ const enUS = {
   'checkout.placeOrder': 'Place order',
   'checkout.securePayment': 'Secure payment',
   'checkout.coaByLot': 'HPLC purity',
+  'checkout.toast.cp': 'Enter a valid 5-digit postal code.',
+  'checkout.toast.pago': 'Choose how you want to pay.',
   'checkout.toast.required': 'Complete the required fields',
   'checkout.toast.phone': 'The phone number must have 10 digits (e.g. (55) 1234-5678)',
   'checkout.toast.success': 'Order placed successfully',

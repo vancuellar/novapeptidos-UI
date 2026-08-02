@@ -1415,6 +1415,8 @@ const esMX = {
   'checkout.placeOrder': 'Realizar pedido',
   'checkout.securePayment': 'Pago seguro',
   'checkout.coaByLot': 'Pureza HPLC',
+  'checkout.toast.cp': 'Escribe un código postal válido (5 dígitos).',
+  'checkout.toast.pago': 'Elige cómo quieres pagar.',
   'checkout.toast.required': 'Completa los campos obligatorios',
   'checkout.toast.phone': 'El teléfono debe tener 10 digitos (ej. (55) 1234-5678)',
   'checkout.toast.success': 'Pedido realizado con exito',

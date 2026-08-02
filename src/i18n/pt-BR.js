@@ -1417,6 +1417,8 @@ const ptBR = {
   'checkout.placeOrder': 'Fazer pedido',
   'checkout.securePayment': 'Pagamento seguro',
   'checkout.coaByLot': 'Pureza HPLC',
+  'checkout.toast.cp': 'Digite um CEP válido (5 dígitos).',
+  'checkout.toast.pago': 'Escolha como quer pagar.',
   'checkout.toast.required': 'Preencha os campos obrigatorios',
   'checkout.toast.phone': 'O telefone deve ter 10 digitos (ex. (55) 1234-5678)',
   'checkout.toast.success': 'Pedido realizado com sucesso',
