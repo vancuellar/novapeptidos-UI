@@ -549,7 +549,7 @@ export const CartProvider = ({ children }) => {
   const envioGratis = cobraEnvio && items.length > 0 && shipping === 0;
 
   return (
-    <CartContext.Provider value={{ items, hidratando, addItem, updateQty, removeItem, clearCart, subtotal, count, discount, discountRate, discountSource, cappedItems, lineDiscounts, regla5Items, compraPropia, baseRate, nextTier, shipping, calcularEnvio, cobraEnvio, envioGratis, faltaParaEnvioGratis, envioGratisDesde: envio.free_shipping_from, envioGratisDeVerdadDesde, topeEnvio, distCode, distRate, codeMin, codeMinMet, applyDistCode, clearDistCode, sharedCartToken, setSharedCartToken, hidratarDesdeUrl, datosDelCliente, pedirDatosDelCliente, extraExpress }}>
+    <CartContext.Provider value={{ items, hidratando, addItem, updateQty, removeItem, clearCart, subtotal, count, discount, discountRate, discountSource, cappedItems, lineDiscounts, regla5Items, compraPropia, baseRate, nextTier, shipping, calcularEnvio, cobraEnvio, envioGratis, faltaParaEnvioGratis, envioGratisDesde: envio.free_shipping_from, envioGratisDeVerdadDesde, topeEnvio, distCode, distRate, codeMin, codeMinMet, applyDistCode, clearDistCode, sharedCartToken, setSharedCartToken, hidratarDesdeUrl, datosDelCliente, pedirDatosDelCliente, extraExpress, pisoAbsorcion, costoGuia }}>
       {children}
     </CartContext.Provider>
   );

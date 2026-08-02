@@ -27,7 +27,7 @@ const ICONS = { CreditCard, Landmark, Bitcoin, Store };
 // Pago, no aqui. Se borraron con el formulario (Christian, 2026-07-26).
 
 const Checkout = () => {
-  const { items, hidratando, subtotal, discount, discountRate, discountSource, cappedItems, regla5Items, calcularEnvio, cobraEnvio, envioGratisDesde, envioGratisDeVerdadDesde, topeEnvio, distCode, clearCart, sharedCartToken, datosDelCliente, extraExpress } = useCart();
+  const { items, hidratando, subtotal, discount, discountRate, discountSource, cappedItems, regla5Items, calcularEnvio, cobraEnvio, envioGratisDesde, envioGratisDeVerdadDesde, topeEnvio, distCode, clearCart, sharedCartToken, datosDelCliente, extraExpress, pisoAbsorcion, costoGuia } = useCart();
   const { user } = useAuth();
   const { t } = useLanguage();
   // El inventario REAL. El aviso de envío partido tiene que estar EN LA PANTALLA DE
@@ -72,8 +72,14 @@ const Checkout = () => {
   const [oxxoOn, setOxxoOn] = useState(false);
   // EL TIPO DE ENVÍO (Christián, 2026-08-02): el cliente ya no ve opciones de
   // paquetería con precios reales — la casa la elige. Aquí sólo vive si pidió
-  // EXPRESS (+$150, 1-2 días hábiles); todo lo demás lo decide el servidor.
+  // EXPRESS (1-2 días hábiles); todo lo demás lo decide el servidor.
   const [express, setExpress] = useState(false);
+  // LA COTIZACIÓN REAL POR CP, sólo para que la pantalla diga el número exacto de
+  // la REGLA V2: desde $2,500, si la guía express real cabe en max($250, 5% de la
+  // compra), el express sale GRATIS TOTAL («¡Buenas noticias!»). Mientras no hay
+  // CP o la paquetería no contesta, se usa el estimado de la casa — que es el
+  // MISMO respaldo con el que cobra el servidor, así que nunca se promete de más.
+  const [tarifasCp, setTarifasCp] = useState([]);
 
   // ⛔ EL PASO QUE NUNCA SE MEDÍA. El backend espera `checkout_start` (ver
   // EVENT_TYPES en server.py) y el frontend jamás lo mandaba: el embudo del Panel
@@ -195,6 +201,23 @@ const Checkout = () => {
     return () => clearTimeout(t);
   }, [form.email, form.full_name, form.phone, items, subtotal, discount]);
 
+  // La cotización real, al escribir el CP (con retraso para no llamar por tecla).
+  const cp = (form.postal_code || '').trim();
+  useEffect(() => {
+    if (cp.length < 5 || !items.length || !cobraEnvio) { setTarifasCp([]); return undefined; }
+    let vivo = true;
+    const timer = setTimeout(() => {
+      api.post('/shipping/quote', {
+        postal_code: cp, state: form.state || '', city: form.city || '',
+        items: items.map((i) => ({ product_id: i.sku || i.product_id, name: i.name,
+                                   price: i.price, quantity: i.quantity })),
+      }).then((r) => { if (vivo) setTarifasCp(r.data?.options || []); })
+        .catch(() => { if (vivo) setTarifasCp([]); });
+    }, 700);
+    return () => { vivo = false; clearTimeout(timer); };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [cp, items, cobraEnvio]);
+
   const afterDiscount = subtotal - discount;
   const pointsApplied = usePoints && loyalty.eligible
     ? Math.min(loyalty.balance, Math.floor(afterDiscount)) : 0;
@@ -209,9 +232,25 @@ const Checkout = () => {
   // buena. Si no, un pedido que baja de la mínima al canjear puntos enseñaba envío
   // gratis mientras la caja lo cobraba. (2026-07-31)
   const pagaMercancia = afterDiscount - pointsApplied;
-  const envioEstandar = calcularEnvio(pagaMercancia);
+  const cumpleMinima = pagaMercancia >= envioGratisDesde;
+  // El presupuesto de absorción de la casa: max($250, 5% de la compra).
+  const presupuesto = cumpleMinima ? Math.max(pisoAbsorcion || 0, pagaMercancia * (topeEnvio || 0)) : 0;
+  // El costo REAL por CP cuando ya se cotizó; el estimado de la casa mientras no.
+  const conPrecio = tarifasCp.filter((o) => Number(o.price) > 0);
+  const costoStd = conPrecio.length
+    ? Math.min(...conPrecio.map((o) => Number(o.price))) : (costoGuia || 0);
+  const rapidas = conPrecio.filter((o) => { const d = Number(o.days) || 0; return d > 0 && d <= 2; });
+  const costoExp = rapidas.length
+    ? Math.min(...rapidas.map((o) => Number(o.price))) : (costoGuia || 0) + extraExpress;
+  const envioEstandar = cumpleMinima
+    ? Math.max(0, Math.round(costoStd - presupuesto)) : calcularEnvio(pagaMercancia);
   const hayExpress = cobraEnvio && extraExpress > 0 && items.length > 0;
-  const envioACobrar = envioEstandar + (hayExpress && express ? extraExpress : 0);
+  // LA REGLA V2: desde la mínima el express se mide contra el presupuesto — si
+  // cabe, GRATIS TOTAL (ni los $150). Abajo de la mínima: tarifa + $150.
+  const envioExpressTotal = cumpleMinima
+    ? Math.max(0, Math.round(costoExp - presupuesto)) : envioEstandar + extraExpress;
+  const expressGratis = hayExpress && cumpleMinima && envioExpressTotal === 0;
+  const envioACobrar = hayExpress && express ? envioExpressTotal : envioEstandar;
   // "Gratis" es un envío que SE GANÓ, no un envío que no se cobra: con el cobro
   // apagado el renglón dice "se cotiza por separado", que es otra cosa.
   const envioGratis = envioACobrar === 0 && cobraEnvio && items.length > 0;
@@ -443,12 +482,24 @@ const Checkout = () => {
                       <div className="text-sm font-medium">{t('checkout.shipping.express')}</div>
                       <div className="text-xs text-muted-foreground">{t('checkout.shipping.expressDays')}</div>
                     </div>
-                    <div className="text-sm font-medium shrink-0">
-                      {envioEstandar > 0 ? formatMXN(envioEstandar + extraExpress)
-                        : `+${formatMXN(extraExpress)}`}
+                    <div className="text-sm font-medium shrink-0" data-testid="checkout-express-precio">
+                      {expressGratis
+                        ? <span className="text-[hsl(var(--success))]">{t('checkout.shipping.free')}</span>
+                        : cumpleMinima
+                          ? formatMXN(envioExpressTotal)
+                          : `+${formatMXN(extraExpress)}`}
                     </div>
                   </Label>
                 </RadioGroup>
+                {/* «¡Buenas noticias!» (Christián, 2026-08-02): cuando el costo real
+                    de la guía express cabe en el presupuesto de la casa (max $250 o
+                    5% de la compra), el express sale gratis y SE DICE. */}
+                {expressGratis && (
+                  <p className="mt-2 text-xs text-[hsl(var(--success))] font-medium"
+                    data-testid="checkout-express-gratis">
+                    {t('checkout.shipping.expressGratis')}
+                  </p>
+                )}
               </div>
             )}
           </Card>
