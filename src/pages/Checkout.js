@@ -241,17 +241,16 @@ const Checkout = () => {
     const timer = setTimeout(() => {
       api.get(`/cp/${cp}`).then((r) => {
         if (!vivo || !r.data?.found) return;
-        setForm((f) => {
-          const cityEsAuto = !f.city || f.city === sugeridoCp.current.city;
-          const stateEsAuto = !f.state || f.state === sugeridoCp.current.state;
-          const next = {
-            ...f,
-            city: cityEsAuto ? (r.data.city || '') : f.city,
-            state: stateEsAuto ? (r.data.state || '') : f.state,
-          };
-          sugeridoCp.current = { city: r.data.city || '', state: r.data.state || '' };
-          return next;
-        });
+        // Copia fija de la sugerencia anterior ANTES de los updaters (que corren
+        // después): comparar contra la referencia viva dejaba pegado el dato del
+        // CP equivocado. Y el updater queda puro: sin efectos adentro.
+        const previo = sugeridoCp.current;
+        sugeridoCp.current = { city: r.data.city || '', state: r.data.state || '' };
+        setForm((f) => ({
+          ...f,
+          city: (!f.city || f.city === previo.city) ? (r.data.city || '') : f.city,
+          state: (!f.state || f.state === previo.state) ? (r.data.state || '') : f.state,
+        }));
       }).catch(() => {});
     }, 500);
     return () => { vivo = false; clearTimeout(timer); };

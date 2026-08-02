@@ -217,9 +217,13 @@ export default function CotizadorDistribuidor({
     const timer = setTimeout(() => {
       api.get(`/cp/${cpCliente.trim()}`).then((r) => {
         if (!vivo || !r.data?.found) return;
-        setCiudadCliente((c) => (!c || c === sugeridoCp.current.city) ? (r.data.city || '') : c);
-        setEstadoCliente((s) => (!s || s === sugeridoCp.current.state) ? (r.data.state || '') : s);
+        // La sugerencia ANTERIOR se copia a una constante ANTES de tocar nada:
+        // los updaters de React corren después, y comparar contra la referencia
+        // viva ya corregida dejaba el estado del CP equivocado pegado.
+        const previo = sugeridoCp.current;
         sugeridoCp.current = { city: r.data.city || '', state: r.data.state || '' };
+        setCiudadCliente((c) => ((!c || c === previo.city) ? (r.data.city || '') : c));
+        setEstadoCliente((s) => ((!s || s === previo.state) ? (r.data.state || '') : s));
       }).catch(() => {});
     }, 500);
     return () => { vivo = false; clearTimeout(timer); };
