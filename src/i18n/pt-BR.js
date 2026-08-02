@@ -384,6 +384,7 @@ const ptBR = {
   'product.inHandStock': 'Em estoque — entrega imediata ({{stock}} disponíveis)',
   'product.oneWeekShip': 'Disponível — envio em ~1 semana',
   'backorder.itemNote': 'Vem dos EUA: demora um pouco mais para chegar. Vamos te manter informado.',
+  'shippingChoice.requerido': 'Escolha como quer receber seu pedido.',
   'shippingChoice.title': 'Como você prefere que a gente envie?',
   'shippingChoice.hint': 'Uma parte do seu pedido vem dos EUA. Você decide.',
   'shippingChoice.partido.label': 'Envie O Disponível Agora',

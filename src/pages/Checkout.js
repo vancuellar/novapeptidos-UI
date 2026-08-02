@@ -44,9 +44,11 @@ const Checkout = () => {
   const navigate = useNavigate();
   const [payment, setPayment] = useState('spei');
   // Cómo quiere que le mandemos el pedido cuando no sale completo: 'partido' (lo que
-  // hay sale ya) o 'completo' (todo junto). Nace en 'partido' porque es lo que la casa
-  // hacía hasta hoy y porque es lo que nunca deja mercancía pagada detenida.
-  const [envioModo, setEnvioModo] = useState('partido');
+  // hay sale ya) o 'completo' (todo junto).
+  // ⛔ SIN PRESELECCIÓN (Christián, 2026-08-02): cuando falta mercancía, el
+  // cliente ELIGE cómo se le manda — partido o completo. Antes venía marcado
+  // «partido» y la mitad ni se enteraba de que decidió algo.
+  const [envioModo, setEnvioModo] = useState('');
   const [submitting, setSubmitting] = useState(false);
   const [summaryOpen, setSummaryOpen] = useState(true);
   const savedPhone = parsePhone(user?.phone);
@@ -299,6 +301,13 @@ const Checkout = () => {
       llevarAlCampo('checkout-phone-input');
       return;
     }
+    // Con mercancía sobre pedido, la forma de envío no se asume: se pregunta y
+    // sin respuesta no hay compra (Christián, 2026-08-02).
+    if (sobrePedido.length > 0 && !envioModo) {
+      toast.error(t('shippingChoice.requerido'));
+      llevarAlCampo('checkout-envio-partido');
+      return;
+    }
     setSubmitting(true);
     try {
       const payload = {
@@ -313,7 +322,7 @@ const Checkout = () => {
         // dinero: no mueve un peso del total, por eso viaja tal cual. El servidor la
         // normaliza igual y la respeta al despachar (una guía o dos).
         // Si el pedido sale completo esto no cambia nada.
-        shipping_preference: sobrePedido.length > 0 ? envioModo : 'partido',
+        shipping_preference: sobrePedido.length > 0 ? (envioModo || 'partido') : 'partido',
         shipping: envioACobrar,
         // ⛔ Viaja el TIPO (estándar o express), NUNCA un monto. El servidor cobra
         // la política de la casa con sus números; lo que mande esta pantalla en

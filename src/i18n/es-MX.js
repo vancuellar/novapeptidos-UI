@@ -281,6 +281,7 @@ const esMX = {
   // ⛔ CÓMO QUIERE QUE LE MANDEMOS SU PEDIDO. Christián, 2026-07-31: cuando el pedido
   // no sale completo, la casa dejaba de partirlo o lo partía por su cuenta. Ahora se
   // le pregunta y se respeta. Los plazos son los de siempre, sin promesas nuevas.
+  'shippingChoice.requerido': 'Elige cómo quieres que te mandemos tu pedido.',
   'shippingChoice.title': '¿Cómo prefieres que te lo mandemos?',
   'shippingChoice.hint': 'Una parte de tu pedido se surte desde EUA. Tú decides.',
   'shippingChoice.partido.label': 'Mándame Lo Disponible Ya',

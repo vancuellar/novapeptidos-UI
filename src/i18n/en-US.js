@@ -372,6 +372,7 @@ const enUS = {
   'product.inHandStock': 'In stock — ships immediately ({{stock}} available)',
   'product.oneWeekShip': 'Available — ships in ~1 week',
   'backorder.itemNote': "Ships from the USA — takes a little longer. We'll keep you posted.",
+  'shippingChoice.requerido': 'Choose how you want your order shipped.',
   'shippingChoice.title': 'How would you like us to ship it?',
   'shippingChoice.hint': 'Part of your order ships from the USA. You decide.',
   'shippingChoice.partido.label': 'Send What Is Available Now',
