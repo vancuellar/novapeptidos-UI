@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import api, { formatMXN } from '@/lib/api';
 import { useLanguage } from '@/context/LanguageContext';
+import useRefrescoAlVolver from '@/hooks/useRefrescoAlVolver';
 
 /* LA BOLSA DE COMISIONES del distribuidor (Christián, 2026-08-01): ganado,
    pagado, por pagar, y el botón para SOLICITAR el pago.
@@ -30,6 +31,8 @@ export default function ComisionesDistribuidor() {
     api.get('/distributor/comisiones').then((r) => setDatos(r.data)).catch(() => {});
   }, []);
   useEffect(cargar, [cargar]);
+  // Al volver a la pestaña se refresca sola (Christián, 2026-08-02).
+  useRefrescoAlVolver(cargar);
 
   const fecha = (iso) => (iso ? new Date(iso).toLocaleDateString(language, {
     day: '2-digit', month: 'short', year: 'numeric',

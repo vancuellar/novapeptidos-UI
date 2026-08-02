@@ -13,6 +13,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import api, { formatMXN } from '@/lib/api';
 import { useLanguage } from '@/context/LanguageContext';
+import useRefrescoAlVolver from '@/hooks/useRefrescoAlVolver';
 
 /* MIS COTIZACIONES — la lista que se guarda en el panel del distribuidor.
 
@@ -62,6 +63,8 @@ export default function MisCotizaciones() {
       .finally(() => setCargando(false));
   }, [enArchivadas]);
   useEffect(cargar, [cargar]);
+  // Al volver a la pestaña, la lista se refresca sola (Christián, 2026-08-02).
+  useRefrescoAlVolver(cargar);
 
   // Archivar / borrar / desarchivar lo seleccionado. La regla del borrado vive en
   // el servidor: una cotización que ya es venta NO se borra — se archiva y aquí

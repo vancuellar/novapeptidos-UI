@@ -21,6 +21,7 @@ import { Tabs, TabsContent } from '@/components/ui/tabs';
 import DashboardSidebar, { alTope } from '@/components/layout/DashboardSidebar';
 import StatCard from '@/components/panels/StatCard';
 import ComisionesAdmin from '@/components/panels/ComisionesAdmin';
+import useRefrescoAlVolver from '@/hooks/useRefrescoAlVolver';
 import GatewayCredentials from '@/components/GatewayCredentials';
 import AjustesEnvio from '@/components/AjustesEnvio';
 // El mismo cotizador que ve el distribuidor; al admin el servidor le manda además
@@ -288,6 +289,9 @@ const Admin = () => {
   }, [esMarketing]);
 
   useEffect(() => { if (tieneDifusion(user)) loadAll(); }, [user, loadAll]);
+  // Al VOLVER a la pestaña, el panel se refresca solo (Christián, 2026-08-02):
+  // lo que se borró o cambió desde otra pantalla ya no se queda pintado.
+  useRefrescoAlVolver(() => { if (tieneDifusion(user)) loadAll(); });
 
   // Los archivados se piden hasta que alguien los quiere ver: casi nunca hacen falta.
   const cargarArchivados = useCallback(

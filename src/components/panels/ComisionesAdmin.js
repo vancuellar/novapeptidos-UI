@@ -8,6 +8,7 @@ import { Input } from '@/components/ui/input';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import api, { formatMXN } from '@/lib/api';
 import { useLanguage } from '@/context/LanguageContext';
+import useRefrescoAlVolver from '@/hooks/useRefrescoAlVolver';
 
 /* COMISIONES — qué se le debe a cada quien y qué ya se pagó (Christián,
    2026-08-01). El servidor manda los números resueltos (`/admin/comisiones`,
@@ -25,6 +26,8 @@ export default function ComisionesAdmin() {
     api.get('/admin/comisiones').then((r) => setDatos(r.data)).catch(() => {});
   }, []);
   useEffect(cargar, [cargar]);
+  // Al volver a la pestaña se refresca sola (Christián, 2026-08-02).
+  useRefrescoAlVolver(cargar);
 
   const registrar = async () => {
     const monto = Number(pago?.amount);

@@ -18,6 +18,7 @@ import NotificationsFeed from '@/components/NotificationsFeed';
 import ToolsPanel, { herramientasDesbloqueadas } from '@/components/ToolsPanel';
 import CotizadorDistribuidor from '@/components/CotizadorDistribuidor';
 import ComisionesDistribuidor from '@/components/ComisionesDistribuidor';
+import useRefrescoAlVolver from '@/hooks/useRefrescoAlVolver';
 // ⛔ EL MISMO componente que ve el admin. Lo que cambia —si se ven o no los números
 // de la casa— lo decide el SERVIDOR con el token, no este archivo: la ruta del
 // distribuidor recorta la respuesta con una lista blanca antes de mandarla.
@@ -171,11 +172,15 @@ const Distributor = () => {
   useEffect(() => { if (user) loadAll(); }, [user, loadAll]);
   // La lista de clientes va aparte de `loadAll`: cambiar el filtro de fecha sólo
   // vuelve a pedir ESTA lista, no las otras siete llamadas del panel.
-  useEffect(() => {
+  const cargarClientes = useCallback(() => {
     if (!user) return;
     api.get('/distributor/clients', { params: { periodo: periodoClientes } })
       .then((r) => setClients(r.data)).catch(() => {});
   }, [user, periodoClientes]);
+  useEffect(cargarClientes, [cargarClientes]);
+  // Al VOLVER a la pestaña, el panel se refresca solo (Christián, 2026-08-02):
+  // lo que otro borró o cambió mientras tanto ya no se queda pintado.
+  useRefrescoAlVolver(() => { if (user) { loadAll(); cargarClientes(); } });
 
   if (!user || !['distributor', 'admin'].includes(user.role)) return null;
 
