@@ -230,20 +230,28 @@ const Checkout = () => {
   }, [cp, items, cobraEnvio]);
 
   // EL CP SUGIERE LA CIUDAD Y EL ESTADO (Christián, 2026-08-02: «If he enters
-  // the zip code, that should assist User with suggesting the rest»). Se llenan
-  // SOLO los campos vacíos — lo que el cliente ya escribió no se pisa. Si la
-  // fuente no contesta, no pasa nada: teclea su ciudad como siempre.
+  // the zip code, that should assist User with suggesting the rest»). Lo que el
+  // cliente TECLEÓ a mano no se pisa; lo que puso ESTA sugerencia sí se
+  // reemplaza cuando corrige el CP — si no, un CP equivocado dejaba pegadas la
+  // ciudad y el estado del error (Christián, mismo día: «not acceptable»).
+  const sugeridoCp = useRef({ city: '', state: '' });
   useEffect(() => {
     if (!/^\d{5}$/.test(cp)) return undefined;
     let vivo = true;
     const timer = setTimeout(() => {
       api.get(`/cp/${cp}`).then((r) => {
         if (!vivo || !r.data?.found) return;
-        setForm((f) => ({
-          ...f,
-          city: f.city || r.data.city || '',
-          state: f.state || r.data.state || '',
-        }));
+        setForm((f) => {
+          const cityEsAuto = !f.city || f.city === sugeridoCp.current.city;
+          const stateEsAuto = !f.state || f.state === sugeridoCp.current.state;
+          const next = {
+            ...f,
+            city: cityEsAuto ? (r.data.city || '') : f.city,
+            state: stateEsAuto ? (r.data.state || '') : f.state,
+          };
+          sugeridoCp.current = { city: r.data.city || '', state: r.data.state || '' };
+          return next;
+        });
       }).catch(() => {});
     }, 500);
     return () => { vivo = false; clearTimeout(timer); };

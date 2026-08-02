@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -207,16 +207,19 @@ export default function CotizadorDistribuidor({
      máximo que puede dar. El 0% va primero: cotizar sin descuento también es cotizar.
      Y queda el campo para teclear un número intermedio, porque quitarlo sería quitar
      algo que ya se podía hacer. */
-  // EL CP SUGIERE CIUDAD Y ESTADO (mismo ayudante que el checkout): se llenan
-  // sólo los campos vacíos — lo que Mónica ya escribió no se pisa.
+  // EL CP SUGIERE CIUDAD Y ESTADO (mismo ayudante que el checkout). Lo tecleado
+  // a mano no se pisa; lo que puso ESTA sugerencia sí se reemplaza al corregir
+  // el CP — un CP equivocado no puede dejar pegada la ciudad del error.
+  const sugeridoCp = useRef({ city: '', state: '' });
   useEffect(() => {
     if (!cpValido) return undefined;
     let vivo = true;
     const timer = setTimeout(() => {
       api.get(`/cp/${cpCliente.trim()}`).then((r) => {
         if (!vivo || !r.data?.found) return;
-        setCiudadCliente((c) => c || r.data.city || '');
-        setEstadoCliente((s) => s || r.data.state || '');
+        setCiudadCliente((c) => (!c || c === sugeridoCp.current.city) ? (r.data.city || '') : c);
+        setEstadoCliente((s) => (!s || s === sugeridoCp.current.state) ? (r.data.state || '') : s);
+        sugeridoCp.current = { city: r.data.city || '', state: r.data.state || '' };
       }).catch(() => {});
     }, 500);
     return () => { vivo = false; clearTimeout(timer); };
