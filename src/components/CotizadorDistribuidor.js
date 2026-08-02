@@ -280,7 +280,10 @@ export default function CotizadorDistribuidor({
     const tope = Number(envioCfg.shipping_cap_rate) || 0;
     if (tope <= 0) return 0;                       // servidor sin tope: la regla de antes
     const costo = Number(envioCfg.shipping_cost_estimate) || Number(envioCfg.shipping_flat) || 0;
-    return Math.max(0, Math.round(costo - mercancia * tope));
+    // El PISO de absorción (2026-08-02): la casa come hasta $250 o el 5%, lo mayor
+    // — con la guía normal, incluido parejo desde la mínima. Mismo número que la caja.
+    const piso = Number(envioCfg.shipping_absorb_floor) || 0;
+    return Math.max(0, Math.round(costo - Math.max(piso, mercancia * tope)));
   })();
   const total = mercancia + envio;
 

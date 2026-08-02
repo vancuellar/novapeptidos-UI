@@ -439,10 +439,11 @@ async function reglasDeDinero(porSku, h) {
     return { product_id: p.id, name: p.name, price: p.price, quantity: cantidad,
              presentation: p.presentation, image_url: '' };
   };
-  const comprar = async (items, codigo) => j(await fetch(`${API}/orders`, {
+  const comprar = async (items, codigo, extra = {}) => j(await fetch(`${API}/orders`, {
     method: 'POST', headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
       items,
+      ...extra,
       // OJO: example.com es un dominio reservado y NO ENTREGABLE, a propósito.
       // Con 'auditoria@exygenlabs.com' cada corrida le mandaba a Christian un
       // "compra confirmada" y un "pago confirmado" a su buzón real — y esta
@@ -473,6 +474,13 @@ async function reglasDeDinero(porSku, h) {
           'total = subtotal − descuento + envío',
           `${conTope.subtotal} − ${conTope.discount} + ${conTope.shipping || 0} = ${conTope.total}`);
   revisar((conTope.shipping || 0) >= 0, 'el envío nunca resta', `$${conTope.shipping}`);
+
+  // EXPRESS (2026-08-02): +$150 SIEMPRE, encima del estándar. En un pedido chico
+  // el envío queda en tarifa plana + extra; el monto lo pone el servidor.
+  const express = await comprar([item('AHKCU-50MG')], null, { shipping_express: true });
+  aBorrar.push(express);
+  revisar(express.shipping === conTope.shipping + 150,
+          'el express cobra su extra de $150', `$${express.shipping} vs $${conTope.shipping}`);
 
   // Un código que no existe no puede dar descuento de distribuidor.
   const falso = await comprar([item('NAD-1000MG')], 'NOEXISTE-99-XXXX');

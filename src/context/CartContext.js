@@ -509,6 +509,14 @@ export const CartProvider = ({ children }) => {
   const topeCrudo = Number(envio.shipping_cap_rate);
   const topeEnvio = Number.isFinite(topeCrudo) && topeCrudo > 0 ? topeCrudo : 0;
   const costoGuia = Number(envio.shipping_cost_estimate) || Number(envio.shipping_flat) || 0;
+  // EL PISO DE ABSORCIÓN (Christián, 2026-08-02): desde la mínima, la casa come la
+  // guía hasta $250 o el 5% de la compra, lo que sea MAYOR. Con la guía normal eso
+  // es «incluido desde $2,500», parejo. El número viaja del servidor; sin él (un
+  // backend anterior) vale 0 y la cuenta se comporta como antes.
+  const pisoAbsorcion = Number(envio.shipping_absorb_floor) || 0;
+  // El extra del EXPRESS (+$150 siempre, 1-2 días hábiles). Cero = el servidor no
+  // lo ofrece todavía y el checkout ni lo enseña.
+  const extraExpress = Number(envio.shipping_express_extra) || 0;
   // Los dos candados, EN ORDEN: 1º la compra mínima —abajo de ella se paga la tarifa
   // plana por barata que salga la guía—; 2º el tope —la casa absorbe hasta el 5% de
   // lo que el cliente paga y él pone la diferencia—.
@@ -522,14 +530,15 @@ export const CartProvider = ({ children }) => {
     if (!cobraEnvio || !items.length) return 0;
     if (paga < envio.free_shipping_from) return envio.shipping_flat;
     if (topeEnvio <= 0) return 0;                    // servidor sin tope: regla de antes
-    return Math.max(0, Math.round(costoGuia - paga * topeEnvio));
-  }, [cobraEnvio, items.length, envio.free_shipping_from, envio.shipping_flat, costoGuia, topeEnvio]);
+    return Math.max(0, Math.round(costoGuia - Math.max(pisoAbsorcion, paga * topeEnvio)));
+  }, [cobraEnvio, items.length, envio.free_shipping_from, envio.shipping_flat, costoGuia, topeEnvio, pisoAbsorcion]);
   const shipping = calcularEnvio(pagaMercancia);
   // DÓNDE EL ENVÍO LLEGA A $0 DE VERDAD. No basta con cruzar la mínima: el tope tiene
   // que alcanzar a tapar la guía completa. Con $250 de guía y 5%, eso pasa hasta los
   // $5,000. Decirle al cliente "te faltan $X para envío gratis" apuntando a $2,500,
   // cuando la caja le va a cobrar $100, es exactamente la mentira que no se hace aquí.
-  const envioGratisDeVerdadDesde = topeEnvio > 0
+  // Con el piso de absorción, la guía normal queda tapada desde la mínima misma.
+  const envioGratisDeVerdadDesde = topeEnvio > 0 && costoGuia > pisoAbsorcion
     ? Math.max(envio.free_shipping_from, Math.ceil(costoGuia / topeEnvio))
     : envio.free_shipping_from;
   const faltaParaEnvioGratis = cobraEnvio && shipping > 0 && envioGratisDeVerdadDesde > 0
@@ -540,7 +549,7 @@ export const CartProvider = ({ children }) => {
   const envioGratis = cobraEnvio && items.length > 0 && shipping === 0;
 
   return (
-    <CartContext.Provider value={{ items, hidratando, addItem, updateQty, removeItem, clearCart, subtotal, count, discount, discountRate, discountSource, cappedItems, lineDiscounts, regla5Items, compraPropia, baseRate, nextTier, shipping, calcularEnvio, cobraEnvio, envioGratis, faltaParaEnvioGratis, envioGratisDesde: envio.free_shipping_from, envioGratisDeVerdadDesde, topeEnvio, distCode, distRate, codeMin, codeMinMet, applyDistCode, clearDistCode, sharedCartToken, setSharedCartToken, hidratarDesdeUrl, datosDelCliente, pedirDatosDelCliente }}>
+    <CartContext.Provider value={{ items, hidratando, addItem, updateQty, removeItem, clearCart, subtotal, count, discount, discountRate, discountSource, cappedItems, lineDiscounts, regla5Items, compraPropia, baseRate, nextTier, shipping, calcularEnvio, cobraEnvio, envioGratis, faltaParaEnvioGratis, envioGratisDesde: envio.free_shipping_from, envioGratisDeVerdadDesde, topeEnvio, distCode, distRate, codeMin, codeMinMet, applyDistCode, clearDistCode, sharedCartToken, setSharedCartToken, hidratarDesdeUrl, datosDelCliente, pedirDatosDelCliente, extraExpress }}>
       {children}
     </CartContext.Provider>
   );

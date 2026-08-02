@@ -31,11 +31,28 @@ Compuertas: backend **1,344 pruebas** (42 nuevas) · auditoría **95/0** · buil
    separado» (`shipping_pending`); el total va sin envío. Con dirección, las
    reglas de siempre — las nuevas se definen con él (ver abajo).
 
-## 🔜 Lo que sigue
+## ✅ 2026-08-02 — LA ESTRATEGIA DE ENVÍO, DICTADA Y EN VIVO (backend `8e7d6fe`)
 
-- **Reglas de envío CON dirección** — Christián va a dictarlas («quizás costo
-  fijo… etc»). Hoy rigen: $250 plano bajo $2,500; arriba, la casa absorbe hasta
-  el 5% de la compra; el análisis está en el mensaje de cierre de esta sesión.
+Christián la cerró pregunta por pregunta:
+
+- **El cliente ya NO escoge paquetería** (la casa la elige). Escoge el TIPO:
+  **Estándar** (3-5 días hábiles) o **Express** (1-2 días hábiles). ⛔ Jamás se
+  promete «1 día»: no existe en México (sus palabras; la realidad son 36-48 h
+  hábiles).
+- **Estándar**: $250 parejo abajo de $2,500; **incluido desde $2,500** con el
+  **piso de absorción**: la casa come la guía hasta **$250 o el 5% de la
+  compra, LO QUE SEA MAYOR** (`envios.PISO_ABSORCION_MXN`); el excedente de una
+  guía monstruosa lo paga el cliente (su ejemplo: $40,000 → absorbe hasta $2,000).
+- **Express: +$150 SIEMPRE** (`EXTRA_EXPRESS_MXN`), también con envío incluido
+  y también sobre el envío de cortesía (el regalo cubre el estándar).
+- **Guía automática**: $400 estándar / **$600 express** (`tope_guia_automatica`).
+- El cobro ya **no depende de Skydropx**: es política; la paquetería sólo aporta
+  el costo real y el servicio a comprar (rápido si es express).
+- Checkout: selector Estándar/Express (fuera las opciones de paquetería con
+  precios). Promesa del sitio actualizada a **3-5 días hábiles** en es/en/pt.
+- La auditoría de compras prueba el express EN VIVO (compra real, se limpia sola).
+
+## 🔜 Lo que sigue
 - Los pendientes 10-13 del handoff de la mañana siguen igual (huecos de catálogo,
   /aprende/conservacion, 20 proveedores sin indexar, análisis de Uther).
 - Las 4 decisiones de Christián del handoff de la mañana siguen esperando.

@@ -27,7 +27,7 @@ const ICONS = { CreditCard, Landmark, Bitcoin, Store };
 // Pago, no aqui. Se borraron con el formulario (Christian, 2026-07-26).
 
 const Checkout = () => {
-  const { items, hidratando, subtotal, discount, discountRate, discountSource, cappedItems, regla5Items, calcularEnvio, cobraEnvio, envioGratisDesde, envioGratisDeVerdadDesde, topeEnvio, distCode, clearCart, sharedCartToken, datosDelCliente } = useCart();
+  const { items, hidratando, subtotal, discount, discountRate, discountSource, cappedItems, regla5Items, calcularEnvio, cobraEnvio, envioGratisDesde, envioGratisDeVerdadDesde, topeEnvio, distCode, clearCart, sharedCartToken, datosDelCliente, extraExpress } = useCart();
   const { user } = useAuth();
   const { t } = useLanguage();
   // El inventario REAL. El aviso de envío partido tiene que estar EN LA PANTALLA DE
@@ -70,14 +70,10 @@ const Checkout = () => {
   const [cryptoOn, setCryptoOn] = useState(false);
   const [cardOn, setCardOn] = useState(false);
   const [oxxoOn, setOxxoOn] = useState(false);
-  // ⛔ ENVÍO COTIZADO EN EL MOMENTO — DETRÁS DEL INTERRUPTOR DEL SERVIDOR.
-  // `quoteOn` sale de /payments/config. Con él apagado (que es como está hoy)
-  // esta pantalla NO pregunta nada, no pinta nada nuevo y se comporta EXACTAMENTE
-  // como antes de que esto existiera. Quien manda es el servidor, nunca la
-  // pantalla: es la misma regla que ya cuida el precio de los productos.
-  const [quoteOn, setQuoteOn] = useState(false);
-  const [envio, setEnvio] = useState({ estado: 'idle', options: [], detail: '' });
-  const [envioElegido, setEnvioElegido] = useState('');
+  // EL TIPO DE ENVÍO (Christián, 2026-08-02): el cliente ya no ve opciones de
+  // paquetería con precios reales — la casa la elige. Aquí sólo vive si pidió
+  // EXPRESS (+$150, 1-2 días hábiles); todo lo demás lo decide el servidor.
+  const [express, setExpress] = useState(false);
 
   // ⛔ EL PASO QUE NUNCA SE MEDÍA. El backend espera `checkout_start` (ver
   // EVENT_TYPES en server.py) y el frontend jamás lo mandaba: el embudo del Panel
@@ -93,7 +89,6 @@ const Checkout = () => {
       setCryptoOn(!!r.data?.crypto_enabled);
       setCardOn(!!r.data?.card_enabled);
       setOxxoOn(!!r.data?.oxxo_enabled);
-      setQuoteOn(!!r.data?.shipping_quote_enabled);
     }).catch(() => {});
   }, []);
   // Con sesión iniciada, el formulario llega LLENO con lo de su última compra: no
@@ -200,82 +195,30 @@ const Checkout = () => {
     return () => clearTimeout(t);
   }, [form.email, form.full_name, form.phone, items, subtotal, discount]);
 
-  // Al escribir el código postal se le pregunta al servidor cuánto cuesta mandar
-  // ESTE carrito ahí. Con retraso, para no llamar en cada tecla. El servidor
-  // devuelve un ID por opción y el precio solo para enseñarlo: al comprar viaja el
-  // ID, nunca el monto — el precio lo pone él (ver server.py).
-  const cp = (form.postal_code || '').trim();
-  useEffect(() => {
-    if (!quoteOn || cp.length < 5 || !items.length) {
-      setEnvio({ estado: 'idle', options: [], detail: '' });
-      return undefined;
-    }
-    let vivo = true;
-    setEnvio((e) => ({ ...e, estado: 'cargando' }));
-    const timer = setTimeout(() => {
-      api.post('/shipping/quote', {
-        postal_code: cp,
-        state: form.state || '',
-        city: form.city || '',
-        items: items.map((i) => ({
-          product_id: i.sku || i.product_id, name: i.name,
-          price: i.price, quantity: i.quantity,
-        })),
-      }).then((r) => {
-        if (!vivo) return;
-        const opciones = r.data?.options || [];
-        setEnvio({ estado: opciones.length ? 'listo' : 'vacio', options: opciones, detail: r.data?.detail || '' });
-        // Se preselecciona la más barata: es lo que la gente elige de todos modos,
-        // y así el total nunca se queda sin envío por no haber tocado nada.
-        setEnvioElegido((prev) => (opciones.some((o) => o.id === prev) ? prev : (opciones[0]?.id || '')));
-      }).catch(() => {
-        if (!vivo) return;
-        // Que la paquetería falle NO puede tumbar la compra. Se dice y se sigue.
-        setEnvio({ estado: 'error', options: [], detail: '' });
-        setEnvioElegido('');
-      });
-    }, 700);
-    return () => { vivo = false; clearTimeout(timer); };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [quoteOn, cp, items]);
-
   const afterDiscount = subtotal - discount;
   const pointsApplied = usePoints && loyalty.eligible
     ? Math.min(loyalty.balance, Math.floor(afterDiscount)) : 0;
-  // Con la cotización encendida el envío sale de la opción elegida; apagada, del
-  // camino de siempre (`shipping` del carrito, que hoy vale 0).
-  const opcionEnvio = envio.options.find((o) => o.id === envioElegido) || null;
-  const envioCotizado = quoteOn && opcionEnvio ? Number(opcionEnvio.price || 0) : 0;
-  // Los dos candados de la política, EN ORDEN: primero la compra mínima, después el
-  // tope (5% desde el 2026-07-31; el número viaja del servidor, ya no se escribe
-  // aquí — escrito dos veces se desalinea en silencio). Y cuando la guía pasa del
-  // tope, la casa pone su parte y el cliente la diferencia.
-  //
-  // Es una PISTA para la pantalla: el número que se cobra lo decide el servidor al
-  // crear el pedido, con su propia cotización guardada.
+  // LA ESTRATEGIA DEL 2026-08-02 (Christián): el cliente ya no escoge paquetería —
+  // escoge el TIPO. Estándar (3-5 días hábiles): $250 abajo de la mínima, incluido
+  // desde $2,500. Express (1-2 días hábiles): +$150 SIEMPRE. La cuenta de aquí es
+  // una PISTA con los números que manda el servidor (`calcularEnvio` ya trae el
+  // piso de absorción); el monto final lo pone él al crear el pedido.
   // ⛔ SOBRE LO QUE DE VERDAD PAGA, PUNTOS INCLUIDOS. El servidor cobra el envío
   // sobre la mercancía que quedó después del descuento Y después de los puntos; el
   // carrito no sabe de puntos, así que aquí se vuelve a pedir la cuenta con la cifra
   // buena. Si no, un pedido que baja de la mínima al canjear puntos enseñaba envío
   // gratis mientras la caja lo cobraba. (2026-07-31)
   const pagaMercancia = afterDiscount - pointsApplied;
-  const cumpleMinima = pagaMercancia >= envioGratisDesde;
-  // Sin tope del servidor (versión anterior del backend) no se adivina: cruzar la
-  // mínima vuelve a valer envío gratis, que es como se comportaba hasta hoy.
-  const topeCasa = cumpleMinima ? pagaMercancia * topeEnvio : 0;
-  const envioCotizadoACobrar = !(quoteOn && envioCotizado > 0) ? envioCotizado
-    : cumpleMinima && topeEnvio <= 0 ? 0
-      : Math.max(0, Math.round(envioCotizado - topeCasa));
-  const envioACobrar = quoteOn ? envioCotizadoACobrar : calcularEnvio(pagaMercancia);
+  const envioEstandar = calcularEnvio(pagaMercancia);
+  const hayExpress = cobraEnvio && extraExpress > 0 && items.length > 0;
+  const envioACobrar = envioEstandar + (hayExpress && express ? extraExpress : 0);
   // "Gratis" es un envío que SE GANÓ, no un envío que no se cobra: con el cobro
   // apagado el renglón dice "se cotiza por separado", que es otra cosa.
-  const envioGratis = envioACobrar === 0
-    && (quoteOn ? envioCotizado > 0 : cobraEnvio && items.length > 0);
+  const envioGratis = envioACobrar === 0 && cobraEnvio && items.length > 0;
   // El empujón, también sobre la cifra con puntos ya restados.
-  const faltaAquiParaEnvioGratis = envioACobrar > 0 && envioGratisDeVerdadDesde > 0
+  const faltaAquiParaEnvioGratis = envioEstandar > 0 && envioGratisDeVerdadDesde > 0
     ? Math.max(0, envioGratisDeVerdadDesde - pagaMercancia) : 0;
   const total = pagaMercancia + envioACobrar;
-  const diasTexto = (d) => (Number(d) === 1 ? t('checkout.shipping.dayOne') : t('checkout.shipping.days', { days: d }));
   const set = (k, v) => setForm((f) => ({ ...f, [k]: v }));
 
   // Quien llega del enlace de una cotización (?pedido=) entra con el carrito
@@ -333,11 +276,10 @@ const Checkout = () => {
         // Si el pedido sale completo esto no cambia nada.
         shipping_preference: sobrePedido.length > 0 ? envioModo : 'partido',
         shipping: envioACobrar,
-        // ⛔ Viaja el ID de la cotización, NUNCA su precio. El servidor va por el
-        // monto a la cotización que él mismo guardó, y la revalida contra este CP y
-        // este peso antes de cobrar. Lo que mande esta pantalla en `shipping` lo
-        // ignora — creerle un precio al navegador ya costó dinero.
-        shipping_quote_id: quoteOn ? (envioElegido || null) : null,
+        // ⛔ Viaja el TIPO (estándar o express), NUNCA un monto. El servidor cobra
+        // la política de la casa con sus números; lo que mande esta pantalla en
+        // `shipping` lo ignora — creerle un precio al navegador ya costó dinero.
+        shipping_express: hayExpress && express,
         discount,
         distributor_code: distCode || null,
         // ⛔ EL CARRITO COMPARTIDO: viaja el TOKEN y nada más. El servidor abre el
@@ -467,45 +409,46 @@ const Checkout = () => {
               <div className="sm:col-span-2"><Label>{t('checkout.notes')}</Label><Textarea className="mt-1.5" value={form.notes} onChange={(e) => set('notes', e.target.value)} data-testid="checkout-notes-input" /></div>
             </div>
 
-            {/* ⛔ COTIZACIÓN EN VIVO — SOLO SI EL SERVIDOR LA ENCIENDE.
-                Con `shipping_quote_enabled` apagado (como hoy) este bloque entero
-                no existe: ni un renglón de más en la pantalla. Cuando se prenda,
-                al escribir el código postal aparecen aquí los precios reales de
-                Estafeta con sus días, y el total de la derecha se mueve solo. */}
-            {quoteOn && (
+            {/* EL TIPO DE ENVÍO (Christián, 2026-08-02). El cliente ya no ve
+                paqueterías ni precios reales — eso lo resuelve la casa. Ve dos
+                cosas: ESTÁNDAR (3-5 días hábiles, $250 o incluido según el
+                importe) y EXPRESS (1-2 días hábiles, +$150 siempre). ⛔ Nunca se
+                promete «1 día»: en México no existe. */}
+            {hayExpress && (
               <div className="mt-5 rounded-xl border border-border bg-[hsl(var(--secondary))]/40 p-4" data-testid="checkout-shipping-options">
                 <div className="flex items-center gap-2 mb-3">
                   <Truck className="h-4 w-4 text-[hsl(var(--primary))]" />
                   <span className="text-sm font-medium">{t('checkout.shipping.pick')}</span>
                 </div>
-                {envio.estado === 'idle' && (
-                  <p className="text-xs text-muted-foreground" data-testid="checkout-shipping-ask-zip">{t('checkout.shipping.askZip')}</p>
-                )}
-                {envio.estado === 'cargando' && (
-                  <p className="text-xs text-muted-foreground" data-testid="checkout-shipping-loading">{t('checkout.shipping.loading')}</p>
-                )}
-                {envio.estado === 'vacio' && (
-                  <p className="text-xs text-muted-foreground" data-testid="checkout-shipping-empty">{envio.detail || t('checkout.shipping.none')}</p>
-                )}
-                {envio.estado === 'error' && (
-                  <p className="text-xs text-muted-foreground" data-testid="checkout-shipping-failed">{t('checkout.shipping.failed')}</p>
-                )}
-                {envio.estado === 'listo' && (
-                  <RadioGroup value={envioElegido} onValueChange={setEnvioElegido} className="space-y-2">
-                    {envio.options.map((o) => (
-                      <Label key={o.id} htmlFor={`envio-${o.id}`}
-                        className={`flex items-center gap-3 rounded-lg border p-3 cursor-pointer transition-all ${envioElegido === o.id ? 'border-[hsl(var(--primary))] ring-2 ring-[hsl(var(--ring))] ring-offset-1' : 'border-border hover:bg-[hsl(var(--secondary))]'}`}
-                        data-testid="checkout-shipping-option">
-                        <RadioGroupItem value={o.id} id={`envio-${o.id}`} />
-                        <div className="flex-1 min-w-0">
-                          <div className="text-sm font-medium">{o.carrier} · {o.service}</div>
-                          <div className="text-xs text-muted-foreground">{diasTexto(o.days)}</div>
-                        </div>
-                        <div className="text-sm font-medium shrink-0">{formatMXN(o.price)}</div>
-                      </Label>
-                    ))}
-                  </RadioGroup>
-                )}
+                <RadioGroup value={express ? 'express' : 'estandar'}
+                  onValueChange={(v) => setExpress(v === 'express')} className="space-y-2">
+                  <Label htmlFor="envio-estandar"
+                    className={`flex items-center gap-3 rounded-lg border p-3 cursor-pointer transition-all ${!express ? 'border-[hsl(var(--primary))] ring-2 ring-[hsl(var(--ring))] ring-offset-1' : 'border-border hover:bg-[hsl(var(--secondary))]'}`}
+                    data-testid="checkout-envio-estandar">
+                    <RadioGroupItem value="estandar" id="envio-estandar" />
+                    <div className="flex-1 min-w-0">
+                      <div className="text-sm font-medium">{t('checkout.shipping.standard')}</div>
+                      <div className="text-xs text-muted-foreground">{t('checkout.shipping.standardDays')}</div>
+                    </div>
+                    <div className="text-sm font-medium shrink-0">
+                      {envioEstandar > 0 ? formatMXN(envioEstandar)
+                        : <span className="text-[hsl(var(--success))]">{t('checkout.shipping.included')}</span>}
+                    </div>
+                  </Label>
+                  <Label htmlFor="envio-express"
+                    className={`flex items-center gap-3 rounded-lg border p-3 cursor-pointer transition-all ${express ? 'border-[hsl(var(--primary))] ring-2 ring-[hsl(var(--ring))] ring-offset-1' : 'border-border hover:bg-[hsl(var(--secondary))]'}`}
+                    data-testid="checkout-envio-express">
+                    <RadioGroupItem value="express" id="envio-express" />
+                    <div className="flex-1 min-w-0">
+                      <div className="text-sm font-medium">{t('checkout.shipping.express')}</div>
+                      <div className="text-xs text-muted-foreground">{t('checkout.shipping.expressDays')}</div>
+                    </div>
+                    <div className="text-sm font-medium shrink-0">
+                      {envioEstandar > 0 ? formatMXN(envioEstandar + extraExpress)
+                        : `+${formatMXN(extraExpress)}`}
+                    </div>
+                  </Label>
+                </RadioGroup>
               </div>
             )}
           </Card>
