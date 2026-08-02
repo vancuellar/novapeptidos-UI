@@ -63,6 +63,34 @@ Christián la cerró pregunta por pregunta:
   precios). Promesa del sitio actualizada a **3-5 días hábiles** en es/en/pt.
 - La auditoría de compras prueba el express EN VIVO (compra real, se limpia sola).
 
+## ✅ 2026-08-02 (tarde) — CHECKOUT QUE ELIGE Y COTIZADOR CON DOMICILIO
+
+Todo EN VIVO (backend `c4b582d`, sitio `main.4e52461d.js`), pedido por Christián
+en vivo y verificado E2E (1,356 pruebas backend, compras reales 151/0, y el
+carrito compartido probado contra producción con limpieza):
+
+- **Nada viene preseleccionado en el checkout**: forma de pago, tipo de envío
+  (estándar/express) y envío partido/completo nacen SIN marcar; sin elegir no
+  hay compra. Dirección completa obligatoria (ciudad, estado, CP de 5 dígitos).
+- **El CP sugiere ciudad y estado** (`GET /api/cp/{cp}`, Nominatim→Zippopotam
+  con caché) — en el checkout Y en el cotizador del distribuidor.
+- **Regla v2 del express**: dentro de max($250,5%) → GRATIS TOTAL con su
+  «¡Buenas noticias!»; si se pasa, solo el excedente. Y un pedido express jamás
+  compra guía lenta (dias_max=2, topes $400/$600).
+- **Cotizador con domicilio POR CAMPOS** (calle, ciudad, estado, CP): con el CP
+  cotiza la guía real y el envío sale en la hoja; el carrito compartido guarda
+  los campos (privados, solo con la segunda llave) y el checkout del cliente
+  llega TODO prellenado. Sin CP ni calle: «Se cotiza por separado».
+- **Los paneles se refrescan solos al volver a la pestaña** (hook
+  `useRefrescoAlVolver`, freno 8 s): Admin, Distribuidor, Mis Cotizaciones y
+  las dos bolsas de comisiones.
+- **Sello Tienda De Confianza** fijo dentro del resumen bajo el botón, con el
+  punto «Envío Rápido Incluido»; iconitos: Pago Seguro · Envío Express
+  Disponible; aviso «los plazos aplican a lo disponible» con sobre pedido.
+- **Motor**: Jess y Dewen con flete ESTIMADO $60 USD (orden de Christián); vara
+  `roi_con_todo.py`: 49/187 bajo el 5× con todo adentro — SOLO reporta, ningún
+  precio se movió (su decisión: mover comisiones, no precios).
+
 ## 🔜 Lo que sigue
 - Los pendientes 10-13 del handoff de la mañana siguen igual (huecos de catálogo,
   /aprende/conservacion, 20 proveedores sin indexar, análisis de Uther).
