@@ -49,6 +49,19 @@ export const topeLocal = (producto, variante) => {
     : TECHO_DESCUENTO_CLIENTE;
 };
 
+/* EL GRAMAJE DE UNA PRESENTACIÓN, EN NÚMERO (Christián, 2026-08-01).
+   «10, 100, 120, 20, 30, 40 mg» era el orden ALFABÉTICO: como texto, "100" va
+   antes que "20" porque el 1 es menor que el 2. Para una persona eso no es una
+   lista, es un revoltijo — y peor: la de 60 mg quedaba en séptimo lugar y el
+   buscador cortaba en seis, así que la Retatrutida de 60 mg NO EXISTÍA en el
+   cotizador aunque estuviera viva en el catálogo.
+   Se toma el PRIMER número de la presentación («10 mg – 100 mg» → 10). Lo que no
+   trae número se va al final de su producto, no al principio. */
+export const gramajeDe = (presentacion) => {
+  const m = String(presentacion || '').replace(',', '.').match(/\d+(?:\.\d+)?/);
+  return m ? Number(m[0]) : Number.POSITIVE_INFINITY;
+};
+
 // El catálogo aplanado que necesita el cotizador: una línea por PRESENTACIÓN,
 // que es lo que se vende y lo que tiene precio propio.
 export const catalogoCotizable = (topes) => {
@@ -62,6 +75,10 @@ export const catalogoCotizable = (topes) => {
       const delServidor = topes ? (topes[v.id] ?? topes[v.sku]) : undefined;
       out.push({
         id: v.id || v.sku,
+        // El nombre del producto SIN la presentación: es por lo que se agrupa al
+        // ordenar. No viaja a ningún lado más — no es un dato nuevo, es el mismo
+        // `p.name` que ya se pinta pegado a la presentación.
+        producto: p.name,
         name: v.presentation ? `${p.name} ${v.presentation}` : p.name,
         presentation: v.presentation || p.presentation || '',
         price: precio,
@@ -69,7 +86,11 @@ export const catalogoCotizable = (topes) => {
       });
     }
   }
-  return out.sort((a, b) => a.name.localeCompare(b.name, 'es'));
+  // Primero por producto (alfabético, que ahí sí es lo natural) y DENTRO de cada
+  // producto por gramaje de menor a mayor: 10, 20, 30, 40, 60, 100, 120 mg.
+  return out.sort((a, b) => a.producto.localeCompare(b.producto, 'es')
+    || gramajeDe(a.presentation) - gramajeDe(b.presentation)
+    || a.name.localeCompare(b.name, 'es'));
 };
 
 // Lo que el cotizador le pide al servidor: los topes por producto y su tasa.

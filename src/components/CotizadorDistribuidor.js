@@ -38,6 +38,19 @@ const CATALOGO_URL = `${SITIO_URL}/catalogo`;
 
 const CORREO_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 
+/* CUÁNTAS PRESENTACIONES ENSEÑA EL BUSCADOR (Christián, 2026-08-01).
+   Eran SEIS, y la Retatrutida tiene siete presentaciones: la de 60 mg —viva en el
+   catálogo, con 20 piezas— quedaba fuera de la lista y para Mónica sencillamente no
+   existía. Ahora caben todas las de cualquier familia del catálogo y la lista se
+   desplaza; el número es un freno contra una búsqueda de dos letras que traiga medio
+   catálogo, no un límite de negocio. */
+const MAX_SUGERENCIAS = 25;
+
+// Piezas máximas de UN obsequio. Mismo número que `regalos.MAX_PIEZAS_OBSEQUIO` en
+// el backend, que es quien manda: pedir 9 y que el servidor guarde 5 sería mentirle
+// a la pantalla.
+const MAX_PIEZAS_OBSEQUIO = 5;
+
 // `conEncabezado` en false quita el título de arriba: lo usa "Mis Herramientas",
 // donde el nombre de la sección ya lo pone el acordeón y repetirlo se lee como un
 // error. El diseño no cambia; sólo se apaga la parte que estorba ahí.
@@ -64,6 +77,8 @@ export default function CotizadorDistribuidor({
   const [correoAbierto, setCorreoAbierto] = useState(false);
   const [correo, setCorreo] = useState('');
   const [enviando, setEnviando] = useState(false);
+  // Cómo le fue al correo, para que se QUEDE en pantalla. Ver `enviarCorreo`.
+  const [resultadoCorreo, setResultadoCorreo] = useState(null); // {ok, texto}
 
   // OBSEQUIOS (Christián, 2026-08-01). Un producto de cortesía o el envío. Se apilan
   // con el descuento del código, y su CÓDIGO INTERNO no existe en esta pantalla: lo
@@ -104,7 +119,7 @@ export default function CotizadorDistribuidor({
     if (q.length < 2) return [];
     return catalogo
       .filter((p) => `${p.name} ${p.presentation || ''}`.toLowerCase().includes(q))
-      .slice(0, 6);
+      .slice(0, MAX_SUGERENCIAS);
   }, [busqueda, catalogo]);
 
   // Los clientes registrados, para el autollenado. Se piden UNA vez al abrir.
@@ -153,22 +168,49 @@ export default function CotizadorDistribuidor({
   const quitar = (id) => setRenglones((r) => r.filter((x) => x.id !== id));
 
   // ------------------------------------------------------------- los obsequios
+  // Volver a elegir el mismo producto SUMA una pieza en vez de no hacer nada: es lo
+  // que la mano espera, y era lo único que se podía hacer antes de que hubiera
+  // cantidad (Christián, 2026-08-01: «que se pueda poner 1, 2, 3…»).
   const agregarObsequio = (p) => {
-    setObsequios((o) => (o.some((x) => x.product_id === p.id) ? o
+    setObsequios((o) => (o.some((x) => x.product_id === p.id)
+      ? o.map((x) => (x.product_id === p.id
+        ? { ...x, cantidad: Math.min(MAX_PIEZAS_OBSEQUIO, (x.cantidad || 1) + 1) } : x))
       : [...o, { tipo: 'producto', product_id: p.id, nombre: p.name, cantidad: 1 }]));
     setBuscaObsequio('');
   };
+  // La cantidad del obsequio: con flechitas y tecleando. Se acota entre 1 y el
+  // máximo del servidor; lo que no es número se queda en 1 en vez de romper la fila.
+  const cambiarCantidadObsequio = (pid, n) => setObsequios((o) => o.map((x) => (
+    x.product_id === pid && x.tipo === 'producto'
+      ? { ...x, cantidad: Math.max(1, Math.min(MAX_PIEZAS_OBSEQUIO, Math.round(Number(n)) || 1)) }
+      : x)));
   const alternarEnvioDeCortesia = () => setObsequios((o) => (o.some((x) => x.tipo === 'envio')
     ? o.filter((x) => x.tipo !== 'envio') : [...o, { tipo: 'envio' }]));
   const quitarObsequio = (llave) => setObsequios(
     (o) => o.filter((x) => (x.tipo === 'envio' ? 'envio' : x.product_id) !== llave));
+
+  /* EL DESCUENTO, CON BOTONES (Christián, 2026-08-01): «botones: 5%, 10%, 15%, 20%…
+     más fácil para Mónica». Era una barra deslizante, que en un teléfono es una
+     lotería: se arrastra el dedo y sale 13%.
+     Los escalones son de 5 en 5 hasta SU tope, y si el tope no cae en un múltiplo de
+     5 se agrega él mismo al final — el número que más le sirve es justamente el
+     máximo que puede dar. El 0% va primero: cotizar sin descuento también es cotizar.
+     Y queda el campo para teclear un número intermedio, porque quitarlo sería quitar
+     algo que ya se podía hacer. */
+  const pasosDescuento = useMemo(() => {
+    const max = Math.round((tasaMaxima || 0) * 100);
+    const pasos = [0];
+    for (let p = 5; p <= max; p += 5) pasos.push(p);
+    if (max > 0 && !pasos.includes(max)) pasos.push(max);
+    return pasos;
+  }, [tasaMaxima]);
 
   const sugerenciasObsequio = useMemo(() => {
     const q = buscaObsequio.trim().toLowerCase();
     if (q.length < 2) return [];
     return catalogo
       .filter((p) => `${p.name} ${p.presentation || ''}`.toLowerCase().includes(q))
-      .slice(0, 6);
+      .slice(0, MAX_SUGERENCIAS);
   }, [buscaObsequio, catalogo]);
 
   // ⛔ UN ENLACE VIEJO NO PUEDE SEGUIR EN PANTALLA CUANDO EL CARRITO YA CAMBIÓ. El
@@ -320,6 +362,7 @@ export default function CotizadorDistribuidor({
     const nuevo = nuevoFolio();
     setFolio(nuevo);          // cada cotización que se genera es un documento nuevo
     setCorreoAbierto(false);
+    setResultadoCorreo(null); // documento nuevo, resultado de correo en blanco
     // Si ya se capturó el correo del cliente, el campo de "Enviar Por Correo"
     // llega lleno — se puede corregir, pero no hay que teclearlo dos veces.
     setCorreo((c) => c || correoCliente.trim());
@@ -427,10 +470,28 @@ export default function CotizadorDistribuidor({
   // El correo lo MANDA EL SERVIDOR, y con SUS precios: aquí sólo viajan qué
   // productos, cuántos y cuánto descuento se pidió. Si esta pantalla estuviera
   // manipulada, el correo saldría con el precio real de todas formas.
+  /* ⛔ EL CORREO NO PUEDE FINGIR (Christián, 2026-08-01): «Le di click a compartir
+     por email pero NO recibí nada en mi email.»
+
+     El botón sí llamaba al servidor y el servidor sí contestaba —con un 502 cuando el
+     envío no salía—, pero lo único que se veía era un aviso rojo de dos segundos y
+     medio que decía «intenta de nuevo». Encima de la vista previa, con la hoja
+     ocupando la pantalla, ese aviso se va antes de que nadie lo lea: parece que no
+     pasó nada. Y «intenta de nuevo» ni siquiera era cierto cuando el motivo era que
+     el correo está APAGADO en el servidor — reintentar mil veces no lo va a encender.
+
+     Ahora el resultado se QUEDA en pantalla hasta que ella lo cierre, dice el motivo
+     real que manda el servidor, y cuando el correo no puede salir ofrece las dos
+     salidas que sí funcionan: WhatsApp y el enlace del carrito. */
   const enviarCorreo = async () => {
     const destino = correo.trim();
-    if (!CORREO_RE.test(destino)) { toast.error(t('cotizador.correoInvalido')); return; }
+    if (!CORREO_RE.test(destino)) {
+      setResultadoCorreo({ ok: false, texto: t('cotizador.correoInvalido') });
+      toast.error(t('cotizador.correoInvalido'));
+      return;
+    }
     setEnviando(true);
+    setResultadoCorreo(null);
     try {
       await api.post('/distributor/quote/email', {
         email: destino,
@@ -443,12 +504,19 @@ export default function CotizadorDistribuidor({
         folio,
         items: filas.map((f) => ({ product_id: f.id, quantity: f.qty })),
       });
+      setResultadoCorreo({ ok: true, texto: t('cotizador.correoEnviado', { email: destino }) });
       toast.success(t('cotizador.correoEnviado', { email: destino }));
-      setCorreoAbierto(false);
       setCorreo('');
     } catch (e) {
       const codigoHttp = e?.response?.status;
-      toast.error(codigoHttp === 429 ? t('cotizador.correoDemasiados') : t('cotizador.correoError'));
+      const motivo = e?.response?.data?.detail?.error;
+      // Los tres «no» posibles, cada uno con su verdad. El de «apagado» es el que más
+      // importa: no es un fallo pasajero y no se arregla insistiendo.
+      const texto = motivo === 'correo_apagado' ? t('cotizador.correoApagado')
+        : codigoHttp === 429 ? t('cotizador.correoDemasiados')
+          : t('cotizador.correoError');
+      setResultadoCorreo({ ok: false, texto });
+      toast.error(texto);
     } finally {
       setEnviando(false);
     }
@@ -476,7 +544,7 @@ export default function CotizadorDistribuidor({
           <Input value={busqueda} onChange={(e) => setBusqueda(e.target.value)}
             placeholder={t('cotizador.buscar')} className="pl-9" data-testid="cotizador-buscar" />
           {sugerencias.length > 0 && (
-            <Card className="absolute z-20 mt-2 w-full overflow-hidden divide-y divide-border shadow-lg">
+            <Card className="absolute z-20 mt-2 w-full max-h-72 overflow-y-auto divide-y divide-border shadow-lg">
               {sugerencias.map((p) => (
                 <button key={p.id} type="button" onClick={() => agregar(p)}
                   className="w-full flex items-center justify-between px-4 py-2.5 text-sm hover:bg-accent transition-colors text-left">
@@ -531,10 +599,36 @@ export default function CotizadorDistribuidor({
               <label className="text-sm font-medium">{t('cotizador.descuento')}</label>
               <span className="text-sm font-semibold tabular-nums">{Math.round(descuento * 100)}%</span>
             </div>
-            <input type="range" min="0" max={Math.round(tasaMaxima * 100)} step="1"
-              value={Math.round(descuento * 100)}
-              onChange={(e) => setDescuento(Number(e.target.value) / 100)}
-              className="w-full accent-primary" data-testid="cotizador-descuento" />
+            {/* LOS BOTONES PRIMERO. Un toque = un descuento redondo. */}
+            <div className="flex flex-wrap gap-1.5" data-testid="cotizador-descuento-botones">
+              {pasosDescuento.map((p) => (
+                <Button key={p} type="button" size="sm"
+                  variant={Math.round(descuento * 100) === p ? 'default' : 'outline'}
+                  className="h-8 px-3 tabular-nums"
+                  onClick={() => setDescuento(p / 100)}
+                  data-testid={`cotizador-descuento-${p}`}>
+                  {p}%
+                </Button>
+              ))}
+            </div>
+            {/* Y el número a mano, para un 13% si lo quiere. Se acota a su tope aquí
+                mismo: el servidor lo volvería a recortar, pero enseñar 30% cuando se
+                van a dar 25% es prometer de más. */}
+            <div className="flex items-center gap-2 mt-2">
+              <label className="text-xs text-muted-foreground" htmlFor="cot-descuento-otro">
+                {t('cotizador.descuentoOtro')}
+              </label>
+              <Input id="cot-descuento-otro" type="number" inputMode="numeric"
+                min="0" max={Math.round(tasaMaxima * 100)} step="1"
+                value={Math.round(descuento * 100)}
+                onChange={(e) => {
+                  const n = Math.round(Number(e.target.value));
+                  if (!Number.isFinite(n)) return;
+                  setDescuento(Math.max(0, Math.min(Math.round(tasaMaxima * 100), n)) / 100);
+                }}
+                className="h-8 w-20 text-sm" data-testid="cotizador-descuento" />
+              <span className="text-xs text-muted-foreground">%</span>
+            </div>
             <p className="text-xs text-muted-foreground mt-1">{t('cotizador.topeNota')}</p>
           </div>
           {/* EL BLOQUE DEL DINERO, con las palabras que pidió Christián: «Descuento
@@ -590,7 +684,7 @@ export default function CotizadorDistribuidor({
                 placeholder={t('cotizador.obsequioBuscar')} className="pl-9"
                 data-testid="cotizador-obsequio-buscar" />
               {sugerenciasObsequio.length > 0 && (
-                <Card className="absolute z-20 mt-2 w-full overflow-hidden divide-y divide-border shadow-lg">
+                <Card className="absolute z-20 mt-2 w-full max-h-72 overflow-y-auto divide-y divide-border shadow-lg">
                   {sugerenciasObsequio.map((p) => (
                     <button key={p.id} type="button" onClick={() => agregarObsequio(p)}
                       className="w-full flex items-center justify-between px-4 py-2.5 text-sm hover:bg-accent transition-colors text-left"
@@ -613,11 +707,35 @@ export default function CotizadorDistribuidor({
                   const llave = o.tipo === 'envio' ? 'envio' : o.product_id;
                   const nombre = o.tipo === 'envio' ? t('cotizador.obsequioEnvio') : o.nombre;
                   return (
-                    <li key={llave} className="flex items-center justify-between gap-2 text-sm">
-                      <span className="flex items-center gap-1.5 min-w-0 text-emerald-600 dark:text-emerald-400">
+                    <li key={llave} className="flex flex-wrap items-center justify-between gap-x-2 gap-y-1 text-sm">
+                      <span className="flex items-center gap-1.5 min-w-0 flex-1 text-emerald-600 dark:text-emerald-400">
                         <Gift className="h-3.5 w-3.5 shrink-0" />
                         <span className="truncate">{nombre}</span>
                       </span>
+                      {/* LA CANTIDAD DEL REGALO: flechitas y también a mano. El envío
+                          no la lleva — regalar dos veces la misma guía no existe. */}
+                      {o.tipo === 'producto' && (
+                        <span className="flex items-center gap-1 shrink-0">
+                          <Button variant="outline" size="icon" className="h-7 w-7"
+                            onClick={() => cambiarCantidadObsequio(o.product_id, (o.cantidad || 1) - 1)}
+                            disabled={(o.cantidad || 1) <= 1}
+                            aria-label="-" data-testid={`cotizador-obsequio-menos-${o.product_id}`}>
+                            <Minus className="h-3.5 w-3.5" />
+                          </Button>
+                          <Input type="number" inputMode="numeric" min="1" max={MAX_PIEZAS_OBSEQUIO}
+                            value={o.cantidad || 1}
+                            onChange={(e) => cambiarCantidadObsequio(o.product_id, e.target.value)}
+                            className="h-7 w-14 text-center text-sm tabular-nums px-1"
+                            aria-label={t('cotizador.obsequioCantidad')}
+                            data-testid={`cotizador-obsequio-cant-${o.product_id}`} />
+                          <Button variant="outline" size="icon" className="h-7 w-7"
+                            onClick={() => cambiarCantidadObsequio(o.product_id, (o.cantidad || 1) + 1)}
+                            disabled={(o.cantidad || 1) >= MAX_PIEZAS_OBSEQUIO}
+                            aria-label="+" data-testid={`cotizador-obsequio-mas-${o.product_id}`}>
+                            <Plus className="h-3.5 w-3.5" />
+                          </Button>
+                        </span>
+                      )}
                       <Button variant="ghost" size="icon" className="h-7 w-7 text-muted-foreground hover:text-destructive shrink-0"
                         onClick={() => quitarObsequio(llave)} aria-label={t('cotizador.obsequioQuitar')}>
                         <Trash2 className="h-3.5 w-3.5" />
@@ -719,6 +837,21 @@ export default function CotizadorDistribuidor({
             />
 
             <div className="flex flex-col gap-2 p-4 sm:px-0 sm:pt-3 bg-card sm:bg-transparent rounded-b-xl sm:rounded-none">
+              {/* EL ENLACE, A LA MANO DESPUÉS DE GENERARLO (Christián, 2026-08-01).
+                  Al generar la cotización el carrito ya se creó, pero su enlace se
+                  quedaba abajo, TAPADO por esta misma ventana: para volver a copiarlo
+                  había que cerrar la vista previa y buscarlo. Aquí está, en el mismo
+                  lugar donde se decide a quién mandársela. */}
+              {carrito?.url && (
+                <div className="flex flex-col sm:flex-row gap-2" data-testid="cotizador-carrito-enlace-preview">
+                  <Input readOnly value={carrito.url} className="sm:flex-1 text-xs bg-card"
+                    onFocus={(e) => e.target.select()} aria-label={t('cotizador.carritoCopiar')} />
+                  <Button variant="outline" className="gap-2 bg-card" onClick={copiarEnlace}
+                    data-testid="cotizador-carrito-copiar-preview">
+                    <Copy className="h-4 w-4" />{t('cotizador.carritoCopiar')}
+                  </Button>
+                </div>
+              )}
               <div className="flex gap-2">
                 <Button className="flex-1 gap-2" onClick={compartir} data-testid="cotizador-whatsapp">
                   <Share2 className="h-4 w-4" /><span className="truncate">{t('cotizador.compartir')}</span>
@@ -749,6 +882,20 @@ export default function CotizadorDistribuidor({
                       {t('cotizador.enviar')}
                     </Button>
                   </div>
+                  {/* ⛔ EL RESULTADO SE QUEDA EN PANTALLA. Un aviso de dos segundos
+                      encima de la hoja no lo lee nadie, y creerse enviado lo que no
+                      salió es peor que no tener el botón. */}
+                  {resultadoCorreo && (
+                    <div data-testid="cotizador-correo-resultado"
+                      className={`rounded-lg border p-2.5 text-xs leading-relaxed ${resultadoCorreo.ok
+                        ? 'border-emerald-500/40 bg-emerald-500/10 text-emerald-700 dark:text-emerald-300'
+                        : 'border-destructive/40 bg-destructive/10 text-destructive'}`}>
+                      <p>{resultadoCorreo.texto}</p>
+                      {!resultadoCorreo.ok && (
+                        <p className="mt-1 opacity-90">{t('cotizador.correoAlternativa')}</p>
+                      )}
+                    </div>
+                  )}
                   <p className="text-[11px] text-muted-foreground leading-relaxed">{t('cotizador.correoNota')}</p>
                   {/* Que no sea una sorpresa: el correo lo firma la atención de la
                       casa, no el distribuidor. Su nombre y su correo no viajan al
