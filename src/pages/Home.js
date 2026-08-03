@@ -403,6 +403,16 @@ const Home = () => {
               <div className="font-heading text-3xl font-bold text-[hsl(var(--primary))]">≥99%</div>
               <div className="font-mono-tech text-[10.5px] uppercase tracking-[0.16em] text-muted-foreground mt-1.5">{t('home.purityHplc')}</div>
             </div>
+            {/* El cuarto dato (Christián, 2026-08-03). Al quitar la pureza duplicada
+                quedaban tres y el bloque pedía un cuarto; de los candidatos, éste es
+                el único que mueve carrito — los otros dos (COA por lote, métodos de
+                pago) informan pero no empujan a comprar. El umbral sale de
+                `envio_gratis_desde_mxn` en las reglas de la casa: si cambia allá,
+                cámbialo aquí. */}
+            <div>
+              <div className="font-heading text-3xl font-bold">{t('home.freeShipValue')}</div>
+              <div className="font-mono-tech text-[10.5px] uppercase tracking-[0.16em] text-muted-foreground mt-1.5">{t('home.freeShipLabel')}</div>
+            </div>
           </div>
         </div>
       </section>

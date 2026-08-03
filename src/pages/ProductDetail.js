@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { ShieldCheck, Minus, Plus, ShoppingCart, FlaskConical } from 'lucide-react';
+import { ShieldCheck, Minus, Plus, ShoppingCart, FlaskConical, Bitcoin, Lock, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
@@ -53,6 +53,8 @@ const ProductDetail = () => {
   // Si viaja con la página, el precio y el botón de comprar esperan por ella. Se
   // pide aparte: la ficha pinta de inmediato y el texto entra en cuanto llega.
   const [monograph, setMonograph] = useState(null);
+  // La foto en grande (Christián, 2026-08-03).
+  const [zoom, setZoom] = useState(false);
 
   useEffect(() => {
     setLoading(true);
@@ -103,6 +105,24 @@ const ProductDetail = () => {
   // Medición del embudo. Va con los demás hooks (antes de cualquier return):
   // si se pone después de un return condicional, React truena.
   useEffect(() => { if (product?.slug) track('product_view', { product: product.slug }); }, [product?.slug]);
+
+  // La foto en grande: se cierra con Escape y bloquea el scroll del fondo mientras
+  // está abierta. Sin lo segundo, el dedo mueve la página por detrás de la imagen.
+  useEffect(() => {
+    if (!zoom) return undefined;
+    const salir = (e) => { if (e.key === 'Escape') setZoom(false); };
+    const previo = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    window.addEventListener('keydown', salir);
+    return () => {
+      document.body.style.overflow = previo;
+      window.removeEventListener('keydown', salir);
+    };
+  }, [zoom]);
+
+  // Al cambiar de presentación la foto cambia: se cierra para no dejar en pantalla
+  // el vial que ya no se está mirando.
+  useEffect(() => { setZoom(false); }, [variantIdx, slug]);
 
   // Monografía a parte (ver el useState de arriba). `vigente` evita que una
   // respuesta vieja pise la ficha nueva si cambias de producto rápido.
@@ -173,9 +193,15 @@ const ProductDetail = () => {
       <div className="grid lg:grid-cols-2 gap-8 lg:gap-14 items-start">
         {/* ------------------------------------------------------------- foto */}
         <div className="lg:sticky lg:top-24">
-          <div className="rounded-3xl border border-border bg-[hsl(var(--secondary))] overflow-hidden">
+          {/* La foto se abre en grande al picarle (Christián, 2026-08-03, copiando
+              lo que hace Nexaph). Es un <button> y no un <div> con onClick a
+              propósito: así se llega con el tabulador y se abre con Enter, que es
+              lo que necesita quien no usa ratón. */}
+          <button type="button" onClick={() => setZoom(true)} data-testid="pdp-image-open"
+            aria-label={t('product.zoomOpen')}
+            className="block w-full rounded-3xl border border-border bg-[hsl(var(--secondary))] overflow-hidden cursor-zoom-in focus:outline-none focus-visible:ring-2 focus-visible:ring-[hsl(var(--primary))]">
             <img src={productImage(localizedProduct, active)} alt={`${localizedProduct.name} ${active.presentation || ''}`.trim()} className="w-full object-cover aspect-square transition-transform duration-300 ease-out hover:scale-105" />
-          </div>
+          </button>
           {isBrandImage(localizedProduct, active) && (
             <p className="mt-3 text-[11px] leading-relaxed text-muted-foreground text-center">{t('product.brandPhotoNote')}</p>
           )}
@@ -261,6 +287,32 @@ const ProductDetail = () => {
               {qty >= 3 ? t('product.volumeApplied') : t('product.volumeNudge')}
             </p>
           )}
+
+          {/* LA FRANJA DEL 5% EN CRIPTO (Christián, 2026-08-03).
+              ⛔ Este 5% SE COBRA DE VERDAD: lo aplica el servidor en create_order
+              (ver descuento_cripto.py en el backend). No es un adorno — si algún día
+              se apaga la regla del backend, hay que apagar esta franja el mismo día,
+              o el banner promete algo que la caja no cumple. Los insumos no llevan
+              descuento comercial, pero éste SÍ les toca: no sale del margen del
+              producto sino de la comisión de pasarela que el pedido no paga. */}
+          <div className="mt-3 rounded-xl border border-[hsl(var(--primary))]/30 bg-[hsl(var(--primary))]/10 px-3.5 py-2.5 flex items-center gap-2.5"
+               data-testid="pdp-crypto-nudge">
+            <Bitcoin className="h-4 w-4 shrink-0 text-[hsl(var(--primary))]" />
+            <span className="text-[13px] font-medium leading-snug">{t('product.cryptoDiscount')}</span>
+          </div>
+
+          {/* Compra segura, con los métodos que de verdad aceptamos. Sin logos de
+              marca: pintar los de Visa y Mastercard sin licencia es un problema que
+              no hace falta tener, y el texto dice lo mismo. */}
+          <div className="mt-4 rounded-xl border border-border bg-secondary/30 px-3.5 py-3" data-testid="pdp-safe-checkout">
+            <div className="flex items-center justify-center gap-1.5 text-[11px] font-mono-tech uppercase tracking-[0.14em] text-muted-foreground">
+              <Lock className="h-3 w-3" />
+              {t('product.safeCheckout')}
+            </div>
+            <p className="text-center text-[11.5px] text-muted-foreground mt-1.5 leading-snug">
+              {t('product.safeCheckoutMethods')}
+            </p>
+          </div>
 
           {/* RUO COMPACTO, PERO ARRIBA Y VISIBLE. (Fable 5, 2026-07-30)
               Era un recuadro de 85 px en la columna de la foto. Ahora es una franja
@@ -367,6 +419,38 @@ const ProductDetail = () => {
               <div key={p.id} className={i >= 2 ? 'hidden lg:block' : ''}><ProductCard product={p} /></div>
             ))}
           </div>
+        </div>
+      )}
+
+      {/* LA FOTO EN GRANDE (Christián, 2026-08-03).
+          Se cierra picando el fondo, la ✕ o Escape — las tres, porque en teléfono
+          la ✕ queda lejos del pulgar y en escritorio nadie busca un botón para
+          cerrar una imagen. `stopPropagation` en la foto para que picarla no la
+          cierre: es lo que uno hace para verla mejor. */}
+      {zoom && (
+        <div
+          className="fixed inset-0 z-[110] flex items-center justify-center bg-background/90 backdrop-blur-md p-4 cursor-zoom-out"
+          onClick={() => setZoom(false)}
+          role="dialog"
+          aria-modal="true"
+          aria-label={localizedProduct.name}
+          data-testid="pdp-image-modal"
+        >
+          <button type="button" onClick={() => setZoom(false)} data-testid="pdp-image-close"
+            aria-label={t('product.zoomClose')}
+            className="absolute top-4 right-4 rounded-full border border-border bg-card/80 p-2.5 hover:bg-card transition-colors">
+            <X className="h-5 w-5" />
+          </button>
+          <figure className="max-w-3xl w-full" onClick={(e) => e.stopPropagation()}>
+            <img
+              src={productImage(localizedProduct, active)}
+              alt={`${localizedProduct.name} ${active.presentation || ''}`.trim()}
+              className="w-full h-auto max-h-[82vh] object-contain rounded-2xl cursor-default"
+            />
+            <figcaption className="text-center text-[12px] text-muted-foreground mt-3">
+              {localizedProduct.name} · {active.presentation}
+            </figcaption>
+          </figure>
         </div>
       )}
     </div>
