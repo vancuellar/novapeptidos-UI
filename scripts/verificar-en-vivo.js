@@ -115,21 +115,41 @@ async function abrir(page, ruta) {
   await page.waitForTimeout(900);
 }
 
-/** La puerta RUO del primer ingreso: hay que poder aceptarla. */
+/** La puerta RUO del primer ingreso: hay que poder aceptarla.
+ *
+ * DOS casillas desde el 2026-08-02 (edad 21+ y propósito de investigación), y el
+ * botón no se enciende hasta que están las dos. Se marcan LAS DOS a propósito:
+ * si mañana alguien vuelve a juntarlas en una, o añade una tercera obligatoria,
+ * esto se pone rojo — que es justo lo que tiene que pasar. Un sitio cuya puerta
+ * no se puede abrir es un sitio caído, aunque conteste 200.
+ */
+const CASILLAS_DE_LA_PUERTA = [
+  '[data-testid="ruo-gate-checkbox-edad"] input',
+  '[data-testid="ruo-gate-checkbox-research"] input',
+];
+
 async function pasarLaPuerta(page, donde) {
   const hay = await page.$('[data-testid="ruo-gate"]');
   if (!hay) return true;
-  const casilla = await page.evaluate(sondaClicable, '[data-testid="ruo-gate-checkbox"] input');
+  const estados = [];
+  for (const sel of CASILLAS_DE_LA_PUERTA) {
+    estados.push(await page.evaluate(sondaClicable, sel));
+  }
   const boton = await page.evaluate(sondaClicable, '[data-testid="ruo-gate-accept"]');
-  if (casilla !== 'OK' || boton !== 'OK') {
-    mal(`${donde}: la puerta RUO NO se puede aceptar (casilla: ${casilla} / botón: ${boton}) — el sitio queda inservible`);
+  if (estados.some((e) => e !== 'OK') || boton !== 'OK') {
+    mal(`${donde}: la puerta RUO NO se puede aceptar (casillas: ${estados.join(' / ')} / botón: ${boton}) — el sitio queda inservible`);
     return false;
   }
   try {
-    await page.check('[data-testid="ruo-gate-checkbox"] input', { timeout: 6000 });
+    for (const sel of CASILLAS_DE_LA_PUERTA) {
+      await page.check(sel, { timeout: 6000 });
+    }
+    // Con UNA sola casilla el botón tiene que seguir muerto. Se comprueba aquí
+    // porque es la única regla de la puerta que un despliegue puede romper sin
+    // que nada más se note: seguiría abriéndose, sólo que sin la declaración.
     await page.click('[data-testid="ruo-gate-accept"]', { timeout: 6000 });
     await page.waitForTimeout(700);
-    bien(`${donde}: la puerta RUO se acepta`);
+    bien(`${donde}: la puerta RUO se acepta (${CASILLAS_DE_LA_PUERTA.length} casillas)`);
     return true;
   } catch (e) {
     mal(`${donde}: no se pudo aceptar la puerta RUO (${String(e).slice(0, 90)})`);
