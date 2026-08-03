@@ -1,11 +1,13 @@
 # 🤝 HANDOFF MAESTRO — 3 de agosto de 2026 (tarde)
 
-**Estado:** sitio en vivo VERIFICADO con los rangos corregidos (el despliegue que quedó
-corriendo en la mañana sí terminó; bundle `main.80270777.js` trae Pinealon 5–20 mg,
-Retatrutida 10–120 mg y HCG desde 1,000 IU) · **hay 2 commits SIN desplegar** en este
-repo: `4c6c05a` (botón «Seguir comprando») y `7887bfc` (auditoría de rangos + arreglo
-del rango de B12 en el catálogo). Salen juntos en el próximo despliegue, avisando antes,
-como manda la regla. Auditoría del sitio: **97/0** (ganó 2 checks nuevos).
+**Estado:** TODO DESPLEGADO Y VERIFICADO — bundle en vivo `main.ccad70b0.js` (orden de
+Christián del 3-ago tarde: «Publica todo»); trae el botón «Seguir comprando» visible
+(`4c6c05a`), la auditoría de rangos + arreglo de B12 (`7887bfc`) y los 3 rangos de la
+mañana. `./desplegar.sh` pasó sus 14 comprobaciones en vivo (escritorio y teléfono).
+Auditoría del sitio: **97/0** (ganó 2 checks nuevos). Además quedaron actualizados: el
+prompt del VIGÍA programado (regla cero: sin scripts no hay veredicto — corre `./vigia.sh`;
+sus 4 falsas alarmas documentadas) y los 3 prompts de Codex (AUDITORIA, CAPTURISTA,
+ROBUSTEZ) con lo del 3-ago (commit `c29096b` del repo del motor).
 
 ## ✅ LO CERRADO ESTA SESIÓN (tarde)
 
@@ -66,8 +68,8 @@ DESPUÉS de las subidas (varios productos están en las dos listas).
    el Glutatión 600 y los HGH chicos aparecen también en la propuesta de comisiones).
 
 **Trabajo:**
-6. **DESPLEGAR los 2 commits acumulados** (`4c6c05a` botón + `7887bfc` auditoría/B12)
-   con `./desplegar.sh`, avisándole a Christián antes.
+6. ~~DESPLEGAR los 2 commits acumulados~~ **HECHO el 3-ago tarde** (`main.ccad70b0.js`,
+   14 comprobaciones en verde).
 7. **Huecos de catálogo**: Survodutida 2 y 5 mg, Dulaglutida 5 mg, **PDA** y el
    **Deadpool Blend** (BPC-157/TB4/Cartalax) con otro proveedor que no sea Nexaph.
 8. **142 productos que los proveedores ofrecen y no vendemos** (`oportunidades.py`) —
