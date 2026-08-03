@@ -1,3 +1,75 @@
+# 🤝 HANDOFF MAESTRO — 2 de agosto de 2026 (noche) · 48 HORAS CONSOLIDADAS
+
+**Estado: TODO EN VIVO Y VERIFICADO.** Backend `c4b582d` (azul/verde, salud OK) ·
+sitio `main.04135a72.js` (14 comprobaciones en navegador real). Compuertas del
+cierre: backend **1,356 pruebas** · motor **381** · compras reales **151/0**
+(auto-limpiadas) · vigía del envío en verde con los números nuevos.
+
+## ✅ LO CERRADO EN ESTAS 48 HORAS (resumen; el detalle vive en las secciones de abajo)
+
+**Panel del distribuidor (1-ago):** promo automática como PISO cuando no pone
+descuento propio (y el carrito compartido cobra lo COTIZADO, no el código `ref` —
+hoyo tapado) · comisiones por cliente con filtro de fecha · solicitud y registro
+de PAGO de comisiones (`comisiones.py`, candados de saldo) · Mis Cotizaciones con
+selección/archivar/borrar (lo pagado no se borra) · sin dirección «Se cotiza por
+separado».
+
+**Estrategia de envío (2-ago, dictada por Christián):** la casa escoge paquetería;
+el cliente escoge TIPO — Estándar 3-5 días hábiles ($250 / incluido desde $2,500
+con piso de absorción max($250, 5%)) o Express 1-2 días hábiles (REGLA V2: gratis
+total si la guía real cabe en el presupuesto, «¡Buenas noticias!»; sólo el
+excedente si se pasa; $250+$150 abajo de la mínima) · topes de guía $400/$600 y un
+express jamás compra guía lenta · promesa del sitio a 3-5 días en es/en/pt.
+
+**Checkout y cotizador (2-ago tarde):** NADA preseleccionado (pago, tipo de envío,
+partido/completo) · dirección completa obligatoria · el CP sugiere ciudad y estado
+(`/api/cp/{cp}`) y CORRIGE al cambiar el CP (sin pisar lo tecleado a mano) ·
+cotizador con domicilio POR CAMPOS que cotiza la guía real con el CP y prellena
+TODO el checkout del cliente (campos privados, segunda llave) · paneles que se
+refrescan al volver a la pestaña · sello Tienda De Confianza fijo bajo el botón
+con «Envío Rápido Incluido» · aviso «plazos aplican a lo disponible» con sobre
+pedido.
+
+**Motor:** Jess y Dewen con flete ESTIMADO $60 USD (orden: «assume $60-$75») ·
+vara `roi_con_todo.py` (todos los gastos, flete prorrateado, peor caso express):
+**49/187 bajo el 5×** — SÓLO reporta; decisión de Christián: si algo se mueve son
+las COMISIONES, no los precios · `cobro_del_envio.py` (vigía 7/7) vigila también
+piso $250 y extra $150 en vivo · los 3 prompts de Codex al día.
+
+## 📋 PENDIENTES CANÓNICOS (2026-08-02)
+
+**Decisiones de Christián (nadie más puede):**
+1. **Glutatión 600 mg** — ¿se oculta? (sostiene la escalera del de 1500; declarado
+   con `pendiente: true`, el vigía lo grita).
+2. **Semaglutida 50 mg** — rinde 350 días vs 28 de vida útil; peor renglón.
+3. **HGH hacia arriba** — 36 IU $3,489 / 24 IU $2,329, calculado y esperando su sí
+   (los HGH de Jess también caen bajo la vara nueva: empuja en la misma dirección).
+4. **Domicilio con sólo número de pedido** (`GET /api/orders/{num}`) — abierto
+   desde el 31-jul.
+5. **Vara ROI con-todo** — ¿se aplica bajando comisiones de escalón a los 49?
+   (sin tocar precios, como él dijo). Antes: pedir flete DECLARADO a Jess y Dewen.
+6. **Rotar credenciales** — la contraseña de admin y la llave de OpenAI viajaron
+   por chat.
+
+**Sólo él (acciones):**
+7. **Llave de OpenAI** en Admin → Cobros (el chat sigue en Gemini gratis: 20/día).
+8. **Copiar los 77 PDF de fichas al EC2** (`/opt/exygen/fichas/` — no viajan con git).
+9. **Barrer pedidos de prueba** viejos desde el Panel (los de las auditorías de
+   estas 48 h se limpiaron solos).
+10. **DMARC**: endurecer (hoy `p=none`).
+
+**Trabajo pendiente (cualquier sesión):**
+11. **Huecos de catálogo** que el proveedor sí tiene: SLU-PP-332 10 mg, PNC-27
+    10 mg, AHK-Cu 20 mg, Survodutida 2 y 5 mg, Dulaglutida 5 mg.
+12. **/aprende/conservacion** aún recomienda congelar alícuotas (sin respaldo).
+13. **20 proveedores del padrón sin lista indexada** (44 en padrón, 24 con precios).
+14. **Envíos**: pesos reales por producto (`weight_kg` vacío; hoy se estima),
+    remitente definitivo y Estafeta directa por API.
+15. **Arte del vial de 5-Amino-1MQ** — regenerar (la identidad ya se corrigió).
+16. **Análisis de Uther (842)** — corriendo en otra sesión.
+
+---
+
 # 🤝 HANDOFF — 1 de agosto de 2026 (TARDE) · PANEL DEL DISTRIBUIDOR CERRADO
 
 **Estado: backend `649d720` EN VIVO (azul/verde, salud OK, rutas nuevas contestando
