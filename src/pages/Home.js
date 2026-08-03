@@ -387,10 +387,6 @@ const Home = () => {
               el bloque entero va centrado. `justify-center` en la fila y `text-center`
               en cada dato, para que el número y su etiqueta compartan eje. */}
           <div className="mt-4 grid grid-cols-2 gap-x-6 gap-y-6 pt-4 text-center sm:flex sm:flex-wrap sm:justify-center sm:gap-x-12">
-            <div>
-              <div className="font-heading text-3xl font-bold">≥99%</div>
-              <div className="font-mono-tech text-[10.5px] uppercase tracking-[0.16em] text-muted-foreground mt-1.5">{t('home.typicalPurity')} · HPLC</div>
-            </div>
             {/* Aquí decía "96 Productos". Pesa más la cuenta de PRESENTACIONES: es
                 mayor, es la que de verdad mide la variedad (un mismo compuesto en
                 tres tamaños son tres cosas distintas para quien compra) y es la que
@@ -404,8 +400,8 @@ const Home = () => {
               <div className="font-mono-tech text-[10.5px] uppercase tracking-[0.16em] text-muted-foreground mt-1.5">{t('home.nationalShipping')}</div>
             </div>
             <div>
-              <div className="font-heading text-3xl font-bold text-[hsl(var(--primary))]">99.4%</div>
-              <div className="font-mono-tech text-[10.5px] uppercase tracking-[0.16em] text-muted-foreground mt-1.5">{t('home.purityHplc')} · {t('home.coa.batch')} NP-BPC5-2401</div>
+              <div className="font-heading text-3xl font-bold text-[hsl(var(--primary))]">≥99%</div>
+              <div className="font-mono-tech text-[10.5px] uppercase tracking-[0.16em] text-muted-foreground mt-1.5">{t('home.purityHplc')}</div>
             </div>
           </div>
         </div>
