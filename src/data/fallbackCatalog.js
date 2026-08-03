@@ -3988,7 +3988,7 @@ export const fallbackProducts = [
       },
       {
         "presentation": "20 mg",
-        "price": 3119,
+        "price": 3309,
         "stock": 40,
         "batch_number": "NP-RETA20-2601",
         "id": "f4bedb15-ffc1-456d-9650-73cffcffdcd9",
@@ -4189,11 +4189,11 @@ export const fallbackProducts = [
     "presentation": "2 mg – 50 mg",
     "form": "Liofilizado",
     "purity": "99.1%",
-    "price": 1079,
+    "price": 1149,
     "variants": [
       {
         "presentation": "2 mg",
-        "price": 1079,
+        "price": 1149,
         "stock": 40,
         "batch_number": "NP-SEMA2-2601",
         "id": "3d44f41f-e3d1-422f-a6a6-ee6984bfa635",
@@ -4202,7 +4202,7 @@ export const fallbackProducts = [
       },
       {
         "presentation": "5 mg",
-        "price": 1319,
+        "price": 1699,
         "stock": 40,
         "batch_number": "NP-SEMA5-2601",
         "id": "3bc388e8-4498-4aeb-a3da-40fc915dcef3",
@@ -4211,7 +4211,7 @@ export const fallbackProducts = [
       },
       {
         "presentation": "10 mg",
-        "price": 1849,
+        "price": 2289,
         "stock": 40,
         "batch_number": "NP-SEMA10-2601",
         "id": "fa9def3b-7709-4b56-98f4-ffe83b0a58a9",
@@ -4220,7 +4220,7 @@ export const fallbackProducts = [
       },
       {
         "presentation": "15 mg",
-        "price": 1859,
+        "price": 2719,
         "stock": 40,
         "batch_number": "NP-SEMA15-2601",
         "id": "16deb2af-234b-4de8-a968-44aef1fdb929",
@@ -4229,7 +4229,7 @@ export const fallbackProducts = [
       },
       {
         "presentation": "20 mg",
-        "price": 2039,
+        "price": 3079,
         "stock": 40,
         "batch_number": "NP-SEMA20-2601",
         "id": "7fdfe542-f6f6-46c6-97f4-1bec48fdbdac",
@@ -4238,7 +4238,7 @@ export const fallbackProducts = [
       },
       {
         "presentation": "30 mg",
-        "price": 2119,
+        "price": 3669,
         "stock": 40,
         "batch_number": "NP-SEMA30-2601",
         "id": "641f267f-9618-418f-90cc-2b2aa9932d2f",
@@ -4247,7 +4247,7 @@ export const fallbackProducts = [
       },
       {
         "presentation": "50 mg",
-        "price": 2189,
+        "price": 4569,
         "stock": 40,
         "batch_number": "NP-SEMA50-2601",
         "id": "40e13576-9c1c-44bf-85bb-e6b9926bbbaf",
