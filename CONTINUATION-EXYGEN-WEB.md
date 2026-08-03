@@ -1,13 +1,58 @@
-# 🤝 HANDOFF MAESTRO — 3 de agosto de 2026 (tarde)
+# 🤝 HANDOFF MAESTRO — 3 de agosto de 2026 (noche)
 
-**Estado:** TODO DESPLEGADO Y VERIFICADO — bundle en vivo `main.ccad70b0.js` (orden de
-Christián del 3-ago tarde: «Publica todo»); trae el botón «Seguir comprando» visible
-(`4c6c05a`), la auditoría de rangos + arreglo de B12 (`7887bfc`) y los 3 rangos de la
-mañana. `./desplegar.sh` pasó sus 14 comprobaciones en vivo (escritorio y teléfono).
-Auditoría del sitio: **97/0** (ganó 2 checks nuevos). Además quedaron actualizados: el
-prompt del VIGÍA programado (regla cero: sin scripts no hay veredicto — corre `./vigia.sh`;
-sus 4 falsas alarmas documentadas) y los 3 prompts de Codex (AUDITORIA, CAPTURISTA,
-ROBUSTEZ) con lo del 3-ago (commit `c29096b` del repo del motor).
+**Estado:** TODO DESPLEGADO Y VERIFICADO. Backend en el EC2 con la SOLICITUD DE GUÍA
+(commit `2c3d967`, suite **1,424** en verde). Sitio desplegándose con la UI de la guía
+(`842b94f`) y el arreglo de i18n de llaves simples (`9b1c6fb`); antes ya estaba
+`main.ccad70b0.js` con el botón «Seguir comprando» y la auditoría de rangos. Auditoría
+del sitio: **97/0**.
+
+## ✅ LO CERRADO ESTA SESIÓN (noche)
+
+**SOLICITUD DE GUÍA DE ENVÍO PARA DISTRIBUIDORES** (encargo de Christián del 3-ago). Antes
+sólo el admin podía comprar una guía; cuando no se autogeneraba, la única salida era que
+Christián la comprara a mano. Ahora:
+- **El distribuidor** ve el botón «Solicitar Guía» junto a SUS pedidos **pagados y sin
+  guía** (usa `cobrado.esta_pagado`, la regla única de ingreso). Si ya la pidió, aparece
+  «Guía Solicitada» apagado. Sin pagar, el botón no existe.
+- **Christián** ve la franja «Solicitudes De Guía» en el Panel → Pedidos (sólo cuando hay
+  pendientes) y **aprueba o rechaza**. Aprobar lleva confirmación: cuesta dinero de verdad.
+- **Al aprobar**, la guía se compra por `comprar_guia_del_pedido` — el MISMO camino del
+  pago automático —, así que el correo al cliente, el candado de doble compra y los frenos
+  de gasto (tope $400/$600, sin empaque, paquetería caída) son idénticos. Si un freno
+  detiene la compra, la solicitud SIGUE pendiente (502 con el motivo): aprobar sin comprar
+  sería mentir. Si el pedido ya tenía guía al aprobar, no se compra dos veces.
+- **Candados**: sólo pedidos propios (`referred_by` o 403), una solicitud a la vez por
+  pedido, `deny_view_as` en todo lo que escribe (espiar un panel jamás puede volverse
+  gastar dinero de otro). Módulo puro `guia_solicitudes.py`, colección `label_requests`,
+  16 pruebas nuevas (`test_guia_solicitudes.py`, ya en `pytest.ini`).
+- **Verificación en vivo**: los 3 endpoints nuevos responden bien en producción (200 con
+  su forma, 401 sin sesión, 404 en inexistentes). El lazo COMPLETO (solicitar→aprobar→
+  guía asignada→correo) está cubierto por las 16 pruebas de integración que pegan a las
+  rutas reales de FastAPI. ⚠️ **NO se compró una guía de verdad en vivo**: habría gastado
+  ~$150 MXN en una guía a un domicilio de prueba que no se envía, y el paso de compra
+  reusa la función del pago automático que ya tiene sus propias pruebas en verde. Si
+  Christián quiere la compra real de punta a punta, se corre `scratchpad/e2e_solicitud_guia.py`
+  (necesita confirmar el correo de la cuenta de prueba, que llega con el token corrupto
+  por la codificación del email — se abre el enlace a mano).
+- ⚠️ **LIMPIEZA PENDIENTE**: quedaron 2 cuentas de prueba SIN verificar y SIN pedidos
+  (`christiancuellar+e2e.guia.e356a5@gmail.com` y
+  `christian+e2e.guia.1a6227@intertaxlegal.com`). No pueden entrar y no hay pedido que
+  barrer; no existe endpoint de admin para borrar usuarios, así que quítalas desde el
+  Panel/base cuando puedas. NO toqué la base por fuera de la app a propósito.
+
+**BUG DE i18n — placeholders de llave simple salían literales** (`9b1c6fb`). El botón de
+comisiones decía literalmente «Solicitar Pago De {monto}». `interpolate` sólo sustituye
+llaves DOBLES; 10 claves usaban simples. Se doblaron en los 3 idiomas. Hallazgo: dos
+claves de reportes (`storageLine`, `expiring`) NO pasaban args a `t()` — `ReportesSemanales.js`
+hacía su propio `.replace('{n}',…)`; se alinearon al mecanismo estándar (por eso también
+se tocó ese componente). Auditoría 97/0.
+
+## ✅ CERRADO ANTES (tarde) — botón, rangos, vigía y prompts
+
+**Botón «Seguir comprando»** visible (`4c6c05a`) · **auditoría de rangos + B12** (`7887bfc`,
+ambos ya en `main.ccad70b0.js`). El prompt del VIGÍA programado (regla cero: sin scripts no
+hay veredicto — corre `./vigia.sh`; sus 4 falsas alarmas documentadas) y los 3 prompts de
+Codex (AUDITORIA, CAPTURISTA, ROBUSTEZ) al día del 3-ago (commit `c29096b` del motor).
 
 ## ✅ LO CERRADO ESTA SESIÓN (tarde)
 
