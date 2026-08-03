@@ -74,9 +74,10 @@ const RuoGate = () => {
   // enciende hasta que están las dos. Antes iban en una sola frase.
   const [edad, setEdad] = useState(false);
   const [investigacion, setInvestigacion] = useState(false);
-  // Marcado por omisión: quien no lo toca se comporta como siempre. Si lo apaga,
-  // el rastro dura sólo la sesión y el aviso le vuelve a salir en la próxima visita.
-  const [recordar, setRecordar] = useState(true);
+  // APAGADO por omisión (orden de Christián, 2026-08-03): recordar la elección
+  // es decisión de cada persona, no un default. Quien no lo marca vuelve a ver
+  // el aviso en su próxima visita; quien lo marca, no.
+  const [recordar, setRecordar] = useState(false);
   const checked = edad && investigacion;
 
   useEffect(() => {
