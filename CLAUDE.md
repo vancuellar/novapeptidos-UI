@@ -36,15 +36,28 @@ worktrees en `.claude/worktrees/`). El índice de git es **compartido**: lo que
 una sesión deja a medias, otra se lo puede llevar en su commit.
 
 **PROHIBIDO `git add -A`, `git add .`, `git commit -a` y `git stash` sin ruta.**
-Siempre con rutas explícitas, sólo los archivos que TÚ tocaste:
+
+⛔ **Y EL `git commit` TAMBIÉN LLEVA RUTAS. Ésta es la mitad que faltaba.**
+`git add` explícito NO basta: `git commit -m "…"` a secas publica **todo lo que
+esté en el índice**, incluido lo que otra sesión dejó ahí con su propio `git add`.
+La forma correcta, siempre, es:
 
 ```bash
-git add src/pages/OrderConfirmation.js src/components/RastreoEnvio.js
-git commit -m "…"
+git status                    # mira qué hay; si no lo reconoces, no es tuyo
+git commit -m "…" -- src/pages/OrderConfirmation.js src/components/RastreoEnvio.js
 ```
 
-Antes de commitear, `git status` y compara con tu propia lista de ediciones. Si
-aparece un archivo que no reconoces, no es tuyo: déjalo fuera.
+Con `-- <rutas>` git commitea ESOS archivos y **ignora el resto del índice**. Es
+la única forma que aísla de verdad cuando hay dos sesiones trabajando. El `git
+add` previo sigue siendo buena costumbre, pero el candado real es el `--` del
+commit.
+
+**Qué pasó el 2026-08-03.** Dos agentes en paralelo, uno en `modelo_ia.py` y otro
+en `server.py`/`chat_negocio.py`. El primero hizo su `git add` explícito y correcto
+—sólo sus dos archivos— pero commiteó con `git commit -m` sin rutas, y se llevó
+los cuatro archivos a medio terminar del otro dentro del commit `7a42032`. Esa vez
+no hubo daño (el trabajo estaba completo y la suite salió en verde), pero pudo
+haber publicado código a medias en producción.
 
 **Qué pasó el 2026-07-31.** Una sesión hizo `git commit -a` y se llevó las
 ediciones en curso de otra (`OrderConfirmation.js` y los tres `i18n/*.js`
