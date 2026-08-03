@@ -229,9 +229,9 @@ const page = {
       items: [
         'Reconstituye un solo vial a la vez. Dos viales abiertos en la mesa son un intercambio de etiquetas esperando a ocurrir.',
         'Prepara y desinfecta la superficie de trabajo antes de sacar nada del refrigerador.',
-        'Elige el volumen de diluyente pensando en la alícuota más pequeña que vas a medir: si esa alícuota cae por debajo de 5 unidades en U-100, diluye más.',
+        'Elige el volumen de diluyente pensando en la porción más pequeña que vas a medir: si esa porción cae por debajo de 5 unidades en U-100, diluye más.',
         'Anota todo en bitácora en el momento, no al final del día: compuesto, lote, volumen, concentración, hora e iniciales.',
-        'Si vas a usar el material a lo largo de meses, considera alicuotar en viales estériles separados y congelar; así descongelas solo lo que necesitas.',
+        'Si vas a usar el material a lo largo de meses, no alargues la vida de la solución: alarga la del polvo. Deja los viales sin reconstituir a −20 °C y prepara uno cuando te toque. El polvo aguanta años; la solución, semanas.',
         'Inspecciona la solución contra luz blanca antes de cada uso: debe estar transparente, sin partículas ni fibras.',
         'Mantén un termómetro con registro de mínimos y máximos dentro del refrigerador. Un refrigerador doméstico oscila más de lo que promete.',
         'Desecha las agujas y jeringas en el contenedor rígido inmediatamente, sin reencapuchar.',
@@ -271,9 +271,25 @@ const page = {
             'Depende de cuánta y de si desaparece. Un poco de espuma que se disuelve sola en unos minutos suele ser irrelevante. Una capa que persiste media hora indica desnaturalización en la interfaz aire-líquido y, con ella, pérdida de material activo. Ese vial ya no es confiable para cuantificar.',
         },
         {
+          // El caso real que faltaba (Christián, 2026-08-03): el vial grande que no se
+          // agota en una sesión, sea porque se toma en porciones más grandes o porque
+          // se reparte entre varias personas. Es el escenario donde MÁS importa el
+          // plazo, porque el vial pasa semanas abierto y acumula perforaciones — y es
+          // justo el que la guía no cubría. Se responde en términos de MANEJO DEL
+          // MATERIAL: nada de dosis ni pautas, que no se dan en ningún canal.
+          q: 'Compré un vial grande y no lo voy a acabar de una vez. ¿Qué cuido?',
+          a:
+            'Es el caso donde el plazo importa más, porque el vial va a pasar semanas abierto y a acumular perforaciones. Tres cosas. Primero, el agua bacteriostática está hecha justo para esto: el alcohol bencílico que lleva permite entrar al mismo vial muchas veces sin que se contamine, y por eso es el diluyente correcto aquí y no el agua estéril. Segundo, la cuenta que decide no es cuánto producto queda, sino cuánto tiempo lleva reconstituido: la referencia son de 2 a 4 semanas a 2–8 °C, y las farmacopeas manejan 28 días para un envase multidosis con conservador. Si al vial le va a sobrar producto cuando se cumpla ese plazo, el material sobrante no se aprovecha por guardarlo mejor. Tercero, cada entrada al septo es una oportunidad de contaminación: alcohol en el tapón antes de cada perforación, aguja nueva siempre, y el vial de vuelta al refrigerador en cuanto termines.',
+        },
+        {
+          q: 'Entonces, ¿me conviene un vial grande o dos chicos?',
+          a:
+            'Depende de si vas a alcanzar a usarlo dentro de su ventana. El vial grande casi siempre sale mejor por miligramo —es el descuento por volumen de todo el catálogo— y si lo consumes dentro del plazo, es la compra más barata. Pero si al cumplirse las semanas te va a sobrar la mitad, ese descuento se lo lleva lo que se desecha: dos viales medianos, reconstituidos uno después del otro, terminan costando menos que un grande del que se aprovecha la mitad. La calculadora de dosis te dice cuántas porciones salen de cada presentación; con ese número y tu ritmo de uso, la cuenta se hace sola.',
+        },
+        {
           q: '¿Puedo congelar un vial que ya reconstituí?',
           a:
-            'Se puede, pero con reservas. Cada ciclo de congelación y descongelación somete al péptido a estrés mecánico por formación de cristales de hielo y a concentración local de solutos. Si vas a congelar, alicuota primero en volúmenes de un solo uso y no descongeles el mismo vial más de una vez. Mejor todavía: guarda el liofilizado congelado y reconstituye solo lo que vas a usar.',
+            'Si lo reconstituiste con agua bacteriostática, mejor no. Ese diluyente lleva alcohol bencílico al 0.9 %, y al formarse el hielo el conservador queda apretado en la poca agua que sigue líquida: deja de estar repartido parejo y favorece que las cadenas se agreguen. La literatura de formulación es explícita en evitar el almacenamiento congelado de preparaciones con alcohol bencílico y mantenerlas entre 2 y 8 °C. Guarda la solución en el refrigerador y respeta su ventana de semanas; lo que sí va al congelador es el vial que todavía está en polvo.',
         },
         {
           q: '¿Por qué el vial se ve vacío si pagué por 10 mg de polvo?',
