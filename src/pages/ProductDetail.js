@@ -249,6 +249,19 @@ const ProductDetail = () => {
             <Button className="flex-1 rounded-xl" size="lg" onClick={addToCart} data-testid="pdp-add-to-cart-button"><ShoppingCart className="h-4 w-4 mr-2" /> {t('product.addToCart')}</Button>
           </div>
 
+          {/* EL ESCALÓN DE VOLUMEN, donde se decide la compra (Christián, 2026-08-02).
+              El 12% desde 3 piezas ya lo cobraba el servidor, pero nadie lo veía —
+              y un descuento que el cliente no sabe que existe no gana ninguna venta.
+              Certified anuncia el suyo en Meta; éste va pegado al selector de cantidad,
+              que es el único lugar donde el número de piezas todavía se puede cambiar.
+              Los insumos no llevan descuento, así que ahí no se promete nada. */}
+          {active.descuentable !== false && (
+            <p className={`mt-3 text-xs ${qty >= 3 ? 'text-[hsl(var(--success))]' : 'text-muted-foreground'}`}
+               data-testid="pdp-volume-nudge">
+              {qty >= 3 ? t('product.volumeApplied') : t('product.volumeNudge')}
+            </p>
+          )}
+
           {/* RUO COMPACTO, PERO ARRIBA Y VISIBLE. (Fable 5, 2026-07-30)
               Era un recuadro de 85 px en la columna de la foto. Ahora es una franja
               de dos renglones justo bajo el botón de comprar: el mismo texto legal,

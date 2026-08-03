@@ -1355,6 +1355,8 @@ const enUS = {
   'product.new': 'New',
   'product.purityLine': 'Purity {{purity}}',
   'product.volumePricing': 'Volume pricing: {{tiers}}',
+  'product.volumeNudge': 'Buy 3 or more and save 12%',
+  'product.volumeApplied': '✓ 12% volume discount applied',
   'product.outOfStock': 'Out of stock',
   'product.inStock': 'In stock ({{stock}} available)',
   'product.addToCart': 'Add to cart',

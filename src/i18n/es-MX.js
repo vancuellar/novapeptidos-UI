@@ -1346,6 +1346,8 @@ const esMX = {
   'product.new': 'Nuevo',
   'product.purityLine': 'Pureza {{purity}}',
   'product.volumePricing': 'Precio por volumen: {{tiers}}',
+  'product.volumeNudge': 'Llévate 3 o más y ahorra 12%',
+  'product.volumeApplied': '✓ 12% de descuento por volumen',
   'product.outOfStock': 'Agotado',
   'product.inStock': 'En stock ({{stock}} disponibles)',
   'product.addToCart': 'Agregar al carrito',

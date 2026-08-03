@@ -1350,6 +1350,8 @@ const ptBR = {
   'product.new': 'Novo',
   'product.purityLine': 'Pureza {{purity}}',
   'product.volumePricing': 'Preco por volume: {{tiers}}',
+  'product.volumeNudge': 'Leve 3 ou mais e economize 12%',
+  'product.volumeApplied': '✓ 12% de desconto por volume',
   'product.outOfStock': 'Esgotado',
   'product.inStock': 'Em estoque ({{stock}} disponíveis)',
   'product.addToCart': 'Adicionar ao carrinho',
