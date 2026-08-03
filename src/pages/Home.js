@@ -387,6 +387,16 @@ const Home = () => {
               el bloque entero va centrado. `justify-center` en la fila y `text-center`
               en cada dato, para que el número y su etiqueta compartan eje. */}
           <div className="mt-4 grid grid-cols-2 gap-x-6 gap-y-6 pt-4 text-center sm:flex sm:flex-wrap sm:justify-center sm:gap-x-12">
+            {/* EL 5% DE CRIPTO VA PRIMERO Y EN BLANCO (Christián, 2026-08-03). Es lo
+                único de los cuatro datos que el cliente puede ACCIONAR hoy mismo, así
+                que abre la fila; el azul se reserva para la pureza, que es la promesa
+                de la marca. Los cuatro son cifras a propósito: «Gratis» rompía la fila.
+                ⛔ Ese 5% lo cobra el servidor de verdad (descuento_cripto.py): si algún
+                día se apaga allá, este dato se cambia el MISMO día. */}
+            <div>
+              <div className="font-heading text-3xl font-bold">{t('home.freeShipValue')}</div>
+              <div className="font-mono-tech text-[10.5px] uppercase tracking-[0.16em] text-muted-foreground mt-1.5">{t('home.freeShipLabel')}</div>
+            </div>
             {/* Aquí decía "96 Productos". Pesa más la cuenta de PRESENTACIONES: es
                 mayor, es la que de verdad mide la variedad (un mismo compuesto en
                 tres tamaños son tres cosas distintas para quien compra) y es la que
@@ -402,17 +412,6 @@ const Home = () => {
             <div>
               <div className="font-heading text-3xl font-bold text-[hsl(var(--primary))]">≥99%</div>
               <div className="font-mono-tech text-[10.5px] uppercase tracking-[0.16em] text-muted-foreground mt-1.5">{t('home.purityHplc')}</div>
-            </div>
-            {/* El cuarto dato (Christián, 2026-08-03). Los otros tres son CIFRAS —187,
-                3-5 días, ≥99%— y «Gratis» rompía la fila: aquí manda el número, la
-                etiqueta sólo lo explica. De los descuentos de la casa, el 5% de cripto
-                es el único que NO está ya en el hero (el 10-15% de introducción lo
-                anuncia el sello dorado de arriba) y el único que ningún competidor da.
-                ⛔ Ese 5% lo cobra el servidor de verdad (descuento_cripto.py): si algún
-                día se apaga allá, este dato se cambia el MISMO día. */}
-            <div>
-              <div className="font-heading text-3xl font-bold text-[hsl(var(--primary))]">{t('home.freeShipValue')}</div>
-              <div className="font-mono-tech text-[10.5px] uppercase tracking-[0.16em] text-muted-foreground mt-1.5">{t('home.freeShipLabel')}</div>
             </div>
           </div>
         </div>
