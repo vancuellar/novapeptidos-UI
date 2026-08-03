@@ -1697,6 +1697,12 @@ const ptBR = {
   'negocio.chat.send': 'Enviar',
   'negocio.chat.error': 'Não consegui responder agora. Tente de novo em um minuto.',
   'negocio.chat.disclaimer': 'O assistente pode errar. O preço e a comissão que valem são os do pedido.',
+  'negocio.chat.nuevo': 'Novo Chat',
+  'negocio.chat.anteriores': 'Chats Anteriores',
+  'negocio.chat.sinAnteriores': 'Ainda não há chats anteriores.',
+  'negocio.chat.sinTitulo': 'Chat sem título',
+  'negocio.chat.memoriaAviso': 'Este chat já usou quase toda a sua memória. Abra um novo para que o consultor não perca o fio.',
+  'negocio.chat.memoriaLlena': 'O consultor já está esquecendo as mensagens mais antigas deste chat.',
 
   // ---------------------------------------------------------------------
   //  COTADOR DE ENVIOS — «quanto custa mandar isto para tal CEP?»

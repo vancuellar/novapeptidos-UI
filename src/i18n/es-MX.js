@@ -1703,6 +1703,12 @@ const esMX = {
   'negocio.chat.send': 'Enviar',
   'negocio.chat.error': 'No pude responder en este momento. Intenta de nuevo en un minuto.',
   'negocio.chat.disclaimer': 'El asistente puede equivocarse. El precio y la comisión que valen son los del pedido.',
+  'negocio.chat.nuevo': 'Nuevo Chat',
+  'negocio.chat.anteriores': 'Chats Anteriores',
+  'negocio.chat.sinAnteriores': 'Aún no hay chats anteriores.',
+  'negocio.chat.sinTitulo': 'Chat sin título',
+  'negocio.chat.memoriaAviso': 'Este chat ya usó casi toda su memoria. Abre uno nuevo para que el asesor no pierda el hilo.',
+  'negocio.chat.memoriaLlena': 'El asesor ya está olvidando los mensajes más viejos de este chat.',
 
   // ---------------------------------------------------------------------
   //  COTIZADOR DE ENVÍOS — «¿cuánto cuesta mandar esto a tal código postal?»

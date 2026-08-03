@@ -1702,6 +1702,12 @@ const enUS = {
   'negocio.chat.send': 'Send',
   'negocio.chat.error': 'I could not answer right now. Try again in a minute.',
   'negocio.chat.disclaimer': 'The assistant can be wrong. The price and commission that count are the ones on the order.',
+  'negocio.chat.nuevo': 'New Chat',
+  'negocio.chat.anteriores': 'Previous Chats',
+  'negocio.chat.sinAnteriores': 'No previous chats yet.',
+  'negocio.chat.sinTitulo': 'Untitled chat',
+  'negocio.chat.memoriaAviso': 'This chat has used almost all of its memory. Open a new one so the advisor does not lose the thread.',
+  'negocio.chat.memoriaLlena': 'The advisor is already forgetting the oldest messages in this chat.',
 
   // ---------------------------------------------------------------------
   //  SHIPPING QUOTER — "what does it cost to send this to that ZIP?"
