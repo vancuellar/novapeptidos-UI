@@ -1,3 +1,144 @@
+# 🤝 HANDOFF MAESTRO — 3 de agosto de 2026 (madrugada)
+
+**Estado: TODO EN VIVO Y VERIFICADO.** Backend `e43a688` (azul/verde, salud OK) ·
+sitio `main.730cf8fb.js` (14 comprobaciones en navegador real) · motor `28e2ba5`.
+Compuertas del cierre: backend **1,391 pruebas** · motor **424** · compras reales
+**151/0** · escalera del catálogo en verde · los tres repos limpios y subidos.
+
+## ✅ LO CERRADO ESTA SESIÓN
+
+**PRECIOS — las escaleras, y la vara que faltaba para verlas.**
+Se descubrió la **LEY DE VOLUMEN**: midiendo los precios de Certified (Tirzepatida y
+Retatrutida, 10/30/60 mg), el $/mg baja como `mg^-0.571` — un vial del doble de tamaño
+cuesta **1.35x, no 2x**. Las dos familias dan la misma pendiente. Con esa vara se
+arreglaron tres escaleras (14 precios, todos SUBEN, todos $11 abajo de Certified donde
+él vende):
+
+- **Tirzepatida** (6): 20mg 2189→2769 · 40mg 3169→3729 · 50mg 3269→4099 · 60mg
+  3919→**4569** · 100mg 4079→5519 · 120mg 4889→5969.
+- **Semaglutida** (7): 2mg 1079→1149 · 5mg 1319→1699 · 10mg 1849→**2289** · 15mg
+  1859→2719 · 20mg 2039→3079 · 30mg 2119→3669 · 50mg 2189→**4569**.
+- **Retatrutida** (1): 20mg 3119→3309. Los demás ya estaban pegados.
+
+⛔ **El 30 mg de Retatrutida NO se toca:** Certified lo vende a $4,800 con su propio
+40 mg a $4,320 — cobran más por menos producto. Esa ancla se descarta a propósito.
+
+**Por qué nadie lo había visto** (y el arreglo): `auditar_catalogo.py` sólo compara
+donde el competidor vende ese tamaño (Certified vende 3 de nuestros 8 de Tirzepatida) y
+`auditar_escalera.py` valida contra pisos de EXOMA, que se desplomó — así que todo
+pasaba en verde mientras el vial de 100 mg salía a $40.80/mg contra $212.90 del de
+10 mg. Nace **`auditar_ley_de_volumen.py`** (orden de Christián: «los scripts deben NO
+sólo comparar contra Certified y/o Exoma, también deben cuidar que las escaleras TENGAN
+sentido»). Hoy encuentra **5 familias torcidas de 23: HCG, HGH, HGH Fragment,
+L-Carnitine y MOTS-c** — SÓLO REPORTA, los precios los mueve Christián.
+
+**EL ROI, AHORA SÍ CON TODO.** Christián preguntó: «¿es considerando TODOS los costos?».
+No lo era. Entraron dos restas:
+- **Pasarela**: Mercado Pago 3.49% + $4.00 **más IVA sobre la comisión** = 4.0484% +
+  $4.64. Verificado contra su ejemplo oficial ($1,500 → $65.37, al centavo).
+- **Publicidad**: `cac_por_pedido_mxn` queda **VACÍA a propósito** — 4 pedidos y $97 de
+  clics con cero compras; cualquier cifra sería ficción. `roi_con_todo()` devuelve
+  `(roi, sin_dato)` y el reporte lo GRITA. Un cero se restaría en silencio.
+- **Flete sin declarar** ya no vale cero: supuesto de Christián de **$50-75 USD**,
+  extremo alto para el piso ($437.50/caja con 3 cajas a 17.5).
+
+Resultado: de **39 productos bajo el piso de 5x a 63**. Y eso sin publicidad.
+
+**EL ESCALÓN DE VOLUMEN: 12% desde 3 piezas** del mismo producto (`descuentos.py`).
+Certified cobra por escalones desde su TERCERA pieza y lo anuncia en Meta como «¡20%
+por apertura en el país!» sin decir que ese 20% exige comprar NUEVE. Nosotros no
+dábamos nada hasta la quinta. 12% y no 20% porque con la vara nueva deja 11 de 187 bajo
+el piso contra 9 hoy; al 20% son 18. La REGLA DE 5 no se tocó. Verificado con compras
+reales: 2pz→10%, 3pz→12%, 5pz→precio de distribuidor.
+
+**EL 5% POR PAGAR EN CRIPTO** (`descuento_cripto.py`), y **se cobra de verdad** — se
+programó ANTES de anunciarlo. Lo financia la comisión de pasarela que no se paga, así
+que cuesta menos del 1% real; por eso NO cuenta contra el techo del 40% y se guarda en
+su propio campo. Sobre la mercancía ya descontada, NUNCA sobre el envío. Comprobado en
+producción: el mismo vial, $2,166 con tarjeta contra **$2,070 en cripto**.
+
+**EL AVISO DE ENTRADA (RUO), rehecho.** Comparado contra nexaph.com/research-use-terms:
+- **21 años**, no 18 — y estaba en SIETE lugares más (términos, checkout, registro), todos
+  alineados en es/en/pt. También el mensaje de error del registro en el backend.
+- **DOS casillas** (edad / propósito), botón muerto hasta marcar ambas. Medido en
+  **320x568 sin scroll**, que es el candado de ese componente.
+- **«Recordar mi elección»**, marcada por omisión. Sin marcar, el rastro dura la sesión.
+- **CONSTANCIA EN EL SERVIDOR** (`ruo_constancia.py`, `POST /api/ruo/aceptar`): hora del
+  servidor, IP real, user-agent, idioma, versión Y **el texto exacto** que se enseñó.
+  ⛔ NUNCA bloquea: si Mongo falla, contesta 200 con `guardada:false` y el visitante entra.
+- Términos: nueva **cláusula 4, Asunción de riesgo**, + el párrafo del registro de la
+  aceptación (art. 1298-A). Privacidad: nueva **cláusula 10** que declara IP y user-agent.
+
+**REVISIÓN ADVERSARIAL DE CODEX** sobre el aviso. Halló que la constancia guardaba la
+VERSION pero no el TEXTO (que vive en el i18n y podía cambiar sin subir la versión) —
+arreglado; el «18» vivo en el backend — arreglado; y que la privacidad no declaraba IP
+ni user-agent — arreglado. **Decisión de Christián: NO se obliga a re-aceptar** a quien
+ya había aceptado con 18. Consecuencia asumida: el cambio a 21 aplica sólo a visitantes
+nuevos.
+
+**EL VIGÍA, dos arreglos.** (1) Reportó «17 productos que Certified vende y nosotros
+no» — **los 17 eran falsos**. Cruzaba nombres exactos más una tabla de alias que se
+pudre sola. Ahora `claves_canon()` compara COMPUESTOS: cruce de 35/47 a **47/47**, y con
+candado — si baja del 85%, GRITA en vez de inventar faltantes. (2) Se **retiró la llave
+de Supabase de Exoma**; `fetch_exoma()` usa el lector público. De paso se descubrió que
+ese lector leía **107 renglones de 215**: partía nombres, veía una sola presentación por
+producto y se comía los agotados.
+
+**HOME Y FICHA.** Se quitó la pureza duplicada (queda ≥99% en azul) · cuarto dato del
+hero: **«Gratis · Envío desde $2,500»** · la foto del vial **se abre en grande** (fondo,
+✕ o Escape) · franja del 5% cripto · sello «Compra segura» sin logos de marca (usarlos
+sin licencia es un problema que no hace falta tener).
+
+**PROVEEDORES AUDITADOS.**
+- **NEXAPH** (nexaph.com): NO es proveedor, es tienda al público. **4.25x más caro**,
+  cero de 43 productos, nada llega al piso de 5x. Su mayoreo pide login. Lo bueno:
+  verifica cada lote con **Janoshik** — idea para copiar. Hueco real: el **PDA**.
+- **YANG** (+852 6563 6503, Hong Kong, llegó por anuncio de Facebook) —
+  `proveedores/md/P-YANG-HK.md`, 128 precios y 18 COAs.
+  A FAVOR: **RT 40 mg en el puesto 4 de 26** del padrón ($16.40 USD/vial) · **único que
+  ofrece muestras** (1 vial de cada uno, pagando sólo $50 de envío) · **único que
+  ofrece las tapas flip-off del color de la casa** (fue al cuarto de muestras y mandó
+  foto en 3 min).
+  ⛔ EN CONTRA: sus 18 COAs son de **«Onyx Research»**, un cliente suyo (lotes
+  `ONYXRES…`, laboratorio Freedom Diagnostics) — él lo dijo: «We have COAs from customer
+  feedback». **El archivo `Ipamorelin 10mg (2).pdf` trae el lote `ONRESSEM404` — un COA
+  de SEMAGLUTIDA con nombre de Ipamorelina**, y es una exportación de Google Sheets
+  («Peptide Sample Tracker»), no un certificado. Cuatro de los 18 son eso. Y **no
+  contestó** las dos preguntas clave: reembolso si falla y PayPal.
+  ⚠️ En el chat se le dio la dirección de Vanguard, `admin@exygenlabs.com` y «Tested
+  for: Exygen Labs».
+  ⛔ SI SE LE PRUEBA: las muestras llegan A CHRISTIÁN primero, nunca directo al
+  laboratorio (muestra dorada: si él elige qué se analiza, el COA no dice nada del
+  pedido comercial).
+
+## 📋 PENDIENTES
+
+**Trabajo (cualquier sesión) — los 11-14 del handoff anterior SIGUEN INTACTOS:**
+11. **Huecos de catálogo**: SLU-PP-332 10 mg, PNC-27 10 mg, AHK-Cu 20 mg, Survodutida
+    2 y 5 mg, Dulaglutida 5 mg. **+ el PDA (Pentadeca Arginate)**, que ninguno de los
+    39 proveedores cotiza (hallazgo de la auditoría de Nexaph).
+12. **/aprende/conservacion** aún recomienda congelar alícuotas (sin respaldo).
+13. **20 proveedores del padrón sin lista indexada** (44 en padrón, 24 con precios).
+    Las dos fichas nuevas de hoy son proveedores NUEVOS, no de esos 20.
+14. **Envíos**: pesos reales por producto (`weight_kg` vacío), remitente definitivo y
+    Estafeta por API.
+15. **Arte del vial de 5-Amino-1MQ** — regenerar.
+16. **Las 5 familias con escalera torcida** que encontró `auditar_ley_de_volumen.py`:
+    HCG, HGH, HGH Fragment, L-Carnitine y MOTS-c. Ahí hay dinero como en Tirzepatida.
+
+**Sólo Christián:**
+17. ⛔ **CAMBIAR LA CONTRASEÑA DE ADMIN** — `Exygenlabs2026` viajó por chat el 3-ago y
+    pudo usarse para registrarse en el portal de Nexaph. **Urgente.**
+18. **Llave de OpenAI** en Admin → Cobros · **copiar los 77 PDF de fichas al EC2**.
+19. **DMARC**: endurecer (hoy `p=none`).
+20. **Maquilador de llenado estéril en México** — prompt entregado para chat aparte.
+    Christián compra materia prima a granel a $200 USD/gramo ($3.50/mg contra los $8.49
+    que paga hoy por vial terminado). **El número que decide es el mínimo de lote.**
+21. Decisiones de precio abiertas del handoff anterior: Glutatión 600, Semaglutida
+    50 mg, HGH hacia arriba, vara ROI con-todo sobre los 49, rotar credenciales.
+
+---
+
 # 🤝 HANDOFF MAESTRO — 2 de agosto de 2026 (noche) · 48 HORAS CONSOLIDADAS
 
 **Estado: TODO EN VIVO Y VERIFICADO.** Backend `c4b582d` (azul/verde, salud OK) ·
