@@ -7,7 +7,7 @@ const page = {
   subtitle:
     'Qué datos personales tratamos, para qué los usamos, con quién los compartimos y cómo puedes ejercer tus derechos ARCO.',
   badge: 'Legal',
-  updated: '20 de julio de 2026',
+  updated: '3 de agosto de 2026',
   sections: [
     {
       type: 'callout',
@@ -131,7 +131,16 @@ const page = {
     },
     {
       type: 'prose',
-      title: '10. Cambios a este aviso y ante quién reclamar',
+      title: '10. La constancia del aviso de entrada',
+      paragraphs: [
+        'Cuando aceptas el aviso de uso en investigación que aparece al entrar al sitio, conservamos una constancia de esa aceptación aunque todavía no tengas cuenta con nosotros. Guardamos la fecha y hora de nuestro servidor, tu dirección IP, el identificador de tu navegador (user-agent), el idioma en que se te mostró el aviso y el texto exacto que aceptaste.',
+        'La finalidad es acreditar que el aviso se mostró y se aceptó, en términos del artículo 1298-A del Código de Comercio. No usamos esos datos para perfilarte, no los cruzamos con otras fuentes y no los compartimos con terceros con fines comerciales.',
+        'Estos datos se conservan mientras exista un interés legítimo en acreditar la aceptación. Puedes solicitarnos copia de tu propia constancia, o su eliminación, por los medios señalados en este aviso.',
+      ],
+    },
+    {
+      type: 'prose',
+      title: '11. Cambios a este aviso y ante quién reclamar',
       paragraphs: [
         'Podemos actualizar este aviso por cambios legales o por modificaciones en nuestros procesos. La versión vigente es la publicada en esta página, con su fecha de última revisión; los cambios sustanciales se anunciarán en el sitio.',
         'Si consideras que tu derecho a la protección de datos personales ha sido vulnerado, puedes acudir ante la autoridad competente en materia de protección de datos personales en México.',

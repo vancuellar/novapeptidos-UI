@@ -128,7 +128,23 @@ const RuoGate = () => {
       fetch(`${API}/ruo/aceptar`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ edad, investigacion, recordar, idioma: language || '' }),
+        body: JSON.stringify({
+          edad,
+          investigacion,
+          recordar,
+          idioma: language || '',
+          // ⛔ Y EL TEXTO QUE DE VERDAD LEYÓ (revisión de Codex, 2026-08-03). La
+          // versión la pone el backend, pero estas frases viven aquí, en el i18n:
+          // se podían editar sin subir la versión, y entonces la constancia probaba
+          // que aceptó «la v2» sin que nadie pudiera reconstruir qué decía la v2.
+          // Se manda lo que se acaba de pintar, no una copia escrita a mano.
+          textos: {
+            intro: t('ruo.gate.intro'),
+            edad: t('ruo.gate.checkboxAge'),
+            investigacion: t('ruo.gate.checkboxResearch'),
+            boton: t('ruo.gate.accept'),
+          },
+        }),
       }).catch(() => {});
     } catch { /* sin red: el rastro del navegador ya quedó */ }
 
