@@ -33,13 +33,13 @@ const page = {
         [
           '−20 °C (congelador)',
           '24 a 36 meses; muchos compuestos siguen dentro de especificación más allá',
-          'Alícuotas de un solo uso: meses. Nunca recongelar',
-          'Inventario y reserva de largo plazo. Es donde debe vivir lo que no vas a tocar este mes.',
+          'No recomendado con agua bacteriostática. Solo con agua estéril o amortiguador sin conservador, en alícuotas de un solo uso',
+          'Inventario y reserva de largo plazo, en polvo. Es donde debe vivir el vial que no vas a reconstituir este mes.',
         ],
         [
           '−80 °C (ultracongelador)',
           'Años; el límite práctico deja de ser la temperatura',
-          'Alícuotas: 6 a 12 meses según compuesto',
+          'Mismo criterio que −20 °C: solo sin conservador y en alícuotas de un solo uso',
           'Solo si ya tienes el equipo. Para la mayoría de los laboratorios no aporta sobre −20 °C.',
         ],
         [
@@ -62,7 +62,7 @@ const page = {
         ],
       ],
       note:
-        'Regla mnemotécnica: el polvo se mide en años, la solución en semanas, el ambiente en días. Cuando dudes entre dos casillas, elige la más fría.',
+        'Regla mnemotécnica: el polvo se mide en años, la solución en semanas, el ambiente en días. El congelador es para el polvo; la solución reconstituida vive en el refrigerador.',
     },
     {
       type: 'prose',
@@ -117,7 +117,7 @@ const page = {
         ],
       ],
       note:
-        'La columna de "reconstituido" asume agua bacteriostática, temperatura estable de 2–8 °C y protección de la luz. Cambia cualquiera de las tres condiciones y los plazos se acortan.',
+        'La columna de "reconstituido" asume agua bacteriostática, temperatura estable de 2–8 °C y protección de la luz. Cambia cualquiera de las tres condiciones y los plazos se acortan. El alcohol bencílico que lleva ese diluyente es también el motivo por el que esa solución no va al congelador.',
     },
     {
       type: 'list',
@@ -126,7 +126,7 @@ const page = {
       items: [
         'Guarda el liofilizado a −20 °C en un congelador que no tenga ciclo de descongelación automática.',
         'Mantén el vial en su caja de cartón original o en un contenedor opaco: la protección de la luz es gratis.',
-        'Alicuota antes de congelar la solución, en volúmenes que se consuman de una sola vez.',
+        'Reconstituye un vial a la vez y deja el resto en polvo: conservar polvo es fácil, conservar solución no.',
         'Coloca un termómetro con registro de mínimos y máximos dentro del refrigerador y revísalo semanal.',
         'Guarda los viales al fondo del estante, nunca en la puerta.',
         'Etiqueta cada vial reconstituido con compuesto, concentración, fecha y hora.',
@@ -141,10 +141,11 @@ const page = {
       title: 'Evitar sin excepciones',
       intro: 'Cada uno de estos tiene un mecanismo de daño concreto detrás.',
       items: [
-        { text: 'Ciclos repetidos de congelación y descongelación: los cristales de hielo cortan mecánicamente las cadenas y concentran solutos localmente.', bad: true },
+        { text: 'Congelar la solución reconstituida en agua bacteriostática: el conservador se concentra y se separa de forma despareja al formarse el hielo, y la interfaz hielo-agua despliega y agrega las cadenas. Si ya está reconstituida, va al refrigerador.', bad: true },
+        { text: 'Congelar y descongelar la misma solución más de una vez, sea cual sea el diluyente: cada ciclo suma agregación y no se revierte.', bad: true },
         { text: 'Agitación vigorosa: la interfaz aire-líquido despliega las moléculas y las agrega de forma irreversible.', bad: true },
         { text: 'Calor para acelerar la disolución: por encima de 30 °C la degradación se dispara en horas.', bad: true },
-        { text: 'Guardar solución reconstituida a temperatura ambiente más de un día.', bad: true },
+        { text: 'Dejar la solución reconstituida fuera del refrigerador como rutina. Un olvido de unas horas rara vez arruina el vial: anótalo y sigue. Lo que cobra factura es que se vuelva costumbre.', bad: true },
         { text: 'Usar un vial cuya etiqueta ya no es legible o que no puedes ligar a ningún pedido.', bad: true },
         { text: 'Mezclar restos de dos viales del mismo compuesto en uno solo: se pierde la trazabilidad de lote y se suma la contaminación de ambos.', bad: true },
         { text: 'Ignorar un cambio de aspecto porque "seguramente no es nada".', bad: true },
@@ -269,10 +270,10 @@ const page = {
     },
     {
       type: 'prose',
-      title: 'Alicuotar: el hábito que más material salva',
+      title: 'Alicuotar: cuándo sirve de verdad y cuándo estorba',
       paragraphs: [
-        'Si un vial reconstituido va a durar más de dos o tres semanas de uso, la solución no es guardarlo mejor: es no tenerlo abierto tanto tiempo. Alicuotar consiste en repartir la solución recién preparada en varios viales estériles pequeños, cada uno con el volumen de una sola sesión, y congelarlos.',
-        'La ganancia es doble. Primero, cada vial se descongela una sola vez, así que no hay ciclos repetidos de congelación. Segundo, el septo de cada alícuota se perfora una sola vez, lo que reduce a mínimos el riesgo de contaminación.',
+        'Alicuotar es repartir la solución recién preparada en varios recipientes estériles, cada uno con lo de una sola sesión. En un laboratorio que disuelve el péptido en agua estéril o en un amortiguador sin conservador y lo guarda congelado, es la práctica estándar: los fabricantes de péptidos recomiendan exactamente eso, alicuotar y mantener por debajo de −15 °C, para que ninguna porción pase por más de un ciclo de congelación.',
+        'Con agua bacteriostática la cuenta cambia. Ese diluyente lleva alcohol bencílico al 0.9 %, y su razón de ser es justamente permitir que el mismo vial se perfore muchas veces sin contaminarse. Ahí alicuotar no compra protección: la protección ya viene en el diluyente. Y trasvasar solución de un vial a otro fuera de una campana de flujo laminar abre el sistema cerrado y suma el riesgo que se pretendía evitar. Además, al congelarse, ese conservador se concentra en la poca agua que queda líquida y deja de estar repartido parejo.',
         'El costo es de unos minutos de trabajo adicional el día de la reconstitución, hecho en condiciones limpias y con todo etiquetado. Comparado con perder la mitad de un vial de 10 mg, la aritmética no admite discusión.',
       ],
     },
@@ -313,7 +314,7 @@ const page = {
         {
           q: '¿Puedo congelar la solución reconstituida?',
           a:
-            'Sí, con una condición: alicuota primero en volúmenes de un solo uso y no recongeles nada. Un ciclo de congelación y descongelación es tolerable para la mayoría de los péptidos; tres o cuatro ya se notan como pérdida de potencia y a veces como turbidez.',
+            'Si la reconstituiste con agua bacteriostática, mejor no. Ese diluyente lleva alcohol bencílico al 0.9 %, y la congelación lo empeora todo: al formarse el hielo, el conservador queda apretado en la poca agua que sigue líquida, se reparte de forma despareja y favorece que las cadenas se agreguen. La literatura de formulación es explícita en evitar el almacenamiento congelado de preparaciones con alcohol bencílico y mantenerlas entre 2 y 8 °C. Guárdala en el refrigerador y respeta la ventana de semanas. Congelar solución solo tiene sentido con agua estéril o un amortiguador sin conservador, en alícuotas de un solo uso y una sola congelación.',
         },
         {
           q: '¿Un refrigerador doméstico sirve?',
@@ -333,7 +334,7 @@ const page = {
         {
           q: '¿Sirve de algo un ultracongelador de −80 °C?',
           a:
-            'Para inventario a muy largo plazo y para alícuotas de solución, sí aporta. Para la mayoría de los laboratorios, −20 °C ya coloca la degradación por debajo del umbral que importa, y el dinero rinde más invirtiéndolo en un termómetro con registro, viales ámbar y disciplina de etiquetado que en el equipo.',
+            'Para inventario en polvo a muy largo plazo, sí aporta. Para solución reconstituida en agua bacteriostática, no: el problema no es qué tan frío está el congelador, es congelar. Para la mayoría de los laboratorios, −20 °C ya coloca la degradación del polvo por debajo del umbral que importa, y el dinero rinde más invirtiéndolo en un termómetro con registro, viales ámbar y disciplina de etiquetado que en el equipo.',
         },
       ],
     },
@@ -342,7 +343,7 @@ const page = {
       tone: 'info',
       title: 'Lo que hay que recordar',
       body:
-        'Seco y congelado dura años; frío y en solución dura semanas; templado dura días. Alicuota antes de congelar, protege de la luz, no agites, fecha todos los viales y desecha ante cualquier duda. Con eso resuelves el noventa por ciento de las pérdidas de material.',
+        'Seco y congelado dura años; frío y en solución dura semanas; templado dura días. El polvo al congelador y la solución al refrigerador, nunca al revés. Reconstituye un vial a la vez, protege de la luz, no agites, fecha todos los viales y desecha ante cualquier duda. Con eso resuelves el noventa por ciento de las pérdidas de material.',
     },
   ],
   related: [
