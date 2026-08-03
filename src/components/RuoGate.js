@@ -3,6 +3,7 @@ import { useLocation } from 'react-router-dom';
 import { ExternalLink } from 'lucide-react';
 import { BrandMark } from '@/components/BrandLogo';
 import { useLanguage } from '@/context/LanguageContext';
+import { API } from '@/lib/api';
 
 // Aviso de uso exclusivo en investigación y de mayoría de edad, la primera vez
 // que alguien entra al sitio. Es una puerta de verdad: no se puede cerrar ni
@@ -65,10 +66,18 @@ const ALWAYS_READABLE = ['/info/terminos', '/info/privacidad'];
 const BASE = process.env.PUBLIC_URL || '';
 
 const RuoGate = () => {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
   const { pathname } = useLocation();
   const [accepted, setAccepted] = useState(true);   // se asume aceptado hasta comprobar
-  const [checked, setChecked] = useState(false);    // la casilla: sin marcar no hay botón
+  // DOS declaraciones, no una (Christián, 2026-08-02). La edad y el propósito de
+  // investigación son cosas distintas y así consta cuál aceptó; el botón no se
+  // enciende hasta que están las dos. Antes iban en una sola frase.
+  const [edad, setEdad] = useState(false);
+  const [investigacion, setInvestigacion] = useState(false);
+  // Marcado por omisión: quien no lo toca se comporta como siempre. Si lo apaga,
+  // el rastro dura sólo la sesión y el aviso le vuelve a salir en la próxima visita.
+  const [recordar, setRecordar] = useState(true);
+  const checked = edad && investigacion;
 
   useEffect(() => {
     // Se pregunta por los TRES rastros, no sólo por localStorage: es justo lo
@@ -96,11 +105,33 @@ const RuoGate = () => {
     // pedido. Si el navegador no deja escribir en localStorage se intenta en la
     // sesión, para no perder el rastro de quien navega en modo privado.
     const cuando = new Date().toISOString();
-    // Se escribe en los tres, sin depender de que ninguno funcione: basta con
-    // que UNO sobreviva para no volver a preguntarle.
-    try { localStorage.setItem(STORAGE_KEY, cuando); } catch { /* bloqueado */ }
+    // "Recordar mi elección" decide DÓNDE queda el rastro. Marcado (lo normal):
+    // en los tres lados, como siempre, y basta con que uno sobreviva para no
+    // volver a preguntarle. Sin marcar: sólo en la sesión, así que al cerrar el
+    // navegador el aviso vuelve a salir — que es exactamente lo que pidió.
     try { sessionStorage.setItem(STORAGE_KEY, cuando); } catch { /* bloqueado */ }
-    escribirCookie(cuando);
+    if (recordar) {
+      try { localStorage.setItem(STORAGE_KEY, cuando); } catch { /* bloqueado */ }
+      escribirCookie(cuando);
+    }
+
+    // Y LA CONSTANCIA EN EL SERVIDOR (Christián, 2026-08-02). Hasta hoy el
+    // "acepto" vivía sólo aquí, en el navegador del cliente — o sea que la casa
+    // no tenía con qué sostener que alguien lo aceptó. Ahora queda la hora del
+    // servidor, la IP, el user-agent y QUÉ VERSIÓN del texto aceptó.
+    //
+    // ⛔ Se dispara y se olvida, a propósito. Si el backend no contesta, el
+    // visitante entra igual: el rastro del navegador es lo que le abre la puerta,
+    // y un aviso legal que deja a la gente afuera cuando se cae la API es peor
+    // que no tener constancia.
+    try {
+      fetch(`${API}/ruo/aceptar`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ edad, investigacion, recordar, idioma: language || '' }),
+      }).catch(() => {});
+    } catch { /* sin red: el rastro del navegador ya quedó */ }
+
     setAccepted(true);
   };
 
@@ -143,12 +174,33 @@ const RuoGate = () => {
           {t('ruo.gate.intro')}
         </p>
 
-        {/* Aceptar es un acto, no un clic de paso: la casilla deja constancia
-            de la edad y del propósito, que es lo que viaja con el pedido. */}
-        <label className="mt-3.5 flex items-start gap-2.5 cursor-pointer rounded-xl border border-border bg-secondary/40 p-3" data-testid="ruo-gate-checkbox">
-          <input type="checkbox" checked={checked} onChange={(e) => setChecked(e.target.checked)}
+        {/* DOS declaraciones, cada una con su casilla (Christián, 2026-08-02).
+            La edad y el propósito de investigación son cosas distintas: juntas
+            en una sola frase, la constancia sólo prueba que aceptó «algo».
+            Separadas, consta cuál aceptó. Es lo que hacen Nexaph y el estándar
+            de EUA, y es lo que sostiene la constancia del servidor.
+            El `p-2.5` en vez de `p-3` y el `mt-3` en vez de `mt-3.5` no son
+            capricho: hay una casilla más y esto tiene que seguir cabiendo en
+            320x568 SIN scroll. Si añades un renglón, vuelve a medirlo. */}
+        <label className="mt-3 flex items-start gap-2.5 cursor-pointer rounded-xl border border-border bg-secondary/40 p-2.5" data-testid="ruo-gate-checkbox-edad">
+          <input type="checkbox" checked={edad} onChange={(e) => setEdad(e.target.checked)}
             className="h-5 w-5 mt-px shrink-0 accent-[hsl(var(--primary))] cursor-pointer" />
-          <span className="text-[13px] leading-snug font-medium">{t('ruo.gate.checkbox')}</span>
+          <span className="text-[13px] leading-snug font-medium">{t('ruo.gate.checkboxAge')}</span>
+        </label>
+
+        <label className="mt-2 flex items-start gap-2.5 cursor-pointer rounded-xl border border-border bg-secondary/40 p-2.5" data-testid="ruo-gate-checkbox-research">
+          <input type="checkbox" checked={investigacion} onChange={(e) => setInvestigacion(e.target.checked)}
+            className="h-5 w-5 mt-px shrink-0 accent-[hsl(var(--primary))] cursor-pointer" />
+          <span className="text-[13px] leading-snug font-medium">{t('ruo.gate.checkboxResearch')}</span>
+        </label>
+
+        {/* Recordar NO es parte de la declaración: es una preferencia, y por eso
+            va sin recuadro y en letra chica. Marcada por omisión — quien no la
+            toca se comporta como siempre. */}
+        <label className="mt-2.5 flex items-center gap-2 cursor-pointer px-0.5" data-testid="ruo-gate-remember">
+          <input type="checkbox" checked={recordar} onChange={(e) => setRecordar(e.target.checked)}
+            className="h-4 w-4 shrink-0 accent-[hsl(var(--primary))] cursor-pointer" />
+          <span className="text-[12px] text-muted-foreground">{t('ruo.gate.remember')}</span>
         </label>
 
         <button onClick={accept} disabled={!checked} data-testid="ruo-gate-accept"

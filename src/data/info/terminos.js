@@ -6,14 +6,14 @@ const page = {
   subtitle:
     'Las condiciones bajo las que Exygen Labs vende material de investigación y las obligaciones que asumen ambas partes al hacer una compra.',
   badge: 'Legal',
-  updated: '20 de julio de 2026',
+  updated: '3 de agosto de 2026',
   sections: [
     {
       type: 'callout',
       tone: 'warn',
       title: 'Lo esencial antes de seguir',
       body:
-        'Todo lo que vendemos es material para investigación (RUO), destinado a trabajo de laboratorio y ensayos in vitro. No es medicamento ni suplemento. Para comprar debes ser mayor de edad y adquirirlo con fines de investigación. Al usar el sitio o comprar, aceptas estos términos.',
+        'Todo lo que vendemos es material para investigación (RUO), destinado a trabajo de laboratorio y ensayos in vitro. No es medicamento ni suplemento. Para comprar debes tener 21 años o más y adquirirlo con fines de investigación. Al usar el sitio o comprar, aceptas estos términos.',
     },
     // 2026-07-31 — Christian ordenó sacar la frase "no para consumo humano ni
     // animal" de fichas, correos, pie, /aprende y /info porque generaba
@@ -47,14 +47,24 @@ const page = {
       type: 'prose',
       title: '3. Quién puede comprar',
       paragraphs: [
-        'Para crear una cuenta o realizar un pedido debes ser mayor de 18 años y tener capacidad legal para contratar. Al comprar, declaras que adquieres el material con fines de investigación y que cuentas con la formación, las instalaciones y las condiciones adecuadas para manejarlo con seguridad.',
+        'Para crear una cuenta o realizar un pedido debes ser mayor de 21 años y tener capacidad legal para contratar. Al comprar, declaras que adquieres el material con fines de investigación y que cuentas con la formación, las instalaciones y las condiciones adecuadas para manejarlo con seguridad.',
         'Declaras asimismo que el uso que darás a los productos cumple con la normativa aplicable en tu jurisdicción, incluidas las disposiciones sanitarias, de bioseguridad y de manejo de residuos que correspondan.',
         'Nos reservamos el derecho de rechazar, limitar o cancelar cualquier pedido cuando existan indicios razonables de que el material se destinará a un uso distinto del declarado, cuando la información proporcionada sea falsa o incompleta, o cuando la operación no pueda verificarse.',
+        'Al entrar al sitio se te pide confirmar tu edad y el propósito de investigación mediante dos declaraciones independientes. Esa aceptación queda registrada por nosotros con la fecha y hora del servidor, la dirección IP desde la que se realizó y la versión del aviso que se te mostró, como elemento de atribución en términos del artículo 1298-A del Código de Comercio. Puedes solicitarnos copia de tu propio registro en cualquier momento.',
+      ],
+    },
+    {
+      type: 'prose',
+      title: '4. Asunción de riesgo en el manejo',
+      paragraphs: [
+        'El material que vendemos se maneja en entornos de laboratorio por personal con la formación necesaria. Al adquirirlo, asumes el riesgo inherente a su recepción, almacenamiento, reconstitución, manipulación y disposición final, y te obligas a aplicar las medidas de seguridad y los protocolos que correspondan a tu instalación.',
+        'La información de conservación, reconstitución y equivalencias que publicamos es orientativa y de carácter general. No sustituye el criterio de la persona responsable del laboratorio ni los procedimientos internos de tu institución, que son quienes determinan las condiciones concretas de trabajo.',
+        'No respondemos por daños derivados del uso distinto al declarado, del incumplimiento de las condiciones de conservación, de la manipulación por personal sin la formación adecuada, ni de la inobservancia de la normativa aplicable en tu jurisdicción.',
       ],
     },
     {
       type: 'list',
-      title: '4. Tu cuenta',
+      title: '5. Tu cuenta',
       items: [
         'Eres responsable de la veracidad de los datos que registres y de mantenerlos actualizados.',
         'Eres responsable de resguardar tus credenciales y de toda actividad realizada desde tu cuenta.',
@@ -65,7 +75,7 @@ const page = {
     },
     {
       type: 'prose',
-      title: '5. Precios, disponibilidad y formación del contrato',
+      title: '6. Precios, disponibilidad y formación del contrato',
       paragraphs: [
         'Los precios se expresan en pesos mexicanos (MXN) e incluyen los impuestos aplicables, salvo indicación distinta. El costo de envío se cotiza por separado y se muestra antes de confirmar la compra.',
         'Los precios y la disponibilidad pueden cambiar sin previo aviso. El precio aplicable es el vigente al momento de confirmar el pedido. Si por un error evidente de sistema se publica un precio manifiestamente incorrecto, podremos cancelar el pedido y reembolsar el importe íntegro, informándote la razón.',
@@ -75,7 +85,7 @@ const page = {
     },
     {
       type: 'list',
-      title: '6. Pagos',
+      title: '7. Pagos',
       items: [
         'Aceptamos tarjeta de crédito o débito (Visa, Mastercard y American Express), transferencia SPEI, efectivo en OXXO y criptomonedas. No manejamos pago contra entrega.',
         'No almacenamos números de tarjeta en nuestros servidores: el cobro lo procesa el proveedor de pago correspondiente.',
@@ -86,7 +96,7 @@ const page = {
     },
     {
       type: 'prose',
-      title: '7. Envíos, devoluciones y riesgo',
+      title: '8. Envíos, devoluciones y riesgo',
       paragraphs: [
         'Los tiempos, coberturas y condiciones de entrega se detallan en nuestra política de envíos. Los plazos son estimados de la paquetería y no constituyen una garantía de entrega en fecha determinada.',
         'Nuestra política de devoluciones detalla qué cubrimos, en qué plazos y con qué evidencia. En términos generales, y por la naturaleza del material, las ventas son finales, con excepciones definidas para daño en tránsito, producto equivocado, pedido incompleto y material fuera de especificación.',
@@ -95,7 +105,7 @@ const page = {
     },
     {
       type: 'prose',
-      title: '8. Calidad, análisis y alcance de lo que garantizamos',
+      title: '9. Calidad, análisis y alcance de lo que garantizamos',
       paragraphs: [
         'Cada lote se analiza para verificar identidad y pureza, y el análisis correspondiente se entrega en digital después de la compra. Lo que garantizamos es que el material entregado corresponde al compuesto y a la especificación publicada para ese lote.',
         'No garantizamos ningún resultado experimental. La idoneidad del material para un diseño experimental concreto, así como la interpretación de los resultados, corresponden exclusivamente al investigador.',
@@ -104,7 +114,7 @@ const page = {
     },
     {
       type: 'prose',
-      title: '9. Limitación de responsabilidad',
+      title: '10. Limitación de responsabilidad',
       paragraphs: [
         'En la medida permitida por la legislación aplicable, nuestra responsabilidad frente a ti por cualquier reclamación relacionada con un producto se limita al importe efectivamente pagado por ese producto.',
         'No respondemos por daños derivados del uso indebido del material, de su empleo en humanos o animales, de su manejo o conservación inadecuados después de la entrega, ni del incumplimiento por tu parte de la normativa aplicable.',
@@ -113,7 +123,7 @@ const page = {
     },
     {
       type: 'list',
-      title: '10. Propiedad intelectual y uso del sitio',
+      title: '11. Propiedad intelectual y uso del sitio',
       items: [
         'La marca Exygen Labs, el logotipo, los textos, las fotografías, las guías y el diseño del sitio son de nuestra propiedad o los usamos con autorización.',
         'Puedes consultar y compartir el contenido para uso personal o académico, citando la fuente. No puedes reproducirlo con fines comerciales sin autorización escrita.',
@@ -122,7 +132,7 @@ const page = {
     },
     {
       type: 'prose',
-      title: '11. Modificaciones, ley aplicable y contacto',
+      title: '12. Modificaciones, ley aplicable y contacto',
       paragraphs: [
         'Podemos actualizar estos términos. La versión vigente es la publicada en esta página, con su fecha de última revisión. Los cambios sustanciales se anunciarán en el sitio. Las compras se rigen por los términos vigentes al momento de realizarlas.',
         'Estos términos se rigen por las leyes de los Estados Unidos Mexicanos. Para cualquier controversia, las partes se someten a los tribunales competentes de la Ciudad de México, sin perjuicio de los derechos que la legislación de protección al consumidor reconozca al comprador, incluida la posibilidad de acudir a la Procuraduría Federal del Consumidor (PROFECO).',
