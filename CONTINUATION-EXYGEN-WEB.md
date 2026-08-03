@@ -132,11 +132,16 @@ Lo bueno que sí tiene: verifica cada lote con **Janoshik** — idea para copiar
    conviene**: no es péptido, está en la lista de la WADA y la FDA lo ha advertido.
 8. **La lista NUEVA de P42** (139 péptidos del 1-ago): falta el .xlsx original.
 9. **Envíos**: remitente definitivo y Estafeta por API (los pesos ya se hicieron).
-10. **`npm run auditoria` no revisa los rangos de presentación** — quedó propuesto
+10. **El botón «Seguir comprando» del carrito casi no se ve** (Christián, 3-ago, con
+    captura). Hoy es azul oscuro sobre fondo oscuro, justo debajo de «Finalizar
+    compra», que es azul brillante: el contraste entre los dos se come al segundo.
+    No es sólo estética — es la salida hacia el catálogo, y de ahí sale el carrito
+    más grande. Archivo: `src/pages/Cart.js` (el `variant` del segundo Button).
+11. **`npm run auditoria` no revisa los rangos de presentación** — quedó propuesto
     añadirlo para que un rango desfasado se cace solo, y NO se hizo.
-11. **Arte del vial de 5-Amino-1MQ** y **llave de OpenAI** + copiar los 77 PDF al EC2.
-12. **DMARC**: endurecer (hoy `p=none`).
-13. **Maquilador de llenado estéril en México** — prompt entregado para chat aparte.
+12. **Arte del vial de 5-Amino-1MQ** y **llave de OpenAI** + copiar los 77 PDF al EC2.
+13. **DMARC**: endurecer (hoy `p=none`).
+14. **Maquilador de llenado estéril en México** — prompt entregado para chat aparte.
     Materia prima a granel a $200 USD/gramo = $3.50/mg contra $8.49 hoy. **El número
     que decide es el mínimo de lote.**
 
