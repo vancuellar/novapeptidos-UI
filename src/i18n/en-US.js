@@ -84,6 +84,22 @@ const enUS = {
   'guia.error': 'The tracking could not be saved.',
   'guia.needNumber': 'Type the tracking number.',
   'guia.needCarrier': 'Pick the carrier.',
+  // Shipping label requests: the distributor asks the house to buy the label
+  // for a PAID order without tracking; the admin approves (real money, hence
+  // the confirm) or declines with a reason.
+  'guia.solicitud.boton': 'Request Label',
+  'guia.solicitud.etiqueta': 'Label Requested',
+  'guia.solicitud.enviada': 'Done. The house received your label request.',
+  'guia.solicitud.error': 'It did not go through. Try again.',
+  'guia.solicitud.tituloAdmin': 'Shipping Label Requests',
+  'guia.solicitud.pendientes': '{{n}} Pending',
+  'guia.solicitud.aprobar': 'Approve And Buy Label',
+  'guia.solicitud.confirmar': 'You are about to buy the label for order {{order}} with company money. Are you sure?',
+  'guia.solicitud.aprobada': 'Label purchased: {{tracking}}. The order now has it.',
+  'guia.solicitud.yaTenia': 'That order already had a label: {{tracking}}. The request was closed.',
+  'guia.solicitud.rechazar': 'Decline',
+  'guia.solicitud.motivoRechazo': 'Reason (optional, the distributor will read it):',
+  'guia.solicitud.rechazada': 'Request declined.',
   // IMPRIMIR LA GUÍA desde el panel (Christián, 2026-07-31).
   'etiqueta.print': 'Print Label',
   'etiqueta.generating': 'Generating…',

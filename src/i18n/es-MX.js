@@ -1895,6 +1895,22 @@ const esMX = {
   'guia.error': 'No se pudo guardar la guía.',
   'guia.needNumber': 'Escribe el número de guía.',
   'guia.needCarrier': 'Elige la paquetería.',
+  // SOLICITUD DE GUÍA (Christián, 2026-08-03): el distribuidor pide que la casa
+  // compre la guía de un pedido YA PAGADO y sin número; el admin aprueba (y se
+  // compra con dinero de la casa, por eso el confirm) o rechaza con motivo.
+  'guia.solicitud.boton': 'Solicitar Guía',
+  'guia.solicitud.etiqueta': 'Guía Solicitada',
+  'guia.solicitud.enviada': 'Listo. La casa recibió tu solicitud de guía.',
+  'guia.solicitud.error': 'No se pudo. Intenta de nuevo.',
+  'guia.solicitud.tituloAdmin': 'Solicitudes De Guía',
+  'guia.solicitud.pendientes': '{{n}} Pendientes',
+  'guia.solicitud.aprobar': 'Aprobar Y Comprar Guía',
+  'guia.solicitud.confirmar': 'Vas a comprar la guía del pedido {{order}} con dinero de la casa. ¿Seguro?',
+  'guia.solicitud.aprobada': 'Guía comprada: {{tracking}}. El pedido ya la trae puesta.',
+  'guia.solicitud.yaTenia': 'Ese pedido ya tenía guía: {{tracking}}. La solicitud quedó cerrada.',
+  'guia.solicitud.rechazar': 'Rechazar',
+  'guia.solicitud.motivoRechazo': 'Motivo del rechazo (opcional, el distribuidor lo va a leer):',
+  'guia.solicitud.rechazada': 'Solicitud rechazada.',
   // IMPRIMIR LA GUÍA desde el panel, sin salir a la página de la paquetería
   // (Christián, 2026-07-31: «quiero manejar TODO desde nuestra app»).
   'etiqueta.print': 'Imprimir Guía',

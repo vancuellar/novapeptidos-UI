@@ -1,6 +1,6 @@
 import React, { useEffect, useLayoutEffect, useState, useCallback } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import { Store, Users, DollarSign, TrendingUp, ShoppingBag, Copy, Percent, Truck, ExternalLink, BookOpen, Award, Ticket, RefreshCw, Bell, Syringe, Package, Coins, User, GraduationCap, FlaskConical, Megaphone, ChevronRight, Calculator, Sparkles, FileText } from 'lucide-react';
+import { Store, Users, DollarSign, TrendingUp, ShoppingBag, Copy, Percent, Truck, ExternalLink, BookOpen, Award, Ticket, RefreshCw, Bell, Syringe, Package, Coins, User, GraduationCap, FlaskConical, Megaphone, ChevronRight, Calculator, Sparkles, FileText, Loader2 } from 'lucide-react';
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip } from 'recharts';
 import GraficaInteractiva from '@/components/charts/GraficaInteractiva';
 import { Button } from '@/components/ui/button';
@@ -119,6 +119,8 @@ const Distributor = () => {
   // Captura de guía de un pedido SUYO. Es el formulario que se abre; el permiso
   // de tocar ESE pedido lo decide el servidor (403 si no trae su código).
   const [guiaOpen, setGuiaOpen] = useState(null);
+  // La solicitud de guía que va en vuelo (por número de pedido): bloquea SU botón.
+  const [solicitandoGuia, setSolicitandoGuia] = useState(null);
   const [codes, setCodes] = useState([]);
   const [rotateDays, setRotateDays] = useState(30);
   const [notifUnread, setNotifUnread] = useState(0);
@@ -230,6 +232,29 @@ const Distributor = () => {
     tracking_number: o.tracking_number || '',
     tracking_url: o.tracking_url || '',
   });
+
+  // ---------------------------------------------------------------------
+  //  Solicitar que LA CASA compre la guía (Christián, 2026-08-03)
+  // ---------------------------------------------------------------------
+  // «Un botón "solicitar guía" junto al cliente al que le falte número de
+  // guía, siempre y cuando ya haya pagado.» Sin pagar, el botón NO existe
+  // (nada de botones grises que confundan); con la solicitud en camino se
+  // pinta la etiqueta y ya. El candado de verdad vive en el servidor: aquí
+  // sólo se pide, y si rebota se enseña su motivo tal cual.
+  const solicitarGuia = async (o) => {
+    setSolicitandoGuia(o.order_number);
+    try {
+      await api.post(`/distributor/orders/${o.order_number}/solicitar-guia`);
+      toast.success(t('guia.solicitud.enviada'));
+      // Se marca en memoria: el fondo de la lista no cambió, sólo esta bandera.
+      setOrders((prev) => prev.map((x) => (
+        x.order_number === o.order_number ? { ...x, guia_solicitada: true } : x)));
+    } catch (e) {
+      toast.error(e?.response?.data?.detail || t('guia.solicitud.error'));
+    } finally {
+      setSolicitandoGuia(null);
+    }
+  };
 
   const filteredEarnings = filteredSales.filter((o) => o.status !== 'cancelado').reduce((s, o) => s + (o.commission || 0), 0);
 
@@ -770,6 +795,29 @@ const Distributor = () => {
                           <Truck className="h-3 w-3 mr-1" />
                           {o.tracking_number ? t('guia.edit') : t('guia.add')}
                         </Button>
+                      )}
+                      {/* SOLICITAR GUÍA a la casa: sólo pedidos PAGADOS y sin
+                          número. Con la solicitud en camino, etiqueta y ya. */}
+                      {!o.tracking_number && o.status !== 'cancelado' && (
+                        o.guia_solicitada ? (
+                          <div className="mt-2">
+                            <Badge variant="outline" className="text-[10px]" data-testid="dist-guia-solicitada">
+                              {t('guia.solicitud.etiqueta')}
+                            </Badge>
+                          </div>
+                        ) : o.paid ? (
+                          <div className="mt-1.5">
+                            <Button variant="outline" size="sm" data-testid="dist-solicitar-guia"
+                              className="h-7 px-2 text-[11px] whitespace-nowrap"
+                              disabled={solicitandoGuia === o.order_number}
+                              onClick={() => solicitarGuia(o)}>
+                              {solicitandoGuia === o.order_number
+                                ? <Loader2 className="h-3 w-3 mr-1 animate-spin" />
+                                : <Truck className="h-3 w-3 mr-1" />}
+                              {t('guia.solicitud.boton')}
+                            </Button>
+                          </div>
+                        ) : null
                       )}
                     </TableCell>
                   </TableRow>

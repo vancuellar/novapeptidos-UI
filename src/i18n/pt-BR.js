@@ -79,6 +79,22 @@ const ptBR = {
   'guia.error': 'Não foi possível salvar o rastreio.',
   'guia.needNumber': 'Digite o número do rastreio.',
   'guia.needCarrier': 'Escolha a transportadora.',
+  // Solicitação de etiqueta de envio: o distribuidor pede que a casa compre a
+  // etiqueta de um pedido JÁ PAGO e sem rastreio; o admin aprova (dinheiro de
+  // verdade, por isso o confirm) ou recusa com motivo.
+  'guia.solicitud.boton': 'Solicitar Etiqueta',
+  'guia.solicitud.etiqueta': 'Etiqueta Solicitada',
+  'guia.solicitud.enviada': 'Pronto. A casa recebeu sua solicitação de etiqueta.',
+  'guia.solicitud.error': 'Não deu certo. Tente de novo.',
+  'guia.solicitud.tituloAdmin': 'Solicitações De Etiqueta',
+  'guia.solicitud.pendientes': '{{n}} Pendentes',
+  'guia.solicitud.aprobar': 'Aprovar E Comprar Etiqueta',
+  'guia.solicitud.confirmar': 'Você vai comprar a etiqueta do pedido {{order}} com dinheiro da casa. Tem certeza?',
+  'guia.solicitud.aprobada': 'Etiqueta comprada: {{tracking}}. O pedido já está com ela.',
+  'guia.solicitud.yaTenia': 'Esse pedido já tinha etiqueta: {{tracking}}. A solicitação foi fechada.',
+  'guia.solicitud.rechazar': 'Recusar',
+  'guia.solicitud.motivoRechazo': 'Motivo (opcional, o distribuidor vai ler):',
+  'guia.solicitud.rechazada': 'Solicitação recusada.',
   // IMPRIMIR LA GUÍA desde el panel (Christián, 2026-07-31).
   'etiqueta.print': 'Imprimir Etiqueta',
   'etiqueta.generating': 'Gerando…',

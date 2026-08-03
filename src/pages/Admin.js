@@ -21,6 +21,9 @@ import { Tabs, TabsContent } from '@/components/ui/tabs';
 import DashboardSidebar, { alTope } from '@/components/layout/DashboardSidebar';
 import StatCard from '@/components/panels/StatCard';
 import ComisionesAdmin from '@/components/panels/ComisionesAdmin';
+// Las solicitudes de guía de los distribuidores: sólo se pinta cuando hay
+// pendientes, arriba de la tabla de Pedidos (Christián, 2026-08-03).
+import GuiaSolicitudesAdmin from '@/components/panels/GuiaSolicitudesAdmin';
 import useRefrescoAlVolver from '@/hooks/useRefrescoAlVolver';
 import GatewayCredentials from '@/components/GatewayCredentials';
 import AjustesEnvio from '@/components/AjustesEnvio';
@@ -1560,6 +1563,9 @@ const Admin = () => {
         </TabsContent>
 
         <TabsContent value="orders" className="mt-5">
+          {/* Solicitudes De Guía de los distribuidores. Aprobar COMPRA la guía
+              (dinero de la casa); sin pendientes la franja no existe. */}
+          <GuiaSolicitudesAdmin onCambio={loadAll} />
           {/* Activos / Archivados + la barra de acciones en lote cuando hay algo marcado */}
           <div className="flex flex-wrap items-center justify-between gap-3 mb-4">
             <div className="flex gap-1">
