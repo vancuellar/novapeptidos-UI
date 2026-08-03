@@ -403,14 +403,15 @@ const Home = () => {
               <div className="font-heading text-3xl font-bold text-[hsl(var(--primary))]">≥99%</div>
               <div className="font-mono-tech text-[10.5px] uppercase tracking-[0.16em] text-muted-foreground mt-1.5">{t('home.purityHplc')}</div>
             </div>
-            {/* El cuarto dato (Christián, 2026-08-03). Al quitar la pureza duplicada
-                quedaban tres y el bloque pedía un cuarto; de los candidatos, éste es
-                el único que mueve carrito — los otros dos (COA por lote, métodos de
-                pago) informan pero no empujan a comprar. El umbral sale de
-                `envio_gratis_desde_mxn` en las reglas de la casa: si cambia allá,
-                cámbialo aquí. */}
+            {/* El cuarto dato (Christián, 2026-08-03). Los otros tres son CIFRAS —187,
+                3-5 días, ≥99%— y «Gratis» rompía la fila: aquí manda el número, la
+                etiqueta sólo lo explica. De los descuentos de la casa, el 5% de cripto
+                es el único que NO está ya en el hero (el 10-15% de introducción lo
+                anuncia el sello dorado de arriba) y el único que ningún competidor da.
+                ⛔ Ese 5% lo cobra el servidor de verdad (descuento_cripto.py): si algún
+                día se apaga allá, este dato se cambia el MISMO día. */}
             <div>
-              <div className="font-heading text-3xl font-bold">{t('home.freeShipValue')}</div>
+              <div className="font-heading text-3xl font-bold text-[hsl(var(--primary))]">{t('home.freeShipValue')}</div>
               <div className="font-mono-tech text-[10.5px] uppercase tracking-[0.16em] text-muted-foreground mt-1.5">{t('home.freeShipLabel')}</div>
             </div>
           </div>
