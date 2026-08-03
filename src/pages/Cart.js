@@ -227,6 +227,14 @@ const Cart = () => {
             </div>
             <Separator className="my-4" />
             <div className="flex justify-between font-heading font-bold text-lg"><span>{t('common.total')}</span><span data-testid="cart-total">{formatMXN(totalConEnvio)}</span></div>
+            {/* El 5% de cripto se ANUNCIA aquí, no se resta: en el carrito todavía no
+                hay método de pago elegido, y descontar algo que el cliente aún no
+                escogió sería prometer un total que la caja no va a cobrar. Se resta en
+                el checkout, donde ya eligió. Naranja de Bitcoin, igual que en la ficha
+                y en el resumen del checkout, para que se lea como la misma promesa. */}
+            <p className="mt-2 text-[12px] leading-snug" style={{ color: '#F7931A' }} data-testid="cart-crypto-hint">
+              {t('cart.cryptoHint')}
+            </p>
             <Button className="w-full mt-5" size="lg" onClick={onCheckoutClick} data-testid="cart-go-to-checkout-button">{t('cart.checkout')} <ArrowRight className="h-4 w-4 ml-1.5" /></Button>
             <Button asChild variant="ghost" className="w-full mt-2"><Link to="/catalogo">{t('cart.keepShopping')}</Link></Button>
           </Card>

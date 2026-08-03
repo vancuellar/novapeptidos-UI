@@ -411,6 +411,7 @@ export default function CotizadorDistribuidor({
     docDescuentoCaja: t('cotizador.docDescuentoCaja', { pct: `${descuentoPct}%` }),
     docEnvio: t('cotizador.docEnvio'),
     docEnvioGratis: t('cotizador.docEnvioGratis'),
+    docCripto: t('cotizador.docCripto'),
     docEnvioPendiente: t('cotizador.envioPendiente'),
     docCortesia: t('cotizador.docCortesia'),
     total: t('cotizador.total'),
@@ -492,6 +493,10 @@ export default function CotizadorDistribuidor({
       ? `${t('cotizador.docEnvio')}: ${envioPendiente ? t('cotizador.envioPendiente')
         : envio > 0 ? money(envio) : t('cotizador.docEnvioGratis')}` : '',
     `*${t('cotizador.total')}: ${money(total)}*`,
+    // El 5% de cripto también en el mensaje de WhatsApp: es por donde de verdad
+    // llega la cotización al cliente. Se anuncia, no se resta — aquí todavía no
+    // hay método de pago. (Christián, 2026-08-03)
+    t('cotizador.docCripto'),
     '',
     // LOS DOS ENLACES, los mismos que van en el PDF: volver a ver la cotización y
     // pagar con el carrito ya armado. ⛔ Ninguno lleva el código del obsequio.

@@ -300,7 +300,20 @@ const Checkout = () => {
   // El empujón, también sobre la cifra con puntos ya restados.
   const faltaAquiParaEnvioGratis = envioEstandar > 0 && envioGratisDeVerdadDesde > 0
     ? Math.max(0, envioGratisDeVerdadDesde - pagaMercancia) : 0;
-  const total = pagaMercancia + envioACobrar;
+  // EL 5% POR PAGAR EN CRIPTO (Christián, 2026-08-03).
+  //
+  // ⛔ POR QUÉ ESTABA MAL. El servidor SÍ lo cobraba desde el 3-ago
+  // (`descuento_cripto.py`), pero esta pantalla no lo restaba: el cliente elegía
+  // cripto, veía el mismo total de siempre y concluía que el descuento no existía.
+  // Un descuento que se cobra pero no se ve es peor que no tenerlo — parece un
+  // engaño y el cliente se va antes de llegar a la caja.
+  //
+  // Va sobre la mercancía YA descontada y con los puntos restados, y NUNCA sobre
+  // el envío: exactamente la misma base que usa el servidor, para que el número de
+  // esta pantalla y el que cobra la caja sean el mismo.
+  // ⛔ SI SE APAGA LA REGLA EN EL BACKEND, HAY QUE APAGAR ESTO EL MISMO DÍA.
+  const descuentoCripto = payment === 'cripto' ? Math.round(pagaMercancia * 0.05) : 0;
+  const total = pagaMercancia - descuentoCripto + envioACobrar;
   const set = (k, v) => setForm((f) => ({ ...f, [k]: v }));
 
   // Quien llega del enlace de una cotización (?pedido=) entra con el carrito
@@ -714,6 +727,15 @@ const Checkout = () => {
             <div className="space-y-1.5 text-sm">
               <div className="flex justify-between"><span className="text-muted-foreground">{t('common.subtotal')}</span><span>{formatMXN(subtotal)}</span></div>
               {discount > 0 && <div className="flex justify-between text-[hsl(var(--success))]"><span>{discountSource === 'self' ? t('discount.lineSelf', { rate: Math.round(discountRate * 100) }) : discountSource === 'code' ? t('discount.lineCode', { code: distCode, rate: Math.round(discountRate * 100) }) : t('discount.line', { rate: Math.round(discountRate * 100) })}</span><span>− {formatMXN(discount)}</span></div>}
+              {/* El 5% de cripto, con el naranja de Bitcoin para que se ate visualmente
+                  a la franja de la ficha. Sólo aparece cuando el cliente ya eligió
+                  cripto: prometerlo antes sería un descuento que todavía no tiene. */}
+              {descuentoCripto > 0 && (
+                <div className="flex justify-between" style={{ color: '#F7931A' }} data-testid="checkout-crypto-discount">
+                  <span>{t('checkout.cryptoDiscountLine')}</span>
+                  <span>− {formatMXN(descuentoCripto)}</span>
+                </div>
+              )}
               {cappedItems.length > 0 && (
                 <div className="rounded-lg border border-border bg-[hsl(var(--secondary))] px-3 py-2 text-[11px] leading-relaxed text-muted-foreground" data-testid="checkout-capped-notice">
                   <span className="font-medium text-foreground">{t('discount.cappedTitle')}</span>{' '}

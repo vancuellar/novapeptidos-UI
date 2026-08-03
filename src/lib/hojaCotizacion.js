@@ -172,6 +172,14 @@ export function hojaCotizacionHTML(datos, { tema = 'claro', origen = '' } = {}) 
       : '',
     `<tr><td class="cot-dlabel cot-dtotal">${esc(t.total || '')}</td>
          <td class="cot-dval cot-dtotal">${money(datos.total)}</td></tr>`,
+    /* El 5% de cripto se ANUNCIA, no se resta: una cotización no lleva método de
+       pago, y descontar algo que el cliente todavía no eligió sería cotizar un
+       total que la caja no va a cobrar. Se resta en el checkout, donde ya eligió.
+       Va DEBAJO del total y en letra chica, para que no se confunda con el precio
+       cotizado. (Christián, 2026-08-03) */
+    t.docCripto
+      ? `<tr><td class="cot-cripto" colspan="2">${esc(t.docCripto)}</td></tr>`
+      : '',
   ].join('');
 
   return `
@@ -211,6 +219,7 @@ export function hojaCotizacionHTML(datos, { tema = 'claro', origen = '' } = {}) 
   .cot-dval{padding:4px 0;text-align:right;color:${c.body};font-size:12.5px;
     font-variant-numeric:tabular-nums;white-space:nowrap;}
   .cot-verde{color:${c.verde};}
+  .cot-cripto{font-size:11.5px;color:#B26A12;padding-top:7px;text-align:right;}
   .cot-dtotal{font-family:${HEAD};font-size:19px;color:${c.ink};padding-top:11px;
     border-top:1px solid ${c.line};}
   .cot-ahorro{margin-top:16px;border:1px dashed ${c.verde};border-radius:9px;

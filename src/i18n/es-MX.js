@@ -199,6 +199,7 @@ const esMX = {
   'checkout.card.secureNote': 'Tus datos de tarjeta se procesan de forma segura y NUNCA se guardan en nuestros servidores.',
   'checkout.speiNote': 'Al confirmar tu pedido te enviaremos los datos bancarios (CLABE) para hacer tu transferencia SPEI. Tu pedido se procesa al recibir el pago.',
   'checkout.cryptoNote': 'Al confirmar te llevamos a una página segura para pagar con cripto. Ahí ves el monto exacto y el tiempo que tienes para pagarlo. Tu pedido se confirma solo en cuanto se recibe el pago.',
+  'checkout.cryptoDiscountLine': 'Pago en cripto (−5%)',
   'checkout.consentText': 'Confirmo que soy mayor de 21 años y entiendo que los productos son exclusivamente para investigación (RUO). Acepto:',
   'checkout.payAmount': 'Pagar {{amount}} MXN',
   'checkout.toast.consent': 'Debes aceptar los términos para continuar',
@@ -872,6 +873,7 @@ const esMX = {
   'cotizador.docDescuentoCaja': 'Descuento {{pct}} · se ahorra',
   'cotizador.docEnvio': 'Envío',
   'cotizador.docEnvioGratis': 'Gratis',
+  'cotizador.docCripto': 'Pagando en criptomonedas se aplica 5% de descuento adicional sobre este total.',
   'cotizador.docCortesia': 'Cortesía',
   // --- Obsequios y carrito compartible (Christián, 2026-08-01) ---
   'cotizador.obsequios': 'Obsequios Para Tu Cliente',
@@ -1388,6 +1390,7 @@ const esMX = {
   'cart.freeShippingLine': 'El envío se cotiza y se cobra por separado según tu zona',
   'cart.shippingTBD': 'Por cotizar',
   'cart.plusShipping': 'Más envío (se cotiza por separado)',
+  'cart.cryptoHint': 'Paga en cripto y ahorra 5% adicional.',
   'cart.checkout': 'Finalizar compra',
   'cart.keepShopping': 'Seguir comprando',
   'cart.codigo.invalido': 'Código no válido',

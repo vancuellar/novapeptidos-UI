@@ -298,9 +298,14 @@ const ProductDetail = () => {
               o el banner promete algo que la caja no cumple. Los insumos no llevan
               descuento comercial, pero éste SÍ les toca: no sale del margen del
               producto sino de la comisión de pasarela que el pedido no paga. */}
-          <div className="mt-3 rounded-xl border border-[hsl(var(--primary))]/30 bg-[hsl(var(--primary))]/10 px-3.5 py-2.5 flex items-center gap-2.5"
+          {/* El naranja es el de Bitcoin, #F7931A (Christián, 2026-08-03): el símbolo y
+              el borde. Va a pelo y no como variable del tema porque NO es un color de
+              la marca — es el color de una moneda, y tiene que verse igual en claro y
+              en oscuro para que se reconozca de un vistazo. */}
+          <div className="mt-3 rounded-xl border px-3.5 py-2.5 flex items-center gap-2.5"
+               style={{ borderColor: '#F7931A', backgroundColor: 'rgba(247,147,26,0.08)' }}
                data-testid="pdp-crypto-nudge">
-            <Bitcoin className="h-4 w-4 shrink-0 text-[hsl(var(--primary))]" />
+            <Bitcoin className="h-4 w-4 shrink-0" style={{ color: '#F7931A' }} />
             <span className="text-[13px] font-medium leading-snug">{t('product.cryptoDiscount')}</span>
           </div>
 
