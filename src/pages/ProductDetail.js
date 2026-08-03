@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { ShieldCheck, Minus, Plus, ShoppingCart, FlaskConical, Bitcoin, Lock, X } from 'lucide-react';
+import { ShieldCheck, Minus, Plus, ShoppingCart, FlaskConical, Bitcoin, Lock, X, ZoomIn, ZoomOut } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
@@ -55,6 +55,8 @@ const ProductDetail = () => {
   const [monograph, setMonograph] = useState(null);
   // La foto en grande (Christián, 2026-08-03).
   const [zoom, setZoom] = useState(false);
+  // Cuánto está ampliada la foto dentro del modal: 1 = tamaño normal, hasta 3.
+  const [escala, setEscala] = useState(1);
 
   useEffect(() => {
     setLoading(true);
@@ -110,6 +112,7 @@ const ProductDetail = () => {
   // está abierta. Sin lo segundo, el dedo mueve la página por detrás de la imagen.
   useEffect(() => {
     if (!zoom) return undefined;
+    setEscala(1);                                   // cada apertura empieza en 1×
     const salir = (e) => { if (e.key === 'Escape') setZoom(false); };
     const previo = document.body.style.overflow;
     document.body.style.overflow = 'hidden';
@@ -122,7 +125,7 @@ const ProductDetail = () => {
 
   // Al cambiar de presentación la foto cambia: se cierra para no dejar en pantalla
   // el vial que ya no se está mirando.
-  useEffect(() => { setZoom(false); }, [variantIdx, slug]);
+  useEffect(() => { setZoom(false); setEscala(1); }, [variantIdx, slug]);
 
   // Monografía a parte (ver el useState de arriba). `vigente` evita que una
   // respuesta vieja pise la ficha nueva si cambias de producto rápido.
@@ -436,19 +439,40 @@ const ProductDetail = () => {
           aria-label={localizedProduct.name}
           data-testid="pdp-image-modal"
         >
-          <button type="button" onClick={() => setZoom(false)} data-testid="pdp-image-close"
-            aria-label={t('product.zoomClose')}
-            className="absolute top-4 right-4 rounded-full border border-border bg-card/80 p-2.5 hover:bg-card transition-colors">
-            <X className="h-5 w-5" />
-          </button>
-          <figure className="max-w-3xl w-full" onClick={(e) => e.stopPropagation()}>
+          {/* Los controles, arriba a la derecha. Se paran el clic para que picarlos
+              no cierre el modal (el fondo cierra). */}
+          <div className="absolute top-4 right-4 flex items-center gap-2" onClick={(e) => e.stopPropagation()}>
+            <button type="button" onClick={() => setEscala((z) => Math.max(1, +(z - 0.5).toFixed(1)))}
+              disabled={escala <= 1} data-testid="pdp-image-zoom-out"
+              aria-label={t('product.zoomOut')}
+              className="rounded-full border border-border bg-card/80 p-2.5 hover:bg-card transition-colors disabled:opacity-30 disabled:pointer-events-none">
+              <ZoomOut className="h-5 w-5" />
+            </button>
+            <button type="button" onClick={() => setEscala((z) => Math.min(3, +(z + 0.5).toFixed(1)))}
+              disabled={escala >= 3} data-testid="pdp-image-zoom-in"
+              aria-label={t('product.zoomIn')}
+              className="rounded-full border border-border bg-card/80 p-2.5 hover:bg-card transition-colors disabled:opacity-30 disabled:pointer-events-none">
+              <ZoomIn className="h-5 w-5" />
+            </button>
+            <button type="button" onClick={() => setZoom(false)} data-testid="pdp-image-close"
+              aria-label={t('product.zoomClose')}
+              className="rounded-full border border-border bg-card/80 p-2.5 hover:bg-card transition-colors">
+              <X className="h-5 w-5" />
+            </button>
+          </div>
+          {/* `overflow-auto` para que, ya ampliada, la foto se pueda recorrer con el
+              dedo o la barra: sin eso el zoom enseña el centro y nada más. */}
+          <figure className="max-w-3xl w-full overflow-auto" onClick={(e) => e.stopPropagation()}>
             <img
               src={productImage(localizedProduct, active)}
               alt={`${localizedProduct.name} ${active.presentation || ''}`.trim()}
-              className="w-full h-auto max-h-[82vh] object-contain rounded-2xl cursor-default"
+              style={{ transform: `scale(${escala})`, transformOrigin: 'center center' }}
+              onClick={() => setEscala((z) => (z >= 3 ? 1 : +(z + 0.5).toFixed(1)))}
+              className={`w-full h-auto max-h-[82vh] object-contain rounded-2xl transition-transform duration-200 ${escala >= 3 ? 'cursor-zoom-out' : 'cursor-zoom-in'}`}
             />
             <figcaption className="text-center text-[12px] text-muted-foreground mt-3">
               {localizedProduct.name} · {active.presentation}
+              {escala > 1 && <span className="ml-2 font-mono-tech">{escala}×</span>}
             </figcaption>
           </figure>
         </div>

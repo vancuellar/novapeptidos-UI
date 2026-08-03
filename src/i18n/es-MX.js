@@ -1353,6 +1353,8 @@ const esMX = {
   'product.volumeNudge': 'Llévate 3 o más y ahorra 12%',
   'product.cryptoDiscount': 'Paga en cripto y ahorra 5% adicional',
   'product.zoomOpen': 'Ver la foto en grande',
+  'product.zoomIn': 'Acercar',
+  'product.zoomOut': 'Alejar',
   'product.zoomClose': 'Cerrar',
   'product.safeCheckout': 'Compra segura',
   'product.safeCheckoutMethods': 'Tarjeta, SPEI, OXXO y criptomonedas. No guardamos tu número de tarjeta.',

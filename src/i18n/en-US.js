@@ -1362,6 +1362,8 @@ const enUS = {
   'product.volumeNudge': 'Buy 3 or more and save 12%',
   'product.cryptoDiscount': 'Pay with crypto and save an extra 5%',
   'product.zoomOpen': 'View larger photo',
+  'product.zoomIn': 'Zoom in',
+  'product.zoomOut': 'Zoom out',
   'product.zoomClose': 'Close',
   'product.safeCheckout': 'Secure checkout',
   'product.safeCheckoutMethods': 'Card, SPEI, OXXO and crypto. We never store your card number.',

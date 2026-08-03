@@ -1357,6 +1357,8 @@ const ptBR = {
   'product.volumeNudge': 'Leve 3 ou mais e economize 12%',
   'product.cryptoDiscount': 'Pague com cripto e economize 5% adicional',
   'product.zoomOpen': 'Ver a foto ampliada',
+  'product.zoomIn': 'Aproximar',
+  'product.zoomOut': 'Afastar',
   'product.zoomClose': 'Fechar',
   'product.safeCheckout': 'Compra segura',
   'product.safeCheckoutMethods': 'Cartao, SPEI, OXXO e criptomoedas. Nao guardamos seu numero de cartao.',
