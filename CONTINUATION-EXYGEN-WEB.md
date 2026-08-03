@@ -1,3 +1,34 @@
+# 🤝 EN VUELO — 3 de agosto de 2026 (noche, segunda tanda del asesor)
+
+**⚠️ TRABAJO EN CURSO al momento de escribir esto** (dos agentes en paralelo; si esta
+sesión se corta, revisar `git log` de los DOS repos para ver si commitearon):
+
+1. **CUOTA DEL CHAT — diagnóstico CERRADO, arreglo esperando a Christián.** El chat
+   decía «se acabó la cuota» porque el servidor SIGUE en Gemini gratis (20/día):
+   `OPENAI_API_KEY` está VACÍA en producción (verificado por `/admin/credenciales`;
+   era el pendiente #12). Cuando Christián pegue su llave en Admin → Credenciales,
+   falta poner `AI_PROVIDER=openai` y `AI_MODEL_NAME_OPENAI=<modelo exacto>` en el
+   .env del EC2 y reiniciar (ver modelo_ia.py: la llave puede venir del panel, el
+   PROVEEDOR solo del entorno).
+2. **Backend en vuelo** (repo RBAC): renombrar chats (`PUT /business/chats/{sid}/nombre`,
+   colección `business_chat_sessions`), búsqueda poderosa
+   (`GET /business/chats/buscar?q=&anio=&mes=` con AND multi-palabra sin acentos y
+   snippet), y archivado a markdown (`POST .../archivar` consolida N mensajes en 1
+   doc `business_chat_archive` con campo `md`; archivado = solo lectura, 409 al
+   escribirle; `GET .../md` exporta). Pruebas en test_chat_negocio.py.
+3. **Frontend en vuelo** (este repo): globito azul de IA lleva DIRECTO al Asesor para
+   admin/distribuidor (público sigue igual) · WhatsApp flotante OCULTO para
+   admin/distribuidor · lapicito para renombrar · barra de búsqueda con debounce +
+   selects Año/Mes · archivar con vista de solo lectura del md · lista agrupada
+   cronológicamente (Hoy, Ayer, Esta Semana, Semana Pasada, Este Mes, meses, años).
+4. Al aterrizar los dos: desplegar backend (`./actualizar-exygen-backend.sh`) y sitio
+   (`./desplegar.sh`), verificar, y pasar esta sección a «CERRADO».
+
+**También cerrado hoy noche (después del handoff de abajo):** la casilla «Recordar mi
+elección» del aviso de entrada ya NO viene premarcada (orden de Christián; commit
+`44efd4e`, en vivo en `main.51fe5b18.js`, verificado en navegador con las 3 casillas
+apagadas).
+
 # 🤝 HANDOFF MAESTRO — 3 de agosto de 2026 (noche)
 
 **Estado:** TODO DESPLEGADO Y VERIFICADO. Backend en el EC2 al commit `25ca835` (suite
