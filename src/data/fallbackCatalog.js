@@ -5614,7 +5614,7 @@ export const fallbackProducts = [
     ],
     "short_description": "Solución de vitamina B12 para trabajo de laboratorio.",
     "description": "Es vitamina B12 (cianocobalamina) en solución, a 1 mg por mililitro. No es un péptido: se usa como reactivo y como referencia en pruebas de laboratorio. Viene lista en frasco de 10 mL. Uso exclusivo en investigación (RUO).",
-    "presentation": "1 mg",
+    "presentation": "1 mg/mL (10 mL)",
     "form": "Solución",
     "purity": "99.0%",
     "price": 1159,

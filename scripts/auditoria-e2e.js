@@ -153,6 +153,61 @@ function categorias() {
   return { cuenta, prods };
 }
 
+// ------------------------------------------------ rangos de presentación
+// Un producto con varias presentaciones anuncia en su entrada agrupada el rango
+// "mínima – máxima" (Pinealon: "5 mg – 20 mg"). El bug histórico: al AGREGAR una
+// presentación, el motor actualizaba el precio pero se le olvidaba el rango —
+// Pinealon anunció «5 mg – 10 mg» teniendo hasta 20 mg. La causa se corrigió en
+// el motor (alta_producto.py recalcula `rango_de_presentaciones`), pero aquí se
+// vigila el RESULTADO: se recalcula el rango esperado ordenando las variantes
+// por su cantidad — NUMÉRICAMENTE, porque como texto "10 mg" < "5 mg" y una
+// presentación nueva puede entrar en medio — y se compara letra por letra contra
+// lo anunciado, con el mismo guion (– U+2013) y los mismos espacios que escribe
+// el catálogo. Los extremos se copian tal cual de la variante ("1,000 IU",
+// "10,000IU"): no se reinventa el formato, se reutiliza el que ya está.
+function rangosDePresentacion(prods) {
+  // "1,000 IU" -> { n: 1000, unidad: 'iu' }. La coma de miles se quita antes de
+  // leer el número, y la unidad puede venir pegada ("10,000IU").
+  const partes = (txt) => {
+    const m = String(txt || '').trim().match(/^([\d.,]+)\s*([a-zA-Zµ]+)/);
+    return m ? { n: parseFloat(m[1].replace(/,/g, '')), unidad: m[2].toLowerCase() } : null;
+  };
+  const desfasados = [];
+  const ilegibles = [];
+  for (const p of prods) {
+    const vs = p.variants || [];
+    if (vs.length <= 1) {
+      // Sin rango que revisar: lo anunciado es la presentación misma.
+      if (vs.length === 1 && (p.presentation || '').trim() !== (vs[0].presentation || '').trim()) {
+        desfasados.push(`${p.name}: anuncia '${p.presentation}' y su única presentación es '${vs[0].presentation}'`);
+      }
+      continue;
+    }
+    const conCantidad = vs.map((v) => ({ v, q: partes(v.presentation) }));
+    const rotas = conCantidad.filter((x) => !x.q);
+    if (rotas.length) {
+      ilegibles.push(`${p.name}: '${rotas.map((x) => x.v.presentation).join("','")}'`);
+      continue;
+    }
+    // Si un día un producto mezcla unidades (mg con IU), min y max ya no se
+    // pueden comparar por número: se dice en voz alta en vez de adivinar.
+    const unidades = [...new Set(conCantidad.map((x) => x.q.unidad))];
+    if (unidades.length > 1) {
+      ilegibles.push(`${p.name}: mezcla unidades (${unidades.join(', ')})`);
+      continue;
+    }
+    const orden = [...conCantidad].sort((a, b) => a.q.n - b.q.n);
+    const esperado = `${orden[0].v.presentation} – ${orden[orden.length - 1].v.presentation}`;
+    if ((p.presentation || '') !== esperado) {
+      desfasados.push(`${p.name}: anuncia '${p.presentation}' y debe ser '${esperado}'`);
+    }
+  }
+  revisar(desfasados.length === 0, 'el rango anunciado cubre todas las presentaciones',
+          desfasados.slice(0, 5).join(' | '));
+  revisar(ilegibles.length === 0, 'toda presentación se deja leer para calcular su rango',
+          ilegibles.slice(0, 5).join(' | '));
+}
+
 // ----------------------------------------------------------------- idioma
 function idioma() {
   // Texto en español escrito a mano dentro del footer: no cambia al elegir otro
@@ -521,6 +576,7 @@ async function main() {
   barraSuperior();
   await paginas();
   const cat = categorias();
+  rangosDePresentacion(cat.prods);
   idioma();
   traducciones();
   const porSku = await catalogo(cat);
