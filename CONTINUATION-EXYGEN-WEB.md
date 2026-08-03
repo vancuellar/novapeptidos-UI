@@ -1,12 +1,30 @@
 # 🤝 HANDOFF MAESTRO — 3 de agosto de 2026 (noche)
 
-**Estado:** TODO DESPLEGADO Y VERIFICADO. Backend en el EC2 con la SOLICITUD DE GUÍA
-(commit `2c3d967`, suite **1,424** en verde). Sitio desplegándose con la UI de la guía
-(`842b94f`) y el arreglo de i18n de llaves simples (`9b1c6fb`); antes ya estaba
-`main.ccad70b0.js` con el botón «Seguir comprando» y la auditoría de rangos. Auditoría
-del sitio: **97/0**.
+**Estado:** TODO DESPLEGADO Y VERIFICADO. Backend en el EC2 al commit `25ca835` (suite
+**1,429** en verde) · sitio en vivo `main.6ee99df8.js` (14 comprobaciones). Trae: la
+SOLICITUD DE GUÍA completa, el ASESOR DE NEGOCIO con chats múltiples + aviso al 85%, el
+arreglo de i18n, el botón «Seguir comprando» y la auditoría de rangos. Auditoría del
+sitio: **97/0**.
 
 ## ✅ LO CERRADO ESTA SESIÓN (noche)
+
+**ASESOR DE NEGOCIO — chats múltiples, memoria y rediseño** (Christián, 3-ago noche;
+backend `25ca835`, frontend `80dba5b`).
+- **El «olvido» tenía causa**: solo viajaban los últimos 8 mensajes al modelo. Ahora
+  viaja lo que quepa en un presupuesto de 48k caracteres
+  (`chat_negocio.PRESUPUESTO_CHARS`), y ese MISMO número alimenta el aviso.
+- **Chats múltiples**: botón «Nuevo Chat» + desplegable «Chats Anteriores»
+  (`GET /business/chats`: título = primer mensaje, % de memoria por chat). El chat
+  actual vive en localStorage como antes; el servidor filtra por `user_id`.
+- **Aviso al 85%**: franja discreta con botón «Nuevo Chat» cuando el chat usó ≥85% de
+  su memoria (header `X-Contexto-Pct` + `aviso_pct` del backend); a ≥100 avisa que ya
+  se olvidan los mensajes viejos. Nunca bloquea.
+- **Diseño ultra minimalista** (pidió «como Claude Chat»): columna central angosta, sin
+  gradientes ni tarjetas, usuario en burbuja sutil, asesor en texto plano, input en
+  píldora, chips discretos. Claro/oscuro y móvil verificados.
+- **Prompt**: dosis/titulación SIN filtros con lenguaje simple (técnico solo si lo
+  piden) y sin trabajos de otro oficio (contratos, etc.). El candado de costos del
+  distribuidor NO se tocó (sus pruebas siguen en verde; 80 en el módulo).
 
 **SOLICITUD DE GUÍA DE ENVÍO PARA DISTRIBUIDORES** (encargo de Christián del 3-ago). Antes
 sólo el admin podía comprar una guía; cuando no se autogeneraba, la única salida era que
