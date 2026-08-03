@@ -4464,7 +4464,7 @@ export const fallbackProducts = [
       },
       {
         "presentation": "20 mg",
-        "price": 2189,
+        "price": 2769,
         "stock": 40,
         "batch_number": "NP-TIRZ20-2601",
         "id": "e7856e6b-dcee-4a94-8126-2528113cf4d5",
@@ -4482,7 +4482,7 @@ export const fallbackProducts = [
       },
       {
         "presentation": "40 mg",
-        "price": 3169,
+        "price": 3729,
         "stock": 40,
         "batch_number": "NP-TIRZ40-2601",
         "id": "c5e91908-e427-4af6-b631-b33ae4846c61",
@@ -4491,7 +4491,7 @@ export const fallbackProducts = [
       },
       {
         "presentation": "50 mg",
-        "price": 3269,
+        "price": 4099,
         "stock": 40,
         "batch_number": "NP-TIRZ50-2601",
         "id": "e94e4156-f26e-40b8-aecc-a5cd1583a3a1",
@@ -4500,7 +4500,7 @@ export const fallbackProducts = [
       },
       {
         "presentation": "60 mg",
-        "price": 3919,
+        "price": 4569,
         "stock": 40,
         "batch_number": "NP-TIRZ60-2601",
         "id": "0169ea33-313d-49c8-9681-866f55f854f7",
@@ -4509,7 +4509,7 @@ export const fallbackProducts = [
       },
       {
         "presentation": "100 mg",
-        "price": 4079,
+        "price": 5519,
         "stock": 40,
         "batch_number": "NP-TIRZ100-2601",
         "id": "fcd44c95-cc87-439f-aa1c-daa14c7202cd",
@@ -4518,7 +4518,7 @@ export const fallbackProducts = [
       },
       {
         "presentation": "120 mg",
-        "price": 4889,
+        "price": 5969,
         "stock": 40,
         "batch_number": "NP-TIRZ120-2601",
         "id": "0f8e3f1e-8bc1-413e-aeca-07b16352410a",
