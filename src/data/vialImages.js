@@ -144,6 +144,7 @@ export const VIAL_SKUS = new Set([
   'PINEALON-10MG',
   'PINEALON-20MG',
   'PINEALON-5MG',
+  'PNC27-10MG',
   'PNC27-5MG',
   'PT141-10MG',
   'PTD1-5MG',

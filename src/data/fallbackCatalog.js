@@ -2228,7 +2228,7 @@ export const fallbackProducts = [
     ],
     "short_description": "Se estudia en laboratorio con líneas de células tumorales.",
     "description": "PNC-27 junta dos partes: un trozo de la proteína p53, que es la que vigila el estado de la célula, y una cola que le permite atravesar la membrana. Se ha estudiado en laboratorio, en cultivos de células tumorales, mirando cómo se comporta al llegar a la membrana. Todo el trabajo publicado se ha hecho en cultivos de células. Uso exclusivo en investigación (RUO).",
-    "presentation": "5 mg",
+    "presentation": "5 mg – 10 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
     "price": 2159,
@@ -2240,6 +2240,15 @@ export const fallbackProducts = [
         "batch_number": "NP-PNC25-2601",
         "id": "d6939bd6-544e-4b5b-b5b9-1eba6395a8f3",
         "sku": "PNC27-5MG",
+        "descuentable": true
+      },
+      {
+        "presentation": "10 mg",
+        "price": 3139,
+        "stock": 40,
+        "batch_number": "NP-PNC210-2601",
+        "id": "9784ddb7-77c6-4d48-afc8-53d6a364eeba",
+        "sku": "PNC27-10MG",
         "descuentable": true
       }
     ],
