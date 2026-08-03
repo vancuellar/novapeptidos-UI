@@ -1,33 +1,42 @@
-# 🤝 EN VUELO — 3 de agosto de 2026 (noche, segunda tanda del asesor)
+# ✅ CERRADO — 3 de agosto de 2026 (noche, segunda tanda del asesor)
 
-**⚠️ TRABAJO EN CURSO al momento de escribir esto** (dos agentes en paralelo; si esta
-sesión se corta, revisar `git log` de los DOS repos para ver si commitearon):
+**Todo desplegado y verificado.** Backend `e6eb23d` (suite **1,455** en verde) · sitio
+`main.b1830668.js` (14 comprobaciones).
 
-1. **CUOTA DEL CHAT — diagnóstico CERRADO, arreglo esperando a Christián.** El chat
-   decía «se acabó la cuota» porque el servidor SIGUE en Gemini gratis (20/día):
-   `OPENAI_API_KEY` está VACÍA en producción (verificado por `/admin/credenciales`;
-   era el pendiente #12). Cuando Christián pegue su llave en Admin → Credenciales,
-   falta poner `AI_PROVIDER=openai` y `AI_MODEL_NAME_OPENAI=<modelo exacto>` en el
-   .env del EC2 y reiniciar (ver modelo_ia.py: la llave puede venir del panel, el
-   PROVEEDOR solo del entorno).
-2. **Backend en vuelo** (repo RBAC): renombrar chats (`PUT /business/chats/{sid}/nombre`,
-   colección `business_chat_sessions`), búsqueda poderosa
-   (`GET /business/chats/buscar?q=&anio=&mes=` con AND multi-palabra sin acentos y
-   snippet), y archivado a markdown (`POST .../archivar` consolida N mensajes en 1
-   doc `business_chat_archive` con campo `md`; archivado = solo lectura, 409 al
-   escribirle; `GET .../md` exporta). Pruebas en test_chat_negocio.py.
-3. **Frontend en vuelo** (este repo): globito azul de IA lleva DIRECTO al Asesor para
-   admin/distribuidor (público sigue igual) · WhatsApp flotante OCULTO para
-   admin/distribuidor · lapicito para renombrar · barra de búsqueda con debounce +
-   selects Año/Mes · archivar con vista de solo lectura del md · lista agrupada
-   cronológicamente (Hoy, Ayer, Esta Semana, Semana Pasada, Este Mes, meses, años).
-4. Al aterrizar los dos: desplegar backend (`./actualizar-exygen-backend.sh`) y sitio
-   (`./desplegar.sh`), verificar, y pasar esta sección a «CERRADO».
+1. **LA CUOTA DEL CHAT — arreglada de raíz.** Christián pegó las llaves de GPT, Claude
+   y Kimi y el chat SEGUÍA diciendo «se acabó la cuota»: `AI_PROVIDER_FALLBACK` venía
+   en `gemini` por omisión y el proveedor también era `gemini`, o sea «si falla
+   Gemini, usa Gemini» — un respaldo que no existía. Ahora, **si nadie eligió respaldo
+   a mano, se toma solo** el primer motor con llave distinto del proveedor: pegar la
+   llave BASTA, sin editar variables en el servidor. Y el orden es **de más barato a
+   más caro** (Christián: «que el más barato responda primero»): **Kimi → GPT →
+   Claude**, porque el respaldo entra el día de más tráfico y saltar al más caro haría
+   que el pico de demanda fuera también el de la factura. Se salta solo el motor que no
+   traiga nombre de modelo (moriría con «falta AI_MODEL_NAME»). Verificado en vivo: el
+   asesor responde 200. ⚠️ Kimi **no se agota**: es de pago por uso (centavos); el que
+   se agota es el plan gratis de Gemini (20/día).
+2. **Backend del asesor** (en vivo): renombrar (`PUT /business/chats/{sid}/nombre`,
+   colección `business_chat_sessions`) · búsqueda (`GET /business/chats/buscar?q=&anio=&mes=`,
+   AND multi-palabra sin acentos, snippet centrado en la coincidencia; sin criterio 400)
+   · archivado a markdown (`POST .../archivar` consolida N mensajes en UN documento
+   `business_chat_archive`; escribe ANTES de borrar, así un tropiezo duplica pero nunca
+   pierde; archivado = solo lectura, **409** al escribirle) · `GET .../md` exporta.
+   Verificado en producción: 200/200/200 y **404 en chat ajeno**.
+3. **Pantalla del asesor** (en vivo): el globito azul de IA lleva DIRECTO al Asesor
+   para admin y distribuidor (para clientes sigue siendo el chat público) · WhatsApp
+   flotante OCULTO para admin y distribuidor · lapicito para renombrar (vacío = título
+   automático) · buscador con debounce y resalte + selects de Año y Mes · archivar con
+   vista de solo lectura · lista agrupada por Hoy / Ayer / Esta Semana / Semana Pasada /
+   Este Mes / mes / año, con los archivados en su cajón al final.
+4. **La casilla «Recordar mi elección»** del aviso de entrada ya NO viene premarcada
+   (commit `44efd4e`, verificado en el navegador con las 3 casillas apagadas).
 
-**También cerrado hoy noche (después del handoff de abajo):** la casilla «Recordar mi
-elección» del aviso de entrada ya NO viene premarcada (orden de Christián; commit
-`44efd4e`, en vivo en `main.51fe5b18.js`, verificado en navegador con las 3 casillas
-apagadas).
+⚠️ **LECCIÓN DEL DÍA (árbol compartido).** Con dos agentes trabajando a la vez, un
+`git add` de rutas explícitas **igual se llevó** el trabajo a medias del otro dentro
+del commit `7a42032` — porque el otro agente ya tenía SUS archivos en el índice. El
+`git add` explícito NO protege de eso: lo que protege es mirar `git status` y hacer
+`git commit -- <rutas>` (que ignora lo demás del índice). Aquí no hubo daño (la suite
+salió en verde y todo estaba completo), pero el próximo puede publicar código a medias.
 
 # 🤝 HANDOFF MAESTRO — 3 de agosto de 2026 (noche)
 
