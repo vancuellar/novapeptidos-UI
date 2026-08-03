@@ -280,17 +280,18 @@ const ReportesSemanales = () => {
           <HardDrive className="h-4 w-4" /> {t('admin.reportes.storageTitle')}
         </h4>
         <p className="text-xs text-muted-foreground">
-          {t('admin.reportes.storageLine')
-            .replace('{semanas}', num(d.almacen.semanas))
-            .replace('{ocupa}', gb(d.almacen.bytes))
-            .replace('{anual}', gb(d.almacen.proyeccion_anual_bytes))
-            .replace('{retencion}', num(d.retencion.semanas))}
+          {t('admin.reportes.storageLine', {
+            semanas: num(d.almacen.semanas),
+            ocupa: gb(d.almacen.bytes),
+            anual: gb(d.almacen.proyeccion_anual_bytes),
+            retencion: num(d.retencion.semanas),
+          })}
         </p>
         {porVencer.length > 0 && (
           <div className="flex items-start gap-2 rounded-lg border border-amber-500/30 bg-amber-500/10 text-amber-700 p-2.5 text-xs mt-3">
             <AlertTriangle className="h-4 w-4 shrink-0 mt-0.5" />
             <span>
-              {t('admin.reportes.expiring').replace('{n}', num(porVencer.length))} {porVencer.join(', ')}
+              {t('admin.reportes.expiring', { n: num(porVencer.length) })} {porVencer.join(', ')}
             </span>
           </div>
         )}
