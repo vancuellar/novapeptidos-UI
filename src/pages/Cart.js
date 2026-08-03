@@ -236,7 +236,11 @@ const Cart = () => {
               {t('cart.cryptoHint')}
             </p>
             <Button className="w-full mt-5" size="lg" onClick={onCheckoutClick} data-testid="cart-go-to-checkout-button">{t('cart.checkout')} <ArrowRight className="h-4 w-4 ml-1.5" /></Button>
-            <Button asChild variant="ghost" className="w-full mt-2"><Link to="/catalogo">{t('cart.keepShopping')}</Link></Button>
+            {/* Salida al catálogo: antes era ghost (texto suelto) y en tema oscuro
+                desaparecía. Outline con borde y texto en primario — el mismo idioma
+                de los botones secundarios de la ficha y de la regla de 5 — para que
+                se vea sin pelearle protagonismo al botón de pagar. */}
+            <Button asChild variant="outline" className="w-full mt-2 border-[hsl(var(--primary))]/40 text-[hsl(var(--primary))] hover:bg-[hsl(var(--primary))]/10 hover:text-[hsl(var(--primary))] hover:border-[hsl(var(--primary))]/60"><Link to="/catalogo">{t('cart.keepShopping')}</Link></Button>
           </Card>
           {/* Widget colapsable de confianza, junto al botón de pagar (Christian,
               2026-07-30) — mismo componente que el checkout y la ficha de
