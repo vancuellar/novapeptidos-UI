@@ -1703,6 +1703,23 @@ const ptBR = {
   'negocio.chat.sinTitulo': 'Chat sem título',
   'negocio.chat.memoriaAviso': 'Este chat já usou quase toda a sua memória. Abra um novo para que o consultor não perca o fio.',
   'negocio.chat.memoriaLlena': 'O consultor já está esquecendo as mensagens mais antigas deste chat.',
+  'negocio.chat.buscar': 'Buscar nos seus chats...',
+  'negocio.chat.sinResultados': 'Nenhum chat corresponde à busca.',
+  'negocio.chat.anio': 'Ano',
+  'negocio.chat.mes': 'Mês',
+  'negocio.chat.coincidencias': '{{n}} ocorrências',
+  'negocio.chat.renombrar': 'Renomear Chat',
+  'negocio.chat.renombrarPregunta': 'Novo nome do chat (deixe vazio para voltar ao título automático):',
+  'negocio.chat.archivar': 'Arquivar Chat',
+  'negocio.chat.archivarConfirma': 'Arquivar este chat? Ele ficará somente leitura.',
+  'negocio.chat.archivadoBanner': 'Este Chat Está Arquivado',
+  'negocio.chat.archivados': 'Arquivados',
+  'negocio.chat.errorArchivado': 'Este chat está arquivado e já não aceita mensagens novas.',
+  'negocio.chat.grupo.hoy': 'Hoje',
+  'negocio.chat.grupo.ayer': 'Ontem',
+  'negocio.chat.grupo.estaSemana': 'Esta Semana',
+  'negocio.chat.grupo.semanaPasada': 'Semana Passada',
+  'negocio.chat.grupo.esteMes': 'Este Mês',
 
   // ---------------------------------------------------------------------
   //  COTADOR DE ENVIOS — «quanto custa mandar isto para tal CEP?»

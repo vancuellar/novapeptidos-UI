@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { WHATSAPP_URL } from '@/lib/contact';
 import { useLanguage } from '@/context/LanguageContext';
+import { useAuth } from '@/context/AuthContext';
 
 // Botón flotante de WhatsApp. Abre un chat a nuestro número (el del iPhone) con
 // un mensaje ya redactado. No hay API ni bot: es el link wa.me, gratis.
@@ -19,6 +20,7 @@ import { useLanguage } from '@/context/LanguageContext';
 // no existe el botón que vigila.
 export default function WhatsAppButton() {
   const { t } = useLanguage();
+  const { user } = useAuth();
   const { pathname } = useLocation();
   const [tapaElHero, setTapaElHero] = useState(false);
 
@@ -37,6 +39,9 @@ export default function WhatsAppButton() {
     return () => { cancelAnimationFrame(cuadro); if (io) io.disconnect(); };
   }, [pathname]);
 
+  // Admin y distribuidores no necesitan el globo de WhatsApp: ellos SON la
+  // casa (pedido de Christián, 2026-08-03). Para todos los demás, igual.
+  if (user && ['admin', 'distributor'].includes(user.role)) return null;
   if (!WHATSAPP_URL) return null;
   const href = `${WHATSAPP_URL}?text=${encodeURIComponent(t('whatsapp.prefill'))}`;
 

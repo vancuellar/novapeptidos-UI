@@ -1709,6 +1709,23 @@ const esMX = {
   'negocio.chat.sinTitulo': 'Chat sin título',
   'negocio.chat.memoriaAviso': 'Este chat ya usó casi toda su memoria. Abre uno nuevo para que el asesor no pierda el hilo.',
   'negocio.chat.memoriaLlena': 'El asesor ya está olvidando los mensajes más viejos de este chat.',
+  'negocio.chat.buscar': 'Buscar en tus chats...',
+  'negocio.chat.sinResultados': 'No hay chats que coincidan.',
+  'negocio.chat.anio': 'Año',
+  'negocio.chat.mes': 'Mes',
+  'negocio.chat.coincidencias': '{{n}} coincidencias',
+  'negocio.chat.renombrar': 'Renombrar Chat',
+  'negocio.chat.renombrarPregunta': 'Nuevo nombre del chat (déjalo vacío para volver al título automático):',
+  'negocio.chat.archivar': 'Archivar Chat',
+  'negocio.chat.archivarConfirma': '¿Archivar este chat? Quedará en solo lectura.',
+  'negocio.chat.archivadoBanner': 'Este Chat Está Archivado',
+  'negocio.chat.archivados': 'Archivados',
+  'negocio.chat.errorArchivado': 'Este chat está archivado y ya no admite mensajes nuevos.',
+  'negocio.chat.grupo.hoy': 'Hoy',
+  'negocio.chat.grupo.ayer': 'Ayer',
+  'negocio.chat.grupo.estaSemana': 'Esta Semana',
+  'negocio.chat.grupo.semanaPasada': 'Semana Pasada',
+  'negocio.chat.grupo.esteMes': 'Este Mes',
 
   // ---------------------------------------------------------------------
   //  COTIZADOR DE ENVÍOS — «¿cuánto cuesta mandar esto a tal código postal?»

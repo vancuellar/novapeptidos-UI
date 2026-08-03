@@ -1,9 +1,11 @@
 import React, { useState, useRef, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import {
   X, ArrowUp, Sparkles, Boxes, CreditCard, Truck, MapPin, PackageSearch,
   Headphones, MessageCircle,
 } from 'lucide-react';
 import { useLanguage } from '@/context/LanguageContext';
+import { useAuth } from '@/context/AuthContext';
 import { WHATSAPP_URL } from '@/lib/contact';
 import RespuestaIA from '@/components/RespuestaIA';
 
@@ -44,7 +46,17 @@ const getSessionId = () => {
 
 const AIChatWidget = () => {
   const { t, language } = useLanguage();
+  const { user } = useAuth();
+  const navigate = useNavigate();
   const [open, setOpen] = useState(false);
+
+  // Para admin y distribuidores el globito NO abre el chat público: los lleva
+  // directo al Asesor de Negocio de su panel (pedido de Christián, 2026-08-03).
+  // Ese asesor sí sabe de SU negocio; este chat es para el visitante de la
+  // tienda. Clientes y anónimos siguen igual que siempre.
+  const rutaAsesor = user && ['admin', 'distributor'].includes(user.role)
+    ? (user.role === 'admin' ? '/admin?tab=asesor' : '/distribuidor?tab=asesor')
+    : null;
   // Arranca VACÍO: la bienvenida no es un mensaje, es un bloque de la interfaz
   // (burbuja + píldoras + cuadrícula). Así se traduce sola al cambiar idioma y
   // desaparece en cuanto la conversación empieza de verdad.
@@ -126,7 +138,7 @@ const AIChatWidget = () => {
       {/* Launcher: destello de IA, no globo de chat. Así no se confunde con WhatsApp. */}
       {!open && (
         <button
-          onClick={() => setOpen(true)}
+          onClick={() => (rutaAsesor ? navigate(rutaAsesor) : setOpen(true))}
           data-testid="ai-chat-open-button"
           style={BRAND_GRADIENT}
           className="hidden sm:flex fixed bottom-24 right-5 z-50 h-14 w-14 rounded-full text-white shadow-[var(--shadow-md)] items-center justify-center hover:scale-105 transition-transform"

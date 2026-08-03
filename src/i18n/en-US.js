@@ -1708,6 +1708,23 @@ const enUS = {
   'negocio.chat.sinTitulo': 'Untitled chat',
   'negocio.chat.memoriaAviso': 'This chat has used almost all of its memory. Open a new one so the advisor does not lose the thread.',
   'negocio.chat.memoriaLlena': 'The advisor is already forgetting the oldest messages in this chat.',
+  'negocio.chat.buscar': 'Search your chats...',
+  'negocio.chat.sinResultados': 'No chats match your search.',
+  'negocio.chat.anio': 'Year',
+  'negocio.chat.mes': 'Month',
+  'negocio.chat.coincidencias': '{{n}} matches',
+  'negocio.chat.renombrar': 'Rename Chat',
+  'negocio.chat.renombrarPregunta': 'New name for this chat (leave it empty to go back to the automatic title):',
+  'negocio.chat.archivar': 'Archive Chat',
+  'negocio.chat.archivarConfirma': 'Archive this chat? It will become read-only.',
+  'negocio.chat.archivadoBanner': 'This Chat Is Archived',
+  'negocio.chat.archivados': 'Archived',
+  'negocio.chat.errorArchivado': 'This chat is archived and no longer accepts new messages.',
+  'negocio.chat.grupo.hoy': 'Today',
+  'negocio.chat.grupo.ayer': 'Yesterday',
+  'negocio.chat.grupo.estaSemana': 'This Week',
+  'negocio.chat.grupo.semanaPasada': 'Last Week',
+  'negocio.chat.grupo.esteMes': 'This Month',
 
   // ---------------------------------------------------------------------
   //  SHIPPING QUOTER — "what does it cost to send this to that ZIP?"
