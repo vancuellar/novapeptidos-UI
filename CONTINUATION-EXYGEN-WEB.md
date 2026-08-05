@@ -1,3 +1,49 @@
+# 🔝 5 de agosto (noche) — El filtro de los «chismosos», EN VIVO
+
+Backend `86435d8` · sitio `e407c21` · **1,506 pruebas en verde** · desplegado y
+**comprobado dentro del contenedor** (no sólo "el script dijo que sí").
+
+## Lo que se cerró
+Christián: *«está llegando mucha basura/spam del carrito… quiero evitar esos chismosos»*,
+*«que un pedido así no me notifique ni dispare un correo de carrito abandonado y que
+caduque solo»*, *«que valide además el C.P. de la dirección de envío»*.
+
+**Los datos primero:** 11 pedidos en total, **2 de broma** — no una avalancha. Y **no
+venían vacíos**: traían todos los campos, inventados (`hola@gmail.com`, tel
+`+52 (12) 3456-7890`, `fjwoijewijfeow@gmail.com`). Por eso no servía «validar que no
+estén en blanco» ni comprobar el dominio del correo: `gmail.com` es real.
+
+**`basura.py`** — señales: nombre que no es nombre, correo tecleado al azar, teléfono de
+juguete, CP inexistente o que no cuadra con el estado (tabla de prefijos SEPOMEX, con los
+compartidos 63 y 98), CP escrito donde va la ciudad, ciudad igual que la calle.
+**Hacen falta DOS.** ⛔ **No bloquea ninguna venta** — regla madre: vender siempre.
+
+Con dos señales: no suena la campanita, el barrido de carritos lo salta, y **a las 24 h se
+cancela solo si nadie pagó** (si pagó, era real y no se toca). En el panel sale marcado
+**con sus motivos**, para poder discutir el veredicto.
+
+**De paso:** no se guardaba **ni la IP ni el navegador** de quien ordena. Ya se guardan —
+sin eso no hay forma de saber si es una persona picando o la competencia.
+
+**Dos falsos positivos cazados en la prueba**, los dos por quitar el punto del correo:
+`vazquez.jr` → `vazquezjr` y `xochitl.hdz` → `xochitlhdz`. Clientes reales marcados por
+pegar palabras que el punto separaba. Ahora se evalúa trozo por trozo. También caían «Li»
+y «Ma» (de Ma. Guadalupe), y las **ventas directas sin teléfono** (Alanis, Paz).
+`test_basura.py` trae los clientes REALES de producción con sus datos tal cual: si alguno
+se marca alguna vez, la suite se pone roja.
+
+## Pendientes
+1. **Los 2 pedidos de broma que YA existen NO se van a caducar solos**: la marca se
+   escribe al crear el pedido, y ésos son de antes. Hay que marcarlos o cancelarlos a
+   mano desde el Panel. **No se tocaron: ningún agente cancela pedidos de producción por
+   su cuenta.**
+2. **Turnstile** sigue pendiente (skill `cloudflare:turnstile-spin`). Ya no urge —
+   el ruido está apagado— pero es lo que frena el VOLUMEN si un día llega en serio.
+3. `TURNSTILE_SECRET_KEY` habría que sumarlo a `secretos.PERMITIDAS` para poder pegarlo
+   desde Admin → Cobros.
+
+---
+
 # 🔝 SIGUIENTE TAREA — Turnstile contra el spam del carrito (5-ago, pedido por Christián)
 
 **Christián:** «está llegando mucha basura/spam del carrito de compras… como lo evitamos».
