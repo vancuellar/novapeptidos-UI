@@ -1,3 +1,79 @@
+# 🔴 EN VUELO — 4 de agosto de 2026: LA BAJADA AL PUNTO MEDIO
+
+**⚠️ DECIDIDO Y ESCRITO, PERO NO APLICADO.** Lo primero que hay que hacer en el
+próximo chat. Todo el análisis está hecho y aprobado por Christián; falta el
+mecanismo para escribirlo en la maestra.
+
+## Lo que Christián aprobó (2026-08-04)
+
+Bajar las **seis familias más vendidas** (Tirzepatida, Retatrutida, GLOW, KLOW,
+GHK-Cu, NAD+) al **PUNTO MEDIO entre Exoma y Certified**, con la escalera
+enderezada y la **comisión topada al 30%**. Los 22 precios, con su motivo y su ROI
+medido, están en `pricing-system.nosync/precios_decididos_2026-08-04.json`
+(commit `f261732`).
+
+- **Anclas** (con Exoma y Certified) → punto medio. Los que Certified tiene
+  AGOTADOS **sí cuentan** (decisión suya).
+- **Las demás presentaciones** → sobre la curva de su familia (log-log sobre los
+  anclas), para que la escalera tenga lógica. Antes la Tirzepatida de 15 mg
+  costaba $1,679, MENOS que la de 10 mg ($2,129).
+- **Piso**: nadie baja de ROI 5x con la vara CON TODO y comisión al 30%.
+- ⛔ **NAD+ es excepción expresa**: escalera coherente aunque quede ARRIBA de
+  Certified en el 500 mg ($1,339 vs $1,260). Orden textual: «ponlo en escalera
+  coherente aunque quedemos arriba de alguien mas».
+- **Se ocultan**: Tirzepatida 5 y 15 mg, Retatrutida 50 mg (torcían la escalera y
+  no tienen costo capturado).
+- La lista de esas familias baja de **$78,678 a $65,018**; el ROI más flaco queda
+  en 5.8x y el mejor en 14.5x.
+
+## ⛔ POR QUÉ NO SE APLICÓ Y QUÉ FALTA
+
+`aplicar_subidas_autorizadas.py` **sólo sube** (a propósito: si bajara sería un
+atajo alrededor del trinquete), y `excepciones_trinquete.json` deja pasar una
+bajada **al precio que propone la fórmula** — que aquí NO es el punto medio,
+porque la fórmula vigente se pega a «Certified −$10». Falta:
+
+1. `aplicar_precios_decididos.py`, espejo de las subidas para precios que la
+   fórmula no produce, que lea `precios_decididos_2026-08-04.json`.
+2. Que `reprecio.py` **respete** esos precios en vez de recalcularlos (si no, la
+   siguiente corrida los revierte).
+3. Ocultar los 3 productos (`ocultar_productos.js` o el `hidden` del backend).
+4. Bajar las comisiones al tope de 30% en la maestra.
+5. Cadena completa + `./vigia.sh` + sincronizar sitio y backend.
+
+## 🕐 LO QUE CHRISTIÁN PIDIÓ DESPUÉS Y TAMPOCO ESTÁ HECHO
+
+- **Aplicar el punto medio a TODO el catálogo** (no sólo a las 6 familias), y
+  entregarle el **ROI promedio del catálogo completo** al terminar. ⚠️ Ojo: eso
+  toca los 188 productos y cambia la política de precios de la casa; conviene
+  hacerlo cambiando la regla en `reprecio.py` (`precio_base`/`banda`) y no
+  producto por producto.
+
+## ✅ Lo que sí quedó cerrado hoy (4-ago)
+
+- **El embudo dice la verdad.** Decía 17 compras y $87,193 con 3 pedidos pagados
+  y $9,973 en la caja. Cuatro fallas encadenadas, todas por creerle al evento del
+  navegador: contaba sesiones en vez de personas, creía eventos sin pedido,
+  sumaba dos veces el mismo pedido si se recargaba la página de gracias, y
+  contaba personas en vez de pedidos en el último escalón. Ahora: **1,618
+  visitas → 3 compras**, ingreso desde `orders`. Backend `3c9a06a`.
+- **Se puede corregir el domicilio de un pedido** antes de que salga
+  (`PUT /admin/orders/{id}/direccion`): no existía y Fabiola pidió que el suyo
+  fuera a casa de una vecina. Con guía comprada se niega (409) y queda rastro.
+- **La cotización del panel usa el SOBRE de verdad** (12×15×1) y no una caja de
+  20×15×10 que no existe en la bodega.
+- **El chat ya no se queda sin cuota**: el motor se elige solo con las llaves que
+  haya, de más barato a más caro (**Kimi → GPT → Claude**), y Gemini pasó de
+  motor de casa a última red.
+- ⛔ **La guía de Fabiola NO se compró**: enviosinternacionales rechaza con
+  «Unverified headquarter». Se descartó todo lo nuestro (saldo $2,307, correo y
+  teléfono validados, dirección de origen creada y predeterminada, remitente
+  alineado). Christián verificó ID y selfie el 4-ago y **está en revisión**: en
+  cuanto pase, comprar **Estafeta Express $221.59, 1 día**, pedido
+  `EX-20260801-2402`. Skydropx tiene **saldo $0** y le falta lo mismo.
+
+---
+
 # ✅ CERRADO — 3 de agosto de 2026 (noche, segunda tanda del asesor)
 
 **Todo desplegado y verificado.** Backend `e6eb23d` (suite **1,455** en verde) · sitio
