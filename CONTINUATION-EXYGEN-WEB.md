@@ -1,3 +1,36 @@
+# 🔝 SIGUIENTE TAREA — Turnstile contra el spam del carrito (5-ago, pedido por Christián)
+
+**Christián:** «está llegando mucha basura/spam del carrito de compras… como lo evitamos».
+Aprobó poner **Cloudflare Turnstile**. **NO SE EMPEZÓ** — se dejó para una sesión con
+contexto limpio: toca Cloudflare, el checkout, el servidor, pruebas y despliegue.
+
+## Antes de programar nada: MIRAR LA BASURA
+No se sabe todavía si son **bots** o **gente real que abandona**. Cambia la solución.
+Ver qué hay en la base (`exygen`), colección de carritos abandonados / pedidos pendientes:
+correos repetidos, dominios raros, ráfagas del mismo minuto, nombres sin sentido.
+Si son humanos, Turnstile no arregla nada y hay que ir por otro lado.
+
+## Si son bots — cómo va
+Hay skill dedicada: **`cloudflare:turnstile-spin`** (crea el widget por API de Cloudflare,
+lo incrusta y cablea el `siteverify` del lado del servidor). Usarla, no hacerlo a mano.
+
+- **Widget** en el formulario de checkout / captura de carrito del sitio.
+- **`TURNSTILE_SECRET_KEY`** va a `secretos.PERMITIDAS` (Admin → Cobros), como las demás.
+  ⚠️ Hoy esa lista NO lo incluye: hay que agregarlo o no se puede pegar desde el panel.
+- **La verificación va EN EL SERVIDOR**, en la ruta que crea el pedido/carrito. Validar en
+  la pantalla no sirve: el endpoint se llama directo. Misma lección que
+  [[exygen-precio-lo-pone-el-servidor]].
+- **⛔ NO romper el checkout.** Si Turnstile se cae o no contesta, la venta NO se puede
+  bloquear (regla madre: *vender siempre*). Que falle ABIERTO y quede anotado.
+- Textos del widget en **es / en / pt**.
+
+## Compuertas
+Toca dinero (checkout) → suite completa de los dos lados y `./publicar.sh` sin `--rapido`.
+⛔ Y después de desplegar, **comprobar dentro del contenedor** que el código llegó — hoy
+un commit ajeno se llevó `server.py` sin `guias.py` y producción quedó rota un rato.
+
+---
+
 # 🔝 5 de agosto de 2026 — El Asesor de Negocio ya ve los pedidos en vivo
 
 **En vivo y verificado.** Backend `acaad39` · 1,484 pruebas en verde.
