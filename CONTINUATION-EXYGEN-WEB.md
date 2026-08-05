@@ -1,3 +1,74 @@
+# 🔝 PRIORIDADES — 5 de agosto de 2026 (lo que Christián pidió, en su orden)
+
+## ⚡ PRIMERO Y ANTE TODO: publicar tiene que tardar 1–3 minutos
+
+Orden textual: *«tienes que hacer el whole process much more faster (commit,
+rebase, push, merge, promote to main, deploy into live web). En JADA lo hacemos en
+1-3 minutos. Quiero que lo podamos hacer igual de rápido.»*
+
+**Ya hay una primera mitad hecha: `./publicar.sh` en la raíz del proyecto.**
+Backend y sitio ya NO se esperan uno al otro — arrancan a la vez y el reloj es el
+del más lento, no la suma. Antes eran ~9 minutos de fila (pytest 3.5 + backend 2 +
+sitio 3); **medido el 5-ago: el sitio completo, con auditoría y verificación en
+navegador, en 1 m 14 s.**
+
+```bash
+./publicar.sh                # los dos lados, en paralelo
+./publicar.sh --sitio        # sólo el sitio
+./publicar.sh --backend      # sólo el backend
+./publicar.sh --sin-pruebas  # salta pytest — SÓLO copy y acomodo, nunca dinero
+```
+
+⚠️ Detalle que costó: el resultado se lee con `PIPESTATUS`, no con `$?`. Con el
+pipe a `tail`, `$?` es el de `tail` y **siempre sale 0** — o sea que una suite en
+rojo se habría publicado en verde.
+
+**Lo que falta para llegar a los 1–3 minutos SIEMPRE** (hoy sólo se logra sin
+pytest):
+1. **Las 1,467 pruebas del backend tardan 3 m 38 s** y son el cuello real. Opciones:
+   correrlas en paralelo (`pytest-xdist`, `-n auto`) — probablemente baja a ~1 min —
+   o partirlas en «las del dinero» (siempre) y el resto (antes de dormir).
+2. **El build de React** rehace el prerender de 137 rutas cada vez. Si el catálogo
+   no cambió, ese trabajo se repite para nada: vale medir cuánto pesa y cachearlo.
+3. **Un `--rapido` de verdad**: que detecte con `git diff` qué se tocó y corra sólo
+   lo que aplica (si sólo cambió `src/`, ni siquiera arrancar el backend).
+
+## 1️⃣ TOP PRIORITY: las comisiones producto por producto
+
+La propuesta del 3-ago que quedó pendiente y que **ya está medida**:
+`pricing-system.nosync/PROPUESTA-COMISIONES-Y-ESCALERAS-2026-08-03.md`.
+
+**63 productos bajo el piso de 5× · 57 se salvan bajando su comisión · 6 salen del
+canal** (ácido acético 3/5/10 ml, agua bacteriostática 3 ml, HGH 191AA 10 y 12 iu).
+La tabla trae la comisión exacta que aguanta cada uno. ⚠️ De los 6 que saldrían,
+sólo el ácido acético 5 ml tiene flete DECLARADO; los otros 5 usan el supuesto de
+$350/caja.
+
+⚠️ **Ese número se movió**: con los precios nuevos del punto medio ya aplicados,
+hoy son **42 de 188 bajo el piso** (con la comisión topada al 30%). Hay que
+**recalcular la propuesta antes de aplicarla** — la tabla del 3-ago está medida
+sobre los precios viejos.
+
+## 2️⃣ Ocultar tres productos
+
+**Tirzepatida 5 mg y 15 mg y Retatrutida 50 mg.** Torcían la escalera (la de 15 mg
+costaba $1,679, MENOS que la de 10 mg) y **no tienen costo capturado**, así que
+nadie puede medir si son rentables. No se borran: quedan con SKU e historial, como
+Dysport. Con `ocultar_productos.js` o el `hidden` del backend.
+
+## 3️⃣ Extender el punto medio a TODO el catálogo
+
+**Después** de resolver lo de las comisiones, no antes. Cambiando **la regla del
+motor** (`reprecio.py`, `precio_base`), no producto por producto: son 188. Hoy la
+fórmula se pega a «Certified −$10» y el punto medio es otro número.
+
+## 4️⃣ Bajar las comisiones al 30% en la maestra
+
+Hoy el tope del 30% sólo se usó para **medir** el piso; los productos siguen con su
+comisión vieja (la mayoría en 40%).
+
+---
+
 # ✅ CERRADO — 4 de agosto de 2026: LA BAJADA AL PUNTO MEDIO, APLICADA
 
 **En vivo y verificado.** Sitio `main.2aeee3fa.js` (14 comprobaciones; la ficha de
