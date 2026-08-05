@@ -9,8 +9,10 @@ hasta que lo esté.**
 - Pruebas: backend **1,473 en 26 s**, todas verdes. Build del sitio limpio, imports en verde, i18n cuadrada en los 3 idiomas.
 
 ```bash
-cd "/Users/christian/Documents/Exygen Peptides/novapeptidos-UI.nosync" && ./publicar.sh
+cd "/Users/christian/Documents/Exygen Peptides" && ./publicar.sh
 ```
+⚠️ `publicar.sh` vive en la RAÍZ del proyecto, no dentro de `novapeptidos-UI.nosync`
+(ahí sólo está `desplegar.sh`, que publica el sitio solo).
 
 ---
 
@@ -61,7 +63,30 @@ código y truena si alguien vuelve a meter el auto-`enviado`.
 
 ---
 
-## ⛔ PENDIENTE 1 — El pedido EX-20260801-2402 sigue sin diagnosticar
+## ✅ RESUELTO — El pedido EX-20260801-2402 (Fabiola Hernández Rodríguez)
+
+Consultado en producción el 5-ago (base **`exygen`**, no `nova_peptides`):
+
+```
+order_number: EX-20260801-2402   ·  Fabiola Hernández Rodríguez  ·  $2,316  ·  pagado
+carrier: DHL   ·   tracking_number: 8764271821
+label_url: ''  ·  label_provider: ''      <- GUÍA TECLEADA A MANO
+status: 'enviado'  ·  shipped_at: 2026-08-04T23:53:41   <- LA MENTIRA, ya escrita
+```
+
+**SÍ tiene número de guía** (DHL 8764271821), y por eso el botón se escondía: `label_provider`
+vacío era exactamente la condición rota. Con el despliegue de hoy el botón ya aparece.
+
+⚠️ **PERO NO HAY PDF QUE IMPRIMIR.** Esa guía no se compró por una paquetería nuestra
+(`label_provider` vacío), así que `_rescatar()` no tiene a quién preguntarle y el botón
+va a contestar «esa guía se capturó a mano». **El PDF hay que sacarlo de DHL.**
+
+⚠️ **EL DATO VIEJO SIGUE MAL.** El pedido quedó marcado `enviado` con `shipped_at` del
+4-ago por el bug de ayer, y Christián dice que **no lo ha enviado**. El arreglo evita que
+vuelva a pasar, pero **no corrige lo ya escrito**: hay que ponerle `status: confirmado` y
+borrar `shipped_at`. **Pendiente de su OK** (es un pedido real y pagado).
+
+## ⛔ PENDIENTE 1 (viejo) — quedaba sin diagnosticar
 
 Christián lo pidió por número y **no se pudo mirar**: el clasificador de permisos
 bloqueó el acceso de sólo lectura a Mongo en producción
