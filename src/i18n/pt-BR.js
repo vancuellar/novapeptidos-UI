@@ -102,6 +102,7 @@ const ptBR = {
   'etiqueta.opened': 'A etiqueta abriu em outra aba: de lá você pode imprimir ou salvar.',
   'etiqueta.notReady': 'A transportadora ainda está preparando o PDF. Tente em alguns segundos.',
   'etiqueta.error': 'Não foi possível trazer a etiqueta.',
+  'admin.order.basuraBadge': 'Dados De Brincadeira',
   'etiqueta.manual': 'Essa etiqueta foi digitada à mão: não há PDF nosso para imprimir. Procure onde a etiqueta foi comprada.',
   'envio.etapa.sin_guia': 'Ainda Sem Etiqueta',
   'envio.etapa.guia_generada': 'Etiqueta Gerada · Não Enviado',

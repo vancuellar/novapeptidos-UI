@@ -1942,6 +1942,7 @@ const esMX = {
   'etiqueta.opened': 'La guía se abrió en otra pestaña: desde ahí puedes imprimirla o guardarla.',
   'etiqueta.notReady': 'La paquetería todavía está preparando el PDF. Inténtalo en unos segundos.',
   'etiqueta.error': 'No se pudo traer la guía.',
+  'admin.order.basuraBadge': 'Datos De Broma',
   'etiqueta.manual': 'Esa guía se capturó a mano: no hay PDF nuestro que imprimir. Búscalo donde se compró la guía.',
   'envio.etapa.sin_guia': 'Sin guía todavía',
   'envio.etapa.guia_generada': 'Guía Generada · Sin Enviar',

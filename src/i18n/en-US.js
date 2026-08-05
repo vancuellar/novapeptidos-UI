@@ -107,6 +107,7 @@ const enUS = {
   'etiqueta.opened': 'The label opened in another tab: print or save it from there.',
   'etiqueta.notReady': 'The carrier is still preparing the PDF. Try again in a few seconds.',
   'etiqueta.error': 'The label could not be retrieved.',
+  'admin.order.basuraBadge': 'Junk Data',
   'etiqueta.manual': 'That tracking number was typed in by hand: there is no PDF of ours to print. Look for it where the label was bought.',
   'envio.etapa.sin_guia': 'No Label Yet',
   'envio.etapa.guia_generada': 'Label Created · Not Shipped',

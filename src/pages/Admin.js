@@ -1665,6 +1665,23 @@ const Admin = () => {
                         className="font-mono-tech text-xs underline decoration-dotted underline-offset-4 hover:text-[hsl(var(--primary))] transition">
                         {o.order_number}
                       </button>
+                      {/* ⛔ PEDIDO DE BROMA (Christián, 2026-08-05: «esos chismosos que
+                          nada más le están picando a lo estúpido»). NO se esconde: se
+                          marca y se enseña POR QUÉ, para que se pueda discutir el
+                          veredicto. Lo que cambia es el ruido — no suena la campanita,
+                          no lo persigue la oferta de carrito, y a las 24 h se cancela
+                          solo si nadie pagó. Nunca se le bloqueó la compra. */}
+                      {o.basura && (
+                        <div className="mt-1" title={(o.basura_motivos || []).join(' · ')}>
+                          <Badge variant="outline" data-testid="admin-order-basura-badge"
+                            className="text-[10px] border-destructive/40 bg-destructive/10 text-destructive">
+                            {t('admin.order.basuraBadge')}
+                          </Badge>
+                          <div className="text-[10px] text-muted-foreground mt-0.5 leading-tight">
+                            {(o.basura_motivos || []).join(' · ')}
+                          </div>
+                        </div>
+                      )}
                       {/* ENVÍO PARTIDO: este pedido no sale completo de la bodega. Se
                           marca en la LISTA, no solo adentro, porque si hay que comprarle
                           al proveedor eso se decide viendo los pedidos del día. */}
