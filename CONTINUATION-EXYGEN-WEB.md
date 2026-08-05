@@ -1,4 +1,155 @@
-# 🔝 PRIORIDADES — 5 de agosto de 2026 (lo que Christián pidió, en su orden)
+# 🔝 PRIORIDADES — 5 de agosto de 2026, TARDE (estado en vivo)
+
+**Pruebas en verde las dos suites: backend 1,467 en 26 s · motor de precios 425 en 1 m 26 s.**
+Nada se desplegó en esta tanda: lo de hoy es guiones, medición y una compuerta arreglada.
+
+## ✅ 1a. `./publicar.sh --rapido` — HECHO
+
+Mira `git diff` y **salta el lado que no cambió**, que es donde están los minutos:
+si sólo tocaste `src/` del sitio, el backend no se despliega y sus **2 m 35 s de SSH
+no ocurren** — el reloj queda en el 1 m 14 s del sitio solo.
+
+```bash
+./publicar.sh --rapido
+```
+
+- **La regla dura del dinero está ESCRITA, no adivinada**: `rutas-del-dinero.txt` en la
+  raíz. Un archivo tocado que case con cualquiera de esos patrones obliga a la **suite
+  completa Y a publicar los dos lados** (un precio nuevo en el sitio con el catálogo
+  viejo en la base es la falla). Si el archivo falta, `--rapido` no salta nada.
+- **Contra qué compara**: `.ultimo-publicado` (el commit que quedó en vivo), que el
+  propio guion anota **sólo cuando ese lado salió en verde**. Sin marca no adivina:
+  publica los dos, completos. La marca está en `.gitignore` de los dos repos — lo que
+  está en vivo no es un hecho del repo, es de esta máquina.
+- **`--sin-pruebas` NO gana** sobre la regla del dinero: si tocaste `comisiones.py`, las
+  pruebas vuelven aunque lo pidas. Probado.
+- **8 casos probados** en simulacro (sin publicar): nada cambió · sólo texto del sitio ·
+  sólo un archivo inocuo del backend · ruta del dinero en el backend · ruta del dinero en
+  el sitio · `--sin-pruebas` sobre ruta del dinero · sin la lista · marca inválida.
+
+⚠️ **Lo que `--rapido` NO hace, a propósito: escoger un subconjunto de pytest.** La suite
+completa ya tarda 26 segundos, así que recortarla **no gana reloj** y sí abre la puerta a
+que una prueba de dinero no corra. Cuando el backend entra, entra con las 1,467.
+
+## 📏 1b. El cuello del backend: YA SE SABE DÓNDE NO ESTÁ
+
+`actualizar-exygen-backend.sh` ahora **cronometra cada paso** e imprime el desglose al
+final (sale hasta si el despliegue falla). Medido hoy con `--estado`:
+
+| Paso | Segundos |
+|---|---|
+| Averiguar tu IP | 0 |
+| Abrir el puerto 22 | 2 |
+| Llave temporal + EC2 Instance Connect | 2 |
+
+**Todo el baile de SSH y security group son 4 segundos.** O sea que de los 2 m 35 s,
+~2 m 30 s pasan **dentro de `/opt/exygen/app/deploy.sh`, en el servidor**: `git pull` +
+`docker build` + levantar el color + verificar salud + los 20 s de gracia.
+
+⛔ **Pendiente y por qué no se cerró hoy:** para partir esos 2 m 30 s hay que leer
+`deploy.sh` en el servidor, y **el SSH quedó bloqueado en esta sesión** (el clasificador
+de permisos lo negó). El próximo despliegue real ya va a imprimir el desglose solo.
+Sospecha principal: el `docker build` sin caché de capas. `GRACIA=0` quita 20 s gratis.
+
+## 💭 1c. GitHub Actions — el veredicto, con el número medido
+
+**No compra reloj, compra no-esperar.** Los 2 m 30 s son del servidor y en GHA serían
+los mismos o peores (el runner arranca frío, sin caché de Docker local). Lo que cambia es
+que **haces push y te vas**: hoy Christián se queda mirando la terminal 3 minutos.
+
+- Free en repos privados: **2,000 min/mes**. A ~3 min por despliegue son ~600 al mes.
+- **Cloudflare Pages construye el sitio solo desde el repo** (500 builds/mes gratis) sin
+  gastar un minuto de GHA: eso se lleva la mitad del trabajo de encima.
+- JADA ya está migrando a GHA (ver la memoria `project_gha_deploy_migration`): conviene
+  copiar ese patrón —CI compila, el servidor sólo descarga— en vez de inventar otro.
+
+## ✅ 2. TOP PRIORITY: las comisiones — RECALCULADAS. **La tabla del 3-ago SIGUE VÁLIDA.**
+
+Guion nuevo: **`pricing-system/comision_maxima.py`** (no escribe nada).
+
+```bash
+cd pricing-system && .venv/bin/python comision_maxima.py        # o --todos, o --csv
+```
+
+**El resultado del recálculo con los precios de HOY es idéntico al del 3-ago:**
+**63 bajo el piso · 57 se salvan bajando su comisión · 6 salen del canal.** Los diez
+recortes más fuertes salen al dígito iguales (HGH 191AA 15 iu → 3%, agua bacteriostática
+10 ml → 3%, HCG 2,000 IU → 5%, L-Carnitine 2 mg → 8%, Lemon Bottle → 11%, Sermorelina
+2 mg → 12%, HGH 24 iu → 15%, Oxytocin → 16%, Triptorelin y PT-141 → 17%).
+
+**Por qué no se movió:** las 22 bajadas del 4-ago fueron de las seis familias más
+vendidas, y **ninguna de ésas estaba bajo el piso**. Los 63 son el resto del catálogo
+—insumos y presentaciones chicas donde el flete se come el margen— y a ésos no les
+cambió el precio. La advertencia del CONTINUATION («está medida sobre precios viejos»)
+era razonable pero resultó no aplicar.
+
+### ⚠️ Y el «42 de 188» NO contradecía al 63: son dos preguntas distintas
+
+Medido hoy, mismos precios, sólo cambiando el supuesto de comisión:
+
+| Comisión | Bajo el piso |
+|---|---|
+| la de hoy (la mayoría al 40%) | **63** de 188 |
+| topada al 35% | 58 |
+| **topada al 30%** | **42** |
+
+O sea: **42 es el catálogo DESPUÉS de bajar las comisiones al 30% (el punto 5)**, no una
+corrección del 63. Los dos números eran ciertos y decían cosas diferentes.
+
+### Los 6 que salen del canal (ni con comisión 0% llegan a 5×)
+
+Ácido acético 3/5/10 ml · agua bacteriostática 3 ml · HGH 191AA 10 y 12 iu.
+Sigue siendo cierto que **sólo el ácido acético 5 ml tiene flete DECLARADO**; los otros
+cinco usan el supuesto alto de $350/caja.
+
+⛔ **Nada aplicado. Espera tu sí.**
+
+## ✅ 3. Ocultar los tres productos — NO HAY NADA QUE OCULTAR (verificado)
+
+**Tirzepatida 5 mg, Tirzepatida 15 mg y Retatrutida 50 mg NO EXISTEN en ningún lado:**
+no están en el catálogo público (188 productos), **ni en el admin** (202, o sea ni
+ocultos), ni en `fallbackCatalog.js` del sitio. En la maestra están las tres, marcadas
+**«No · dominada»**, que es justamente por lo que nunca se dieron de alta.
+
+Dos cosas que el CONTINUATION decía mal y quedan corregidas:
+
+1. **«No tienen costo capturado» es falso**: las tres lo tienen (Tirze 5 mg $402,
+   Tirze 15 mg $682, Reta 50 mg $3,115 por caja). El motivo real es «dominada».
+2. **«La de 15 mg costaba $1,679, MENOS que la de 10 mg» tampoco cuadra**: la de 10 mg
+   está en $1,459. Lo que sí pasó fue con **Retatrutida**, y ésas —5 mg y 15 mg— **ya
+   están ocultas** en el backend desde antes, junto con Dysport y otras 12.
+
+## ⛔ 4 y 5 — TE TOCA DECIDIR, no hay código que escribir antes
+
+- **Extender el punto medio a los 188** cambiando la regla en `reprecio.py`
+  (`precio_base`), no producto por producto. Ojo: 42 ya están bajo el piso.
+- **Bajar las comisiones al 30% en la maestra.** Hoy el tope del 30% sólo se usó para
+  MEDIR; los productos siguen con su comisión vieja (la mayoría al 40%). El reporte de
+  `comision_maxima.py` trae aparte **los 77 que ya aguantan el piso pero traen en la
+  maestra una comisión ARRIBA de lo que su escalera autoriza** — ésos son este pendiente.
+
+## 🔧 De pasada: una compuerta que se ponía roja SOLA cada medianoche
+
+`test_precios.py::test_el_csv_esta_al_dia_con_la_maestra` comparaba el texto completo de
+`maestra.csv` contra una corrida nueva del generador. Pero el generador baja el precio de
+la competencia **en vivo** y estampa en `competencia_capturada` **el día en que corre**:
+el CSV commiteado quedaba «atrás» al cambiar la fecha del calendario **aunque no se
+hubiera movido un solo precio**. Hoy 5-ago las 142 filas con competencia diferían en eso
+y en NADA más — verificado columna por columna.
+
+Una compuerta que se pone roja por el reloj se aprende a ignorar, y el día que sí haya un
+precio movido nadie la mira. Ahora exige lo de verdad —**ninguna cifra del dinero puede
+diferir**— y el sello de la foto se avisa aparte sin tumbar la suite. Comprobado que
+sigue atrapando un precio o una comisión movidos, y que la prueba **no escribe** en
+`maestra.csv` (redirige la escritura a un buffer: una prueba no toca archivos del dinero).
+
+## ✔️ La guía de Fabiola: YA SE COMPRÓ
+
+Christián la compró (5-ago). El pendiente de `enviosinternacionales` queda cerrado.
+
+---
+
+# 🔝 PRIORIDADES — 5 de agosto de 2026, MAÑANA (el planteamiento original)
 
 ## ⚡ VELOCIDAD DE PUBLICAR — hecho lo grande, falta lo último
 
