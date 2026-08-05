@@ -1,3 +1,69 @@
+# 🔝 6 de agosto de 2026 — LO GORDO: la guía que salía era la de OTRO CLIENTE
+
+**En vivo y verificado.** Backend `8536bf5` · sitio `4a89f35`. Backend 1,478 pruebas.
+
+## ⛔⛔ El hallazgo que importa
+
+Verificando que el botón de imprimir sirviera de verdad —no que existiera, sino que
+sacara el papel correcto— salió esto: **dos pedidos distintos sacaban un PDF con el
+MISMO sha256.** EX-20260730-5930 y el de Fabiola (EX-20260801-2402).
+
+**No era un botón que falla: era imprimir y pegar en la caja la etiqueta de otro
+cliente** — otro nombre, otro domicilio. El paquete se va al lugar equivocado y quien
+lo esperaba no recibe nada.
+
+**La causa.** En la API de Envíos Internacionales el número de guía **no vive en el
+envío**: `data[].attributes.tracking_number` viene en `None`. Vive en el **paquete**,
+dentro de `included`, al que apunta `relationships.packages.data[].id` — y ahí está
+también el `label_url`. `etiqueta_por_rastreo` lo buscaba en el envío (donde nunca
+está) y le pasaba a `skydropx._guia_del_json` el `included` **entero de la lista**, o
+sea los paquetes de todos los envíos. Esa función se queda con el **primer**
+`label_url` que ve. Devolvía siempre la misma etiqueta.
+
+Su propio docstring lo avisaba: *«⚠️ NO VERIFICADO CONTRA UNA COMPRA REAL»*.
+
+**El arreglo, en dos capas independientes:**
+1. Se casa por el **paquete** y se le pasa a `_guia_del_json` únicamente ese `included`.
+2. Candado aparte en `etiquetas._preguntarle_a`: si el proveedor dice de qué guía es su
+   papel y **no** es la que se pidió, no se entrega y se escribe un `logger.error`.
+   Entre no imprimir nada e imprimir la de alguien más, no imprimir gana siempre.
+
+**Comprobado en producción:** Fabiola ya saca un PDF **distinto**, que trae su número
+`8764271821` y su nombre dentro.
+
+## ⛔ Y ANTES DE ESO: producción estuvo ROTA un rato
+
+El commit `7401e89` de otra sesión se llevó mi `server.py` **sin** `guias.py`. Se subió
+y se desplegó así: `server.py` llamaba a `guias.etapa_de_envio()`, que en ese commit no
+existía. Las pruebas del despliegue pasan porque corren sobre el árbol LOCAL (que sí
+tenía las dos mitades) y el healthcheck (`/api/`) no toca pedidos.
+
+**Lección, y vale más que el arreglo:** después de desplegar hay que comprobar que **el
+contenedor tiene el código**, no que el despliegue dijo que sí. Un `grep` dentro del
+contenedor lo habría cazado en diez segundos.
+
+## ✅ El pedido de Fabiola — resuelto del todo
+
+`EX-20260801-2402` · $2,316 · pagado · DHL `8764271821`. **Sí tiene guía y ya se
+imprime.** Se compró por Envíos Internacionales pero la compra falló a medias
+(`label_error`: *«Unverified headquarter»*) y el pedido quedó sin `label_provider`, así
+que el rescate le preguntaba sólo a Skydropx. Ahora, sin proveedor conocido, se barren
+todos los encendidos (`5706065`).
+
+⚠️ **SIGUE PENDIENTE, ES DATO Y NO CÓDIGO:** ese pedido está marcado `enviado` con
+`shipped_at: 2026-08-04T23:53:41` por el bug de ayer, y Christián **no lo ha enviado**.
+Hay que ponerle `status: confirmado` y borrar `shipped_at`. **Pendiente de su OK.**
+
+## ⛔ NO SE EMPEZÓ — El tablero del Asesor de Negocio
+
+Se le dio prioridad al bug de las etiquetas cruzadas. Christián ya confirmó la forma:
+**una pantalla** («tablero»), no el chat. La base honesta ya existe:
+`guias.etapa_de_envio()` y el campo `etapa_envio` viajando en la lista y en la ficha.
+Falta decidir cuánto ve de cada cliente (hoy el contacto va tras un interruptor por
+persona, `_contacto_del_cliente`).
+
+---
+
 # 🔝 PRIORIDADES — 5 de agosto de 2026, NOCHE (estado en vivo)
 
 **⛔ LO PRIMERO DE LA PRÓXIMA SESIÓN: DESPLEGAR. El arreglo de las guías está
