@@ -1,37 +1,64 @@
 # 🔝 PRIORIDADES — 5 de agosto de 2026 (lo que Christián pidió, en su orden)
 
-## ⚡ PRIMERO Y ANTE TODO: publicar tiene que tardar 1–3 minutos
+## ⚡ VELOCIDAD DE PUBLICAR — hecho lo grande, falta lo último
 
-Orden textual: *«tienes que hacer el whole process much more faster (commit,
-rebase, push, merge, promote to main, deploy into live web). En JADA lo hacemos en
-1-3 minutos. Quiero que lo podamos hacer igual de rápido.»*
+Orden textual: *«tiene que estar up and running en 1 minuto, 2 tops para un sitio
+tan pequeño»* y *«no entiendo por qué tienes que hacer las 1,467 pruebas cada vez
+que hacemos un cambio por pequeño o grande que sea. Super dislike!!!»*.
 
-**Ya hay una primera mitad hecha: `./publicar.sh` en la raíz del proyecto.**
-Backend y sitio ya NO se esperan uno al otro — arrancan a la vez y el reloj es el
-del más lento, no la suma. Antes eran ~9 minutos de fila (pytest 3.5 + backend 2 +
-sitio 3); **medido el 5-ago: el sitio completo, con auditoría y verificación en
-navegador, en 1 m 14 s.**
+### Lo que ya está hecho y medido
+
+| | Antes | Ahora |
+|---|---|---|
+| Pruebas del backend | **3 m 38 s** | **26 s** |
+| Sitio completo (auditoría + build + despliegue + verificación) | ~3 m | **1 m 14 s** |
+| Backend completo | ~5 m | 3 m |
+
+**1. `./publicar.sh` en la raíz del proyecto.** Backend y sitio ya no se esperan:
+arrancan a la vez y el reloj es el del más lento, no la suma.
 
 ```bash
-./publicar.sh                # los dos lados, en paralelo
-./publicar.sh --sitio        # sólo el sitio
+./publicar.sh                # los dos, en paralelo
+./publicar.sh --sitio        # sólo el sitio (1 m 14 s)
 ./publicar.sh --backend      # sólo el backend
-./publicar.sh --sin-pruebas  # salta pytest — SÓLO copy y acomodo, nunca dinero
+./publicar.sh --sin-pruebas  # salta pytest — sólo copy, nunca dinero
 ```
 
-⚠️ Detalle que costó: el resultado se lee con `PIPESTATUS`, no con `$?`. Con el
-pipe a `tail`, `$?` es el de `tail` y **siempre sale 0** — o sea que una suite en
+**2. Las pruebas, 8 veces más rápidas.** Dos causas, y la grande no era la obvia:
+- **UNA sola prueba se llevaba 121 de los 132 segundos.** No era lenta: abre y
+  cierra la app (`with TestClient(app)`) y los eventos de ARRANQUE hablan con
+  Mongo, que en pruebas no existe. Cada uno esperaba su tiempo de espera. El 92%
+  del reloj era arranque esperando a una base que no está. Ahora los seis arranques
+  se frenan solos dentro de pytest (`_en_pruebas` en `server.py`, mira
+  `PYTEST_CURRENT_TEST`). En producción esa variable no existe: el arranque real no
+  cambia ni una línea.
+- **Corrían de una en una.** `pytest-xdist` con `-n auto`, ya por omisión en
+  `pytest.ini`.
+
+⚠️ Detalle que costó en `publicar.sh`: el resultado se lee con `PIPESTATUS`, no con
+`$?`. Con el pipe a `tail`, `$?` es el de `tail` y **siempre sale 0** — una suite en
 rojo se habría publicado en verde.
 
-**Lo que falta para llegar a los 1–3 minutos SIEMPRE** (hoy sólo se logra sin
-pytest):
-1. **Las 1,467 pruebas del backend tardan 3 m 38 s** y son el cuello real. Opciones:
-   correrlas en paralelo (`pytest-xdist`, `-n auto`) — probablemente baja a ~1 min —
-   o partirlas en «las del dinero» (siempre) y el resto (antes de dormir).
-2. **El build de React** rehace el prerender de 137 rutas cada vez. Si el catálogo
-   no cambió, ese trabajo se repite para nada: vale medir cuánto pesa y cachearlo.
-3. **Un `--rapido` de verdad**: que detecte con `git diff` qué se tocó y corra sólo
-   lo que aplica (si sólo cambió `src/`, ni siquiera arrancar el backend).
+### ⛔ LO QUE FALTA (y es lo que pidió Christián)
+
+**No correr las 1,467 pruebas para cada cambio.** Hoy ya sólo son 26 s, así que dejó
+de ser el cuello — pero la queja es correcta. Lo que hay que construir:
+
+1. **`publicar.sh --rapido`**: que mire `git diff --name-only` y decida solo:
+   - sólo `src/` del sitio → ni siquiera arrancar el backend;
+   - sólo textos/i18n → auditoría del sitio y ya;
+   - cualquier cosa que toque **precios, cobros, comisiones o envíos** → suite
+     completa, sin excepción. Esa lista de rutas «del dinero» hay que escribirla
+     explícita, no adivinarla.
+2. **El cuello real ahora es el despliegue del backend: 2 m 35 s** (SSH + abrir el
+   puerto 22 + levantar el color nuevo + verificar salud). Ahí está el minuto que
+   falta. Vale medir qué parte pesa: si es el `docker build`, cachear capas.
+3. **GitHub Actions** (Christián preguntó por el costo): en repos privados el plan
+   Free trae **2,000 minutos/mes gratis**, y JADA ya está en GitHub. Con despliegues
+   de ~3 min alcanza para ~600 al mes. Lo que de verdad cambia no es el reloj sino
+   **que no haya que esperarlo**: se hace push y el CI trabaja solo. Cloudflare Pages
+   además puede construir solo desde el repo (500 builds/mes gratis) sin gastar
+   minutos de GitHub.
 
 ## 1️⃣ TOP PRIORITY: las comisiones producto por producto
 
