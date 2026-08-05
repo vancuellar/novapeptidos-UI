@@ -29,6 +29,18 @@ const ETIQUETAS = {
   // esta etiqueta es lo que las hace aparecer en la pantalla.
   ENVIOSINT_CLIENT_ID: { grupo: 'Envíos Internacionales (envíos)', label: 'Client ID', pista: 'app.enviosinternacionales.com → Configuración → API ("Clave del Cliente")' },
   ENVIOSINT_CLIENT_SECRET: { grupo: 'Envíos Internacionales (envíos)', label: 'Client secret', pista: 'La "Clave Secreta del Cliente", en la misma pantalla' },
+  // El escudo antibots del checkout (Cloudflare Turnstile).
+  //
+  // ⚠️ Y VOLVIÓ A PASAR LO MISMO (2026-08-05). El backend ya aceptaba la llave
+  // —está en `secretos.PERMITIDAS`— y el sitio ya traía su parte, pero NADIE la
+  // puso en esta tabla, así que no había dónde pegarla. Christián: «No veo el campo
+  // en el sitio web». Es idéntico a lo que pasó con la llave de OpenAI unos días
+  // antes, y el aviso ya estaba escrito ahí arriba. Aceptar una llave en el backend
+  // NO la hace aparecer en el panel: hace falta este renglón, siempre.
+  //
+  // Sólo va la SECRETA. La pública (sitekey) se publica en el HTML a propósito y
+  // vive en `.env.local` del sitio, no aquí.
+  TURNSTILE_SECRET_KEY: { grupo: 'Turnstile (antibots)', label: 'Secret key', pista: 'Cloudflare → Turnstile → tu widget → Secret Key (la que NO empieza con 0x)' },
   // El motor del chat con IA (el asesor del Panel y el chat de los clientes).
   //
   // ⚠️ El backend ya aceptaba estas tres llaves desde el 2026-08-01 (están en la
