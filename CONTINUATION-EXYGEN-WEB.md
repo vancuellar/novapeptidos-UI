@@ -1,3 +1,46 @@
+# 🔝 5 de agosto de 2026 — El Asesor de Negocio ya ve los pedidos en vivo
+
+**En vivo y verificado.** Backend `acaad39` · 1,484 pruebas en verde.
+
+## ✅ Lo que se cerró
+
+El **Asesor de Negocio** (el chat interno del panel — `chat_negocio.py` /
+`ChatNegocio.js`, NO un tablero: eso fue una confusión mía en el handoff anterior)
+ya recibe en su contexto los **pedidos y clientes en vivo**: número, fecha, cliente,
+total, si está pagado y con qué, estado, **etapa de envío**, guía con su paquetería, y
+fechas de salida y entrega.
+
+**El candado está en la CONSULTA, no en el prompt.** Al distribuidor no se le manda la
+lista entera para luego pedirle al modelo que se calle lo ajeno: se le pregunta a Mongo
+sólo por los pedidos con su `referred_by`. Lo que no viaja no se puede filtrar mal. Una
+prueba comprueba **el filtro que se le mandó a Mongo**, no sólo el texto que sale.
+
+**El contacto va por el interruptor que ya existía** (`ve_datos_del_cliente`): el admin
+siempre; el distribuidor sólo si lo tiene encendido. Sin él, el asesor sabe de sus
+pedidos y sólo el **nombre de pila** del cliente.
+
+**Y no puede mentir con los envíos:** el encabezado le prohíbe expresamente decir que
+algo va en camino cuando la etapa es `guia_generada`.
+
+**Comprobado en producción:** el admin ve los 9 pedidos; María, 7 (los suyos) con
+contacto; los otros dos distribuidores, 0 — no tienen clientes referidos.
+
+## ✅ Fabiola — cerrado
+
+Ya se envió de verdad: la paquetería registra «Shipment accepted» el 5-ago 19:09, así
+que el `enviado` de la base **ahora sí es cierto** y no hay nada que corregir. Único
+detalle cosmético: `shipped_at` quedó con la fecha del 4-ago (cuando se capturó la
+guía) en vez del 5. Christián sabe; no lo pidió.
+
+## Pendientes
+
+- Ajustar `shipped_at` de `EX-20260801-2402` al 5-ago si Christián lo quiere.
+- **PANTALLA:** el asesor ya *sabe* de los pedidos, pero no hay nada nuevo que ver en
+  el panel. Si algún día se quiere una vista tipo lista, la fuente honesta ya existe
+  (`guias.etapa_de_envio`, campo `etapa_envio`).
+
+---
+
 # 🔝 6 de agosto de 2026 — LO GORDO: la guía que salía era la de OTRO CLIENTE
 
 **En vivo y verificado.** Backend `8536bf5` · sitio `4a89f35`. Backend 1,478 pruebas.
