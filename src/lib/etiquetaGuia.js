@@ -86,8 +86,20 @@ export function imprimirEtiqueta(url) {
 
    La ficha del pedido no usa esto —el servidor ya le manda el sí/no resuelto—; esto es
    para las pantallas del admin, que trabajan con el pedido crudo.                   */
+/* ⛔ BASTA CON QUE HAYA NÚMERO DE GUÍA (Christián, 2026-08-05: «no puedo imprimir las
+   guías, teníamos un botón específico para eso y ya no está»).
+
+   Aquí se exigía además `label_provider`, con el razonamiento de que una guía tecleada
+   a mano no tiene PDF. Es falso: el servidor le pregunta a la paquetería POR NÚMERO DE
+   RASTREO, así que una guía comprada en la cuenta de la casa y capturada a mano —lo
+   normal— sí tiene papel. El botón se escondía justo en los pedidos donde imprimir
+   habría funcionado, y desde afuera eso se ve igual que una app rota.
+
+   Si de verdad no hay PDF, el servidor contesta 409 `estado: manual` y el botón lo
+   explica en una línea. Es el gemelo de `server._detalle_de_pedido.tiene_etiqueta`. */
 export const hayEtiqueta = (pedido) => Boolean(
-  pedido && (pedido.label_url || (pedido.label_provider && pedido.tracking_number)));
+  pedido && (pedido.tiene_etiqueta || pedido.label_url
+    || String(pedido.tracking_number || '').trim()));
 
 /* PLAN B: la misma hoja en una pestaña, para verla y guardarla. */
 export function abrirEtiqueta(url) {

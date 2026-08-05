@@ -1738,11 +1738,31 @@ const Admin = () => {
                     </TableCell>
                     <TableCell>
                       {o.tracking_number ? (
-                        <button type="button" onClick={() => openShipping(o)} data-testid="admin-edit-tracking"
-                          className="text-xs text-left hover:text-[hsl(var(--primary))] transition">
-                          <div className="text-muted-foreground">{o.carrier || '—'}</div>
-                          <div className="font-mono-tech">{o.tracking_number}</div>
-                        </button>
+                        /* ⛔ IMPRIMIR SIN ABRIR NADA (Christián, 2026-08-05: «ese botón
+                           debe estar bien visible y fácil de encontrar en los paneles de
+                           admin y distribuidor con cada pedido de cada cliente»). Vivía
+                           dentro de la ficha del pedido, a dos clics y escondido tras una
+                           condición que fallaba. Quien despacha veinte paquetes no abre
+                           veinte fichas: lo quiere en el renglón. */
+                        <div className="flex flex-col gap-1.5 items-start">
+                          <button type="button" onClick={() => openShipping(o)} data-testid="admin-edit-tracking"
+                            className="text-xs text-left hover:text-[hsl(var(--primary))] transition">
+                            <div className="text-muted-foreground">{o.carrier || '—'}</div>
+                            <div className="font-mono-tech">{o.tracking_number}</div>
+                          </button>
+                          {/* La etapa REAL, no el estado del pedido: «Guía Generada ·
+                              Sin Enviar» es lo que separa lo que falta por sacar de lo
+                              que ya salió. */}
+                          <span className={`text-[10px] px-1.5 py-0.5 rounded ${
+                            (o.etapa_envio || 'guia_generada') === 'guia_generada'
+                              ? 'bg-amber-500/15 text-amber-600 dark:text-amber-400'
+                              : 'bg-emerald-500/15 text-emerald-600 dark:text-emerald-400'}`}
+                            data-testid="admin-etapa-envio">
+                            {t(`envio.etapa.${o.etapa_envio || 'guia_generada'}`)}
+                          </span>
+                          <BotonImprimirGuia testid="admin-list-label"
+                            ruta={`/admin/orders/${o.order_number}/etiqueta`} />
+                        </div>
                       ) : (
                         <Button variant="outline" size="sm" className="h-8 text-xs" onClick={() => openShipping(o)} data-testid="admin-add-tracking">
                           <Truck className="h-3.5 w-3.5 mr-1.5" /> {t('guia.add')}

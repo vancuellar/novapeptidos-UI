@@ -12,6 +12,7 @@ import CoaLibrary from '@/components/CoaLibrary';
 import FichaPedido from '@/components/FichaPedido';
 import FichaCliente from '@/components/FichaCliente';
 import HojaDeGuia from '@/components/HojaDeGuia';
+import BotonImprimirGuia from '@/components/BotonImprimirGuia';
 import FichaLibrary from '@/components/FichaLibrary';
 import LabReports from '@/components/LabReports';
 import NotificationsFeed from '@/components/NotificationsFeed';
@@ -785,6 +786,26 @@ const Distributor = () => {
                         </div>
                       ) : (
                         <span className="text-muted-foreground">{o.eta || t('distributor.noTracking')}</span>
+                      )}
+                      {/* ⛔ IMPRIMIR LA GUÍA, AQUÍ MISMO (Christián, 2026-08-05: «bien
+                          visible y fácil de encontrar en los paneles de admin y
+                          distribuidor con cada pedido de cada cliente»). En el panel del
+                          distribuidor NO EXISTÍA: sólo estaba dentro de la ficha, y ahí
+                          escondido tras una condición que fallaba con las guías tecleadas
+                          a mano — o sea, casi siempre. El candado sigue en el servidor:
+                          `/distributor/...` sólo sirve etiquetas de SUS pedidos. */}
+                      {o.tracking_number && (
+                        <div className="mt-2 flex flex-col items-start gap-1">
+                          <span className={`text-[10px] px-1.5 py-0.5 rounded ${
+                            (o.etapa_envio || 'guia_generada') === 'guia_generada'
+                              ? 'bg-amber-500/15 text-amber-600 dark:text-amber-400'
+                              : 'bg-emerald-500/15 text-emerald-600 dark:text-emerald-400'}`}
+                            data-testid="dist-etapa-envio">
+                            {t(`envio.etapa.${o.etapa_envio || 'guia_generada'}`)}
+                          </span>
+                          <BotonImprimirGuia testid="dist-list-label"
+                            ruta={`/distributor/orders/${o.order_number}/etiqueta`} />
+                        </div>
                       )}
                       {/* Él despachó el paquete: que capture él la guía. Un pedido
                           cancelado ya no se manda a ningún lado. */}

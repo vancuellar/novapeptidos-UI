@@ -55,7 +55,14 @@ const BotonImprimirGuia = ({ ruta, testid = 'imprimir-guia', className = '' }) =
         toast.info(t('etiqueta.opened'));
       }
     } catch (e) {
-      toast.error(e.response?.status === 409 ? t('etiqueta.notReady') : t('etiqueta.error'));
+      // Tres desenlaces distintos y tres avisos distintos. El que importa es
+      // `manual`: ahí no hay papel nuestro y no lo va a haber, así que decirle
+      // «generando, espera» sería mandarlo a picarle diez veces (Christián,
+      // 2026-08-05). Se le dice qué pasó y dónde está su PDF.
+      const estado = e.response?.data?.detail?.estado;
+      if (estado === 'manual') toast.warning(t('etiqueta.manual'), { duration: 8000 });
+      else if (e.response?.status === 409) toast.error(t('etiqueta.notReady'));
+      else toast.error(t('etiqueta.error'));
     } finally {
       if (vivo.current) setEstado('listo');
     }
