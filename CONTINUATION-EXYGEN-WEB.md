@@ -1,3 +1,47 @@
+# 🔝 5 de agosto (noche) — TURNSTILE ENCENDIDO Y PROBADO DE VERDAD
+
+Backend `00c4fd5` · sitio `974ac17` · **1,516 pruebas en verde** · desplegado.
+
+## Probado de punta a punta, con datos reales (no con teoría)
+
+| Prueba | Resultado |
+|---|---|
+| Navegador real en `exygenlabs.com` pide token | ✅ lo obtuvo (794 chars) |
+| Ese token, validado por NUESTRO servidor | ✅ **aceptado** |
+| Token inventado | ✅ rechazado (`invalid-input-response`) |
+
+Eso prueba lo único que importaba: las dos llaves están emparejadas y el dominio
+está bien configurado. **Un cliente de verdad pasa; un bot no.**
+
+## Cómo quedó
+- **Site Key** (pública) `0x4AAAAAAEHaFoDnceEk7kTd` → `.env.local` del sitio.
+- **Secret Key** → Admin → Cobros → `TURNSTILE_SECRET_KEY` (la pegó Christián).
+- ⛔ **Falla ABIERTO**: si Cloudflare tarda, se cae, o la llave está mal, **la venta
+  pasa**. Regla madre: vender siempre.
+- ⛔ **Un token malo NO rechaza: MARCA.** Vale 2 señales de `basura.py` = el umbral
+  completo, así que basta solo para apagarle el ruido (sin campanita, sin oferta de
+  carrito, caduca a las 24 h si nadie paga). Una red intermitente o un bloqueador
+  también rompen el token, y ésos son clientes.
+- El token se pide **al mandar el pedido**, no al abrir la página: caducan a los 5
+  minutos y quien llena su dirección con calma tardaba más.
+
+## ⚠️ LA LECCIÓN QUE SE REPITIÓ DOS VECES EN UNA SEMANA
+Christián: *«No veo el campo en el sitio web»*. El backend ya aceptaba la llave
+(`secretos.PERMITIDAS`) y el sitio ya traía su parte, pero **el panel sólo pinta los
+campos que están en la tabla `ETIQUETAS` de `GatewayCredentials.js`**. Sin ese
+renglón no hay dónde pegarla.
+
+**Es idéntico a lo que pasó con la llave de OpenAI unos días antes**, y el aviso ya
+estaba escrito en ese mismo archivo. **Aceptar una llave en el backend NO la hace
+aparecer en el panel — son dos cambios, siempre.**
+
+## Pendiente
+Los 2 pedidos de broma que ya existían **no se caducan solos** (la marca se escribe
+al crear el pedido y ésos son de antes). Hay que borrarlos desde el Panel — ningún
+agente cancela pedidos de producción por su cuenta.
+
+---
+
 # 🔝 5 de agosto (noche) — El filtro de los «chismosos», EN VIVO
 
 Backend `86435d8` · sitio `e407c21` · **1,506 pruebas en verde** · desplegado y
