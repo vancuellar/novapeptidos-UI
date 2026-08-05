@@ -177,6 +177,7 @@ const Admin = () => {
   const [loteBusy, setLoteBusy] = useState(false);
   // El SIMULACRO del barrido de pruebas: qué se llevaría y qué no, antes de tocar nada.
   const [barrido, setBarrido] = useState(null);
+  const [barridoUsuarios, setBarridoUsuarios] = useState(null);
   const [intentos, setIntentos] = useState(null);    // carritos que no se cerraron
   const [meta, setMeta] = useState(null);
   const [metaBusy, setMetaBusy] = useState(false);
@@ -539,6 +540,39 @@ const Admin = () => {
       setSel([]);
       loadAll();
       cargarArchivados();
+    } catch (e) { toast.error(e.response?.data?.detail || 'Error'); }
+    finally { setLoteBusy(false); }
+  };
+
+  // ---------------------------------------------------------------------------
+  //  BARRER USUARIOS DE PRUEBA — el botón que pidió Christián (2026-08-05)
+  // ---------------------------------------------------------------------------
+  // «¿Puedes borrar los usuarios de prueba que se llaman E2E Guia (prueba)?» … «o
+  // dame un botón para borrarlos y yo lo hago». Cada corrida de E2E deja su cuenta
+  // desechable y con el tiempo el padrón de clientes se llena de gente que no existe.
+  //
+  // Mismos DOS PASOS que el de pedidos: primero el simulacro, que no toca nada y
+  // enseña a quién se llevaría y a quién NO (con el motivo); sólo entonces el botón
+  // que borra. El candado de verdad vive en el servidor.
+  const verBarridoUsuarios = async () => {
+    setLoteBusy(true);
+    try {
+      const r = await api.post('/admin/users/barrer-pruebas', { simulacro: true });
+      setBarridoUsuarios(r.data);
+      if (!(r.data.barreria || []).length && !(r.data.protegidos || []).length) {
+        toast.info(t('admin.usuariosPrueba.ninguno'));
+        setBarridoUsuarios(null);
+      }
+    } catch (e) { toast.error(e.response?.data?.detail || 'Error'); }
+    finally { setLoteBusy(false); }
+  };
+  const barrerUsuariosPrueba = async () => {
+    setLoteBusy(true);
+    try {
+      const r = await api.post('/admin/users/barrer-pruebas', { simulacro: false });
+      toast.success(t('admin.usuariosPrueba.done', { n: r.data.borrados }));
+      setBarridoUsuarios(null);
+      loadAll();
     } catch (e) { toast.error(e.response?.data?.detail || 'Error'); }
     finally { setLoteBusy(false); }
   };
@@ -1602,6 +1636,14 @@ const Admin = () => {
                   <FlaskConical className="h-3.5 w-3.5 mr-1.5" /> {t('admin.prueba.sweep')}
                 </Button>
               )}
+              {/* BARRER LAS CUENTAS DESECHABLES QUE DEJAN LAS CORRIDAS E2E. A
+                  diferencia del de pedidos, éste sale SIEMPRE: no hay una etiqueta
+                  previa que marcar, el filtro es el correo que se inventan los
+                  guiones. Si no hay ninguna, el simulacro lo dice y no abre nada. */}
+              <Button size="sm" variant="outline" className="ml-2" disabled={loteBusy}
+                onClick={verBarridoUsuarios} data-testid="admin-barrer-usuarios-prueba">
+                <FlaskConical className="h-3.5 w-3.5 mr-1.5" /> {t('admin.usuariosPrueba.sweep')}
+              </Button>
             </div>
             {sel.length > 0 && (
               <div className="flex flex-wrap items-center gap-2" data-testid="admin-lote-bar">
@@ -1948,6 +1990,64 @@ const Admin = () => {
               </div>
             </>
           ))}
+        </DialogContent>
+      </Dialog>
+
+      {/* BARRIDO DE USUARIOS DE PRUEBA. Mismo patrón que el de pedidos: lo que se ve
+          es el SIMULACRO del servidor —a quién se lleva y a quién NO, con el motivo—
+          y el botón que borra sólo aparece si hay algo que borrar. */}
+      <Dialog open={!!barridoUsuarios} onOpenChange={(v) => !v && setBarridoUsuarios(null)}>
+        <DialogContent className="max-w-md" data-testid="admin-barrido-usuarios-dialog">
+          {barridoUsuarios && (
+            <>
+              <DialogHeader><DialogTitle>{t('admin.usuariosPrueba.sweepTitle')}</DialogTitle></DialogHeader>
+              {barridoUsuarios.barreria?.length > 0 ? (
+                <>
+                  <p className="text-sm text-muted-foreground">
+                    {t('admin.usuariosPrueba.sweepBody', { n: barridoUsuarios.barreria.length })}
+                  </p>
+                  <div className="rounded-lg border border-border p-3 space-y-1 text-xs max-h-40 overflow-y-auto"
+                    data-testid="admin-barrido-usuarios-lista">
+                    {barridoUsuarios.barreria.map((u) => (
+                      <div key={u.id} className="font-mono-tech">{u.email}</div>
+                    ))}
+                  </div>
+                </>
+              ) : (
+                <p className="text-sm text-muted-foreground" data-testid="admin-barrido-usuarios-vacio">
+                  {t('admin.usuariosPrueba.none')}
+                </p>
+              )}
+              {barridoUsuarios.protegidos?.length > 0 && (
+                <>
+                  <p className="text-xs text-muted-foreground">
+                    {t('admin.usuariosPrueba.protected', { n: barridoUsuarios.protegidos.length })}
+                  </p>
+                  <div className="rounded-lg border border-[hsl(var(--warning-border))] bg-[hsl(var(--warning))]/10 p-3 space-y-1.5 text-xs max-h-40 overflow-y-auto"
+                    data-testid="admin-barrido-usuarios-protegidos">
+                    {barridoUsuarios.protegidos.map((u) => (
+                      <div key={u.id}>
+                        <span className="font-mono-tech">{u.email}</span>
+                        <span className="text-muted-foreground"> — {(u.motivos || []).join(' · ')}</span>
+                      </div>
+                    ))}
+                  </div>
+                </>
+              )}
+              <div className="flex justify-end gap-2 mt-2">
+                <Button variant="outline" size="sm" onClick={() => setBarridoUsuarios(null)}>
+                  {t('common.cancel')}
+                </Button>
+                {barridoUsuarios.barreria?.length > 0 && (
+                  <Button variant="destructive" size="sm" disabled={loteBusy}
+                    onClick={barrerUsuariosPrueba} data-testid="admin-barrido-usuarios-confirmar">
+                    <Trash2 className="h-4 w-4 mr-1.5" />
+                    {t('admin.usuariosPrueba.confirm', { n: barridoUsuarios.barreria.length })}
+                  </Button>
+                )}
+              </div>
+            </>
+          )}
         </DialogContent>
       </Dialog>
 
