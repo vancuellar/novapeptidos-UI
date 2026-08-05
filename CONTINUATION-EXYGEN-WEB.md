@@ -1,3 +1,104 @@
+# 🔝 PRIORIDADES — 5 de agosto de 2026, NOCHE (estado en vivo)
+
+**⛔ LO PRIMERO DE LA PRÓXIMA SESIÓN: DESPLEGAR. El arreglo de las guías está
+COMMITEADO Y PROBADO PERO NO ESTÁ EN VIVO, y Christián no puede imprimir sus guías
+hasta que lo esté.**
+
+- Backend `4bd6a7a` (⚠️ ojo: `server.py` viajó dentro de `7401e89`, de otra sesión — ver abajo)
+- Sitio `4a89f35`
+- Pruebas: backend **1,473 en 26 s**, todas verdes. Build del sitio limpio, imports en verde, i18n cuadrada en los 3 idiomas.
+
+```bash
+cd "/Users/christian/Documents/Exygen Peptides/novapeptidos-UI.nosync" && ./publicar.sh
+```
+
+---
+
+## ✅ CERRADO HOY — Las guías: el botón perdido y el «enviado» que mentía
+
+Christián, 5-ago: *«no puedo imprimir las guías, teníamos un botón específico para eso
+y ya no está»*, *«ese botón debe estar bien visible y fácil de encontrar en los paneles
+de admin y distribuidor con cada pedido de cada cliente»* y *«no puede aparecer un envío
+como enviado a menos que en verdad se haya enviado… el de Fabiola aún no lo envío yo»*.
+
+Eran **tres cosas distintas con la misma raíz**: el sistema daba por ciertas cosas que
+no le constaban.
+
+### 1. El botón se escondía justo donde habría servido
+`tiene_etiqueta` (servidor) y `hayEtiqueta()` (pantalla) exigían `label_provider`, con
+el razonamiento de que *«una guía tecleada a mano no tiene PDF»*. **Es falso**:
+`etiquetas._rescatar()` le pregunta a la paquetería **por número de rastreo**, así que
+una guía comprada en la cuenta de la casa y luego capturada a mano —lo de todos los
+días— sí tiene papel. Ahora basta con que haya número. Cuando de verdad no hay PDF, el
+servidor contesta **409 `estado: manual`** y el botón lo explica en una línea, en vez de
+desaparecer. Un botón invisible se ve igual que una app rota.
+
+### 2. Estaba enterrado a dos clics
+Vivía dentro de la ficha del pedido. Quien despacha veinte paquetes no abre veinte
+fichas. Ahora se pinta **en el renglón de la tabla**, en el Panel de Administración y en
+el del Distribuidor — donde **no existía en absoluto**.
+
+### 3. Tener guía no es haber enviado
+Capturar el número empujaba el pedido a `enviado` y estampaba `shipped_at`. Comprar la
+guía es un trámite de escritorio; el paquete de Fabiola llevaba días en la mesa y el
+tablero lo daba por salido — y al cliente le llegaba *«Tu pedido va en camino»*.
+
+Ahora **el estado no se mueve solo**. `guias.etapa_de_envio()` **deduce**
+`sin_guia | guia_generada | enviado | entregado` de lo que ya está guardado, y el
+renglón lo pinta: **«Guía Generada · Sin Enviar»** en ámbar contra **«Enviado»** en
+verde. El aviso al cliente se partió en dos: `avisar_de_la_guia()` («ya tienes guía»,
+al capturar) y `avisar_del_envio()` («va en camino», cuando sale de verdad).
+
+⛔ **`guia_generada` NO se metió al vocabulario de estados, a propósito.** Habría
+obligado a tocar `loyalty.PAID_STATUSES`, `cobrado.ESTADOS_PAGADOS` y
+`coa_store.PAID_STATUSES`, y **cada uno de esos es una decisión de dinero**. Se deduce,
+que además es lo honesto: la verdad de si algo salió es `shipped_at`, no una etiqueta
+que alguien pudo no mover.
+
+**Las 5 pruebas que fallaron fijaban la conducta vieja** y se reescribieron con el
+porqué. Se sumaron 5 candados nuevos en `test_etiquetas.py`, incluido uno que lee el
+código y truena si alguien vuelve a meter el auto-`enviado`.
+
+---
+
+## ⛔ PENDIENTE 1 — El pedido EX-20260801-2402 sigue sin diagnosticar
+
+Christián lo pidió por número y **no se pudo mirar**: el clasificador de permisos
+bloqueó el acceso de sólo lectura a Mongo en producción
+(`sudo docker exec app-mongo-1 mongosh …`), dos veces, con dos formas distintas.
+
+**No se sabe si ese pedido tiene número de guía.** Si lo tiene, con el despliegue de
+arriba el botón aparece y se imprime. Si NO lo tiene, no hay nada que imprimir y lo que
+toca es comprarle la guía.
+
+Para desbloquearlo hace falta que Christián autorice ese comando (una regla de Bash en
+`.claude/settings.json`), o que lo mire él en el Panel.
+
+## ⛔ PENDIENTE 2 — El tablero del Asesor de Negocio (lo que pidió DESPUÉS)
+
+*«necesito que el asesor de negocios pueda ver en tiempo real TODO sobre clientes, sus
+nombres de pila, sus pedidos, sus números de guía, TODO, TODO, TODO, el status de sus
+pagos, envíos, etc.»*
+
+**NO SE EMPEZÓ.** Lo que ya está listo para construirlo encima:
+- `guias.etapa_de_envio()` da la verdad del envío sin inventar.
+- `etapa_envio` y `tiene_etiqueta` ya viajan en la lista de pedidos y en la ficha.
+- El chat del asesor vive en `chat_negocio.py` (backend) y `ChatNegocio.js` (sitio).
+
+Lo que falta decidir con él: si el asesor **lee** los datos (una vista) o si el **chat**
+los contesta en lenguaje natural. Y **cuánto ve de cada cliente** — hoy los datos de
+contacto van tras un interruptor por persona (`_contacto_del_cliente`), que existe por
+una razón: no todo el mundo ve el teléfono de todos.
+
+## ⚠️ AVISO — Otra sesión se llevó `server.py` en su commit
+
+`7401e89` («El CAC de Meta…», 11:51:41) se publicó **42 segundos antes** que `4bd6a7a`
+(11:52:23) y **arrastró los cambios de `server.py` de esta sesión**. Es exactamente el
+accidente que documenta el `CLAUDE.md`. **No hubo daño** —el trabajo estaba completo y
+las 1,473 pruebas pasaron— pero conviene saberlo al leer el historial: los cambios de
+las guías en `server.py` **no están en el commit que los explica**.
+
+---
 # 🔝 PRIORIDADES — 5 de agosto de 2026, TARDE (estado en vivo)
 
 **Pruebas en verde las dos suites: backend 1,467 en 26 s · motor de precios 425 en 1 m 26 s.**
