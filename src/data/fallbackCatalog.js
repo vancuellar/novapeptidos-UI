@@ -509,7 +509,7 @@ export const fallbackProducts = [
         "batch_number": "NP-AHKC50-2601",
         "id": "3e2d78c8-408f-4298-b3c8-02ade1ac012a",
         "sku": "AHKCU-50MG",
-        "descuentable": true
+        "descuentable": false
       },
       {
         "presentation": "100 mg",
@@ -732,7 +732,7 @@ export const fallbackProducts = [
         "batch_number": "NP-SNAP10-2601",
         "id": "09b829c3-1104-4e87-a5a9-fc04d50a087d",
         "sku": "SNAP8-10MG",
-        "descuentable": true
+        "descuentable": false
       },
       {
         "presentation": "100 mg",
@@ -1148,7 +1148,7 @@ export const fallbackProducts = [
         "batch_number": "NP-HGHF5-2601",
         "id": "fdb66b4f-afd5-4964-ba3f-cf95036c33b2",
         "sku": "HGHFRAGMENT176-5MG",
-        "descuentable": true
+        "descuentable": false
       },
       {
         "presentation": "10 mg",
@@ -1227,7 +1227,7 @@ export const fallbackProducts = [
         "batch_number": "NP-IGF11-2601",
         "id": "1932037e-9657-4f4f-b832-4ed7a469ed04",
         "sku": "IGF1LR3-1MG",
-        "descuentable": true
+        "descuentable": false
       }
     ],
     "tiers": [],
@@ -1274,7 +1274,7 @@ export const fallbackProducts = [
         "batch_number": "NP-IPA2-2601",
         "id": "b2bf9962-2eab-47cb-a1d2-d5e1bb243ef1",
         "sku": "IPAMORELIN-2MG",
-        "descuentable": true
+        "descuentable": false
       },
       {
         "presentation": "5 mg",
@@ -1283,7 +1283,7 @@ export const fallbackProducts = [
         "batch_number": "NP-IPA5-2601",
         "id": "8b8e6aef-74ce-4cd0-addd-ea31b00c481d",
         "sku": "IPAMORELIN-5MG",
-        "descuentable": true
+        "descuentable": false
       },
       {
         "presentation": "10 mg",
@@ -1292,7 +1292,7 @@ export const fallbackProducts = [
         "batch_number": "NP-IPA10-2601",
         "id": "f88df19e-5dd5-4bd3-8e1e-348a1297b91d",
         "sku": "IPAMORELIN-10MG",
-        "descuentable": true
+        "descuentable": false
       }
     ],
     "tiers": [],
@@ -1567,7 +1567,7 @@ export const fallbackProducts = [
         "batch_number": "NP-EPI10-2601",
         "id": "cc5d841a-54a7-4d8e-8f8a-269033c7ef05",
         "sku": "EPITHALON-10MG",
-        "descuentable": true
+        "descuentable": false
       },
       {
         "presentation": "50 mg",
@@ -1790,7 +1790,7 @@ export const fallbackProducts = [
         "batch_number": "NP-NAD100-2601",
         "id": "17253e95-6318-4827-bed2-1dbc536a51c1",
         "sku": "NAD-100MG",
-        "descuentable": true
+        "descuentable": false
       },
       {
         "presentation": "500 mg",
@@ -1995,7 +1995,7 @@ export const fallbackProducts = [
         "batch_number": "NP-DSIP5-2601",
         "id": "bb8e9ee3-501c-4345-9fba-fe3e11b2f7d5",
         "sku": "DSIP-5MG",
-        "descuentable": true
+        "descuentable": false
       },
       {
         "presentation": "10 mg",
@@ -2004,7 +2004,7 @@ export const fallbackProducts = [
         "batch_number": "NP-DSIP10-2601",
         "id": "949505ed-8adb-440a-aa46-d6a3f12dbf55",
         "sku": "DSIP-10MG",
-        "descuentable": true
+        "descuentable": false
       }
     ],
     "tiers": [],
@@ -2141,7 +2141,7 @@ export const fallbackProducts = [
         "batch_number": "NP-OREX5-2601",
         "id": "01fd87d3-af2d-475c-8378-a5e3bf72a4d2",
         "sku": "OREXINB-5MG",
-        "descuentable": true
+        "descuentable": false
       },
       {
         "presentation": "10 mg",
@@ -2195,7 +2195,7 @@ export const fallbackProducts = [
         "batch_number": "NP-PE2210-2601",
         "id": "09745c57-4a6c-4749-813e-cfbe6be283af",
         "sku": "PE2228-10MG",
-        "descuentable": true
+        "descuentable": false
       }
     ],
     "tiers": [],
@@ -2406,7 +2406,7 @@ export const fallbackProducts = [
         "batch_number": "NP-ACTH5-2601",
         "id": "f9b7b446-9009-41c8-a73d-2ebed37ba522",
         "sku": "ACTH139-5MG",
-        "descuentable": true
+        "descuentable": false
       }
     ],
     "tiers": [],
@@ -2507,7 +2507,7 @@ export const fallbackProducts = [
         "batch_number": "NP-B7332-2601",
         "id": "22716315-e599-4b50-aa8e-4ee383b8f056",
         "sku": "B733-2MG",
-        "descuentable": true
+        "descuentable": false
       },
       {
         "presentation": "10 mg",
@@ -2628,7 +2628,7 @@ export const fallbackProducts = [
         "batch_number": "NP-CJCN2-2601",
         "id": "2c72debf-df0d-4769-ade0-0c974ad0dee7",
         "sku": "CJC1295SINDAC-2MG",
-        "descuentable": true
+        "descuentable": false
       },
       {
         "presentation": "5 mg",
@@ -2637,7 +2637,7 @@ export const fallbackProducts = [
         "batch_number": "NP-CJCN5-2601",
         "id": "5ab62375-3a75-4e76-9296-722a63ad9eec",
         "sku": "CJC1295SINDAC-5MG",
-        "descuentable": true
+        "descuentable": false
       },
       {
         "presentation": "10 mg",
@@ -2646,7 +2646,7 @@ export const fallbackProducts = [
         "batch_number": "NP-CJCN10-2601",
         "id": "1d795150-41ef-4f8f-a099-5a456f56f1b4",
         "sku": "CJC1295SINDAC-10MG",
-        "descuentable": true
+        "descuentable": false
       }
     ],
     "tiers": [],
@@ -3024,7 +3024,7 @@ export const fallbackProducts = [
         "batch_number": "NP-OXY2-2601",
         "id": "9f3357cc-0898-4cd8-a49e-5ff30b86369b",
         "sku": "OXITOCINA-2MG",
-        "descuentable": true
+        "descuentable": false
       },
       {
         "presentation": "5 mg",
@@ -3033,7 +3033,7 @@ export const fallbackProducts = [
         "batch_number": "NP-OXY5-2601",
         "id": "17bc65bf-139d-40c8-86a5-acdce12edd60",
         "sku": "OXITOCINA-5MG",
-        "descuentable": true
+        "descuentable": false
       },
       {
         "presentation": "10 mg",
@@ -3459,7 +3459,7 @@ export const fallbackProducts = [
         "batch_number": "NP-AOD95-2601",
         "id": "9b73c607-b922-45fe-bc94-c7e9c5979048",
         "sku": "AOD9604-5MG",
-        "descuentable": true
+        "descuentable": false
       },
       {
         "presentation": "10 mg",
@@ -3725,7 +3725,7 @@ export const fallbackProducts = [
         "batch_number": "NP-LCAR600-2601",
         "id": "79ad3e2c-ff01-42ba-ab42-0b6d4c9444d9",
         "sku": "LCARNITINE-600MG",
-        "descuentable": true
+        "descuentable": false
       },
       {
         "presentation": "1200 mg",
@@ -3734,7 +3734,7 @@ export const fallbackProducts = [
         "batch_number": "NP-LCAR1200-2601",
         "id": "e15cb83b-ccf8-4065-ae95-451375f2074b",
         "sku": "LCARNITINE-1200MG",
-        "descuentable": true
+        "descuentable": false
       }
     ],
     "tiers": [],
@@ -3926,7 +3926,7 @@ export const fallbackProducts = [
         "batch_number": "NP-MOTS15-2601",
         "id": "9e336d64-8af3-4991-ac30-fafb9f736bf2",
         "sku": "MOTSC-15MG",
-        "descuentable": true
+        "descuentable": false
       },
       {
         "presentation": "20 mg",
@@ -3935,7 +3935,7 @@ export const fallbackProducts = [
         "batch_number": "NP-MOTS20-2601",
         "id": "f878af32-45f7-4b6b-82da-52b985ac90ed",
         "sku": "MOTSC-20MG",
-        "descuentable": true
+        "descuentable": false
       },
       {
         "presentation": "40 mg",
@@ -4665,7 +4665,7 @@ export const fallbackProducts = [
         "batch_number": "NP-BPC2-2601",
         "id": "9ba48165-7a02-473c-a089-6a9a09af5da1",
         "sku": "BPC157-2MG",
-        "descuentable": true
+        "descuentable": false
       },
       {
         "presentation": "5 mg",
@@ -4674,7 +4674,7 @@ export const fallbackProducts = [
         "batch_number": "NP-BPC5-2601",
         "id": "db5309f7-6dde-4c26-9384-016fb7e43792",
         "sku": "BPC157-5MG",
-        "descuentable": true
+        "descuentable": false
       },
       {
         "presentation": "10 mg",
@@ -5258,7 +5258,7 @@ export const fallbackProducts = [
         "batch_number": "NP-TB10-2601",
         "id": "7ca299ad-2828-439e-92b7-0b77e280b6d4",
         "sku": "TB500-10MG",
-        "descuentable": true
+        "descuentable": false
       }
     ],
     "tiers": [],
@@ -5331,7 +5331,7 @@ export const fallbackProducts = [
         "batch_number": "NP-GONA5-2601",
         "id": "23040e1b-4339-4b30-b62b-f4d50db9805f",
         "sku": "GONADORELINACE-5MG",
-        "descuentable": true
+        "descuentable": false
       }
     ],
     "tiers": [],
