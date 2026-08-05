@@ -11,6 +11,7 @@ import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { toast } from 'sonner';
 import { track, attribution } from '@/lib/track';
 import api, { formatMXN, PAYMENT_METHODS } from '@/lib/api';
+import { tokenDeTurnstile } from '@/lib/turnstile';
 import { phoneValid } from '@/lib/utils';
 import { PhoneField, StateField, composePhone, parsePhone } from '@/components/CountryPhoneFields';
 import { ruoAcceptedAt } from '@/components/RuoGate';
@@ -417,6 +418,12 @@ const Checkout = () => {
         attribution: attribution(),
         // Seguridad: los datos de la tarjeta NUNCA se envian ni se guardan en nuestro servidor.
       };
+      // ⛔ EL ESCUDO ANTIBOTS, PEDIDO AQUÍ Y NO AL ABRIR LA PÁGINA. Los tokens de
+      // Turnstile caducan a los 5 minutos, y quien llena su dirección con calma tarda
+      // más: pedirlo al abrir era garantizar que llegara vencido justo al cliente
+      // cuidadoso. Si Cloudflare no contesta devuelve '' y la compra sigue — el
+      // servidor MARCA el pedido, nunca lo rechaza (ver src/lib/turnstile.js).
+      payload.turnstile_token = await tokenDeTurnstile();
       const res = await api.post('/orders', payload);
       // ⛔ AQUÍ NO SE DISPARA `purchase`. Un pedido CREADO no es una venta: SPEI, cripto y
       // OXXO nacen pendientes y muchos no se pagan nunca. Disparándolo aquí, cada carrito
