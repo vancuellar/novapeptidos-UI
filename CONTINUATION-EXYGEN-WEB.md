@@ -4,6 +4,25 @@
 Aprobó poner **Cloudflare Turnstile**. **NO SE EMPEZÓ** — se dejó para una sesión con
 contexto limpio: toca Cloudflare, el checkout, el servidor, pruebas y despliegue.
 
+## ⛔ DATO NUEVO DE CHRISTIÁN (5-ago, y cambia el orden del trabajo)
+
+*«Aunque sea gente real, está picando a lo idiota SIN DIRECCIÓN, SIN NOMBRE, SIN EMAIL,
+mandando pedidos a lo estúpido. Puede ser competencia.»*
+
+**Entonces el primer agujero es NUESTRO, no de ellos.** Si un pedido se guarda sin nombre,
+sin correo y sin dirección, es que **el servidor lo está aceptando**. Eso se cierra con
+validación en el backend —en la ruta que crea el pedido, no en la pantalla— y es más
+barato y más efectivo que Turnstile: el que pica a lo tonto deja de poder, y el bot
+tampoco pasa. Es la misma lección de [[exygen-precio-lo-pone-el-servidor]].
+
+**ORDEN DEL TRABAJO, corregido:**
+1. **Validar en el servidor** nombre, correo y dirección al crear el pedido. ⚠️ Con
+   cuidado de no romper la venta legítima (regla madre: *vender siempre*) — revisar qué
+   pide hoy el checkout y qué rutas pueden crear pedidos.
+2. **Mirar los datos** para saber si es competencia: IP repetida, ráfagas en el mismo
+   minuto, mismo agente de navegador, horarios. Si es una sola IP, se bloquea y ya.
+3. **Turnstile** al final, para el volumen.
+
 ## Antes de programar nada: MIRAR LA BASURA
 No se sabe todavía si son **bots** o **gente real que abandona**. Cambia la solución.
 Ver qué hay en la base (`exygen`), colección de carritos abandonados / pedidos pendientes:
