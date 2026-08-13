@@ -41,6 +41,15 @@ const ETIQUETAS = {
   // Sólo va la SECRETA. La pública (sitekey) se publica en el HTML a propósito y
   // vive en `.env.local` del sitio, no aquí.
   TURNSTILE_SECRET_KEY: { grupo: 'Turnstile (antibots)', label: 'Secret key', pista: 'Cloudflare → Turnstile → tu widget → Secret Key (la que NO empieza con 0x)' },
+  // Las reseñas de Google que salen en la portada. Sin las DOS, la sección no se
+  // pinta y el sitio se ve igual que antes.
+  //
+  // ⛔ TERCERA VEZ QUE SE ESCRIBE ESTA TABLA EN LA MISMA SEMANA, y por eso va con
+  // el renglón desde el primer commit: el backend acepta la llave, pero si no está
+  // AQUÍ no hay dónde pegarla. Paso con OPENAI_API_KEY y volvió a pasar con
+  // TURNSTILE_SECRET_KEY. Son DOS cambios, siempre.
+  GOOGLE_PLACES_API_KEY: { grupo: 'Reseñas de Google', label: 'API key de Google Cloud', pista: 'Google Cloud → APIs y servicios → Credenciales. Hay que activar "Places API (New)"' },
+  GOOGLE_PLACE_ID: { grupo: 'Reseñas de Google', label: 'Place ID del negocio', pista: 'Se saca en developers.google.com/maps/documentation/places/web-service/place-id — empieza con ChIJ' },
   // El motor del chat con IA (el asesor del Panel y el chat de los clientes).
   //
   // ⚠️ El backend ya aceptaba estas tres llaves desde el 2026-08-01 (están en la

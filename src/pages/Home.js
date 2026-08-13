@@ -17,6 +17,7 @@ import { toast } from 'sonner';
 import ProductCard from '@/components/ProductCard';
 import TrustBadges from '@/components/TrustBadges';
 import TrustWidget from '@/components/TrustWidget';
+import ResenasGoogle from '@/components/ResenasGoogle';
 import useEsMovil from '@/hooks/useEsMovil';
 import api from '@/lib/api';
 import { VISIBLE_CATEGORIES, fallbackProducts } from '@/data/fallbackCatalog';
@@ -667,6 +668,13 @@ const Home = () => {
         </div>
       </section>
       )}
+
+      {/* LAS RESEÑAS DE GOOGLE (Christián, 2026-08-05). Van aquí, después de las
+          fotos y antes de «cómo verificamos cada lote»: primero se ve el oficio,
+          luego lo dice gente real, y recién entonces el detalle técnico.
+          ⛔ Si no hay reseñas el componente devuelve null y NO deja hueco: ni
+          título, ni recuadro vacío, ni «pronto habrá opiniones». */}
+      <ResenasGoogle />
 
       {/* ===== Traceability — light band, 3 steps ===== */}
       {/* Fuera del teléfono (Christián, 2026-07-31): "cómo verificamos cada lote"
