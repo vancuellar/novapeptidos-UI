@@ -22,6 +22,7 @@ import useEsMovil from '@/hooks/useEsMovil';
 import api from '@/lib/api';
 import { VISIBLE_CATEGORIES, fallbackProducts } from '@/data/fallbackCatalog';
 import { FEATURED_TABS, getTabProducts } from '@/data/featured';
+import useOcultos, { estaOculto } from '@/hooks/useOcultos';
 import { useLanguage } from '@/context/LanguageContext';
 import { localizeCategories, localizeProducts } from '@/i18n/catalog';
 
@@ -121,6 +122,7 @@ const Home = () => {
   const [vialOffset, setVialOffset] = useState(0);
   const carouselRef = useRef(null);
   const { language, t } = useLanguage();
+  const ocultos = useOcultos();
   // ===== LA PORTADA EN TELÉFONO VA ADELGAZADA (Christián, 2026-07-31) =====
   //
   // Medido el 31 de julio: el home medía 10,565 px a 375 px de ancho —trece
@@ -171,11 +173,13 @@ const Home = () => {
     // Los destacados son una lista curada nuestra (src/data/featured.js), no lo
     // que diga el backend: el campo `featured` del catálogo lo regenera el
     // script de precios y se perdería el orden que eligió Christian.
-    setFeatured(getTabProducts(featuredTab));
+    // Un destacado escondido no se pinta: seria invitar a la portada a un
+    // producto cuya ficha ya no existe (Christian, 2026-08-05).
+    setFeatured(getTabProducts(featuredTab).filter((x) => !estaOculto(ocultos, x)));
     // Las categorias salen del catalogo del sitio, NO del API: el API devuelve
     // slugs viejos que ningun producto usa y esas tarjetas abrian vacias.
     setCategories(VISIBLE_CATEGORIES);
-  }, [featuredTab]);
+  }, [featuredTab, ocultos]);
 
   // El carrusel NO gira solo: lo mueve el cliente con las flechas o deslizando
   // (Christian, 2026-07-26). Así puede detenerse en el vial que le interese sin

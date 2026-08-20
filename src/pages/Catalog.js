@@ -13,6 +13,7 @@ import { Skeleton } from '@/components/ui/skeleton';
 import ProductCard from '@/components/ProductCard';
 import { formatMXN } from '@/lib/api';
 import { VISIBLE_CATEGORIES, fallbackProducts } from '@/data/fallbackCatalog';
+import useOcultos, { estaOculto } from '@/hooks/useOcultos';
 import { useLanguage } from '@/context/LanguageContext';
 import { localizeCategories, localizeProducts, localizeProduct } from '@/i18n/catalog';
 
@@ -71,6 +72,7 @@ const Filters = ({ categories, selectedCat, setCat, inStock, setInStock, priceMa
 const Catalog = () => {
   const [params, setParams] = useSearchParams();
   const [products, setProducts] = useState([]);
+  const ocultos = useOcultos();
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState(params.get('search') || '');
@@ -100,7 +102,12 @@ const Catalog = () => {
     // Sin acentos y sin la vocal final de cada palabra: "Retatrutide" (inglés) encuentra "Retatrutida".
     const norm = (s) => (s || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
     const stem = (s) => norm(s).replace(/([a-z]{3})[aeo]\b/g, '$1');
-    let list = [...fallbackProducts];
+    // ⛔ LOS ESCONDIDOS NO SE PINTAN (Christián, 2026-08-05). El catálogo sale de
+    // `fallbackCatalog` —que viaja en el bundle—, así que la única forma de esconder
+    // algo era borrarlo del archivo y desplegar. Ahora se pregunta al servidor y se
+    // filtra aquí: esconder vuelve a ser un dato. Si la consulta falla, el conjunto
+    // llega vacío y se ve el catálogo COMPLETO (falla abierto, a propósito).
+    let list = fallbackProducts.filter((p) => !estaOculto(ocultos, p));
     if (selectedCat) list = list.filter((product) => (product.categories || [product.category]).includes(selectedCat));
     if (search) {
       const nq = norm(search).trim();
@@ -134,7 +141,7 @@ const Catalog = () => {
     else list.sort((a, b) => flagshipRank(a) - flagshipRank(b));
     setProducts(list);
     setLoading(false);
-  }, [selectedCat, search, inStock, priceMax, sort, categories, language]);
+  }, [selectedCat, search, inStock, priceMax, sort, categories, language, ocultos]);
 
   useEffect(() => { fetchProducts(); }, [fetchProducts]);
 

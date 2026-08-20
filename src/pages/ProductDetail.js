@@ -10,6 +10,7 @@ import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbP
 import ProductCard from '@/components/ProductCard';
 import TrustWidget from '@/components/TrustWidget';
 import api, { formatMXN } from '@/lib/api';
+import useOcultos, { estaOculto } from '@/hooks/useOcultos';
 import { useCart } from '@/context/CartContext';
 import { getFallbackProductBySlug, getFallbackProductsByCategory } from '@/data/fallbackCatalog';
 import { productImage, hasProductPhoto, isBrandImage } from '@/data/productImages';
@@ -73,6 +74,8 @@ const ProductDetail = () => {
   useEffect(() => {
     api.get('/stock').then((r) => setStockMap(r.data || null)).catch(() => setStockMap(null));
   }, []);
+
+  const ocultos = useOcultos();
 
   // ARRANCA EN LA PRESENTACIÓN QUE MÁS LE CONVIENE AL CLIENTE. (Fable 5, 2026-07-27)
   //
@@ -140,6 +143,11 @@ const ProductDetail = () => {
   }, [product?.slug]);
 
   if (loading) return <div className="max-w-[1180px] mx-auto px-4 py-10"><Skeleton className="h-96 rounded-xl" /></div>;
+  // ⛔ Un producto escondido se comporta como si no existiera, igual que en el
+  // servidor (la ruta publica da 404 si `hidden`). Si no, la ficha seguiria
+  // abierta por su liga directa y se podria agregar al carrito algo que el
+  // checkout va a rechazar — peor que no encontrarlo.
+  if (product && estaOculto(ocultos, product)) return <div className="max-w-[1180px] mx-auto px-4 py-20 text-center">{t('product.notFound')} <Link to="/catalogo" className="text-[hsl(var(--primary))]">{t('product.backToCatalog')}</Link></div>;
   if (!product) return <div className="max-w-[1180px] mx-auto px-4 py-20 text-center">{t('product.notFound')} <Link to="/catalogo" className="text-[hsl(var(--primary))]">{t('product.backToCatalog')}</Link></div>;
 
   const localizedProduct = localizeProduct(product, language);
