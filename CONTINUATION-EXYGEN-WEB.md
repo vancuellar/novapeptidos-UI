@@ -1,3 +1,68 @@
+# 🔝 5 de agosto — La tienda queda SOLO con lo que hay en la bodega
+
+**En vivo y verificado.** Backend `fa96cff` · sitio `5da0756` · 1,537 pruebas ·
+auditoría 97/0 · catálogo en vivo: **9 familias / 13 presentaciones**.
+
+Christián mandó una foto de su bodega: «actualiza el inventario para solo mostrar
+esto» y «esconde todos los otros compuestos de los que no tenemos stock».
+
+## Lo que quedó a la venta (piezas = cajas × 10)
+
+| SKU | piezas | | SKU | piezas |
+|---|---:|---|---|---:|
+| RETATRUTIDA-10MG | 30 | | 5AMINO1MQ-5MG | 30 |
+| RETATRUTIDA-20MG | 30 | | TESAMORELINA-20MG | 10 |
+| RETATRUTIDA-40MG | 30 | | NAD-500MG | 30 |
+| TIRZEPATIDA-10MG | 30 | | NAD-1000MG | 10 |
+| KLOWBPCGHKCUTB-80MG | 30 | | AGUABACTERIOST-10ML | 30 |
+| **EPITALON-50MG** (alta) | 10 | | **ALCOHOLBENCILICO-10ML** (alta) | 30 |
+| **ALCOHOLBENCILICO-3ML** (alta) | 20 | | | |
+
+**192 escondidos.** Respaldo del estado anterior: `/app/respaldo_stock.json` en el EC2.
+
+## ⛔ LO IMPORTANTE: esconder ya NO es un despliegue
+
+Se descubrió que esconder un producto obligaba a **borrarlo a mano de
+`fallbackCatalog.js`** y volver a desplegar — así se escondieron los 17 anteriores, y
+por eso nadie recordaba cómo se hacía. Ahora:
+
+- `GET /api/catalogo/ocultos` (público, falla abierto) dice qué no pintar.
+- El sitio filtra en catálogo, portada y ficha con `useOcultos` / `filtrarCatalogo`.
+- **Marcar `hidden` en el Panel basta.** Sin tocar código.
+
+## Tres tropiezos que costaron y conviene no repetir
+
+1. **Escribí 203 renglones de inventario vivo con la llave equivocada.** Las llaves
+   usan el slug de **familia** (`fallback-nad-plus::500 mg`), no el de la variante
+   (`fallback-nad-plus-500-mg::500 mg`). Se borraron y se rehicieron con
+   `_familia_del_slug`. Quedan 9 huérfanos **anteriores** a esto (10-amino-1mq,
+   adipotide, ace-031, dermorphin, b12) — no son productos, no estorban.
+2. **El primer filtro no escondía nada** y el catálogo seguía pintando 97. El
+   catálogo del sitio agrupa por **familia** (una Retatrutida con nueve variantes) y
+   yo comparaba por SKU, que la familia no tiene. Se filtra por dentro.
+3. **La auditoría se puso roja (3 fallas)** y una era un **bug real**: 5-AMINO-1MQ
+   5 mg estaba oculto de antes, ya se vende, y el sitio no lo tenía. Las otras dos
+   eran suposiciones viejas de la auditoría (comparaba contra la lista pública); se
+   le enseñó el modelo nuevo, **sin debilitarla**: un SKU que no está ni a la venta ni
+   en la lista de escondidos sigue tronando.
+
+## Precios de las tres altas — no se inventaron
+- **Alcohol bencílico**: le cuesta EXACTAMENTE lo mismo que el agua bacteriostática
+  (BA3=WA3=$142.40 · BA10=WA10=$160.20 MXN/caja) → mismo precio: **$179 y $239**.
+- **Epitalón 50 mg**: el más barato es Lumi a $106 USD/caja = $1,855 MXN/caja. A
+  **$3,699** queda en ROI 19.9, la banda de SS-31 50 mg (19.8) y NAD+ 500 (19.6).
+
+## Pendientes
+- ⚠️ **Choca con la regla madre** (`exygen-vender-siempre-envio-partido`): «nunca
+  bloquear venta por inventario, 20 ya + 20 sobre pedido». Christián lo decidió así a
+  sabiendas; si se arrepiente, el respaldo lo revierte.
+- `npm run catalogo:sincronizar` **se planta** (con razón) mientras el API devuelva 13
+  y el sitio conozca 189. Las altas nuevas van a mano.
+- Faltaba `playwright` con Chromium en la Mac: el sitio se publicó una vez **sin
+  verificar**. Ya está instalado.
+
+---
+
 # 🔝 5 de agosto (noche) — TURNSTILE ENCENDIDO Y PROBADO DE VERDAD
 
 Backend `00c4fd5` · sitio `974ac17` · **1,516 pruebas en verde** · desplegado.
