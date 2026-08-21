@@ -1,3 +1,53 @@
+# ⛔⛔ ÉSTE ES EL ÚNICO CONTINUATION DEL PROYECTO
+
+Orden de Christián (2026-08-05): **«1 solo CONTINUATION file por proyecto»**.
+
+Los otros tres se archivaron en `archivo-continuations/` (con su LÉEME): están
+caducos —el más nuevo no se tocaba desde el 18 de julio— y creerles es justo el error
+que ya costó caro: repetir lo que dice un CONTINUATION viejo en vez de consultar el
+código, la base o el endpoint en vivo.
+
+**Lo nuevo va ARRIBA de este archivo.** No se abre otro.
+
+---
+
+# 🔝 5 de agosto (cierre) — El vigía gritó en falso y ya no lo hace
+
+**Christián:** «me llegó un email de que la tienda está caída porque solo hay 13
+productos». **La tienda estaba perfecta.** Ese día él dejó a la venta sólo las 13
+presentaciones que tiene en bodega y escondió las otras 192, a propósito.
+
+## Qué pasaba
+`vigilante.py` tenía **`PRODUCTOS_MINIMOS = 40` a secas**. Un piso escrito a mano
+convierte cada decisión de negocio en una alarma falsa — y **una alarma que grita
+cuando la casa hizo lo que quiso se aprende a ignorar**, que es la peor avería posible
+en un vigía.
+
+⚠️ **Era la MISMA lección que ya estaba escrita** en `auditoria-e2e.js` desde el
+1-ago (cuando se ocultaron ocho presentaciones por ventana de sentido y la compuerta
+se puso roja). Se repitió el error en otro archivo. **Cualquier umbral fijo sobre el
+tamaño del catálogo es una alarma falsa esperando su turno.**
+
+## Cómo quedó
+Recortar el piso a secas lo habría dejado ciego. Ahora caza las dos averías reales:
+1. **Cero productos a la venta** → «no se puede vender». Ésa sí es la tienda caída.
+2. **Truncamiento** → mide **a la venta + escondidos** contra el piso. Que Christián
+   esconda 192 a propósito no es avería; que se pierdan 192 **sin que nadie los
+   escondiera** sí — y se caza igual, porque entonces tampoco salen en la lista de
+   escondidos.
+
+Y si `/api/catalogo/ocultos` no contesta, **avisa en vez de callar**: ante la duda, el
+vigía habla.
+
+**6 pruebas nuevas** (`test_vigilante.py`) que cuidan las dos caras: que calle cuando
+debe y que grite cuando debe. El vigía no tenía ninguna.
+
+**Subido al EC2** (`/opt/exygen/vigilante/vigilante.py`, respaldo
+`.bak-2026-08-05`) y corrido en vivo ahí: **cero fallas**. Backend `135932f`,
+1,543 pruebas.
+
+---
+
 # 🔝 5 de agosto — La tienda queda SOLO con lo que hay en la bodega
 
 **En vivo y verificado.** Backend `fa96cff` · sitio `5da0756` · 1,537 pruebas ·
