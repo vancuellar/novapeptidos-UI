@@ -10,7 +10,7 @@ import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbP
 import ProductCard from '@/components/ProductCard';
 import TrustWidget from '@/components/TrustWidget';
 import api, { formatMXN } from '@/lib/api';
-import useOcultos, { estaOculto } from '@/hooks/useOcultos';
+import useOcultos, { filtrarCatalogo } from '@/hooks/useOcultos';
 import { useCart } from '@/context/CartContext';
 import { getFallbackProductBySlug, getFallbackProductsByCategory } from '@/data/fallbackCatalog';
 import { productImage, hasProductPhoto, isBrandImage } from '@/data/productImages';
@@ -144,15 +144,23 @@ const ProductDetail = () => {
 
   if (loading) return <div className="max-w-[1180px] mx-auto px-4 py-10"><Skeleton className="h-96 rounded-xl" /></div>;
   // ⛔ Un producto escondido se comporta como si no existiera, igual que en el
-  // servidor (la ruta publica da 404 si `hidden`). Si no, la ficha seguiria
-  // abierta por su liga directa y se podria agregar al carrito algo que el
-  // checkout va a rechazar — peor que no encontrarlo.
-  if (product && estaOculto(ocultos, product)) return <div className="max-w-[1180px] mx-auto px-4 py-20 text-center">{t('product.notFound')} <Link to="/catalogo" className="text-[hsl(var(--primary))]">{t('product.backToCatalog')}</Link></div>;
+  // servidor (la ruta publica da 404 si `hidden`). Si no, la ficha seguiria abierta
+  // por su liga directa y se podria agregar al carrito algo que el checkout va a
+  // rechazar — peor que no encontrarlo.
+  //
+  // Y se filtra POR VARIANTE, no por familia: de una Retatrutida con nueve
+  // presentaciones pueden quedar tres. La ficha tiene que ofrecer esas tres, no las
+  // nueve; si no queda ninguna, no hay ficha.
+  const visible = product ? (filtrarCatalogo([product], ocultos)[0] || null) : null;
+  if (product && !visible) return <div className="max-w-[1180px] mx-auto px-4 py-20 text-center">{t('product.notFound')} <Link to="/catalogo" className="text-[hsl(var(--primary))]">{t('product.backToCatalog')}</Link></div>;
   if (!product) return <div className="max-w-[1180px] mx-auto px-4 py-20 text-center">{t('product.notFound')} <Link to="/catalogo" className="text-[hsl(var(--primary))]">{t('product.backToCatalog')}</Link></div>;
 
   const localizedProduct = localizeProduct(product, language);
   const localizedRelated = localizeProducts(related, language);
-  const variants = product.variants || [];
+  // Las presentaciones que SIGUEN a la venta (ver el filtro de arriba): de una
+  // familia con nueve pueden quedar tres, y ofrecer las otras seis seria mandar al
+  // cliente a un carrito que el checkout rechaza.
+  const variants = (visible || product).variants || [];
   const active = variants[variantIdx] || { price: localizedProduct.price, presentation: localizedProduct.presentation, stock: localizedProduct.stock };
   // Los insumos y la calculadora solo tienen sentido en lo que llega en polvo y se
   // dosifica por mg. El agua bacteriostática no se ofrece a sí misma.

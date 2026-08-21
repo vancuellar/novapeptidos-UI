@@ -13,7 +13,7 @@ import { Skeleton } from '@/components/ui/skeleton';
 import ProductCard from '@/components/ProductCard';
 import { formatMXN } from '@/lib/api';
 import { VISIBLE_CATEGORIES, fallbackProducts } from '@/data/fallbackCatalog';
-import useOcultos, { estaOculto } from '@/hooks/useOcultos';
+import useOcultos, { filtrarCatalogo } from '@/hooks/useOcultos';
 import { useLanguage } from '@/context/LanguageContext';
 import { localizeCategories, localizeProducts, localizeProduct } from '@/i18n/catalog';
 
@@ -107,7 +107,7 @@ const Catalog = () => {
     // algo era borrarlo del archivo y desplegar. Ahora se pregunta al servidor y se
     // filtra aquí: esconder vuelve a ser un dato. Si la consulta falla, el conjunto
     // llega vacío y se ve el catálogo COMPLETO (falla abierto, a propósito).
-    let list = fallbackProducts.filter((p) => !estaOculto(ocultos, p));
+    let list = filtrarCatalogo(fallbackProducts, ocultos);
     if (selectedCat) list = list.filter((product) => (product.categories || [product.category]).includes(selectedCat));
     if (search) {
       const nq = norm(search).trim();

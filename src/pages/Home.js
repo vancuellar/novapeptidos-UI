@@ -22,7 +22,7 @@ import useEsMovil from '@/hooks/useEsMovil';
 import api from '@/lib/api';
 import { VISIBLE_CATEGORIES, fallbackProducts } from '@/data/fallbackCatalog';
 import { FEATURED_TABS, getTabProducts } from '@/data/featured';
-import useOcultos, { estaOculto } from '@/hooks/useOcultos';
+import useOcultos, { filtrarCatalogo } from '@/hooks/useOcultos';
 import { useLanguage } from '@/context/LanguageContext';
 import { localizeCategories, localizeProducts } from '@/i18n/catalog';
 
@@ -175,7 +175,7 @@ const Home = () => {
     // script de precios y se perdería el orden que eligió Christian.
     // Un destacado escondido no se pinta: seria invitar a la portada a un
     // producto cuya ficha ya no existe (Christian, 2026-08-05).
-    setFeatured(getTabProducts(featuredTab).filter((x) => !estaOculto(ocultos, x)));
+    setFeatured(filtrarCatalogo(getTabProducts(featuredTab), ocultos));
     // Las categorias salen del catalogo del sitio, NO del API: el API devuelve
     // slugs viejos que ningun producto usa y esas tarjetas abrian vacias.
     setCategories(VISIBLE_CATEGORIES);

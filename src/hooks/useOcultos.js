@@ -46,3 +46,43 @@ export const estaOculto = (ocultos, p) => Boolean(
     || (p.slug && ocultos.has(p.slug))
     || (p.id && ocultos.has(p.id))
     || (p.product_id && ocultos.has(p.product_id))));
+
+/**
+ * EL CATÁLOGO DEL SITIO ESTÁ AGRUPADO POR FAMILIA, y ahí estuvo el error.
+ *
+ * `fallbackCatalog` no guarda un renglón por presentación: guarda UNA "Retatrutida"
+ * con nueve variantes dentro. Esa familia no tiene `sku`, y su `slug` es
+ * `retatrutida` — mientras que lo que se esconde son las PRESENTACIONES
+ * (`RETATRUTIDA-5MG`, slug `retatrutida-5-mg`). Preguntar por la familia no acertaba
+ * nunca, y el catálogo seguía pintando los 97 productos como si nada.
+ *
+ * Lo correcto es filtrar POR DENTRO:
+ *   · se quitan las variantes escondidas;
+ *   · si no queda ninguna, la familia entera desaparece;
+ *   · y si quedan algunas, se recalcula el rango que anuncia («5 mg – 120 mg» sería
+ *     mentira cuando sólo quedan tres) y el precio de entrada.
+ */
+export function filtrarCatalogo(productos, ocultos) {
+  if (!ocultos || !ocultos.size) return productos;
+  const out = [];
+  for (const p of productos || []) {
+    const variantes = p.variants || [];
+    if (!variantes.length) {
+      if (!estaOculto(ocultos, p)) out.push(p);
+      continue;
+    }
+    const vivas = variantes.filter((v) => !estaOculto(ocultos, v));
+    if (!vivas.length) continue;                       // familia entera escondida
+    if (vivas.length === variantes.length) { out.push(p); continue; }
+    const precios = vivas.map((v) => v.price).filter((x) => x > 0);
+    out.push({
+      ...p,
+      variants: vivas,
+      price: precios.length ? Math.min(...precios) : p.price,
+      presentation: vivas.length === 1
+        ? vivas[0].presentation
+        : `${vivas[0].presentation} – ${vivas[vivas.length - 1].presentation}`,
+    });
+  }
+  return out;
+}
