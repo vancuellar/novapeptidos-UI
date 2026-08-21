@@ -5605,6 +5605,89 @@ export const fallbackProducts = [
     "is_new": false
   },
   {
+    "id": "fallback-alcohol-bencilico",
+    "name": "Alcohol bencílico 0.9%",
+    "slug": "alcohol-bencilico",
+    "category": "suministros",
+    "categories": [
+      "suministros"
+    ],
+    "short_description": "El conservador que mantiene estéril el vial ya disuelto.",
+    "description": "No es un péptido: es un insumo de laboratorio. Es el conservador que se le añade al agua para que no crezcan bacterias en el vial una vez disuelto, y es lo mismo que lleva dentro el agua bacteriostática. Se usa cuando se prefiere preparar la mezcla por separado. Uso exclusivo en investigación (RUO).",
+    "presentation": "3 mL – 10 mL",
+    "form": "Solución",
+    "purity": "99.0%",
+    "price": 179,
+    "variants": [
+      {
+        "presentation": "3 mL",
+        "price": 179,
+        "stock": 20,
+        "batch_number": "",
+        "id": "a64a2817-f8ad-459f-9df8-8de339c73038",
+        "sku": "ALCOHOLBENCILICO-3ML",
+        "descuentable": false
+      },
+      {
+        "presentation": "10 mL",
+        "price": 239,
+        "stock": 30,
+        "batch_number": "",
+        "id": "75bed4d6-8958-4214-b804-f94ca120433d",
+        "sku": "ALCOHOLBENCILICO-10ML",
+        "descuentable": false
+      }
+    ],
+    "tiers": [],
+    "stock": 30,
+    "image_url": "https://images.pexels.com/photos/6129873/pexels-photo-6129873.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
+    "coa_url": "",
+    "batch_number": "",
+    "storage": "Conservar a -20 °C, protegido de la luz. Reconstituido: 2–8 °C.",
+    "start_dose": null,
+    "start_unit": null,
+    "start_levels": null,
+    "featured": false,
+    "is_new": true
+  },
+  {
+    "id": "fallback-epitalon",
+    "name": "Epitalón",
+    "slug": "epitalon",
+    "category": "longevidad",
+    "categories": [
+      "longevidad"
+    ],
+    "short_description": "Péptido de cuatro aminoácidos que se investiga por su efecto sobre la telomerasa.",
+    "description": "Es un tetrapéptido (Ala-Glu-Asp-Gly) que se estudia por su relación con la enzima telomerasa y con los ritmos de la glándula pineal. La investigación disponible es sobre todo de laboratorio y en modelos animales; en personas no está demostrado. Uso exclusivo en investigación (RUO).",
+    "presentation": "50 mg",
+    "form": "Liofilizado",
+    "purity": "99.0%",
+    "price": 3699,
+    "variants": [
+      {
+        "presentation": "50 mg",
+        "price": 3699,
+        "stock": 10,
+        "batch_number": "",
+        "id": "d7633081-797d-4cb8-b856-329dbcd1a2df",
+        "sku": "EPITALON-50MG",
+        "descuentable": true
+      }
+    ],
+    "tiers": [],
+    "stock": 10,
+    "image_url": "https://images.pexels.com/photos/10514991/pexels-photo-10514991.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
+    "coa_url": "",
+    "batch_number": "",
+    "storage": "Conservar a -20 °C, protegido de la luz. Reconstituido: 2–8 °C.",
+    "start_dose": null,
+    "start_unit": null,
+    "start_levels": null,
+    "featured": false,
+    "is_new": true
+  },
+  {
     "id": "fallback-b12",
     "name": "B12",
     "slug": "b12",
