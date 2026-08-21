@@ -3345,11 +3345,20 @@ export const fallbackProducts = [
     ],
     "short_description": "Se estudia por su efecto en las células que almacenan grasa.",
     "description": "5-Amino-1MQ es una molécula pequeña, no un péptido. Se estudia porque frena una enzima que trabaja dentro de las células que almacenan grasa, y de paso influye en el NAD+, que es lo que la célula usa para producir energía. La investigación se ha hecho en laboratorio y en animales. Uso exclusivo en investigación (RUO).",
-    "presentation": "10 mg – 50 mg",
+    "presentation": "5 mg – 50 mg",
     "form": "Liofilizado",
     "purity": "99.0%",
     "price": 929,
     "variants": [
+      {
+        "presentation": "5 mg",
+        "price": 839,
+        "stock": 30,
+        "batch_number": "",
+        "id": "bd1ca7a4-03e0-4891-bbba-e60424162662",
+        "sku": "5AMINO1MQ-5MG",
+        "descuentable": true
+      },
       {
         "presentation": "10 mg",
         "price": 929,

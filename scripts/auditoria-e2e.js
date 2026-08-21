@@ -295,8 +295,21 @@ async function catalogo({ prods }) {
   // y una compuerta que se rompe por lo que la casa QUISO hacer se aprende a ignorar. Se
   // mide contra lo que el propio sitio conoce: un truncamiento llega en cientos de menos.
   const skusDelSitio = new Set(prods.flatMap((p) => (p.variants || []).map((v) => v.sku))).size;
-  revisar(vivos.length >= Math.floor(skusDelSitio * 0.9), 'catálogo del API',
-          `${vivos.length} productos · el sitio conoce ${skusDelSitio}`);
+  // ⛔ LOS ESCONDIDOS CUENTAN (Christián, 2026-08-05: «esconde todos los otros
+  // compuestos de los que no tenemos stock»). Desde ese día, esconder es un DATO:
+  // el backend deja de publicarlos y el sitio los filtra en vivo con
+  // `/api/catalogo/ocultos`. La lista pública puede ser legítimamente mucho más
+  // corta que el catálogo del sitio — ese día bajó a 13 de 189 — y comparar contra
+  // ella convertía una decisión de negocio en una compuerta roja. Lo que esta
+  // comprobación tiene que seguir cazando es una respuesta TRUNCADA, así que se mide
+  // vivos + escondidos contra lo que el sitio conoce.
+  let ocultos = new Set();
+  try {
+    const ro = await fetch(`${API}/catalogo/ocultos`);
+    if (ro.ok) { const dd = await ro.json(); ocultos = new Set(dd.skus || []); }
+  } catch (e) { /* sin la lista, se compara como antes */ }
+  revisar(vivos.length + ocultos.size >= Math.floor(skusDelSitio * 0.9), 'catálogo del API',
+          `${vivos.length} a la venta + ${ocultos.size} escondidos · el sitio conoce ${skusDelSitio}`);
   revisar(vivos.every((p) => p.price > 0), 'todos con precio',
           vivos.filter((p) => !(p.price > 0)).map((p) => p.sku).join(','));
   revisar(vivos.every((p) => p.sku), 'todos con SKU');
@@ -320,7 +333,10 @@ async function catalogo({ prods }) {
   for (const p of prods) {
     for (const v of (p.variants || [])) {
       const b = porSku[v.sku];
-      if (!b) { huerfanos.push(v.sku); continue; }
+      // Un SKU escondido a propósito NO es un fantasma: el backend no lo publica
+      // porque la casa lo escondió, y el sitio ya no lo pinta. Fantasma es el que
+      // no está ni a la venta ni en la lista de escondidos — ése sí apunta a nada.
+      if (!b) { if (!ocultos.has(v.sku)) huerfanos.push(v.sku); continue; }
       if (Math.round(v.price) !== Math.round(b.price)) {
         difPrecio.push(`${v.sku}: sitio $${v.price} vs API $${b.price}`);
       }
